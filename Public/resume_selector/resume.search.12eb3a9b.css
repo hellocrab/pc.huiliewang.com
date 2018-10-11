@@ -1,0 +1,639 @@
+.LocalDataUIA {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  vertical-align: middle;
+  position: relative;
+  cursor: pointer;
+}
+.LocalDataUIA em.drop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 22px;
+  height: 100%;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/plugins/jquery-LocalDataUIA/drop_arrow.bcae6d1e.gif) center center no-repeat;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+  pointer-events: none;
+}
+.LocalDataUIA input {
+  cursor: pointer;
+  padding-right: 1.8em;
+}
+.LocalDataUIA i.placeholder {
+  position: absolute;
+  font-style: normal;
+  color: #acacac;
+  pointer-events: none;
+}
+.LocalDataUIA-disabled {
+  background-color: #f5f5f5;
+}
+.LocalDataUIB {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  vertical-align: middle;
+  position: relative;
+  cursor: pointer;
+}
+.LocalDataUIB em.drop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 22px;
+  height: 100%;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/plugins/jquery-LocalDataUIB/drop_arrow.bcae6d1e.gif) center center no-repeat;
+  overflow: hidden;
+  z-index: 9999;
+  cursor: pointer;
+}
+.data-tabs ul{list-style: none;}
+.LocalDataUIB i.placeholder {
+  position: absolute;
+  font-style: normal;
+  color: #acacac;
+  z-index: 9999;
+  top:5px;
+  left: 10px;
+}
+.LocalDataUIB span.items {
+  position: absolute;
+  left: 0;
+  overflow: hidden;
+}
+.LocalDataUIB span.items span {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  margin-right: 5px;
+  white-space: nowrap;
+  padding: 0 20px 0 2px;
+  position: relative;
+  text-overflow: ellipsis;
+}
+.LocalDataUIB span.items span a.close {
+  position: absolute;
+  right: 0;
+  top: 7px;
+  width: 16px;
+  height: 16px;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/plugins/jquery-LocalDataUIB/close.5ed4f863.png);
+  overflow: hidden;
+}
+.LocalDataUIB span.items span a.close:hover {
+  background-position: 0 -16px;
+}
+.LocalDataUIB-disabled {
+  background-color: #f5f5f5;
+}
+.LocalDataUIC {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  vertical-align: top;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.LocalDataUIC-simulation-text {
+  color: #454545;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #fff;
+  border: 1px solid #cccccc;
+  border-radius: 2px;
+}
+.LocalDataUIC em.drop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/plugins/jquery-LocalDataUIC/drop_arrow_p.62eb697e.png) center center no-repeat;
+}
+.LocalDataUIC:hover em.drop {
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/plugins/jquery-LocalDataUIC/drop_arrow_p_hover.9295e2e7.png) center center no-repeat #f5f5f5;
+}
+.LocalDataUIC input {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background-color: transparent;
+}
+.LocalDataUIC i.placeholder {
+  position: absolute;
+  font-style: normal;
+  color: #acacac;
+}
+.LocalDataUIC span.items {
+  position: absolute;
+  left: 0;
+  margin-right: 28px;
+  overflow: hidden;
+}
+.LocalDataUIC span.items span {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  margin-right: 5px;
+  white-space: nowrap;
+  padding: 0 20px 0 2px;
+  position: relative;
+  text-overflow: ellipsis;
+}
+.LocalDataUIC span.items span a.close {
+  position: absolute;
+  right: 0;
+  top: 7px;
+  width: 16px;
+  height: 16px;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/plugins/jquery-LocalDataUIC/close.5ed4f863.png);
+  overflow: hidden;
+}
+.LocalDataUIC span.items span a.close:hover {
+  background-position: 0 -16px;
+}
+.LocalDataUIC-disabled {
+  background-color: #f5f5f5;
+}
+.LocalDataUIC-disabled:hover em.drop {
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/plugins/jquery-LocalDataUIC/drop_arrow_p.62eb697e.png) center center no-repeat;
+}
+.LocalDataUID {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  vertical-align: top;
+  position: relative;
+  overflow: visible;
+  /*cursor: pointer;*/
+}
+.LocalDataUID-simulation-text {
+  color: #454545;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #fff;
+
+  border-radius: 2px;
+}
+.LocalDataUID em.drop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/plugins/jquery-LocalDataUID/drop_arrow_p.62eb697e.png) center center no-repeat;
+}
+.LocalDataUID em.drop:hover {
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/plugins/jquery-LocalDataUID/drop_arrow_p_hover.9295e2e7.png) center center no-repeat #f5f5f5;
+}
+.LocalDataUID input {
+  width: 100%!important;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+}
+.LocalDataUIB-input {
+  width: 100%!important;
+}
+.LocalDataUID .LocalDataUID-input {
+  position: absolute;
+  bottom: 0;
+}
+.LocalDataUID .LocalDataUID-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+.LocalDataUID .LocalDataUID-suggest {
+  position: absolute;
+  display: none;
+  margin-left: -1px;
+  left: 0;
+  right: 0;
+  top: 100%;
+  width: 100%;
+  line-height: 24px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  min-height: 200px;
+  overflow-y: hidden;
+  z-index: 99999;
+}
+.LocalDataUID .LocalDataUID-suggest-notfound, .LocalDataUID .LocalDataUID-suggest-over-range {
+  text-align: center;
+  line-height: 30px;
+  color: #b94e4a;
+  background-color: #f2dede;
+}
+.LocalDataUID .LocalDataUID-suggest-title, .LocalDataUID .LocalDataUID-suggest-item {
+  padding: 0 10px;
+}
+.LocalDataUID .LocalDataUID-suggest-title {
+  color: #999;
+  margin: 5px 0;
+  background-color: #f4f4f4;
+}
+.LocalDataUID .LocalDataUID-suggest-list {
+  position: relative;
+  /*margin: -5px 0;*/
+  max-height: 350px;
+  overflow: auto;
+}
+.LocalDataUID .LocalDataUID-suggest-item {
+  cursor: pointer;
+}
+.LocalDataUID .LocalDataUID-suggest-item:hover, .LocalDataUID .LocalDataUID-suggest-item.active {
+  color: #fff;
+  text-shadow: none;
+  background-color: #249aca;
+}
+.LocalDataUID .LocalDataUID-suggest-item .suggest-selected {
+  float: right;
+}
+.LocalDataUID i.placeholder {
+  position: absolute;
+  font-style: normal;
+  color: #acacac;
+    left: 10px;
+}
+.LocalDataUID span.items {
+  height: 28px;
+  position: absolute;
+  left: 0;
+  margin-right: 28px;
+  overflow: hidden;
+}
+.LocalDataUID span.items span {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  margin-right: 5px;
+  white-space: nowrap;
+  padding: 0 20px 0 2px;
+  position: relative;
+  text-overflow: ellipsis;
+}
+.LocalDataUID span.items span a.close {
+  position: absolute;
+  right: 0;
+  top: 7px;
+  width: 16px;
+  height: 16px;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/plugins/jquery-LocalDataUID/close.5ed4f863.png);
+  overflow: hidden;
+}
+.LocalDataUID span.items span a.close:hover {
+  background-position: 0 -16px;
+}
+.LocalDataUID-disabled {
+  background-color: #f5f5f5;
+}
+.LocalDataUID-disabled em.drop:hover {
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/plugins/jquery-LocalDataUID/drop_arrow_p.62eb697e.png) center center no-repeat;
+}
+#resume-search-form {
+  font-family: "Microsoft Yahei";
+}
+.submenu {
+  margin: 0 0 -1px 1px;
+}
+.submenu a {
+  padding: 10px 20px;
+  background: #eff6fb;
+  color: #579bc8;
+  float: left;
+  border: 1px solid #d9d9d9;
+  margin: -1px;
+}
+.submenu a.active {
+  background: #fff;
+  border-bottom: none;
+}
+.submenu .search-info-title {
+  float: right;
+}
+.submenu .search-info-title .input-append {
+  font-size: 12px;
+  float: right;
+  position: relative;
+  top: 12px;
+  *top: 9px;
+}
+.submenu .search-info-title .input-append .title {
+  font-size: 12px;
+  color: #999;
+  vertical-align: middle;
+}
+.submenu .search-info-title .input-append .text {
+  height: 15px;
+  line-height: 15px;
+  border-radius: 0;
+  border: 1px solid #d3d3d3;
+  padding-left: 10px;
+  font-size: 12px;
+  width: 105px;
+  padding-right: 34px;
+  margin: 0;
+}
+.submenu .search-info-title .input-append .btn {
+  cursor: pointer;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/pages/resume.search/icon-resume.9cc7195e.png) 4px 5px no-repeat #f7fcff;
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #b2d5e7;
+  border-radius: 0;
+  position: absolute;
+  right: 0;
+  *top: 1px;
+  _top: 2px;
+  top: 0px;
+}
+.submenu .search-info-title .input-append a.btn-disabled {
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: 1px solid #c5c5c5;
+  padding: 1px 2px 2px 4px;
+  background: #eee;
+}
+.bt-search a {
+  margin-right: 10px;
+}
+.bt-search a i {
+  margin-right: 6px;
+}
+.resume-search a {
+  color: #3f8aaf;
+  cursor: pointer;
+}
+.resume-search .serach-info-detail a.btn-disibled {
+  color: #666;
+  margin-right: 16px;
+}
+.resume-search .resume-form {
+  border: 1px solid #ddd;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/pages/resume.search/bj-find.cdbfaf35.jpg) right 0 repeat-y #fff;
+}
+.resume-search .resume-form .resume-search-list {
+  width: 228px;
+  float: right;
+  overflow: hidden;
+}
+.resume-search .resume-form .resume-search-list h2 {
+  font-weight: bold;
+  font-size: 12px;
+  margin: 0;
+  line-height: 37px;
+  margin: 0 15px;
+  border-bottom: 1px dotted #d3d3d3;
+}
+.resume-search .resume-form .resume-search-list h2 span {
+  color: #999;
+  font-weight: normal;
+  float: right;
+}
+.resume-search .resume-form .resume-search-list h2 span i {
+  color: #f90;
+  font-weight: bold;
+  margin: 0 2px;
+}
+.resume-search .resume-form .resume-search-list ul {
+  padding: 2px 0;
+}
+.resume-search .resume-form .resume-search-list ul li {
+  height: 25px;
+  line-height: 25px;
+  padding: 0 10px 0 15px;
+  margin: 7px 0;
+  position: relative;
+}
+.resume-search .resume-form .resume-search-list ul li:hover {
+  background: #63b2da;
+}
+.resume-search .resume-form .resume-search-list ul li:hover a.link-title {
+  color: #fff;
+}
+.resume-search .resume-form .resume-search-list ul li .side-btn {
+  display: none;
+}
+.resume-search .resume-form .resume-search-list ul li .side-info {
+  float: right;
+  color: #808080;
+}
+.resume-search .resume-form .resume-search-list ul li a.icon-16 {
+  position: relative;
+  float: right;
+  top: 4px;
+  margin-left: 5px;
+  margin-right: 0;
+}
+.resume-search .resume-form .resume-search-list ul li a.icon-subscribe-yes i {
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  width: 16px;
+  height: 16px;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/common/icons/icon-16.cfc07a81.png) no-repeat 0 -144px;
+  position: relative;
+  top: 3px;
+}
+.resume-search .resume-form .resume-search-list ul li a.icon-subscribe-no {
+  position: relative;
+}
+.resume-search .resume-form .resume-search-info {
+  width: 748px;
+  float: left;
+  background: #fff;
+  padding-bottom: 30px;
+  position: relative;
+}
+.resume-search .resume-form .resume-search-info .search-info-title {
+  padding: 0 20px;
+  background: #f6f6f6;
+  height: 50px;
+}
+.resume-search .resume-form .resume-search-info .search-info-title h1 {
+  float: left;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  _margin-top: 0px;
+  line-height: 50px;
+}
+.resume-search .resume-form .resume-search-info .resume-search-custom {
+  padding-left: 152px;
+  margin-top: 30px;
+}
+/* jing 2014/4/17 优化 */
+.resume-search .resume-form .resume-search-info .custom-search {
+  font-weight: normal;
+  font-size: 12px;
+  background: #f7fcff;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  height: 16px;
+  vertical-align: middle;
+  padding-left: 20px;
+  line-height: 12px;
+  margin-left: 10px;
+  padding: 7px 10px;
+  border: 1px solid #d5e9f3;
+  margin-top: 10px;
+}
+/* jing 2014/4/17 优化 */
+.resume-search .resume-form .resume-search-info .search-info-title .input-append {
+  font-size: 12px;
+  float: right;
+  position: relative;
+  top: 12px;
+  *top: 9px;
+}
+.resume-search .resume-form .resume-search-info .search-info-title .input-append .text {
+  height: 15px;
+  line-height: 15px;
+  border-radius: 0;
+  border: 1px solid #d3d3d3;
+  padding-left: 10px;
+  font-size: 12px;
+  width: 105px;
+  padding-right: 34px;
+  margin: 0;
+}
+.resume-search .resume-form .resume-search-info .search-info-title .input-append .btn {
+  cursor: pointer;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/pages/resume.search/icon-resume.9cc7195e.png) 4px 5px no-repeat #f7fcff;
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #b2d5e7;
+  border-radius: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  *top: 1px;
+  _top: 2px;
+}
+.resume-search .resume-form .resume-search-info .search-info-title .input-append a.btn-disabled {
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: 1px solid #c5c5c5;
+  padding: 1px 2px 2px 4px;
+  background: #eee;
+}
+.bgorange {
+  background: #f90;
+  color: #fff;
+  padding: 3px 5px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail {
+  width: 100%;
+  margin: 25px 0 0 0;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail tr {
+  height: 50px;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail .h-auto {
+  height: auto;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail tr th {
+  width: 150px;
+  padding-right: 10px;
+  text-align: right;
+  font-weight: normal;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail tr td input.text {
+  width: 300px;
+  margin-right: 10px;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail tr td input.text2 {
+  width: 126px;
+  margin: 0;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail tr td input.text3 {
+  width: 126px;
+  margin-right: 10px;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail tr td .selectui {
+  margin-right: 10px;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail tr td .gray {
+  font-size: 0;
+  border-bottom: 1px solid #d3d3d3;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  height: 0;
+  width: 14px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail tr td .simulation-text {
+  border-radius: 0;
+}
+
+.simulation-text{padding: 0;}
+.resume-search .resume-form .resume-search-info .serach-info-detail tr td .btn-search {
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/pages/resume.search/icon-resume.9cc7195e.png) 10px -14px #3d9ccc no-repeat;
+  padding-left: 30px;
+  margin-right: 5px;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail tr td label {
+  margin-right: 10px;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail tr td .spread-others input.text {
+  display: none;
+  vertical-align: middle;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail td .btn-light {
+  padding: 7px 12px;
+}
+.resume-search .resume-form .resume-search-info .serach-info-detail td .btn-search {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.resume-search .resume-form .resume-search-info .j-autocomplete ul li span {
+  color: #ff7018;
+}
+.resume-search .resume-form .resume-search-info .j-autocomplete ul li.hasFocus {
+  background: #cde6ff;
+}
+.resume-search .resume-form .resume-search-info .j-autocomplete ul li {
+  font-weight: normal;
+  color: #3a89b1;
+}
+.resume-search .load {
+  text-align: center;
+  line-height: 55px;
+}
+.resume-search .load i {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  width: 16px;
+  height: 16px;
+  background: url(//concat.lietou-static.com/fe-h-pc/v5/images/common/icons/loading1.4f323667.gif) no-repeat;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.alertTs-js-k span.bgorange {
+  background: #f90;
+  color: #fff;
+  padding: 3px 5px;
+  cursor: pointer;
+}
+.tree-list ul{
+    padding-left: 0px;
+}

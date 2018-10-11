@@ -1,0 +1,57 @@
+
+<link href="__PUBLIC__/style/css/dialog.css" rel="stylesheet">
+
+<form class="form-horizontal" >
+<div class="full-height">
+    <div class="content">
+        <div class="addgwtitle">公司全员</div>
+        <div class="btn-group bootstrap-select show-tick form-control">
+            <div class="ddd">
+                <input type="text" class="form-control sousuo" name="msgw" style="background-color:#fff;color:#000;border:1px solid #ccc;width: 100%;cursor: text;" placeholder="搜索成员名称">
+                <input type="hidden" name="user_id" id="user_id" />
+                <i class="fa fa-search"></i>
+            </div>
+            <div class="xuanxiang">
+                <ul class="xxul">
+                    <volist name="user" id="vo">
+                        <li class="xxli">
+                            <img src="{$vo['img']}" class="touxiang">
+                            <span class="namexx" data-id="{$vo['user_id']}">{$vo['name']}</span>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+
+
+
+<script>
+
+    $(".sousuo").on("keyup",function () {
+        var con=$(this).val();
+        var list=$(".xxli");
+        list.each(function () {
+            var _this=$(this);
+            if(_this.find(".namexx").html().indexOf(con)>=0){
+                _this.show();
+            }else{
+                _this.hide();
+            }
+        })
+    })
+
+    $("body").on("click",".xxli",function () {
+        var select=$(this).find(".namexx").html();
+        var id=$(this).find(".namexx").attr("data-id");
+        $(".sousuo").val(select);
+        $("#user_id").attr("data-id",id);
+    })
+
+
+
+
+</script>

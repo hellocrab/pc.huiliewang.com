@@ -1,0 +1,84 @@
+[ 2018-10-09T09:05:08+08:00 ] 183.228.49.181 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-10-09T09:09:37+08:00 ] 180.163.220.3 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-10-09T13:41:48+08:00 ] 183.228.53.208 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-10-09T14:02:08+08:00 ] 42.236.10.124 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-10-09T14:02:46+08:00 ] 42.236.10.124 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-10-09T16:34:26+08:00 ] 183.228.52.127 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-10-09T16:34:27+08:00 ] 183.228.52.127 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-10-09T16:34:50+08:00 ] 183.228.52.127 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1538323200 AND 1541001600 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1538323200 AND 1541001600 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1538928000 AND 1539532800 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1538928000 AND 1539532800 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-10-09T16:42:18+08:00 ] 183.228.52.127 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1538323200 AND 1541001600 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1538323200 AND 1541001600 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1538928000 AND 1539532800 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1538928000 AND 1539532800 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-10-09T16:57:22+08:00 ] 180.163.220.4 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-10-09T16:57:28+08:00 ] 180.163.220.66 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-10-09T17:03:04+08:00 ] 180.163.220.3 /index.php?m=product&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+

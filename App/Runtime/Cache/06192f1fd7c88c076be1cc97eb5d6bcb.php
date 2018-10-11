@@ -1,0 +1,164 @@
+<?php if (!defined('THINK_PATH')) exit();?><style>
+
+
+</style>
+
+<link href="__PUBLIC__/style/css/dialog.css" rel="stylesheet">
+
+<form class="form-horizontal" id="status_form1" action="<?php echo U('business/addgwms');?>"  method="post">
+    <input type="hidden" name="id" value="<?php echo I('id');?>">
+    <input type="hidden" name="key" value="<?php echo I('key');?>">
+<div class="full-height">
+    <div class="content">
+       <table class="beizhu">
+           <tr>
+               <td style="text-align: right;"><label style="color: red;">*</label>面试顾问:</td>
+               <td class="result_select" style="padding-left: 20px;">
+                   <input type="hidden" class="msren" name="msren" value="<?php echo ($user['name']); ?>">
+                   <input type="hidden" class="msren_id" name="msren_id">
+                   <span class="mmr20"><?php echo ($user['name']); ?></span>
+                   <!--<a href="javascript:void(0)" class="addgw">添加</a>-->
+               </td>
+           </tr>
+           <tr>
+               <td style="text-align: right;">候选人空闲时间:</td>
+               <td style="padding-left: 20px;">
+                   <div class="btnshuang">
+                       <span class="btnsz xuzhong" data-type="kj">快捷设置</span>
+                       <span class="btnsz" data-type="xx">详细设置</span>
+                   </div>
+               </td>
+           </tr>
+           <tr>
+               <td style="text-align: right;"></td>
+               <td style="padding-left: 20px;">
+                   <div class="kj">
+                       <input type="hidden" class="kjtime" value="<?php echo ($project['kjtime']); ?>" name="kjtime">
+                       <input type="button" class="btn btn-select" value="中午打" rel="中午打">
+                       <input type="button" class="btn btn-select" value="晚上打"  rel="晚上打">
+                       <input type="button" class="btn btn-select" value="周末打" rel="周末打">
+                   </div>
+                   <div class="xx" style="display: none;">
+                       <input type="hidden" class="xxtime" value="" name="xxtime">
+                       <input type="text" readonly="readonly" class="time_se form-control timerinput"  id="timestart" name="timestart"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm', minDate:&quot;#F{$dp.$D('timestart')}&quot;,maxDate:'2038-01-01'})"  placeholder="选择时间" value="<?php echo ($project['timestart']); ?>" style="margin-right: 5px;">-
+                       <input type="text" readonly="readonly" class="time_se form-control timerinput"  id="timeend" name="timeend"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm', minDate:&quot;#F{$dp.$D('timestart')}&quot;,maxDate:'2038-01-01'})" value="<?php echo ($project['timeend']); ?>" placeholder="选择时间">
+                   </div>
+
+               </td>
+           </tr>
+
+           <tr>
+               <td style="text-align: right;">推荐备注:</td>
+               <td style="padding-left: 20px;">
+                   <textarea col="3" row="5" class="tjbeizhu" name="tjbeizhu" placeholder="最多不超过1000字"><?php echo ($project['tjbeizhu']); ?></textarea>
+               </td>
+           </tr>
+       </table>
+    </div>
+</div>
+</form>
+
+<div style="display:none" id="dialog-gw">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    var msren = "<?php echo ($project['msren']); ?>";
+    var kjtime = "<?php echo ($project['kjtime']); ?>";
+    var timestart = "<?php echo ($project['timestart']); ?>";
+    var timeend = "<?php echo ($project['timeend']); ?>";
+    var tjbeizhu = "<?php echo ($project['tjbeizhu']); ?>";
+
+    console.log(msren+kjtime+timestart+timeend+tjbeizhu);
+    if(timestart || timeend){
+        $(".btnsz").removeClass("xuzhong");
+        $(".btnsz").eq(1).addClass("xuzhong");
+        $(".xx").show();
+        $(".kj").hide();
+    }
+    if(kjtime){
+        $(".btnsz").removeClass("xuzhong");
+        $(".btnsz").eq(0).addClass("xuzhong");
+        $(".xx").hide();
+        $(".kj").show();
+        $(".kj .btn-select").each(function () {
+            if(kjtime==$(this).val()){
+                $(".kj .btn-select").removeClass("staactive");
+                $(this).addClass("staactive");
+            }
+        })
+    }
+
+    $("#dialog-gw").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 380,
+        minHeight: 580,
+        position: ["center",80],
+        title:"选择面试顾问",
+        close:function(){
+            selectStatus();//更新
+            $(this).html("");
+        },
+        buttons: {
+            "确定": function () {
+                var sousuo=$(".sousuo").val();
+                var user_id=$("#user_id").val();
+                if(sousuo!=null || sousuo!=""){
+                    $(".msren").val(sousuo);
+                    $(".msren_id").val(user_id);
+                    $(".result_select").find(".mmr20").html(sousuo);
+                    $(".addgw").html("修改");
+                }
+
+                $(this).dialog("close");
+
+            },
+            "取消": function () {
+                selectStatus();//更新
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    $(function () {
+        $(".addgw").on("click",function () {
+            $('#dialog-gw').dialog("open");
+            $('#dialog-gw').load("index.php?m=business&a=addgw");
+        })
+
+        $(".btnsz").click(function () {
+            var type=$(this).data("type");
+            $(".btnsz").removeClass("xuzhong");
+            $(this).addClass("xuzhong");
+            //点击切换时清空
+            $(".kj input").removeClass("staactive");
+            $(".kjtime").val("");
+            $("#timestart").val("")
+            $("#timeend").val("")
+
+            $(".kj,.xx").hide();
+            $("."+type+"").show();
+        })
+
+        $(".kj input").on("click",function () {
+            $(".kj input").removeClass("staactive");
+            $(this).addClass("staactive");
+            var kjtime=$(this).attr("rel");
+            $(".kjtime").val(kjtime);
+        })
+
+    })
+
+
+
+</script>

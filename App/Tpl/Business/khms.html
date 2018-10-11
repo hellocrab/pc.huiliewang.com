@@ -1,0 +1,94 @@
+<style>
+
+
+</style>
+
+<link href="__PUBLIC__/style/css/dialog.css" rel="stylesheet">
+
+<form class="form-horizontal" id="status_form3" action="{:U('business/khms')}" method="post">
+    <input type="hidden" name="id" value="{:I('id')}">
+    <input type="hidden" name="key" value="{:I('key')}">
+<div class="full-height">
+    <div class="content">
+       <table class="beizhu">
+           <tr  height="50">
+               <td style="text-align: right;"><label style="color: red;">*</label>姓名:</td>
+               <td class="result_select" style="padding-left: 20px;">
+                   <span href="javascript:void(0)" class="addgw">{$project.name}</span>
+                   <input type="hidden" name="name" value="{$project.name}">
+               </td>
+           </tr>
+           <tr  height="50">
+               <td style="text-align: right;">职位:</td>
+               <td class="result_select" style="padding-left: 20px;">
+                   <span href="javascript:void(0)" class="addgw">{$project.business_name}</span>
+                   <input type="hidden" name="job_name" value="{$project.business_name}">
+               </td>
+           </tr>
+           <tr  height="50">
+               <td style="text-align: right;"><label style="color: red;">*</label>面试时间:</td>
+               <td style="padding-left: 20px;">
+                   <div>
+                       <input type="hidden" class="xxtime" value="" name="xxtime">
+                       <input type="text" readonly="readonly" class="form-control timerinput"  id="timestart" name="timestart"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm', minDate:&quot;#F{$dp.$D('timestart')}&quot;,maxDate:'2038-01-01'})"  placeholder="请选择面试时间" value="{$list['timestart']}">
+                   </div>
+               </td>
+           </tr>
+           <tr height="50">
+               <td style="text-align: right;">面试地点:</td>
+               <td style="padding-left: 20px;">
+                   <input type="text" class="form-control timerinput" name="interview_place" placeholder="面试地点（200字以内）" maxlength="200" value="{$list['interview_place']}">
+               </td>
+           </tr>
+
+           <tr height="50">
+               <td style="text-align: right;">面试官:</td>
+               <td style="padding-left: 20px;">
+                   <input type="text" class="form-control timerinput" name="status_type" placeholder="面试人" maxlength="200" value="{$list['status_type']}">
+                   <!--<select class="form-control required" id="status_type" name="status_type" aria-required="true">-->
+                       <!--<option value="" label="">选择面试官</option>-->
+                       <!--<option value="成功的" label="成功的">成功的</option>-->
+                       <!--<option value="暂停的" label="暂停的">暂停的</option>-->
+                       <!--<option value="失败的" label="失败的">失败的</option>-->
+                       <!--<option value="已取消" label="已取消">已取消</option>-->
+                   <!--</select>-->
+               </td>
+           </tr>
+           <tr  height="50">
+               <td style="text-align: right;">终面:</td>
+               <td style="padding-left: 20px;">
+                   <input type="checkbox" name="end" <if condition="$list['end']">checked</if> >
+               </td>
+           </tr>
+       </table>
+    </div>
+</div>
+</form>
+
+<div style="display:none" id="dialog-gw">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+
+
+    $(function () {
+        $("input").on("blur",function () {
+            $(this).css("border","1px solid #d8e3ef");
+        })
+
+    })
+
+
+
+</script>

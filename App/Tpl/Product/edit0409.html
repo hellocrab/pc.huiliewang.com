@@ -1,0 +1,677 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PUBLIC__/js/PCASClass.js" ></script>
+<link rel="stylesheet" href="__PUBLIC__/css/jquery.fileupload.css" type="text/css" />
+<script src="__PUBLIC__/js/addResume.js"></script>
+<style type="text/css">
+.add_body >div >.full-height-scroll{
+	border-right:1px dotted #ccc
+}
+.add_body_title{
+	margin:15px auto 30px auto;
+}
+.add_body_form>form>.form-group{
+	margin-bottom: 25px;
+}
+body{overflow-y:hidden;}
+
+#main_pic_prev{width: 120px;height: 120px;border: 1px dashed #d3d3d6;}
+.form-horizontal .control-label{
+	text-align: right;
+}
+.fileinput-button1{
+	position: relative;
+	overflow: hidden;
+}
+.note-codable{
+	display: none;
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 0;
+	font-family: Menlo,Monaco,monospace,sans-serif;
+	font-size: 14px;
+	color: #ccc;
+	background-color: #222;
+	border: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	box-shadow: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+	resize: none;
+}
+.timerinput{
+	width:120px; display:inline;height: 25px;background: #ffffff !important;
+}
+
+.youzhi input{
+    content: "";
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    margin-left: -20px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    background-color: #fff;
+}
+.LocalDataUID-simulation-text{
+    font-size: 12px;
+    width: 364px;
+    height: 28px;
+    line-height: 28px;
+}
+</style>
+<script>
+$(function(){
+	$(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+	$(window).resize(function(){
+		$(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+	})
+})
+</script>
+<div class="wrapper wrapper-content animated fadeIn col-md-8">
+		<form class="form-horizontal" id="form" role="form" action="{:U('product/edit', 'id='.$product['product_id'])}" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="product_id" value="{$product.product_id}"/>
+			<input type="hidden" name="jump_url" value="{$jump_url}"/>
+			<input name="a" type="hidden" value="edit">
+			<input type="hidden" name="main_images_id" value="{$product.images.main.images_id}"/>
+			<div class="ibox-content add_body" id="add_body">
+				<div class="row">
+					<div class="col-md-12 add_body" >
+						<div class="full-height-scroll">
+							<div class="row" >
+								<div class="col-md-12 add_body_title">
+									<div class="all-inline">
+										<span class="sq-tag"></span>
+										<div class="text-tag">
+											<span>修改信息</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-11 add_body_form" style="margin-left:15px;">
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">上传简历：</label>
+										<div class="col-md-7" style="margin-left: -15px;">
+											<div class="col-md-4">
+												<select class="form-control required" id="standard" name="standard" aria-required="true">
+													<option value="原始简历">原始简历</option>
+													<option value="推荐报告">推荐报告</option>
+													<option value="背景调查">背景调查</option>
+													<option value="其他资料">其他资料</option>
+												</select>
+												<span id="standardTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+											</div>
+
+											<div class="col-md-4">
+												<div class="btn btn-default fileinput-button" style="width: 100%;">
+													<span>上传简历</span>
+													<input type="file" name="main_pic[]" id="main_pic"/>
+												</div>
+											</div>
+
+											<div class="col-md-4">
+												<div class="btn btn-default textdialog" style="width: 100%;">
+													<span>粘贴简历</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">加入项目：</label>
+
+										<div class="col-md-6">
+											<select class="form-control required" id="standard" name="standard" aria-required="true">
+												<option value="">请输入项目名称或客户名称搜索(默认显示最近20条)</option>
+												<option value=""></option>
+											</select>
+											<span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">姓名：</label>
+										<div class="col-md-6">
+											<input  type="hidden" id="status" name="status" value="{$product['status']}">
+											<input class="form-control required" type="text" id="name" name="name" value="{$product['name']}">
+											<span id="sketchTip"style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+										</div>
+										<div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                        <div class="col-md-2 youzhi">
+                                            <input  type="checkbox" name="isperfect">
+                                            <label for="">优质人选</label>
+                                        </div>
+									</div>
+                                    <div  class="form-group">
+                                        <label class="col-md-3 control-label">行业：</label>
+                                        <div class="col-md-6">
+                                            <input data-selector="industrys" class="text required" type="text" placeholder="请选择行业" id="industrys" name="industry" data-ui="LocalDataUID" style="display: none;width:380px;height:40px;" aria-required="true" rell="行业"  value="040"  />
+                                        </div>
+                                        <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    </div>
+                                    <div  class="form-group">
+                                        <label class="col-md-3 control-label">职能：</label>
+                                        <div class="col-md-6">
+                                            <input data-selector="jobtitles" class="text required" type="text" placeholder="请选择职能"  id="jobtitles" name="job_class" data-ui="LocalDataUID" style="display: none;width:380px;height:40px;" aria-required="true" required  value="100090"/>
+                                        </div>
+                                        <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    </div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">性别：</label>
+										<div class="col-md-6">
+											<div class="radio radio-info radio-inline" style="margin-left: 20px;margin-right: 20px;">
+												<input type="radio" name="sex" checked id="sex" value="男">
+												<label for="sex">男</label>
+											</div>
+											<div class="radio radio-info radio-inline">
+												<input type="radio" name="sex" id="sex" value="女">
+												<label for="sex">女</label>
+											</div>
+										</div>
+										<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+									</div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">出生年月：</label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control text-center timerinput" id="birthday" type="text" placeholder="年-月" value="{$product['birthday']}"   onFocus="WdatePicker({dateFmt:'yyyy-MM', minDate:&quot;#F{$dp.$D('birthday')}&quot;,maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;">
+                                        </div>
+                                        <label class="col-md-2 control-label">开始工作时间：</label>
+                                        <div class="col-sm-3">
+                                            <input class="form-control text-center timerinput" id="startWorkyear" type="text" placeholder="年-月"   value="{$product['startWorkyear']}" onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="startWorkyear">
+                                        </div>
+                                        <!--<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>-->
+                                    </div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">手机：</label>
+										<div class="col-md-6">
+											<input class="form-control required" type="text" id="telephone" name="telephone" value="{$product['telephone']}">
+											<span id="sketchTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+										</div>
+										<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+									</div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">邮箱：</label>
+                                        <div class="col-md-6">
+                                            <input class="form-control required email" type="text" id="email" name="email" value="{$product['email']}">
+                                            <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                        </div>
+                                        <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    </div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">学历：</label>
+										<div class="col-md-6">
+											<select class="form-control required" id="education" name="education" aria-required="true">
+												<option  value="{$product['education']}">{$product['education']}</option>
+												<option value="大专">大专</option>
+												<option value="本科">本科</option>
+												<option value="硕士">硕士</option>
+												<option value="博士">博士</option>
+												<option value="MBA">MBA</option>
+												<option value="大专+MBA">大专+MBA</option>
+												<option value="本科+MBA">本科+MBA</option>
+												<option value="硕士+MBA">硕士+MBA</option>
+												<option value="博士+MBA">博士+MBA</option>
+												<option value="博士后">博士后</option>
+											</select>
+											<span style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+										</div>
+										<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+									</div>
+                                    <div  class="form-group">
+                                        <label class="col-md-3 control-label">所在城市：</label>
+                                        <div class="col-md-6">
+                                            <input data-selector="dqs" value="040" class="text required" type="text" placeholder="选择目前所在地区" id="dqs" name="location" data-ui="LocalDataUIB" style="display: none;width:440px;height:40px;" aria-required="true" required />
+                                        </div>
+                                        <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">目前公司：</label>
+                                        <div class="col-md-6">
+                                            <input class="form-control" type="text" id="curCompany" name="curCompany" value="{$product['curCompany']}" >
+                                            <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">目前职位：</label>
+                                        <div class="col-md-6">
+                                            <input class="form-control" type="text" id="curPosition" name="curPosition" value="{$product['curPosition']}" >
+                                            <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">目前年薪：</label>
+                                        <div class="col-md-6" style="position: relative;">
+                                            <input class="form-control number" type="text" id="curSalary" name="curSalary" value="{$product['curSalary']}">
+                                            <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                            <span class="unit">万</span>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">目前状态：</label>
+                                        <div class="col-md-6">
+                                            <select class="form-control" id="curStatus" name="curStatus" value="{$product['curStatus']}" >
+                                                <option value="">--请选择--</option>
+                                                <option value="在职，正在寻找新机会">在职，正在寻找新机会</option>
+                                                <option value="离职，正在求职中">离职，正在求职中</option>
+                                                <option value="在职，不打算换工作">在职，不打算换工作</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                    </div>
+                                    <div  class="form-group">
+                                        <label class="col-md-3 control-label">意向城市：</label>
+                                        <div class="col-md-6">
+                                            <input data-selector="wantdqs" class="text" type="text" placeholder="选择期望工作城市" id="wantdqs" name="intentCity" data-ui="LocalDataUIB" style="display: none;" />
+                                        </div>
+                                        <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    </div>
+
+                                    <div class="form-group workExp">
+                                        <label class="col-md-3 control-label">工作经历：</label>
+                                        <div class="col-lg-9">
+                                            <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;">
+                                                <div style="background: none" class="panel-body3">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-10">
+                                                            <input class="form-control text-center timerinput required" id="workyearFrom" type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="workExp[starttime][]"><span>-&gt;</span>
+                                                            <input class="form-control text-center timerinput required" id="workyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})"  readonly="readonly" name="workExp[endtime][]">
+                                                            <div class="checkbox checkbox-info checkbox-inline" style="vertical-align: baseline;">
+                                                                <input type="checkbox">
+                                                                <label>目前在职<span class="text-danger">*</span></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" >
+                                                        <label class="col-sm-2 control-label">公司名称<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-9">
+                                                            <input class="form-control required" type="text" id="companyName" name="workExp[company][]"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">公司介绍<span class="text-danger"></span></label>
+                                                        <div class="col-sm-9">
+                                                            <textarea class="msd-elastic form-control" id="companyDes" style="min-height: 66px; overflow: hidden; word-wrap: break-word; resize: none;" name="workExp[companyDes][]"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">职位<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-4">
+                                                            <input class="form-control required" type="text" id="jobPosition" name="workExp[jobPosition][]">
+                                                        </div>
+                                                        <label class="col-sm-1 control-label">部门<span class="text-danger"></span></label>
+                                                        <div class="col-sm-4">
+                                                            <input class="form-control" type="text" id="depart" name="workExp[depart][]">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">职责描述<span class="text-danger"></span></label>
+                                                        <div class="col-sm-9">
+                                                            <textarea class="msd-elastic form-control" id="jobContent" name="workExp[duty][]" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-footer">
+                                                    <button class="btn btn-success btn-xs" type="button" onclick="expadd('workExp')">增加新的工作经历</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group eduExp">
+                                        <label class="col-md-3 control-label">教育经历：</label>
+                                        <div class="col-lg-9">
+                                            <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;">
+                                                <div style="background: none" class="panel-body3">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-10">
+                                                            <input class="form-control text-center timerinput required" id="eduyearFrom" type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:'yyyy-MM', minDate:&quot;#F{$dp.$D('workyearFrom')}&quot;,maxDate:'2038-01-01'})" readonly="readonly" name="eduExp[starttime][]"><span>-&gt;</span>
+                                                            <input class="form-control text-center timerinput required" id="eduyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:'yyyy-MM', minDate:&quot;#F{$dp.$D('workyearFrom')}&quot;,maxDate:'2038-01-01'})"  readonly="readonly" name="eduExp[endtime][]">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" >
+                                                        <label class="col-sm-2 control-label">学校名称<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-9">
+                                                            <input class="form-control required" type="text" name="schoolName" id="schoolName">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">专业<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control required" type="text" id="majorName" name="majorName" >
+                                                        </div>
+                                                        <label class="col-sm-2 control-label">学历<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control required" type="text" id="degree" name="degree">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="panel-footer">
+                                                    <button class="btn btn-success btn-xs" type="button" onclick="expadd('eduExp')">增加新的教育经历</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group projectExp">
+                                        <label class="col-md-3 control-label">项目经历：</label>
+                                        <div class="col-lg-9">
+                                            <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;">
+                                                <div style="background: none" class="panel-body3">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-10">
+                                                            <input class="form-control text-center timerinput required" id="projectyearFrom" type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:'yyyy-MM', minDate:&quot;#F{$dp.$D('workyearFrom')}&quot;,maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[starttime][]"><span>-&gt;</span>
+                                                            <input class="form-control text-center timerinput required" id="projectyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:'yyyy-MM', minDate:&quot;#F{$dp.$D('workyearFrom')}&quot;,maxDate:'2038-01-01'})"  readonly="readonly" name="projectExp[endtime][]">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" >
+                                                        <label class="col-sm-2 control-label">项目名称<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-9">
+                                                            <input class="form-control required" type="text" name="proName" id="proName">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">所在公司<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-4">
+                                                            <input class="form-control required" type="text" id="proCompany" name="proCompany">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">项目职位<span class="text-danger"></span></label>
+                                                        <div class="col-sm-9">
+                                                            <input class="form-control" type="text" id="proOffice" name="proOffice" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">项目描述<span class="text-danger"></span></label>
+                                                        <div class="col-sm-9">
+                                                            <textarea class="msd-elastic form-control" id="proDes"  name="proDes" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 136px;"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-footer">
+                                                    <button class="btn btn-success btn-xs" type="button" onclick="expadd('projectExp')">增加新的项目经历</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+									<!-- <div class="form-group">
+										<label class="col-md-4 control-label">选择仓库：</label>
+										<div class="col-md-6">
+											<volist name="house_list" id="vi"><label for=""><input type="checkbox" style="margin:-3px 3px 0px 8px" checked="true" name="warehouse_id[]" value="{$vi.warehouse_id}">{$vi.name}</label></volist>
+										</div>
+										<div class="col-md-2"></div>
+									</div> -->
+									<div class="form-group" style="display: none;">
+										<label class="col-md-4 control-label">产品图片：</label>
+										<div class="col-md-4">
+											<img id="main_pic_prev" class="thumb80" />
+										</div>
+										<div class="col-md-4">
+											<div class="btn btn-success fileinput-button">
+												<span>选择图片</span>
+												<input type="file" name="main_pic[]" id="main_pic"/>
+											</div>
+										</div>
+									</div>
+									<volist name="field_list['data']" id="vo" key="key">
+										<div class="form-group"  style="display: none;">
+											<label class="col-md-4 control-label">{$vo.name}：</label>
+											<if condition="$vo['form_type'] == 'textarea'">
+												<if condition = "$vo['tip_start'] eq 1">
+													<div class="col-md-6">
+														<textarea class="form-control" id="description" name="description" rows="5"></textarea>
+													</div>
+													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+													<else/>
+													<div class="col-md-8">
+														<textarea class="form-control" id="description" name="description" rows="5"></textarea>
+													</div>
+												</if>
+												<elseif condition="$vo['form_type'] == 'address'"/>
+												<if condition = "$vo['tip_start'] eq 1">
+													<div class="col-md-7">
+														{$vo.html}
+													</div>
+													<div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+													<else/>
+													<div class="col-md-8">
+														{$vo.html}
+													</div>
+												</if>
+												<else/>
+												<div class="col-md-6">
+													{$vo.html}
+												</div>
+												<if condition = "$vo['tip_start'] eq 1 || $vo['field'] eq 'customer_id'">
+													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+													<else/>
+													<div class="col-md-2"></div>
+												</if>
+											</if>
+										</div>
+									</volist>
+								</div>
+								<div class="col-md-1 pull-right">
+									<!-- <div style="height: 100%; border-right: 1px dashed gray;">&nbsp;sadf</div> -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="tfoot_div" class="clearfix">
+				<div class="clearfix" id="tfoot_page">
+					<div class="ibox-content" style="border-top: none;">
+
+						<div class="col-sm-offset-2" style="text-align:center;margin-left:0px;">
+							<button type="submit" id="save_submit" class="btn btn-primary">保存</button>
+							<input class="btn btn-default" type="button" onclick="javascript:history.go(-1)" value="{:L('RETURN')}"/>
+							<!--<button type="submit" class="btn btn-primary">修改产品</button>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="wrapper wrapper-content " style="padding-top:12px">
+	<include file="Public:alert" />
+    <div class="row">
+        <div class="col-lg-12">
+			<div class="ibox-content clearfix" style="padding-top:0px">
+				<form id="form1" action="{:U('product/edit', 'id='.$product['product_id'])}" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="product_id" value="{$product.product_id}"/>
+				<input type="hidden" name="jump_url" value="{$jump_url}"/>
+				<input name="a" type="hidden" value="edit">
+				<input name="product_id" type="hidden" value="{$product['product_id']}">
+				<table class="table" width="95%" border="0" cellspacing="1" cellpadding="0">
+					<tfoot>
+						<tr>
+							<td style="text-align:center;" colspan="4"><input name="submit" class="btn btn-primary" type="submit" value="{:L('SAVE')}"/>&nbsp;
+							<input class="btn  btn-primary" type="button" onclick="javascript:history.go(-1)" value="{:L('RETURN')}"/></td>
+						</tr>
+					</tfoot>
+					<tbody class="form-inline">
+						<tr><th colspan="4">{:L('BASIC_INFORMATION')}</th></tr>
+							<php>$j=0;</php>
+							<volist name="field_list['main']" id="vo">
+							<php>$j++;</php>
+							<if condition="$vo['form_type'] == 'textarea' or $vo['form_type'] == 'editor' or $vo['form_type'] == 'address'">
+								<if condition="$i%2 == 0">
+								<td colspan="2">&nbsp;</td>
+								</tr>
+								</if>
+								<tr>
+									<td class="tdleft" width="15%">{$vo.name}:</td>
+									<td colspan="3">{$vo.html}</td>
+								</tr>
+								<if condition="$i%2 != 0 && count($field_list['main']) != $j">
+								<php>$i++;</php>
+								</if>
+							<else/>
+								<if condition="$i%2 != 0">
+								<tr>
+								</if>
+									<td class="tdleft" width="15%">{$vo.name}:</td>
+									<td width="35%">{$vo.html}</td>
+								<if condition="$i%2 == 0">
+								</tr>
+								</if>
+								<if condition="$i%2 != 0 && count($field_list['main']) == $j">
+									<td colspan="2">&nbsp;</td>
+									</tr>
+								</if>
+							</if>
+							</volist>
+							<tr><th  colspan="4">{:L('PRODUCT_PICTURE')}</th></tr>
+							<tr>
+								<td class="tdleft" height="100">主图</td>
+								<td colspan="3" height="100">
+									<input type="hidden" name="main_images_id" value="{$product.images.main.images_id}"/>
+									<table  class="table table-striped">
+										<tbody>
+											<tr>
+												<td width="20%">
+													<div class="thumbnail thumb80">
+														<if condition="empty($product['images']['main']['path'])">
+															<img id="main_pic_prev" class="thumb80" />
+														<else />
+															<a href="{$product.images.main.path}" target="_self" class="litebox">
+																<img id="main_pic_prev" src="{$product.images.main.path}" class="thumb80" />
+															</a>
+														</if>
+													</div>
+												</td>
+												<td width="35%">
+													<p>
+														<span id="main_pic_prev_name">
+															<if condition="empty($product['images']['main']['name'])">无<else />{$product.images.main.name}</if>
+														</span>
+													</p>
+												</td>
+												<td width="25%">
+													<p>
+														<span id="main_pic_prev_size">
+															<if condition="empty($product['images']['main']['size'])">0<else />{$product.images.main.size}</if>
+														</span> KB
+													</p>
+												</td>
+												<td width="30%">
+													<div class="btn btn-success fileinput-button">
+														<span>选择文件</span>
+														<input type="file" name="main_pic[]" id="main_pic">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td class="tdleft" style="min-height:50">副图</td>
+								<td colspan="3" style="min-height:50">
+									<notempty name="product['images']['secondary']">
+										<volist name="product['images']['secondary']" id="vo">
+											<div class="box-secondary" id="box-list-{$vo.images_id}">
+												<a href="{$vo.path}" target="_self" class="litebox" data-litebox-group="group-1">
+													<img src="{$vo.path}" class="thumbnail thumb80">
+													<a href="javascript:del_img({$vo.images_id});"><i class="fa fa-remove del_parts"></i></a>
+												</a>
+											</div>
+										</volist>
+									</notempty>
+									<div class="div_add">
+										<a class="btn btn-primary pull-right" id="btn_add_files" href="javascript:void(0);">
+											<i class="fa fa-plus"></i>&nbsp;&nbsp;新增
+										</a>
+									</div>
+								</td>
+							</tr>
+							<tr><th  colspan="4">{:L('ADDITIONAL_INFORMATION')}</th></tr>
+							<php>$j=0;</php>
+							<volist name="field_list['data']" id="vo">
+							<php>$j++;</php>
+							<if condition="$vo['form_type'] == 'textarea' or $vo['form_type'] == 'editor' or $vo['form_type'] == 'address'">
+								<if condition="$i%2 == 0">
+								<td colspan="2">&nbsp;</td>
+								</tr>
+								</if>
+								<tr>
+									<td class="tdleft" width="15%">{$vo.name}:</td>
+									<td colspan="3">{$vo.html}</td>
+								</tr>
+								<if condition="$i%2 != 0 && count($field_list['data']) != $j">
+								<php>$i++;</php>
+								</if>
+							<else/>
+								<if condition="$i%2 != 0">
+								<tr>
+								</if>
+									<td class="tdleft" width="15%">{$vo.name}:</td>
+									<td width="35%">{$vo.html}</td>
+								<if condition="$i%2 == 0">
+								</tr>
+								</if>
+								<if condition="$i%2 != 0 && count($field_list['data']) == $j">
+									<td colspan="2">&nbsp;</td>
+									</tr>
+								</if>
+							</if>
+							</volist>
+					</tbody>
+				</table>
+				<input name="a" type="hidden" value="edit">
+				<input name="product_id" type="hidden" value="{$product['product_id']}">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="" style="dispaly:none;" id="dialog-validate" title="{:L('PRODUCT_TEST_RESULTS')}">
+	{:L('SELECT_ALL_OF_CUSTOMERS')}
+	<div id="search_content"></div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/uploadPreview.js"></script>
+<script type="text/javascript">
+//初始化上传图片
+$("body").on('click','input[type="file"]', function(){
+	var selector = $(this).attr('id');
+	$("#"+selector).uploadPreview({ Img: selector+"_prev", Width: 120, Height: 120 });
+});
+$(document).ready(function(){
+	/*form表单验证*/
+	$("#form").validate({
+
+	});
+});
+
+$(function () {
+    $("body").on("click",".deletebtn",function () {
+        var item=$(this).closest(".panel").find(".panel-body3");
+        if(item.length<=1){
+            item.find(".deletebtn").remove();
+        }else{
+            $(this).closest(".expbox").remove();
+        }
+        if(item.length==2){
+            $(this).closest(".expbox").remove();
+            item.find(".deletebtn").remove();
+        }
+
+    })
+})
+</script>
+<include file="Public:footer" />

@@ -1,0 +1,60 @@
+[ 2018-06-08T10:43:41+08:00 ] 106.11.225.53 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-06-08T11:41:53+08:00 ] 183.226.187.63 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-06-08T11:42:53+08:00 ] 117.144.246.149 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-06-08T15:25:45+08:00 ] 183.226.187.63 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-06-08T15:25:50+08:00 ] 183.226.187.63 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-06-08T15:25:51+08:00 ] 183.226.187.63 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-06-08T15:26:03+08:00 ] 183.226.187.63 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1527782400 AND 1530374400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1527782400 AND 1530374400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1528041600 AND 1528646400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1528041600 AND 1528646400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-06-08T15:27:11+08:00 ] 120.204.17.72 /index.php?m=product&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-06-08T15:27:20+08:00 ] 117.144.246.149 /index.php?m=log&a=resume_project&r=RCustomerLog&module=customer&id=1384466
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT role.user_id AS user_id,role.role_id AS role_id,role.position_id AS position_id,user.user_id AS user_id,user.extid AS extid,user.name AS login_name,user.full_name AS user_name,user.second_name AS second_name,user.job_rank AS job_rank,user.status AS status,user.weixinid AS weixinid,user.category_id AS category_id,user.sex AS sex,user.address AS address,user.email AS email,user.img AS img,user.thumb_path AS thumb_path,user.telephone AS telephone,user.hometown AS hometown,user.customer_num AS customer_num,user.birthday AS birthday,user.entry AS entry,user.introduce AS introduce,user.office_tel AS office_tel,user.qq AS qq,user.dashboard AS dashboard,user.full_name AS full_name,user.prefixion AS prefixion,user.number AS number,user.type AS type,position.name AS role_name,position.parent_id AS parent_id,position.department_id AS department_id,position.description AS description,role_department.name AS department_name FROM mx_role role LEFT JOIN mx_user user ON user.user_id=role.user_id LEFT JOIN mx_position position ON position.position_id=role.position_id LEFT JOIN mx_role_department role_department ON role_department.department_id=position.department_id WHERE ( role.role_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE ( business.owner_role_id IN (null,'1','17','12','13','18','32','6','16','2' at line 1
+ [ SQL语句 ] : SELECT business.status_type AS status_type,business.telephone AS telephone,business.business_id AS business_id,business.name AS name,business.code AS code,business.prefixion AS prefixion,business.customer_id AS customer_id,business.creator_role_id AS creator_role_id,business.owner_role_id AS owner_role_id,business.total_amount AS total_amount,business.total_subtotal_val AS total_subtotal_val,business.final_discount_rate AS final_discount_rate,business.final_price AS final_price,business.create_time AS create_time,business.update_time AS update_time,business.status_id AS status_id,business.nextstep_time AS nextstep_time,business.is_deleted AS is_deleted,business.delete_role_id AS delete_role_id,business.delete_time AS delete_time,business.contacts_id AS contacts_id,business.possibility AS possibility,business.remarks AS remarks,business.jobContent AS jobContent,business.status_type_id AS status_type_id,business.grade AS grade,business.isshare AS isshare,business.requirement AS requirement,business.minsalary AS minsalary,business.maxsalary AS maxsalary,business.minexp AS minexp,business.maxexp AS maxexp,business.minage AS minage,business.maxage AS maxage,business.startdate AS startdate,business.industry AS industry,business.jobclass AS jobclass,business.address AS address,business.education AS education,business.joiner AS joiner,business.joiner_name AS joiner_name,business.pro_type AS pro_type,top.set_top AS set_top,top.top_time AS top_time FROM mx_business business LEFT JOIN mx_top top ON business.business_id = top.module_id and top.module = 'business' and top.create_role_id = WHERE ( business.owner_role_id IN (null,'1','17','12','13','18','32','6','16','21','15','24','30','29','28','14','25','11','26','27','37','38','39','40','34','35','36','33','42','41','7','19','22','31','3','8','10','23','9') ) AND ( business.is_deleted = 0 ) ORDER BY business.create_time desc LIMIT 20  
+

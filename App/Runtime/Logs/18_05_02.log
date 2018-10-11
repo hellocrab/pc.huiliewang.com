@@ -1,0 +1,2808 @@
+[ 2018-05-02T08:38:01+08:00 ] 183.226.184.158 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T08:38:12+08:00 ] 183.226.184.158 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T08:38:13+08:00 ] 183.226.184.158 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-05-02T08:38:22+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T08:39:00+08:00 ] 117.185.117.55 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T08:39:01+08:00 ] 117.144.246.149 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T08:39:14+08:00 ] 117.185.117.54 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T08:39:14+08:00 ] 120.204.17.72 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T08:39:17+08:00 ] 120.204.17.72 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T08:39:17+08:00 ] 117.185.117.51 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T08:39:18+08:00 ] 120.204.17.72 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T08:39:23+08:00 ] 120.204.17.71 /index.php?m=product&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-02T08:42:06+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T08:42:35+08:00 ] 120.204.17.70 /index.php?m=product&a=add
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-02T08:43:36+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T08:45:05+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T08:47:35+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T08:51:02+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T08:51:04+08:00 ] 183.226.187.253 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-05-02T08:51:39+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T08:55:50+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T08:56:50+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T08:57:50+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T08:58:57+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T08:59:59+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:01:01+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:02:03+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:02:50+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:03:05+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:04:07+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:05:09+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:06:11+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:06:20+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:06:50+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:07:20+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:07:45+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:08:15+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:10:09+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:10:16+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:10:19+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:10:32+08:00 ] 183.226.187.253 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-05-02T09:11:33+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:13:03+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:16:00+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:18:03+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:19:03+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:20:08+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:22:42+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:23:14+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:24:33+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:28:33+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:30:33+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:31:33+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:32:34+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:34:34+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:35:34+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:35:37+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:36:39+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:38:34+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:39:04+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:39:34+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:40:04+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:40:16+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:43:21+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:43:34+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:44:34+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:45:04+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:45:56+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:46:58+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:48:01+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:49:02+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:49:04+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:50:04+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:51:06+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:53:10+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:54:12+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T09:57:48+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:01:57+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:03:04+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:04:00+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:04:04+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:06:04+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:06:34+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:06:36+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:07:04+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:09:11+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:10:04+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:11:04+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:11:34+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:13:49+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:15:08+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:16:24+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:17:26+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:19:30+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:22:36+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:25:11+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:25:28+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:25:59+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:26:13+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:27:01+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:27:32+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:31:54+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:36:01+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:36:19+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:38:54+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:39:38+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:40:27+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:42:00+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:43:33+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:44:04+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:44:35+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:45:06+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:48:05+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:48:35+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:49:14+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:50:35+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:52:05+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:54:55+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:55:35+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:55:57+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T10:57:30+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:00:36+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:01:09+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:02:09+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:02:40+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:03:13+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:04:44+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:07:19+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:08:21+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:11:27+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:13:16+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:14:43+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:15:04+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:16:47+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:19:53+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:20:48+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:21:18+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:21:46+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:21:56+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:22:26+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:22:44+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:22:59+08:00 ] 183.226.187.253 /index.php?m=event&a=indexdata&start=1525017600&end=1528646400&_=1525231357909
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= '1528646400' ) AND ( `end_time` >= '1525017600' ) 
+
+[ 2018-05-02T11:23:16+08:00 ] 183.226.187.253 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-05-02T11:23:20+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:23:48+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:24:19+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:26:20+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:27:25+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:27:50+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:28:20+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:28:27+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:30:00+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:30:31+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:31:20+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:33:50+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:34:39+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:36:51+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:37:51+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:38:47+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:40:51+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:40:51+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:44:52+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:46:22+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:46:32+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:47:34+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:47:52+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:50:22+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:50:52+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:57:22+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:57:53+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T11:58:52+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:03:53+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:04:36+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:04:53+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:06:09+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:06:40+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:07:11+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:08:23+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:08:44+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:09:53+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:12:52+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:13:23+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:14:56+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:16:29+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:17:00+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:18:02+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:21:53+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:22:41+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:23:23+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:24:14+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:27:53+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:28:53+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:32:30+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:35:05+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:35:24+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:35:53+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:36:24+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:37:09+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:38:42+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:39:54+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:41:24+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:42:19+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:43:54+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:44:54+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:45:24+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:47:54+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:48:00+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:48:24+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:49:33+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:49:54+08:00 ] 183.226.184.158 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:50:35+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:52:39+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:54:24+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:56:16+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:57:24+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T12:58:24+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:02:25+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:02:59+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:03:30+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:04:55+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:06:36+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:06:55+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:13:07+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:13:49+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:14:51+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:16:44+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:17:15+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:17:57+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:18:17+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:19:50+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:20:32+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:22:05+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:24:40+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:25:11+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:25:31+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:26:02+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:27:04+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:32:38+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:33:37+08:00 ] 120.204.17.70 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T13:35:39+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:36:02+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:36:10+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:40:41+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:42:45+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:43:24+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:44:18+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:46:53+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:47:31+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:47:41+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:48:26+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:48:27+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:48:30+08:00 ] 117.144.246.149 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T13:50:43+08:00 ] 117.185.117.55 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T13:50:44+08:00 ] 117.185.117.55 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T13:51:32+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:52:48+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:53:05+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:54:38+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:55:19+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:55:22+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:55:40+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:55:46+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:56:21+08:00 ] 117.185.117.55 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T13:56:23+08:00 ] 120.204.17.72 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T13:56:42+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:56:45+08:00 ] 117.185.117.55 /index.php?m=data_analysis&a=business
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d )' at line 1
+ [ SQL语句 ] : SELECT * FROM `mx_role_department` WHERE ( department_id =%d ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-02T13:58:00+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:59:04+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T13:59:15+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:01:27+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:01:59+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:02:15+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:02:59+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:04:59+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:05:15+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:07:59+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:10:29+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:11:59+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:12:28+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:13:29+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:14:32+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:15:03+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:19:17+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:19:45+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:20:13+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:20:15+08:00 ] 117.185.117.54 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T14:21:15+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:22:41+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:24:21+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:25:53+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:28:25+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:28:27+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:29:28+08:00 ] 120.204.17.71 /index.php?m=data_analysis&a=achievement
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525242568) AND (achievement.addtime >= 1525104000)  ) AND ( achievement.user_id IN () ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '传统项目' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525242568) AND (achievement.addtime >= 1525104000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '传统项目' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '面试快' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525242568) AND (achievement.addtime >= 1525104000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '面试快' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '入职快' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525242568) AND (achievement.addtime >= 1525104000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '入职快' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '其他' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525242568) AND (achievement.addtime >= 1525104000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '其他' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d )' at line 1
+ [ SQL语句 ] : SELECT * FROM `mx_role_department` WHERE ( department_id =%d ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-02T14:29:35+08:00 ] 120.204.200.81 /index.php?m=dataAnalysis&a=achievement&dbname=&select_type=&content_id=&field=pro_type&between_date=2018-04-01+-+2018-05-01&department=all&role=all
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525190399) AND (achievement.addtime >= 1522512000)  ) AND ( achievement.user_id IN () ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '传统项目' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525190399) AND (achievement.addtime >= 1522512000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '传统项目' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '面试快' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525190399) AND (achievement.addtime >= 1522512000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '面试快' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '入职快' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525190399) AND (achievement.addtime >= 1522512000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '入职快' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '其他' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525190399) AND (achievement.addtime >= 1522512000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '其他' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d )' at line 1
+ [ SQL语句 ] : SELECT * FROM `mx_role_department` WHERE ( department_id =%d ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-02T14:31:28+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:31:29+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:32:30+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:32:59+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:33:29+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:34:00+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:34:41+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:35:59+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:36:30+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:39:09+08:00 ] 120.204.17.70 /index.php?m=product&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-02T14:39:22+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:39:51+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:42:26+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:42:57+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:43:29+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:43:39+08:00 ] 120.204.17.70 /index.php?m=dataAnalysis&a=achievement&dbname=&select_type=&content_id=&field=pro_type&between_date=2018-04-01+-+2018-05-01&department=all&role=all
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525190399) AND (achievement.addtime >= 1522512000)  ) AND ( achievement.user_id IN () ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '传统项目' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525190399) AND (achievement.addtime >= 1522512000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '传统项目' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '面试快' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525190399) AND (achievement.addtime >= 1522512000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '面试快' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '入职快' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525190399) AND (achievement.addtime >= 1522512000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '入职快' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( business.pro_type = '其他' ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(integral) AS tp_sum FROM mx_achievement achievement LEFT JOIN mx_business business ON achievement.project_id=business.business_id WHERE ( (achievement.addtime <= 1525190399) AND (achievement.addtime >= 1522512000)  ) AND ( achievement.user_id IN () ) AND ( business.pro_type = '其他' ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d )' at line 1
+ [ SQL语句 ] : SELECT * FROM `mx_role_department` WHERE ( department_id =%d ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-02T14:44:00+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:45:32+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:46:03+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:46:35+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:48:20+08:00 ] 183.226.187.184 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-05-02T14:49:20+08:00 ] 117.185.117.55 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T14:49:21+08:00 ] 120.204.17.72 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T14:49:21+08:00 ] 117.185.117.51 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T14:49:26+08:00 ] 120.204.200.81 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T14:50:23+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:50:42+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:50:53+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:51:13+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:51:17+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:51:18+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:51:24+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:52:06+08:00 ] 117.185.117.54 /index.php?m=product&a=add
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-02T14:52:23+08:00 ] 117.144.246.149 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T14:53:12+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:53:46+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:55:07+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:55:52+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:56:38+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:57:56+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:58:27+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T14:59:29+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:00:14+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:01:33+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:02:04+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:04:49+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:05:50+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:06:43+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:07:24+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:09:59+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:10:51+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:11:22+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:11:32+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:12:02+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:12:55+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:14:59+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:17:44+08:00 ] 117.185.117.51 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T15:19:38+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:20:23+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:20:54+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:22:13+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:24:17+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:25:50+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:26:03+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:29:09+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:34:06+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:37:57+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:38:14+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:38:27+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:40:01+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:40:49+08:00 ] 183.226.187.54 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:41:33+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:43:07+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:44:09+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:44:57+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:45:59+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:46:30+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:48:17+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:48:36+08:00 ] 183.226.187.184 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-05-02T15:48:37+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:50:07+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:50:10+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:51:08+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:51:40+08:00 ] 183.226.187.253 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T15:52:14+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:54:08+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:54:18+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:56:38+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:57:08+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T15:58:38+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:01:32+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:03:42+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:06:04+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:07:47+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:08:04+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:08:17+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:08:47+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:09:47+08:00 ] 183.226.187.253 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:11:34+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:12:34+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:14:14+08:00 ] 183.226.187.184 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525017600 AND 1525622400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-05-02T16:19:16+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:20:46+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:24:16+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:27:16+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:36:40+08:00 ] 117.185.117.51 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T16:36:43+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:37:14+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:37:45+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:39:18+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:39:49+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:41:52+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:42:52+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:44:23+08:00 ] 120.92.11.170 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T16:44:24+08:00 ] 120.92.11.205 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T16:51:34+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:53:04+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:54:04+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:55:34+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:58:26+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T16:59:28+08:00 ] 120.204.200.81 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T17:01:43+08:00 ] 183.226.187.184 /index.php?m=business&a=tjfk&id=54&key=11
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `full_name`,`thumb_path` FROM `mx_user` WHERE ( user_id=%d ) LIMIT 1  
+
+[ 2018-05-02T17:02:40+08:00 ] 117.185.117.55 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T17:02:44+08:00 ] 120.204.17.70 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T17:02:56+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:03:23+08:00 ] 120.204.17.72 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T17:03:56+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:05:28+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:05:59+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:12:43+08:00 ] 120.204.200.81 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T17:12:45+08:00 ] 117.185.117.52 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T17:16:45+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:18:18+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:26:22+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:29:22+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:31:22+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:31:52+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:35:22+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:35:52+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:36:52+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:37:22+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:37:52+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:46:52+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:47:52+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:48:52+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:49:22+08:00 ] 106.11.226.37 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-02T17:55:52+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T17:57:52+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T18:02:54+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T18:05:29+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T18:06:00+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T18:12:27+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T18:12:58+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T18:16:03+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T18:17:02+08:00 ] 120.204.17.72 /index.php?m=product&a=index&p=2
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-02T18:17:03+08:00 ] 120.204.17.70 /index.php?m=product&a=index&p=1
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-02T18:17:04+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+
+[ 2018-05-02T18:19:34+08:00 ] 183.226.187.184 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1525276800 ) AND ( `end_time` >= 1525190399 ) 
+

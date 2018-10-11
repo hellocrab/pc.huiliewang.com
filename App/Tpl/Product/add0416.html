@@ -1,0 +1,1005 @@
+<include file="Public:header" />
+<link rel="stylesheet" href="__PUBLIC__/css/class.public.css" />
+<script src="__PUBLIC__/js/addResume.js"></script>
+
+<style>
+    body{overflow-y:hidden; }
+    #main_pic_prev{width: 120px;height: 120px;border: 1px dashed #d3d3d6;}
+    .add_body_title{
+        margin:15px auto 30px auto;
+    }
+    .form-horizontal .control-label{
+        text-align: right;
+    }
+    .fileinput-button1{
+        position: relative;
+        overflow: hidden;
+    }
+    .note-codable{
+        display: none;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 0;
+        font-family: Menlo,Monaco,monospace,sans-serif;
+        font-size: 14px;
+        color: #ccc;
+        background-color: #222;
+        border: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        box-shadow: none;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+        resize: none;
+    }
+    .timerinput{
+        width:120px; display:inline;height: 32px;background: #ffffff !important;
+    }
+    .resume_area{
+        width: 100%;
+        height: 100%;
+        resize: none;
+        outline: none;
+        padding: 20px;
+        border: none;
+    }
+
+    .btn{
+        line-height: 21px;
+    }
+    .form-control, .single-line{
+        left: 0 !important;
+    }
+    .deletebtn{
+        margin-bottom: 10px;
+    }
+    .btnclosee{
+        position: absolute;
+        right: 30px;
+        top:10px;
+    }
+    .submitfiles{
+        padding-left: 15px;
+    }
+    .youzhi input{
+        content: "";
+        display: inline-block;
+        width: 17px;
+        height: 17px;
+        margin-left: -20px;
+        border: 1px solid #cccccc;
+        border-radius: 3px;
+        background-color: #fff;
+    }
+
+</style>
+<script type="text/javascript" src="__PUBLIC__/js/PCASClass.js" ></script>
+<link rel="stylesheet" href="__PUBLIC__/css/jquery.fileupload.css" type="text/css" />
+<script>
+    $(function(){
+        $(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+        $(window).resize(function(){
+            $(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+        })
+    })
+</script>
+<!--职位类别start-->
+<div class="sPopupDiv none" id="jobdiv" style="float:left;"></div>
+<!--职位类别end-->
+<div class="wrapper wrapper-content animated fadeIn col-md-12">
+    <form class="form-horizontal" id="form" role="form" action="{:U('product/add')}" method="post" enctype="multipart/form-data">
+        <input type='hidden' name="r" <present name="r">value="{$r}"</present>/>
+        <input type='hidden' name="module" <present name="r">value="{$module}"</present>/>
+        <input type='hidden' name="id" <present name="r">value="{$model_id}"</present>/>
+        <input type='hidden' name="eid" value="{:I('id')}"/>
+        <div class="ibox-content add_body" id="add_body">
+            <div class="row">
+                <div class="col-md-12 add_body" >
+                    <div class="full-height-scroll">
+                        <div class="col-md-8 row" >
+                            <div class="col-md-12 add_body_title">
+                                <div class="all-inline">
+                                    <span class="sq-tag"></span>
+                                    <div class="text-tag">
+                                        <span>添加人才信息</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div  id="resume-search-form" class="col-md-11 add_body_form" style="margin-left:15px;">
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">上传简历：</label>
+                                    <div class="col-md-7" style="margin-left: -15px;">
+                                        <div class="submitfiles"></div>
+                                        <div class="col-md-4">
+                                            <select class="form-control required" id="standard" name="standard" aria-required="true">
+                                                <option value="原始简历">原始简历</option>
+                                                <option value="推荐报告">推荐报告</option>
+                                                <option value="背景调查">背景调查</option>
+                                                <option value="其他资料">其他资料</option>
+                                            </select>
+                                            <span id="standardTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="btn btn-default fileinput-button" style="width: 100%;">
+                                                <span>上传简历</span>
+                                                <input type="file" name="files" id="uploadresume"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="btn btn-default textdialog" style="width: 100%;">
+                                                <span>粘贴简历</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">加入项目：</label>
+                                    <div class="col-md-6">
+                                        <input type="hidden" name="business_id" id="business_id" value="">
+                                        <input class="form-control" placeholder="请点击选择需要加入的项目" type="text" name="business_name" id="business_name" value="" readonly="true" style="cursor:pointer;" title="请点击选择">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">姓名：</label>
+                                    <div class="col-md-6">
+                                        <input  type="hidden" id="status" name="status" value="推荐客户">
+                                        <input class="form-control required" type="text" id="name" name="name" value="{$resume.name}">
+                                        <span id="sketchTip"style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                    </div>
+                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-2 youzhi">
+                                        <input  type="checkbox" name="isperfect">
+                                        <label for="">优质人选</label>
+                                    </div>
+                                </div>
+                                <div  class="form-group">
+                                    <label class="col-md-3 control-label">行业：</label>
+                                    <div class="col-md-6">
+                                        <input data-selector="industrys" class="text required" type="text" placeholder="请选择行业" id="industrys" name="industry" data-ui="LocalDataUID" style="display: none;width:100%;height:40px;" aria-required="true" rell="行业"  value="{$resume.industry}"  />
+                                    </div>
+                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+
+                                </div>
+
+                                <div  class="form-group">
+                                    <label class="col-md-3 control-label">职能：</label>
+                                    <div class="col-md-6">
+                                        <input data-selector="jobtitles" class="text required" type="text" placeholder="请选择职能"  id="jobtitles" name="job_class" data-ui="LocalDataUID" style="display: none;width:100%;height:40px;" aria-required="true" required  value="{$resume.job_class}"/>
+                                    </div>
+                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">性别：</label>
+                                    <div class="col-md-6">
+                                        <div class="radio radio-info radio-inline" style="margin-left: 20px;margin-right: 20px;">
+                                            <input type="radio" name="sex" checked class="sex" value="1">
+                                            <label for="sex">男</label>
+                                        </div>
+                                        <div class="radio radio-info radio-inline">
+                                            <input type="radio" name="sex" class="sex" value="2">
+                                            <label for="sex">女</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">出生年月：</label>
+                                    <div class="col-sm-6">
+                                        <input class="form-control text-center timerinput" id="birthday" type="text"  onFocus="WdatePicker({dateFmt:'yyyy-MM', maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;height: 32px;text-align: left;" >
+                                    </div>
+                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;"></span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">开始工作时间：</label>
+                                    <div class="col-sm-6">
+                                        <input class="form-control text-center timerinput" id="startWorkyear" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="startWorkyear" style="width: 100%;height: 32px;text-align: left;" value="{$resume.startWorkyear}">
+                                    </div>
+                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;"></span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">手机：</label>
+                                    <div class="col-md-6">
+                                        <input class="form-control required mobile" type="text" id="telphone" name="telephone" value="{$resume.telephone}">
+                                        <span id="sketchTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                    </div>
+                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">邮箱：</label>
+                                    <div class="col-md-6">
+                                        <input class="form-control email" type="text" id="email" name="email" value="{$resume.email}">
+                                        <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                    </div>
+                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;"></span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">学历：</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control required" id="education" name="edu" aria-required="true">
+                                            <option value="专科">专科</option>
+                                            <option value="本科">本科</option>
+                                            <option value="硕士">硕士</option>
+                                            <option value="MBA/EMBA">MBA/EMBA</option>
+                                            <option value="博士">博士</option>
+                                            <option value="博士后">博士后</option>
+                                        </select>
+                                        <span style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                    </div>
+                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                </div>
+                                <div  class="form-group">
+                                    <label class="col-md-3 control-label">所在城市：</label>
+                                    <div class="col-md-6">
+                                        <input data-selector="dqs" data-option="1" class="text" type="text" placeholder="选择目前所在地区" id="dqs" name="location" data-ui="LocalDataUIB" style="display: none;width:100%;height:40px;"/>
+                                    </div>
+                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">目前公司：</label>
+                                    <div class="col-md-6">
+                                        <input class="form-control" type="text" id="curCompany" name="curCompany" value="{$resume.curCompany}">
+                                        <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">目前职位：</label>
+                                    <div class="col-md-6">
+                                        <input class="form-control" type="text" id="curPosition" name="curPosition" value="{$resume.curPosition}">
+                                        <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">目前年薪：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <input class="form-control number" type="text" id="curSalary" name="curSalary" value="{$resume.curSalary}">
+                                        <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                        <span class="unit">万</span>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">求职状态：</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" id="curStatus" name="curStatus">
+                                            <option value="">--请选择--</option>
+                                            <option value="在职，看看新机会">在职，看看新机会</option>
+                                            <option value="在职，急寻新工作">在职，急寻新工作</option>
+                                            <option value="在职，暂无跳槽打算">在职，暂无跳槽打算</option>
+                                            <option value="离职，正在找工作">离职，正在找工作</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div  class="form-group">
+                                    <label class="col-md-3 control-label">意向城市：</label>
+                                    <div class="col-md-6">
+                                        <input data-selector="wantdqs" class="text" type="text" placeholder="选择期望工作城市" id="wantdqs" name="intentCity" data-ui="LocalDataUIB" style="display: none;width: 100%;" />
+                                    </div>
+                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                </div>
+                                <div class="form-group workExp">
+                                    <label class="col-md-3 control-label">工作经历：</label>
+                                    <div class="col-lg-9">
+                                        <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;margin-top: 10px;">
+                                            <notempty   name="resume_work">
+                                                <volist name="resume_work" id="vo">
+                                                    <input  type="hidden"  name="workExp[id][]" value="{$vo.id}"/>
+                                                    <div style="background: none" class="panel-body3">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>
+                                                            <div class="col-sm-10">
+                                                                <input class="form-control text-center timerinput required" id="workyearFrom" type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="workExp[starttime][]" value="{$vo.starttime|date="Y-m",###}"><span>-&gt;</span>
+                                                                <input class="form-control text-center timerinput required" id="workyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})"  readonly="readonly" name="workExp[endtime][]" value="{$vo.endtime|date="Y-m",###}">
+                                                                <div class="checkbox checkbox-info checkbox-inline" style="vertical-align: baseline;">
+                                                                    <input type="checkbox">
+                                                                    <label>目前在职<span class="text-danger">*</span></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group" >
+                                                            <label class="col-sm-2 control-label">公司名称<span class="text-danger">*</span></label>
+                                                            <div class="col-sm-9">
+                                                                <input class="form-control required" type="text" id="companyName" name="workExp[company][]" value="{$vo.company}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">公司介绍<span class="text-danger"></span></label>
+                                                            <div class="col-sm-9">
+                                                                <textarea class="msd-elastic form-control" id="companyDes" style="min-height: 66px; overflow: hidden; word-wrap: break-word; resize: none;" name="workExp[companyDes][]">{$vo.companyDes}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">职位<span class="text-danger">*</span></label>
+                                                            <div class="col-sm-4">
+                                                                <input class="form-control required" type="text" id="jobPosition" name="workExp[jobPosition][]" value="{$vo.jobPosition}">
+                                                            </div>
+                                                            <label class="col-sm-1 control-label">部门<span class="text-danger"></span></label>
+                                                            <div class="col-sm-4">
+                                                                <input class="form-control" type="text" id="depart" name="workExp[depart][]" value="{$vo.depart}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">职责描述<span class="text-danger"></span></label>
+                                                            <div class="col-sm-9">
+                                                                <textarea class="msd-elastic form-control" id="jobContent" name="workExp[duty][]" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;">{$vo.duty}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </volist>
+                                            <else/>
+                                                <div style="background: none" class="panel-body3">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-9">
+                                                            <input class="form-control text-center timerinput required" id="workyearFrom" type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;"><span>-&gt;</span>
+                                                            <input class="form-control text-center timerinput required" id="workyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})"  readonly="readonly" name="workExp[endtime][]" style="height: 32px;">
+                                                            <div class="checkbox checkbox-info checkbox-inline" style="vertical-align: baseline;">
+                                                                <input type="checkbox">
+                                                                <label>目前在职<span class="text-danger">*</span></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" >
+                                                        <label class="col-sm-2 control-label">公司名称<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-9">
+                                                            <input class="form-control required" type="text" id="companyName" name="workExp[company][]"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">公司介绍<span class="text-danger"></span></label>
+                                                        <div class="col-sm-9">
+                                                            <textarea class="msd-elastic form-control" id="companyDes" style="min-height: 66px; overflow: hidden; word-wrap: break-word; resize: none;" name="workExp[companyDes][]"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">职位<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control required" type="text" id="jobPosition" name="workExp[jobPosition][]">
+                                                        </div>
+                                                        <label class="col-sm-2 control-label">部门<span class="text-danger"></span></label>
+                                                        <div class="col-sm-4">
+                                                            <input class="form-control" type="text" id="depart" name="workExp[depart][]">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">职责描述<span class="text-danger"></span></label>
+                                                        <div class="col-sm-9">
+                                                            <textarea class="msd-elastic form-control" id="jobContent" name="workExp[duty][]" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </notempty >
+
+                                            <div class="panel-footer">
+                                                <button class="btn btn-success btn-xs" type="button" onclick="expadd('workExp')">增加新的工作经历</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group eduExp">
+                                    <label class="col-md-3 control-label">教育经历：</label>
+                                    <div class="col-lg-9">
+                                        <notempty name="resume_edu" >
+                                            <div class="panel panel-default adddefault addedu" onclick="faddEdu();" style="display: none;">
+                                                <span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加教育经历
+                                            </div>
+                                            <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;">
+                                                <volist name="resume_edu" id="vo">
+                                                    <input  type="hidden"  name="eduExp[id][]" value="{$vo.id}"/>
+                                                    <div style="background: none" class="panel-body3">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-10">
+                                                            <input class="form-control text-center timerinput required" id="eduyearFrom" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="eduExp[starttime][]" value="{$vo.starttime|date="Y-m",###}"><span>-&gt;</span>
+                                                            <input class="form-control text-center timerinput required" id="eduyearEnd" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="eduExp[endtime][]" value="{$vo.endtime|date="Y-m",###}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">学校名称<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-9">
+                                                            <input class="form-control required" type="text" name="eduExp[schoolName][]" id="schoolName" value="{$vo.schoolName}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">专业<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control required" type="text" id="majorName" name="eduExp[majorName][]" value="{$vo.majorName}">
+                                                        </div>
+                                                        <label class="col-sm-2 control-label">学历<span class="text-danger">*</span></label>
+                                                        <div class="col-md-3">
+                                                            <select class="form-control required" id="degree" name="eduExp[degree][]" aria-required="true">
+                                                                <option value="专科">专科</option>
+                                                                <option value="本科">本科</option>
+                                                                <option value="硕士">硕士</option>
+                                                                <option value="MBA/EMBA">MBA/EMBA</option>
+                                                                <option value="博士">博士</option>
+                                                                <option value="博士后">博士后</option>
+                                                            </select>
+                                                            <span style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                                        </div>
+                                                    </div>
+                                                    <button class="btn col-sm-offset-2 btn-danger btn-xs deletebtn" type="button">删除</button></div>
+                                                </volist>
+                                                <div class="panel-footer">
+                                                    <button class="btn btn-success btn-xs" type="button" onclick="expadd('eduExp')">增加新的教育经历</button>
+                                                </div>
+                                            </div>
+                                        <else/>
+                                            <div class="panel panel-default adddefault addedu" onclick="faddEdu();">
+                                                <span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加教育经历
+                                            </div>
+                                            <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;display: none;">
+                                                <div class="panel-footer">
+                                                    <button class="btn btn-success btn-xs" type="button" onclick="expadd('eduExp')">增加新的教育经历</button>
+                                                </div>
+                                            </div>
+                                        </notempty>
+                                    </div>
+                                </div>
+
+                                <div class="form-group projectExp">
+                                    <label class="col-md-3 control-label">项目经历：</label>
+                                    <div class="col-lg-9">
+                                        <notempty name="resume_project" >
+                                            <div class="panel panel-default adddefault addpro" style="display: none;" onclick="faddPro();">
+                                                <span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加项目经历
+                                            </div>
+                                                <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;">
+                                                    <volist name="resume_project" id="vo">
+                                                        <input type="hidden" name="projectExp[id][]" value="{$vo.id}" />
+                                                        <div style="background: none" class="panel-body3">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>
+                                                            <div class="col-sm-10">
+                                                                <input class="form-control text-center timerinput required" id="projectyearFrom" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[starttime][]" value="{$vo.starttime|date="Y-m",###}"><span>-&gt;</span>
+                                                                <input class="form-control text-center timerinput required" id="projectyearEnd" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[endtime][]" value="{$vo.endtime|date="Y-m",###}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">项目名称<span class="text-danger">*</span></label>
+                                                            <div class="col-sm-9">
+                                                                <input class="form-control required" type="text" id="proName" name="projectExp[proName][]" value="{$vo.proName}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">所在公司<span class="text-danger">*</span></label>
+                                                            <div class="col-sm-4">
+                                                                <input class="form-control required" type="text" id="proCompany" name="projectExp[proCompany][]" value="{$vo.proCompany}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">项目职位<span class="text-danger"></span></label>
+                                                            <div class="col-sm-9">
+                                                                <input class="form-control" type="text" id="proOffice" name="projectExp[proOffice][]" value="{$vo.proOffice}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">项目描述<span class="text-danger"></span></label>
+                                                            <div class="col-sm-9">
+                                                                <textarea class="msd-elastic form-control" id="proDes" name="projectExp[proDes][]" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 136px;">{$vo.proDes}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn col-sm-offset-2 btn-danger btn-xs deletebtn" type="button">删除</button></div>
+                                                    </volist>
+                                                    <div class="panel-footer">
+                                                        <button class="btn btn-success btn-xs" type="button" onclick="expadd('projectExp')">增加新的项目经历</button>
+                                                    </div>
+                                                </div>
+                                        <else/>
+                                            <div class="panel panel-default adddefault addpro" onclick="faddPro();">
+                                                <span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加项目经历
+                                            </div>
+                                            <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;display: none;">
+                                                <div class="panel-footer">
+                                                    <button class="btn btn-success btn-xs" type="button" onclick="expadd('projectExp')">增加新的项目经历</button>
+                                                </div>
+                                            </div>
+                                        </notempty>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">优劣势分析：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="evaluate" name="evaluate" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">技能：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="skill" name="skill" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;"></textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">语言能力：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="language" name="language" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;"></textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+
+
+                                <volist name="field_list['data']" id="vo" key="key">
+                                    <div class="form-group"  style="display: none;">
+                                        <label class="col-md-4 control-label">{$vo.name}：</label>
+                                        <if condition="$vo['form_type'] == 'textarea'">
+                                            <if condition = "$vo['tip_start'] eq 1">
+                                                <div class="col-md-6">
+                                                    <textarea class="form-control" id="description" name="description" rows="5"></textarea>
+                                                </div>
+                                                <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                                <else/>
+                                                <div class="col-md-8">
+                                                    <textarea class="form-control" id="description" name="description" rows="5"></textarea>
+                                                </div>
+                                            </if>
+                                            <elseif condition="$vo['form_type'] == 'address'"/>
+                                            <if condition = "$vo['tip_start'] eq 1">
+                                                <div class="col-md-7">
+                                                    {$vo.html}
+                                                </div>
+                                                <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                                <else/>
+                                                <div class="col-md-8">
+                                                    {$vo.html}
+                                                </div>
+                                            </if>
+                                            <else/>
+                                            <div class="col-md-6">
+                                                {$vo.html}
+                                            </div>
+                                            <if condition = "$vo['tip_start'] eq 1 || $vo['field'] eq 'customer_id'">
+                                                <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                                <else/>
+                                                <div class="col-md-2"></div>
+                                            </if>
+                                        </if>
+                                    </div>
+                                </volist>
+                            </div>
+                            <div class="col-md-1 pull-right">
+                                <!-- <div style="height: 100%; border-right: 1px dashed gray;">&nbsp;sadf</div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tfoot_div" class="clearfix">
+            <div class="clearfix" id="tfoot_page">
+                <div class="ibox-content" style="border-top: none;">
+                    <div class="col-sm-offset-2" style="text-align:center;margin-left:0px;">
+                        <button type="submit" id="save_submit" class="btn btn-primary">保存</button>
+                        <input class="btn btn-default" type="button" onclick="javascript:history.go(-1)" value="{:L('RETURN')}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="" style="display:none;" id="dialog-validate" title="{:L('TEST_RESULTS')}">
+    {:L('HAVE_THE_FOLLOWING_PRODUCTS_ARE_SIMILAR_TO_THE_PRODUCT_NAME')}
+    <div id="search_content"></div>
+</div>
+<div style="display:none;"  id="dialog-resume" title="粘贴简历">
+    <div class="form-group">
+        <label class="col-sm-1 control-label ng-binding">文件名称</label>
+        <div class="col-sm-11">
+            <input class="form-control ng-pristine ng-untouched ng-valid" type="text">
+        </div>
+        <div class="col-sm-12">
+            <textarea class="msd-elastic form-control parse-content" style="margin-top: 10px;height: 280px;width: 100%;outline: none;resize: none; overflow: hidden; word-wrap: break-word;"></textarea>
+        </div>
+    </div>
+</div>
+<div class="" style="display:none;" id="dialog-business" title="选择项目">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<link href="__PUBLIC__/css/selector.css" rel="stylesheet" />
+<script type="text/javascript" src="__PUBLIC__/js/uploadPreview.js"></script>
+<script src="__PUBLIC__/js/citydata.js"></script>
+<script src="__PUBLIC__/js/cityselector_o.js"></script>
+
+<script type="text/javascript">
+
+
+//    lieselect();
+    //初始化上传图片
+    $("body").on('click','input[type="file"]', function(){
+//	var selector = $(this).attr('id');
+//	$("#"+selector).uploadPreview({ Img: selector+"_prev", Width: 120, Height: 120 });
+    });
+    $(document).ready(function(){
+
+        $(document).on("click",".btnclosee",function (event) {
+            var width=$("#right-sidebar-log").width();
+            if($("#right-sidebar-log").css('right') == '0px'){
+                $("#right-sidebar-log").animate({right:'-'+width+'px'}, 400);
+            }
+            $("#linetoggle").remove();
+        })
+
+        $(".jCitySelector").loadCitySelector();
+
+        $('#save_submit').prop('disabled',false);
+        /*form表单验证*/
+        $("#form").validate({
+            submitHandler:function(form){
+                $('#save_submit').off().on("click",function(){
+                    var industrys = $("#industrys").val();
+                    var jobtitles = $("#jobtitles").val();
+                    var dqs = $("#dqs").val();
+                    var wantdqs= $("#wantdqs").val();
+                    var telephone=$("#telphone").val();
+                    var flag=0;
+                    $("input[data-selector=industrys]").val(industrys);
+                    $("input[data-selector=jobtitles]").val(jobtitles);
+                    $("input[data-selector=dqs]").val(dqs);
+                    $("input[data-selector=wantdqs]").val(wantdqs);
+
+                    if(industrys){
+                        $("span[data-name=industry]").find("input").css("border","1px solid #d8e3ef");
+                    }
+                    if(jobtitles){
+                        $("span[data-name=job_class]").find("input").css("border","1px solid #d8e3ef");
+                    }
+                    if(dqs){
+                        $("span[data-name=location]").find("input").css("border","1px solid #d8e3ef");
+                    }
+                    if(wantdqs){
+                        $("span[data-name=intentCity]").find("input").css("border","1px solid #d8e3ef");
+                    }
+                    if(industrys=="" || industrys==null){
+                        alert_crm("请填写行业信息！");
+                        $("span[data-name=industry]").find("input").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    if(jobtitles=="" || jobtitles==null){
+                        alert_crm("请填写职能信息！");
+                        $("span[data-name=job_class]").find("input").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    if(dqs=="" || dqs==null){
+                        alert_crm("请填写所在城市信息！");
+                        $("span[data-name=location]").find("input").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    if(wantdqs=="" || wantdqs==null){
+                        alert_crm("请选择意向城市！");
+                        $("span[data-name=intentCity]").find("input").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    $.ajax({
+                        url:"/index.php?m=product&a=check_tel",
+                        type:"post",
+                        async:false,
+                        data:{
+                            telephone:telephone
+                        },
+                        success:function (data) {
+                           if(data){
+                               alert_crm("该手机号码已经存在！");
+                               flag=0;
+                               $("input[name=telephone]").css("border","1px dotted #cc5965");
+                               return;
+                           }else{
+                               $("input[name=telephone]").css("border","1px solid #d8e3ef");
+                               flag=1;
+                               return;
+                           }
+                        }
+                    });
+
+                    if(dqs && jobtitles && industrys && wantdqs && flag){
+                        form.submit();
+                    }
+
+                });
+
+            }
+        });
+
+        $("#uploadresume").on("change",function () {
+            var dataform = new FormData();
+            dataform.append("file",$('#uploadresume')[0].files[0]);
+
+            $.ajax({
+                url:"/index.php?m=parse&a=index",
+                type:"post",
+                data:dataform,
+                processData:false,
+                contentType:false,
+                success:function(data){
+
+                    var content=JSON.parse(data);
+                    //内容解析显示在页面中
+                    $("#name").val(content.name);
+                    var sex=content.sex;
+                    if(sex=="女"){
+                        $("input[name=sex]").eq(1).prop("checked","checked");
+                    }
+                    $("#telphone").val(content.telphone);
+                    $("#birthday").val(content.birthday);
+//                    $("#dqs").val(content.living);
+                    $("#email").val(content.email);
+                    $("#curSalary").val(content.wage_current);
+//                    $("#dqs").val(content.living);
+//                    $("input[data-selector=dqs]").val(content.living);
+//                    $("input[data-selector=wantdqs]").val(wantdqs);
+                    $("#wantdqs").val(content.wage_current);
+//                    lieselect();
+                    var edu=content.edu;
+                    $("#education option").each(function () {
+                        if(edu==$(this).attr("value")){
+                            $(this).attr("selected",true);
+                        }
+                    })
+
+                    var worksdata = content.workExp;
+                    var edudata = content.eduExps;
+                    var prodata = content.proExp;
+                    if(worksdata){
+                        $(".workExp .panel-body3").remove();
+                        $.each(worksdata,function(i,v){
+                            addWork(v);
+                        });
+                    }
+
+                    if(edudata){
+                        $(".eduExp .addedu").hide();
+                        $.each(edudata,function(i,v){
+                            addEdu(v);
+                        });
+                        $("#degree option").each(function () {
+                            if($(this).parent().attr("data-value")==$(this).val()){
+                                $(this).attr("selected","selected");
+                            }
+                        })
+                    }
+
+                    if(prodata){
+                        $(".projectExp .addpro").hide();
+                        $.each(prodata,function(i,v){
+                            addPro(v);
+                        });
+                    }
+
+                    //出现右边的滑框
+                    if($("#right-sidebar-log").css('right') != '0px'){
+                        $("#right-sidebar-log").animate({right:'0px'}, 600);
+                        $("#right-sidebar-log").css("width","60%");
+                    }
+                    $('#sidebar-container').html("<div class='btn btn-primary btnclosee'>关闭</div><textarea class='resume_area'>"+content.content+"</textarea>");
+                    if($("#linetoggle").length>0){
+                        return
+                    }else{
+                        $('#sidebar-container').before("<div id='linetoggle'><div class='btn_ico'></div></div>");
+                    }
+                },
+                error:function(e){
+                    alert("错误！！");
+                    window.clearInterval(timer);
+                }
+            });
+        })
+    });
+
+    $(function () {
+        $(document).on('click','.textdialog',function () {
+            $('#dialog-resume').dialog('open');
+        });
+
+        $('#business_name').click(function () {
+            $('#dialog-business').dialog('open');
+            $('#dialog-business').load("{:U('business/listdialog')}");
+        });
+    })
+
+    $("#dialog-business").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 800,
+        height: 400,
+        close: function () {
+            $(this).html("");
+        },
+        buttons: {
+            "{:L('OK')}": function () {
+                var item = $('input:radio[name="business"]:checked').val();
+                var name = $('input:radio[name="business"]:checked').parent().next().html();
+                if(item){
+                    $('#business_id').val(item);
+                    $('#business_name').val(name);
+                }
+                $(this).dialog("close");
+            },
+            "{:L('CANCEL')}": function () {
+                $(this).dialog("close");
+            }
+        },
+        position:["center",100]
+    });
+
+    $("#dialog-resume").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 1100,
+        maxHeight: 500,
+        buttons: {
+            "确定": function () {
+
+                $.ajax({
+                    type:"post",
+                    url:"{:U('parse/parse_action')}",
+                    data:{
+                        content:$(".parse-content").val()
+                    },
+                    success:function(data){
+                        var content=JSON.parse(data);
+                        //内容解析显示在页面中
+                        $("#name").val(content.name);
+                        var sex=content.sex;
+                        if(sex=="女"){
+                            $("input[name=sex]").eq(1).prop("checked","checked");
+                        }
+                        $("#telphone").val(content.telphone);
+                        $("#birthday").val(content.birthday);
+//                    $("#dqs").val(content.living);
+                        $("#email").val(content.email);
+                        $("#curSalary").val(content.wage_current);
+//                    $("#dqs").val(content.living);
+//                    $("input[data-selector=dqs]").val(content.living);
+//                    $("input[data-selector=wantdqs]").val(wantdqs);
+                        $("#wantdqs").val(content.wage_current);
+                        lieselect();
+                        var edu=content.edu;
+                        $("#education option").each(function () {
+                            if(edu==$(this).attr("value")){
+                                $(this).attr("selected",true);
+                            }
+                        })
+                        var worksdata = content.workExp;
+                        var edudata = content.eduExps;
+                        var prodata = content.proExp;
+                        if(worksdata){
+                            $(".workExp .panel-body3").remove();
+                            $.each(worksdata,function(i,v){
+                                addWork(v);
+                            });
+                        }
+
+                        if(edudata){
+                            $(".eduExp .addedu").hide();
+                            $.each(edudata,function(i,v){
+                                addEdu(v);
+                            });
+                        }
+
+                        if(prodata){
+                            $(".projectExp .addpro").hide();
+                            $.each(prodata,function(i,v){
+                                addPro(v);
+                            });
+                        }
+
+                        //出现右边的滑框
+                        if($("#right-sidebar-log").css('right') != '0px'){
+                            $("#right-sidebar-log").animate({right:'0px'}, 600);
+                            $("#right-sidebar-log").css("width","60%");
+                        }
+                        $('#sidebar-container').html("<div class='btn btn-primary btnclosee'>关闭</div><textarea class='resume_area'>"+content.content+"</textarea>");
+                        if($("#linetoggle").length>0){
+                            return
+                        }else{
+                            $('#sidebar-container').before("<div id='linetoggle'><div class='btn_ico'></div></div>");
+                        }
+                    }
+                })
+
+                //追加产品信息
+                $(".se_product_").each(function(){
+
+                });
+                $(this).dialog("close");
+            },
+            "取消": function () {
+                $(this).dialog("close");
+            }
+        },
+        position: ["center", 100],
+        close:function(){
+//            $(this).html('');
+        }
+    });
+
+
+
+    $(function () {
+        $("body").on("click",".deletebtn",function () {
+            var item=$(this).closest(".panel").find(".panel-body3");
+            if(item.length==1){
+                item.closest(".col-lg-9").find(".adddefault").show();
+                item.parent().remove();
+            }
+            $(this).closest(".panel-body3").remove();
+        })
+    })
+
+</script>
+
+
+<include file="Public:footer" />
+
+
+
+<div id="right-sidebar-log">
+    <!--the css for jquery.mCustomScrollbar-->
+    <link rel="stylesheet" href="__PUBLIC__/emoji/css/jquery.mCustomScrollbar.min.css"/>
+    <!--the css for this plugin-->
+    <link rel="stylesheet" href="__PUBLIC__/emoji/css/jquery.emoji.css"/>
+    <!--(Optional) the js for jquery.mCustomScrollbar's addon-->
+    <script src="__PUBLIC__/emoji/js/jquery.mousewheel-3.0.6.min.js"></script>
+    <!--the js for jquery.mCustomScrollbar-->
+    <script src="__PUBLIC__/emoji/js/jquery.mCustomScrollbar.min.js"></script>
+    <!--the js for this plugin-->
+    <script src="__PUBLIC__/emoji/js/jquery.emoji.js"></script>
+
+    <div class="sidebar-container" id="sidebar-container">
+
+    </div>
+</div>
+
+<style>
+
+    .sidebar-container ul.nav-tabs li a{
+        background: #fff !important;
+        color: #a7b1c2 !important;
+        font-weight: 600 !important;
+        padding: 14px 20px 14px !important;
+        border-right: none !important;
+    }
+    .sidebar-container nav{
+        display: none;
+    }
+    .sidebar-container #page-wrapper{
+        margin-left: 0px;
+    }
+    #sidebar-container{
+        box-shadow: rgb(187, 187, 187) -1px 10px 10px;
+        border: 2px solid rgb(238, 238, 238);
+    }
+
+    #right-sidebar-log{
+        width: 60%;
+        right: -60%;
+        background-color: #fff;
+        position: fixed;
+        top: 60px;
+        z-index: 1009;
+        bottom: 0;
+        box-shadow: -5px -5px 1px #ccc;
+    }
+
+</style>

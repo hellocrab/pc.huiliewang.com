@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{:C('defaultinfo.name')}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="author" content="{:L('AUTHOR')}"/>
+    <!-- 360浏览器默认使用Webkit内核 -->
+    <meta name="renderer" content="webkit">
+    <link rel="shortcut icon" href="__PUBLIC__/ico/favicon.png"/>
+    <script src="__PUBLIC__/style/js/jquery-2.1.1.js"></script>
+    <!--<link type="text/css" href="__PUBLIC__/css/jquery-ui-1.10.0.custom.css" rel="stylesheet" />-->
+    <link type="text/css" href="__PUBLIC__/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/style/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/style/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/font-awesome.min.css" rel="stylesheet">
+    <link type="text/css" href="__PUBLIC__/css/hovershow.css" rel="stylesheet"/>
+    <!-- animate -->
+    <link rel='stylesheet' href='__PUBLIC__/css/animate/animate.min.css'>
+    <link rel="stylesheet" href="__PUBLIC__/css/animate/notification.css">
+    <style type="text/css">
+        a.active{
+            font-weight: bold;
+            color: #777;
+        }
+        .nobr{
+            white-space:nowrap;
+        }
+        #header-top{
+            position: fixed;
+            /*width: 87.3%;*/
+            right:0px;
+            z-index: 102;
+        }
+        .sidebar-collapse{z-index:9999;}
+        .tooltip{width:85px;line-height:36px;}
+        .tooltip-inner{padding:3px 12px;text-align:left;}
+        .table{margin-bottom:0px;}
+        @media (max-width: 768px){
+            .nav.left-side{
+                display: none;
+            }
+        }
+        .navbar{margin-bottom:0px;}
+        .check_list{width: 20px;height: 20px;}
+        .check_all{width: 20px;height: 20px;}
+        .check_all{width: 20px;height: 20px;}
+        input[type=checkbox], input[type=radio]{margin-top:0px;}
+        .radio.radio-inline {padding-left: 0px;}
+        .alert-error{margin:20px;line-height:30px;}
+        .text{color:#000;}
+        .notification{top:150px;z-index:9999;}
+
+        .checkbox, .radio{margin:0 auto;}
+
+        /*闪烁效果*/
+        .crm_heart{
+            animation:heart 1s ease infinite;
+        }
+
+        @keyframes heart {
+            0% {color:#FF6D57;}
+            100%{color:#93A6B5;}
+        }
+
+
+    </style>
+    <!-- Toastr style -->
+    <link href="__PUBLIC__/style/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="__PUBLIC__/style/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="__PUBLIC__/style/css/style.css" rel="stylesheet">
+    <link href="__PUBLIC__/style/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <!-- Mainly scripts -->
+    <script src="__PUBLIC__/style/js/bootstrap.min.js"></script>
+    <script src="__PUBLIC__/js/daterangepicker/moment.min.js"></script>
+    <script src="__PUBLIC__/style/js/jquery.form.js" type="text/javascript"></script>
+    <!-- <script src="__PUBLIC__/style/js/plugins/metisMenu/jquery.metisMenu.js"></script> -->
+    <script src="__PUBLIC__/style/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Toastr -->
+    <script src="__PUBLIC__/style/js/plugins/toastr/toastr.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="__PUBLIC__/style/js/plugins/pace/pace.min.js"></script>
+    <script src="__PUBLIC__/style/js/inspinia.js"></script>
+    <script src="__PUBLIC__/js/mxcrm_zh-cn.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/js/mxcrm.js" type="text/javascript"></script>
+    <!-- jQuery UI -->
+    <script src="__PUBLIC__/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/js/WdatePicker.js" type="text/javascript"></script>
+    <!-- Sweet alert -->
+    <script src="__PUBLIC__/style/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery Validate -->
+    <script src="__PUBLIC__/style/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="__PUBLIC__/style/js/plugins/validate/messages_zh.min.js"></script>
+    <script src="__PUBLIC__/js/bootstrap-tooltip.js"></script>
+    <!-- 下拉筛选 -->
+    <link rel="stylesheet" href="__PUBLIC__/css/bootstrap-select.css">
+    <script type="text/javascript" src="__PUBLIC__/js/bootstrap-select.js" charset="UTF-8"></script>
+    <!-- select2 -->
+    <link href="__PUBLIC__/style/css/plugins/select2/select2.min.css" rel="stylesheet">
+    <script src="__PUBLIC__/style/js/plugins/select2/select2.full.min.js"></script>
+    <link href="__PUBLIC__/css/new.css">
+</head>
+<script>
+    $(function(){
+        var innerHeight = window.innerHeight;
+        if(innerHeight < 768){
+            innerHeight = 768;
+        }
+        $("#page-wrapper").css("min-height",innerHeight);
+        $(window).resize(function(){
+            var innerHeight = window.innerHeight;
+            if(innerHeight < 768){
+                innerHeight = 768;
+            }
+            $("#page-wrapper").css("min-height",innerHeight);
+        });
+        $(".select2").select2({
+            placeholder: "--请选择--"
+            // allowClear: true
+        });
+    });
+</script>
+<!-- <body class="navbar fixed-sidebar"> -->
+<body class="navbar">
+<div id="wrapper">
+        </div>
+        <div class="modal inmodal" id="Profile" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content animated bounceInRight">
+
+                </div>
+            </div>
+        </div>
+        <!-- 模态框 -->
+        <div class="modal inmodal fade" id="Modal_login" tabindex="-1"  style=" overflow:auto; border:1px solid #000000;" role="dialog" >
+            <div class="modal-dialog modal-md" style="width:700px;">
+                <div class="modal-content" id="login_modal">
+
+                </div>
+            </div>
+        </div>
+
+
+        <script type="text/javascript">
+
+            $(document).on('click','#authorize',function(){
+                $('#Modal_anthorize').modal('show');
+            });
+
+            $('[data-toggle="tooltip"]').tooltip({html:true});
+            /*时间插件*/
+            $('.date').datepicker({
+                format: "yyyy-mm-dd",
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+            $("#dialog-message-send").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 800,
+                maxHeight: 600,
+                position: ["center",100]
+            });
+
+            $(function(){
+                /*站内信*/
+                message_tips();
+                login_tips();
+                $("#header_send_message").click(function(){
+                    $('#dialog-message-send').dialog('open');
+                    $('#dialog-message-send').load('{:U("message/send")}');
+                });
+                /*让复选框默认取消选择*/
+                //$(':checkbox').prop('checked', false);
+
+                /*记录菜单隐藏状态*/
+                $(".navbar-minimalize").click(function(){
+                    var arr,reg = new RegExp("(^| )mini-navbar=([^;]*)(;|$)");
+                    arr = document.cookie.match(reg);
+                    if(arr){
+                        var nav_status = unescape(arr[2]) == 1 ? 0:1;
+                    }else{
+                        var nav_status = 1;
+                    }
+                    document.cookie = "mini-navbar="+nav_status;
+                });
+            });
+
+            function salert(){
+                var txt = "<foreach name='alert.content' item='v' key='k'><foreach name='v' item='vv' key='kk'>{$vv}</foreach></foreach>";
+                if(txt != ''){
+                    swal(txt, "", "{$alert['type'][0]}")
+                }
+            }
+
+            /*退出提示*/
+            $('.logout').click(function () {
+                swal({
+                        title: "确定退出登录?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "确定",
+                        cancelButtonText: "取消",
+                        closeOnConfirm: false
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            window.location="{:U('user/logout')}";
+                        }
+                    }
+                );
+            });
+
+            /*提交失败返回前一页*/
+            var href = "{$error}";
+            if(href != '' && href != null){
+                swal({
+                        title: "添加失败!",type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "返回",
+                        closeOnConfirm: false
+                    },
+                    function(){
+                        location.href = 'javascript:history.back(-1)';
+                    });
+            }
+            var login_show = 0;
+            function login_tips(){
+                $.get("{:U('message/logintips')}", function(data){
+                    var is_login = data.data['is_login'];
+                    if(is_login == 0 && login_show != 1){
+                        $.ajax({
+                            type: "GET",
+                            url: "{:U('user/loginajax')}",
+                            async: true,
+                            success: function(data) {
+                                if(data.status != 2){
+                                    $("#login_modal").parent().removeClass("modal-lg").addClass("modal-md");
+                                    $url = "{:U('user/loginajax')}";
+                                    $('#Modal_login').modal('show');
+                                    login_show = 1;
+                                    $('#login_modal').load($url);
+                                }else{
+                                    login_show = 1;
+                                }
+                            }
+                        });
+                    }
+                },'json')
+                setTimeout('login_tips()',20000);
+            }
+
+            /*轮询*/
+            var mark_count = 1;//标记第一次弹出
+            /*初始默认值*/
+            var msg_num = '0,0';
+
+            function message_tips(){
+                $.get("{:U('message/tips')}", function(data){
+                    var is_lock = data.data['is_lock'];
+                    if(is_lock == 1){
+                        location.href = "{:U('setting/lockscreen')}";
+                    }
+                    //卡片提醒显示与隐藏
+                    var message_html = '';
+                    var new_num = data.data['message']+','+data.data['contract_count'];
+
+                    //待办事项
+                    $('#header_check_contract_num').html(data.data['check_contract_num']);
+                    $('#header_dqcontact_num').html(data.data['contract_num']);
+                    $('#header_examine_num').html(data.data['examine_num']);
+                    $('#header_receivables_num').html(data.data['receivingorder_num']);
+                    $('#receivables_num').html(data.data['receivables_num']);
+                    $('#header_follow_customer_num').html(data.data['today_customer']);
+                    if (data.data['todo_num']) {
+                        $('#todo_num').html(data.data['todo_num']);
+                    } else {
+                        $('#todo_num').html('');
+                    }
+
+                    //导航提醒实时写入数值
+                    if(data.data['message'] != 0 && data.data['message'] != ''){
+                        $('#message_group').show();
+                        //桌面提醒
+                        if(data.data['data_list']){
+                            $(data.data['data_list']).each(function(k, v){
+                                if (data.data['data_list_count'] < 3) {
+                                    animateMessage(v.role_info.thumb_path, v.role_info.full_name, v.content_msubstr);
+                                }
+                                aaa(v.role_info.thumb_path, v.role_info.full_name, v.content, v.url_link);
+                            });
+                        }
+                        $('#message_num').html(data.data['message']);
+                        $('#message_list').html('');
+                        if(data.data['message_num'] != 0 && data.data['message_num'] != ''){
+                            message_html += '<a href="{:U('message/index')}" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
+		                    <div style="padding:0 10px;">\
+		                        <img src="__PUBLIC__/img/Messenger.png" title="小助手"> 您有<strong>'+data.data['message_num']+'</strong>条消息待查看\
+		                        <span class="pull-right text-muted small" style="line-height:30px;">'+data.data['message_time']+'前</span>\
+		                    </div>\
+		                </a>';
+                        }
+
+                        if(data.data['message_announcement_count'] != 0 && data.data['message_announcement_count'] != ''){
+                            message_html += '<a href="{:U('message/index','by=announcement')}" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
+		                    <div style="padding:0 10px;">\
+		                        <img src="__PUBLIC__/img/System.png" title="系统公告"> 您有<strong>'+data.data['message_announcement_count']+'</strong>条公告信息待查看\
+		                        <span class="pull-right text-muted small" style="line-height:30px;">'+data.data['announcement_time']+'前</span>\
+		                    </div>\
+		                </a>';
+                        }
+                        if(data.data['role_message_list']){
+                            $(data.data['role_message_list']).each(function(k, v){
+                                message_html += '<a href="{:U('message/message_view','to_role_id=')}'+v.role_id+'" title="点击回复" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;" >\
+	                            <div class="dropdown-messages-box" style="padding:0 10px;">\
+	                                <div class="pull-left">\
+	                                    <img alt="image" class="img-circle" src="'+v.thumb_path+'">&nbsp;\
+	                                </div>\
+	                                <div style="overflow:hidden;">\
+	                                    <span>'+v.full_name+'</span><span class="label label-warning pull-right" style="margin-right: 3px;border-radius:50% !important;">'+v.unread_num+'</span><br>\
+	                                    <span style="word-wrap: break-word;word-break: normal;float:left;margin-top:10px;width:100%;">'+v.content+'</span><br>\
+	                                    <small class="text-muted pull-right" style="margin-top: 5px;">'+v.send_time+'</small>\
+	                                </div>\
+	                            </div>\
+	                        </a>';
+                            });
+                        }
+                        $('#message_list').append(message_html);
+                    }else{
+                        $('#message_group').hide();
+                    }
+                    //日程提醒
+                    var event_temp = '';
+                    if(data.data['event_list'] != 0 && data.data['event_list'] != ''){
+                        $('#event_group').show();
+                        $('#event_list').html('');
+                        $('#event_num').html(data.data['event_num']);
+                        $.each(data.data['event_list'], function(k, v){
+                            event_temp += '<a href="{:U('event/index')}" title="点击查看" style="padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;width:100%;">\
+	                                <div style="overflow:hidden;padding:0 10px;">\
+	                                	<span class="pull-left" style="color:'+v.color+';line-height:26px;"><i class="fa fa-circle"></i>&nbsp;&nbsp;'+v.subject+'</span><br>\
+	                                    <small class="text-muted pull-right" style="margin-top: 5px;">'+v.between_date+'</small>\
+	                                </div>\
+	                            </a>';
+                        });
+                        $('#event_list').append(event_temp);
+                    }else{
+                        $('#event_group').hide();
+                    }
+                },'json')
+                setTimeout('message_tips()',30000);
+            }
+
+            /*head 特效*/
+            $('.nav-head .navbar-left li').mouseover(function(){
+                $(this).find('a span').css("color", '#ffb173');
+            });
+
+            $('.nav-head .navbar-left li').mouseout(function(){
+                $(this).find('a span').css("color", '#e6e9f2');
+            });
+        </script>
+
+        <script type="text/javascript">
+            function aaa(icon, name, content, url_link){
+                var t = new Date().toLocaleString();
+                var options={
+                    dir: "ltr",
+                    lang: "utf-8",
+                    icon: icon,
+                    body: content
+                };
+                if(Notification && Notification.permission === "granted"){
+                    var n = new Notification(name + t, options);
+                    //5秒后自动关闭
+                    n.onshow = function(){
+                        setTimeout(function () {
+                            n.close();
+                        }, 5000)
+                    };
+                    n.onclick = function() {
+                        // alert("You clicked me!");
+                        window.location = url_link;
+                        n.close();
+                    };
+                    n.onclose = function(){
+                        console.log("notification closed!");
+                    };
+                    n.onerror = function() {
+                        console.log("An error accured");
+                    }
+                }
+            }
+
+            function mouseoveriframe(width,zindex,url) {
+                $("#if"+zindex).remove();
+                var height=$(window).height()-70;
+                var iframebox="<iframe id='if"+zindex+"' src='"+url+"'  scrolling='yes' width='"+width+"' height='"+height+"' style='position: fixed;z-index: "+zindex+";right: -"+width+"px;top: 70px;'></iframe>";
+
+                $('body').append(iframebox);
+                setTimeout(function () {
+                    $("#if"+zindex).animate({right:"10px"})
+                },1000)
+                $("#if"+zindex).find(".navbar-default").hide();
+            }
+
+
+        </script>
+<link href="__PUBLIC__/css/step.css" rel="stylesheet">
+<style>
+    .a{
+        display:block;
+    }
+    .form-p{line-height: 25px;height: 25px;}
+    .form-p-owner{line-height: 25px;height: 25px;padding-top: 5px;font-size: 14px;color: #000;}
+    .product-a-line{border-left: 3px solid #19aa8d !important;}
+    .product-list:hover{background-color: #f3f3f4;}
+    .all_business{background-color: #fff;color: #00aaef;}
+    .all_business_a{background-color: #00aaef;color: #fff !important;}
+    .form-horizontal .control-label{color: #999;}
+    /*step*/
+    .nav > li.active {background: none;}
+    iframe nav{
+        display: none;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="ibox-content" style="padding-top:9px;padding-bottom:4px;">
+        <include file="Public:alert" />
+        <div class="row border-bottom">
+            <div class="col-md-9">
+                <div class="all-inline">
+                    <input type="hidden" id="business_id" value="{$business_info['business_id']}" />
+                    <input type="hidden" id="module_business_id" value="{$business_info['business_id']}" />
+                    <span><img src="__PUBLIC__/img/customer_view_icon.png" style="margin-bottom:9px;" alt=""></span>
+                    <h2 class="h2-customer-name" style="font-weight:400;color: #000;">{$business_info['name']}</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-xs btn-primary pull-right" type="button" style="margin-left: 5px" id="close_iframe"  onclick="$('iframe').css('display','none')">关闭</button>
+            </div>
+        </div>
+        <div class="row" style="padding-top: 20px">
+            <div class="col-md-9">
+                <div class="form-horizontal view-group " style="margin-left:-10px;">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商机名称</label>
+                        <div class="col-sm-4">
+                            <p class="form-p color-a-edit">
+                                <span>{$business_info['name']}</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label">商机编号</label>
+                        <div class="col-sm-4">
+                            <p class="form-p">
+                                <span>{$business_info['code']}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <?php $tag = 0; ?>
+                    <volist name="field_list" id="vo">
+                        <if condition="$vo['form_type'] == 'textarea'">
+                            <if condition="$tag%2 neq 0">
+                                </div>
+                            </if>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{$vo.name}</label>
+                                <div class="col-sm-10">
+                                    <p class="form-p color-a-edit">
+                                        <span style="color:#{$vo['color']}">{$business_info[$vo['field']]}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <?php $tag = 0; ?>
+                        <else/>
+                            <if condition="$tag%2 eq 0">
+                                <div class="form-group">
+                            </if>
+                            <label class="col-sm-2 control-label">{$vo.name}</label>
+                            <div class="col-sm-4">
+                                <p class="form-p">
+                                    <span style="color:#{$vo['color']}">
+                                        <if condition="$vo['form_type'] eq 'datetime'">
+                                            <if condition="$business_info[$vo['field']] neq '0'">{:newTimeDate($business_info[$vo['field']])}</if>
+                                        <elseif condition="$vo['form_type'] eq 'address'" />
+                                            {$business_info[$vo['field']]}
+                                            <a href="javascript:void(0);" class="getMap" rel="{$business_info[$vo['field']]}">
+                                                <span class="fa fa-map-marker" style="font-size:16px;"></span>
+                                            </a>
+                                        <elseif condition="$vo['field'] eq 'customer_id'" />
+                                            <a href="{:U('customer/view','id='.$business_info['customer_id'])}">{$business_info['customer_info']['name']}</a>
+                                        <elseif condition="$vo['field'] eq 'contacts_id'" />
+                                            <a href="{:U('contacts/view','id='.$business_info['contacts_id'])}">{$business_info['contacts_info']['name']}</a>
+                                        <else />
+                                            {$business_info[$vo['field']]}
+                                        </if>
+                                    </span>
+                                </p>
+                            </div>
+                            <if condition="$tag%2 neq 0">
+                                </div>
+                            </if>
+                            <?php $tag += 1; ?>
+                        </if>
+                    </volist>
+                </div>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeIn" style="padding-top:10px;">
+    <div class="ibox-content" style="padding-top:9px;padding-bottom:4px;">
+        <ul class="nav nav-pills nav-justified step step-arrow">
+            <volist name="status_list" id="vo">
+                <li <if condition = "$vo['order_id'] elt $business_info['status_order_id']">class="active"</if>>
+                    <a class="business_step" rel="{$vo['status_id']}" rel1="{$vo['name']}" href="javascript:void(0);" title="点击推进商机状态">{$vo['name']}</a>
+                </li>
+            </volist>
+        </ul>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeIn" style="padding-top:10px;">
+     <div class="ibox-content" id="business_view" style="padding-top:9px;padding-bottom:4px;">
+        <div class="tabs-container ibox-content product-content" style="min-height:608px;border: none;">
+        </div>
+    </div>
+</div>
+<div style="display:none" id="dialog-editproduct" title="编辑产品">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" language="javascript" >
+/*商机详情 加载的圈圈效果*/
+var detail_html = '<div class="spiner-example">\
+                        <div class="sk-spinner sk-spinner-fading-circle">\
+                            <div class="sk-circle1 sk-circle"></div>\
+                            <div class="sk-circle2 sk-circle"></div>\
+                            <div class="sk-circle3 sk-circle"></div>\
+                            <div class="sk-circle4 sk-circle"></div>\
+                            <div class="sk-circle5 sk-circle"></div>\
+                            <div class="sk-circle6 sk-circle"></div>\
+                            <div class="sk-circle7 sk-circle"></div>\
+                            <div class="sk-circle8 sk-circle"></div>\
+                            <div class="sk-circle9 sk-circle"></div>\
+                            <div class="sk-circle10 sk-circle"></div>\
+                            <div class="sk-circle11 sk-circle"></div>\
+                            <div class="sk-circle12 sk-circle"></div>\
+                        </div>\
+                    </div>';
+/*单个商机*///obj为要打开的标签页
+product_detail();
+function product_detail(){
+    var business_id = $('#business_id').val();
+    $('.product-content').load("{:U('business/view_ajax')}", {id: business_id});
+}
+
+$(".editproduct").click(function(){
+    var business_id = $(this).attr('rel');
+    $('#dialog-editproduct').dialog('open');
+    $('#dialog-editproduct').load('{:U("product/mutildialog_product","business_id=")}'+business_id);
+});
+/*编辑商机*/
+$("#dialog-editproduct").dialog({
+    autoOpen: false,
+    modal: true,
+    minWidth: 850,
+    maxHeight: 400,
+    position: ["center",100],
+    buttons: {
+        "确定": function () {
+            var is_product = $('.cproduct_id').val();
+            if(is_product == 'undefined' || is_product == '0'){
+                alert_crm('请至少选择一个产品！');
+            }else{
+                $('#addbusiness_form').submit();
+                $(this).dialog("close");
+            }
+        },
+        "取消": function () {
+            $(this).html('');
+            $(this).dialog("close");
+        }
+    },
+    close: function() {
+        /*关闭清空数据*/
+    $(this).empty();
+    }
+});
+
+//商机推进
+$('.business_step').click(function(){
+    var business_id = $('#business_id').val();
+    var status_id = $(this).attr('rel');
+    var status_name = $(this).attr('rel1');
+    swal({
+        title: "温馨提示",
+        text: "确认要推进商机状态为"+'‘'+status_name+'’？',
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "是的，我要推进！",
+        cancelButtonText:'让我再考虑一下…',
+        closeOnConfirm:false,
+        closeOnCancel:false
+    },
+    function(isConfirm){
+        if (isConfirm) {
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:'{:U("business/advance","business_id=")}'+business_id+'&status_id='+status_id,
+                async: false,
+                success: function(data) {
+                    if(data.status == 1){
+                        swal("温馨提示！", "商机状态推进成功！", "success");
+                        location.reload();
+                    }else{
+                        swal("温馨提示！", "商机状态推进失败，请重试！", "error");
+                        return false;
+                    }
+                }
+            });
+        }else{
+            swal("已取消","您取消了推进操作！","error");
+        }
+    });
+});
+
+
+$(function () {
+    $("body").on("click","#close_iframe",function () {
+        var tag=window.parent.document.getElementById("if1000");
+        tag.remove();
+    })
+
+})
+
+</script>
+<include file="Public:footer" />

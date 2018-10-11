@@ -1,0 +1,54 @@
+[ 2018-05-29T01:15:33+08:00 ] 106.120.161.68 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-29T09:47:51+08:00 ] 183.226.185.144 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-29T09:48:02+08:00 ] 183.226.185.144 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1527436800 AND 1528041600 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1527436800 AND 1528041600 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-05-29T09:48:51+08:00 ] 117.144.246.149 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-29T09:55:07+08:00 ] 183.226.185.144 /
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1527436800 AND 1528041600 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1527436800 AND 1528041600 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-05-29T10:11:41+08:00 ] 120.204.17.72 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-29T22:08:41+08:00 ] 106.11.226.194 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+

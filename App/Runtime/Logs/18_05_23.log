@@ -1,0 +1,412 @@
+[ 2018-05-23T08:07:40+08:00 ] 47.100.38.232 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-23T10:34:23+08:00 ] 183.226.185.195 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-23T10:34:31+08:00 ] 183.226.185.195 /index.php?m=index&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : SELECT `receivables_id`,`price` FROM `mx_receivables` WHERE ( `contract_id` IN () ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1525104000 AND 1527782400 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1526832000 AND 1527436800 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1526832000 AND 1527436800 ) ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ' at line 1
+ [ SQL语句 ] : SELECT SUM(money) AS tp_sum FROM `mx_receivingorder` WHERE ( `receivables_id` IN () ) AND ( `status` = 1 ) AND (  (`pay_time` BETWEEN 1514736000 AND 1546272000 ) ) LIMIT 1  
+
+[ 2018-05-23T10:35:01+08:00 ] 120.92.11.159 /index.php?m=integral&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM mx_user user LEFT JOIN mx_user_category user_category ON user.category_id=user_category.category_id LEFT JOIN mx_job_rank job_rank ON job_rank.id=user.job_rank LEFT JOIN mx_role role ON user.user_id=role.user_id LEFT JOIN mx_position position ON position.position_id=role.position_id LEFT JOIN mx_role_department role_department ON role_department.department_id=position.department_id WHERE ( user.role_id IN () ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) LIMIT 0,15' at line 1
+ [ SQL语句 ] : SELECT user.user_id AS user_id,user.name AS name,user.position_info AS position_info,user.full_name AS full_name,user.second_name AS second_name,user.hometown AS hometown,user.sex AS sex,user.img AS img,user.email AS email,user.telephone AS telephone,user.address AS address,user.status AS status,user_category.name AS category_name,user_category.category_id AS category_id,job_rank.name AS rank_name,role.role_id AS role_id,role.position_id AS position_id,position.name AS role_name,position.parent_id AS parent_id,position.department_id AS department_id,position.description AS description,role_department.name AS department_name,role_department.department_label AS department_label FROM mx_user user LEFT JOIN mx_user_category user_category ON user.category_id=user_category.category_id LEFT JOIN mx_job_rank job_rank ON job_rank.id=user.job_rank LEFT JOIN mx_role role ON user.user_id=role.user_id LEFT JOIN mx_position position ON position.position_id=role.position_id LEFT JOIN mx_role_department role_department ON role_department.department_id=position.department_id WHERE ( user.role_id IN () ) LIMIT 0,15  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d )' at line 1
+ [ SQL语句 ] : SELECT * FROM `mx_role_department` WHERE ( department_id =%d ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-23T10:35:02+08:00 ] 120.92.11.69 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-23T10:35:05+08:00 ] 120.92.11.159 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-23T10:35:05+08:00 ] 120.92.11.205 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+
+[ 2018-05-23T10:35:35+08:00 ] 117.185.117.51 /index.php?m=integral&a=index
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM mx_user user LEFT JOIN mx_user_category user_category ON user.category_id=user_category.category_id LEFT JOIN mx_job_rank job_rank ON job_rank.id=user.job_rank LEFT JOIN mx_role role ON user.user_id=role.user_id LEFT JOIN mx_position position ON position.position_id=role.position_id LEFT JOIN mx_role_department role_department ON role_department.department_id=position.department_id WHERE ( user.role_id IN () ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) LIMIT 0,15' at line 1
+ [ SQL语句 ] : SELECT user.user_id AS user_id,user.name AS name,user.position_info AS position_info,user.full_name AS full_name,user.second_name AS second_name,user.hometown AS hometown,user.sex AS sex,user.img AS img,user.email AS email,user.telephone AS telephone,user.address AS address,user.status AS status,user_category.name AS category_name,user_category.category_id AS category_id,job_rank.name AS rank_name,role.role_id AS role_id,role.position_id AS position_id,position.name AS role_name,position.parent_id AS parent_id,position.department_id AS department_id,position.description AS description,role_department.name AS department_name,role_department.department_label AS department_label FROM mx_user user LEFT JOIN mx_user_category user_category ON user.category_id=user_category.category_id LEFT JOIN mx_job_rank job_rank ON job_rank.id=user.job_rank LEFT JOIN mx_role role ON user.user_id=role.user_id LEFT JOIN mx_position position ON position.position_id=role.position_id LEFT JOIN mx_role_department role_department ON role_department.department_id=position.department_id WHERE ( user.role_id IN () ) LIMIT 0,15  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d )' at line 1
+ [ SQL语句 ] : SELECT * FROM `mx_role_department` WHERE ( department_id =%d ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-23T10:40:30+08:00 ] 117.185.117.51 /index.php?m=integral&a=index&p=3
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM mx_user user LEFT JOIN mx_user_category user_category ON user.category_id=user_category.category_id LEFT JOIN mx_job_rank job_rank ON job_rank.id=user.job_rank LEFT JOIN mx_role role ON user.user_id=role.user_id LEFT JOIN mx_position position ON position.position_id=role.position_id LEFT JOIN mx_role_department role_department ON role_department.department_id=position.department_id WHERE ( user.role_id IN () ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) LIMIT 0,15' at line 1
+ [ SQL语句 ] : SELECT user.user_id AS user_id,user.name AS name,user.position_info AS position_info,user.full_name AS full_name,user.second_name AS second_name,user.hometown AS hometown,user.sex AS sex,user.img AS img,user.email AS email,user.telephone AS telephone,user.address AS address,user.status AS status,user_category.name AS category_name,user_category.category_id AS category_id,job_rank.name AS rank_name,role.role_id AS role_id,role.position_id AS position_id,position.name AS role_name,position.parent_id AS parent_id,position.department_id AS department_id,position.description AS description,role_department.name AS department_name,role_department.department_label AS department_label FROM mx_user user LEFT JOIN mx_user_category user_category ON user.category_id=user_category.category_id LEFT JOIN mx_job_rank job_rank ON job_rank.id=user.job_rank LEFT JOIN mx_role role ON user.user_id=role.user_id LEFT JOIN mx_position position ON position.position_id=role.position_id LEFT JOIN mx_role_department role_department ON role_department.department_id=position.department_id WHERE ( user.role_id IN () ) LIMIT 0,15  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d )' at line 1
+ [ SQL语句 ] : SELECT * FROM `mx_role_department` WHERE ( department_id =%d ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-23T10:40:43+08:00 ] 120.204.17.71 /index.php?m=integral&a=index&p=1
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM mx_user user LEFT JOIN mx_user_category user_category ON user.category_id=user_category.category_id LEFT JOIN mx_job_rank job_rank ON job_rank.id=user.job_rank LEFT JOIN mx_role role ON user.user_id=role.user_id LEFT JOIN mx_position position ON position.position_id=role.position_id LEFT JOIN mx_role_department role_department ON role_department.department_id=position.department_id WHERE ( user.role_id IN () ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) LIMIT 0,15' at line 1
+ [ SQL语句 ] : SELECT user.user_id AS user_id,user.name AS name,user.position_info AS position_info,user.full_name AS full_name,user.second_name AS second_name,user.hometown AS hometown,user.sex AS sex,user.img AS img,user.email AS email,user.telephone AS telephone,user.address AS address,user.status AS status,user_category.name AS category_name,user_category.category_id AS category_id,job_rank.name AS rank_name,role.role_id AS role_id,role.position_id AS position_id,position.name AS role_name,position.parent_id AS parent_id,position.department_id AS department_id,position.description AS description,role_department.name AS department_name,role_department.department_label AS department_label FROM mx_user user LEFT JOIN mx_user_category user_category ON user.category_id=user_category.category_id LEFT JOIN mx_job_rank job_rank ON job_rank.id=user.job_rank LEFT JOIN mx_role role ON user.user_id=role.user_id LEFT JOIN mx_position position ON position.position_id=role.position_id LEFT JOIN mx_role_department role_department ON role_department.department_id=position.department_id WHERE ( user.role_id IN () ) LIMIT 0,15  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d and url = "%s" ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `type` FROM `mx_permission` WHERE ( position_id = %d and url = "%s" ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d )' at line 1
+ [ SQL语句 ] : SELECT * FROM `mx_role_department` WHERE ( department_id =%d ) 
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `img` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%d ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT `thumb_path` FROM `mx_user` WHERE ( user_id = %d ) LIMIT 1  
+
+[ 2018-05-23T10:41:17+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T10:48:31+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T11:04:57+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T11:24:02+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T11:50:16+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T11:57:30+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T12:02:08+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T12:08:51+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T12:21:15+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T12:23:19+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T12:25:23+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T12:26:56+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T12:36:45+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T12:39:51+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T12:56:55+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T13:00:01+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T13:08:48+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T13:19:38+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T13:31:00+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T13:47:01+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T14:02:00+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T14:04:04+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T14:10:16+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T14:10:47+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T14:16:27+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T14:34:31+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T14:57:14+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T15:16:52+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T15:31:50+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T15:36:30+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T15:41:09+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T15:52:00+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T15:53:33+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T16:01:49+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T16:15:15+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T16:16:48+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T16:27:37+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T16:47:15+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T16:48:48+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T17:00:06+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T17:02:09+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T17:08:50+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T17:10:23+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T17:19:04+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T17:24:44+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T17:49:26+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T17:54:34+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T18:07:56+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T18:12:34+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T18:30:05+08:00 ] 183.226.185.195 /index.php?m=message&a=tips
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_cycel`
+ERR: Table 'pinping.mx_cycel' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_cycel` WHERE ( `create_role_id` = '1' ) AND ( `start_time` <= 1527091200 ) AND ( `end_time` >= 1527004799 ) 
+
+[ 2018-05-23T18:45:27+08:00 ] 106.11.225.130 /index.php?m=user&a=login
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
+ERR: Table 'pinping.mx_carousel_images' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
+

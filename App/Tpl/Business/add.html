@@ -1,0 +1,712 @@
+<include file="Public:header" />
+<style type="text/css">
+	.add_body >div >.full-height-scroll{
+		border-right:1px dotted #ccc
+	}
+	.add_body_title{
+		margin:20px 0 0 10px;
+		padding-left: 14px;
+	}
+	.add_body_form>form>.form-group{
+		margin-bottom: 25px;
+	}
+	body{overflow-y:hidden;}
+	.product_thead>tr>td{
+		background-color:#FFFFFF;padding:1px;font-size:13px;color:#999;
+	}
+	/*附件样式*/
+	.test_div {
+		width: 98.8%;
+		background-color: #f9f9f9;
+		height: 30px;
+		position: relative;
+		top: -31px;
+		right: -1px;
+	}
+	.test_div>.addfile{
+		display: inline-block;
+		line-height: 30px;
+		margin-left: 18px;
+		cursor: pointer;
+	}
+	#filecontent{
+		width: 95%;
+		border: 1px dashed #d8e3ef;
+	}
+	.showfile{
+		padding:6px;
+	}
+	#filecontent .tishiinfo{
+		margin-top: 10px;
+		margin-bottom: 10px;
+		display: block;
+		margin-left: 10px;
+	}
+	#filecontent .fujian{
+		margin-left: 8px;
+		color: #646464;
+	}
+	#addfilediv{
+		color: #cccccc;
+		margin-left: 6px;
+		padding-top: 8px;
+		display: block;
+		margin-bottom: 6px;
+	}
+</style>
+<script>
+    $(function(){
+        $(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+        $(window).resize(function(){
+            $(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+        })
+    })
+</script>
+<div class="wrapper wrapper-content animated fadeIn">
+	<include file="Public:alert" />
+	<form class="form-horizontal" id="form" role="form" action="{:U('business/add')}" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="refer_url" value="{$refer_url}" />
+		<div class="ibox-content add_body" id="add_body" >
+			<div class="row">
+				<div class="col-md-6 add_body" style="padding-right: 0px;">
+					<div class="full-height-scroll">
+						<div class="row">
+							<div class="col-md-12 add_body_title" >
+								<div class="all-inline">
+									<span class="sq-tag"></span>
+									<div class="text-tag">
+										<span>基础信息</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-11 add_body_form" style="margin:20px 0 0 20px;">
+								<div class="form-group">
+									<label class="col-md-4 control-label">项目编号：</label>
+									<div class="col-md-6">
+										<div class="input-daterange input-group">
+											<span class="input-group-addon" style="background-color:#ccc;">{$business['business_custom']}</span>
+											<input type="text" name="code" rel="require" class="form-control" value="{$business['code']}"/>
+											<input type="hidden" id="prefixion" name="prefixion" value="{$business['
+											business_custom']}"/>
+										</div>
+									</div>
+									<div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
+								</div>
+								<volist name="field_list['main']" id="vo" key="key">
+									<if condition="$vo['field'] eq 'status_id'">
+										<div class="form-group">
+											<label class="col-md-4 control-label">项目进度：</label>
+											<div class="col-md-6">
+												<select name="status_id" id="status_id" class="form-control" >
+													<volist name="status_list" id="vo">
+														<option value="{$vo['status_id']}">{$vo['name']}</option>
+													</volist>
+												</select>
+											</div>
+											<div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
+										</div>
+										<elseif condition = "$vo['field'] eq 'customer_id'" />
+
+										<div class="form-group">
+											<label class="col-md-4 control-label">客户名称：</label>
+											<div class="col-md-6">
+												<input type="hidden" name="customer_id" id="customer_id" value="{$business.customer_id}" />
+												<input class="form-control required" aria-required="true" placeholder="请点击选择"  type="text" name="customer_name" id="customer_name" value="{$business.customer_name}" readonly="true" style="cursor:pointer;" title="请点击选择"/>
+											</div>
+
+											<div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
+										</div>
+										<elseif condition = "$vo['field'] eq 'contacts_id'" />
+										<div class="form-group">
+											<label class="col-md-4 control-label">联系人：</label>
+											<div class="col-md-6">
+												<input type="hidden" name="contacts_id" id="contacts_id" value="{$business.contacts_id}" />
+												<input class="form-control " aria-required="true" placeholder="请点击选择" type="text" name="contacts_name" value="{$business.contacts_name}" id="contacts_name" readonly="true" style="cursor:pointer;" title="请点击选择"/>
+											</div>
+											<div class="col-md-2"></div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-4 control-label">维护人：</label>
+											<div class="col-md-6">
+												<input type="hidden" name="joiner" id="user_id" value="" />
+												<input class="form-control required" aria-required="true" placeholder="请点击选择"  type="text" name="joiner_name" id="user_name" value="" readonly="true" style="cursor:pointer;" title="请点击选择"/>
+											</div>
+											<div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
+										</div>
+										<elseif condition = "$vo['field'] eq 'minage'" />
+										<div class="form-group">
+											<label class="col-sm-3 control-label">年龄要求：</label>
+											<div class="col-md-1"></div>
+											<div class="col-sm-4">
+												<div class="input-group">
+													<input class="form-control" type="text" name="minage"  onkeyup="num_input(this)"><span class="input-group-addon">~</span>
+													<input class="form-control" type="text" name="maxage"  onkeyup="num_input(this)"><span class="input-group-addon">岁</span>
+												</div>
+											</div>
+											<div class="col-md-2"></div>
+										</div>
+										<elseif condition = "$vo['field'] eq 'minsalary'" />
+										<div class="form-group">
+											<label class="col-sm-3 control-label">年薪范围：</label>
+											<div class="col-md-1"></div>
+											<div class="col-sm-4">
+												<div class="input-group">
+													<input class="form-control" type="text" name="minsalary"  onkeyup="num_input(this)"><span class="input-group-addon">~</span>
+													<input class="form-control" type="text" name="maxsalary"  onkeyup="num_input(this)"><span class="input-group-addon">万元</span>
+												</div>
+											</div>
+											<div class="col-md-2"></div>
+										</div>
+										<elseif condition = "$vo['field'] eq 'minexp'" />
+										<div class="form-group">
+											<label class="col-sm-3 control-label">工作年限要求：</label>
+											<div class="col-md-1"></div>
+											<div class="col-sm-4">
+												<div class="input-group">
+													<input class="form-control" type="text" name="minexp"  onkeyup="num_input(this)"><span class="input-group-addon">~</span>
+													<input class="form-control" type="text" name="maxexp"  onkeyup="num_input(this)"><span class="input-group-addon">年</span>
+												</div>
+											</div>
+											<div class="col-md-2"></div>
+										</div>
+										<else />
+										<div class="form-group">
+											<label class="col-md-4 control-label">{$vo.name}：</label>
+											<if condition="$vo['form_type'] == 'textarea'">
+												<if condition = "$vo['tip_start'] eq 1">
+													<div class="col-md-6">
+														{$vo.html}
+													</div>
+													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+													<else/>
+													<div class="col-md-8">
+														{$vo.html}
+													</div>
+												</if>
+												<elseif condition="$vo['form_type'] == 'address'"/>
+												<if condition = "$vo['tip_start'] eq 1">
+													<div class="col-md-7">
+														{$vo.html}
+													</div>
+													<div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+													<else/>
+													<div class="col-md-8">
+														{$vo.html}
+													</div>
+												</if>
+												<elseif condition="$vo['form_type'] == 'box'"/>
+												<div class="col-md-6">
+													<if condition="$vo['field'] == 'grade'">
+														<input type="hidden" id="star" name="grade" value="">
+														<div class="all-star" style="font-size: 18px;padding-top:3px;color:#D0D0D0;">
+															<i class="fa fa-star">&nbsp;&nbsp;</i><i class="fa fa-star">&nbsp;&nbsp;</i><i class="fa fa-star">&nbsp;&nbsp;</i><i class="fa fa-star">&nbsp;&nbsp;</i><i class="fa fa-star">&nbsp;&nbsp;</i>
+														</div>
+														<else/>
+														{$vo.html}
+													</if>
+												</div>
+												<if condition = "$vo['tip_start'] eq 1">
+													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+													<else/>
+													<div class="col-md-2"></div>
+												</if>
+												<elseif condition="$vo['form_type'] == 'p_box'"/>
+												<div class="col-md-6">
+													<select name="possibility" id="possibility" class="form-control">
+														<volist name="possibility_list" key="key1" id="vo">
+															<option value="{$vo}%">{$vo}%</option>
+														</volist>
+													</select>
+												</div>
+												<div class="col-md-2"></div>
+												<elseif condition="$vo['field'] == 'name'"/>
+												<div class="col-md-6">
+													<input class="form-control required" id="name" name="name" placeholder="" type="text" value="{$business['name']}" />
+												</div>
+												<if condition = "$vo['tip_start'] eq 1">
+													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+													<else/>
+													<div class="col-md-2"></div>
+												</if>
+												<else/>
+												<div class="col-md-6">
+													{$vo.html}
+												</div>
+												<if condition = "$vo['tip_start'] eq 1">
+													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+													<else/>
+													<div class="col-md-2"></div>
+												</if>
+											</if>
+										</div>
+									</if>
+								</volist>
+							</div>
+							<div class="col-md-12 add_body_title">
+								<div class="all-inline">
+									<span class="sq-tag"></span>
+									<div class="text-tag">
+										<span>附加信息</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-11 add_body_form" style="margin:20px 0 0 20px;">
+								<volist name="field_list['data']" id="vo" key="key">
+									<div class="form-group">
+										<label class="col-md-4 control-label">{$vo.name}：</label>
+										<if condition="$vo['form_type'] == 'address' || $vo['form_type'] == 'box' || $vo['form_type'] == 'textarea'">
+											<div class="col-md-7">
+												{$vo.html}
+											</div>
+											<if condition = "$vo['tip_start'] eq 1">
+												<div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+												<else/>
+												<div class="col-md-1"></div>
+											</if>
+											<else/>
+											<div class="col-md-6">
+												{$vo.html}
+											</div>
+											<if condition = "$vo['tip_start'] eq 1">
+												<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+												<else/>
+												<div class="col-md-2"></div>
+											</if>
+										</if>
+									</div>
+								</volist>
+							</div>
+							<div class="col-md-1 pull-right">
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div id="tfoot_div" class="clearfix">
+			<div class="clearfix" id="tfoot_page">
+				<div class="ibox-content" style="border-top: none;">
+					<div class="col-sm-offset-2">
+						<input type="hidden" name="submit" value="保存项目" />
+						<button type="submit" id="save_submit" class="btn btn-primary">保存</button>
+						<input class="btn btn-default" type="button" onclick="javascript:history.go(-1)" value="{:L('RETURN')}"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<div style="display:none" id="dialog-customer-list" title="{:L('SELECT_THE_CUSTOMER')}">
+	<div class="spiner-example">
+		<div class="sk-spinner sk-spinner-three-bounce">
+			<div class="sk-bounce1"></div>
+			<div class="sk-bounce2"></div>
+			<div class="sk-bounce3"></div>
+		</div>
+	</div>
+</div>
+<div style="display:none" id="dialog-role-list2" title="选择维护人">
+	<div class="spiner-example">
+		<div class="sk-spinner sk-spinner-three-bounce">
+			<div class="sk-bounce1"></div>
+			<div class="sk-bounce2"></div>
+			<div class="sk-bounce3"></div>
+		</div>
+	</div>
+</div>
+<div style="display:none" id="dialog-contacts-list" title="选择联系人">
+	<div class="spiner-example">
+		<div class="sk-spinner sk-spinner-three-bounce">
+			<div class="sk-bounce1"></div>
+			<div class="sk-bounce2"></div>
+			<div class="sk-bounce3"></div>
+		</div>
+	</div>
+</div>
+<div style="display:none" id="dialog-product-list" title="添加产品">
+	<div class="spiner-example">
+		<div class="sk-spinner sk-spinner-three-bounce">
+			<div class="sk-bounce1"></div>
+			<div class="sk-bounce2"></div>
+			<div class="sk-bounce3"></div>
+		</div>
+	</div>
+</div>
+<div style="display:none;" id="dialog-file" title="添加文件">
+	<div class="spiner-example">
+		<div class="sk-spinner sk-spinner-three-bounce">
+			<div class="sk-bounce1"></div>
+			<div class="sk-bounce2"></div>
+			<div class="sk-bounce3"></div>
+		</div>
+	</div>
+</div>
+<div style="display:none" id="dialog-validate" title="{:L('BUSINESS_OPPORTUNITIES_OF_TEST_RESULTS')}">
+	{:L('HAS_THE_FOLLOWING_BUSINESS_OPPORTUNITIES_ARE_SIMILAR_TO_THE_BUSINESS_NAME')}
+	<div id="search_content"></div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('#save_submit').prop('disabled',false);
+        /*form表单验证*/
+        $("#form").validate({
+            submitHandler:function(form){
+                $('#save_submit').click(function(){
+                    $('#save_submit').prop('disabled',true);
+                });
+                form.submit();
+            }
+        });
+    });
+
+    $(function(){
+        $('#name').blur(function(){
+            name = $('#name').val();
+            if(name!=''){
+                $.post('{:U("business/check")}',
+                    {
+                        name:name
+                    },
+                    function(data){
+                        if(data.data != 0){
+                            var result = '';
+                            $.each(data.data, function(k, v){
+                                result += (k+1)+'、'+v+'</br>';
+                            });
+                            $('#dialog-validate').dialog('open');
+                            $("#search_content").html(result);
+                        }
+                    },
+                    'json');
+            }
+        });
+
+        $('#customer_name').click(function () {
+            $('#dialog-customer-list').dialog('open');
+            $('#dialog-customer-list').load("{:U('Customer/listDialog')}");
+        });
+
+        $('#user_name').click(function () {
+            $('#dialog-role-list2').dialog('open');
+            $('#dialog-role-list2').load("{:U('User/listDialog')}");
+        });
+
+        $('#contacts_name').click(function () {
+            var customer_id = $('#customer_id').val();
+            $('#dialog-contacts-list').dialog('open');
+            $('#dialog-contacts-list').load("{:U('contacts/radiolistdialog','id=')}"+customer_id);
+        });
+
+        //项目状态组
+        $('#type_id').change(function(){
+            var type_id = $(this).val();
+            var temp = '';
+            if(type_id){
+                $.ajax({
+                    'type':'get',
+                    'data': {'type_id':type_id},
+                    'dataType':'json',
+                    'url':'{:U("business/getbusinessStatus")}',
+                    'success':function(data){
+                        if(data.status == 1){
+                            $('#status_id').html('');
+                            $.each(data.data, function(k, v){
+                                temp += '<option value="'+v.status_id+'">'+v.name+'</option>';
+                            });
+                            $('#status_id').html(temp);
+                        }else{
+                            alert_crm(data.info)
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    $('#dialog-customer-list').dialog({
+        autoOpen: false,
+        modal: true,
+        width: 700,
+        maxHeight: 400,
+        buttons: {
+            "{:L('CONFIRM')}": function () {
+                var item = $('input:radio[name="customer"]:checked').val();
+                var name = $('input:radio[name="customer"]:checked').parent().next().html();
+                var contacts_id = $('input:radio[name="customer"]:checked').attr('rel');
+                var contacts_name = $('input:radio[name="customer"]:checked').next().attr('value');
+                $('#customer_name').val(name);
+                $('#customer_id').val(item);
+                $('#contacts_id').val(contacts_id);
+                $('#contacts_name').val(contacts_name);
+                $(this).dialog("close");
+            },
+            "{:L('CANCEL')}": function () {
+                $(this).dialog("close");
+            }
+        },
+        position:["center",100]
+    });
+
+    $('#dialog-role-list2').dialog({
+        autoOpen: false,
+        modal: true,
+        width: 700,
+        maxHeight: 400,
+        buttons: {
+            "{:L('CONFIRM')}": function () {
+                var joiner = new Array();
+                var joiner_name = new Array();
+                $('input:checkbox[name="owner"]:checked').each(function () {
+                    joiner.push($(this).val());
+                    joiner_name.push($(this).attr('rel'));
+                })
+                joiner = joiner.join(",");
+                joiner_name = joiner_name.join(",");
+                var nameskey=sessionStorage.getItem("nameskey");
+                var idskey=sessionStorage.getItem("idskey");
+                $('#user_name').val("");
+                $('#user_id').val("");
+                $('#user_name').val(nameskey);
+                $('#user_id').val(idskey);
+
+//                $('#user_name').val(joiner_name);
+//                $('#user_id').val(joiner);
+                $(this).dialog("close");
+            },
+            "{:L('CANCEL')}": function () {
+                $(this).dialog("close");
+            }
+        },
+        position:["center",100]
+    });
+
+
+    $('#dialog-contacts-list').dialog({
+        autoOpen: false,
+        modal: true,
+        width: 700,
+        maxHeight: 400,
+        buttons: {
+            "{:L('CONFIRM')}": function () {
+                var item = $('input:radio[name="contacts"]:checked').val();
+                var name = $('input:radio[name="contacts"]:checked').parent().next().html();
+                var customer_id = $('input:radio[name="contacts"]:checked').next().val();
+                var customer_name = $('input:radio[name="contacts"]:checked').next().attr('rel');
+                $('#contacts_name').val(name);
+                $('#contacts_id').val(item);
+                $('#customer_id').val(customer_id);
+                $('#customer_name').val(customer_name);
+                $(this).dialog("close");
+            },
+            "{:L('CANCEL')}": function () {
+                $(this).dialog("close");
+            }
+        },
+        position:["center",100]
+    });
+    $("#dialog-validate").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 400,
+        maxHeight: 400,
+        buttons: {
+            "{:L('CONFIRM')}": function () {
+                $(this).dialog("close");
+            }
+        },
+        position: ["center", 100]
+    });
+</script>
+<script type="text/javascript">
+    var now_rows = {$max_key}?{$max_key}:0;
+    var total_row_id = {$max_key}?{$max_key}:0;
+    //减少一条信息
+    $(document).on('click','.reduce_one',function(){
+        var row_id = $(this).parent().parent().attr('id');
+        row_val = row_id.substr(4);
+        if($('#product_id_'+row_val).val() == ''){
+            $('#'+row_id).remove();
+            calculate(total_row_id);
+        }else{
+            swal({
+                    title: "温馨提示",
+                    text: "您确定要移除该商品吗?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的，我要移除！",
+                    cancelButtonText:'让我再考虑一下…',
+                    closeOnConfirm:false,
+                    closeOnCancel:false
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        $('#'+row_id).remove();
+                        calculate(total_row_id);
+                        swal("移除成功！", "您已经移除了该商品信息！", "success");
+                    } else {
+                        // return false;
+                        swal("已取消","您取消了移除操作！","error");
+                    }
+                });
+        }
+        // now_rows --;
+    });
+
+    $(".addproduct").click(function(){
+        $('#dialog-product-list').dialog('open');
+        $('#dialog-product-list').load('{:U("product/mutildialog")}');
+    });
+
+
+</script>
+<script type="text/javascript">
+    $("#dialog-file").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 800,
+        maxHeight: 400,
+        position: ["center",100],
+        buttons: {
+            "确定": function () {
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url:'{:U("file/getfiles")}',
+                    data:$('#uploadForm').serialize(),
+                    async: false,
+                    success: function(data) {
+                        var result = data.data.file_list;
+                        $('#filecontent').removeAttr('class');
+                        var temp = '';
+                        if(result){
+                            $.each(result,function(k,v){
+                                temp += '<div class="showfile" id="del_'+v.file_id+'"><input type="hidden" name="file[]" value="'+v.file_id+'"/><img src="__PUBLIC__/productImg/'+v.pic+'">&nbsp;<span style="color:#646464;">'+v.name+'&nbsp;(&nbsp;'+v.size+'KB&nbsp;)</span>&nbsp;&nbsp;<a href="javascript:;" rel="'+v.file_id+'" onclick="del_file(this);"><img src="__PUBLIC__/img/delfile.png"/></a></div>';
+                            });
+                            $('#addfilediv').before(temp);
+                            var old_file_num = Number($('#file_num').html());
+                            var old_file_size = Number($('#file_size').html());
+                            var new_file_num = old_file_num+data.data.file_num;
+                            var new_file_size = old_file_size+data.data.file_size;
+                            $('#file_num').html(new_file_num);
+                            $('#file_size').html(new_file_size);
+                        }
+                    }
+                });
+                $(this).dialog("close");
+            },
+            "取消": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    $(".addfile").click(function(){
+        $('#dialog-file').dialog('open');
+        $('#dialog-file').load('{:U("file/addlogfile")}');
+    });
+    //删除 函数
+    function del_obj(id){
+        $.post("{:U('file/filedel')}",{file_id:id},function(data){
+            if(data.status == 1){
+                $('#del_'+id).remove();
+                swal("删除成功！", "你的文件被删除了", "success");
+                if($('.showfile').length > 0){
+                    return true;
+                }else{
+                    $('#filecontent').addClass('hide');
+                }
+            }else{
+                swal({
+                    title: "温馨提示",
+                    text: data.info,
+                    type: "error"
+                });
+            }
+        },"json");
+    }
+    //删除
+    function del_file(obj){
+        var id = $(obj).attr('rel');
+        swal({
+                title: "您确定要删除这条信息吗？",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的，我要删除！",
+                cancelButtonText:'让我再考虑一下…',
+                closeOnConfirm:false,
+                closeOnCancel:false
+            },
+            function(isConfirm){
+                if (isConfirm) {
+                    del_obj(id);
+                }else{
+                    // return false;
+                    swal("已取消","您取消了删除操作！","error");
+                }
+            });
+    }
+    //全部删除 函数
+    function delall(){
+        swal({
+                title: "您确定要删除这条信息吗？",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的，我要删除！",
+                cancelButtonText:'让我再考虑一下…',
+                closeOnConfirm:false,
+                closeOnCancel:false
+            },
+            function(isConfirm){
+                if (isConfirm) {
+                    $('.showfile').each(function(){
+                        var id = $(this).find('input[type="hidden"]').val();
+                        del_obj(id);
+                    });
+                }else{
+                    // return false;
+                    swal("已取消","您取消了删除操作！","error");
+                }
+            });
+    }
+
+
+</script>
+
+<script>
+    var star = $('#star').val();
+    if(star == '' || star == null){
+        $('.fa-star').removeClass("star-orange");
+    }else{
+        $('.fa-star').removeClass("star-orange");
+        $('.fa-star:lt('+star+')').addClass("star-orange");
+    }
+    /*星星特效*/
+    $('.fa-star').mousemove(function(){
+        $(this).addClass("star-orange");
+        $(this).prevAll().addClass("star-orange");
+        $(this).nextAll().removeClass("star-orange");
+    });
+    $('.fa-star').mouseout(function(){
+        var star = $('#star').val();
+        if(star == '' || star == null){
+            $('.fa-star').removeClass("star-orange");
+        }else{
+            $('.fa-star').removeClass("star-orange");
+            $('.fa-star:lt('+star+')').addClass("star-orange");
+        }
+    });
+    $('.fa-star').click(function(){
+        var num = $(this).index() + 1;
+        $('#star').val(num);
+
+    });
+</script>
+<include file="Public:footer" />
+<script src="__PUBLIC__/resume_selector/common.21a64352.js"></script>
+<script src="__PUBLIC__/resume_selector/resume.search.910ebde0.js "></script>

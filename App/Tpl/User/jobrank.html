@@ -1,0 +1,167 @@
+<include file="Public:header" />
+<style>
+    body{overflow-y: hidden;}
+</style>
+<script type="text/javascript" src="__PUBLIC__/style/js/TableFreeze.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jscolor/jscolor.js"></script>
+<script>
+    $(function(){
+        var scroll_width = 5;
+        $("#table_div").height(window.innerHeight-$("#table_div").offset().top-10);
+        $(window).resize(function(){
+            $("#table_div").height(window.innerHeight-$("#table_div").offset().top-10);
+            $("#oDivL_tab_Test3").height($("#table_div").height()-scroll_width-1).width($("#oTableLH_tab_Test3").width());
+            $("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width()-scroll_width);
+        })
+        $("#tab_Test3").FrozenTable(1,0,0);
+        $("#oDivL_tab_Test3").height($("#table_div").height()-scroll_width).width($("#oTableLH_tab_Test3").width());
+        $("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width()-scroll_width);
+    })
+</script>
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <include file="Public:alert" />
+        <div class="col-md-12">
+            <include file="Setting:setting_left" />
+            <div class="col-lg-10">
+                <div class="table-content" id="table_container" style="padding-bottom:10px">
+                    <div class="ibox-content" style="border-bottom: none;">
+                        <div class="row " style="margin-left: 5px;">
+                            <div class="nav pull-left" >
+                                <span style="font-weight:900;line-height:40px;">职级管理</span>
+                            </div>
+                            <div class="nav pull-right" >
+                                <button class="btn btn-primary" type="button" id="add" onclick="add_departmentlabel()">&nbsp; 添加职级</button>
+                            </div>
+                        </div>
+                    </div>
+
+                        <div class="col-sm-12 ibox-content" style="border-top: none;padding:0px 2px;">
+                            <div id="table_div" class="full-height-scroll" style="left:0px;top:0px;">
+                                <table class="table table-hover table-striped table_thead_fixed sort-list" id="tab_Test3">
+                                    <notempty name="department_label">
+                                        <thead>
+                                        <tr colspan="6" class="tabTh" style="background-color:#f3f3f3;line-height:42px;height:42px;">
+                                            <td width="10%">&nbsp;</td>
+                                            <td width="20%">职级名称</td>
+                                            <td width="20%">操作</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <volist name="department_label" id="vo">
+                                            <tr class="controls_tr">
+                                                <td><input type="hidden" class="check_list" name="field_id[]" value="{$vo.id}"/></td>
+                                                <td>{$vo.name}</td>
+                                                <td>
+                                                    <if condition="$vo['operating'] == 0 or $vo['operating'] == 1 ">
+                                                        <a class="edit" href="javascript:void(0)" rel="{$vo.id}">
+                                                            <i class="fa fa-pencil" style="color:#707070;"></i>
+                                                        </a>
+                                                        <else />
+                                                        <i class="fa fa-pencil" style="color:#ccc;"></i>
+                                                    </if> &nbsp;
+                                                    <if condition="$vo['operating'] == 0 or $vo['operating'] == 3 ">
+                                                        <a class="delete" href="javascript:void(0)" rel="{$vo.id}">
+                                                            <i class="fa fa-times" style="color:#707070;"></i>
+                                                        </a>
+                                                        <else />
+                                                        <i class="fa fa-times" style="color:#ccc;"></i>
+                                                    </if> &nbsp;
+                                                </td>
+                                            </tr>
+
+                                        </volist>
+                                        </tbody>
+                                        <else />
+                                        <tr>
+                                            <td>{:L('EMPTY_TPL_DATA')}</td>
+                                        </tr>
+                                    </notempty>
+                                </table>
+                            </div>
+                        </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="modal inmodal fade" id="Modal" tabindex="1" style="overflow:auto; border:1px solid #000000;" role="dialog" >
+    <div class="modal-dialog modal-md" style="width:700px;">
+        <div class="modal-content" id="dep_modal">
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $(".edit").click(function(){
+            var id = $(this).attr('rel');
+            $("#dep_modal").parent().removeClass("modal-lg").addClass("modal-md");
+            var url = "{:U('user/jobrankedit','&id=')}"+id;
+            $('#Modal').modal('show');
+            $('#dep_modal').load(url);
+        });
+
+        $('.delete').click(function(){
+            var id = $(this).attr('rel');
+            swal({
+                    title: "您确定要删除该字段？",
+                    text: "删除后将无法恢复，请谨慎操作！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的，我要删除！",
+                    cancelButtonText:'让我再考虑一下…',
+                    closeOnConfirm:false,
+                    closeOnCancel:false
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        $.ajax({
+                            type:'GET',
+                            url: "{:U('user/deljobrank','id=')}"+id,
+                            async: false,
+                            success: function (data) {
+                                if (data.status == 1) {
+                                    swal("删除成功！", "您已经永久删除了信息！", "success");
+                                    location.reload();
+                                }else{
+                                    swal({
+                                        title: "操作失败！",
+                                        text:data.info,
+                                        type: "error"
+                                    })
+                                    return false;
+                                }
+                            },
+                            dataType: 'json'
+                        });
+                    } else {
+                        swal("已取消","您取消了删除操作！","error");
+                    }
+                });
+        });
+    });
+
+    /*模态框关闭或打开 先清除内容*/
+    $(".modal").on("hide.bs.modal", function() {
+        $(this).removeData("bs.modal");
+    });
+    $(".modal").on("show.bs.modal", function() {
+        $(this).removeData("bs.modal");
+    });
+
+    function add_departmentlabel(obj){
+        $("#dep_modal").parent().removeClass("modal-lg").addClass("modal-md");
+        var url = "{:U('user/jobrankadd')}";
+        $('#Modal').modal('show');
+        $('#dep_modal').load(url);
+    }
+
+</script>
+<include file="Public:footer" />

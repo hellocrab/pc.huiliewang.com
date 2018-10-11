@@ -1,0 +1,415 @@
+<include file="Public:header" />
+<link href="__PUBLIC__/css/step.css" rel="stylesheet">
+<style>
+    .a{
+        display:block;
+    }
+    .form-p{line-height: 25px;height: 25px;}
+    .form-p-owner{line-height: 25px;height: 25px;padding-top: 5px;font-size: 14px;color: #000;}
+    .product-a-line{border-left: 3px solid #19aa8d !important;}
+    .product-list:hover{background-color: #f3f3f4;}
+    .all_business{background-color: #fff;color: #00aaef;}
+    .all_business_a{background-color: #00aaef;color: #fff !important;}
+    .form-horizontal .control-label{color: #999;}
+    /*step*/
+    .nav > li.active {background: none;}
+    iframe nav{
+        display: none;
+    }
+    #right-sidebar-log{
+        width: 50% !important;
+        right: -60%;
+        background-color: #fff;
+        overflow: hidden;
+        position: fixed;
+        top: 60px;
+        z-index: 99;
+        bottom: 0;
+        box-shadow: 0px 2px 1px #888888;
+    }
+    .nav-tabs>li {
+        width: auto !important;
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="ibox-content" style="padding-top:9px;padding-bottom:4px;">
+        <include file="Public:alert" />
+        <div class="row border-bottom">
+            <div class="col-md-9">
+                <div class="all-inline">
+                    <input type="hidden" id="business_id" value="{$business_info['business_id']}" />
+                    <input type="hidden" id="module_business_id" value="{$business_info['business_id']}" />
+                    <span><img src="__PUBLIC__/img/customer_view_icon.png" style="margin-bottom:9px;" alt=""></span>
+                    <h2 class="h2-customer-name" style="font-weight:400;color: #000;">{$business_info['name']}</h2>
+                </div>
+            </div>
+            <div class="col-md-3" style="position: relative">
+                <a href="javascript:void(0)" class="btn btn-outline btn-default pull-right togglebtn">操作&nbsp;&nbsp;<i class="fa fa-angle-down"></i></a>
+                <ul class="togglediv">
+                    <li><a href="{:U('business/edit','id='.$business_info['business_id'])}" ><i class="fa fa-pencil"></i>&nbsp;&nbsp;编辑</a></li>
+                    <!--<li><a href="{:U('business/edit','id='.$business_info['business_id'])}" ><i class="fa fa-exchange"></i>&nbsp;&nbsp;转移</a></li>-->
+                    <!--<li><a href="{:U('business/edit','id='.$business_info['business_id'])}" ><i class="fa fa-bell-o"></i>&nbsp;&nbsp;添加提醒</a></li>-->
+                    <!--<li><a href="{:U('business/edit','id='.$business_info['business_id'])}" ><i class="fa fa-comments"></i>&nbsp;&nbsp;添加备注</a></li>-->
+                </ul>
+                <!--<a href="{:U('business/edit','id='.$business_info['business_id'])}" class="btn btn-outline btn-default pull-right" style="margin-right: 15px;"><i class="fa fa-pencil"></i>&nbsp;&nbsp;编辑</a> -->
+            </div>
+        </div>
+        <div class="row" style="padding-top: 20px">
+            <div class="col-md-9">
+                <div class="form-horizontal view-group " style="margin-left:-10px;">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">项目名称</label>
+                        <div class="col-sm-4">
+                            <p class="form-p color-a-edit">
+                                <span>{$business_info['name']}</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label">项目编号</label>
+                        <div class="col-sm-4">
+                            <p class="form-p">
+                                <span>{$business_info['code']}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">项目类型</label>
+                        <div class="col-sm-4">
+                            <p class="form-p color-a-edit">
+                                <if condition="$business_info['pro_type'] eq '面试快'">
+                                    <span class="label label-success">{$business_info['pro_type']}</span>
+                                    <elseif condition="$business_info['pro_type'] eq '入职快'"/>
+                                    <span class="label label-danger">{$business_info['pro_type']}</span>
+                                    <elseif condition="$business_info['pro_type'] eq '传统项目'"/>
+                                    <span class="label label-black">{$business_info['pro_type']}</span>
+                                    <else/>
+                                    <span class="label label-warning">其他</span>
+                                </if>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label">项目等级</label>
+                        <div class="col-sm-4">
+                            <p class="form-p1">
+                                <!-- 星星 -->
+                                <?php $start = $business_info['grade']+1; $end = 6-$business_info['grade']; ?>
+                                <span style="cursor:pointer;color:#D0D0D0;">
+																<for start="1" end="$start">
+																<i class="fa fa-star star-orange"></i>&nbsp;
+																</for><for start="1" end="$end">
+																<i class="fa fa-star"></i>&nbsp;
+																</for>
+															</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">所属客户</label>
+                        <div class="col-sm-4">
+                            <p class="form-p">
+                            <span>
+                                <a href="{:U('customer/view','id='.$business_info['customer_id'])}">{$business_info['customer_info']['name']}</a>
+                            </span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label">维护人</label>
+                        <div class="col-sm-4">
+                            <p class="form-p">
+                                <span>
+                                    <volist name="business_info['joiner']" id="vo">
+                                        <a class="role_info" rel="{$vo['id']}" href="javascript:void(0)" style="margin-right: 5px;">{$vo['name']}</a>
+                                    </volist>
+                                     <!--<a href="#">{$business_info['owner_role_id']}</a>-->
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">项目联系人</label>
+                        <div class="col-sm-4">
+                            <p class="form-p">
+                                <span>
+                                     <a href="{:U('contacts/view','id='.$business_info['contacts_id'])}">{$business_info['contacts_name']}</a>
+                                </span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label">创建时间</label>
+                        <div class="col-sm-4">
+                            <p class="form-p">
+                                <span>{$business_info['create_time']|date="Y-m-d h:i:m",###}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">BD</label>
+                        <div class="col-sm-4">
+                            <p class="form-p color-a-edit">
+                                <!--<span>{$business_info['name']}</span>-->
+                                <a class="role_info" rel="{$business_info['creator_role_id']}" href="javascript:void(0)">{$business_info['user_name']}</a>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label">最后更新时间</label>
+                        <div class="col-sm-4">
+                            <p class="form-p">
+                                <span>{$business_info['update_time']|date="Y-m-d h:i:m",###}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <?php $tag = 0; ?>
+                    <!--<volist name="field_list" id="vo">-->
+                    <!--<if condition="$vo['form_type'] == 'textarea'">-->
+                    <!--<if condition="$tag%2 neq 0">-->
+                    <!--</div>-->
+                    <!--</if>-->
+                    <!--<div class="form-group">-->
+                    <!--<label class="col-sm-2 control-label">{$vo.name}</label>-->
+                    <!--<div class="col-sm-10">-->
+                    <!--<p class="form-p color-a-edit">-->
+                    <!--<span style="color:#{$vo['color']}">{$business_info[$vo['field']]}</span>-->
+                    <!--</p>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<?php $tag = 0; ?>-->
+                    <!--<else/>-->
+                    <!--<if condition="$tag%2 eq 0">-->
+                    <!--<div class="form-group">-->
+                    <!--</if>-->
+                    <!--<label class="col-sm-2 control-label">{$vo.name}</label>-->
+                    <!--<div class="col-sm-4">-->
+                    <!--<p class="form-p">-->
+                    <!--<span style="color:#{$vo['color']}">-->
+                    <!--<if condition="$vo['form_type'] eq 'datetime'">-->
+                    <!--<if condition="$business_info[$vo['field']] neq '0'">{:newTimeDate($business_info[$vo['field']])}</if>-->
+                    <!--<elseif condition="$vo['form_type'] eq 'address'" />-->
+                    <!--{$business_info[$vo['field']]}-->
+                    <!--<a href="javascript:void(0);" class="getMap" rel="{$business_info[$vo['field']]}">-->
+                    <!--<span class="fa fa-map-marker" style="font-size:16px;"></span>-->
+                    <!--</a>-->
+                    <!--<elseif condition="$vo['field'] eq 'customer_id'" />-->
+                    <!--<a href="{:U('customer/view','id='.$business_info['customer_id'])}">{$business_info['customer_info']['name']}</a>-->
+                    <!--<elseif condition="$vo['field'] eq 'contacts_id'" />-->
+                    <!--<a href="{:U('contacts/view','id='.$business_info['contacts_id'])}">{$business_info['contacts_info']['name']}</a>-->
+                    <!--<else />-->
+                    <!--{$business_info[$vo['field']]}-->
+                    <!--</if>-->
+                    <!--</span>-->
+                    <!--</p>-->
+                    <!--</div>-->
+                    <!--<if condition="$tag%2 neq 0">-->
+                    <!--</div>-->
+                    <!--</if>-->
+                    <!--<?php $tag += 1; ?>-->
+                    <!--</if>-->
+                    <!--</volist>-->
+                </div>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeIn" style="padding-top:10px;">
+    <div class="ibox-content" style="padding-top:9px;padding-bottom:4px;">
+        <ul class="nav nav-pills nav-justified step step-arrow">
+            <volist name="status_list" id="vo">
+                <li <if condition = "$vo['order_id'] elt $business_info['status_order_id']">class="active"</if>>
+                <a class="business_step" rel="{$vo['status_id']}" rel1="{$vo['name']}" href="javascript:void(0);" title="点击推进项目状态">{$vo['name']}</a>
+                </li>
+            </volist>
+        </ul>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeIn" style="padding-top:10px;">
+    <div class="ibox-content" id="business_view" style="padding-top:9px;padding-bottom:4px;">
+        <div class="tabs-container ibox-content product-content" style="min-height:608px;border: none;">
+        </div>
+    </div>
+</div>
+<div style="display:none" id="dialog-editproduct" title="编辑产品">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" language="javascript" >
+    /*项目详情 加载的圈圈效果*/
+    var detail_html = '<div class="spiner-example">\
+                        <div class="sk-spinner sk-spinner-fading-circle">\
+                            <div class="sk-circle1 sk-circle"></div>\
+                            <div class="sk-circle2 sk-circle"></div>\
+                            <div class="sk-circle3 sk-circle"></div>\
+                            <div class="sk-circle4 sk-circle"></div>\
+                            <div class="sk-circle5 sk-circle"></div>\
+                            <div class="sk-circle6 sk-circle"></div>\
+                            <div class="sk-circle7 sk-circle"></div>\
+                            <div class="sk-circle8 sk-circle"></div>\
+                            <div class="sk-circle9 sk-circle"></div>\
+                            <div class="sk-circle10 sk-circle"></div>\
+                            <div class="sk-circle11 sk-circle"></div>\
+                            <div class="sk-circle12 sk-circle"></div>\
+                        </div>\
+                    </div>';
+    /*单个项目*///obj为要打开的标签页
+    product_detail();
+    function product_detail(){
+        var business_id = $('#business_id').val();
+        $('.product-content').load("{:U('business/view_ajax')}", {id: business_id});
+    }
+
+    $(".editproduct").click(function(){
+        var business_id = $(this).attr('rel');
+        $('#dialog-editproduct').dialog('open');
+        $('#dialog-editproduct').load('{:U("product/mutildialog_product","business_id=")}'+business_id);
+    });
+    /*编辑项目*/
+    $("#dialog-editproduct").dialog({
+        autoOpen: false,
+        modal: true,
+        minWidth: 850,
+        maxHeight: 400,
+        position: ["center",100],
+        buttons: {
+            "确定": function () {
+                var is_product = $('.cproduct_id').val();
+                if(is_product == 'undefined' || is_product == '0'){
+                    alert_crm('请至少选择一个产品！');
+                }else{
+                    $('#addbusiness_form').submit();
+                    $(this).dialog("close");
+                }
+            },
+            "取消": function () {
+                $(this).html('');
+                $(this).dialog("close");
+            }
+        },
+        close: function() {
+            /*关闭清空数据*/
+            $(this).empty();
+        }
+    });
+
+    //项目推进
+    $('.business_step').click(function(){
+        var business_id = $('#business_id').val();
+        var status_id = $(this).attr('rel');
+        var status_name = $(this).attr('rel1');
+        swal({
+                title: "温馨提示",
+                text: "确认要推进项目状态为"+'‘'+status_name+'’？',
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的，我要推进！",
+                cancelButtonText:'让我再考虑一下…',
+                closeOnConfirm:false,
+                closeOnCancel:false
+            },
+            function(isConfirm){
+                if (isConfirm) {
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:'{:U("business/advance","business_id=")}'+business_id+'&status_id='+status_id,
+                        async: false,
+                        success: function(data) {
+                            if(data.status == 1){
+                                swal("温馨提示！", "项目状态推进成功！", "success");
+                                location.reload();
+                            }else{
+                                swal("温馨提示！", "项目状态推进失败，请重试！", "error");
+                                return false;
+                            }
+                        }
+                    });
+                }else{
+                    swal("已取消","您取消了推进操作！","error");
+                }
+            });
+    });
+
+    $(function () {
+        $(".togglebtn").click(function () {
+            $(".togglediv").toggle();
+        })
+    })
+
+    $(document).click(function(e){
+        var con=$(".togglediv,.togglebtn");
+        //目标区域之外的地方
+        if(!con.is(e.target) && con.has(e.target).length===0){
+            $(".togglediv").hide();
+        }
+
+    })
+
+
+    //鼠标点击空白处，隐藏右侧滑出
+    //document.onmousedown=function(event){
+    //    if($(".litebox-overlay").length > 0) return;
+    //    if(event.target.className == 'right-sidebar-toggle-log') return;
+    //
+    //    var div = document.getElementById("right-sidebar-log");
+    //    var x=event.clientX;
+    //    var y=event.clientY;
+    //    var divx1 = div.offsetLeft;
+    //    var divy1 = div.offsetTop;
+    //    var divx2 = div.offsetLeft + div.offsetWidth;
+    //    var divy2 = div.offsetTop + div.offsetHeight;
+    //    if( x < divx1 || x > divx2 || y < divy1 || y > divy2){
+    //        if($("#right-sidebar-log").css('right') == '0px'){
+    //            $("#right-sidebar-log").animate({right:'-60%'}, 400);
+    //            //$('#is_show').val('0');
+    //        }
+    //    }
+    //}
+
+    //日志详情弹出
+    $(document).on('click','.right-sidebar-toggle-log',function(){
+
+        var log_id = $(this).attr('rel');
+        // var is_show = document.getElementById("is_show").value;
+        $(".emoji_container").remove();
+
+
+        $(".check_all").attr("checked",false);
+        $('input[name="log_id[]"]').each(function(){
+            if ($(this).val() == log_id && $(this).is(":checked") == false) {
+                $(this).click();
+            } else if ($(this).val() != log_id && $(this).is(":checked")){
+                $(this).click();
+            }
+        });
+
+        if($("#right-sidebar-log").css('right') != '0px'){
+            $("#right-sidebar-log").animate({right:'0px'}, 600);
+        }
+
+        $('#log-content').html(detail_html);
+        $('#sidebar-container').load("{:U('log/viewAjax','log_id=')}"+log_id);
+
+    });
+
+
+
+</script>
+<include file="Public:footer" />
+
+
+<div id="right-sidebar-log">
+    <!--the css for jquery.mCustomScrollbar-->
+    <link rel="stylesheet" href="__PUBLIC__/emoji/css/jquery.mCustomScrollbar.min.css"/>
+    <!--the css for this plugin-->
+    <link rel="stylesheet" href="__PUBLIC__/emoji/css/jquery.emoji.css"/>
+    <!--(Optional) the js for jquery.mCustomScrollbar's addon-->
+    <script src="__PUBLIC__/emoji/js/jquery.mousewheel-3.0.6.min.js"></script>
+    <!--the js for jquery.mCustomScrollbar-->
+    <script src="__PUBLIC__/emoji/js/jquery.mCustomScrollbar.min.js"></script>
+    <!--the js for this plugin-->
+    <script src="__PUBLIC__/emoji/js/jquery.emoji.js"></script>
+
+    <div class="sidebar-container" id="sidebar-container">
+
+    </div>
+</div>

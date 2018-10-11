@@ -1,0 +1,52 @@
+<style>
+	.dialog_table >tbody>tr>td {
+		border:none;
+	}
+</style>
+<form class="form-horizontal" id="dialog_form1" action="{:U('Log/add_fine_project')}" method="post">
+	<table class="table dialog_table" style="border:none;">
+		<input type='hidden' name="module" id="dialog_module" <present name="module">value="{$module}"</present>/>
+		<input type='hidden' name="id" id="dialog_module_id" rel="{$module_name}" value="{$model_id}"/>
+		<input type="hidden" name="r" value="{$r}" />
+
+
+			<tr >
+				<td class="tdleft">候选人名称：</td>
+				<td>
+					{$user['name']}
+					<input type="hidden" name="resume_id" value="{$user['eid']}" />
+				</td>
+
+			</tr>
+		<tr>
+			<td class="tdleft">添加项目：</td>
+			<td>
+				<select id="replay_list" class="form-control select2" name="project" style="width: 460px;">
+					<option value="">--请选择--</option>
+					<volist name="project" id="vo">
+						<option value="{$vo['business_id']}" rel="{$vo['business_id']}">{$vo['name']}</option>
+					</volist>
+				</select>
+                <!--<input type="hidden" class="form-control" id="project" name="project" style="width: 460px;">-->
+                <!--<input type="text" class="form-control" id="project_sou" style="width: 460px;">-->
+                <!--<div class="list_pro" style="display: none;">-->
+                    <!--<volist name="project" id="vo">-->
+                        <!--<p class="pro_item" data-value="{$vo['business_id']}" rel="{$vo['business_id']}">{$vo['name']}</p>-->
+                    <!--</volist>-->
+                <!--</div>-->
+
+			</td>
+		</tr>
+	</table>
+</form>
+<script>
+
+$(function () {
+   
+    $(".select2").select2();
+
+
+
+})
+
+</script>

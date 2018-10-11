@@ -1,0 +1,169 @@
+{:W('Record')}
+	</div>
+</div>
+<include file="Public:feedback" />
+
+<script src="__PUBLIC__/js/animate/index.js"></script>
+
+<script src="__PUBLIC__/js/animate/notification.js"></script>
+<!-- layer -->
+<script src="__PUBLIC__/js/layer/layer.js"></script>
+
+<script src="__PUBLIC__/js/call/call.js"></script>
+<script type='text/javascript'>
+
+$(document).ready(function(){
+
+//    var tid = 0;
+//    $( ".projectname" ).hover( function() {
+//        tid = setTimeout( function() {
+//            //当触发hover就开始自动在1秒后执行相应代码
+//            var href=$(this).attr("href");
+//            mouseoveriframe("1200","1000",href);
+//        }, 1000 );
+//    }, function() {
+//        clearTimeout( tid );//当在1秒内退出了hover事件就取消计时代码
+//    } );
+
+	var timer;
+    $(".projectname").on("mouseenter",function () {
+        var href=$(this).attr("href1");
+        timer=setTimeout(function () {
+            mouseoveriframe("1200","1000",href);
+        },1000)
+	});
+    $(".projectname").on("mouseleave",function (){
+        clearTimeout(timer);
+	})
+
+
+
+    /*复选框选择效果*/
+    if($('.check_all').size() > 0){
+        var icheck_num = 0;
+        var all_check_num = 0;
+        /*选择所有and取消所有*/
+        $(".check_all").change(function(){
+            $("input[class='check_list']").prop('checked', $(this).prop("checked"));//选中
+            // if($(".check_all").prop("checked")){
+            if($(this).is(":checked")){ //jQuery方式判断
+                $(".single_btn").hide().children().each(function(){
+                    $(this).attr('rel','');
+                })
+                $('#title-hide').show();
+                $('#title-show').hide();
+                all_check_num = $("input[class='check_list']:checked").length;
+            }else{
+                $('#title-hide').hide();
+                $('#title-show').show();
+                all_check_num = 0;
+            }
+
+            if(document.getElementById("oDivL_tab_Test3")){
+                if ($(".check_all:checked").size()>0 && icheck_num % 2 == 0) {
+                    icheck_num = all_check_num/2;
+                    $("#icheck_num").text(all_check_num/2);
+                } else {
+                    icheck_num = all_check_num;
+                    $("#icheck_num").text(all_check_num);
+                }
+            } else {
+                icheck_num = all_check_num;
+                // all_check_num = $("input[class='check_list']:checked").length;
+                // icheck_num = all_check_num;
+                $("#icheck_num").text(icheck_num);
+            }
+        });
+        /*让隐藏标签显示*/
+        $('.check_list').click(function(){
+            if($(this).prop("checked")){
+                icheck_num++;
+            }else{
+                icheck_num--;
+            }
+            $("#icheck_num").text(icheck_num);
+            //处理单选时才有的操作
+            if (icheck_num == 1) {
+                $(".single_btn").show().children().each(function(){
+                    $(this).attr('rel',$("input.check_list:checked").val());
+                    $('#log_customer').attr('rel1',$("input.check_list:checked").attr('rel'));
+                    $('#add_calllist').attr('rel',$("input.check_list:checked").val());
+                    $('#favorite').attr('rel',$("input.check_list:checked").val());
+
+					$('#log_business').attr('rel',$("input.check_list:checked").attr('rel'));
+                    $('.business_btn').children().attr('rel1',$("input.check_list:checked").attr('rel'));
+
+                    $('#examine_type').val($("input.check_list:checked").attr('rel'));
+                    if($("input.check_list:checked").attr('rel1') == 1){
+                        $('#to_top_span').html('&nbsp;取消置顶');
+                        $('#to_check').html('<input type="hidden" id="is_checked" value="2">&nbsp;撤销');
+                        $('#user_span').html('<a id="delete" href="javascript:void(0)" onclick="del_user(2)"><i class="fa fa-check"></i>&nbsp;启用账号</a>');
+                    }else{
+                        $('#to_top_span').html('&nbsp;置顶');
+                        var rel_name = $("input.check_list:checked").attr('rel3');
+                        $('#to_check').html('<input type="hidden" id="is_checked" rel="'+rel_name+'" value="1">&nbsp;审核');
+                    }
+                })
+            } else {
+                var id_array = new Array();
+                $(".check_list:checked").each(function() {
+                    id_array.push($(this).val());
+                });
+                var ids=id_array.join(",");
+                $('#add_calllist').attr('rel',ids);
+                $(".single_btn").hide().children().each(function(){
+                    $(this).attr('rel','');
+                })
+            }
+            if(icheck_num <= 0){
+                $('#title-hide').hide();
+                $('#title-show').show();
+            }else{
+                $('#title-hide').show();
+                $('#title-show').hide();
+            }
+        });
+        /*点插 取消所有选中*/
+        $('#back-show').click(function(){
+            icheck_num = 0;
+            $("#icheck_num").text(icheck_num);
+            $('#title-hide').hide();
+            $('#title-show').show();
+            $(".check_list,.check_all").attr("checked",false);
+        });
+    }
+});
+
+$(function () {
+
+    $("iframe").find("nav").hide();
+
+})
+
+function Se(id) {
+    return document.getElementById(id)
+}
+window.onload = function() {
+    var oBox =  Se("box"),
+        oBottom = Se("right-sidebar-log"),
+        oLine = Se("linetoggle");
+
+    $("body").on("mousedown","#linetoggle",function (e) {
+        var Cwide=$("#right-sidebar-log").width();
+        var disX = (e || event).clientX;
+        document.onmousemove = function(e) {
+            var Cx=(e || event).clientX;
+            var MoveX = disX - Cx;
+            oBottom.style.width = Cwide + MoveX + "px";
+            return false
+        };
+        document.onmouseup = function() {
+            document.onmousemove = null;
+            document.onmouseup = null;
+        };
+    });
+};
+
+</script>
+</body>
+</html>
