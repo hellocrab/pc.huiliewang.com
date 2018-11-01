@@ -65,8 +65,6 @@
 	        0% {color:#FF6D57;}
 	        100%{color:#93A6B5;}
 		}
-
-
 	</style>
 
 
@@ -176,19 +174,15 @@ $(function(){
 	                </li>
 	                <?php endif; ?>
 
-
-
-
 					<li>
 	                	<a data-toggle="tooltip" data-placement="right" data-original-title="财务发票" <?php if(($module_name == 'invoice' || $module_name == 'finance')): ?>class="active"<?php endif; ?> href="<?php echo U('finance/index');?>"><i class="fa fa-credit-card"></i><span class="menu_code">财务</span></a>
 	                </li>
 	              
 	                <?php if (in_array('analytics',$new_module_list)): ?>
 					<li>
-	                	<a data-toggle="tooltip" data-placement="right" data-original-title="报表分析" <?php if($action_name == 'collection' || $action_name == 'analytics' || $action_name == 'record'|| $action_name == 'projecttrend'|| $action_name == 'resume'|| $action_name == 'project'|| $action_name == 'customer'|| ($action_name == 'department' && $module_name == 'leads')|| $action_name == 'business'|| $action_name == 'achievement'|| $action_name == 'weektrend'|| $action_name == 'monthtrend'): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('leads','analytics')): ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php elseif(checkPerByAction('customer','analytics')): ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php elseif(checkPerByAction('business','analytics')): ?>href="<?php echo U('business/analytics','content_id=1');?>"<?php elseif(checkPerByAction('finance','analytics')): ?>href="<?php echo U('finance/analytics','content_id=1');?>"<?php elseif(checkPerByAction('product','analytics')): ?>href="<?php echo U('product/analytics','content_id=1');?>"<?php elseif(checkPerByAction('log','analytics')): ?>href="<?php echo U('log/analytics','content_id=1');?>"<?php else: ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php endif; ?> ><i class="fa fa-area-chart"></i><span class="menu_code">报表</span></a>
+	                	<a data-toggle="tooltip" data-placement="right" data-original-title="报表分析" <?php if($action_name == 'collection' || $action_name == 'analytics' || $action_name == 'record'|| $action_name == 'projecttrend'|| $action_name == 'resume'|| $action_name == 'project'|| $action_name == 'customer'|| ($action_name == 'department' && $module_name == 'leads')|| $action_name == 'business'|| $action_name == 'achievement'|| $action_name == 'weektrend'|| $action_name == 'monthtrend' || $action_name == 'yieldrate' || $action_name == 'departmentrate'): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('leads','analytics')): ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php elseif(checkPerByAction('customer','analytics')): ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php elseif(checkPerByAction('business','analytics')): ?>href="<?php echo U('business/analytics','content_id=1');?>"<?php elseif(checkPerByAction('finance','analytics')): ?>href="<?php echo U('finance/analytics','content_id=1');?>"<?php elseif(checkPerByAction('product','analytics')): ?>href="<?php echo U('product/analytics','content_id=1');?>"<?php elseif(checkPerByAction('log','analytics')): ?>href="<?php echo U('log/analytics','content_id=1');?>"<?php else: ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php endif; ?> ><i class="fa fa-area-chart"></i><span class="menu_code">报表</span></a>
 	                </li>
 	                <?php endif; ?>
-
 
 					<li>
 						<a data-toggle="tooltip" data-placement="right" data-original-title="职级升降" <?php if(($module_name == 'integral')): ?>class="active"<?php endif; ?> href="<?php echo U('integral/index');?>"><i class="fa fa-leaf"></i><span class="menu_code">职级</span></a>
@@ -196,11 +190,17 @@ $(function(){
 					<li>
 						<a data-toggle="tooltip" data-placement="right" data-original-title="培训管理" <?php if(($module_name == 'train' || $module_name == 'teacher')): ?>class="active"<?php endif; ?> href="<?php echo U('train/index');?>"><i class="fa fa-graduation-cap" style="width: 14px;"></i><span class="menu_code">培训</span></a>
 					</li>
+					<?php if (in_array('log',$new_module_list)): ?>
+					<li>
+						<a data-toggle="tooltip" data-placement="right" data-original-title="背景调查" <?php if($module_name == 'log' && $action_name != 'analytics' || ($module_name == 'examine' && $action_name != 'analytics') || $module_name == 'announcement' || ($module_name == 'knowledge' && $action_name != 'category') || $module_name == 'sign' || $module_name == 'event' || $module_name == 'background' || ($module_name == 'kaoqin' && $action_name == 'index')): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('background','index')): ?>href="<?php echo U('background/index');?>"<?php elseif(checkPerByAction('examine','index')): ?>href="<?php echo U('examine/index');?>"<?php elseif(checkPerByAction('knowledge','index')): ?>href="<?php echo U('knowledge/index');?>"<?php elseif(checkPerByAction('announcement','index')): ?>href="<?php echo U('announcement/index');?>"<?php elseif(checkPerByAction('sign','index')): ?>href="<?php echo U('sign/index');?>"<?php elseif(checkPerByAction('background','index')): ?>href="<?php echo U('background/index');?>"<?php elseif(checkPerByAction('background','index')): ?>href="<?php echo U('background/index');?>"<?php endif; ?>><i class="fa fa-user"></i><span class="menu_code">背调</span></a>
+					</li>
+					<?php endif; ?>
 	                <?php if (in_array('log',$new_module_list)): ?>
 					<li>
 	                	<a data-toggle="tooltip" data-placement="right" data-original-title="日程" <?php if($module_name == 'log' && $action_name != 'analytics' || ($module_name == 'examine' && $action_name != 'analytics') || $module_name == 'announcement' || ($module_name == 'knowledge' && $action_name != 'category') || $module_name == 'sign' || $module_name == 'event' || $module_name == 'task' || ($module_name == 'kaoqin' && $action_name == 'index')): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('event','index')): ?>href="<?php echo U('event/index');?>"<?php elseif(checkPerByAction('examine','index')): ?>href="<?php echo U('examine/index');?>"<?php elseif(checkPerByAction('knowledge','index')): ?>href="<?php echo U('knowledge/index');?>"<?php elseif(checkPerByAction('announcement','index')): ?>href="<?php echo U('announcement/index');?>"<?php elseif(checkPerByAction('sign','index')): ?>href="<?php echo U('sign/index');?>"<?php elseif(checkPerByAction('event','index')): ?>href="<?php echo U('event/index');?>"<?php elseif(checkPerByAction('task','index')): ?>href="<?php echo U('task/index');?>"<?php endif; ?>><i class="fa fa-desktop"></i><span class="menu_code">日程</span></a>
 	                </li>
 	                <?php endif; ?>
+
 	                <!--<?php if (in_array('contacts',$new_module_list)): ?>-->
 	                <!--<li>-->
 	                	<!--<a data-toggle="tooltip" data-placement="right" data-original-title="通讯录" <?php if($module_name == 'user' && ($action_name == 'contacts' || $action_name == 'view')): ?>class="active"<?php endif; ?> href="<?php echo U('user/contacts');?>" ><i class="fa fa-phone-square"></i></a>-->
@@ -211,7 +211,6 @@ $(function(){
 	                	<!--<a data-toggle="tooltip" data-placement="right" data-original-title="营销" <?php if($action_name == 'sendsms' || $action_name == 'smsrecord' || $action_name == 'sendemail' || $module_name == 'email' || $module_name == 'sms'): ?>class="active"<?php endif; ?> href="<?php echo U('setting/sendsms');?>"><i class="fa fa-envelope"></i></a>-->
 	                <!--</li>-->
 	                <!--<?php endif; ?>-->
-					<!---->
 
 	                <?php if (in_array('setting',$new_module_list)): ?>
 	                <li>
@@ -246,6 +245,9 @@ $(function(){
 							<li <?php if($_GET['via'] == internet): ?>class="active"<?php endif; ?> > <a href="<?php echo U('integral/internet','via=internet');?>"> <span class="fa fa-group" style="display:inline"></span>&nbsp;&nbsp;互联网+</a></li>
 						<?php elseif($module_name == 'contract' || $module_name == 'order'): ?>
 							<li <?php if($module_name == 'contract'): ?>class="active"<?php endif; ?>><a href="<?php echo U('contract/index');?>"><span class="fa fa-list-alt" style="display:inline"></span>&nbsp;&nbsp;合同</a></li>
+						<?php elseif($module_name == 'background' || $module_name == 'index'): ?>
+							<li <?php if($action_name == 'index'||$action_name == 'add'||$action_name == 'add_more'||$action_name == 'edit'): ?>class="active"<?php endif; ?> ><a href="<?php echo U('background/index');?>"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对内背景调查</a></li>
+							<li <?php if($action_name == 'index_external'||$action_name == 'add_external'||$action_name == 'add_more_external'): ?>class="active"<?php endif; ?> ><a href="<?php echo U('background/index_external');?>"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对外背景调查</a></li>
 						<?php
  elseif($module_name == 'train' || $module_name == 'teacher'): ?>
 						<li <?php if($module_name == 'finance'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index');?>"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;课程管理</a></li>
@@ -1120,7 +1122,7 @@ function mouseoveriframe(width,zindex,url) {
                                                                     <!-- 星星 -->
                                                                     <?php $start = $vo['grade']+1; $end = 6-$vo['grade']; ?>
                                                                     <span style="cursor:pointer;color:#D0D0D0;">
-                                                                                <?php $__FOR_START_1258119233__=1;$__FOR_END_1258119233__=$start;for($i=$__FOR_START_1258119233__;$i < $__FOR_END_1258119233__;$i+=1){ ?><i class="fa fa-star star-orange"></i>&nbsp;<?php } $__FOR_START_1501142388__=1;$__FOR_END_1501142388__=$end;for($i=$__FOR_START_1501142388__;$i < $__FOR_END_1501142388__;$i+=1){ ?><i class="fa fa-star"></i>&nbsp;<?php } ?>
+                                                                                <?php $__FOR_START_11698__=1;$__FOR_END_11698__=$start;for($i=$__FOR_START_11698__;$i < $__FOR_END_11698__;$i+=1){ ?><i class="fa fa-star star-orange"></i>&nbsp;<?php } $__FOR_START_24835__=1;$__FOR_END_24835__=$end;for($i=$__FOR_START_24835__;$i < $__FOR_END_24835__;$i+=1){ ?><i class="fa fa-star"></i>&nbsp;<?php } ?>
                                                                             </span>
                                                                     <!--<a href="javascript:void(0);" class="fa fa-pencil pencil-size field-edit hide"></a>-->
                                                                 </p>
