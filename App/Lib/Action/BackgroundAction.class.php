@@ -893,4 +893,5 @@ class BackgroundAction extends Action
         }
         return $data;
     }
+
 }
