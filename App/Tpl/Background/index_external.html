@@ -384,6 +384,7 @@
                                                        removeobj(body.find('.witness'));
                                                        for(let j=0;j<data['work'][i]['witness'].length;j++){
                                                            var witness =  body.find('.witness').eq(0).clone(true);
+                                                           witness.css('left','0');
                                                            var witnessData = data['work'][i]['witness'];
                                                            witness.children('span').text('证明人 '+(j+1));
                                                            witness.children('span').attr({'data-id':witnessData[j]['Id'],'data-type':'witness'});
