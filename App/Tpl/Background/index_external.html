@@ -284,26 +284,6 @@
                                     </table>
                                 </div>
                                 <script>
-                                    function timestampToTime(timestamp) {
-                                        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                                        var Y = date.getFullYear() + '-';
-                                        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-                                        var D = date.getDate() + ' ';
-                                        var h = date.getHours() + ':';
-                                        var m = date.getMinutes() + ':';
-                                        var s = date.getSeconds();
-                                        return Y+M+D+h+m+s;
-                                    }
-                                    timestampToTime(1403058804);
-                                    function shouqi(data) {
-                                        var count = $(data).parent().parent().children(".bdcount").children("span").text();
-                                        var tr = $(data).parent().parent();
-                                        for(let i=0;i<count;i++){
-                                            tr.next().remove();
-                                        }
-                                        $(data).prev().css('display','inline');
-                                        $(data).remove();
-                                    }
                                     $(document).ready(function () {
                                         $(".hxr_detail").on("click",function () {
                                             var msg = {"Id":$(this).children('span').attr('data-id')};
@@ -314,17 +294,21 @@
                                                data:msg,
                                                success:function (data) {
                                                    data = JSON.parse(data);
-                                                   console.log(data);
                                                    var idnumber = data['bg']['idnumber'];
                                                    var birthday = idnumber.substr(6,8);
                                                    var sex = idnumber.substr(16,1)%2==0?'女':'男';
+                                                   $('.sex-width').children("span").text(sex);
                                                    var msgdetail = $('.msg-detail');
+                                                   $(msgdetail).find('input[type="text"]').attr('readonly','readonly');
+                                                   $(msgdetail).find('input[type="text"]').css('border','none');
                                                    msgdetail.find('.name').text(data['bg']['name']);
                                                    msgdetail.find('.industry').text(data['bg']['industry']);
                                                    msgdetail.find('.jobs').text(data['bg']['jobs']);
                                                    msgdetail.find('.photo').children().eq(0).attr("src",data['bg']['id_pic_src']);
                                                    var body  = $('.bodyshow');
+                                                   //基本信息
                                                    body.find('.bg').find('img').attr('src','Uploads'+data['bg']['id_pic_src']);
+                                                   body.find('.bg').children('span').attr({'data-id':data['bg']['Id'],'data-type':'bg'});
                                                    var bginputs = body.find('.bg').find('input[type="text"]');
                                                    bginputs.eq(0).val(data['bg']['name']);
                                                    bginputs.eq(1).val(sex);
@@ -335,6 +319,7 @@
                                                    for(let i=0;i<data['edu'].length;i++){
                                                        var  edu  = body.find('.edu').eq(0).clone(true);
                                                        edu.children("span").text("学历证书 "+(i+1));
+                                                       edu.children("span").attr({'data-id':data['edu'][i]['Id'],'data-type':'edu'});
                                                        var input = edu.find('.lable-input');
                                                        input.find('i').attr("class","");
                                                        input.eq(0).children('input[type="text"]').val(data['edu'][i]['school']+'毕业证');
@@ -362,6 +347,7 @@
                                                    for(let i=0;i<data['qc'].length;i++){
                                                        var  qc  = body.find('.qc').eq(0).clone(true);
                                                        qc.children("span").text("资格证书 "+(i+1));
+                                                       qc.children("span").attr({'data-id':data['qc'][i]['Id'],'data-type':'qc'});
                                                        var input = qc.find('.lable-input');
                                                        input.find('i').attr("class","");
                                                        input.eq(1).children('input[type="text"]').val(data['qc'][i]['qc_type']);
@@ -382,7 +368,8 @@
                                                    removeobj(body.find('.work'));
                                                    for(let i=0;i<data['work'].length;i++){
                                                        var  work  = body.find('.work').eq(0).clone(true);
-                                                       work.children("span").text("工作经历 "+(i+1));
+                                                       work.children("span").eq(0).text("工作经历 "+(i+1));
+                                                       work.find("span").eq(1).attr({'data-id':data['work'][i]['Id'],'data-type':'work'});
                                                        var input = work.children('div').eq(0).find('.lable-input');
                                                        input.find('i').attr("class","");
                                                        input.eq(0).children('input[type="text"]').val(data['work'][i]['company']);
@@ -399,24 +386,23 @@
                                                            var witness =  body.find('.witness').eq(0).clone(true);
                                                            var witnessData = data['work'][i]['witness'];
                                                            witness.children('span').text('证明人 '+(j+1));
-                                                           witness.children('span').attr('data-id',witnessData['w_id'])
+                                                           witness.children('span').attr({'data-id':witnessData[j]['Id'],'data-type':'witness'});
                                                            var witInput = witness.find('input[type="text"]');
-                                                           witInput.eq(0).val(witnessData['witness']);
-                                                           witInput.eq(1).val(witnessData['position']);
-                                                           witInput.eq(2).val(witnessData['tel']);
-                                                           witInput.eq(3).val(witnessData['relationship']);
-                                                           witInput.eq(4).val(witnessData['method']);
+                                                           witInput.eq(0).val(witnessData[j]['witness']);
+                                                           witInput.eq(1).val(witnessData[j]['position']);
+                                                           witInput.eq(2).val(witnessData[j]['tel']);
+                                                           witInput.eq(3).val(witnessData[j]['relationship']);
+                                                           witInput.eq(4).val(witnessData[j]['method']);
                                                           /* witInput.eq(5).val(witnessData['witness']);*/
-                                                           witInput.eq(5).val(witnessData['performance']);
-                                                           witInput.eq(6).val(witnessData['badrecord']);
-                                                           witInput.eq(7).val(witnessData['reason']);
-                                                           witInput.eq(8).val(witnessData['train']);
-                                                           witInput.eq(9).val(witnessData['compete']);
+                                                           witInput.eq(5).val(witnessData[j]['performance']);
+                                                           witInput.eq(6).val(witnessData[j]['badrecord']);
+                                                           witInput.eq(7).val(witnessData[j]['reason']);
+                                                           witInput.eq(8).val(witnessData[j]['train']);
+                                                           witInput.eq(9).val(witnessData[j]['compete']);
                                                            $(witness).appendTo(body.find('.witness-div'));
                                                        }
                                                    }
                                                    body.find('.work').eq(0).remove();
-
                                                    msgdetail.fadeIn();
                                                }
                                            })

@@ -556,7 +556,7 @@ class BackgroundAction extends Action
             $id = I('post.');
             if((int)$id['Id']){
                 $exBackground = M('external_background');
-                $bg = $exBackground->field('name,jobs,tocompany,industry,id_pic_src,bz,idnumber')->where($id)->find();
+                $bg = $exBackground->field('Id,name,jobs,tocompany,industry,id_pic_src,bz,idnumber')->where($id)->find();
                 $exBackgroundEdu = M('external_background_edu');
                 $edu = $exBackgroundEdu->where('c_id ='.$id['Id'])->field('c_id',true)->select();
                 $exBackgroundQc = M('external_background_qc');
@@ -565,7 +565,7 @@ class BackgroundAction extends Action
                 $work = $exBackgroundWork->where('c_id ='.$id['Id'])->field('c_id',true)->select();
                 $exBackgroundWitness = M('external_background_witness');
                 foreach ($work as $k => $v){
-                    $witness = $exBackgroundWitness->where('w_id ='.$v['Id'])->field('Id',true)->select();
+                    $witness = $exBackgroundWitness->where('w_id ='.$v['Id'])->select();
                     $work[$k]['witness'] = $witness;
                 }
                 $data['bg'] = $bg;
@@ -894,4 +894,106 @@ class BackgroundAction extends Action
         return $data;
     }
 
+    //单条修改
+    function save_one(){
+        if(IS_POST){
+            $data = I('post.');
+            $dataList = $data['data'];
+            $where['Id'] = $data['Id'];
+            switch ($data['type']){
+                case 'bg':
+                    unset($map);
+                    $map['name'] = $dataList[0];
+                    $map['idnumber'] = $dataList[5];
+                    $result = M('external_background')->where($where)->save($map);
+                    if($result){
+                        echo 'success';
+                    }else{
+                        echo $result;
+                    }
+                    break;
+                case 'edu':
+                    unset($map);
+                    $map['school'] = $dataList[1];
+                    $map['school_add'] = 'sure';
+                    $map['edu_type'] = $dataList[2];
+                    $map['edu_type_add'] = 'sure';
+                    $map['major'] =  $dataList[3];
+                    $map['major_add'] =  'sure';
+                    $map['enter_time'] = $dataList[6];
+                    $map['enter_time_add'] = 'sure';
+                    $map['out_time'] = $dataList[7];
+                    $map['out_time_add'] = 'sure';
+                    $map['edu_num'] =  $dataList[4];
+                    $map['edu_num_add'] =  'sure';
+                    $map['msgbelong'] =  $dataList[5];
+                    $map['msgbelong_add'] =  'sure';
+                    $result = M('external_background_edu')->where($where)->save($map);
+                    if($result){
+                        echo 'success';
+                    }else{
+                        echo $result;
+                    }
+                    break;
+                case 'qc':
+                    unset($map);
+                    $map['qc_type']= $dataList[1];
+                    $map['qc_num']= $dataList[2];
+                    $map['qc_get_time']= $dataList[3];
+                    $map['qc_out_time']= $dataList[4];
+                    $map['qc_source']= $dataList[5];
+                    $map['qc_type_add']= 'sure';
+                    $map['qc_num_add']= 'sure';
+                    $map['qc_get_time_add']= 'sure';
+                    $map['qc_out_time_add']= 'sure';
+                    $map['qc_source_add']= 'sure';
+                    $result = M('external_background_qc')->where($where)->save($map);
+                    if($result){
+                        echo 'success';
+                    }else{
+                        echo $result;
+                    }
+                    break;
+                case 'work':
+                    unset($map);
+                    $map['company'] = $dataList[0];
+                    $map['enter_time'] = $dataList[1];
+                    $map['out_time'] = $dataList[2];
+                    $map['position'] = $dataList[3];
+                    $map['company_add'] = 'sure';
+                    $map['enter_time_add'] = 'sure';
+                    $map['out_time_add'] = 'sure';
+                    $map['position_add'] = 'sure';
+                    $result = M('external_background_work')->where($where)->save($map);
+                    if($result){
+                        echo 'success';
+                    }else{
+                        echo $result;
+                    }
+                    break;
+                case 'witness':
+                    unset($map);
+                    $map['witness'] = $dataList[0];
+                    $map['position'] = $dataList[1];
+                    $map['tel'] = $dataList[2];
+                    $map['relationship'] = $dataList[3];
+                    $map['method'] = $dataList[4];
+                    $map['performance'] = $dataList[5];
+                    $map['badrecord'] = $dataList[6];
+                    $map['reason'] = $dataList[7];
+                    $map['train'] = $dataList[8];
+                    $map['compete'] = $dataList[9];
+                    $result = M('external_background_witness')->where($where)->save($map);
+                    if($result){
+                        echo 'success';
+                    }else{
+                        echo $result;
+                    }
+                    break;
+                default:
+                    echo 'error';
+                    break;
+            }
+        }
+    }
 }

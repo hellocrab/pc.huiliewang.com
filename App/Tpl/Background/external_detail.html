@@ -3,6 +3,9 @@
     input{
         vertical-align: inherit!important;
     }
+    input[type='text']{
+        padding-left: 5px;
+    }
     .msgbody{
         width: 1217px;
         height: 700px;
@@ -209,6 +212,8 @@
         margin-top: 34px;
         width: 210px;
         float: left;
+        position: relative;
+        height: 395px;
     }
     .work-div>div:nth-child(3){
         width: 850px;
@@ -257,7 +262,7 @@
     }
     .work-div>img{
         position: absolute;
-        top:220px;
+        top:240px;
         cursor: pointer;
         display: none;
     }
@@ -297,6 +302,7 @@
         position: relative;
         background-image: url("./Public/img/true.png");
         background-size: 15px 15px;
+        left: 5px;
     }
     .i-wrong:after{
         content: '';
@@ -306,6 +312,7 @@
         position: relative;
         background-image: url("./Public/img/wrong.png");
         background-size: 15px 15px;
+        left: 5px;
     }
     .i-notsure:after{
         content: '';
@@ -315,6 +322,7 @@
         position: relative;
         background-image: url("./Public/img/notsure.png");
         background-size: 15px 15px;
+        left: 5px;
     }
 </style>
 <div class="msgbody">
@@ -359,8 +367,8 @@
                 <span>基本信息</span>
                 <div class="lable-input"><label>姓名：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                 <div class="lable-input"><label>性别：</label><input type="text" readonly="readonly" value="男"></div>
-                <div class="lable-input"><label>出生时间：</label><input type="text" readonly="readonly" value=""></div>
-                <div class="lable-input"><label>联系电话：</label><input type="text" readonly="readonly" value=""></div>
+                <div class="lable-input"><label>出生时间：</label><input type="text" readonly="readonly" value="" style="width: 150px"></div>
+                <div class="lable-input"><label>联系电话：</label><input type="text" readonly="readonly" value="" style="width: 150px"></div>
                 <div class="lable-input"><label>邮箱：</label><input type="text" readonly="readonly" value=""></div>
                 <div class="lable-input"><label>身份证号：</label><input type="text" readonly="readonly" value="500382199801263573"></div>
                 <img class="id-card-img" src="Public/img/idcard.jpg">
@@ -403,10 +411,12 @@
             <div class="work-div work">
                 <span>工作经历</span>
                 <div>
-                    <div class="lable-input"><label>公司名称：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
+                    <span style="display: none"></span>
+                    <div class="lable-input"><label>公司名称：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 195px"><i class="i-true"></i></div>
                     <div class="lable-input"><label>入职时间：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
                     <div class="lable-input"><label>离职时间：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
                     <div class="lable-input"><label>任职职位：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
+                    <input type="button" class="msg-edit" value="修改" style="top: -410px;left: 170px;">
                 </div>
                 <div class="witness-div">
                     <div class="witness">
@@ -420,51 +430,10 @@
                         <div class="lable-input"><label>候选人在职期间工作情况：</label><input type="text" readonly="readonly" value="Steve Jobs"style="width: 260px;display: block"></div>
                         <div class="lable-input"><label>是否有违规违纪不良记录：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 260px;display: block"> </div>
                         <div class="lable-input"><label>离职原因：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>有否培训协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>有否竞争协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
+                        <div class="lable-input"><label>有否培训协议：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 100px"></div>
+                        <div class="lable-input"><label>有否竞争协议：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 100px"></div>
+                        <input type="button" class="msg-edit" value="修改">
                     </div>
-                    <!--<div class="witness">
-                        <span>证明人2：</span>
-                        <div class="lable-input"><label>姓名：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>岗位：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>电话：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>与候选人关系：</label><input type="text" readonly="readonly" value="下属" style="width: 150px" ></div>
-                        <div class="lable-input"><label>调查方式：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>证明人核实情况：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 143px"></div>
-                        <div class="lable-input"><label>候选人在职期间工作情况：</label><input type="text" readonly="readonly" value="Steve Jobs"style="width: 260px;display: block"></div>
-                        <div class="lable-input"><label>是否有违规违纪不良记录：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 122px"> </div>
-                        <div class="lable-input"><label>离职原因：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>有否培训协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>有否竞争协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                    </div>
-                    <div class="witness">
-                        <span>证明人3：</span>
-                        <div class="lable-input"><label>姓名：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>岗位：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>电话：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>与候选人关系：</label><input type="text" readonly="readonly" value="下属" style="width: 150px" ></div>
-                        <div class="lable-input"><label>调查方式：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>证明人核实情况：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 143px"></div>
-                        <div class="lable-input"><label>候选人在职期间工作情况：</label><input type="text" readonly="readonly" value="Steve Jobs"style="width: 260px;display: block"></div>
-                        <div class="lable-input"><label>是否有违规违纪不良记录：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 122px"> </div>
-                        <div class="lable-input"><label>离职原因：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>有否培训协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>有否竞争协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                    </div>
-                    <div class="witness">
-                        <span>证明人4：</span>
-                        <div class="lable-input"><label>姓名：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>岗位：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>电话：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>与候选人关系：</label><input type="text" readonly="readonly" value="下属" style="width: 150px" ></div>
-                        <div class="lable-input"><label>调查方式：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>证明人核实情况：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 143px"></div>
-                        <div class="lable-input"><label>候选人在职期间工作情况：</label><input type="text" readonly="readonly" value="Steve Jobs"style="width: 260px;display: block"></div>
-                        <div class="lable-input"><label>是否有违规违纪不良记录：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 122px"> </div>
-                        <div class="lable-input"><label>离职原因：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>有否培训协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>有否竞争协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                    </div>-->
                 </div>
                 <img class="jt" src="Public/img/left.png" alt="left">
                 <img class="jt" src="Public/img/right.png"  alt="right">
@@ -498,7 +467,36 @@
             $(this).parent().parent().parent().fadeOut();
         });
         $('.msg-edit').on('click',function () {
-
+            var obj =$(this);
+            var ac = obj.val();
+            var span  = obj.parent().children('span');
+            var text = obj.parent().children().find('input[type="text"]');
+            if(ac=='修改'){
+                text.removeAttr('readonly');
+                text.css({'border':'1px solid #e7eaec','height':'22px'});
+                obj.val('保存');
+            }else if(ac=='保存'){
+                var msg = new Array();
+                text.each(function () {
+                    msg.push($(this).val());
+                });
+                var data = {Id:span.attr('data-id'),type:span.attr('data-type'),data:msg};
+                $.ajax({
+                    url:'{:U("background/save_one")}',
+                    data:data,
+                    type:'post',
+                    success:function (success) {
+                        if(success==0){
+                            alert_crm("未修改！");
+                        }else if(success>0||success=='success'){
+                            alert_crm("修改成功!");
+                        }
+                        text.attr('readonly','readonly');
+                        text.css({'border':'none','height':'22px'});
+                        obj.val('修改');
+                    }
+                })
+            }
         })
     })
 </script>
