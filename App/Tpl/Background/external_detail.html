@@ -1,5 +1,8 @@
 <!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
 <style>
+    input{
+        vertical-align: inherit!important;
+    }
     .msgbody{
         width: 1217px;
         height: 700px;
@@ -125,7 +128,7 @@
         /* border:1px solid rgba(207,205,205,0.4);
          box-shadow:3px 3px 0 0 rgba(0,0,0,0.1);*/
         background-image: url("./Public/img/detailcard.png");
-        background-position: 550px 310px;
+        background-size: 550px 312px;
         z-index: 0;
         position: relative;
         float: left
@@ -244,6 +247,7 @@
     .witness-div{
         overflow-x: hidden;
         white-space: nowrap;
+        padding-left: 10px;
     }
     .witness-div>div:nth-child(2){
         margin-left: 15px;
@@ -323,19 +327,19 @@
             <table>
                 <tbody>
                 <tr>
-                    <td colspan="2">
+                    <td colspan="2" class="name">
                         Steve jobs
                     </td>
                 </tr>
                 <tr>
                     <td class="sex-width"><span>男</span></td>
-                    <td><span>1955/2/24</span></td>
+                    <td style="display: none"><span>1955/2/24</span></td>
                 </tr>
                 <tr>
-                    <td colspan="2">计算机软件工程</td>
+                    <td colspan="2" class="industry" style="height: 30px">计算机软件工程</td>
                 </tr>
                 <tr>
-                    <td colspan="2">CEO</td>
+                    <td colspan="2" class="jobs" style="height: 30px">CEO</td>
                 </tr>
                 </tbody>
             </table>
@@ -351,18 +355,18 @@
     </div>
     <div class="body">
         <div class="bodyshow">
-            <div class="width-550-div">
+            <div class="width-550-div bg">
                 <span>基本信息</span>
                 <div class="lable-input"><label>姓名：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                 <div class="lable-input"><label>性别：</label><input type="text" readonly="readonly" value="男"></div>
-                <div class="lable-input"><label>出生时间：</label><input type="text" readonly="readonly" value="1955/2/24"></div>
-                <div class="lable-input"><label>联系电话：</label><input type="text" readonly="readonly" value="18983160353"></div>
-                <div class="lable-input"><label>邮箱：</label><input type="text" readonly="readonly" value="591013798@qq.com"></div>
+                <div class="lable-input"><label>出生时间：</label><input type="text" readonly="readonly" value=""></div>
+                <div class="lable-input"><label>联系电话：</label><input type="text" readonly="readonly" value=""></div>
+                <div class="lable-input"><label>邮箱：</label><input type="text" readonly="readonly" value=""></div>
                 <div class="lable-input"><label>身份证号：</label><input type="text" readonly="readonly" value="500382199801263573"></div>
                 <img class="id-card-img" src="Public/img/idcard.jpg">
                 <input type="button" class="msg-edit" value="修改">
             </div>
-            <div class="width-550-div">
+            <!--<div class="width-550-div">
                 <span>合作信息</span>
                 <div class="lable-input"><label>目前公司：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                 <div class="lable-input"><label>所属行业：</label><input type="text" readonly="readonly" value="男"></div>
@@ -372,8 +376,8 @@
                 <div class="lable-input"><label>顾问名：</label><input type="text" readonly="readonly" value="500382199801263573"></div>
                 <div class="lable-input"><label>协作人：</label><input type="text" readonly="readonly" value="呀哈哈" class="width-100"></div>
                 <input type="button" class="msg-edit" value="修改">
-            </div>
-            <div class="width-550-div">
+            </div>-->
+            <div class="width-550-div edu">
                 <span>学历证书</span>
                 <div class="lable-input"><label>证书名称：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
                 <div class="lable-input"><label>毕业院校：</label><input type="text" readonly="readonly" value="男"><i class="i-notsure"></i></div>
@@ -385,18 +389,18 @@
                 <div class="lable-input" style="margin-right: 12px"><label>毕业时间：</label><input type="text" readonly="readonly" value="2018/01/01" style="width: 100px"><i class="i-true"></i></div>
                 <input type="button" class="msg-edit" value="修改">
             </div>
-            <div class="width-550-div">
+            <div class="width-550-div qc">
                 <span>资格证书</span>
                 <div class="lable-input"><label>证书名称：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
                 <div class="lable-input"><label>证书类型：</label><input type="text" readonly="readonly" value="男"><i class="i-notsure"></i></div>
-                <div class="lable-input"><label>学历类型：</label><input type="text" readonly="readonly" value="1955/2/24"><i class="i-wrong"></i></div>
                 <div class="lable-input"><label>证书编号：</label><input type="text" readonly="readonly" value="18983160353"><i class="i-true"></i></div>
                 <div class="lable-input"><label>获得时间：</label><input type="text" readonly="readonly" value="591013798@qq.com"><i class="i-true"></i></div>
+                <div class="lable-input"><label>有效时间：</label><input type="text" readonly="readonly" value="591013798@qq.com"><i class="i-true"></i></div>
                 <div class="lable-input"><label>信息来源：</label><input type="text" readonly="readonly" value="500382199801263573"><i class="i-true"></i></div>
                 <input type="button" class="msg-edit" value="修改">
             </div>
             <div style="clear: both"></div>
-            <div class="work-div">
+            <div class="work-div work">
                 <span>工作经历</span>
                 <div>
                     <div class="lable-input"><label>公司名称：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
@@ -412,14 +416,14 @@
                         <div class="lable-input"><label>电话：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                         <div class="lable-input"><label>与候选人关系：</label><input type="text" readonly="readonly" value="下属" style="width: 150px" ></div>
                         <div class="lable-input"><label>调查方式：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                        <div class="lable-input"><label>证明人核实情况：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 143px"></div>
+                        <!--<div class="lable-input"><label>证明人核实情况：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 143px"></div>-->
                         <div class="lable-input"><label>候选人在职期间工作情况：</label><input type="text" readonly="readonly" value="Steve Jobs"style="width: 260px;display: block"></div>
-                        <div class="lable-input"><label>是否有违规违纪不良记录：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 122px"> </div>
+                        <div class="lable-input"><label>是否有违规违纪不良记录：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 260px;display: block"> </div>
                         <div class="lable-input"><label>离职原因：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                         <div class="lable-input"><label>有否培训协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                         <div class="lable-input"><label>有否竞争协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                     </div>
-                    <div class="witness">
+                    <!--<div class="witness">
                         <span>证明人2：</span>
                         <div class="lable-input"><label>姓名：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                         <div class="lable-input"><label>岗位：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
@@ -448,7 +452,7 @@
                         <div class="lable-input"><label>有否竞争协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                     </div>
                     <div class="witness">
-                        <span>证明人3：</span>
+                        <span>证明人4：</span>
                         <div class="lable-input"><label>姓名：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                         <div class="lable-input"><label>岗位：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                         <div class="lable-input"><label>电话：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
@@ -460,7 +464,7 @@
                         <div class="lable-input"><label>离职原因：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                         <div class="lable-input"><label>有否培训协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                         <div class="lable-input"><label>有否竞争协议：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
-                    </div>
+                    </div>-->
                 </div>
                 <img class="jt" src="Public/img/left.png" alt="left">
                 <img class="jt" src="Public/img/right.png"  alt="right">
@@ -479,14 +483,22 @@
         });
         $('.jt').on("click",function () {
             var obj =$(this);
-            if(obj.attr("alt")=="right"){
-                obj.parent().children('.witness-div').children("div").animate({left:"-275px"});
+            var length = obj.parent().children('.witness-div').children('.witness').length;
+            if(length>3){
+                if(obj.attr("alt")=="right"){
+                    obj.parent().children('.witness-div').children("div").animate({left:"-275px"});
+                }else{
+                    obj.parent().children('.witness-div').children("div").animate({left:"0"});
+                }
             }else{
-                obj.parent().children('.witness-div').children("div").animate({left:"0"});
+                alert_crm('仅有'+length+'个证明人！');
             }
         });
         $('.closeimg').on('click',function () {
             $(this).parent().parent().parent().fadeOut();
+        });
+        $('.msg-edit').on('click',function () {
+
         })
     })
 </script>

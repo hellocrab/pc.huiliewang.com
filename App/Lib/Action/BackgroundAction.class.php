@@ -13,9 +13,9 @@ class BackgroundAction extends Action
         $this->assign("title",$title);
     }
     public function index(){
-        /* if(I('get.ac')){
-             $this->output();
-         }*/
+       /* if(I('get.ac')){
+            $this->output();
+        }*/
         $backGround = M('background');
         $delete['delete'] = 0 ;
         $by = I('get.by');
@@ -123,7 +123,7 @@ class BackgroundAction extends Action
                 $ids = $backGroundMsg->where($sId)->field('id')->select();
                 $msg = array();
                 foreach ($ids as $k => $v){
-                    $val['msg'] = $v['id'];
+                   $val['msg'] = $v['id'];
                     array_push($msg,$val);
                 }
                 $where['Id'] = $sId['s_id'];
@@ -432,10 +432,10 @@ class BackgroundAction extends Action
         header('Content-Disposition:attachment;filename="'.$filename.'.xls"');
         header("Content-Transfer-Encoding:binary");
         //$objWriter1 = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-        /* header("Content-Type: application/vnd.ms-excel;");
-         header("Content-Disposition:attachment;filename=背调信息".date('Y-m-d',mktime()).".xls");
-         header("Pragma:no-cache");
-         header("Expires:0");*/
+       /* header("Content-Type: application/vnd.ms-excel;");
+        header("Content-Disposition:attachment;filename=背调信息".date('Y-m-d',mktime()).".xls");
+        header("Pragma:no-cache");
+        header("Expires:0");*/
         $objWriter->save('php://output');
     }
     function output($data){
@@ -458,19 +458,19 @@ class BackgroundAction extends Action
         for($i=0;$i<count($list);$i++){
             foreach ($listKey as $key => $val){
                 if($key<6){
-                    foreach ($list[$i] as $k => $v){
-                        if($k=='s_name'||$k=='department'||$k=='school'||$k=='major'||$k=='education'||$k=='industry'){
-                            $outList[$i][$k] = $v;
-                        }elseif($k=='msg'){
-                            foreach ($v as $K => $V){
-                                foreach ($V as $KEY => $VAL){
-                                    if($KEY=='company_name'||$KEY=='enter_time'||$KEY=='out_time'||$KEY=='position'||$KEY=='witness'||$KEY=='witness_add'||$KEY=='tel'||$KEY=='adress'||$KEY=='work_performance'||$KEY=='bz'||$KEY=='reasons'||$KEY=='health'||$KEY=='salary'){
+                   foreach ($list[$i] as $k => $v){
+                       if($k=='s_name'||$k=='department'||$k=='school'||$k=='major'||$k=='education'||$k=='industry'){
+                           $outList[$i][$k] = $v;
+                       }elseif($k=='msg'){
+                           foreach ($v as $K => $V){
+                               foreach ($V as $KEY => $VAL){
+                                   if($KEY=='company_name'||$KEY=='enter_time'||$KEY=='out_time'||$KEY=='position'||$KEY=='witness'||$KEY=='witness_add'||$KEY=='tel'||$KEY=='adress'||$KEY=='work_performance'||$KEY=='bz'||$KEY=='reasons'||$KEY=='health'||$KEY=='salary'){
                                         $outList[$i][$KEY."".$K] =$VAL;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                                   }
+                               }
+                           }
+                       }
+                   }
                 }
             }
         }
@@ -506,57 +506,57 @@ class BackgroundAction extends Action
     }
     //对外背调通用删除
     function ex_delete(){
-        if(IS_POST){
-            $id = I('post.');
-            $mapId['Id'] = array('in',$id['Id']);
-            $exBg = M('external_background');
-            $exBg->startTrans();
-            $bg = $exBg->where($mapId)->delete();
+    if(IS_POST){
+        $id = I('post.');
+        $mapId['Id'] = array('in',$id['Id']);
+        $exBg = M('external_background');
+        $exBg->startTrans();
+        $bg = $exBg->where($mapId)->delete();
 
-            $mapCid['c_id'] = array('in',$id['Id']);
-            $exEdu = M('external_background_edu');
-            $exEdu->startTrans();
-            $edu = $exEdu->where($mapCid)->delete();
+        $mapCid['c_id'] = array('in',$id['Id']);
+        $exEdu = M('external_background_edu');
+        $exEdu->startTrans();
+        $edu = $exEdu->where($mapCid)->delete();
 
-            $exQc = M('external_background_qc');
-            $exQc->startTrans();
-            $qc =$exQc->where($mapCid)->delete();
+        $exQc = M('external_background_qc');
+        $exQc->startTrans();
+        $qc =$exQc->where($mapCid)->delete();
 
-            $exWork =M('external_background_work');
-            $exWork->startTrans();
-            $work = $exWork->where($mapCid)->select();
-            $workResult = $exWork->where($mapCid)->delete();
+        $exWork =M('external_background_work');
+        $exWork->startTrans();
+        $work = $exWork->where($mapCid)->select();
+        $workResult = $exWork->where($mapCid)->delete();
 
-            foreach ($work as $k =>$v){
-                $wId[] = $v['Id'];
-            }
-            $mapWid['w_id'] = array('in',$wId);
-            $exWitness = M('external_background_witness');
-            $exWitness->startTrans();
-            $witness = $exWitness->where($mapWid)->delete();
-            if($bg||($edu&&$qc&&$workResult&&$witness)){
-                $exBg->commit();
-                $exEdu->commit();
-                $exQc->commit();
-                $exWork->commit();
-                $exWitness->commit();
-                echo '{"status":"1"}';
-            }else{
-                $exBg->rollback();
-                $exEdu->rollback();
-                $exQc->rollback();
-                $exWork->rollback();
-                $exWitness->rollback();
-                echo '{"status":"0"}';
-            }
+        foreach ($work as $k =>$v){
+            $wId[] = $v['Id'];
+        }
+        $mapWid['w_id'] = array('in',$wId);
+        $exWitness = M('external_background_witness');
+        $exWitness->startTrans();
+        $witness = $exWitness->where($mapWid)->delete();
+        if($bg||($edu&&$qc&&$workResult&&$witness)){
+            $exBg->commit();
+            $exEdu->commit();
+            $exQc->commit();
+            $exWork->commit();
+            $exWitness->commit();
+            echo '{"status":"1"}';
+        }else{
+            $exBg->rollback();
+            $exEdu->rollback();
+            $exQc->rollback();
+            $exWork->rollback();
+            $exWitness->rollback();
+            echo '{"status":"0"}';
         }
     }
+}
     function hxr_detail(){
         if(IS_POST){
             $id = I('post.');
             if((int)$id['Id']){
                 $exBackground = M('external_background');
-                $bg = $exBackground->field('name,jobs,tocompany,industry,id_pic_src,bz')->where($id)->find();
+                $bg = $exBackground->field('name,jobs,tocompany,industry,id_pic_src,bz,idnumber')->where($id)->find();
                 $exBackgroundEdu = M('external_background_edu');
                 $edu = $exBackgroundEdu->where('c_id ='.$id['Id'])->field('c_id',true)->select();
                 $exBackgroundQc = M('external_background_qc');
