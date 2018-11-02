@@ -127,255 +127,202 @@
 <div class="wrapper wrapper-content">
     <include file="Public:alert" />
     <!--<div style="position: absolute;width: 1200px;height: 700px;top: 50px;left:15%; background-color: black;z-index:999;">--></div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="ibox float-e-margins">
-                <div class="title-bar" style="position: relative;z-index: 99;">
-                    <div class="row  clearfix" id="title-hide" style="display:none;">
-                        <ul class="breadcrum pull-left">
-                            <li>已选中&nbsp;<span id="icheck_num"></span>&nbsp;项</li>
-                            <!--<if condition="$Think.get.by neq 'deleted'">
-                                <li class="single_btn"><a href="javascript:void(0)" id="edit_product"><i class="fa fa-pencil"></i>&nbsp;编辑</a></li>
-                            </if>
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="title-bar" style="position: relative;z-index: 99;">
+                <div class="row  clearfix" id="title-hide" style="display:none;">
+                    <ul class="breadcrum pull-left">
+                        <li>已选中&nbsp;<span id="icheck_num"></span>&nbsp;项</li>
+                        <!--<if condition="$Think.get.by neq 'deleted'">
+                            <li class="single_btn"><a href="javascript:void(0)" id="edit_product"><i class="fa fa-pencil"></i>&nbsp;编辑</a></li>
+                        </if>
 
-                            <if condition="$Think.get.by eq 'deleted'">
-                                <li class="single_btn"><a href="javascript:void(0)" id="unfavorite"><i class="fa fa-star-o"></i>&nbsp;取消收藏</a></li>
-                                <else />
-                                <li class="single_btn">
-                                    <span id="to_product"><a href="javascript:void(0)" id="favorite"><i class="fa fa-star-o"></i>&nbsp;收藏</a></span>
-                                </li>
-                            </if>-->
-                            <li>
-                                <span><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></span>
+                        <if condition="$Think.get.by eq 'deleted'">
+                            <li class="single_btn"><a href="javascript:void(0)" id="unfavorite"><i class="fa fa-star-o"></i>&nbsp;取消收藏</a></li>
+                            <else />
+                            <li class="single_btn">
+                                <span id="to_product"><a href="javascript:void(0)" id="favorite"><i class="fa fa-star-o"></i>&nbsp;收藏</a></span>
                             </li>
-                            <li>
-                                <span><a id="delete" href="javascript:void(0);" class="link"><i class="fa fa-times"></i>&nbsp;删除</a></span>
-                            </li>
-                            <li class="last_li"><big><a class="fa fa-times pull-right" id="back-show"></a></big></li>
-                        </ul>
-                    </div>
-                    <div class="row " id="title-show">
-                        <ul class="nav pull-left" style="margin:2px 0 0 15px;">
-                            <a href="{:U('background/add_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 新增候选人</a>
-                            <a href="{:U('background/add_more_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 批量导入候选人</a>
-                        </ul>
-                        <form class="form-inline" id="" action="" method="get">
-                            <ul class="breadcrum pull-right" style="margin-bottom: 0px">
-                                <li>
-                                    搜索：
-                                    <div class="input-group">
-                                        <input type="hidden" name="m" value="background"/>
-                                        <input type="hidden" name="a" value="index_external"/>
-                                        <!-- <input type="hidden" name="field" value="name"/>
-                                         <input type="hidden" name="condition" value="contains"/>-->
-                                        <input id="short_search" type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control " name="search" value="{$search}" />
-                                        <span class="input-group-btn">
-										    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-search"></i></button>
-									    </span>
-                                    </div>
-                                    <!--&nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
-
-                                </li>&nbsp;&nbsp;
-                                <div class="btn-group ">
-                                    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-
-                                        <if condition = "checkPerByAction('product','excelexport')">
-                                            <li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出2</a></li>
-                                        </if>
-                                    </ul>
-                                </div>
-                            </ul>
-                        </form>
+                        </if>-->
+                        <li>
+                            <span><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></span>
+                        </li>
+                        <li>
+                            <span><a id="delete" href="javascript:void(0);" class="link"><i class="fa fa-times"></i>&nbsp;删除</a></span>
+                        </li>
+                        <li class="last_li"><big><a class="fa fa-times pull-right" id="back-show"></a></big></li>
+                    </ul>
+                </div>
+                <div class="row " id="title-show">
+                    <ul class="nav pull-left" style="margin:2px 0 0 15px;">
+                        <a href="{:U('background/add_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 新增候选人</a>
+                        <a href="{:U('background/add_more_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 批量导入候选人</a>
+                    </ul>
+                    <form class="form-inline" id="" action="" method="get">
                         <ul class="breadcrum pull-right" style="margin-bottom: 0px">
                             <li>
+                                搜索：
                                 <div class="input-group">
-                                    <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-bottom:5px;">
-                                        <option value="{:U('background/index_external','by=name&'.$by_parameter)}" <if condition = "$by eq 'name'">selected="selected"</if>>全部员工(姓名)</option>
-                                        <option value="{:U('background/index_external','by=Id&'.$by_parameter)}" <if condition = "$by eq 'Id'">selected="selected"</if>>录入时间</option>
-                                        <option value="{:U('background/index_external','by=tocompany&'.$by_parameter)}" <if condition = "$by eq 'tocompany'">selected="selected"</if>>推荐公司名</option>
-                                        <option value="{:U('background/index_external','by=jobs&'.$by_parameter)}" <if condition = "$by eq 'jobs'">selected="selected"</if>>岗位</option>
-                                        <option value="{:U('background/index_external','by=industry&'.$by_parameter)}" <if condition = "$by eq 'industry'">selected="selected"</if>>行业
-                                    </select>
+                                    <input type="hidden" name="m" value="background"/>
+                                    <input type="hidden" name="a" value="index_external"/>
+                                    <!-- <input type="hidden" name="field" value="name"/>
+                                     <input type="hidden" name="condition" value="contains"/>-->
+                                    <input id="short_search" type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control " name="search" value="{$search}" />
+                                    <span class="input-group-btn">
+										    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-search"></i></button>
+									    </span>
                                 </div>
-                            </li>
+                                <!--&nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
+
+                            </li>&nbsp;&nbsp;
+                            <div class="btn-group ">
+                                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+
+                                    <if condition = "checkPerByAction('product','excelexport')">
+                                        <li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出2</a></li>
+                                    </if>
+                                </ul>
+                            </div>
                         </ul>
+                    </form>
+                    <ul class="breadcrum pull-right" style="margin-bottom: 0px">
+                        <li>
+                            <div class="input-group">
+                                <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-bottom:5px;">
+                                    <option value="{:U('background/index_external','by=name&'.$by_parameter)}" <if condition = "$by eq 'name'">selected="selected"</if>>全部员工(姓名)</option>
+                                    <option value="{:U('background/index_external','by=Id&'.$by_parameter)}" <if condition = "$by eq 'Id'">selected="selected"</if>>录入时间</option>
+                                    <option value="{:U('background/index_external','by=tocompany&'.$by_parameter)}" <if condition = "$by eq 'tocompany'">selected="selected"</if>>推荐公司名</option>
+                                    <option value="{:U('background/index_external','by=jobs&'.$by_parameter)}" <if condition = "$by eq 'jobs'">selected="selected"</if>>岗位</option>
+                                    <option value="{:U('background/index_external','by=industry&'.$by_parameter)}" <if condition = "$by eq 'industry'">selected="selected"</if>>行业
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" style="margin: 0;">
+                <div class="msg-detail"><include file="Background:external_detail" /></div>
+                <div class="pull-left" style="width:16.222%;color: #000;display: none;">
+                    <div class="ibox-title clearfix" style="padding-top: 4px;">
+                        <div class="detail-title clearfix">
+                            <div class="pull-left all-inline">
+                                <a href="{:U('product/index')}">
+                                    <span class="fa fa-inbox" style="font-size:18px;color:#667B8F"></span>&nbsp;
+                                    <span style="color:#667B8F">全部人才</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content" style="min-height: 300px;border-top: none;">
+                        <div id="left_list" class="full-height-scroll">
+                            <div id="knowledge-tree" >
+                                {$tree_code}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row" style="margin: 0;">
-                    <div class="msg-detail"><include file="Background:external_detail" /></div>
-                    <div class="pull-left" style="width:16.222%;color: #000;display: none;">
-                        <div class="ibox-title clearfix" style="padding-top: 4px;">
-                            <div class="detail-title clearfix">
-                                <div class="pull-left all-inline">
-                                    <a href="{:U('product/index')}">
-                                        <span class="fa fa-inbox" style="font-size:18px;color:#667B8F"></span>&nbsp;
-                                        <span style="color:#667B8F">全部人才</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ibox-content" style="min-height: 300px;border-top: none;">
-                            <div id="left_list" class="full-height-scroll">
-                                <div id="knowledge-tree" >
-                                    {$tree_code}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pull-right" style="width:100%">
-                        <div class="ibox-content clearfix" id="table_container" style="z-index: 1;">
-                            <form id="form1" action="" method="Post" style="position:relative;">
-                                <div id="table_div" class="nicescroll">
-                                    <table class="table table-hover table-striped table_thead_fixed" id="tab_Test3">
-                                        <if condition="$data    eq null">
-                                            <div style="background-color:#fff;"><include file="Public:nodata" /></div>
-                                            <else/>
-                                            <tr id="childNodes_num" class="tabTh">
-                                                <td style="max-width: 60px;width:74px;padding:0 10px 0 7px;">
+                <div class="pull-right" style="width:100%">
+                    <div class="ibox-content clearfix" id="table_container" style="z-index: 1;">
+                        <form id="form1" action="" method="Post" style="position:relative;">
+                            <div id="table_div" class="nicescroll">
+                                <table class="table table-hover table-striped table_thead_fixed" id="tab_Test3">
+                                    <if condition="$data    eq null">
+                                        <div style="background-color:#fff;"><include file="Public:nodata" /></div>
+                                        <else/>
+                                        <tr id="childNodes_num" class="tabTh">
+                                            <td style="max-width: 60px;width:74px;padding:0 10px 0 7px;">
+                                                <div class="checkbox checkbox-primary">
+                                                    <input type="checkbox" class="check_all"/>
+                                                    <label for=""></label>
+                                                </div>
+                                            </td>
+                                            <td style="display: none">id</td>
+                                            <td>姓名</td>
+                                            <td>岗位</td>
+                                            <td>推荐公司名称</td>
+                                            <td>行业</td>
+                                            <td>备注</td>
+                                            <td>操作</td>
+                                        </tr>
+                                        <tbody>
+                                        <volist name="data" id="val" key="k">
+                                            <tr class="controls_tr">
+                                                <td>
                                                     <div class="checkbox checkbox-primary">
-                                                        <input type="checkbox" class="check_all"/>
+                                                        <input name="product_id[]" class="check_list" type="checkbox" value="{$val['Id']}" <if condition="$vo['is_deleted'] eq '0'">rel1="0"<else/>rel1="1"</if>/>
                                                         <label for=""></label>
                                                     </div>
                                                 </td>
-                                                <td style="display: none">id</td>
-                                                <td>姓名</td>
-                                                <td>岗位</td>
-                                                <td>推荐公司名称</td>
-                                                <td>行业</td>
-                                                <td>备注</td>
-                                                <td>操作</td>
+                                                <foreach name="val" item="vo" key="k">
+                                                    <if condition="$k eq 'Id' ">
+                                                        <td style="display: none">
+                                                            <span class="ygid">{$vo}</span>
+                                                        </td>
+                                                        <elseif condition="$k eq 'name'"/>
+                                                        <td class="bdcount hxr_detail">
+                                                            <span data-id="{$val['Id']}">{$vo}</span>
+                                                        </td>
+                                                        <else/>
+                                                        <td>
+                                                            <span>{$vo}</span>
+                                                        </td>
+                                                    </if>
+                                                </foreach>
+                                                <td>
+                                                    <span class="label label-danger editstatus bgdelete" style="cursor: pointer;margin-left: 10px" data-id="{$val['Id']}">删除 </span>
+                                                </td>
                                             </tr>
-                                            <tbody>
-                                            <volist name="data" id="val" key="k">
-                                                <tr class="controls_tr">
-                                                    <td>
-                                                        <div class="checkbox checkbox-primary">
-                                                            <input name="product_id[]" class="check_list" type="checkbox" value="{$val['Id']}" <if condition="$vo['is_deleted'] eq '0'">rel1="0"<else/>rel1="1"</if>/>
-                                                            <label for=""></label>
-                                                        </div>
-                                                    </td>
-                                                    <foreach name="val" item="vo" key="k">
-                                                        <if condition="$k eq 'Id' ">
-                                                            <td style="display: none">
-                                                                <span class="ygid">{$vo}</span>
-                                                            </td>
-                                                            <elseif condition="$k eq 'name'"/>
-                                                            <td class="bdcount hxr_detail">
-                                                                <span data-id="{$val['Id']}">{$vo}</span>
-                                                            </td>
-                                                            <else/>
-                                                            <td>
-                                                                <span>{$vo}</span>
-                                                            </td>
-                                                        </if>
-                                                    </foreach>
-                                                    <td>
-                                                        <span class="label label-danger editstatus bgdelete" style="cursor: pointer;margin-left: 10px" data-id="{$val['Id']}">删除 </span>
-                                                    </td>
-                                                </tr>
-                                                <!--
-                                                    <tr class="controls_tr"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调</td></tr><tr><td>公司名: <span>南方新华</span></td><td>入职时间：<span>2018-8</span></td><td>离职时间：<span>2018-9</span></td><td>职位：<span>提莫</span></td></tr><tr><td>证明人：<span>职位</span></td><td>与证明人：<span>关系</span></td><td>联系电话：<span>职位</span></td><td>联系地址：<span>职位</span></td></tr><tr><td>薪资：<span>123</span></td><td>工作表现：<span>职位</span></td><td>优缺点：<span>职位</span></td><td>离职原因：<span>关系</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>职位</span></td></tr></table></td></tr>
-                                                -->
-                                            </volist>
-                                            <tbody>
-                                        </if>
-                                    </table>
-                                </div>
-                                <script>
-                                    function timestampToTime(timestamp) {
-                                        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                                        var Y = date.getFullYear() + '-';
-                                        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-                                        var D = date.getDate() + ' ';
-                                        var h = date.getHours() + ':';
-                                        var m = date.getMinutes() + ':';
-                                        var s = date.getSeconds();
-                                        return Y+M+D+h+m+s;
+                                            <!--
+                                                <tr class="controls_tr"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调</td></tr><tr><td>公司名: <span>南方新华</span></td><td>入职时间：<span>2018-8</span></td><td>离职时间：<span>2018-9</span></td><td>职位：<span>提莫</span></td></tr><tr><td>证明人：<span>职位</span></td><td>与证明人：<span>关系</span></td><td>联系电话：<span>职位</span></td><td>联系地址：<span>职位</span></td></tr><tr><td>薪资：<span>123</span></td><td>工作表现：<span>职位</span></td><td>优缺点：<span>职位</span></td><td>离职原因：<span>关系</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>职位</span></td></tr></table></td></tr>
+                                            -->
+                                        </volist>
+                                        <tbody>
+                                    </if>
+                                </table>
+                            </div>
+                            <script>
+                                function timestampToTime(timestamp) {
+                                    var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+                                    var Y = date.getFullYear() + '-';
+                                    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+                                    var D = date.getDate() + ' ';
+                                    var h = date.getHours() + ':';
+                                    var m = date.getMinutes() + ':';
+                                    var s = date.getSeconds();
+                                    return Y+M+D+h+m+s;
+                                }
+                                timestampToTime(1403058804);
+                                function shouqi(data) {
+                                    var count = $(data).parent().parent().children(".bdcount").children("span").text();
+                                    var tr = $(data).parent().parent();
+                                    for(let i=0;i<count;i++){
+                                        tr.next().remove();
                                     }
-                                    timestampToTime(1403058804);
-                                    function shouqi(data) {
-                                        var count = $(data).parent().parent().children(".bdcount").children("span").text();
-                                        var tr = $(data).parent().parent();
-                                        for(let i=0;i<count;i++){
-                                            tr.next().remove();
-                                        }
-                                        $(data).prev().css('display','inline');
-                                        $(data).remove();
-                                    }
-                                    $(document).ready(function () {
-                                        $(".hxr_detail").on("click",function () {
-                                            var msg = {"Id":$(this).children('span').attr('data-id')};
-                                           $.ajax({
-                                               url:'{:U("background/hxr_detail")}',
-                                               type:'post',
-                                               async:true,
-                                               data:msg,
-                                               success:function (data) {
-                                                  data = JSON.parse(data);
-                                                  console.log(data);
-                                                   $('.msg-detail').fadeIn();
-                                               }
-                                           })
-                                        });
-                                        $(".bgdelete").on("click",function () {
-                                            var id = $(this).attr("data-id");
-                                            var ids = new Array();
-                                            ids.push(id);
-                                            swal({
-                                                    title: "您确定要删除员工信息吗？",
-                                                    text: "删除后将无法恢复，请谨慎操作！",
-                                                    type: "warning",
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: "#DD6B55",
-                                                    confirmButtonText: "是的，我要删除！",
-                                                    cancelButtonText:'让我再考虑一下…',
-                                                    closeOnConfirm:false,
-                                                    closeOnCancel:false
-                                                },
-                                                function(isConfirm){
-                                                    if (isConfirm) {
-                                                        $.ajax({
-                                                            url:"/index.php?m=background&a=ex_delete",
-                                                            type:"post",
-                                                            async:true,
-                                                            data:{Id:ids},
-                                                            success: function (data) {
-                                                                if (data.status == 1) {
-                                                                    swal("删除成功！", "您已经永久删除了信息！", "success");
-                                                                    location.reload();
-                                                                } else {
-                                                                    swal({
-                                                                        title: "操作失败！",
-                                                                        text:data.info,
-                                                                        type: "error"
-                                                                    })
-                                                                    return false;
-                                                                }
-                                                            },
-                                                            dataType: 'json'
-                                                        });
-                                                    } else {
-                                                        swal("已取消","您取消了删除操作！","error");
-                                                    }
-                                                });
-                                        });
+                                    $(data).prev().css('display','inline');
+                                    $(data).remove();
+                                }
+                                $(document).ready(function () {
+                                    $(".hxr_detail").on("click",function () {
+                                        var msg = {"Id":$(this).children('span').attr('data-id')};
+                                        $.ajax({
+                                            url:'{:U("background/hxr_detail")}',
+                                            type:'post',
+                                            async:true,
+                                            data:msg,
+                                            success:function (data) {
+                                                data = JSON.parse(data);
+                                                console.log(data);
+                                                $('.msg-detail').fadeIn();
+                                            }
+                                        })
                                     });
-                                    $(".bgedit").on("click",function () {
+                                    $(".bgdelete").on("click",function () {
                                         var id = $(this).attr("data-id");
-                                        id = parseInt(id);
-                                        window.location.href="/index.php?m=background&a=edit&id="+id;
-                                    });
-                                    $('#delete').click(function(){
-                                        var id_array = new Array();
-                                        $("input.check_list:checked").each(function(){
-                                            id_array.push($(this).val());
-                                        });
-                                        if(id_array.length == 0){
-                                            alert_crm('{:L('YOU_HAVE_NOT_CHOSEN_ANY_CUSTOMERS')}');
-                                            return false;
-                                        }
+                                        var ids = new Array();
+                                        ids.push(id);
                                         swal({
                                                 title: "您确定要删除员工信息吗？",
                                                 text: "删除后将无法恢复，请谨慎操作！",
@@ -390,10 +337,10 @@
                                             function(isConfirm){
                                                 if (isConfirm) {
                                                     $.ajax({
-                                                        type:'post',
-                                                        url: "{:U('background/ex_delete')}",
-                                                        data: {Id: id_array},
-                                                        async: false,
+                                                        url:"/index.php?m=background&a=ex_delete",
+                                                        type:"post",
+                                                        async:true,
+                                                        data:{Id:ids},
                                                         success: function (data) {
                                                             if (data.status == 1) {
                                                                 swal("删除成功！", "您已经永久删除了信息！", "success");
@@ -413,23 +360,76 @@
                                                     swal("已取消","您取消了删除操作！","error");
                                                 }
                                             });
-                                    })
-                                </script>
-                                <div id="tfoot_div" class="clearfix">
-                                    <div class="clearfix" id="tfoot_page">
-                                        <if condition="$fields_search || $_GET['field']">
-                                            <span class="pull-left" style="margin-left:25px;margin-top:10px;">本次搜索结果<span style="color:#F8AC59"> {$count} </span>条数据<a href="{:U('product/index')}" class="btn" style="background:#fff;border:1px solid #ccc;margin-left:10px;color:#999;" id="clearnumber">清除搜索条件</a></span>
-                                        </if>
-                                        {$page}<include file="Public:listrows" />
-                                    </div>
+                                    });
+                                });
+                                $(".bgedit").on("click",function () {
+                                    var id = $(this).attr("data-id");
+                                    id = parseInt(id);
+                                    window.location.href="/index.php?m=background&a=edit&id="+id;
+                                });
+                                $('#delete').click(function(){
+                                    var id_array = new Array();
+                                    $("input.check_list:checked").each(function(){
+                                        id_array.push($(this).val());
+                                    });
+                                    if(id_array.length == 0){
+                                        alert_crm('{:L('YOU_HAVE_NOT_CHOSEN_ANY_CUSTOMERS')}');
+                                        return false;
+                                    }
+                                    swal({
+                                            title: "您确定要删除员工信息吗？",
+                                            text: "删除后将无法恢复，请谨慎操作！",
+                                            type: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#DD6B55",
+                                            confirmButtonText: "是的，我要删除！",
+                                            cancelButtonText:'让我再考虑一下…',
+                                            closeOnConfirm:false,
+                                            closeOnCancel:false
+                                        },
+                                        function(isConfirm){
+                                            if (isConfirm) {
+                                                $.ajax({
+                                                    type:'post',
+                                                    url: "{:U('background/ex_delete')}",
+                                                    data: {Id: id_array},
+                                                    async: false,
+                                                    success: function (data) {
+                                                        if (data.status == 1) {
+                                                            swal("删除成功！", "您已经永久删除了信息！", "success");
+                                                            location.reload();
+                                                        } else {
+                                                            swal({
+                                                                title: "操作失败！",
+                                                                text:data.info,
+                                                                type: "error"
+                                                            })
+                                                            return false;
+                                                        }
+                                                    },
+                                                    dataType: 'json'
+                                                });
+                                            } else {
+                                                swal("已取消","您取消了删除操作！","error");
+                                            }
+                                        });
+                                })
+                            </script>
+                            <div id="tfoot_div" class="clearfix">
+                                <div class="clearfix" id="tfoot_page">
+                                    <if condition="$fields_search || $_GET['field']">
+                                        <span class="pull-left" style="margin-left:25px;margin-top:10px;">本次搜索结果<span style="color:#F8AC59"> {$count} </span>条数据<a href="{:U('product/index')}" class="btn" style="background:#fff;border:1px solid #ccc;margin-left:10px;color:#999;" id="clearnumber">清除搜索条件</a></span>
+                                    </if>
+                                    {$page}<include file="Public:listrows" />
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <div style="display:none" id="dialog-field-search" title="高级搜索">
     <form class="form-inline" id="searchForm" action="" method="get">
