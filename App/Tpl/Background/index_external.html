@@ -307,7 +307,13 @@
                                                    msgdetail.find('.photo').children().eq(0).attr("src",data['bg']['id_pic_src']);
                                                    var body  = $('.bodyshow');
                                                    //基本信息
-                                                   body.find('.bg').find('img').attr('src','Uploads'+data['bg']['id_pic_src']);
+                                                   if(data['bg']['id_pic_src']==null){
+                                                       body.find('.bg').find('img').removeAttr('src');
+                                                       body.find('.bg').find('img').removeClass('id-card-img');
+                                                   }else{
+                                                       body.find('.bg').find('img').addClass('id-card-img');
+                                                       body.find('.bg').find('img').attr('src','Uploads'+data['bg']['id_pic_src']);
+                                                   }
                                                    body.find('.bg').children('span').attr({'data-id':data['bg']['Id'],'data-type':'bg'});
                                                    var bginputs = body.find('.bg').find('input[type="text"]');
                                                    bginputs.eq(0).val(data['bg']['name']);
