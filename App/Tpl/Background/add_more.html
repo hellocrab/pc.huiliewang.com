@@ -1,0 +1,400 @@
+<include file="Public:header" />
+<link rel="stylesheet" href="__PUBLIC__/css/class.public.css" />
+<link rel="stylesheet" href="__PUBLIC__/upload_selector/ssi-uploader.css" />
+<script type="text/javascript" src="__PUBLIC__/js/job.cache.js"></script>
+<style>
+    body{overflow-y:hidden; }
+    #main_pic_prev{width: 120px;height: 120px;border: 1px dashed #d3d3d6;}
+    .add_body_title{
+        margin:15px auto 30px auto;
+    }
+    .form-horizontal .control-label{
+        text-align: right;
+    }
+    .fileinput-button1{
+        position: relative;
+        overflow: hidden;
+    }
+    .note-codable{
+        display: none;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 0;
+        font-family: Menlo,Monaco,monospace,sans-serif;
+        font-size: 14px;
+        color: #ccc;
+        background-color: #222;
+        border: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        box-shadow: none;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+        resize: none;
+    }
+    .timerinput{
+        width:120px; display:inline;height: 25px;background: #ffffff !important;
+    }
+    .ssi-removeBtn{
+        background: none !important;
+        border: none;
+        color: #cf5144;
+    }
+</style>
+<script type="text/javascript" src="__PUBLIC__/js/PCASClass.js" ></script>
+<link rel="stylesheet" href="__PUBLIC__/css/jquery.fileupload.css" type="text/css" />
+<script>
+    $(function(){
+        $(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+        $(window).resize(function(){
+            $(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+        })
+    })
+</script>
+<!--职位类别start-->
+<div class="sPopupDiv none" id="jobdiv" style="float:left;"></div>
+<!--职位类别end-->
+<div class="wrapper wrapper-content animated fadeIn">
+    <form class="form-horizontal" id="form" role="form" action="{:U('product/add')}" method="post" enctype="multipart/form-data">
+        <input type='hidden' name="r" <present name="r">value="{$r}"</present>/>
+        <input type='hidden' name="module" <present name="r">value="{$module}"</present>/>
+        <input type='hidden' name="id" <present name="r">value="{$model_id}"</present>/>
+        <div class="ibox-content add_body" id="add_body">
+            <div class="row">
+                <div class="col-md-12 add_body" >
+                    <div class="full-height-scroll">
+                        <div class="row" >
+                            <div class="col-md-12 add_body_title">
+                                <div class="all-inline">
+                                    <span class="sq-tag"></span>
+                                    <div class="text-tag">
+                                        <span>批量导入员工背调信息</span>
+                                    </div>
+                                </div>
+                            </div>
+                           <!-- <div class="col-md-11 add_body_form" style="margin-left:15px;">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" style="text-align: left;">加入项目：</label>
+                                    <div class="col-md-4">
+                                        <select class="form-control required" id="standard" name="standard" aria-required="true">
+                                            <option value="">请输入项目名称或客户名称搜索(默认显示最近20条)</option>
+                                            <option value=""></option>
+                                        </select>
+                                        <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                    </div>
+                                </div>
+                            </div>-->
+                            <div class="col-md-12">
+                                <span style="float: right;margin-top: 10px;margin-right: 60%;color: #cf5144;">支持xls、xlsx格式的背调表，一次最多上传1份,所上传的背调表请严格按照格式录入信息</span>
+                                <input type="file" multiple id="ssi-upload"/>
+                            </div>
+                            <div class="col-md-12" style="background: #f5f5f5;height: 50px;line-height: 50px;display: none;">
+                                <div class="btn btn-primary fileinput-button" style="width: 100px;margin-left: 10px;">
+                                    <span>+上传文件</span>
+                                    <input type="file" name="files" id="uploadresumes" multiple accept=""/>
+                                </div>
+                                <span style="margin-left: 10px;">支持xls、xlsx格式的背调表，一次最多上传1份,所上传的背调表请严格按照格式录入信息</span>
+                                <div class="pull-right" style="margin-right: 10px;">
+                                    <span>上传成功(&nbsp;<b class="success">0</b>&nbsp;)份</span>
+                                    <span style="color: #fa7252;margin-left: 10px;">失败(&nbsp;<b class="error">0</b>&nbsp;)份</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 fileuploadd" style="display: none">
+                                <img src="__PUBLIC__/img/upload.png" class="uploadimg">
+                                <div class="uploadzi">直接拖入文件即可上传</div>
+                            </div>
+                            <div class="col-md-12" style="display: none;">
+                                <table class="table table-hover process_list" style="margin-top: 20px;">
+                                    <!--<tr class="hebing">-->
+                                    <!--<td>-->
+                                    <!--<div class="checkbox checkbox-primary" style="display: inline-block;">-->
+                                    <!--<input class="check_all" type="checkbox" value="1">-->
+                                    <!--<label for=""></label>-->
+                                    <!--</div>-->
+                                    <!--选择全部和简历库重复的简历-->
+                                    <!--</td>-->
+                                    <!--<td></td>-->
+                                    <!--<td>-->
+                                    <!--<input class="btn btn-default" type="button" value="合并简历">-->
+                                    <!--</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                    <!--<td>-->
+                                    <!--<div class="checkbox checkbox-primary" style="display: inline-block;">-->
+                                    <!--<input class="check_list" type="checkbox" value="1">-->
+                                    <!--<label for=""></label>-->
+                                    <!--</div>-->
+                                    <!--智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                    <!--<td>-->
+                                    <!--<i class="fa fa-check-circle fa-sucess"></i>-->
+                                    <!--<span style="margin-right: 10px;">简历上传成功</span>-->
+                                    <!--<a href="#" target="_blank">查看简历</a>-->
+                                    <!--</td>-->
+
+                                    <!--<td>-->
+                                    <!--&lt;!&ndash;简历状态&ndash;&gt;-->
+                                    <!--<span class="label label-grey">预测信息不全</span>-->
+                                    <!--</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                    <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                    <!--<td>-->
+                                    <!--<i class="fa fa-check-circle fa-sucess"></i>-->
+                                    <!--<span style="margin-right: 10px;">简历上传成功</span>-->
+                                    <!--<a href="#" target="_blank">查看简历</a>-->
+                                    <!--</td>-->
+                                    <!--<td>-->
+                                    <!--&lt;!&ndash;简历状态&ndash;&gt;-->
+                                    <!--<span class="label label-grey">预测信息不全</span>-->
+                                    <!--</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                    <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                    <!--<td>-->
+                                    <!--<i class="fa fa-check-circle fa-sucess"></i>-->
+                                    <!--<span style="margin-right: 10px;">简历上传成功</span>-->
+                                    <!--<a href="#" target="_blank">查看简历</a>-->
+                                    <!--</td>-->
+                                    <!--<td>-->
+                                    <!--&lt;!&ndash;简历状态&ndash;&gt;-->
+                                    <!--<span class="label label-success">完整简历</span>-->
+                                    <!--</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                    <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                    <!--<td>-->
+                                    <!--<i class="fa fa-times-circle fa-error"></i>-->
+                                    <!--<span style="margin-right: 10px;">简历解析错误</span>-->
+                                    <!--<a href="#" target="_blank">查看已有简历</a></td>-->
+                                    <!--<td></td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                    <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                    <!--<td>-->
+                                    <!--<i class="fa fa-times-circle fa-error"></i>-->
+                                    <!--<span style="margin-right: 10px;">简历解析错误</span>-->
+                                    <!--<a href="#" target="_blank">查看已有简历</a></td>-->
+                                    <!--<td></td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                    <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                    <!--<td>-->
+                                    <!--<i class="fa fa-times-circle fa-error"></i>-->
+                                    <!--<span style="margin-right: 10px;">简历解析错误</span>-->
+                                    <!--<a href="#" target="_blank">查看已有简历</a></td>-->
+                                    <!--<td></td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                    <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                    <!--<td>-->
+                                    <!--<i class="fa fa-times-circle fa-error"></i>-->
+                                    <!--<span style="margin-right: 10px;">简历解析错误</span>-->
+                                    <!--<a href="#" target="_blank">查看已有简历</a></td>-->
+                                    <!--<td></td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                    <!--<td colspan="3" style="text-align: center;">-->
+                                    <!--<img src="__PUBLIC__/img/upload.png" class="" style="width: 20px;">-->
+                                    <!--<span class="">直接拖入文件即可上传</span>-->
+                                    <!--</td>-->
+                                    <!--</tr>-->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<script type="text/javascript" src="__PUBLIC__/js/uploadPreview.js"></script>
+<script src="__PUBLIC__/upload_selector/ssi-uploader.js"></script>
+<script type="text/javascript">
+    $('#ssi-upload').ssi_uploader({
+        url: '/index.php?m=background&a=upload',
+        maxFileSize: 100,
+        allowed: ['xls', 'xlsx']
+    });
+</script>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function(){
+
+        var i=0;
+        var j=0;
+        $(function(){
+
+            $("#uploadresumes").change(function eventStart(){
+                console.log("....."+j);
+                var ss =this.files; //获取当前选择的文件对象
+                for(var m=0;m<ss.length;m++){ //循环添加进度条
+                    efileName = ss[m].name ;
+                    if (ss[m].size> 1024 * 1024){
+                        sfileSize = (Math.round(ss[m].size /(1024 * 1024))).toString() + 'MB';
+                    }
+                    else{
+                        sfileSize = (Math.round(ss[m].size/1024)).toString() + 'KB';
+                    }
+                    if($(".filefooter").length>0){
+                        $(".filefooter").before('<tr class="'+m+'file"><td>'+efileName+'</td><td class="pro_status">上传中……</td><td><span class="label label-grey">预测信息不全</span></td></tr>');
+                    }else{
+                        $(".process_list").append(
+//                    "<li id="+m+"file><div class='progress'><div id="+m+"barj class='progressbar'></div></div><span class='filename'>"+efileName+"</span><span id="+m+"pps class='progressnum'>"+(sfileSize)+"</span></li>");
+                            '<tr class="'+m+'file"><td>'+efileName+'</td><td class="pro_status">上传中……</td><td><span class="label label-grey">预测信息不全</span></td></tr>'
+                        )
+                    }
+                }
+
+                if($(".filefooter").length>0){
+                    return;
+                }else{
+                    $(".process_list").append(
+                        '<tr class="filefooter"><td colspan="3" style="text-align: center;"><img src="__PUBLIC__/img/upload.png" class="" style="width: 20px;">\n' +
+                        '<span class="">直接拖入文件即可上传</span></td></tr>'
+                    )
+                }
+                $(".fileuploadd").hide();
+                sendAjax();
+                function sendAjax() {
+                    if(j>=ss.length)  //采用递归的方式循环发送ajax请求
+                    {
+                        $("#uploadresumes").val("");
+                        j=0;
+                        return;
+                    }
+                    var formData = new FormData();
+                    formData.append('files', ss[j]); //将该file对象添加到formData对象中
+                    $.ajax({
+                        url:'/index.php?m=background&a=upload',
+                        type:'POST',
+                        cache: false,
+                        data:{},//需要什么参数，自己配置
+                        data: formData,//文件以formData形式传入
+                        processData : false,
+                        //必须false才会自动加上正确的Content-Type
+                        contentType : false ,
+                        /*  beforeSend:beforeSend,//发送请求
+                         complete:complete,//请求完成
+                         */      xhr: function(){   //监听用于上传显示进度
+                            var xhr = $.ajaxSettings.xhr();
+                            if(onprogress && xhr.upload) {
+                                xhr.upload.addEventListener("progress" , onprogress, false);
+                                return xhr;
+                            }
+                        } ,
+                        success:function(data){
+                            console.log(j)
+                            $("."+j+"file").last().find(".pro_status").html('<i class="fa fa-check-circle fa-sucess"></i><span style="margin-right: 10px;">上传成功</span><a href="#" target="_blank">查看简历</a>');//移除进度条样式
+                            j++;
+                            sendAjax();
+                        },
+                        error:function(xhr){
+                            $("."+j+"file").last().find(".pro_status").html('<i class="fa fa-times-circle fa-error"></i><span style="margin-right: 10px;">简历解析错误</span><a href="#" target="_blank">查看已有简历</a>');
+                        }
+                    });
+                }
+            })
+            function onprogress(evt){
+                var loaded = evt.loaded;   //已经上传大小情况
+                var tot = evt.total;   //附件总大小
+                var per = Math.floor(100*loaded/tot); //已经上传的百分比
+                $(".filelist").find("#"+j+"pps").text(per +"%");
+                $(".filelist").find("#"+j+"barj").width(per+"%");
+            };
+
+            // box为被拖放的区域
+            var box=document.querySelector("#add_body");
+            box.addEventListener('dragover', function (e) {
+                e.preventDefault(); // 必须阻止默认事件
+            }, false);
+
+            box.addEventListener('drop', function (e) {
+                e.preventDefault(); // 阻止默认事件
+                var data = e.dataTransfer.files; //获取文件
+                if (data.length < 1) {
+                    return;  // 检测是否有文件拖拽到页面
+                }
+                console.log("长度"+e.dataTransfer.files.length);
+                for (var m = 0; m < e.dataTransfer.files.length; m++) {
+                    efileName =e.dataTransfer.files[m];
+                    if ($(".filefooter").length > 0) {
+                        $(".filefooter").before('<tr class="' + m + 'file"><td>' + efileName.name + '</td><td class="pro_status">上传中……</td><td><span class="label label-grey">预测信息不全</span></td></tr>');
+                    } else {
+                        $(".process_list").append(
+//                    "<li id="+m+"file><div class='progress'><div id="+m+"barj class='progressbar'></div></div><span class='filename'>"+efileName+"</span><span id="+m+"pps class='progressnum'>"+(sfileSize)+"</span></li>");
+                            '<tr class="' + m + 'file"><td>' + efileName.name + '</td><td class="pro_status">上传中……</td><td><span class="label label-grey">预测信息不全</span></td></tr>'
+                        )
+                    }
+                }
+
+                if($(".filefooter").length>0){
+                    return;
+                }else{
+                    $(".process_list").append(
+                        '<tr class="filefooter"><td colspan="3" style="text-align: center;"><img src="__PUBLIC__/img/upload.png" class="" style="width: 20px;">\n' +
+                        '<span class="">直接拖入文件即可上传</span></td></tr>'
+                    )
+                }
+                $(".fileuploadd").hide();
+                sendAjax1();
+                function sendAjax1() {
+                    console.log("daying"+e.dataTransfer.files);
+                    if(j>=e.dataTransfer.files.length)  //采用递归的方式循环发送ajax请求
+                    {
+                        $("#uploadresumes").val("");
+                        j=0;
+                        return;
+                    }
+                    var formData = new FormData();
+                    formData.append('files', e.dataTransfer.files[j], e.dataTransfer.files[j].name); //将该file对象添加到formData对象中
+                    console.log("添加的内容有："+formData);
+                    $.ajax({
+                        url:'/index.php?m=background&a=upload',
+                        type:'POST',
+                        cache: false,
+                        data:{},//需要什么参数，自己配置
+                        data: formData,//文件以formData形式传入
+                        processData : false,
+                        //必须false才会自动加上正确的Content-Type
+                        contentType : false ,
+                        /*  beforeSend:beforeSend,//发送请求
+                         complete:complete,//请求完成
+                         */      xhr: function(){   //监听用于上传显示进度
+                            var xhr = $.ajaxSettings.xhr();
+                            if(onprogress && xhr.upload) {
+                                xhr.upload.addEventListener("progress" , onprogress, false);
+                                return xhr;
+                            }
+                        } ,
+                        success:function(data){
+                            console.log(j)
+                            $("."+j+"file").last().find(".pro_status").html('<i class="fa fa-check-circle fa-sucess"></i><span style="margin-right: 10px;">上传成功</span><a href="#" target="_blank">查看简历</a>');//移除进度条样式
+                            j++;
+                            sendAjax1();
+                        },
+                        error:function(xhr){
+                            $("."+j+"file").last().find(".pro_status").html('<i class="fa fa-times-circle fa-error"></i><span style="margin-right: 10px;">简历解析错误</span><a href="#" target="_blank">查看已有简历</a>');
+                        }
+                    });
+                }
+            }, false);
+
+        })
+
+
+
+
+    });
+
+
+</script>
+
+<include file="Public:footer" />

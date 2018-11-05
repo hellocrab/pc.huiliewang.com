@@ -1,0 +1,502 @@
+<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+<style>
+    input{
+        vertical-align: inherit!important;
+    }
+    input[type='text']{
+        padding-left: 5px;
+    }
+    .msgbody{
+        width: 1217px;
+        height: 700px;
+        overflow-y: hidden;
+        margin: 0 auto;
+        overflow-x: hidden;
+        border-radius: 30px;
+    }
+    .header{
+        width: 1200px;
+        height: 200px;
+        background-color: rgb(56,53,119);
+        border-radius: 30px;
+        position: relative;
+        z-index: 1000;
+    }
+    .shadow{
+        display: block;
+        position: absolute;
+        top: 13px;
+        left: 22px;
+        z-index: -1;
+    }
+    .photo{
+        width: 120px;
+        height: 160px;
+        position: absolute;
+        left: 60px;
+        top: 40px;
+        overflow-y: hidden;
+    }
+    .hxrmsg{
+        width: 320px;
+        height: 130px;
+        position: absolute;
+        top: 60px;
+        left: 211px;
+    }
+    .hxrmsg>table{
+        width: 62%;
+    }
+    .hxrmsg>table>tbody>tr:nth-child(1)>td{
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .hxrmsg>table>tbody>tr:nth-child(2){
+        height: 25px;
+    }
+    .hxrmsg>table>tbody>tr:nth-child(2)>td{
+        position: relative;
+    }
+    .hxrmsg>table>tbody>tr:nth-child(2)>td>span{
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: lighter;
+        display: block;
+        position: absolute;
+        top:7px
+    }
+    .hxrmsg>table>tbody>tr:nth-child(n+3)>td{
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: lighter;
+    }
+    .sex-width{
+        width: 47px;
+    }
+    .caozuo{
+        width: 130px;
+        height: 40px;
+        position: absolute;
+        right: 67px;
+        top: 91px
+    }
+    .edit{
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
+    .delete{
+        width: 25px;
+        height: 32px;
+        position: absolute;
+        right: 6px;
+        cursor: pointer;
+    }
+    .closeimg{
+        position: absolute;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+    }
+    .close>img{
+        width: 58px;
+        height: 58px;
+    }
+    .body{
+        width: 1208px;
+        height: 470px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-top: 80px;
+        padding-left: 30px;
+        padding-right: 40px;
+    }
+    .bodyshow{
+        width: 1200px;
+        height: 1000px;
+    }
+    .bodyshow > .width-550-div:nth-child(2n){
+        margin-left: 30px;
+    }
+    .bodyshow > .width-550-div:nth-child(n+3){
+        margin-top: 30px;
+    }
+    .width-550-div{
+        width: 550px;
+        height: 300px;
+        padding-left: 30px;
+        padding-right: 35px;
+        border-radius: 30px;
+        /* border:1px solid rgba(207,205,205,0.4);
+         box-shadow:3px 3px 0 0 rgba(0,0,0,0.1);*/
+        background-image: url("./Public/img/detailcard.png");
+        background-size: 550px 312px;
+        z-index: 0;
+        position: relative;
+        float: left
+    }
+    .width-550-div > span:nth-child(1){
+        font-size: 18px;
+        color:#383577;
+        margin-top: 30px;
+        display: block;
+    }
+    .width-550-div > div:nth-child(2){
+        margin-top: 17px!important;
+    }
+    .width-550-div > div:nth-child(n+9){
+        float: right;
+        margin-top: -167px;
+        margin-right: -60px;
+    }
+    .width-550-div > div:nth-child(8){
+        float: right;
+        margin-top: -198px;
+        margin-right: -20px;
+    }
+    .lable-input{
+        margin-top: 13px;
+    }
+    .lable-input > label{
+        font-size: 15px;
+        color: #383577;
+    }
+    .lable-input > input[type='text']{
+        font-size: 15px;
+        color: #383577;
+        border:none;
+    }
+    .id-card-img{
+        width: 240px;
+        height: 150px;
+        position: absolute;
+        top: 75px;
+        right: 35px;
+    }
+    .msg-edit{
+        position: absolute;
+        right: 35px;
+        bottom: 35px;
+        outline: none;
+        border:none;
+        background-color: inherit;
+        cursor: pointer;
+    }
+    .width-100{
+        width: 100px;
+    }
+    .work-div{
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 9px;
+        border-radius: 30px;
+        width: 1130px;
+        height: 491px;
+        margin-top: 30px;
+        background-image: url("./Public/img/workbg.png");
+        background-position: 1148px 507px;
+        position: relative;
+    }
+    .work-div>span:nth-child(1){
+        font-size: 18px;
+        color:#383577;
+        display: block;
+        position: relative;
+        top: 21px;
+    }
+    .work-div>div:nth-child(2) > .lable-input{
+        width: 210px;
+    }
+    .work-div>div:nth-child(2){
+        margin-top: 34px;
+        width: 210px;
+        float: left;
+        position: relative;
+        height: 395px;
+    }
+    .work-div>div:nth-child(3){
+        width: 850px;
+        float:right;
+        min-height: 458px
+    }
+    .work-div>div:nth-child(1) > .lable-input:nth-child(2){
+        margin-top: 43px;
+    }
+    .work-div >div:nth-child(2)> .lable-input>input{
+        width: 120px;
+    }
+    .witness{
+        width: 270px;
+        height: 430px;
+        background-image: url("./Public/img/witnessbg.png");
+        background-position: 277px 443px;
+        display: inline-block;
+        position: relative;
+    }
+    .witness>span{
+        display: block;
+        color: #383577;
+        font-size: 15px;
+    }
+    .witness>.lable-input{
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+    .witness>.lable-input>label{
+        font-size: 12px;
+    }
+    .witness>.lable-input>input[type='text']{
+        font-size: 12px;
+    }
+    .witness-div{
+        overflow-x: hidden;
+        white-space: nowrap;
+        padding-left: 10px;
+    }
+    .witness-div>div:nth-child(2){
+        margin-left: 15px;
+    }
+    .witness-div>div:nth-child(3){
+        margin-left: 15px;
+    }
+    .work-div>img{
+        position: absolute;
+        top:240px;
+        cursor: pointer;
+        display: none;
+    }
+    .work-div>img:nth-child(4){
+        left: 225px;
+    }
+    .work-div>img:nth-child(5){
+        right: 35px;
+    }
+    /*滚动条*/
+    .body::-webkit-scrollbar {
+        width: 14px;
+        height: 14px;
+    }
+    .body::-webkit-scrollbar-track,
+    .body::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        border: 5px solid transparent;
+    }
+    .body::-webkit-scrollbar-track {
+        box-shadow: 2px 2px 5px rgba(0,0,0,.2) inset;
+    }
+    .body::-webkit-scrollbar-thumb {
+        min-height: 20px;
+        background-clip: content-box;
+        box-shadow: 0 0 0 5px rgba(0,0,0,.2) inset;
+    }
+    .body::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+    /*图标*/
+    .i-true:after{
+        content: '';
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        position: relative;
+        background-image: url("./Public/img/true.png");
+        background-size: 15px 15px;
+        left: 5px;
+    }
+    .i-wrong:after{
+        content: '';
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        position: relative;
+        background-image: url("./Public/img/wrong.png");
+        background-size: 15px 15px;
+        left: 5px;
+    }
+    .i-notsure:after{
+        content: '';
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        position: relative;
+        background-image: url("./Public/img/notsure.png");
+        background-size: 15px 15px;
+        left: 5px;
+    }
+</style>
+<div class="msgbody">
+    <div class="header">
+        <div class="photo">
+            <img src="Public/img/head.png" alt="">
+            <img src="Public/img/slownone.png" alt="">
+        </div>
+        <div class="hxrmsg">
+            <table>
+                <tbody>
+                <tr>
+                    <td colspan="2" class="name">
+                        Steve jobs
+                    </td>
+                </tr>
+                <tr>
+                    <td class="sex-width"><span>男</span></td>
+                    <td style="display: none"><span>1955/2/24</span></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="industry" style="height: 30px">计算机软件工程</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="jobs" style="height: 30px">CEO</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="caozuo">
+            <img class="edit" src="Public/img/rewrite.png" alt="">
+            <img class="delete" src="Public/img/Delete.png" alt="">
+        </div>
+        <div class="closeimg">
+            <img src="Public/img/close.png" alt="">
+        </div>
+        <img class="shadow" src="Public/img/shadow.png" alt="">
+    </div>
+    <div class="body">
+        <div class="bodyshow">
+            <div class="width-550-div bg">
+                <span>基本信息</span>
+                <div class="lable-input"><label>姓名：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
+                <div class="lable-input"><label>性别：</label><input type="text" readonly="readonly" value="男"></div>
+                <div class="lable-input"><label>出生时间：</label><input type="text" readonly="readonly" value="" style="width: 150px"></div>
+                <div class="lable-input" style="display: none"><label>联系电话：</label><input type="text" readonly="readonly" value="" style="width: 150px"></div>
+                <div class="lable-input" style="display: none"><label>邮箱：</label><input type="text" readonly="readonly" value=""></div>
+                <div class="lable-input"><label>身份证号：</label><input type="text" readonly="readonly" value="500382199801263573" style="width: 168px"></div>
+                <img class="id-card-img">
+                <input type="button" class="msg-edit" value="修改">
+            </div>
+            <!--<div class="width-550-div">
+                <span>合作信息</span>
+                <div class="lable-input"><label>目前公司：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
+                <div class="lable-input"><label>所属行业：</label><input type="text" readonly="readonly" value="男"></div>
+                <div class="lable-input"><label>职位：</label><input type="text" readonly="readonly" value="1955/2/24"></div>
+                <div class="lable-input"><label>年薪：</label><input type="text" readonly="readonly" value="18983160353"></div>
+                <div class="lable-input"><label>猎头顾问推荐公司：</label><input type="text" readonly="readonly" value="591013798@qq.com"></div>
+                <div class="lable-input"><label>顾问名：</label><input type="text" readonly="readonly" value="500382199801263573"></div>
+                <div class="lable-input"><label>协作人：</label><input type="text" readonly="readonly" value="呀哈哈" class="width-100"></div>
+                <input type="button" class="msg-edit" value="修改">
+            </div>-->
+            <div class="width-550-div edu">
+                <span>学历证书</span>
+                <div class="lable-input"><label>证书名称：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
+                <div class="lable-input"><label>毕业院校：</label><input type="text" readonly="readonly" value="男"><i class="i-notsure"></i></div>
+                <div class="lable-input"><label>学历类型：</label><input type="text" readonly="readonly" value="1955/2/24"><i class="i-wrong"></i></div>
+                <div class="lable-input"><label>专业：</label><input type="text" readonly="readonly" value="18983160353"><i class="i-true" style="position: relative;left: 30px"></i></div>
+                <div class="lable-input"><label>证书编号：</label><input type="text" readonly="readonly" value="591013798@qq.com"><i class="i-true"></i></div>
+                <div class="lable-input"><label>信息来源：</label><input type="text" readonly="readonly" value="500382199801263573"><i class="i-true"></i></div>
+                <div class="lable-input" style="margin-right: 12px"><label>入学时间：</label><input type="text" readonly="readonly" value="2018/01/01" style="width: 100px"><i class="i-true"></i></div>
+                <div class="lable-input" style="margin-right: 12px"><label>毕业时间：</label><input type="text" readonly="readonly" value="2018/01/01" style="width: 100px"><i class="i-true"></i></div>
+                <input type="button" class="msg-edit" value="修改">
+            </div>
+            <div class="width-550-div qc">
+                <span>资格证书</span>
+                <div class="lable-input" style="display: none"><label>证书名称：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
+                <div class="lable-input"><label>证书名称：</label><input type="text" readonly="readonly" value="男"><i class="i-notsure"></i></div>
+                <div class="lable-input"><label>证书编号：</label><input type="text" readonly="readonly" value="18983160353"><i class="i-true"></i></div>
+                <div class="lable-input"><label>获得时间：</label><input type="text" readonly="readonly" value="591013798@qq.com"><i class="i-true"></i></div>
+                <div class="lable-input"><label>有效时间：</label><input type="text" readonly="readonly" value="591013798@qq.com"><i class="i-true"></i></div>
+                <div class="lable-input"><label>信息来源：</label><input type="text" readonly="readonly" value="500382199801263573"><i class="i-true"></i></div>
+                <input type="button" class="msg-edit" value="修改">
+            </div>
+            <div style="clear: both"></div>
+            <div class="work-div work">
+                <span>工作经历</span>
+                <div>
+                    <span style="display: none"></span>
+                    <div class="lable-input"><label>公司名称：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 195px"><i class="i-true"></i></div>
+                    <div class="lable-input"><label>入职时间：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
+                    <div class="lable-input"><label>离职时间：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
+                    <div class="lable-input"><label>任职职位：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
+                    <input type="button" class="msg-edit" value="修改" style="top: -410px;left: 170px;">
+                </div>
+                <div class="witness-div">
+                    <div class="witness">
+                        <span>证明人1：</span>
+                        <div class="lable-input"><label>姓名：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
+                        <div class="lable-input"><label>岗位：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
+                        <div class="lable-input"><label>电话：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
+                        <div class="lable-input"><label>与候选人关系：</label><input type="text" readonly="readonly" value="下属" style="width: 150px" ></div>
+                        <div class="lable-input"><label>调查方式：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
+                        <!--<div class="lable-input"><label>证明人核实情况：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 143px"></div>-->
+                        <div class="lable-input"><label>候选人在职期间工作情况：</label><input type="text" readonly="readonly" value="Steve Jobs"style="width: 260px;display: block"></div>
+                        <div class="lable-input"><label>是否有违规违纪不良记录：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 260px;display: block"> </div>
+                        <div class="lable-input"><label>离职原因：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
+                        <div class="lable-input"><label>有否培训协议：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 100px"></div>
+                        <div class="lable-input"><label>有否竞争协议：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 100px"></div>
+                        <input type="button" class="msg-edit" value="修改">
+                    </div>
+                </div>
+                <img class="jt" src="Public/img/left.png" alt="left">
+                <img class="jt" src="Public/img/right.png"  alt="right">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('.witness-div').on('mouseenter mouseleave',function (event) {
+            if(event.type=='mouseenter'){
+                $(this).parent().children('img').fadeIn();
+            }else{
+                $(this).parent().children('img').fadeOut(2000);
+            }
+        });
+        $('.jt').on("click",function () {
+            var obj =$(this);
+            var length = obj.parent().children('.witness-div').children('.witness').length;
+            if(length>3){
+                if(obj.attr("alt")=="right"){
+                    obj.parent().children('.witness-div').children("div").animate({left:"-275px"});
+                }else{
+                    obj.parent().children('.witness-div').children("div").animate({left:"0"});
+                }
+            }else{
+                alert_crm('仅有'+length+'个证明人！');
+            }
+        });
+        $('.closeimg').on('click',function () {
+            $(this).parent().parent().parent().fadeOut();
+        });
+        $('.msg-edit').on('click',function () {
+            var obj =$(this);
+            var ac = obj.val();
+            var span  = obj.parent().children('span');
+            var text = obj.parent().children().find('input[type="text"]');
+            if(ac=='修改'){
+                text.removeAttr('readonly');
+                text.css({'border':'1px solid #e7eaec','height':'22px'});
+                obj.val('保存');
+            }else if(ac=='保存'){
+                var msg = new Array();
+                text.each(function () {
+                    msg.push($(this).val());
+                });
+                var data = {Id:span.attr('data-id'),type:span.attr('data-type'),data:msg};
+                $.ajax({
+                    url:'{:U("background/save_one")}',
+                    data:data,
+                    type:'post',
+                    success:function (success) {
+                        if(success==0){
+                            alert_crm("未修改！");
+                        }else if(success>0||success=='success'){
+                            alert_crm("修改成功!");
+                        }
+                        text.attr('readonly','readonly');
+                        text.css({'border':'none','height':'22px'});
+                        obj.val('修改');
+                    }
+                })
+            }
+        })
+    })
+</script>
