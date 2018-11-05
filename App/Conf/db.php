@@ -1,6 +1,6 @@
 <?php
 
-if (strpos($_SERVER['SERVER_ADDR'], '192.168')) {
+if (strpos($_SERVER['SERVER_ADDR'], '192.168') !== FALSE) {
     return array(
         'DB_TYPE' => 'mysqli',
         'DB_HOST' => 'localhost',
