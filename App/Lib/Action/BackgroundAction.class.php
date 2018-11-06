@@ -957,7 +957,7 @@ class BackgroundAction extends Action
             $id = I('post.');
             if((int)$id['Id']){
                 $exBackground = M('external_background');
-                $bg = $exBackground->field('name,jobs,tocompany,industry,id_pic_src,bz')->where($id)->find();
+                $bg = $exBackground->field('name,jobs,tocompany,industry,id_pic_src,bz,idnumber')->where($id)->find();
                 $exBackgroundEdu = M('external_background_edu');
                 $edu = $exBackgroundEdu->where('c_id ='.$id['Id'])->field('c_id',true)->select();
                 $exBackgroundQc = M('external_background_qc');
