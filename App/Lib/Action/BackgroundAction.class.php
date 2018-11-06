@@ -397,8 +397,8 @@ class BackgroundAction extends Action
     //word 导出
     function readyOutPutt(){
 
-        require_once __DIR__ . "/../../../vendor/phpoffice/phpword/bootstrap.php";
-        include_once __DIR__ . "/../../../vender/phpoffice/phpword/samples/Sample_Header.php";
+        require_once  "/vendor/phpoffice/phpword/bootstrap.php";
+        include_once  "/vender/phpoffice/phpword/samples/Sample_Header.php";
 
         //取出当前id的所有信息
         $get = I("get.ids");
