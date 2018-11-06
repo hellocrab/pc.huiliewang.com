@@ -1107,6 +1107,10 @@ class BackgroundAction extends Action
                 $exBackground->rollback();
             }
         }else{
+            //获取账户,,
+            $user_id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : session('user_id');
+            $account = M('user')->where(array('user_id'=>intval($user_id)))->getField('name');
+            $this->assign('account',$account);
             $this->display();
         }
     }
