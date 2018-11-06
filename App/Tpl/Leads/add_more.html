@@ -1,0 +1,750 @@
+<include file="Public:header" />
+<link rel="stylesheet" href="__PUBLIC__/css/class.public.css" />
+<link rel="stylesheet" href="__PUBLIC__/upload_selector/ssi-uploader.css" />
+<script type="text/javascript" src="__PUBLIC__/js/job.cache.js"></script>
+<style>
+    body{overflow-y:hidden; }
+    #main_pic_prev{width: 120px;height: 120px;border: 1px dashed #d3d3d6;}
+    .add_body_title{
+        margin:15px auto 30px auto;
+    }
+    .form-horizontal .control-label{
+        text-align: right;
+    }
+    .fileinput-button1{
+        position: relative;
+        overflow: hidden;
+    }
+    .note-codable{
+        display: none;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 0;
+        font-family: Menlo,Monaco,monospace,sans-serif;
+        font-size: 14px;
+        color: #ccc;
+        background-color: #222;
+        border: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        box-shadow: none;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+        resize: none;
+    }
+    .timerinput{
+        width:120px; display:inline;height: 25px;background: #ffffff !important;
+    }
+    .ssi-removeBtn{
+        background: none !important;
+        border: none;
+        color: #cf5144;
+    }
+</style>
+<script type="text/javascript" src="__PUBLIC__/js/PCASClass.js" ></script>
+<link rel="stylesheet" href="__PUBLIC__/css/jquery.fileupload.css" type="text/css" />
+<script>
+    $(function(){
+        $(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+        $(window).resize(function(){
+            $(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+        })
+    })
+</script>
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <style>
+                    table tbody tr{cursor:move;}
+                    .active {color: #000;}
+                    .nav.nav-tabs-left li{width:100%;}
+                    .nav-tabs-left>li.active>a{border-top:white;color: #19aa8d !important;background-color:#fff;}
+
+                    /*主要样式*/
+                    .subNavBox{width:100%;margin-top:0px;margin-bottom:50px;}
+                    .subNav{
+                        cursor:pointer;
+                        font-size:14px;
+                        color:#375264;
+                        line-height:40px;
+                        padding-left:10px;
+                        /*background:url(/Public/img/jiantou1.jpg) no-repeat;background-position:95% 50%*/
+                    }
+                    .subNav_text{
+                        cursor:pointer;
+                        font-size:14px;
+                        color:#375264;
+                        line-height:40px;
+                        padding-left:10px;
+                        /*background:url(/Public/img/jiantou1.jpg) no-repeat;background-position:95% 50%*/
+                    }
+                    .subNavBox ul{margin-bottom:18px;}
+                    .subNav:hover{color:#375264;}
+                    .currentDd{color:#375264}
+                    /*.currentDt{background-image:url(/Public/img/jiantou.jpg);}*/
+                    .navContent{list-style: none;display: none;padding-left: 13px;}
+                    .navContent li a{display:block;width:100%;height:32px;text-align:left;font-size:14px;line-height:32px;color:#75899D}
+                    .li_text{padding-left:10px;width: 100%;float:left;line-height:32px;margin-bottom:3px;}
+                    .li_text:hover{background-color:#f5f5f5;}
+                    .li_text_active{float:left;padding-left:10px;background-color:#f5f5f5;width: 100%;border-left:2px solid #03a9f4;line-height:32px;margin-bottom:3px;color:#03a9f4;font-weight:500}
+                </style>
+                <script type="text/javascript">
+                    $(function(){
+                        $("#left_height").height(window.innerHeight-$("#left_height").offset().top-32);
+                        $("#right_height").height(window.innerHeight-$("#right_height").offset().top-50);
+                        $(window).resize(function(){
+                            $("#left_height").height(window.innerHeight-$("#left_height").offset().top-32);
+                            $("#right_height").height(window.innerHeight-$("#right_height").offset().top-50);
+                        });
+                    })
+                </script>
+                <div class="col-sm-2 ibox-title" id="left_height" style="background-color: rgb(255, 255, 255); height: 858.766px;">
+                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;"><div class="full-height-scroll" style="overflow: hidden; width: auto; height: 100%;">
+                        <div class="subNavBox">
+                            <div rel="leads" class="subNav currentDd currentDt">业绩数据分析</div>
+                            <ul class="navContent" rel="leads" style="display:block;margin-bottom:0px;">
+                                <li>
+                                    <a class="color1 " href="/index.php?m=leads&amp;a=analytics"><span class="li_text">员工业绩分析</span></a>
+                                </li>
+
+                            </ul>
+                            <div rel="leads" class="subNav currentDd currentDt">项目数据分析</div>
+                            <ul class="navContent" rel="leads" style="display:block;margin-bottom:0px;">
+                                <li>
+                                    <a class="color1 " href="/index.php?m=data_analysis&amp;a=business"><span class="li_text">员工项目进展分析</span></a>
+                                </li>
+                                <!--<li >-->
+                                <!--<a class="color1 " href="/index.php?m=customer&a=analytics&content_id=1"><span class="li_text">员工项目进展分析</span></a>-->
+                                <!--</li>-->
+                            </ul>
+                            <div rel="business" class="subNav currentDd currentDt">自定义数据分析</div>
+                            <ul class="navContent" style="display:block">
+                                <li>
+                                    <a class="" href="/index.php?m=data_analysis&amp;a=achievement"><span class="li_text">业绩自定义分析</span></a>
+
+                                </li>
+                                <li>
+                                    <!--<a class="" href="/index.php?m=business&a=analytics&content_id=3"><span class="li_text">客户自定义分析</span></a>-->
+                                    <a class="" href="/index.php?m=data_analysis&amp;a=customer"><span class="li_text">客户自定义分析</span></a>
+                                </li>
+                                <li>
+                                    <a class="" href="/index.php?m=data_analysis&amp;a=project"><span class="li_text">项目自定义分析</span></a>
+                                    <!--<a class="" href="/index.php?m=business&a=analytics&content_id=8"><span class="li_text">项目自定义分析</span></a>-->
+                                </li>
+                                <li>
+                                    <a class="" href="/index.php?m=data_analysis&amp;a=ispresent"><span class="li_text">到场数自定义分析</span></a>
+                                </li>
+                                <li>
+                                    <a class="" href="/index.php?m=data_analysis&amp;a=resume"><span class="li_text">简历自定义分析</span></a>
+                                    <!--<a class="" href="/index.php?m=business&a=analytics&content_id=10"><span class="li_text">简历自定义分析</span></a>-->
+                                </li>
+                            </ul>
+                            <div rel="business" class="subNav currentDd currentDt">趋势数据分析</div>
+                            <ul class="navContent" style="display:block">
+                                <!--<li >-->
+                                <!--<a class="" href="/index.php?m=business&a=analytics&content_id=1"><span class="li_text">项目漏斗分析</span></a>-->
+                                <!--</li>-->
+                                <!--<li >-->
+                                <!--<a class="" href="/index.php?m=business&a=analytics&content_id=2"><span class="li_text">项目漏斗分析</span></a>-->
+                                <!--</li>-->
+                                <li>
+                                    <a class="" href="/index.php?m=data_analysis&amp;a=projecttrend"><span class="li_text">趋势分析（日）</span></a>
+                                    <!--<a class="" href="/index.php?m=business&a=analytics&content_id=4"><span class="li_text">趋势分析（日）</span></a>-->
+                                </li>
+                                <li>
+                                    <a class="" href="/index.php?m=data_analysis&amp;a=weektrend"><span class="li_text">趋势分析（周）</span></a>
+                                    <!--<a class="" href="/index.php?m=business&a=analytics&content_id=5"><span class="li_text">趋势分析（周）</span></a>-->
+                                </li>
+                                <li>
+                                    <a class="" href="/index.php?m=data_analysis&amp;a=monthtrend"><span class="li_text">趋势分析（月）</span></a>
+                                    <!--<a class="" href="/index.php?m=business&a=analytics&content_id=6"><span class="li_text">趋势分析（月）</span></a>-->
+                                </li>
+                            </ul>
+                            <div rel="business" class="subNav currentDd currentDt">客户结果分析</div>
+                            <ul class="navContent" style="display:block">
+                                <li>
+                                    <a class="" href="/index.php?m=contract&amp;a=analytics&amp;content_id=1"><span class="li_text">合同金额统计</span></a>
+                                </li>
+                                <li>
+                                    <a class="" href="/index.php?m=contract&amp;a=analytics&amp;content_id=2"><span class="li_text">回款金额统计</span></a>
+                                </li>
+                                <li>
+                                    <a class="" href="/index.php?m=contract&amp;a=analytics&amp;content_id=3"><span class="li_text">合同金额TOP10</span></a>
+                                </li>
+                            </ul>
+                            <div rel="business" class="subNav currentDd currentDt">业绩管理分析</div>
+                            <ul class="navContent" style="display:block">
+                                <li>
+                                    <a class="color1 " href="/index.php?m=contract&amp;a=collection"><span class="li_text">业绩目标</span></a>
+                                </li>
+                                <li>
+                                    <a class="color1 li_text_active" href="/index.php?m=leads&amp;a=departmentrate"><span class="li_text">部门晋升业绩达成率</span></a>
+                                </li>
+                            </ul>
+                            <!--<div rel="log" class="subNav currentDd currentDt">员工办公统计</div>-->
+                            <!--<ul class="navContent" style="display:block">-->
+                            <!--<li >-->
+                            <!--<a class="" href="/index.php?m=examine&a=analytics&content_id=1"><span class="li_text">审批统计</span></a>-->
+                            <!--</li>-->
+                            <!--<li >-->
+                            <!--<a  href="/index.php?m=kaoqin&a=record"><span class="li_text">考勤记录</span></a>-->
+                            <!--</li>-->
+                            <!--<li >-->
+                            <!--<a  href="/index.php?m=kaoqin&a=analytics"><span class="li_text">考勤统计</span></a>-->
+                            <!--</li>-->
+                            <!--</ul>-->
+                            <!--<div rel="log" class="subNav currentDd currentDt">员工日志分析</div>-->
+                            <!--<ul class="navContent" style="display:block">-->
+                            <!--<li >-->
+                            <!--<a class="" href="/index.php?m=log&a=analytics&content_id=1"><span class="li_text">工作日志</span></a>-->
+                            <!--</li>-->
+                            <!--<li >-->
+                            <!--<a class="" href="/index.php?m=log&a=analytics&content_id=2"><span class="li_text">沟通日志</span></a>-->
+                            <!--</li>-->
+                            <!---->
+                            <!--</ul>-->
+
+
+                            <!--<div rel="leads" class="subNav currentDd currentDt">线索数据分析</div>-->
+                            <!--<ul class="navContent" rel="leads" style="display:block;margin-bottom:0px;">-->
+                            <!--<li >-->
+                            <!--<a class="color1 li_text_active" href="/index.php?m=leads&a=analytics"><span class="li_text">员工线索分析</span></a>-->
+                            <!--</li>-->
+                            <!--</ul>-->
+                            <!--<div rel="customer" class="subNav currentDd currentDt">客户数据分析</div>
+                            <ul class="navContent" style="display:block">
+                                <li >
+                                    <a class="color1 " href="/index.php?m=customer&a=analytics&content_id=1"><span class="li_text">员工客户分析</span></a>
+                                </li>
+                                <li >
+                                    <a class="" href="/index.php?m=customer&a=analytics&content_id=2"><span class="li_text">客户自定义分析</span></a>
+                                </li>
+                                 <li >
+                                    <a class="" href="/index.php?m=customer&a=city_analytics&content_id=3"><span class="li_text">客户地区统计分析</span></a>
+                                </li>
+                            </ul>-->
+                            <!--<div rel="business" class="subNav currentDd currentDt">客户过程分析</div>
+                            <ul class="navContent" style="display:block">
+                                <li >
+                                    <a class="" href="/index.php?m=business&a=analytics&content_id=1"><span class="li_text">员工商机分析</span></a>
+                                </li>
+                                <li >
+                                    <a class="" href="/index.php?m=business&a=analytics&content_id=2"><span class="li_text">销售漏斗分析</span></a>
+                                </li>
+                                <li >
+                                    <a class="" href="/index.php?m=business&a=analytics&content_id=3"><span class="li_text">商机金额分布统计</span></a>
+                                </li>
+                                <li >
+                                    <a class="" href="/index.php?m=business&a=analytics&content_id=4"><span class="li_text">商机趋势分析（日）</span></a>
+                                </li>
+                                <li >
+                                    <a class="" href="/index.php?m=business&a=analytics&content_id=5"><span class="li_text">商机趋势分析（周）</span></a>
+                                </li>
+                                <li >
+                                    <a class="" href="/index.php?m=business&a=analytics&content_id=6"><span class="li_text">商机趋势分析（月）</span></a>
+                                </li>
+                            </ul>
+                            <div rel="finance" class="subNav currentDd currentDt" style="display: none;">客户结果分析</div>
+                            <ul class="navContent" style="display:none">
+                                <li >
+                                    <a class="" href="/index.php?m=contract&a=analytics&content_id=1"><span class="li_text">合同金额统计</span></a>
+                                </li>
+                                <li >
+                                    <a class="" href="/index.php?m=contract&a=analytics&content_id=2"><span class="li_text">回款金额统计</span></a>
+                                </li>
+                                <li >
+                                    <a class="" href="/index.php?m=contract&a=analytics&content_id=3"><span class="li_text">合同金额TOP10</span></a>
+                                </li>
+                            </ul>-->
+                            <!--<div rel="contract" class="subNav currentDd currentDt">业绩管理分析</div>-->
+                            <!--<ul class="navContent" rel="contract" style="display:block;margin-bottom:0px;">-->
+                            <!--<li >-->
+                            <!--<a class="color1 " href="/index.php?m=contract&a=collection"><span class="li_text">业绩目标</span></a>-->
+                            <!--</li>-->
+                            <!--</ul>-->
+                            <!-- <div rel="product" class="subNav currentDd currentDt">产品销量分析</div>
+                            <ul class="navContent" style="display:block">
+                                <li >
+                                    <a class="" href="/index.php?m=product&a=analytics&content_id=1"><span class="li_text">产品统计</span></a>
+                                </li>
+                                <li >
+                                    <a class="" href="/index.php?m=product&a=analytics&content_id=2"><span class="li_text">销量TOP20</span></a>
+                                </li>
+                                <li >
+                                    <a class="" href="/index.php?m=product&a=analytics&content_id=3"><span class="li_text">销售额统计</span></a>
+                                </li>
+                            </ul> -->
+
+
+                        </div>
+                    </div><div class="slimScrollBar" style="background: rgb(153, 153, 153); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 836px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                </div>
+                <script type="text/javascript">
+                    //高级筛选
+                    $("#dialog-advance_search").dialog({
+                        autoOpen: false,
+                        modal: true,
+                        width: 600,
+                        maxHeight: 450,
+                        position: ["center",100],
+                        buttons: {
+                            "确定": function () {
+                                var select_role = 0;
+                                var arys = new Array();
+                                var type_id = $('#type_id').val();
+                                var content_id = $('#content_id').val();
+                                $('#types_id').val(type_id);
+                                $('#contents_id').val(content_id);
+                                $('#advance_search_form').submit();
+                                return true;
+                            },
+                            "取消": function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+
+                    function changeRole(){
+                        department_id = $("#department option:selected").val();
+                        $.ajax({
+                            type:'get',
+                            url:'index.php?m=user&a=getrolebydepartment&department_id='+department_id,
+                            async:true,
+                            success:function(data){
+                                options = '<option value="all">全部</option>';
+                                if(data.data != null){
+                                    $.each(data.data, function(k, v){
+                                        options += '<option value="'+v.role_id+'">'+v.role_name+"-"+v.user_name+'</option>';
+                                    });
+                                }
+                                $("#role").html(options);
+                            },
+                            dataType:'json'});
+                    }
+                    // 	// </script>
+                <input type="hidden" id="content_id" value="0">
+                <div class="col-lg-10 col-md-10">
+                    <div class="ibox-content" style="padding-bottom:10px;border-bottom:none;">
+                        <form class="form-group" method="get" style="margin-bottom: 0px;">
+                            <input type="hidden" name="m" value="contract">
+                            <input type="hidden" name="a" value="collection">
+                            <div class="row" style="height: 45px;">
+                                <div class="col-lg-4">
+                                    <div class="pull-left">
+										<span style="font-size: 18px;color: #000;">
+											部门业绩达成率
+										</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="pull-right">
+                                        <div class="pull-left" style="margin-right: 15px;line-height: 40px;">
+                                            <a href="{:U('leads/departmentrate')}">返回</a> |
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ibox-content" id="right_height" style="border-top: none; padding-top: 0px; height: 766.766px;">
+                        <!--职位类别start-->
+                        <div class="sPopupDiv none" id="jobdiv" style="float:left;"></div>
+                        <!--职位类别end-->
+                        <div class="wrapper wrapper-content animated fadeIn" style="padding: 0;border: none">
+                            <form class="form-horizontal" id="form" role="form" action="{:U('product/add')}" method="post" enctype="multipart/form-data">
+                                <input type='hidden' name="r" <present name="r">value="{$r}"</present>/>
+                                <input type='hidden' name="module" <present name="r">value="{$module}"</present>/>
+                                <input type='hidden' name="id" <present name="r">value="{$model_id}"</present>/>
+                                <div class="ibox-content add_body" id="add_body" style="border:none;max-height: 750px">
+                                    <div class="row">
+                                        <div class="col-md-12 add_body" >
+                                            <div class="full-height-scroll">
+                                                <div class="row" >
+                                                    <div class="col-md-12 add_body_title">
+                                                        <div class="all-inline">
+                                                            <span class="sq-tag"></span>
+                                                            <div class="text-tag">
+                                                                <span>批量导入部门业绩信息</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <!--<span>请选择年份：</span>
+                                                        <span class="crm-salestarget-setting-year">
+                                                            <select name="year" class="select_years" id="year">
+                                                                <option value="2015">2015</option>
+                                                                <option value="2016">2016</option>
+                                                                <option value="2017">2017</option>
+                                                                <option value="2018" selected="selected">2018</option>
+                                                                <option value="2019">2019</option>
+                                                                <option value="2020">2020</option>
+                                                                <option value="2021">2021</option>
+                                                                <option value="2022">2022</option>
+                                                                <option value="2023">2023</option>
+                                                                <option value="2024">2024</option>
+                                                                <option value="2025">2025</option>
+                                                                <option value="2026">2026</option>
+                                                                <option value="2027">2027</option>
+                                                                <option value="2028">2028</option>
+                                                                <option value="2029">2029</option>
+                                                                <option value="2030">2030</option>
+                                                                <option value="2031">2031</option>
+                                                                <option value="2032">2032</option>
+                                                                <option value="2033">2033</option>
+                                                                <option value="2034">2034</option>
+                                                                <option value="2035">2035</option>
+                                                                <option value="2036">2036</option>
+                                                                <option value="2037">2037</option>
+                                                                <option value="2038">2038</option>
+                                                                <option value="2039">2039</option>
+                                                                <option value="2040">2040</option>
+                                                                <option value="2041">2041</option>
+                                                                <option value="2042">2042</option>
+                                                                <option value="2043">2043</option>
+                                                                <option value="2044">2044</option>
+                                                                <option value="2045">2045</option>
+                                                                <option value="2046">2046</option>
+                                                                <option value="2047">2047</option>
+                                                                <option value="2048">2048</option>
+                                                                <option value="2049">2049</option>
+                                                                <option value="2050">2050</option>
+                                                            </select>
+                                                        </span>-->
+                                                    </div>
+                                                    <!-- <div class="col-md-11 add_body_form" style="margin-left:15px;">
+                                                         <div class="form-group">
+                                                             <label class="col-md-2 control-label" style="text-align: left;">加入项目：</label>
+                                                             <div class="col-md-4">
+                                                                 <select class="form-control required" id="standard" name="standard" aria-required="true">
+                                                                     <option value="">请输入项目名称或客户名称搜索(默认显示最近20条)</option>
+                                                                     <option value=""></option>
+                                                                 </select>
+                                                                 <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                                             </div>
+                                                         </div>
+                                                     </div>-->
+                                                    <div class="col-md-12">
+                                                        <span style="float: right;margin-top: 10px;margin-right: 60%;color: #cf5144;">支持xls、xlsx格式的背调表，一次最多上传1份,所上传的表请严格按照格式录入信息，上传年分自动录入</span>
+                                                        <input type="file" multiple id="ssi-upload"/>
+                                                    </div>
+                                                    <div class="col-md-12" style="background: #f5f5f5;height: 50px;line-height: 50px;display: none;">
+                                                        <div class="btn btn-primary fileinput-button" style="width: 100px;margin-left: 10px;">
+                                                            <span>+上传文件</span>
+                                                            <input type="file" name="files" id="uploadresumes" multiple accept=""/>
+                                                        </div>
+                                                        <span style="margin-left: 10px;">支持xls、xlsx格式的背调表，一次最多上传1份,所上传的背调表请严格按照格式录入信息</span>
+                                                        <div class="pull-right" style="margin-right: 10px;">
+                                                            <span>上传成功(&nbsp;<b class="success">0</b>&nbsp;)份</span>
+                                                            <span style="color: #fa7252;margin-left: 10px;">失败(&nbsp;<b class="error">0</b>&nbsp;)份</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 fileuploadd" style="display: none">
+                                                        <img src="__PUBLIC__/img/upload.png" class="uploadimg">
+                                                        <div class="uploadzi">直接拖入文件即可上传</div>
+                                                    </div>
+                                                    <div class="col-md-12" style="display: none;">
+                                                        <table class="table table-hover process_list" style="margin-top: 20px;">
+                                                            <!--<tr class="hebing">-->
+                                                            <!--<td>-->
+                                                            <!--<div class="checkbox checkbox-primary" style="display: inline-block;">-->
+                                                            <!--<input class="check_all" type="checkbox" value="1">-->
+                                                            <!--<label for=""></label>-->
+                                                            <!--</div>-->
+                                                            <!--选择全部和简历库重复的简历-->
+                                                            <!--</td>-->
+                                                            <!--<td></td>-->
+                                                            <!--<td>-->
+                                                            <!--<input class="btn btn-default" type="button" value="合并简历">-->
+                                                            <!--</td>-->
+                                                            <!--</tr>-->
+                                                            <!--<tr>-->
+                                                            <!--<td>-->
+                                                            <!--<div class="checkbox checkbox-primary" style="display: inline-block;">-->
+                                                            <!--<input class="check_list" type="checkbox" value="1">-->
+                                                            <!--<label for=""></label>-->
+                                                            <!--</div>-->
+                                                            <!--智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                                            <!--<td>-->
+                                                            <!--<i class="fa fa-check-circle fa-sucess"></i>-->
+                                                            <!--<span style="margin-right: 10px;">简历上传成功</span>-->
+                                                            <!--<a href="#" target="_blank">查看简历</a>-->
+                                                            <!--</td>-->
+
+                                                            <!--<td>-->
+                                                            <!--&lt;!&ndash;简历状态&ndash;&gt;-->
+                                                            <!--<span class="label label-grey">预测信息不全</span>-->
+                                                            <!--</td>-->
+                                                            <!--</tr>-->
+                                                            <!--<tr>-->
+                                                            <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                                            <!--<td>-->
+                                                            <!--<i class="fa fa-check-circle fa-sucess"></i>-->
+                                                            <!--<span style="margin-right: 10px;">简历上传成功</span>-->
+                                                            <!--<a href="#" target="_blank">查看简历</a>-->
+                                                            <!--</td>-->
+                                                            <!--<td>-->
+                                                            <!--&lt;!&ndash;简历状态&ndash;&gt;-->
+                                                            <!--<span class="label label-grey">预测信息不全</span>-->
+                                                            <!--</td>-->
+                                                            <!--</tr>-->
+                                                            <!--<tr>-->
+                                                            <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                                            <!--<td>-->
+                                                            <!--<i class="fa fa-check-circle fa-sucess"></i>-->
+                                                            <!--<span style="margin-right: 10px;">简历上传成功</span>-->
+                                                            <!--<a href="#" target="_blank">查看简历</a>-->
+                                                            <!--</td>-->
+                                                            <!--<td>-->
+                                                            <!--&lt;!&ndash;简历状态&ndash;&gt;-->
+                                                            <!--<span class="label label-success">完整简历</span>-->
+                                                            <!--</td>-->
+                                                            <!--</tr>-->
+                                                            <!--<tr>-->
+                                                            <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                                            <!--<td>-->
+                                                            <!--<i class="fa fa-times-circle fa-error"></i>-->
+                                                            <!--<span style="margin-right: 10px;">简历解析错误</span>-->
+                                                            <!--<a href="#" target="_blank">查看已有简历</a></td>-->
+                                                            <!--<td></td>-->
+                                                            <!--</tr>-->
+                                                            <!--<tr>-->
+                                                            <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                                            <!--<td>-->
+                                                            <!--<i class="fa fa-times-circle fa-error"></i>-->
+                                                            <!--<span style="margin-right: 10px;">简历解析错误</span>-->
+                                                            <!--<a href="#" target="_blank">查看已有简历</a></td>-->
+                                                            <!--<td></td>-->
+                                                            <!--</tr>-->
+                                                            <!--<tr>-->
+                                                            <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                                            <!--<td>-->
+                                                            <!--<i class="fa fa-times-circle fa-error"></i>-->
+                                                            <!--<span style="margin-right: 10px;">简历解析错误</span>-->
+                                                            <!--<a href="#" target="_blank">查看已有简历</a></td>-->
+                                                            <!--<td></td>-->
+                                                            <!--</tr>-->
+                                                            <!--<tr>-->
+                                                            <!--<td>智联招聘_陈壮鹏_中文_20171225_62975329.doc</td>-->
+                                                            <!--<td>-->
+                                                            <!--<i class="fa fa-times-circle fa-error"></i>-->
+                                                            <!--<span style="margin-right: 10px;">简历解析错误</span>-->
+                                                            <!--<a href="#" target="_blank">查看已有简历</a></td>-->
+                                                            <!--<td></td>-->
+                                                            <!--</tr>-->
+                                                            <!--<tr>-->
+                                                            <!--<td colspan="3" style="text-align: center;">-->
+                                                            <!--<img src="__PUBLIC__/img/upload.png" class="" style="width: 20px;">-->
+                                                            <!--<span class="">直接拖入文件即可上传</span>-->
+                                                            <!--</td>-->
+                                                            <!--</tr>-->
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="__PUBLIC__/js/uploadPreview.js"></script>
+<script src="__PUBLIC__/upload_selector/ssi-uploader.js"></script>
+<script type="text/javascript">
+    $('#ssi-upload').ssi_uploader({
+        url: '/index.php?m=leads&a=uploadTarget&year='+$('.select_years').val(),
+        maxFileSize: 100,
+        allowed: ['xls', 'xlsx']
+    });
+</script>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function(){
+
+        var i=0;
+        var j=0;
+        $(function(){
+
+            $("#uploadresumes").change(function eventStart(){
+                console.log("....."+j);
+                var ss =this.files; //获取当前选择的文件对象
+                for(var m=0;m<ss.length;m++){ //循环添加进度条
+                    efileName = ss[m].name ;
+                    if (ss[m].size> 1024 * 1024){
+                        sfileSize = (Math.round(ss[m].size /(1024 * 1024))).toString() + 'MB';
+                    }
+                    else{
+                        sfileSize = (Math.round(ss[m].size/1024)).toString() + 'KB';
+                    }
+                    if($(".filefooter").length>0){
+                        $(".filefooter").before('<tr class="'+m+'file"><td>'+efileName+'</td><td class="pro_status">上传中……</td><td><span class="label label-grey">预测信息不全</span></td></tr>');
+                    }else{
+                        $(".process_list").append(
+//                    "<li id="+m+"file><div class='progress'><div id="+m+"barj class='progressbar'></div></div><span class='filename'>"+efileName+"</span><span id="+m+"pps class='progressnum'>"+(sfileSize)+"</span></li>");
+                            '<tr class="'+m+'file"><td>'+efileName+'</td><td class="pro_status">上传中……</td><td><span class="label label-grey">预测信息不全</span></td></tr>'
+                        )
+                    }
+                }
+
+                if($(".filefooter").length>0){
+                    return;
+                }else{
+                    $(".process_list").append(
+                        '<tr class="filefooter"><td colspan="3" style="text-align: center;"><img src="__PUBLIC__/img/upload.png" class="" style="width: 20px;">\n' +
+                        '<span class="">直接拖入文件即可上传</span></td></tr>'
+                    )
+                }
+                $(".fileuploadd").hide();
+                sendAjax();
+                function sendAjax() {
+                    if(j>=ss.length)  //采用递归的方式循环发送ajax请求
+                    {
+                        $("#uploadresumes").val("");
+                        j=0;
+                        return;
+                    }
+                    var formData = new FormData();
+                    formData.append('files', ss[j]); //将该file对象添加到formData对象中
+                    $.ajax({
+                        url:'/index.php?m=background&a=upload',
+                        type:'POST',
+                        cache: false,
+                        data:{},//需要什么参数，自己配置
+                        data: formData,//文件以formData形式传入
+                        processData : false,
+                        //必须false才会自动加上正确的Content-Type
+                        contentType : false ,
+                        /*  beforeSend:beforeSend,//发送请求
+                         complete:complete,//请求完成
+                         */      xhr: function(){   //监听用于上传显示进度
+                            var xhr = $.ajaxSettings.xhr();
+                            if(onprogress && xhr.upload) {
+                                xhr.upload.addEventListener("progress" , onprogress, false);
+                                return xhr;
+                            }
+                        } ,
+                        success:function(data){
+                            console.log(j)
+                            $("."+j+"file").last().find(".pro_status").html('<i class="fa fa-check-circle fa-sucess"></i><span style="margin-right: 10px;">上传成功</span><a href="#" target="_blank">查看简历</a>');//移除进度条样式
+                            j++;
+                            sendAjax();
+                        },
+                        error:function(xhr){
+                            $("."+j+"file").last().find(".pro_status").html('<i class="fa fa-times-circle fa-error"></i><span style="margin-right: 10px;">简历解析错误</span><a href="#" target="_blank">查看已有简历</a>');
+                        }
+                    });
+                }
+            })
+            function onprogress(evt){
+                var loaded = evt.loaded;   //已经上传大小情况
+                var tot = evt.total;   //附件总大小
+                var per = Math.floor(100*loaded/tot); //已经上传的百分比
+                $(".filelist").find("#"+j+"pps").text(per +"%");
+                $(".filelist").find("#"+j+"barj").width(per+"%");
+            };
+
+            // box为被拖放的区域
+            var box=document.querySelector("#add_body");
+            box.addEventListener('dragover', function (e) {
+                e.preventDefault(); // 必须阻止默认事件
+            }, false);
+
+            box.addEventListener('drop', function (e) {
+                e.preventDefault(); // 阻止默认事件
+                var data = e.dataTransfer.files; //获取文件
+                if (data.length < 1) {
+                    return;  // 检测是否有文件拖拽到页面
+                }
+                console.log("长度"+e.dataTransfer.files.length);
+                for (var m = 0; m < e.dataTransfer.files.length; m++) {
+                    efileName =e.dataTransfer.files[m];
+                    if ($(".filefooter").length > 0) {
+                        $(".filefooter").before('<tr class="' + m + 'file"><td>' + efileName.name + '</td><td class="pro_status">上传中……</td><td><span class="label label-grey">预测信息不全</span></td></tr>');
+                    } else {
+                        $(".process_list").append(
+//                    "<li id="+m+"file><div class='progress'><div id="+m+"barj class='progressbar'></div></div><span class='filename'>"+efileName+"</span><span id="+m+"pps class='progressnum'>"+(sfileSize)+"</span></li>");
+                            '<tr class="' + m + 'file"><td>' + efileName.name + '</td><td class="pro_status">上传中……</td><td><span class="label label-grey">预测信息不全</span></td></tr>'
+                        )
+                    }
+                }
+
+                if($(".filefooter").length>0){
+                    return;
+                }else{
+                    $(".process_list").append(
+                        '<tr class="filefooter"><td colspan="3" style="text-align: center;"><img src="__PUBLIC__/img/upload.png" class="" style="width: 20px;">\n' +
+                        '<span class="">直接拖入文件即可上传</span></td></tr>'
+                    )
+                }
+                $(".fileuploadd").hide();
+                sendAjax1();
+                function sendAjax1() {
+                    console.log("daying"+e.dataTransfer.files);
+                    if(j>=e.dataTransfer.files.length)  //采用递归的方式循环发送ajax请求
+                    {
+                        $("#uploadresumes").val("");
+                        j=0;
+                        return;
+                    }
+                    var formData = new FormData();
+                    formData.append('files', e.dataTransfer.files[j], e.dataTransfer.files[j].name); //将该file对象添加到formData对象中
+                    console.log("添加的内容有："+formData);
+                    $.ajax({
+                        url:'/index.php?m=background&a=upload',
+                        type:'POST',
+                        cache: false,
+                        data:{},//需要什么参数，自己配置
+                        data: formData,//文件以formData形式传入
+                        processData : false,
+                        //必须false才会自动加上正确的Content-Type
+                        contentType : false ,
+                        /*  beforeSend:beforeSend,//发送请求
+                         complete:complete,//请求完成
+                         */      xhr: function(){   //监听用于上传显示进度
+                            var xhr = $.ajaxSettings.xhr();
+                            if(onprogress && xhr.upload) {
+                                xhr.upload.addEventListener("progress" , onprogress, false);
+                                return xhr;
+                            }
+                        } ,
+                        success:function(data){
+                            console.log(j)
+                            $("."+j+"file").last().find(".pro_status").html('<i class="fa fa-check-circle fa-sucess"></i><span style="margin-right: 10px;">上传成功</span><a href="#" target="_blank">查看简历</a>');//移除进度条样式
+                            j++;
+                            sendAjax1();
+                        },
+                        error:function(xhr){
+                            $("."+j+"file").last().find(".pro_status").html('<i class="fa fa-times-circle fa-error"></i><span style="margin-right: 10px;">简历解析错误</span><a href="#" target="_blank">查看已有简历</a>');
+                        }
+                    });
+                }
+            }, false);
+
+        })
+
+
+
+
+    });
+
+
+</script>
+
+<include file="Public:footer" />

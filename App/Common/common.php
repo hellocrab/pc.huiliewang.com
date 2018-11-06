@@ -2402,7 +2402,7 @@ function getTimeBySec($time){
 function getmonthdays($year_month){
  	$month = date('m',$year_month);
  	$year = date('Y',$year_month);
- 	if (in_array($month, array('1', '3', '5', '7', '8', '01', '03', '05', '07', '08', '10', '12'))){  
+ 	if (in_array($month, array(1, 3, 5, 7, 8, 01, 03, 05, 07, 08, 10, 12))){  
         $days = '31';  
 	}elseif($month == 2){ 
         if ($year % 400 == 0 || ($year % 4 == 0 && $year % 100 !== 0)){//判断是否是闰年  
