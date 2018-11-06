@@ -124,148 +124,146 @@
                                         <li><a id="import_excel" class="link" href="javascript:void(0);"><i class="fa fa-upload"></i>&nbsp;导入</a></li>
                                         <!--<li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></li>-->
                                     </ul>
-                                    </div>
-                                </ul>
-                            </form>
+                                </div>
+                            </ul>
+                        </form>
 
-
-                            <form id="searchForm" class="form-group" method="get" style="margin-bottom: 0px;">
-                                <input type="hidden" name="m" value="integral" />
-                                <input type="hidden" name="a" value="index" />
+                        <form id="searchForm" class="form-group" method="get" style="margin-bottom: 0px;">
+                            <input type="hidden" name="m" value="integral" />
+                            <input type="hidden" name="a" value="index" />
+                            <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
+                                <div class="input-group">
+                                    <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="position_info" id="position_info" >
+                                        <option class="all" value="all">--请选择升降级状态--</option>
+                                        <option class="all" value="0" <if condition="($_GET['position_info'] eq 0) and is_numeric($_GET['position_info'])">selected</if>>正常</option>
+                                        <option class="all" value="1" <if condition="$_GET['position_info'] eq 1">selected</if>>升级</option>
+                                        <option class="all" value="-1" <if condition="$_GET['position_info'] eq -1">selected</if>>降级</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <if condition = "$_GET['dbname'] eq ''">
                                 <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
                                     <div class="input-group">
-                                        <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="position_info" id="position_info" >
-                                            <option class="all" value="all">--请选择升降级状态--</option>
-                                            <option class="all" value="0" <if condition="($_GET['position_info'] eq 0) and is_numeric($_GET['position_info'])">selected</if>>正常</option>
-                                            <option class="all" value="1" <if condition="$_GET['position_info'] eq 1">selected</if>>升级</option>
-                                            <option class="all" value="-1" <if condition="$_GET['position_info'] eq -1">selected</if>>降级</option>
+                                        <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="department" id="department" onchange="changeRole()">
+                                            <option class="all" value="all">{:L('ALL')}</option>
+                                            <volist name="departmentList" id="vo">
+                                                <option value="{$vo.department_id}" <if condition="$_GET['department'] eq $vo['department_id']">selected</if>>{$vo.name}</option>
+                                            </volist>
                                         </select>
                                     </div>
                                 </div>
-                                <if condition = "$_GET['dbname'] eq ''">
-                                    <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
-                                        <div class="input-group">
-                                            <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="department" id="department" onchange="changeRole()">
-                                                <option class="all" value="all">{:L('ALL')}</option>
-                                                <volist name="departmentList" id="vo">
-                                                    <option value="{$vo.department_id}" <if condition="$_GET['department'] eq $vo['department_id']">selected</if>>{$vo.name}</option>
-                                                </volist>
-                                            </select>
-                                        </div>
+                                <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
+                                    <div class="input-group">
+                                        <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="role" id="role" onchange="changeCondition()">
+                                            <option class="all" value="all">{:L('ALL')}</option>
+                                            <volist name="roleList" id="vo">
+                                                <option value="{$vo.role_id}" <if condition="$_GET['role'] eq $vo['role_id']">selected</if>>{$vo.role_name}-{$vo.user_name}</option>
+                                            </volist>
+                                        </select>
                                     </div>
-                                    <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
-                                        <div class="input-group">
-                                            <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="role" id="role" onchange="changeCondition()">
-                                                <option class="all" value="all">{:L('ALL')}</option>
-                                                <volist name="roleList" id="vo">
-                                                    <option value="{$vo.role_id}" <if condition="$_GET['role'] eq $vo['role_id']">selected</if>>{$vo.role_name}-{$vo.user_name}</option>
-                                                </volist>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </if>
-                                <div class="pull-left" style="margin-left: 20px;">
-                                    <button type="submit" id="analytics_search" class="btn btn-primary">立即搜索</button>
                                 </div>
-                            </form>
+                            </if>
+                            <div class="pull-left" style="margin-left: 20px;">
+                                <button type="submit" id="analytics_search" class="btn btn-primary">立即搜索</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row" style="margin: 0;" >
+                    <div class="pull-left" style="width:16.222%;color: #000;display: none;">
+                        <div class="ibox-title clearfix" style="padding-top: 4px;">
+                            <div class="detail-title clearfix">
+                                <div class="pull-left all-inline" >
+                                    <a href="{:U('product/index')}">
+                                        <span class="fa fa-inbox" style="font-size:18px;color:#667B8F"></span>
+                                        <span style="color:#667B8F">全部人才</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ibox-content" style="min-height: 300px;border-top: none;">
+                            <div id="left_list" class="full-height-scroll">
+                                <div id="knowledge-tree" >
+                                    {$tree_code}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row" style="margin: 0;" >
-                        <div class="pull-left" style="width:16.222%;color: #000;display: none;">
-                            <div class="ibox-title clearfix" style="padding-top: 4px;">
-                                <div class="detail-title clearfix">
-                                    <div class="pull-left all-inline" >
-                                        <a href="{:U('product/index')}">
-                                            <span class="fa fa-inbox" style="font-size:18px;color:#667B8F"></span>
-                                            <span style="color:#667B8F">全部人才</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ibox-content" style="min-height: 300px;border-top: none;">
-                                <div id="left_list" class="full-height-scroll">
-                                    <div id="knowledge-tree" >
-                                        {$tree_code}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pull-right" style="width:100%">
-                            <div class="ibox-content clearfix" id="table_container" style="z-index: 1;">
-                                <form id="form1" action="" method="Post" style="position:relative;">
-                                    <div id="table_div" class="nicescroll">
-                                        <table class="table table-hover table-striped table_thead_fixed" id="tab_Test3">
-                                            <if condition="$list eq null">
-                                                <div style="background-color:#fff;"><include file="Public:nodata" /></div>
-                                                <else/>
-                                                <tr id="childNodes_num" class="tabTh">
-                                                    <td style="max-width: 60px;width:74px;padding:0 10px 0 7px;">
+                    <div class="pull-right" style="width:100%">
+                        <div class="ibox-content clearfix" id="table_container" style="z-index: 1;">
+                            <form id="form1" action="" method="Post" style="position:relative;">
+                                <div id="table_div" class="nicescroll">
+                                    <table class="table table-hover table-striped table_thead_fixed" id="tab_Test3">
+                                        <if condition="$list eq null">
+                                            <div style="background-color:#fff;"><include file="Public:nodata" /></div>
+                                            <else/>
+                                            <tr id="childNodes_num" class="tabTh">
+                                                <td style="max-width: 60px;width:74px;padding:0 10px 0 7px;">
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input type="checkbox" class="check_all"/>
+                                                        <label for=""></label>
+                                                    </div>
+                                                </td>
+
+                                                <td>姓名</td>
+                                                <td>部门</td>
+                                                <td>职级</td>
+                                                <volist name="month_num" id="vo">
+                                                    <td>{$vo}</td>
+                                                </volist>
+                                                <td>周期业绩</td>
+                                                <td>升降级提示</td>
+                                                <td>操作</td>
+                                            </tr>
+                                            <tbody>
+                                            <volist name="list" id="vo">
+                                                <tr class="controls_tr">
+                                                    <td>
                                                         <div class="checkbox checkbox-primary">
-                                                            <input type="checkbox" class="check_all"/>
+                                                            <input name="product_id[]" class="check_list" type="checkbox" value="{$vo.eid}" <if condition="$vo['is_deleted'] eq '0'">rel1="0"<else/>rel1="1"</if>/>
                                                             <label for=""></label>
                                                         </div>
                                                     </td>
-
-                                                    <td>姓名</td>
-                                                    <td>部门</td>
-                                                    <td>职级</td>
-                                                    <volist name="month_num" id="vo">
-                                                        <td>{$vo}</td>
+                                                    <td data-id="{$vo['user_id']}" > {$vo.full_name}</td>
+                                                    <td>{$vo.department_name}</td>
+                                                    <td>{$vo.rank_name}</td>
+                                                    <volist name="month_yj" id="v">
+                                                        <td><input type="text" readonly="readonly" style="width: 70px;" value="{$vo[$v]}"></td>
                                                     </volist>
-                                                    <td>周期业绩</td>
-                                                    <td>晋升业绩达成率</td>
-                                                    <td>升降级提示</td>
-                                                    <!--<td>当月工资计算</td>-->
-                                                    <!--<td>操作</td>-->
+                                                    <td>{$vo.total}</td>
+                                                    <td>
+                                                        <if condition="$vo['position_info'] eq -1 and ($vo['current_month'] eq 6 or $vo['current_month'] eq 12)"><a class="label label-danger jjstatus" style="color: white;" data-id="{$vo['user_id']}">取消降级 </a>
+                                                            <elseif condition="$vo['position_info'] eq 1 "/><a class="label label-primary sjstatus" style="color: white;" data-id="{$vo['user_id']}">取消升级 </a>
+                                                            <else/>
+                                                            正常
+                                                        </if>
+                                                    </td>
+                                                    <td>
+                                                        <input type="button" class="btn btn-xs  btn-info xiugai" value="修改" onclick="edittext(this)" >
+                                                        <input type="button" class="btn btn-xs  btn-success baocun" value="保存" onclick="savetext(this)" style="display: none">
+                                                    </td>
                                                 </tr>
-                                                <tbody>
-                                                <volist name="list" id="vo">
-                                                    <tr class="controls_tr">
-                                                        <td>
-                                                            <div class="checkbox checkbox-primary">
-                                                                <input name="product_id[]" class="check_list" type="checkbox" value="{$vo.eid}" <if condition="$vo['is_deleted'] eq '0'">rel1="0"<else/>rel1="1"</if>/>
-                                                                <label for=""></label>
-                                                            </div>
-                                                        </td>
-                                                       <td>{$vo.full_name}</td>
-                                                       <td>{$vo.department_name}</td>
-                                                       <td>{$vo.rank_name}</td>
-                                                        <!-- -->
-                                                       <volist name="month_yj" id="v">
-                                                       <td>{$vo[$v]}</td>
-                                                       </volist>
-                                                       <td>{$vo.total}</td>
-                                                       <td>{$vo.rate}%</td>
-                                                       <td>
-                                                           <if condition="$vo['position_info'] eq -1 and ($vo['current_month'] eq 6 or $vo['current_month'] eq 12)"><a class="label label-danger jjstatus" style="color: white;" data-id="{$vo['user_id']}">降级 </a>
-                                                           <elseif condition="$vo['position_info'] eq 1 "/><a class="label label-primary sjstatus" style="color: white;" data-id="{$vo['user_id']}">升级 </a>
-                                                           <else/>
-                                                               正常
-                                                           </if>
-                                                       </td>
-                                                       <!--<td>10</td>-->
-                                                    </tr>
-                                                </volist>
-                                                <tbody>
-                                            </if>
-                                        </table>
+                                            </volist>
+                                            <tbody>
+                                        </if>
+                                    </table>
+                                </div>
+                                <div id="tfoot_div" class="clearfix">
+                                    <div class="clearfix" id="tfoot_page">
+                                        <if condition="$fields_search || $_GET['field']">
+                                            <span class="pull-left" style="margin-left:25px;margin-top:10px;">本次搜索结果<span style="color:#F8AC59"> {$count} </span>条数据<a href="{:U('product/index')}" class="btn" style="background:#fff;border:1px solid #ccc;margin-left:10px;color:#999;" id="clearnumber">清除搜索条件</a></span>
+                                        </if>
+                                        {$page}<include file="Public:listrows" />
                                     </div>
-                                    <div id="tfoot_div" class="clearfix">
-                                        <div class="clearfix" id="tfoot_page">
-                                            <if condition="$fields_search || $_GET['field']">
-                                                <span class="pull-left" style="margin-left:25px;margin-top:10px;">本次搜索结果<span style="color:#F8AC59"> {$count} </span>条数据<a href="{:U('product/index')}" class="btn" style="background:#fff;border:1px solid #ccc;margin-left:10px;color:#999;" id="clearnumber">清除搜索条件</a></span>
-                                            </if>
-                                            {$page}<include file="Public:listrows" />
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 <div class="" style="display:none;" id="dialog-import" title="导入数据">
     <div class="spiner-example">
@@ -395,34 +393,7 @@
     $('.sjstatus').click(function () {
         var _this = $(this);
         swal({
-                title: "确定对该员工升级职级吗？",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "确定",
-                closeOnConfirm: false
-            },
-            function () {
-                var user_id = _this.attr("data-id");
-                $.ajax({
-                    type: "post",
-                    url: "{:U('integral/position_edit')}",
-                    data: {
-                        user_id: user_id,
-                        position_info: 1
-                    },
-                    success: function (data) {
-                        if (data.status == 1) {
-                           location = location;
-                        }
-                    }
-                })
-            });
-    });
-    $('.jjstatus').click(function () {
-        var _this = $(this);
-        swal({
-                title: "确定对该员工降级职级吗？",
+                title: "确定取消该员工的升级吗？",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -443,10 +414,36 @@
                             location = location;
                         }
                     }
+                })
+            });
+    });
+    $('.jjstatus').click(function () {
+        var _this = $(this);
+        swal({
+                title: "确定取消该员工的降级吗？",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定",
+                closeOnConfirm: false
+            },
+            function () {
+                var user_id = _this.attr("data-id");
+                $.ajax({
+                    type: "post",
+                    url: "{:U('integral/position_edit')}",
+                    data: {
+                        user_id: user_id,
+                        position_info: 1
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            location = location;
+                        }
+                    }
                 });
             });
     });
-
 
     var limit_size = 1000;
     var ii = 1;
@@ -525,13 +522,11 @@
         };
     });
 
-
     $(".log_calllist").click(function(){
         $('#dialog-log').dialog('open');
         $('#dialog-log').load('{:U("log/resume_project","r=RCustomerLog&module=customer&id=")}'+$(this).attr('rel'));
         $.fn.modal.Constructor.prototype.enforceFocus = function() {};
     });
-
 
     $("#dialog-log").dialog({
         autoOpen: false,
@@ -611,11 +606,66 @@
                     });
                 }
                 $("#role").html(options);
-                <if condition="$_GET['role']">
+            <if condition="$_GET['role']">
                     $("#role option[value='{$Think.get.role}']").prop("selected", true);
             </if>
             },
             dataType:'json'});
+    }
+    //文本框变为可编辑状态
+    function edittext(data) {
+        var tr = $($(data).parent().parent());
+        var tdcount = tr.children().length-3;
+        for (let i = 0;i<tdcount;i++){
+            if (tr.children().eq(i).children().length>0&&tr.children().eq(i).children().length<2&&i>3){
+                $(tr.children().eq(i).children().eq(0)).removeAttr('readonly');
+            }
+        }
+        $($($(data).parent()).children().eq(1)).css('display','block');
+        $(data).css('display','none');
+    }
+    //发送文本框值
+    function savetext(data) {
+        var tr = $($(data).parent().parent());
+        var tdcount = tr.children().length - 2;
+        var value = [];
+        var postdata = {};
+        for (let i = 0;i<tdcount;i++){
+            if (tr.children().eq(i).children().length>0&&tr.children().eq(i).children().length<2&&i>3){
+                value[i]=$(tr.children().eq(i).children().eq(0)).val();
+                $(tr.children().eq(i).children().eq(0)).attr('readonly','readonly');
+            }else if(i==1){
+                value[i] = $(tr.children().eq(i)).attr('data-id');
+            }
+        }
+        var th = $($('#childNodes_num').children());
+        var thvalue = [];
+        for (let i = 0;i<tdcount-1;i++) {
+            if(i>3){
+                thvalue[i] = th.eq(i).text();
+                postdata[thvalue[i]] = value[i];
+            }else if(i==1){
+                thvalue[i] = "data-id";
+                postdata[thvalue[i]] = value[i];
+            }
+        }
+        $.ajax({
+                type: "POST",
+                url: "{:U('integral/edit_index')}",
+                data: {
+                    postdata:postdata,
+                    belong : 1
+                },
+                async:false,
+                dataType:'json',
+                success: function(data) {
+                    console.log(data)
+                }
+            }
+
+        )
+        $($($(data).parent()).children().eq(0)).css('display','block');
+        $(data).css('display','none');
     }
 </script>
 <include file="Public:footer" />

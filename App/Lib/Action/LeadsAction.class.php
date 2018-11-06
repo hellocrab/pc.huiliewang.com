@@ -22,6 +22,154 @@ class LeadsAction extends Action{
 		B('Authenticate', $action);
 		$this->_permissionRes = getPerByAction(MODULE_NAME,ACTION_NAME);
 	}
+
+    /**
+     * 部门业绩达成率
+     */
+    public function departmentrate(){
+        $integral = D('DepartmentIntegral');
+        $m_target = M('Target');
+        $department = M('role_department');
+        $set = array();
+        $where['parent_id'] = 1;
+        $fessial =  $department -> where($where) -> select();
+        // 查询事业部
+        $fk = 0;
+        foreach ($fessial as $k => $v) {
+            $result = $department->where(array('parent_id'=>intval($v['department_id']))) -> select();  // 事业部下的所有部门（role_department表）
+	   $set[$fk]['unit'] = $v['name'];
+            if(!empty($result)){
+                foreach ($result as $k1 => $v1){
+                        $set[$fk]['department_id'] = $v1['department_id'];
+                        $set[$fk]['part'] = $v1['name'];
+                        //存储详细业绩信息
+                        $set[$fk]['detail'] = array();
+                        for ($i = 0 ; $i <= 11 ; $i++ ){
+                            //计算部门全部目前业绩总和
+                            $data = $integral -> where("role_department.department_id=%d and yjtime=%d",intval($v1['department_id']),mktime(0,0,0,($i+1),1,date('Y')))->select();
+                            $total = 0;
+                            foreach ($data as $k => $v){
+                                $total += intval($v['achievement']);
+                            }
+                            $set[$fk]['detail'][$i]['achieve'] = $total;
+                            //查询目标
+                            $res = $m_target -> where(array('id_type'=>1,'id'=>intval($v1['department_id']),'year'=>intval(date('Y'))))->find();
+                            $set[$fk]['detail'][$i]['target'] = $res['month'.($i+1)];
+                            //计算目标达成率
+                            if (empty($res['month'.($i+1)]))
+                                $set[$fk]['detail'][$i]['targetRate'] = null;
+                            else
+                                $set[$fk]['detail'][$i]['targetRate'] = round(($total/$res['month'.($i+1)]),2);
+                            //取出晋升业绩
+                            $set[$fk]['detail'][$i]['promoteAchieve'] = $res['topachieve'.($i+1)];
+                            //取出出勤比
+                            $set[$fk]['detail'][$i]['attendanceRate'] = $res['attendanceRate'.($i+1)];
+                            //计算业绩达成率
+                            list($current,$topachieve) = split('/',$res['attendanceRate'.($i+1)]);
+                            $set[$fk]['detail'][$i]['yieldRate'] = round($total/intval($res['topachieve'.($i+1)])*(intval($current)/intval($topachieve)),2);
+                        }
+                        $fk++;
+                }
+            }
+        }
+        $this -> assign('list',$set);
+        $this -> display();
+    }
+
+    /**
+     * 设置部门目标
+     */
+    public function set_target(){
+        $m_target = M('Target');
+
+        if ($this->isPost()) {
+            $where['target_type'] = intval($_POST['target_type']);
+            $where['year'] = intval($_POST['year']);
+            $department_id = intval($_POST['department_id']);
+            if (!empty($department_id)) {
+                //检查是否已经设置
+                $where['id_type'] = 1;
+                $where['id'] = $department_id;
+                $target = $m_target->where($where)->find();
+                if ($m_target->create()) {
+                    $m_target->id_type = 1;
+                    $m_target->id = $department_id;
+                    if ($target) {
+                        $m = $m_target->where('target_id = %d', $target['target_id'])->save();
+                    } else {
+                        $m = $m_target->add();
+                    }
+                    if ($m !== false) {
+                        alert('success', '设置成功！', $_SERVER['HTTP_REFERER']);
+                    } else {
+                        alert('error', '保存失败！', $_SERVER['HTTP_REFERER']);
+                    }
+                } else {
+                    alert('error', '保存失败！', $_SERVER['HTTP_REFERER']);
+                }
+            } else if (is_array($_POST['role_ids'])){
+                foreach ($_POST['role_ids'] as $k => $v) {
+                    //检查是否已经设置
+                    $where['id_type'] = 2;
+                    $where['id'] = $v;
+                    $target = $m_target->where($where)->find();
+                    if ($m_target->create()) {
+                        $m_target->id_type = 2;
+                        $m_target->id = $v;
+
+                        if ($target) {
+                            $m = $m_target->where('target_id = %d', $target['target_id'])->save();
+                        } else {
+                            $m = $m_target->add();
+                        }
+                        if ($m === false) {
+                            alert('error', '保存失败！', $_SERVER['HTTP_REFERER']);
+                        }
+                    } else {
+                        alert('error', '保存失败！', $_SERVER['HTTP_REFERER']);
+                    }
+                }
+                alert('success', '设置成功！', $_SERVER['HTTP_REFERER']);
+            }
+        }else{
+            $rel = intval($_GET['rel']);
+            if ($rel == 1 || $rel == 2) {
+                //部门岗位
+                $url = getCheckUrlByAction(MODULE_NAME,ACTION_NAME);
+                $per_type =  M('Permission') -> where('position_id = %d and url = "%s"', session('position_id'), $url)->getField('type');
+                if($per_type == 2 || session('?admin')){
+                    $departmentList = M('roleDepartment')->select();
+                }else{
+                    $departmentList = M('roleDepartment')->where('department_id =%d',session('department_id'))->select();
+                }
+                $this->assign('departmentList', $departmentList);
+            } else if ($rel == 3){ //修改部门目标
+                $where['target_type'] = intval($_GET['target_type']);
+                $where['id_type'] = 1;
+                $where['id'] = intval($_GET['id']);
+                $where['year'] = intval($_GET['year']);
+                $target = $m_target->where($where)->find();
+                $target['name'] = M('roleDepartment')->where('department_id = %d', intval($_GET['id']))->getField('name');
+                $this->assign('target', $target);
+            } else if ($rel == 4){ //修改个人目标
+                $where['target_type'] = intval($_GET['target_type']);
+                $where['id_type'] = 2;
+                $where['id'] = intval($_GET['id']);
+                $where['year'] = intval($_GET['year']);
+                $target = $m_target->where($where)->find();
+                $target['name'] = M('User')->where('role_id = %d', intval($_GET['id']))->getField('full_name');
+                $this->assign('target', $target);
+            }
+
+            //年份列表
+            $this->year_list = range(2015, 2050);
+
+            $this->alert = parseAlert();
+            $this->display();
+        }
+
+    }
+
 	/**
 	字段查重
 	**/
@@ -55,6 +203,7 @@ class LeadsAction extends Action{
 			}
 		}
 	}
+
 	/**
 	*线索名验重
 	*
@@ -2214,4 +2363,95 @@ class LeadsAction extends Action{
 			$this->ajaxReturn(0,"新增错误！",0);
 		}
 	}
+
+	public function add_more(){
+	    $this->display();
+    }
+
+    function excelToArray($name){
+        require_once 'Base/Lib/Classes/PHPExcel/IOFactory.php';
+
+        //加载excel文件
+        $filename = 'Uploads/resume_file/'.$name;
+        $objPHPExcelReader = PHPExcel_IOFactory::load($filename);
+
+        $sheet = $objPHPExcelReader->getSheet(0);        // 读取第一个工作表(编号从 0 开始)
+        $highestRow = $sheet->getHighestRow();           // 取得总行数
+        $highestColumn = $sheet->getHighestColumn();     // 取得总列数
+        $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM', 'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ', 'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM', 'BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ');
+        //读取员工基本信息
+        $res_arr = array();
+        for ($row = 3; $row <= $highestRow; $row++) {
+            $row_arr = array();
+            for ($column = 0; $arr[$column] != 'AL'; $column++) {
+                $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
+                $row_arr[] = $val;
+            }
+            $res_arr[] = $row_arr;
+        }
+        return $res_arr;
+    }
+
+    public function uploadTarget(){
+        /*$year = I('get.year');*/
+        $year = date("Y");
+        $time = time();
+        if ($_FILES){
+            //上传员工背景EXCEL表到uploads/resume_file目录下
+            $file = $_FILES['files'];
+            $type =  end(explode('.', $file['name'][0]));
+            $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/resume_file/".$time.".".$type;
+            $upload_path_name = $_SERVER['DOCUMENT_ROOT']."/Uploads/resume_file/".$time.".".$type;
+            $complete_path = time().".".$type;
+            move_uploaded_file($file['tmp_name'][0],$upload_path_name);
+            $data = $this->excelToArray($complete_path);
+            foreach ($data as $key => $val){
+               $departmentName[] = $val[0];
+            }
+            $departmentIdMap['name'] = array('in',$departmentName);
+            $roleDepartment = M('role_department');
+            $departmentIds = $roleDepartment->where($departmentIdMap)->field('department_id')->select();
+
+            //删除已存在的目标
+            $target = M('target');
+            foreach ($departmentIds as $key => $val){
+                $targetId[] = $val['department_id'];
+            }
+            $targetIds['id'] = array('in',$targetId);
+            $where['year'] = $year;
+            $target->startTrans();
+            $deleteResult = $target->where($targetIds)->where($where)->delete();
+            if($deleteResult){
+                $target->commit();
+            }else{
+                $target->rollback();
+            }
+
+            //构建添加数据并添加表中上传目标
+            foreach ($data as $key => $val){
+                $data[$key][0] = $departmentIds[$key]['department_id'];
+            }
+            $dataList = array('id_type'=>'1','id'=>'','year'=> $year,'month1'=>'','month2'=>'','month3'=>'','month4'=>'','month5'=>'','month6'=>'','month7'=>'','month8'=>'','month9'=>'','month10'=>'','month11'=>'','month12'=>'','topachieve1'=>'','topachieve2'=>'','topachieve3'=>'','topachieve4'=>'','topachieve5'=>'','topachieve6'=>'','topachieve7'=>'','topachieve8'=>'','topachieve9'=>'','topachieve10'=>'','topachieve11'=>'','topachieve12'=>'','attendanceRate1'=>'','attendanceRate2'=>'','attendanceRate3'=>'','attendanceRate4'=>'','attendanceRate5'=>'','attendanceRate6'=>'','attendanceRate7'=>'','attendanceRate8'=>'','attendanceRate9'=>'','attendanceRate10'=>'','attendanceRate11'=>'','attendanceRate12'=>'','total'=>'0');
+            //dump($data);
+            foreach ($data as $key => $val){
+                $dataList['id'] = $val[0];
+                $dataList['total'] = 0;
+                for($i = 1;$i<13;$i++){
+                    $month = ($i*3)-2;
+                    $dataList['month'.$i] = (int)$val[$month];
+                    $dataList['topachieve'.$i] = (int)$val[($i*3)-1];
+                    $dataList['attendanceRate'.$i] = $val[$i*3];
+                    $dataList['total'] += $dataList['month'.$i];
+                }
+                $addData[] = $dataList;
+            }
+            $target->startTrans();
+            $addresult = $target->addAll($addData);
+            if($addresult){
+                $target->commit();
+            }else{
+                $target->rollback();
+            }
+        }
+    }
 }
