@@ -388,7 +388,14 @@ class BackgroundAction extends Action
         }
     }
 
-    function readyOutPut(){
+    function readyOutput(){
+        $get = I("get.ids");
+        if($get){
+            $this->output($get);
+        }
+    }
+
+    function readyOutPutt(){
 
         require_once "../../../vendor/phpoffice/phpword/bootstrap.php";
         include_once "../../../vender/phpoffice/phpword/samples/Sample_Header.php";
