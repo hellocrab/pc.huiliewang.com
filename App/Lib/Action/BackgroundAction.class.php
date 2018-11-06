@@ -398,7 +398,7 @@ class BackgroundAction extends Action
     function readyOutPutt(){
 
         require_once  "/vendor/phpoffice/phpword/bootstrap.php";
-        include_once  "/vender/phpoffice/phpword/samples/Sample_Header.php";
+        include_once  "/vendor/phpoffice/phpword/samples/Sample_Header.php";
 
         //取出当前id的所有信息
         $get = I("get.ids");
