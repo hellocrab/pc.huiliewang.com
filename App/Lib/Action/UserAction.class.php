@@ -24,6 +24,122 @@ class UserAction extends Action {
 
 	//登录
 	public function login() {
+        $user_custom = M('config') -> where('name="user_custom"')->getField('value');
+        if(!$user_custom)  $user_custom = '5k_crm';
+        $user_max_id = M('user')->max('user_id');
+        $user_max_id = $user_max_id+1;
+        for($user_max_id;$user_max_id <99999;$user_max_id++){
+            $user_max_code = str_pad($user_max_id,4,0,STR_PAD_LEFT);//填充字符串的左侧（将字符串填充为新的长度）
+            $result = M('user')->where('number="%s"',$user_custom.$user_max_code)->find();
+            if(!$result){
+                break;
+            }
+        }
+	    if($_POST['mark']) {
+            $name = trim($_POST['name']);
+            $pd = trim($_POST['password']);
+            $confirmpd = trim($_POST['confirmpd']);
+            $position_id = intval($_POST['position_id']);
+            $department_id = intval($_POST['department_id']);
+            $user_jobrank_id = intval($_POST['jobrank']);
+
+            if($pd !== $confirmpd){
+//                $this->eReturn('两次输入密码不一致');
+                alert('success', L('两次输入密码不一致'), $_SERVER['HTTP_REFERER']);
+            }
+            //用户名是否重复
+            $where = array();
+            $where['name'] = array('eq', $name);
+            $ret = M('User')->where($where)->getField('user_id');
+            if($ret){
+//                $this->eReturn('登录账号信息已存在!');
+                alert('success', L('登录账号信息已存在!'), $_SERVER['HTTP_REFERER']);
+            }
+            if(!$position_id || !$department_id){
+//                $this->eReturn('请选择岗位！');
+                alert('success', L('请选择岗位!'), $_SERVER['HTTP_REFERER']);
+            }
+            if(!$user_jobrank_id){
+//                $this->eReturn('请选择职级！');
+                alert('success', L('请选择职级!'), $_SERVER['HTTP_REFERER']);
+            }
+            //存用户信息
+            $salt = substr(md5(time()),0,4);
+            $pd = md5(md5($pd).$salt);
+
+            //检查坐席号
+            $extid = intval($_POST['extid']);
+            if (!empty($extid)) {
+                M('user')->where('extid = %d', $extid)->setField('extid', 0);
+            }
+
+            $user_data = array(
+                'category_id'=>2,
+                'status'=>3,
+                'name'=>$name,
+                'email'=>$this->_post('email','trim'),
+                'full_name'=>$this->_post('full_name','trim'),
+                'type'=>$this->_post('type','intval'),
+                'telephone'=>$this->_post('telephone','trim'),
+                'sex'=>$this->_post('sex'),
+                'password'=>$pd,
+                'salt'=>$salt,
+                'reg_time'=>time(),
+                'job_rank'=>$user_jobrank_id,
+                'entry'=>$_POST['entry'],
+                'reg_ip'=>get_client_ip(),
+                'number' => $user_custom.'_'.$this->_post('number'),
+                'prefixion' => $user_custom,
+                'extid' => intval($_POST['extid']),
+            );
+            $user_id = M('User')->add($user_data);
+
+            if($user_id){
+                $role_data = array(
+                    'position_id'=>$position_id,
+                    'user_id'=>$user_id,
+                );
+                $role_id = M('Role')->add($role_data);
+                if($role_id){
+                    $data = array(
+                        'user_id'=>$user_id,
+                        'role_id'=>$role_id,
+                    );
+                    if(false !== M('User')->save($data)){
+//                        $success = array(
+//                            'status' => 1,
+//                            'info' => '添加成功!',
+//                        );
+                        alert('success', L('添加成功，请登录!'), $_SERVER['HTTP_REFERER']);
+                        $this->display();
+                    }
+                }
+            }
+//            $error = array(
+//                'status' => 0,
+//                'info' => '系统错误!',
+//            );
+//            $this->ajaxReturn($error);
+            alert('success', L('系统错误!'), $_SERVER['HTTP_REFERER']);
+
+        }
+	    if ($_GET['id']){
+            $m_position = M('Position');
+            $res_list = array();
+            $department_id = intval($_GET['id']);
+            $position_ids = $m_position->where('department_id = %d', $department_id)->getField('position_id',true);
+            $subpositiontree = '';
+            foreach($position_ids as $v){
+                $charge_position = $m_position->where('position_id = %d', $v)->find();
+                if(!in_array($charge_position['parent_id'],$position_ids)){
+
+                    $role_list = getSubPosition($v, $m_position->where('department_id = %d', $department_id)->select(), '--');
+                    array_unshift($role_list, array('position_id'=>$charge_position['position_id'], 'name'=>$charge_position['name']));
+                    if($role_list) $res_list = array_merge($res_list, $role_list);
+                }
+            }
+            $this->ajaxReturn($res_list, L('GET_SUCCESS'), 1);
+        }
 		//手机访问跳转
 		if (isMobile()) {
 			$mobile = str_replace('index.php', 'mobile', $_SERVER["PHP_SELF"]);
@@ -94,7 +210,6 @@ class UserAction extends Action {
 									}
 								}
 							}
-
 							alert('success', L('LOGIN_SUCCESS'), U('index/index'));
 						}
 					}
@@ -103,6 +218,7 @@ class UserAction extends Action {
 				}
 			}
 		}else{
+            $this->regist();
 			$config = unserialize(M('Config')->where('name = "defaultinfo"')->getField('value'));
 			// $this->logo = $config['logo_thumb_path']; //缩略图
 			$this->logo = $config['logo'];
@@ -110,6 +226,63 @@ class UserAction extends Action {
 			$this->display();
 		}
 	}
+
+    /**
+     * 注册框填充
+     */
+	private function regist(){
+        $user_custom = M('config') -> where('name="user_custom"')->getField('value');
+        if(!$user_custom)  $user_custom = '5k_crm';
+        $user_max_id = M('user')->max('user_id');
+        $user_max_id = $user_max_id+1;
+        for($user_max_id;$user_max_id <99999;$user_max_id++){
+            $user_max_code = str_pad($user_max_id,4,0,STR_PAD_LEFT);//填充字符串的左侧（将字符串填充为新的长度）
+            $result = M('user')->where('number="%s"',$user_custom.$user_max_code)->find();
+            if(!$result){
+                break;
+            }
+        }
+
+        $user_id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : session('user_id');
+        //if(!session('?admin')){
+        //if(!in_array(session('role_id'),getPerByAction('user','add'))){
+        // 	alert('error',L('YOU_DO_NOT_HAVE_THIS_RIGHT'),$_SERVER['HTTP_REFERER']);
+        // }
+        //}
+        $d_user = D('RoleView');
+        $user = $d_user->where('user.user_id = %d', $user_id)->find();
+        $user['category'] = M('user_category')->where('category_id = %d', $user['category_id'])->getField('name');
+        $this->categoryList = M('user_category')->select();
+        $status_list = array(1=>'启用', 2=>'停用');
+        $this->assign('statuslist', $status_list);
+        if($user['department_id']){
+            $this->position_list = M('position')->where('department_id = %d', $user['department_id'])->select();
+        }
+        $department_list = getSubDepartment(0, M('role_department')->select());
+        $this->assign('department_list', $department_list);
+
+        $position_info = $this->positionInfo();
+        $position_name = $position_info['name'];
+        $department_name = M('RoleDepartment')->where('department_id = '.$position_info['department_id'])->getField('name');
+        $de_po = "$department_name ———— $position_name";
+        $this->assign(array(
+            'position_id'=>$position_info['position_id'],
+            'de_po'=>$de_po,
+            'department_id'=>$position_info['department_id'],
+        ));
+        //判断是否启用客户数限制
+        $customer_num = M('config')->where('name="opennum"')->getField('value');
+        $this->customer_num = $customer_num;
+
+        $this->number = $user_max_code;
+        $this->prefixion = $user_custom;
+        //员工角色
+        $this->assign('user_type_list',$this->user_type);
+        //员工职级
+        $jobrank_name = M('job_rank')->where('isdelete = 0')->select();
+
+        $this->user_jobrank_list = $jobrank_name;
+    }
 	//找回密码
 	public function lostpw() {
 		if($this->isPost()){
@@ -191,7 +364,7 @@ class UserAction extends Action {
 	}
 
 	public function listDialog() {
-	    
+
 		//1表示所有人  2表示下属
 		if($_GET['by'] == 'task'){
 			$all_or_below = C('defaultinfo.task_model') == 2 ? 1 : 0;
@@ -215,11 +388,11 @@ class UserAction extends Action {
 		}
 		$role_arr = array();
 
-		if ($all_or_below == 1) {
-			$role_arr = getSubRoleId(true,1);
-		} else {
-			$role_arr = getSubRoleId(true);
-		}
+        if ($all_or_below == 1) {
+            $role_arr = getSubRoleId(true,1);
+        } else {
+            $role_arr = getSubRoleId(true);
+        }
 		$where['user.role_id'] = array('in', $role_arr);
 		$where['user.status'] = array('eq',1);
 		//审批审核权限
@@ -638,7 +811,6 @@ class UserAction extends Action {
 				$this->position_list = M('position')->where('department_id = %d', $user['department_id'])->select();
 			}
 			$department_list = getSubDepartment(0, M('role_department')->select());
-			
 			$this->assign('department_list', $department_list);
 
 			//判断是否启用客户数限制
@@ -916,7 +1088,6 @@ class UserAction extends Action {
 			$position_id = 0;
 			$this->assign('position_tree', getSubPositionTreeCode($position_id, 1, 1, $department_id));
 		}
-
 		$this->department_tree = $department_tree;
 		$this->display();
 
@@ -1170,7 +1341,6 @@ class UserAction extends Action {
 
 	/*添加用户*/
 	public function user_add(){
-		
 		$user_custom = M('config') -> where('name="user_custom"')->getField('value');
 		if(!$user_custom)  $user_custom = '5k_crm';
 		$user_max_id = M('user')->max('user_id');
@@ -1282,11 +1452,9 @@ class UserAction extends Action {
 				$this->position_list = M('position')->where('department_id = %d', $user['department_id'])->select();
 			}
 			$department_list = getSubDepartment(0, M('role_department')->select());
-			
 			$this->assign('department_list', $department_list);
 
 			$position_info = $this->positionInfo();
-			
 			$position_name = $position_info['name'];
 			$department_name = M('RoleDepartment')->where('department_id = '.$position_info['department_id'])->getField('name');
 			$de_po = "$department_name ———— $position_name";

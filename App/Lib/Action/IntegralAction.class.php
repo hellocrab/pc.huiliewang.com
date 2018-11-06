@@ -9,7 +9,135 @@ class IntegralAction extends Action{
 
     public $historyArr = array("apply"=>1,"examine"=>"apply","billing"=>"examine","money"=>"billing","return"=>"billing","distribution"=>"money","refund"=>"money","grant"=>"distribution");
 
+    // 页面数据修改编辑功能
+    public function edit_index(){
+        $data = $_POST['postdata'];
+        $belong = intval($_POST['belong']);
+        $yjtime[12] = mktime(0,0,0,date('m')-1,1,date('Y'));
+        $yjtime[11] = mktime(0,0,0,date('m')-2,1,date('Y'));
+        $yjtime[10] = mktime(0,0,0,date('m')-3,1,date('Y'));
+        $yjtime[9] = mktime(0,0,0,date('m')-4,1,date('Y'));
+        $yjtime[8] = mktime(0,0,0,date('m')-5,1,date('Y'));
+        $yjtime[7] = mktime(0,0,0,date('m')-6,1,date('Y'));
+        $yjtime[6] = mktime(0,0,0,date('m')-7,1,date('Y'));
+        $yjtime[5] = mktime(0,0,0,date('m')-8,1,date('Y'));
+        $yjtime[4] = mktime(0,0,0,date('m')-9,1,date('Y'));
+        $yjtime[3] = mktime(0,0,0,date('m')-10,1,date('Y'));
+        $yjtime[2] = mktime(0,0,0,date('m')-11,1,date('Y'));
+        $yjtime[1] = mktime(0,0,0,date('m')-12,1,date('Y'));
+        $num = 1;
+        $user_id = $data['data-id'];
+       foreach ($data as $k => $v){
+            if ($k == 'data-id') continue;
+            $achiev = intval($v);
+            $data['yjtime'] = $yjtime[$num];
+            $data['user_id'] = $user_id;
+            $achievement= M("integral")->where($data)->getField("achievement");
+            if(is_null($achievement)){
+                $adddata['user_id'] = $user_id;
+                $adddata['achievement'] = $achiev;
+                $adddata['yjtime'] = $yjtime[$num];
+               if(intval($v) != 0 ){
+                   M("integral") -> add($adddata);
+               }
+            }else{
+                $savedata['achievement'] = $achiev;
+                M('integral') -> where($data) ->save($savedata);
+            }
+            $num += 1;
+       }
+        if($belong == 1 )$this->index_changed($user_id); else $this->index_internet($user_id);
+    }
 
+    //状态变换
+    private function index_changed($user_id){
+        $yjtime1[1]  = mktime(0,0,0,date('m')-1,1,date('Y'));
+        $yjtime1[2]  = mktime(0,0,0,date('m')-2,1,date('Y'));
+        $yjtime1[3]  = mktime(0,0,0,date('m')-3,1,date('Y'));
+        $yjtime1[4]  = mktime(0,0,0,date('m')-4,1,date('Y'));
+        $yjtime1[5]  = mktime(0,0,0,date('m')-5,1,date('Y'));
+        $yjtime1[6]  = mktime(0,0,0,date('m')-6,1,date('Y'));
+        $yjtime1[7]  = mktime(0,0,0,date('m')-7,1,date('Y'));
+        $yjtime1[8]  = mktime(0,0,0,date('m')-8,1,date('Y'));
+        $yjtime1[9]  = mktime(0,0,0,date('m')-9,1,date('Y'));
+        $yjtime1[10] = mktime(0,0,0,date('m')-10,1,date('Y'));
+        $yjtime1[11] = mktime(0,0,0,date('m')-11,1,date('Y'));
+        $yjtime1[12] = mktime(0,0,0,date('m')-12,1,date('Y'));
+        krsort($yjtime1);
+        //周期业绩计算
+        foreach ($yjtime1 as $k=>$i){
+            $data['yjtime'] = $i;
+            $data['user_id'] = $user_id;
+            $field = "yj".$k;
+            $achievement = M("integral")->where($data)->getField("achievement"); //  M数据库，where条件，getField获取字段
+            $list[$field] = $achievement?$achievement:0;
+        }
+        $total = $list['yj1']+$list['yj2']+$list['yj3']+$list['yj4']+$list['yj5']+$list['yj6'];
+        $job_rank = M("user")->where(array('user_id'=>$user_id))->getField("job_rank"); //获取对应用户的职级
+        $lowAchievement = M("professionhunters_range")->where(array('rankid'=>$job_rank))->getField("lowachievment");
+        $upachievement =  M("professionhunters_range")->where(array('rankid'=>$job_rank))->getField("upachievment");
+        if($total>=$upachievement){
+            M("user")->where("user_id=%d",$user_id)->setInc('job_rank');
+            M("user")->where(array('user_id'=>$user_id))->setField('position_info',1);
+        }elseif($total<$lowAchievement){
+            M("user")->where("user_id=%d",$user_id)->setDec('job_rank');
+            M("user")->where(array('user_id'=>$user_id))->setField('position_info',-1);
+        }else{
+            M("user")->where(array('user_id'=>$user_id))->setField('position_info',0);
+        }
+    }
+
+    private function index_internet($user_id){
+        $yjtime1[1]  = mktime(0,0,0,date('m')-1,1,date('Y'));
+        $yjtime1[2]  = mktime(0,0,0,date('m')-2,1,date('Y'));
+        $yjtime1[3]  = mktime(0,0,0,date('m')-3,1,date('Y'));
+        $yjtime1[4]  = mktime(0,0,0,date('m')-4,1,date('Y'));
+        $yjtime1[5]  = mktime(0,0,0,date('m')-5,1,date('Y'));
+        $yjtime1[6]  = mktime(0,0,0,date('m')-6,1,date('Y'));
+        $yjtime1[7]  = mktime(0,0,0,date('m')-7,1,date('Y'));
+        $yjtime1[8]  = mktime(0,0,0,date('m')-8,1,date('Y'));
+        $yjtime1[9]  = mktime(0,0,0,date('m')-9,1,date('Y'));
+        $yjtime1[10] = mktime(0,0,0,date('m')-10,1,date('Y'));
+        $yjtime1[11] = mktime(0,0,0,date('m')-11,1,date('Y'));
+        $yjtime1[12] = mktime(0,0,0,date('m')-12,1,date('Y'));
+        krsort($yjtime1);
+        foreach ($yjtime1 as $k=>$i){
+            $data['yjtime'] = $i;
+            $data['user_id'] = $user_id;
+            $field = "yj".$k;
+            $achievement= M("integral")->where($data)->getField("achievement"); //  M数据库，where条件，getField获取字段
+            $list[$field] = $achievement?$achievement:0;
+        }
+        //取出职级获取对应的周期
+        $dat1['user_id'] = $user_id;
+        $jobrank = M('user') -> where($dat1) -> getField("job_rank");
+        $dat2['rankid'] = intval($jobrank);
+        $cycletime = M("professioninternet_range")->where($dat2) -> getField('cycletime');
+//      周期业绩的总量存储在list集合中,
+        $list['total'] = 0.00;
+        for ( $i = 1 ; $i <= intval($cycletime);$i ++){
+            $list['total'] += $list["yj".$i];
+        }
+        $low = M('professioninternet_range')->where(array('rankid'=>intval($jobrank)))->getField('lowachievement');
+        $mid = M('professioninternet_range')->where(array('rankid'=>intval($jobrank)))->getField('midachievement');
+        $up  = M('professioninternet_range')->where(array('rankid'=>intval($jobrank)))->getField('upachievement');
+        if($list['total']<$low){
+            M('user')->where("user_id=%d",$user_id)->setDec('job_rank');
+            M('user')->where(array('user_id'=>$user_id))->setField('position_info',-1);
+        }elseif ($list['total']>=$up){
+            M('user')->where("user_id=%d",$user_id)->setInc('job_rank');
+            M('user')->where(array('user_id'=>$user_id))->setField('position_info',2);
+        }elseif ($list['total']<$up && $list['total']>$mid){
+            M('user')->where(array('user_id'=>$user_id))->setField('position_info',1);
+        }else{
+            $position = intval(M('user')->where(array('user_id'=>$user_id))->getField('position_info'));
+            if(0==$position){
+                M('user')->where("user_id=%d",$user_id)->setDec('job_rank');
+                M('user')->where(array('user_id'=>$user_id))->setField('position_info',-1);
+            }
+            else M('user')->where(array('user_id'=>$user_id))->setField('position_info',0);
+        }
+    }
 
     /**
      *用于判断权限
@@ -26,11 +154,10 @@ class IntegralAction extends Action{
 //        );
 //        B('Authenticate', $action);
 //        $this->_permissionRes = getPerByAction(MODULE_NAME,ACTION_NAME);
-
     }
 
     //专业猎头 方法
-    public function index(){
+    public function index(){  //
         header("Content-type: text/html; charset=utf-8");
 //        $id = M("job_rank")->where("name='%s'","A2")->getField("id");
 //        var_dump($id);exit();
@@ -48,7 +175,6 @@ class IntegralAction extends Action{
 
         //权限判断
         $below_ids = getPerByAction(MODULE_NAME,ACTION_NAME,false);
-
         if(intval($_GET['role'])){
             $role_ids = array(intval($_GET['role']));
         }else{
@@ -70,11 +196,6 @@ class IntegralAction extends Action{
         if(is_numeric($_GET['position_info'])){
             $where_source['user.position_info'] = $_GET['position_info'];
         }
-//        echo print_r($where_source);
-//        exit;
-/*
- *  数据库查询
- */
         $where_source['user.profession_id'] = 1;
         $count = $user->where($where_source)->count() ? $user->where($where_source)->count() : '0';
         //$count 是查询记录的总条数
@@ -84,11 +205,8 @@ class IntegralAction extends Action{
             $p = $p_num;
         }
         $list = $user->where($where_source)->Page($p.','.$listrows)->select();
-        //  联表,mx_user,mx_user_category,mx_job_rank,mx_role,mx_position,mx_role_department,各表信息全部查出
+//      联表,mx_user,mx_user_category,mx_job_rank,mx_role,mx_position,mx_role_department,各表信息全部查出
 
-/*
- * 整改部分
- */
         $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
         $yjtime[1] = mktime(0,0,0,date('m')-1,1,date('Y'));
         $yjtime[2] = mktime(0,0,0,date('m')-2,1,date('Y'));
@@ -114,23 +232,25 @@ class IntegralAction extends Action{
            foreach ($yjtime as $k=>$i){
                 $data['yjtime'] = $i;
                 $data['user_id'] = $li['user_id'];
-               //data[0]= userid=>1 yjtime=>1498838400
                 $field = "yj".$k;
                 $achievement= M("integral")->where($data)->getField("achievement"); //  M数据库，where条件，getField获取字段
                 $list[$key][$field] = $achievement?$achievement:0;
             }
-/******************************************************************************************************************/
-                //周期业绩的总量存储在list集合中，
+                // 周期业绩的总量存储在list集合中，
                 $list[$key]['total'] = $list[$key]["yj1"]+$list[$key]["yj2"]+$list[$key]["yj3"]+$list[$key]["yj4"]+$list[$key]["yj5"]+$list[$key]["yj6"];
-                //计算周期业绩达成率
-                $list[$key]['rate'] = round(((float)$list[$key]['total']/(float)$li['upachievment']*100),2);
-                //保存当前月份
-               $list[$key]['current_month'] = $num;
+                $job_rank = M("user")->where(array('user_id'=>$li['user_id']))->getField("job_rank");        //获取对应用户的职级
+                $lowAchievement = M("professionhunters_range")->where(array('rankid'=>$job_rank))->getField("lowachievment");
+                $upachievement =  M("professionhunters_range")->where(array('rankid'=>$job_rank))->getField("upachievment");
+                if($list[$key]['total']>=$upachievement){
+                    M("user")->where(array('user_id'=>$li['user_id']))->setField('position_info',1);
+                }elseif($list[$key]['total']<$lowAchievement){
+                    M("user")->where(array('user_id'=>$li['user_id']))->setField('position_info',-1);
+                }else{
+                    M("user")->where(array('user_id'=>$li['user_id']))->setField('position_info',0);
+                }
+                //  保存当前月份
+                $list[$key]['current_month'] = $num;
         }
-/*********************************************************************************************************/
-//      $list[$key]['sj'] = $this->positionRF($li['rank_name'],$li['user_id']);
-//      echo print_r($list).'<br/>';
-//      exit;
         $show = $Page->show();// 显示分页栏
         //客户导出
         if(trim($_GET['act']) == 'excel'){
@@ -150,7 +270,6 @@ class IntegralAction extends Action{
                         }
                         $list[$k]['industry'] = implode(",",$data);
                     }
-
                     if($list[$k]['job_class']){
                         $job_class = explode(",",$list[$k]['job_class']);
                         $data = "";
@@ -179,8 +298,6 @@ class IntegralAction extends Action{
                 alert('error',  L('HAVE NOT PRIVILEGES'),$_SERVER['HTTP_REFERER']);
             }
         }
-
-
         //用户权限验证
         $idArray = $below_ids;
         $roleList = array();
@@ -188,8 +305,6 @@ class IntegralAction extends Action{
             $roleList[$roleId] = getUserByRoleId($roleId);
         }
         $this->roleList = $roleList;
-
-
         //部门权限验证
         $url = getCheckUrlByAction(MODULE_NAME,ACTION_NAME);
         $per_type =  M('Permission') -> where('position_id = %d and url = "%s"', session('position_id'), $url)->getField('type');
@@ -200,7 +315,6 @@ class IntegralAction extends Action{
         }
         $this->alert = parseAlert();
         $this->assign('departmentList', $departmentList);
-
 
         $this->assign('list',$list);// 赋值数据集
         $this->assign('page',$show);// 赋值分页输出
@@ -293,7 +407,6 @@ class IntegralAction extends Action{
             $month_yj[]  = "yj".$key;
         }
         //计算   互联网+
-
         foreach ($list as $key=>$li){
             foreach ($yjtime as $k=>$i){
                 $data['yjtime'] = $i;
@@ -308,12 +421,9 @@ class IntegralAction extends Action{
             for ( $i = 1 ; $i <= intval($li['cycletime']);$i ++){
                 $list[$key]['total'] += $list[$key]["yj".$i];
             }
-            //计算保存业绩达成率
-            $list[$key]['rate'] = round(((float)$list[$key]['total']/(float)$li['upachievement'] * 100),2 );
-            //保存当前月份
+//      保存当前月份
             $list[$key]['current_month'] = $num;
         }
-//        echo dump($list);
         $show = $Page->show(); // 显示分页栏
         //客户导出
         if(trim($_GET['act']) == 'excel'){
@@ -504,7 +614,7 @@ class IntegralAction extends Action{
         session('export_status', 0);
     }
 
-    /*
+    /**
      * 职位升降判断
      * job_rank当前职能等级   month_yj当年每月业绩集合
      **/
@@ -1074,6 +1184,7 @@ class IntegralAction extends Action{
 
         return $result;
     }
+
     //编辑专业猎头职级
     public function position_edit(){
         $position = array(27=>"A2",30=>"A3",31=>"A4",32=>"C1",33=>"C2",34=>"C3",35=>"C4",36=>"C5",37=>"C6",38=>"D1",39=>"D2",40=>"D3",41=>"D4",42=>"D5",43=>"D6",44=>"D7",45=>"D8",46=>"D9",47=>"D10",48=>"P1",49=>"P2",50=>"P3");
@@ -1083,7 +1194,7 @@ class IntegralAction extends Action{
             if($position_info==1){
                 $result = M("user")->where("user_id=%d",$user_id)->setInc('job_rank');
                 M("user")->where("user_id=%d",$user_id)->save(array("position_info"=>0));
-                M("integral")->where("user_id=%d",$user_id)->save(array('achievement'=>0));
+//                M("integral")->where("user_id=%d",$user_id)->save(array('achievement'=>0));
                 if($result){
                     $this->ajaxReturn("成功",'success',1);
                 }
@@ -1096,20 +1207,21 @@ class IntegralAction extends Action{
             }
         }
     }
+
     //编辑互联网+职级
     public function position_edit_net(){
         $position = array(27=>"A2",30=>"A3",31=>"A4",32=>"C1",33=>"C2",34=>"C3",35=>"C4",36=>"C5",37=>"C6",38=>"D1",39=>"D2",40=>"D3",41=>"D4",42=>"D5",43=>"D6",44=>"D7",45=>"D8",46=>"D9",47=>"D10",48=>"P1",49=>"P2",50=>"P3");
         if($this->isPost()){
             $user_id = $_POST['user_id'];
             $position_info = $_POST['position_info'];
-            if($position_info==2){
+            if($position_info==2){ //取消降级
                 $result = M('user')->where("user_id=%d",$user_id)->setInc('job_rank');
                 M("user")->where('user_id=%d',$user_id)->save(array("position_info"=>1));
-                M("integral")->where("user_id=%d",$user_id)->save(array('achievement'=>0));
+//                M("integral")->where("user_id=%d",$user_id)->save(array('achievement'=>0));
                 if($result){
                     $this->ajaxReturn("成功","success",1);
                 }
-            }elseif ($position_info==-1){
+            }elseif ($position_info==-1){ //取消升级
                 $result = M("user")->where("user_id=%d",$user_id)->setDec('job_rank');
                 M("user")->where("user_id=%d",$user_id)->save(array("position_info"=>1));
                 if($result){
@@ -1121,7 +1233,6 @@ class IntegralAction extends Action{
 
     /**
      *  客户导入
-     *
      **/
     public function excelImport(){
         if($this->isPost()){   //前端ajax请求
@@ -1170,13 +1281,11 @@ class IntegralAction extends Action{
         }
     }
 
-/*
- * 保存导入的Excel内容
- */
+    //保存导入的Excel内容
     public function excelImportact(){
         $m_product = D('product');
         $m_product_data = D('ProductData');
-        $savePath = $_GET['path'];  // path=./Uploads/201807/24/5b56c463f24979873.xls
+        $savePath = $_GET['path'];    // path=./Uploads/201807/24/5b56c463f24979873.xls
         import("ORG.PHPExcel.PHPExcel");
         $PHPExcel = new PHPExcel();
         $PHPReader = new PHPExcel_Reader_Excel2007();
@@ -1186,7 +1295,7 @@ class IntegralAction extends Action{
         $PHPExcel = $PHPReader->load($savePath);
         $currentSheet = $PHPExcel->getSheet(0);
         $allRow = $currentSheet->getHighestRow();
-        $field_list = array("name","department","achievement","level","profession_id","position");
+        $field_list = array("name","unit","department","achievement","level","profession_id","position");
         $currentRow = intval($_GET['num']);  // $num = 3
         if($currentRow+99 <=$allRow){
             $rows_excal = $currentRow+100;
@@ -1211,6 +1320,7 @@ class IntegralAction extends Action{
                     $cv = chr(strlen($cv)+65);
                 }
             }
+            //国庆节name----猎头八部----C4----(互联网+)----部门经理
             if($info['profession_id'] == "互联网+") $info['profession_id'] = 2; else $info['profession_id'] = 1;
             if($info['profession_id'] == 1)
                 $this->calculateProHunter($info,$yjtime);
@@ -1227,9 +1337,9 @@ class IntegralAction extends Action{
         }else{
             $this->ajaxReturn('','error',0);
         }
-
     }
-    //专业猎头周期计算 ，
+
+    //专业猎头周期计算
     public function calculateProHunter($info,$yjtime){
         $yjtime1 = array();
         $yjtime1[1] = mktime(0,0,0,date('m')-1,1,date('Y'));
@@ -1247,6 +1357,7 @@ class IntegralAction extends Action{
         krsort($yjtime1);
         $list = array();
         $user_id = $this->addUser($info['name'],$info['department'],$info['level'],$info['profession_id'],$info['position']);    //$user_id = 46
+
         foreach ($yjtime1 as $k=>$i){
             $data['yjtime'] = $i;
             $data['user_id'] = $user_id;
@@ -1276,6 +1387,7 @@ class IntegralAction extends Action{
             M("user")->where(array('user_id'=>$user_id))->setField('position_info',0);
         }
     }
+
     //互联网+ 周期计算
     public function calculateProInte($info,$yjtime){
         $month = intval(date('m',$yjtime));
@@ -1329,14 +1441,19 @@ class IntegralAction extends Action{
         $mid = M('professioninternet_range')->where(array('rankid'=>$job_rank))->getField('midachievement');
         $up  = M('professioninternet_range')->where(array('rankid'=>$job_rank))->getField('upachievement');
         if($total<$low){
+            M('user')->where("user_id=%d",$user_id)->setDec('job_rank');
             M('user')->where(array('user_id'=>$user_id))->setField('position_info',-1);
         }elseif ($total>=$up){
+            M('user')->where("user_id=%d",$user_id)->setInc('job_rank');
             M('user')->where(array('user_id'=>$user_id))->setField('position_info',2);
         }elseif ($total<$up && $total>$mid){
-            M('user')->where(array('user_id'=>$user_id))->setField('position_info',1);
+            M('user')->where(array('user_id'=>$user_id))->seitFeld('position_info',1);
         }else{
             $position = intval(M('user')->where(array('user_id'=>$user_id))->getField('position_info'));
-            if(0==$position) M('user')->where(array('user_id'=>$user_id))->setField('position_info',-1);
+            if(0==$position){
+                M('user')->where("user_id=%d",$user_id)->setDec('job_rank');
+                M('user')->where(array('user_id'=>$user_id))->setField('position_info',-1);
+            }
             else M('user')->where(array('user_id'=>$user_id))->setField('position_info',0);
         }
     }
@@ -1362,16 +1479,15 @@ class IntegralAction extends Action{
 
             $data = "";
             $role = D("DeptView");    //  position ,role_department
-            $arr['role_department.name'] = $department;
-            $arr['position.name'] = $position;    //$arr['position.name'] = "猎头顾问";
-            $data['position_id'] = $role->where($arr)->getField("position_id");
-            $data['user_id'] =$user_id;
-            $role_id = M("role")->add($data);
+            $arr['role_department.name'] = $department; //  $department 部门
+            $arr['position.name'] = $position;    //  $position 职位
+            $data['position_id'] = $role->where($arr)->getField("position_id"); //获取的是职位id
+            $data['user_id'] = $user_id;
+            $role_id = M("role")->add($data);  // 用户 --> 岗位 --> 部门 --> 事业部
 
             $data = "";
             $data['role_id'] = $role_id;
             $data['number'] = "K_00".$user_id;
-
             $result = M("user")->where("user_id=%d",$user_id)->save($data);
             return $user_id;
         }
@@ -1396,10 +1512,10 @@ class IntegralAction extends Action{
         $objProps = $objPHPExcel->getProperties();
         $objProps->setCreator("慧猎");
         $objProps->setLastModifiedBy("慧猎");
-        $objProps->setTitle("慧猎积分模板");
-        $objProps->setSubject("慧猎积分数据");
-        $objProps->setDescription("慧猎积分数据");
-        $objProps->setKeywords("慧猎积分数据");
+        $objProps->setTitle("慧猎业绩模板");
+        $objProps->setSubject("慧猎业绩数据");
+        $objProps->setDescription("慧猎业绩数据");
+        $objProps->setKeywords("慧猎业绩数据");
         $objProps->setCategory("慧猎");
         $objPHPExcel->setActiveSheetIndex(0);
         $objActSheet = $objPHPExcel->getActiveSheet();
@@ -1407,7 +1523,8 @@ class IntegralAction extends Action{
         $objActSheet->setTitle('Sheet1');
         $ascii = 65;
         $cv = '';
-        $field_list = array("姓名","部门","n月业绩(n为具体月份)","原职级","岗位");
+        $field_list = array("姓名","事业部","部门","n月业绩","职级","属性","岗位");
+
         foreach($field_list as $field){
             $objActSheet->setCellValue($cv.chr($ascii).'2', $field);
             $ascii++;
@@ -1421,18 +1538,17 @@ class IntegralAction extends Action{
                 }
             }
         }
-
         $objActSheet->mergeCells('A1:'.$cv.chr($ascii).'1');
         $objActSheet->getRowDimension('1')->setRowHeight(20);
         $objActSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER); //水平居中
         $objActSheet->getStyle('A1')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER); //垂直居中
         $objActSheet->getStyle('A1')->getFont()->getColor()->setARGB('FFFF0000');
         $objActSheet->getStyle('A1')->getAlignment()->setWrapText(true);
-        $content = '积分信息（*代表必填项）';
+        $content = '业绩信息（请全部填写）';
         $objActSheet->setCellValue('A1', $content);
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         header("Content-Type: application/vnd.ms-excel;");
-        header("Content-Disposition:attachment;filename=慧猎积分模板.xls");
+        header("Content-Disposition:attachment;filename=慧猎业绩模板.xls");
         header("Pragma:no-cache");
         header("Expires:0");
         $objWriter->save('php://output');

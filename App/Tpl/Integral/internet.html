@@ -115,7 +115,6 @@
                         </ul>
                     </div>
                     <div class="row " id="title-show" >
-
                         <form class="form-inline" id="" action="" method="get">
                             <ul class="breadcrum pull-right" style="margin-bottom: 0px">
 
@@ -129,7 +128,6 @@
                                 </div>
                             </ul>
                         </form>
-
 
                         <form id="searchForm" class="form-group" method="get" style="margin-bottom: 0px;">
                             <input type="hidden" name="m" value="integral" />
@@ -217,10 +215,8 @@
                                                     <td>{$vo}</td>
                                                 </volist>
                                                 <td>周期业绩</td>
-                                                <td>晋升业绩达成率</td>
                                                 <td>升降级提示</td>
-                                                <!--<td>当月工资计算</td>-->
-                                                <!--<td>操作</td>-->
+                                                <td>操作</td>
                                             </tr>
                                             <tbody >
                                             <volist name="list" id="vo">
@@ -231,21 +227,24 @@
                                                             <label for=""></label>
                                                         </div>
                                                     </td>
-                                                    <td>{$vo.full_name}</td>
+                                                    <td data-id="{$vo['user_id']}">{$vo.full_name}</td>
                                                     <td>{$vo.department_name}</td>
                                                     <td>{$vo.rank_name}</td>
                                                     <volist name="month_yj" id="v">
-                                                        <td>{$vo[$v]}</td>
+                                                        <td><input type="text" readonly="readonly" style="width: 70px;" value="{$vo[$v]}"></td>
                                                     </volist>
                                                     <td>{$vo.total}</td>
-                                                    <td>{$vo.rate}%</td>
                                                     <td>
-                                                        <if condition="$vo['position_info'] eq -1"><a class="label label-danger jjstatus" style="color: white;" data-id="{$vo['user_id']}">降级 </a>
-                                                            <elseif condition="$vo['position_info'] eq 2"/><a class="label label-primary sjstatus" style="color: white;" data-id="{$vo['user_id']}">升级 </a>
+                                                        <if condition="$vo['position_info'] eq -1"><a class="label label-danger jjstatus" style="color: white;" data-id="{$vo['user_id']}">取消降级</a>
+                                                            <elseif condition="$vo['position_info'] eq 2"/><a class="label label-primary sjstatus" style="color: white;" data-id="{$vo['user_id']}">取消升级 </a>
                                                                 <elseif condition="$vo['position_info'] eq 0" /><span class="label label-warning ">警告</span>
                                                             <else/>
                                                             正常
                                                         </if>
+                                                    </td>
+                                                    <td>
+                                                        <input type="button" class="btn btn-xs  btn-info xiugai" value="修改" onclick="edittext(this)" >
+                                                        <input type="button" class="btn btn-xs  btn-success baocun" value="保存" onclick="savetext(this)" style="display: none">
                                                     </td>
                                                 </tr>
                                             </volist>
@@ -343,6 +342,17 @@
         // }
     });
 
+    //文本框变为可编辑状态
+    function edittext(data) {
+        var tr = $($(data).parent().parent());
+        var tdcount = tr.children().length;
+        for (let i = 0;i<tdcount;i++){
+            if (tr.children().eq(i).children().length>0&&tr.children().eq(i).children().length<2){
+                $(tr.children().eq(i).children().eq(0)).removeAttr('readonly');
+            }
+        }
+    }
+
     /*添加筛选条件*/
     var m = 1;
     $('#add_btn').click(function(){
@@ -404,34 +414,7 @@
     $('.sjstatus').click(function () {
         var _this = $(this);
         swal({
-                title: "确定对该员工升级职级吗？",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "确定",
-                closeOnConfirm: false
-            },
-            function () {
-                var user_id = _this.attr("data-id");
-                $.ajax({
-                    type: "post",
-                    url: "{:U('integral/position_edit_net')}",
-                    data: {
-                        user_id: user_id,
-                        position_info: 2
-                    },
-                    success: function (data) {
-                        if (data.status == 1) {
-                            location = location;
-                        }
-                    }
-                })
-            });
-    });
-    $('.jjstatus').click(function () {
-        var _this = $(this);
-        swal({
-                title: "确定对该员工降级职级吗？",
+                title: "确定取消该员工的升级吗？",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -446,6 +429,33 @@
                     data: {
                         user_id: user_id,
                         position_info: -1
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            location = location;
+                        }
+                    }
+                })
+            });
+    });
+    $('.jjstatus').click(function () {
+        var _this = $(this);
+        swal({
+                title: "确定取消该员工的降级吗？",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定",
+                closeOnConfirm: false
+            },
+            function () {
+                var user_id = _this.attr("data-id");
+                $.ajax({
+                    type: "post",
+                    url: "{:U('integral/position_edit_net')}",
+                    data: {
+                        user_id: user_id,
+                        position_info: 2
                     },
                     success: function (data) {
                         if (data.status == 1) {
@@ -620,6 +630,61 @@
             </if>
             },
             dataType:'json'});
+    }
+    //文本框变为可编辑状态
+    function edittext(data) {
+        var tr = $($(data).parent().parent());
+        var tdcount = tr.children().length-3;
+        for (let i = 0;i<tdcount;i++){
+            if (tr.children().eq(i).children().length>0&&tr.children().eq(i).children().length<2&&i>3){
+                $(tr.children().eq(i).children().eq(0)).removeAttr('readonly');
+            }
+        }
+        $($($(data).parent()).children().eq(1)).css('display','block');
+        $(data).css('display','none');
+    }
+    //发送文本框值
+    function savetext(data) {
+        var tr = $($(data).parent().parent());
+        var tdcount = tr.children().length - 2;
+        var value = [];
+        var postdata = {};
+        for (let i = 0;i<tdcount;i++){
+            if (tr.children().eq(i).children().length>0&&tr.children().eq(i).children().length<2&&i>3){
+                value[i]=$(tr.children().eq(i).children().eq(0)).val();
+                $(tr.children().eq(i).children().eq(0)).attr('readonly','readonly');
+            }else if(i==1){
+                value[i] = $(tr.children().eq(i)).attr('data-id');
+            }
+        }
+        var th = $($('#childNodes_num').children());
+        var thvalue = [];
+        for (let i = 0;i<tdcount-1;i++) {
+            if(i>3){
+                thvalue[i] = th.eq(i).text();
+                postdata[thvalue[i]] = value[i];
+            }else if(i==1){
+                thvalue[i] = "data-id";
+                postdata[thvalue[i]] = value[i];
+            }
+        }
+        $.ajax({
+                type: "POST",
+                url: "{:U('integral/edit_index')}",
+                data: {
+                    postdata:postdata,
+                    belong: 2
+                },
+                async:false,
+                dataType:'json',
+                success: function(data) {
+                    console.log(data)
+                }
+            }
+
+        )
+        $($($(data).parent()).children().eq(0)).css('display','block');
+        $(data).css('display','none');
     }
 </script>
 <include file="Public:footer" />
