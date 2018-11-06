@@ -202,7 +202,6 @@ class BackgroundAction extends Action
             echo '{"status":"false"}';
         }
     }
-
     function deleteall(){
         $ids = I('post.');
         $backGround = M('background');
@@ -222,7 +221,6 @@ class BackgroundAction extends Action
             echo '{"status":"2"}';
         }
     }
-
     //通用更新员工信息表背调字段方法$ids为背调信息表id集合，$sid为员工id
     function updatemsg($ids,$sid){
         $msgId = Array();
@@ -388,7 +386,6 @@ class BackgroundAction extends Action
             }
         }
     }
-
     function readyOutPut(){
         $get = I("get.ids");
         if($get){
@@ -441,7 +438,6 @@ class BackgroundAction extends Action
         header("Expires:0");*/
         $objWriter->save('php://output');
     }
-
     function output($data){
         $map['Id'] = array('in',explode(',',$data));
         $map2['s_id'] = $map['Id'];
@@ -480,5 +476,524 @@ class BackgroundAction extends Action
         }
         $this->exportExcel($outList,'backGroundMsg',$listKey);
         session('export_status', 0);
+    }
+    function index_external(){
+        $exBackground = M('external_background');
+        $listrows = I('get.listrows')?I('get.listrows'):10;
+        $p = isset($_GET['p'])?$_GET['p']:1;
+        $field = 'name,jobs,tocompany,industry,bz,Id';
+        $search = I('get.search');
+        $by = I('get.by');
+        if($search!=''){
+            $where['name']=array('like',$search.'%');
+            $count = $exBackground->where($where)->count();
+            $data = $exBackground->where($where)->field($field)->page($p.','.$listrows)->order($by)->select();
+            $this->assign('data',$data);
+        }else{
+            $count = $exBackground->count();
+            $data = $exBackground->field($field)->page($p.','.$listrows)->order($by)->select();
+            $this->assign('data',$data);
+        }
+        $this->assign('by',$by);
+        //分页设置
+        import('@.ORG.Page');//导入分页类
+        $Page = new Page($count,$listrows);
+        $data = $Page->show();
+        $this->assign('page',$data);
+        $this->assign('listrows',$listrows);
+        $this->assign('search',$search);
+        $this->display();
+    }
+    //对外背调通用删除
+    function ex_delete(){
+    if(IS_POST){
+        $id = I('post.');
+        $mapId['Id'] = array('in',$id['Id']);
+        $exBg = M('external_background');
+        $exBg->startTrans();
+        $bg = $exBg->where($mapId)->delete();
+
+        $mapCid['c_id'] = array('in',$id['Id']);
+        $exEdu = M('external_background_edu');
+        $exEdu->startTrans();
+        $edu = $exEdu->where($mapCid)->delete();
+
+        $exQc = M('external_background_qc');
+        $exQc->startTrans();
+        $qc =$exQc->where($mapCid)->delete();
+
+        $exWork =M('external_background_work');
+        $exWork->startTrans();
+        $work = $exWork->where($mapCid)->select();
+        $workResult = $exWork->where($mapCid)->delete();
+
+        foreach ($work as $k =>$v){
+            $wId[] = $v['Id'];
+        }
+        $mapWid['w_id'] = array('in',$wId);
+        $exWitness = M('external_background_witness');
+        $exWitness->startTrans();
+        $witness = $exWitness->where($mapWid)->delete();
+        if($bg||($edu&&$qc&&$workResult&&$witness)){
+            $exBg->commit();
+            $exEdu->commit();
+            $exQc->commit();
+            $exWork->commit();
+            $exWitness->commit();
+            echo '{"status":"1"}';
+        }else{
+            $exBg->rollback();
+            $exEdu->rollback();
+            $exQc->rollback();
+            $exWork->rollback();
+            $exWitness->rollback();
+            echo '{"status":"0"}';
+        }
+    }
+}
+    function hxr_detail(){
+        if(IS_POST){
+            $id = I('post.');
+            if((int)$id['Id']){
+                $exBackground = M('external_background');
+                $bg = $exBackground->field('Id,name,jobs,tocompany,industry,id_pic_src,bz,idnumber')->where($id)->find();
+                $exBackgroundEdu = M('external_background_edu');
+                $edu = $exBackgroundEdu->where('c_id ='.$id['Id'])->field('c_id',true)->select();
+                $exBackgroundQc = M('external_background_qc');
+                $qc = $exBackgroundQc->where('c_id ='.$id['Id'])->field('c_id',true)->select();
+                $exBackgroundWork = M('external_background_work');
+                $work = $exBackgroundWork->where('c_id ='.$id['Id'])->field('c_id',true)->select();
+                $exBackgroundWitness = M('external_background_witness');
+                foreach ($work as $k => $v){
+                    $witness = $exBackgroundWitness->where('w_id ='.$v['Id'])->select();
+                    $work[$k]['witness'] = $witness;
+                }
+                $data['bg'] = $bg;
+                $data['edu'] = $edu;
+                $data['qc'] = $qc;
+                $data['work'] = $work;
+                $data = json_encode($data);
+                echo $data;
+            }
+        }
+    }
+    function add_external(){
+        if(IS_POST){
+            $data = I('post.');
+            $bgKey = ['name','jobs','tocompany','industry','consultant','idnumber','bz'];
+            $dataBg = explode(',',$data['bg']);
+            for($i = 0;$i<count($dataBg);$i++){
+                $bg[$bgKey[$i]] = $dataBg[$i];
+            }//$bg 为存入external_background表的数据
+
+            $eduKey = ['school','school_add','edu_type','edu_type_add','major','major_add','enter_time','enter_time_add','out_time','out_time_add','edu_num','edu_num_add','msgbelong','msgbelong_add'];
+            $dataEdu = explode(',',$data['edu']);
+            $eduCount = count($dataEdu)/count($eduKey);
+            for($i=0;$i<$eduCount;$i++){
+                for($j=0;$j<count($eduKey);$j++){
+                    $edu[$i][$eduKey[$j]] = $dataEdu[$j+(count($eduKey)*$i)];
+                }
+            }//$edu 为存入external_background_edu表的数据
+
+            $qcKey = ['get_time','get_time_add','out_time','out_time_add','qc_type','qc_type_add','qc_source','qc_source_add','qc_num','qc_num_add'];
+            $dataQc = explode(',',$data['qc']);
+            $qcCount = count($dataQc)/count($qcKey);
+            for($i=0;$i<$qcCount;$i++){
+                for($j=0;$j<count($qcKey);$j++){
+                    $qc[$i][$qcKey[$j]] = $dataQc[$j+(count($qcKey)*$i)];
+                }
+            }//$qc 为存入external_background_edu表的数据
+
+            $workKey = ['company','company_add','enter_time','enter_time_add','out_time','out_time_add','position','position_add','witness_count'];
+            $dataWork = explode(',',$data['work']);
+            $workCount = count($dataWork)/count($workKey);
+            for($i=0;$i<$workCount;$i++){
+                for($j=0;$j<count($workKey);$j++){
+                    $work[$i][$workKey[$j]] = $dataWork[$j+(count($workKey)*$i)];
+                }
+            }//$work 为存入external_background_work表的数据
+
+            $witnessKey = ['witness','position','tel','relationship','method','performance','badrecord','reason','train','compete'];
+            $dataWitness = explode(',',$data['witness']);
+            $witnessCount = count($dataWitness)/count($witnessKey);
+            for($i=0;$i<$witnessCount;$i++){
+                for($j=0;$j<count($witnessKey);$j++){
+                    $witness[$i][$witnessKey[$j]] = $dataWitness[$j+(count($witnessKey)*$i)];
+                }
+            }//$witness 为存入external_background_witness表的数据
+
+            if(!empty($_FILES)){
+                $pics = $_FILES;
+                //移动所上传图片
+                $picName = array_keys($pics);
+                foreach ($picName as $key => $val){
+                    $type = end(explode('.',$pics[$val]['name']));
+                    $name = reset(explode('.',$pics[$val]['name']));
+                    if($val =="id"){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/idpic/".time()."_".$name.".".$type;
+                        $idPath = end(explode('/Uploads',$path));
+                        $bg['id_pic_src'] = $idPath;
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }elseif(count(explode("edu",$val))>=2){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/edu/".time()."_".$name.".".$type;
+                        $arr['src'] = end(explode('/Uploads',$path));
+                        $arr['for'] = end(explode("edu",$val))==''?'0':end(explode("edu",$val));
+                        $eduPath[] = $arr;
+                        foreach ($eduPath as $k => $v){
+                            $edu[$v['for']]['edu_pic_src'] = $v['src'];
+                        }//对应数据存入图片地址
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }elseif (count(explode("qc",$val))>=2){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/qc/".time()."_".$name.".".$type;
+                        $arr['src'] = end(explode('/Uploads',$path));
+                        $arr['for'] = end(explode("qc",$val))==''?'0':end(explode("qc",$val));
+                        $qcPath[] = $arr;
+                        foreach ($qcPath as $k => $v){
+                            $qc[$v['for']]['qc_pic_src'] = $v['src'];
+                        }//对应数据存入图片地址
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }
+                }
+            }
+            //写入数据库
+            $exBackground = M('external_background');
+            $exBackgroundEdu = M('external_background_edu');
+            $exBackgroundQc = M('external_background_qc');
+            $exBackgroundWitness = M('external_background_witness');
+            $exBackgroundWork = M('external_background_work');
+
+
+            $exBackground->startTrans();
+            $bgResult = $exBackground->add($bg);
+            if($bgResult){
+                $exBackground->commit();
+                $bgId =$exBackground->field('Id')->order('Id desc')->find();
+                $exBackgroundEdu->startTrans();
+                $eduResult = 0;
+                foreach ($edu as $k => $v){
+                    $v['c_id'] = $bgId['Id'];
+                    $status = $exBackgroundEdu->add($v);
+                    if(!$status){
+                        $eduResult = 1;
+                    }
+                }
+                $eduResult==0?$exBackgroundEdu->commit(): $exBackgroundEdu->rollback();
+                $exBackgroundQc->startTrans();
+                $qcResult = 0;
+                foreach ($qc as $k => $v){
+                    $v['c_id'] = $bgId['Id'];
+                    $status = $exBackgroundQc->add($v);
+                    if(!$status){
+                        $qcResult = 1;
+                    }
+                }
+                $qcResult==0?$exBackgroundQc->commit():$exBackgroundQc->rollback();
+                $exBackgroundWork->startTrans();
+                $exBackgroundWitness->startTrans();
+                foreach ($work as $k => $v){
+                    $v['c_id'] = $bgId['Id'];
+                    $workResult = $exBackgroundWork->add($v);
+                    if($workResult){
+                        $workId = $exBackgroundWork->field('Id')->order('Id desc')->find();
+                        $countWitness = $v['witness_count'];
+                        for($i=0;$i<$countWitness;$i++){
+                            $witness[$i]['w_id'] = $workId['Id'];
+                            $witnessResult = $exBackgroundWitness->add($witness[$i]);
+                            $witnessResult?$exBackgroundWitness->commit():$exBackgroundWitness->rollback();
+                            unset($witness[$i]);
+                        }
+                        $witness = array_values($witness);
+                        $exBackgroundWork->commit();
+                    }else{
+                        $exBackgroundWork->rollback();
+                    }
+                    $this->ajaxReturn('true');
+                }
+            }else{
+                $exBackground->rollback();
+            }
+        }else{
+            $this->display();
+        }
+    }
+    //对外背调excel导入
+    function ex_excel_upload(){
+        if($_FILES){
+            $file = $_FILES['files'];
+            $type =  end(explode('.', $file['name'][0]));
+            $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/resume_file/".time().".".$type;
+            $upload_path_name = $_SERVER['DOCUMENT_ROOT']."/Uploads/resume_file/".time().".".$type;
+            $complete_path = time().".".$type;
+            move_uploaded_file($file['tmp_name'][0],$upload_path_name);
+            $data = $this->ex_excelToArray($complete_path);
+            //dump($data);
+            //数据拆分
+            //ex_background表
+            foreach ($data as $key => $val){
+                foreach ($val as $k => $v){
+                    if($k<=6){
+                        $bg[$key][] = $v;
+                    }elseif ($k>6&&$k<=13){
+                        $edu[$key*2][] = $v;
+                    }elseif($k>13&&$k<=20){
+                        $edu[$key*2+1][] = $v;
+                    }elseif ($k>20&&$k<=25){
+                        $qc[$key*2][] = $v;
+                    }elseif($k>25&&$k<=30){
+                        $qc[$key*2+1][] = $v;
+                    }elseif($k>30&&$k<=34){
+                        $work[$key*2][] = $v;
+                    }elseif($k>74&&$k<=78){
+                        $work[$key*2+1][] = $v;
+                    }elseif($k>34&&$k<=44){
+                        $witness[$key*8][] = $v;
+                    }elseif($k>44&&$k<=54){
+                        $witness[$key*8+1][] = $v;
+                    }elseif($k>54&&$k<=64){
+                        $witness[$key*8+2][] = $v;
+                    }
+                    elseif($k>64&&$k<=74){
+                        $witness[$key*8+3][] = $v;
+                    }
+                    elseif($k>78&&$k<=88){
+                        $witness[$key*8+4][] = $v;
+                    }
+                    elseif($k>88&&$k<=98){
+                        $witness[$key*8+5][] = $v;
+                    }
+                    elseif($k>98&&$k<=108){
+                        $witness[$key*8+6][] = $v;
+                    }elseif($k>108&&$k<=118){
+                        $witness[$key*8+7][] = $v;
+                    }
+                }
+            }
+            $exBg = M('external_background');
+            $exBg->startTrans();
+            $bg = $this->data_keys_change($bg,'bg');
+            $edu =  $this->data_keys_change($edu,'edu');
+            $qc = $this->data_keys_change($qc,'qc');
+            $work = $this->data_keys_change($work,'work');
+            $witness = $this->data_keys_change($witness,'witness');
+
+            $exBgResult = $exBg->addAll($bg);
+            if(!$exBgResult){
+                $exBg->rollback();
+            }else{
+                $exBg->commit();
+                $cIds = $exBg->field('Id')->order('Id desc')->limit(count($bg))->select();
+                $cIds = $this->array_order_id($cIds);//升序排列cid
+                $edu  = $this->data_add_id($edu,$cIds,2,'c_id');
+                $qc = $this->data_add_id($qc,$cIds,2,'c_id');
+                $work = $this->data_add_id($work,$cIds,2,'c_id');
+                $exEdu = M('external_background_edu');
+                $exEdu->startTrans();
+                $exEduResult = $exEdu->addAll($edu);
+                $exQc = D('external_background_qc');
+                $exQc->startTrans();
+                $exQcResult = $exQc->addAll($qc);
+                $exWork = M('external_background_work');
+                $exWork->startTrans();
+                $exWorkResult = $exWork->addAll($work);
+                if(!$exEduResult&&!$exQcResult&&!$exWorkResult){
+                    $exEdu->rollback();
+                    $exQc->rollback();
+                    $exWork->rollback();
+                }else{
+                    $exEdu->commit();
+                    $exQc->commit();
+                    $exWork->commit();
+                    $wIds = $exWork->order('Id desc')->limit(count($work))->field('Id')->select();
+                    $wIds = $this->array_order_id($wIds);
+                    $witness = $this->data_add_id($witness,$wIds,4,'w_id');
+                    $exWitness = M('external_background_witness');
+                    $exWitnessResult = $exWitness->addAll($witness);
+                    if($exWitnessResult){
+                        $exWitness->commit();
+                    }else{
+                        $exWitness->rollback();
+                    }
+                }
+            }
+        }
+    }
+    function ex_excelToArray($name){
+        require_once 'Base/Lib/Classes/PHPExcel/IOFactory.php';
+
+        //加载excel文件
+        $filename = 'Uploads/resume_file/'.$name;
+        $objPHPExcelReader = PHPExcel_IOFactory::load($filename);
+
+        $sheet = $objPHPExcelReader->getSheet(0);        // 读取第一个工作表(编号从 0 开始)
+        $highestRow = $sheet->getHighestRow();           // 取得总行数
+        //$highestColumn = $sheet->getHighestColumn();     // 取得总列数
+        $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM', 'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ', 'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM', 'BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ','EA','EB','EC','ED','EE','EF','EG','EH','EI','EJ','EK','EL','EM','EN','EO','EP','EQ','ER','ES','ET','EU','EV','EW','EX','EY','EZ');
+        //读取员工基本信息
+        $res_arr = array();
+        for ($row = 3; $row <= $highestRow; $row++) {
+            $row_arr = array();
+            for ($column = 0; $arr[$column] != 'DP'; $column++) {
+                $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
+                $row_arr[] = $val;
+            }
+
+            $res_arr[] = $row_arr;
+        }
+        return $res_arr;
+    }
+    function array_keys_change($keys,$data){
+        foreach ($data as $key => $val){
+            foreach ($val as $k => $v){
+                $list[$keys[$k]] = $v;
+                unset($data[$key]);
+                $data[$key] = $list;
+            }
+        }
+        return $data;
+    }
+    //cid升序排列
+    function array_order_id($cid){
+        for($i=count($cid)-1;$i>=0;$i--){
+            $data[]=$cid[$i];
+        }
+        return $data;
+    }
+    //excel数据读取 键值对应
+    function data_keys_change($data,$type){
+        switch ($type){
+            case 'bg':
+                $keys = array("name","jobs","tocompany","industry","consultant","idnumber","bz");
+                $data = $this->array_keys_change($keys,$data);
+                return $data;
+                break;
+            case 'edu':
+                $keys = ['school','edu_type','major','enter_time','out_time','edu_num','msgbelong'];
+                $data = $this->array_keys_change($keys,$data);
+                return $data;
+            case 'qc':
+                $keys = ['get_time','out_time','qc_type','qc_source','qc_num'];
+                $data = $this->array_keys_change($keys,$data);
+                return $data;
+            case 'work':
+                $keys = ['company','enter_time','out_time','position','witness_count'];
+                $data = $this->array_keys_change($keys,$data);
+                return $data;
+            case 'witness':
+                $keys = ['witness','position','tel','relationship','method','performance','badrecord','reason','train','compete'];
+                $data = $this->array_keys_change($keys,$data);
+                return $data;
+        }
+    }
+    //数据添加c_id/w_id,$type为c_id 或w_id
+    function data_add_id($data,$ids,$count,$type){
+        for($i=0;$i<count($ids);$i++){
+            for($k=0;$k<$count;$k++){
+                $data[$i*$count+$k][$type] =$ids[$i]['Id'];
+            }
+        }
+        return $data;
+    }
+
+    //单条修改
+    function save_one(){
+        if(IS_POST){
+            $data = I('post.');
+            $dataList = $data['data'];
+            $where['Id'] = $data['Id'];
+            switch ($data['type']){
+                case 'bg':
+                    unset($map);
+                    $map['name'] = $dataList[0];
+                    $map['idnumber'] = $dataList[5];
+                    $result = M('external_background')->where($where)->save($map);
+                    if($result){
+                        echo 'success';
+                    }else{
+                        echo $result;
+                    }
+                    break;
+                case 'edu':
+                    unset($map);
+                    $map['school'] = $dataList[1];
+                    $map['school_add'] = 'sure';
+                    $map['edu_type'] = $dataList[2];
+                    $map['edu_type_add'] = 'sure';
+                    $map['major'] =  $dataList[3];
+                    $map['major_add'] =  'sure';
+                    $map['enter_time'] = $dataList[6];
+                    $map['enter_time_add'] = 'sure';
+                    $map['out_time'] = $dataList[7];
+                    $map['out_time_add'] = 'sure';
+                    $map['edu_num'] =  $dataList[4];
+                    $map['edu_num_add'] =  'sure';
+                    $map['msgbelong'] =  $dataList[5];
+                    $map['msgbelong_add'] =  'sure';
+                    $result = M('external_background_edu')->where($where)->save($map);
+                    if($result){
+                        echo 'success';
+                    }else{
+                        echo $result;
+                    }
+                    break;
+                case 'qc':
+                    unset($map);
+                    $map['qc_type']= $dataList[1];
+                    $map['qc_num']= $dataList[2];
+                    $map['qc_get_time']= $dataList[3];
+                    $map['qc_out_time']= $dataList[4];
+                    $map['qc_source']= $dataList[5];
+                    $map['qc_type_add']= 'sure';
+                    $map['qc_num_add']= 'sure';
+                    $map['qc_get_time_add']= 'sure';
+                    $map['qc_out_time_add']= 'sure';
+                    $map['qc_source_add']= 'sure';
+                    $result = M('external_background_qc')->where($where)->save($map);
+                    if($result){
+                        echo 'success';
+                    }else{
+                        echo $result;
+                    }
+                    break;
+                case 'work':
+                    unset($map);
+                    $map['company'] = $dataList[0];
+                    $map['enter_time'] = $dataList[1];
+                    $map['out_time'] = $dataList[2];
+                    $map['position'] = $dataList[3];
+                    $map['company_add'] = 'sure';
+                    $map['enter_time_add'] = 'sure';
+                    $map['out_time_add'] = 'sure';
+                    $map['position_add'] = 'sure';
+                    $result = M('external_background_work')->where($where)->save($map);
+                    if($result){
+                        echo 'success';
+                    }else{
+                        echo $result;
+                    }
+                    break;
+                case 'witness':
+                    unset($map);
+                    $map['witness'] = $dataList[0];
+                    $map['position'] = $dataList[1];
+                    $map['tel'] = $dataList[2];
+                    $map['relationship'] = $dataList[3];
+                    $map['method'] = $dataList[4];
+                    $map['performance'] = $dataList[5];
+                    $map['badrecord'] = $dataList[6];
+                    $map['reason'] = $dataList[7];
+                    $map['train'] = $dataList[8];
+                    $map['compete'] = $dataList[9];
+                    $result = M('external_background_witness')->where($where)->save($map);
+                    if($result){
+                        echo 'success';
+                    }else{
+                        echo $result;
+                    }
+                    break;
+                default:
+                    echo 'error';
+                    break;
+            }
+        }
     }
 }

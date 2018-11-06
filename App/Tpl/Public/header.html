@@ -11,6 +11,7 @@
 	<link rel="shortcut icon" href="__PUBLIC__/ico/favicon.png"/>
 	<script src="__PUBLIC__/style/js/jquery-2.1.1.js"></script>
 	<link type="text/css" href="__PUBLIC__/css/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
+	<!--<link type="text/css" rel="stylesheet" href="__PUBLIC__/css/background-detail.css">-->
 	<link type="text/css" href="__PUBLIC__/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="__PUBLIC__/resume_selector/common.41f94c00.css">
 	<link rel="stylesheet" href="__PUBLIC__/resume_selector/resume.search.12eb3a9b.css">
@@ -65,8 +66,6 @@
 	        0% {color:#FF6D57;}
 	        100%{color:#93A6B5;}
 		}
-
-
 	</style>
 
 
@@ -325,19 +324,15 @@ $(function(){
 	                </li>
 	                <?php endif; ?>
 
-
-
-
 					<li>
 	                	<a data-toggle="tooltip" data-placement="right" data-original-title="财务发票" <if condition="($module_name eq 'invoice' || $module_name eq 'finance')"> class="active"</if> href="{:U('finance/index')}"><i class="fa fa-credit-card"></i><span class="menu_code">财务</span></a>
 	                </li>
 	              
 	                <?php if (in_array('analytics',$new_module_list)): ?>
 					<li>
-	                	<a data-toggle="tooltip" data-placement="right" data-original-title="报表分析" <if condition="$action_name eq 'collection' || $action_name eq 'analytics' || $action_name eq 'record'|| $action_name eq 'projecttrend'|| $action_name eq 'resume'|| $action_name eq 'project'|| $action_name eq 'customer'|| ($action_name eq 'department' && $module_name eq 'leads')|| $action_name eq 'business'|| $action_name eq 'achievement'|| $action_name eq 'weektrend'|| $action_name eq 'monthtrend'"> class="active"</if> <if condition="checkPerByAction('leads','analytics')">href="{:U('leads/analytics','content_id=1')}"<elseif condition = "checkPerByAction('customer','analytics')" />href="{:U('leads/analytics','content_id=1')}"<elseif condition = "checkPerByAction('business','analytics')" />href="{:U('business/analytics','content_id=1')}"<elseif condition = "checkPerByAction('finance','analytics')" />href="{:U('finance/analytics','content_id=1')}"<elseif condition = "checkPerByAction('product','analytics')" />href="{:U('product/analytics','content_id=1')}"<elseif condition = "checkPerByAction('log','analytics')" />href="{:U('log/analytics','content_id=1')}"<else />href="{:U('leads/analytics','content_id=1')}"</if> ><i class="fa fa-area-chart"></i><span class="menu_code">报表</span></a>
+	                	<a data-toggle="tooltip" data-placement="right" data-original-title="报表分析" <if condition="$action_name eq 'collection' || $action_name eq 'analytics' || $action_name eq 'record'|| $action_name eq 'projecttrend'|| $action_name eq 'resume'|| $action_name eq 'project'|| $action_name eq 'customer'|| ($action_name eq 'department' && $module_name eq 'leads')|| $action_name eq 'business'|| $action_name eq 'achievement'|| $action_name eq 'weektrend'|| $action_name eq 'monthtrend' || $action_name eq 'yieldrate' || $action_name eq 'departmentrate'"> class="active"</if> <if condition="checkPerByAction('leads','analytics')">href="{:U('leads/analytics','content_id=1')}"<elseif condition = "checkPerByAction('customer','analytics')" />href="{:U('leads/analytics','content_id=1')}"<elseif condition = "checkPerByAction('business','analytics')" />href="{:U('business/analytics','content_id=1')}"<elseif condition = "checkPerByAction('finance','analytics')" />href="{:U('finance/analytics','content_id=1')}"<elseif condition = "checkPerByAction('product','analytics')" />href="{:U('product/analytics','content_id=1')}"<elseif condition = "checkPerByAction('log','analytics')" />href="{:U('log/analytics','content_id=1')}"<else />href="{:U('leads/analytics','content_id=1')}"</if> ><i class="fa fa-area-chart"></i><span class="menu_code">报表</span></a>
 	                </li>
 	                <?php endif; ?>
-
 
 					<li>
 						<a data-toggle="tooltip" data-placement="right" data-original-title="职级升降" <if condition="($module_name eq 'integral')"> class="active"</if> href="{:U('integral/index')}"><i class="fa fa-leaf"></i><span class="menu_code">职级</span></a>
@@ -345,11 +340,17 @@ $(function(){
 					<li>
 						<a data-toggle="tooltip" data-placement="right" data-original-title="培训管理" <if condition="($module_name eq 'train' || $module_name eq 'teacher')"> class="active"</if> href="{:U('train/index')}"><i class="fa fa-graduation-cap" style="width: 14px;"></i><span class="menu_code">培训</span></a>
 					</li>
+					<?php if (in_array('log',$new_module_list)): ?>
+					<li>
+						<a data-toggle="tooltip" data-placement="right" data-original-title="背景调查" <if condition="$module_name eq 'log' &&  $action_name neq 'analytics' || ($module_name eq 'examine' && $action_name neq 'analytics') || $module_name eq 'announcement' || ($module_name eq 'knowledge' && $action_name neq 'category') || $module_name eq 'sign' || $module_name eq 'event' || $module_name eq 'background' || ($module_name eq 'kaoqin' && $action_name eq 'index')"> class="active"</if> <if condition="checkPerByAction('background','index')">href="{:U('background/index')}"<elseif condition ="checkPerByAction('examine','index')" />href="{:U('examine/index')}"<elseif condition ="checkPerByAction('knowledge','index')" />href="{:U('knowledge/index')}"<elseif condition ="checkPerByAction('announcement','index')" />href="{:U('announcement/index')}"<elseif condition ="checkPerByAction('sign','index')" />href="{:U('sign/index')}"<elseif condition ="checkPerByAction('background','index')" />href="{:U('background/index')}"<elseif condition ="checkPerByAction('background','index')" />href="{:U('background/index')}"</if>><i class="fa fa-user"></i><span class="menu_code">背调</span></a>
+					</li>
+					<?php endif; ?>
 	                <?php if (in_array('log',$new_module_list)): ?>
 					<li>
 	                	<a data-toggle="tooltip" data-placement="right" data-original-title="日程" <if condition="$module_name eq 'log' &&  $action_name neq 'analytics' || ($module_name eq 'examine' && $action_name neq 'analytics') || $module_name eq 'announcement' || ($module_name eq 'knowledge' && $action_name neq 'category') || $module_name eq 'sign' || $module_name eq 'event' || $module_name eq 'task' || ($module_name eq 'kaoqin' && $action_name eq 'index')"> class="active"</if> <if condition="checkPerByAction('event','index')">href="{:U('event/index')}"<elseif condition ="checkPerByAction('examine','index')" />href="{:U('examine/index')}"<elseif condition ="checkPerByAction('knowledge','index')" />href="{:U('knowledge/index')}"<elseif condition ="checkPerByAction('announcement','index')" />href="{:U('announcement/index')}"<elseif condition ="checkPerByAction('sign','index')" />href="{:U('sign/index')}"<elseif condition ="checkPerByAction('event','index')" />href="{:U('event/index')}"<elseif condition ="checkPerByAction('task','index')" />href="{:U('task/index')}"</if>><i class="fa fa-desktop"></i><span class="menu_code">日程</span></a>
 	                </li>
 	                <?php endif; ?>
+
 	                <!--<?php if (in_array('contacts',$new_module_list)): ?>-->
 	                <!--<li>-->
 	                	<!--<a data-toggle="tooltip" data-placement="right" data-original-title="通讯录" <if condition="$module_name eq 'user' && ($action_name eq 'contacts' || $action_name eq 'view')"> class="active"</if> href="{:U('user/contacts')}" ><i class="fa fa-phone-square"></i></a>-->
@@ -360,7 +361,6 @@ $(function(){
 	                	<!--<a data-toggle="tooltip" data-placement="right" data-original-title="营销" <if condition="$action_name eq 'sendsms' || $action_name eq 'smsrecord' || $action_name eq 'sendemail' || $module_name eq 'email' || $module_name eq 'sms'"> class="active"</if> href="{:U('setting/sendsms')}"><i class="fa fa-envelope"></i></a>-->
 	                <!--</li>-->
 	                <!--<?php endif; ?>-->
-					<!---->
 
 	                <?php if (in_array('setting',$new_module_list)): ?>
 	                <li>
@@ -398,6 +398,9 @@ $(function(){
 							<li <if condition ="$_GET['via'] eq internet">class="active"</if> > <a href="{:U('integral/internet','via=internet')}"> <span class="fa fa-group" style="display:inline"></span>&nbsp;&nbsp;互联网+</a></li>
 						<?php elseif($module_name == 'contract' || $module_name == 'order'): ?>
 							<li <if condition = "$module_name eq 'contract'">class="active"</if>><a href="{:U('contract/index')}"><span class="fa fa-list-alt" style="display:inline"></span>&nbsp;&nbsp;合同</a></li>
+						<?php elseif($module_name == 'background' || $module_name == 'index'): ?>
+							<li <if condition = "$action_name eq 'index'||$action_name eq 'add'||$action_name eq 'add_more'||$action_name eq 'edit'">class="active"</if> ><a href="{:U('background/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对内背景调查</a></li>
+							<li <if condition = "$action_name eq 'index_external'||$action_name eq 'add_external'||$action_name eq 'add_more_external'">class="active"</if> ><a href="{:U('background/index_external')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对外背景调查</a></li>
 						<?php
 							elseif($module_name == 'train' || $module_name == 'teacher'): ?>
 						<li <if condition = "$module_name eq 'finance'">class="active"</if>><a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;课程管理</a></li>
