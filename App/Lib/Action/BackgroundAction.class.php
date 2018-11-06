@@ -6,6 +6,7 @@
  * Date: 2018/10/12
  * Time: 15:11
  */
+
 class BackgroundAction extends Action
 {
     public function _initialize(){
@@ -386,11 +387,410 @@ class BackgroundAction extends Action
             }
         }
     }
-    function readyOutPut(){
+    function readyOutput(){
         $get = I("get.ids");
         if($get){
             $this->output($get);
         }
+
+    }
+    //word 导出
+    function readyOutPutt(){
+
+        require_once  __DIR__ ."/../../../vendor/phpoffice/phpword/bootstrap.php";
+        include_once  __DIR__ ."/../../../vendor/phpoffice/phpword/samples/Sample_Header.php";
+
+        //取出当前id的所有信息
+        $get = I("get.ids");
+        $userId = intval($get);
+        $background = M('external_background')->where(array('Id'=>$userId))->select();
+        $edu = M('external_background_edu')->where(array('cid'=>$userId))->select();
+        $qc = M('external_background_qc')->where(array('cid'=>$userId))->select();
+
+        $work = M('external_background_work')->where(array('c_id'=>$userId))->select();
+        $work_id = M('external_background_work')->where(array('c_id'=>$userId))->getField('Id');
+        $witness = M('external_background_witness')->where(array('w_id'=>intval($work_id)))->select();
+
+        //Word文档样式的导出
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $phpWord->getSettings()->setUpdateFields(true);
+        $section = $phpWord->addSection();
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addText('背景调查报告',array('bold'=>true,'宋体'=>true,'size'=>26),array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, 'spaceAfter' => 100));
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addText('客   户:'.$background[0]['tocompany'],array('bold'=>true,'宋体'=>true,'size'=>16));
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addText('推荐职位:'.$background[0]['jobs'],array('bold'=>true,'宋体'=>true,'size'=>16));
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addText('项目经理:'.$background[0]['consultant'],array('bold'=>true,'宋体'=>true,'size'=>16));
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak(); $section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak(); $section->addTextBreak();
+        $section->addText('日期:20'.date('y-m-d',time()),array('bold'=>true,'宋体'=>true,'size'=>16),array('alignment'=> \PhpOffice\PhpWord\SimpleType\Jc::RIGHT,'spaceAfter' => 400));
+        $section->addTextBreak();
+        //添加页脚
+        $footer = $section ->addFooter();
+        $footer->addTextBreak();
+        $footer->addPreserveText('第{PAGE}页  共{NUMPAGES}页',array('Times New Roman'=>true,'size'=>8),array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER));
+        $footer->addTextBreak();
+        $foTextRun = $footer->addTextRun();
+        $foTextRun->addText('南方新华主要办公及服务区域:北京，上海，深圳，广州，杭州，天津，南京，成都，重庆',array('宋体'=>true,'size'=>7));
+        $foTextRun->addText('                         服务质量监督TEL:023-88597927 ',array('宋体'=>true,'size'=>7),array('alignment'=> \PhpOffice\PhpWord\SimpleType\Jc::END,'spaceAfter'=>100));
+        //添加页眉
+        $header = $section->addHeader();
+        $textRun = $header->addTextRun();
+        $textRun->addImage('Public/img/logo1.png',array('width'=>148,'height'=>42));
+        $textRun->addText('                                                   24小时极速猎头+',array('italic'=>true,'size'=>13));
+        //第二页
+        $section->addPageBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addText('推荐职位-姓名-背景调查报告',array('宋体'=>true,'bold'=>true,'size'=>15),array('alignment'=>\PhpOffice\PhpWord\SimpleType\Jc::CENTER));
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addText('报告摘要',array('宋体(正文)'=>true,'bold'=>true,'size'=>15));
+        $section->addTextBreak();
+        $fancyTableStyle = array('borderSize' => 6, 'borderColor' => '999999');
+        $spanTableStyleName = 'Colspan Rowspan';
+        $phpWord->addTableStyle($spanTableStyleName, $fancyTableStyle);
+        $table = $section->addTable($spanTableStyleName);
+        $table->addRow();
+        $table->addCell(2500)->addText('核查内容',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500)->addText('是否核实',array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('身份信息核实',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500);
+        $table->addRow();
+        $table->addCell(2500)->addText('学历信息核实',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500);
+        $table->addRow();
+        $table->addCell(2500)->addText('专业资格核实',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500);
+        $table->addRow();
+        $table->addCell(2500)->addText('工作履历核实',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500);
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addText('一、身份信息',array('宋体(正文)'=>true,'bold'=>true,'size'=>15));
+        $section->addTextBreak();
+        $table = $section->addTable($spanTableStyleName);
+        $table->addRow();
+        $table->addCell(5400,array('gridSpan'=>2))->addText('身份信息',array('宋体'=>true,'size'=>15),array('alignment'=>\PhpOffice\PhpWord\SimpleType\Jc::CENTER));
+        $table->addCell(3600)->addText('核实结果',array('宋体'=>true,'size'=>15));
+        $table->addRow();
+        $table->addCell(1800)->addText('姓名',array('宋体'=>true,'size'=>15));
+        $table->addCell(3600)->addText($background[0]['name'],array('宋体'=>true,'size'=>15));
+        $table->addCell(3600);
+        $table->addRow();
+        $table->addCell(1800)->addText('身份证号码',array('宋体'=>true,'size'=>15));
+        $table->addCell(3600)->addText($background[0]['idnumber'],array('宋体'=>true,'size'=>15));
+        $table->addCell(3600);
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addText('二、学历信息',array('宋体(正文)'=>true,'bold'=>true,'size'=>15));
+        $section->addTextBreak();
+        $table = $section->addTable($spanTableStyleName);
+        $table->addRow();
+        $table->addCell(5400,array('gridSpan'=>2))->addText('学历信息',array('宋体'=>true,'size'=>15),array('alignment'=>\PhpOffice\PhpWord\SimpleType\Jc::CENTER));
+        $table->addCell(3600)->addText('核实结果',array('宋体'=>true,'size'=>15));
+        $table->addRow();
+        $table->addCell(1800)->addText('学历类型',array('宋体'=>true,'size'=>15));
+        $table->addCell(3600)->addText($edu[0]['edu_type'],array('宋体'=>true,'size'=>15));
+        $table->addCell(3600);
+        $table->addRow();
+        $table->addCell(1800)->addText('专业',array('宋体'=>true,'size'=>15));
+        $table->addCell(3600)->addText($edu[0]['major'],array('宋体'=>true,'size'=>15));
+        $table->addCell(3600);
+        $table->addRow();
+        $table->addCell(1800)->addText('入学时间',array('宋体'=>true,'size'=>15));
+        $table->addCell(3600)->addText($edu[0]['enter_time'],array('宋体'=>true,'size'=>15));
+        $table->addCell(3600);
+        $table->addRow();
+        $table->addCell(1800)->addText('毕业时间',array('宋体'=>true,'size'=>15));
+        $table->addCell(3600)->addText($edu[0]['out_time'],array('宋体'=>true,'size'=>15));
+        $table->addCell(3600);
+        $table->addRow();
+        $table->addCell(1800)->addText('证书编号',array('宋体'=>true,'size'=>15));
+        $table->addCell(3600)->addText($edu[0]['edu_num'],array('宋体'=>true,'size'=>15));
+        $table->addCell(3600);
+        $table->addRow();
+        $table->addCell(1800)->addText('信息来源',array('宋体'=>true,'size'=>15));
+        $table->addCell(3600)->addText($edu[0]['msgbelong'],array('宋体'=>true,'size'=>15));
+        $table->addCell(3600);
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak(); $section->addTextBreak();
+        $section->addText('三、专业资格',array('宋体(正文)'=>true,'bold'=>true,'size'=>15));
+        $section->addTextBreak();
+        //第三页
+        $section->addPageBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $table = $section->addTable($spanTableStyleName);
+        $table->addRow();
+        $table->addCell(5400,array('gridSpan'=>2))->addText('专业资格',array('宋体'=>true,'size'=>15),array('alignment'=>\PhpOffice\PhpWord\SimpleType\Jc::CENTER));
+        $table->addCell(3600)->addText('核实结果',array('宋体'=>true,'size'=>15));
+        $table->addRow();
+        $table->addCell(1800)->addText('证书名称',array('宋体'=>true,'size'=>15));
+        $table->addCell(3600);
+        $table->addCell(3600);
+        $table->addRow();
+        $table->addCell(1800)->addText('证书号码',array('宋体'=>true,'size'=>15));
+        $table->addCell(3600)->addText($qc[0]['qc_num'],array('宋体'=>true,'size'=>15));
+        $table->addCell(3600);
+        $table->addRow();
+        $table->addCell(1800)->addText('获证时间',array('宋体'=>true,'size'=>15));
+        $table->addCell(3600)->addText($qc[0]['get_time'],array('宋体'=>true,'size'=>15));
+        $table->addCell(3600);
+        $table->addRow();
+        $table->addCell(1800)->addText('信息来源',array('宋体'=>true,'size'=>15));
+        $table->addCell(7200,array('gridSpan'=>2))->addText($qc[0]['qc_source'],array('宋体'=>true,'size'=>15));
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $section->addText('四、工作履历',array('宋体(正文)'=>true,'bold'=>true,'size'=>15));
+        $section->addTextBreak();
+        $table = $section -> addTable($spanTableStyleName);
+        $table->addRow();
+        $table->addCell(9000,array('gridSpan'=>5))->addText('调查企业一',array('宋体'=>true,'bold'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('公司名称:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($work[0]['company'],array('宋体'=>true,'size'=>15));
+        $table->addRow();
+        $table->addCell(2500)->addText('在职时间:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($work[0]['enter_time'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('职位:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($work[0]['position'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('1.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['witness'].'/'.$witness[0]['position'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['relationship'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['method'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['tel'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('被调查者在职期间的工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['performance'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('是否有不良记录:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['badrecord'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('2.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1]['witness'].'/'.$witness[0]['position'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText('人力资源',array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        //第四页
+        $section->addPageBreak();
+        $section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $table = $section->addTable($spanTableStyleName);
+        $table->addRow();
+        $table->addCell(2500)->addText('离职原因:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('3.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2]['witness'].'/'.$witness[0]['position'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText('下级',array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('业绩及团队管理能力:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $table = $section->addTable($spanTableStyleName);
+        $table->addRow();
+        $table->addCell(9000,array('gridSpan'=>5))->addText('调查企业二',array('宋体'=>true,'bold'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('公司名称:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('在职时间:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('职位:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('1.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText('上级',array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('被调查者在职期间的工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('是否有不良记录:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('2.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText('人力资源',array('宋体'=>true,'size'=>14));
+
+        //第五页
+        $section->addPageBreak();
+        $section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $table = $section->addTable($spanTableStyleName);
+        $table->addRow();
+        $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('离职原因:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('3.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table = $section->addTable($spanTableStyleName);
+        $table->addRow();
+        $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText('下级',array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('业绩及团队管理能力:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $section->addTextBreak();
+        $table = $section->addTable($spanTableStyleName);
+        $table->addRow();
+        $table->addCell(9000,array('gridSpan'=>5))->addText('调查企业三',array('宋体'=>true,'bold'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('公司名称:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('在职时间:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('职位:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('1.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText('上级',array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('被调查者在职期间的工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        //第六页
+        $section->addPageBreak();
+        $section->addTextBreak();
+        $section->addTextBreak();$section->addTextBreak();$section->addTextBreak();
+        $table = $section->addTable($spanTableStyleName);
+        $table->addRow();
+        $table->addCell(2500)->addText('是否有不良记录:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('2.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText('人力资源',array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('离职原因:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('3.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText('下级',array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addRow();
+        $table->addCell(2500)->addText('业绩及团队管理能力:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4));
+
+        //缓冲输出
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord,'Word2007');
+        $fileName = "背景调查报表".date("YmdHis");
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition:attachment;filename=".$fileName.".docx");
+        header('Cache-Control: max-age=0');
+        ob_clean();
+        flush();
+        $objWriter->save('php://output');
+
     }
     function exportExcel($list,$filename,$indexKey=array()){
         require_once 'Base/Lib/Classes/PHPExcel/IOFactory.php';
@@ -439,6 +839,7 @@ class BackgroundAction extends Action
         $objWriter->save('php://output');
     }
     function output($data){
+
         $map['Id'] = array('in',explode(',',$data));
         $map2['s_id'] = $map['Id'];
         $backGround = M('background');
@@ -497,7 +898,7 @@ class BackgroundAction extends Action
         $this->assign('by',$by);
         //分页设置
         import('@.ORG.Page');//导入分页类
-        $Page = new Page($count,$listrows);
+            $Page = new Page($count,$listrows);
         $data = $Page->show();
         $this->assign('page',$data);
         $this->assign('listrows',$listrows);
@@ -556,7 +957,7 @@ class BackgroundAction extends Action
             $id = I('post.');
             if((int)$id['Id']){
                 $exBackground = M('external_background');
-                $bg = $exBackground->field('Id,name,jobs,tocompany,industry,id_pic_src,bz,idnumber')->where($id)->find();
+                $bg = $exBackground->field('name,jobs,tocompany,industry,id_pic_src,bz,idnumber')->where($id)->find();
                 $exBackgroundEdu = M('external_background_edu');
                 $edu = $exBackgroundEdu->where('c_id ='.$id['Id'])->field('c_id',true)->select();
                 $exBackgroundQc = M('external_background_qc');
@@ -565,7 +966,7 @@ class BackgroundAction extends Action
                 $work = $exBackgroundWork->where('c_id ='.$id['Id'])->field('c_id',true)->select();
                 $exBackgroundWitness = M('external_background_witness');
                 foreach ($work as $k => $v){
-                    $witness = $exBackgroundWitness->where('w_id ='.$v['Id'])->select();
+                    $witness = $exBackgroundWitness->where('w_id ='.$v['Id'])->field('Id',true)->select();
                     $work[$k]['witness'] = $witness;
                 }
                 $data['bg'] = $bg;
@@ -713,6 +1114,10 @@ class BackgroundAction extends Action
                 $exBackground->rollback();
             }
         }else{
+            //获取账户,,
+            $user_id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : session('user_id');
+            $account = M('user')->where(array('user_id'=>intval($user_id)))->getField('name');
+            $this->assign('account',$account);
             $this->display();
         }
     }
@@ -894,106 +1299,4 @@ class BackgroundAction extends Action
         return $data;
     }
 
-    //单条修改
-    function save_one(){
-        if(IS_POST){
-            $data = I('post.');
-            $dataList = $data['data'];
-            $where['Id'] = $data['Id'];
-            switch ($data['type']){
-                case 'bg':
-                    unset($map);
-                    $map['name'] = $dataList[0];
-                    $map['idnumber'] = $dataList[5];
-                    $result = M('external_background')->where($where)->save($map);
-                    if($result){
-                        echo 'success';
-                    }else{
-                        echo $result;
-                    }
-                    break;
-                case 'edu':
-                    unset($map);
-                    $map['school'] = $dataList[1];
-                    $map['school_add'] = 'sure';
-                    $map['edu_type'] = $dataList[2];
-                    $map['edu_type_add'] = 'sure';
-                    $map['major'] =  $dataList[3];
-                    $map['major_add'] =  'sure';
-                    $map['enter_time'] = $dataList[6];
-                    $map['enter_time_add'] = 'sure';
-                    $map['out_time'] = $dataList[7];
-                    $map['out_time_add'] = 'sure';
-                    $map['edu_num'] =  $dataList[4];
-                    $map['edu_num_add'] =  'sure';
-                    $map['msgbelong'] =  $dataList[5];
-                    $map['msgbelong_add'] =  'sure';
-                    $result = M('external_background_edu')->where($where)->save($map);
-                    if($result){
-                        echo 'success';
-                    }else{
-                        echo $result;
-                    }
-                    break;
-                case 'qc':
-                    unset($map);
-                    $map['qc_type']= $dataList[1];
-                    $map['qc_num']= $dataList[2];
-                    $map['qc_get_time']= $dataList[3];
-                    $map['qc_out_time']= $dataList[4];
-                    $map['qc_source']= $dataList[5];
-                    $map['qc_type_add']= 'sure';
-                    $map['qc_num_add']= 'sure';
-                    $map['qc_get_time_add']= 'sure';
-                    $map['qc_out_time_add']= 'sure';
-                    $map['qc_source_add']= 'sure';
-                    $result = M('external_background_qc')->where($where)->save($map);
-                    if($result){
-                        echo 'success';
-                    }else{
-                        echo $result;
-                    }
-                    break;
-                case 'work':
-                    unset($map);
-                    $map['company'] = $dataList[0];
-                    $map['enter_time'] = $dataList[1];
-                    $map['out_time'] = $dataList[2];
-                    $map['position'] = $dataList[3];
-                    $map['company_add'] = 'sure';
-                    $map['enter_time_add'] = 'sure';
-                    $map['out_time_add'] = 'sure';
-                    $map['position_add'] = 'sure';
-                    $result = M('external_background_work')->where($where)->save($map);
-                    if($result){
-                        echo 'success';
-                    }else{
-                        echo $result;
-                    }
-                    break;
-                case 'witness':
-                    unset($map);
-                    $map['witness'] = $dataList[0];
-                    $map['position'] = $dataList[1];
-                    $map['tel'] = $dataList[2];
-                    $map['relationship'] = $dataList[3];
-                    $map['method'] = $dataList[4];
-                    $map['performance'] = $dataList[5];
-                    $map['badrecord'] = $dataList[6];
-                    $map['reason'] = $dataList[7];
-                    $map['train'] = $dataList[8];
-                    $map['compete'] = $dataList[9];
-                    $result = M('external_background_witness')->where($where)->save($map);
-                    if($result){
-                        echo 'success';
-                    }else{
-                        echo $result;
-                    }
-                    break;
-                default:
-                    echo 'error';
-                    break;
-            }
-        }
-    }
 }
