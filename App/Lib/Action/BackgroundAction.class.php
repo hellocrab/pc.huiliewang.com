@@ -387,14 +387,14 @@ class BackgroundAction extends Action
             }
         }
     }
-
     function readyOutput(){
         $get = I("get.ids");
         if($get){
             $this->output($get);
         }
-    }
 
+    }
+    //word 导出
     function readyOutPutt(){
 
         require_once __DIR__ . "/../../../vendor/phpoffice/phpword/bootstrap.php";
