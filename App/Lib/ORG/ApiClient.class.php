@@ -10,10 +10,11 @@ class ApiClient {
 
     public static function init($appid, $secret, $timeout = 20, $sdk_lib = array('hlwApiSdk'))
     {
+        require_once __DIR__. "/ApiClientLoader.class.php";
         self::$appid = $appid;
         self::$secret = $secret;
         self::$timeout = $timeout;
-        \ApiClientLoader::init($sdk_lib);
+        ApiClientLoader::init($sdk_lib);
     }
 
     /**
@@ -25,6 +26,7 @@ class ApiClient {
      */
     public static function build(&$instance, array $map = array())
     {
+        require_once __DIR__. "/ApiClientLoader.class.php";
         $class = get_class($instance);
         if ($class === FALSE) {
             throw new Exception('Instance Is Not Object.', -1);
@@ -34,10 +36,11 @@ class ApiClient {
         }
 
         if ($map == NULL) {
-            $map = \ApiClientLoader::loadConfig($class);
+            $map = ApiClientLoader::loadConfig($class);
         }
 
-        $instance = new \ApiClientProxy(self::$appid, self::$secret, self::$timeout, $class, $map);
+        require_once  __DIR__. "/ApiClientProxy.class.php";
+        $instance = new ApiClientProxy(self::$appid, self::$secret, self::$timeout, $class, $map);
     }
 
 }

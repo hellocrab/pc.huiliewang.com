@@ -41,7 +41,8 @@ class ApiClientProxy {
      */
     private function request($host, $port, $timeout = 0, array $headers = array(), $uri, $clientClass, $clientMethod, array $arguments) {
 
-        $socket = new \ApiClientHttpClient($host, $port, $uri);
+        require_once __DIR__. "/ApiClientHttpClient.class.php";
+        $socket = new ApiClientHttpClient($host, $port, $uri);
         $transport = new Thrift\Transport\TBufferedTransport($socket, 1024, 1024);
         $protocol = new Thrift\Protocol\TBinaryProtocol($transport);
         $client = new $clientClass($protocol);
