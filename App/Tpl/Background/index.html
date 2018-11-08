@@ -149,8 +149,8 @@
                                     <div class="input-group">
                                         <input type="hidden" name="m" value="background"/>
                                         <input type="hidden" name="a" value="index"/>
-                                       <!-- <input type="hidden" name="field" value="name"/>
-                                        <input type="hidden" name="condition" value="contains"/>-->
+                                        <!-- <input type="hidden" name="field" value="name"/>
+                                         <input type="hidden" name="condition" value="contains"/>-->
                                         <input id="short_search" type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control " name="search" value="{$search}" />
                                         <span class="input-group-btn">
 										    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-search"></i></button>
@@ -267,9 +267,9 @@
                                                         <span class="label label-danger editstatus bgdelete" style="cursor: pointer;margin-left: 10px" data-id="{$val['Id']}">删除 </span>
                                                     </td>
                                                 </tr>
-<!--
-                                                <tr class="controls_tr"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调</td></tr><tr><td>公司名: <span>南方新华</span></td><td>入职时间：<span>2018-8</span></td><td>离职时间：<span>2018-9</span></td><td>职位：<span>提莫</span></td></tr><tr><td>证明人：<span>职位</span></td><td>与证明人：<span>关系</span></td><td>联系电话：<span>职位</span></td><td>联系地址：<span>职位</span></td></tr><tr><td>薪资：<span>123</span></td><td>工作表现：<span>职位</span></td><td>优缺点：<span>职位</span></td><td>离职原因：<span>关系</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>职位</span></td></tr></table></td></tr>
--->
+                                                <!--
+                                                                                                <tr class="controls_tr"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调</td></tr><tr><td>公司名: <span>南方新华</span></td><td>入职时间：<span>2018-8</span></td><td>离职时间：<span>2018-9</span></td><td>职位：<span>提莫</span></td></tr><tr><td>证明人：<span>职位</span></td><td>与证明人：<span>关系</span></td><td>联系电话：<span>职位</span></td><td>联系地址：<span>职位</span></td></tr><tr><td>薪资：<span>123</span></td><td>工作表现：<span>职位</span></td><td>优缺点：<span>职位</span></td><td>离职原因：<span>关系</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>职位</span></td></tr></table></td></tr>
+                                                -->
                                             </volist>
                                             <tbody>
                                         </if>
@@ -280,7 +280,7 @@
                                         var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
                                         var Y = date.getFullYear() + '-';
                                         var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-                                       var D = date.getDate() + ' ';
+                                        var D = date.getDate() + ' ';
                                         var h = date.getHours() + ':';
                                         var m = date.getMinutes() + ':';
                                         var s = date.getSeconds();
@@ -369,60 +369,60 @@
                                                         swal("已取消","您取消了删除操作！","error");
                                                     }
                                                 });
-                                            });
                                         });
-                                        $(".bgedit").on("click",function () {
-                                            var id = $(this).attr("data-id");
-                                            id = parseInt(id);
-                                            window.location.href="/index.php?m=background&a=edit&id="+id;
+                                    });
+                                    $(".bgedit").on("click",function () {
+                                        var id = $(this).attr("data-id");
+                                        id = parseInt(id);
+                                        window.location.href="/index.php?m=background&a=edit&id="+id;
+                                    });
+                                    $('#delete').click(function(){
+                                        var id_array = new Array();
+                                        $("input.check_list:checked").each(function(){
+                                            id_array.push($(this).val());
                                         });
-                                        $('#delete').click(function(){
-                                            var id_array = new Array();
-                                            $("input.check_list:checked").each(function(){
-                                                id_array.push($(this).val());
+                                        if(id_array.length == 0){
+                                            alert_crm('{:L('YOU_HAVE_NOT_CHOSEN_ANY_CUSTOMERS')}');
+                                            return false;
+                                        }
+                                        swal({
+                                                title: "您确定要删除员工信息吗？",
+                                                text: "删除后将无法恢复，请谨慎操作！",
+                                                type: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#DD6B55",
+                                                confirmButtonText: "是的，我要删除！",
+                                                cancelButtonText:'让我再考虑一下…',
+                                                closeOnConfirm:false,
+                                                closeOnCancel:false
+                                            },
+                                            function(isConfirm){
+                                                if (isConfirm) {
+                                                    $.ajax({
+                                                        type:'post',
+                                                        url: "{:U('background/deleteall')}",
+                                                        data: {customer_id: id_array},
+                                                        async: false,
+                                                        success: function (data) {
+                                                            if (data.status == 1) {
+                                                                swal("删除成功！", "您已经永久删除了信息！", "success");
+                                                                location.reload();
+                                                            } else {
+                                                                swal({
+                                                                    title: "操作失败！",
+                                                                    text:data.info,
+                                                                    type: "error"
+                                                                })
+                                                                return false;
+                                                            }
+                                                        },
+                                                        dataType: 'json'
+                                                    });
+                                                } else {
+                                                    swal("已取消","您取消了删除操作！","error");
+                                                }
                                             });
-                                            if(id_array.length == 0){
-                                                alert_crm('{:L('YOU_HAVE_NOT_CHOSEN_ANY_CUSTOMERS')}');
-                                                return false;
-                                            }
-                                            swal({
-                                                    title: "您确定要删除员工信息吗？",
-                                                    text: "删除后将无法恢复，请谨慎操作！",
-                                                    type: "warning",
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: "#DD6B55",
-                                                    confirmButtonText: "是的，我要删除！",
-                                                    cancelButtonText:'让我再考虑一下…',
-                                                    closeOnConfirm:false,
-                                                    closeOnCancel:false
-                                                },
-                                                function(isConfirm){
-                                                    if (isConfirm) {
-                                                        $.ajax({
-                                                            type:'post',
-                                                            url: "{:U('background/deleteall')}",
-                                                            data: {customer_id: id_array},
-                                                            async: false,
-                                                            success: function (data) {
-                                                                if (data.status == 1) {
-                                                                    swal("删除成功！", "您已经永久删除了信息！", "success");
-                                                                    location.reload();
-                                                                } else {
-                                                                    swal({
-                                                                        title: "操作失败！",
-                                                                        text:data.info,
-                                                                        type: "error"
-                                                                    })
-                                                                    return false;
-                                                                }
-                                                            },
-                                                            dataType: 'json'
-                                                        });
-                                                    } else {
-                                                        swal("已取消","您取消了删除操作！","error");
-                                                    }
-                                            });
-                                        })
+                                    })
                                 </script>
                                 <div id="tfoot_div" class="clearfix">
                                     <div class="clearfix" id="tfoot_page">
@@ -769,37 +769,37 @@
     var count = '{$count}';
 
     /*var ii = 1;
-    function remainTime(){
-        if(ii == -1){
-            ii = 1;
-        }
-        var id_array = new Array();
-        $(".check_list:checked").each(function() {
-            id_array.push($(this).val());
-        });
-        $("#daochu").val(id_array);
-        $.get(url,function(data){
-            if(data.data == 0){
-                if (id_array != '') {
-                    count = id_array.length;
-                }
-                if((ii-1)*limit_size < count){
-                    $("#act").val('excel');
-                    $("#current_page").val(ii);
-                    $("#export_limit").val(limit_size);
-                    $("#searchForm").submit();
-                    setTimeout("remainTime()",1000);
-                    ii++;
-                }else{
-                    swal("数据导出成功！","","success");
-                    //alert('导出完毕!');
-                    ii = 1;
-                }
-            }else{
-                setTimeout("remainTime()",1000);
-            }
-        }, 'json');
-    }*/
+     function remainTime(){
+     if(ii == -1){
+     ii = 1;
+     }
+     var id_array = new Array();
+     $(".check_list:checked").each(function() {
+     id_array.push($(this).val());
+     });
+     $("#daochu").val(id_array);
+     $.get(url,function(data){
+     if(data.data == 0){
+     if (id_array != '') {
+     count = id_array.length;
+     }
+     if((ii-1)*limit_size < count){
+     $("#act").val('excel');
+     $("#current_page").val(ii);
+     $("#export_limit").val(limit_size);
+     $("#searchForm").submit();
+     setTimeout("remainTime()",1000);
+     ii++;
+     }else{
+     swal("数据导出成功！","","success");
+     //alert('导出完毕!');
+     ii = 1;
+     }
+     }else{
+     setTimeout("remainTime()",1000);
+     }
+     }, 'json');
+     }*/
     //初始化图片查看插件
     $('.litebox').liteBox({
         revealSpeed: 400,
@@ -905,20 +905,20 @@
         $("#check_all").click(function(){
             $("input[class='check_list']").prop('checked', $(this).prop("checked"));
         });
-       /* $('#delete').click(function(){
-            swal({
-                    title: "确定要下架该人才吗？",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "确定",
-                    closeOnConfirm: false
-                },
-                function(){
-                    $("#form1").attr('action', '{:U("product/delete")}');
-                    $("#form1").submit();
-                });
-        });*/
+        /* $('#delete').click(function(){
+         swal({
+         title: "确定要下架该人才吗？",
+         type: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#DD6B55",
+         confirmButtonText: "确定",
+         closeOnConfirm: false
+         },
+         function(){
+         $("#form1").attr('action', '{:U("product/delete")}');
+         $("#form1").submit();
+         });
+         });*/
 
 
         $('#revert').click(function(){
@@ -960,7 +960,9 @@
                 for(let i=0;i<id_array.length;i++){
                     ids = (ids==""?"":ids+",")+id_array[i];
                 };
-                var dataId ={"ids":ids};
+                var urlby = window.location.href;
+                var by = urlby.split('by=');
+                var dataId ={"idss":ids,"by":by[1]};
                 if(id_array !=''){
                     swal({
                         title: "确定导出选中人才?",
@@ -973,23 +975,23 @@
                         showLoaderOnConfirm: true
                     }, function(){
                         //remainTime();
-                       /* $.ajax({
-                            url:'{:U("background/output")}',
-                            data:dataId,
-                            type:'post',
-                            success:function () {
+                        /* $.ajax({
+                         url:'{:U("background/output")}',
+                         data:dataId,
+                         type:'post',
+                         success:function () {
 
-                            },
-                            error:function () {
+                         },
+                         error:function () {
 
-                            },
-                            dataType:'json'
-                        })*/
+                         },
+                         dataType:'json'
+                         })*/
                         $.get("/index.php?m=background&a=readyOutPut",dataId,function (data) {
                             swal("数据导出成功！","","success");
                         });
                         ids=encodeURIComponent(ids);
-                        window.open('/index.php?m=background&a=readyOutPut&ids='+ids);
+                        window.open('/index.php?m=background&a=readyOutPut&ids='+ids+"&by="+by[1]);
                     });
                 }else{
                     swal({
