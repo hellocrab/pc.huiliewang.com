@@ -40,9 +40,14 @@ class ApiClientLoader
 
         if (self::$is_register_loader == FALSE) {
             self::$is_register_loader = TRUE;
-            define('THRIFT_SDK_ROOT', realpath(__DIR__ . '/../../../../'));
+            if(ENV == 'local'){
+               define('THRIFT_SDK_ROOT', realpath(__DIR__ . '/../../../../../')); 
+            } else {
+                define('THRIFT_SDK_ROOT', '/home/wwwroot/');
+            }
+            
+            
             define('THRIFT_LIB_DIR', realpath(__DIR__ . '/3rd'));
-
             spl_autoload_register(array(__CLASS__, 'loadClass'));
         }
 
@@ -64,6 +69,7 @@ class ApiClientLoader
 
 
             $path = realpath(THRIFT_SDK_ROOT . '/' . $lib);
+            echo $path;exit;
             if ($path == '') {
                 continue;
             }
