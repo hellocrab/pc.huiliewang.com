@@ -66,7 +66,6 @@ class ApiClientProxy {
             if (strlen($message) > 14 && substr($message, -14) == 'unknown result') {
                 $result = NULL;
             } else {
-                \SLogger::getLogger("unknown_thrift_service", "thrift_error")->error("thrift call error", $e);
                 throw $e;
             }
         }
@@ -108,7 +107,6 @@ class ApiClientProxy {
         }
         if ($cfg == NULL) {
             $methodException = new Exception('Api Client Method Not Exists', -1);
-            \SLogger::getLogger("unknown_thrift_service", "thrift_error")->error("thrift error, Api Client Method NOT exist", $methodException);
             throw $methodException;
         }
 

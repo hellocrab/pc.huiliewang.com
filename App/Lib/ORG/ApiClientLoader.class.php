@@ -69,7 +69,6 @@ class ApiClientLoader
 
 
             $path = realpath(THRIFT_SDK_ROOT . '/' . $lib);
-            echo $path;exit;
             if ($path == '') {
                 continue;
             }
