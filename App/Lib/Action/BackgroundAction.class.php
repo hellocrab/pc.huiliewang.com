@@ -968,6 +968,10 @@ class BackgroundAction extends Action
             }
         }
     }
+    function status(){
+        $status = I('get.status');
+        echo $status;
+    }
     function hxr_detail(){
         if(IS_POST){
             $id = I('post.');
