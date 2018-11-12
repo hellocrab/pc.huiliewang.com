@@ -906,11 +906,44 @@
                     }
                 })
             }
+			$(document).ready(function () {
+                function checkTextInput(text,type) {
+                    switch (type){
+                        case 'name':
+                            const name =  /[A-Za-z0-9_\-\u4e00-\u9fa5]+/;
+                            return name.test(text);
+                            break;
+                    }
+                }
+            })
+            function searchtype(data) {
+                $('#s-type').attr('value',$(data).val());
+                var html = '<input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd HH:mm:ss &quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" />';
+                $('.short_search').remove();
+                switch ($(data).val()){
+					case 'all':
+                        $('#s-type').after(html);
+                        $('.short_search').attr('placeholder','请输入人才姓名');
+                        $('.short_search').removeAttr('onFocus');
+                        $('.short_search').removeAttr('readonly');
+					    break;
+					case 'time':
+                        $('#s-type').after(html);
+                        $('.short_search').attr('placeholder','请选择日期');
+                        break;
+                    case 'company':
+                        $('#s-type').after(html);
+                        $('.short_search').attr('placeholder','请输入公司名称');
+                        $('.short_search').removeAttr('onFocus');
+                        $('.short_search').removeAttr('readonly');
+                        break;
+                    case 'industry':
+                        $('#s-type').after(html);
+                        $('.short_search').attr('placeholder','请输入行业');
+                        $('.short_search').removeAttr('onFocus');
+                        $('.short_search').removeAttr('readonly');
+                        break;
+				}
 
-
-
-
-
-
-
+            }
 		</script>

@@ -97,6 +97,11 @@
         $(window).resize(function(){
             $("#left_list").height(window.innerHeight-$("#left_list").offset().top-30);
         })
+    });
+    $(document).ready(function () {
+        $("#short_search").off().on(function () {
+            console.log(1);
+        });
     })
 </script>
 <div style="display:none" id="dialog-log" title="加入项目">
@@ -149,9 +154,16 @@
                                     <div class="input-group">
                                         <input type="hidden" name="m" value="background"/>
                                         <input type="hidden" name="a" value="index"/>
+                                        <input id="s-type" type="hidden" name="type" value="{$type}">
                                         <!-- <input type="hidden" name="field" value="name"/>
                                          <input type="hidden" name="condition" value="contains"/>-->
-                                        <input id="short_search" type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control " name="search" value="{$search}" />
+                                        <if condition = "$type eq 'all'">
+                                            <input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search " name="search" value="{$search}" data-type="all" />
+                                            <elseif condition="$type eq 'company'"/><input type="text" style="width:160px;" placeholder="请输入公司名称"  class="form-control short_search " name="search" value="{$search}" data-type="all" />
+                                            <elseif condition="$type eq 'industry'"/><input type="text" style="width:160px;" placeholder="请输入行业名称"  class="form-control short_search " name="search" value="{$search}" data-type="all" />
+                                            <elseif condition="$type eq ''"/><input type="text" style="width:160px;" placeholder="请输入行业名称"  class="form-control short_search " name="search" value="{$search}" data-type="all" />
+                                            <elseif condition="$type eq 'time'"/><input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd HH:mm:ss &quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" />
+                                        </if>
                                         <span class="input-group-btn">
 										    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-search"></i></button>
 									    </span>
@@ -159,7 +171,7 @@
                                     <!--&nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
 
                                 </li>&nbsp;&nbsp;
-                                <div class="btn-group ">
+                                <!--<div class="btn-group ">
                                     <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -168,17 +180,25 @@
                                             <li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出2</a></li>
                                         </if>
                                     </ul>
-                                </div>
+                                </div>-->
                             </ul>
                         </form>
                         <ul class="breadcrum pull-right" style="margin-bottom: 0px">
                             <li>
-                                <div class="input-group">
+                                <!--<div class="input-group">
                                     <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-bottom:5px;">
                                         <option value="{:U('background/index','by=all&'.$by_parameter)}" <if condition = "$by eq 'all'">selected="selected"</if>>全部员工</option>
                                         <option value="{:U('background/index','by=time&'.$by_parameter)}" <if condition = "$by eq 'time'">selected="selected"</if>>录入时间</option>
                                         <option value="{:U('background/index','by=company&'.$by_parameter)}" <if condition = "$by eq 'company'">selected="selected"</if>>公司名称</option>
                                         <option value="{:U('background/index','by=industry&'.$by_parameter)}" <if condition = "$by eq 'industry'">selected="selected"</if>>所属行业
+                                    </select>
+                                </div>-->
+                                <div class="input-group">
+                                    <select class="form-control" onchange="searchtype(this)" style="margin-bottom:5px;">
+                                        <option value="all" <if condition = "$type eq 'all'">selected="selected"</if>>全部员工</option>
+                                        <option value="time" <if condition = "$type eq 'time'">selected="selected"</if>>录入时间</option>
+                                        <option value="company" <if condition = "$type eq 'company'">selected="selected"</if>>公司名称</option>
+                                        <option value="industry" <if condition = "$type eq 'industry'">selected="selected"</if>>所属行业
                                     </select>
                                 </div>
                             </li>

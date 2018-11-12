@@ -14,9 +14,6 @@ class BackgroundAction extends Action
         $this->assign("title",$title);
     }
     public function index(){
-        /* if(I('get.ac')){
-             $this->output();
-         }*/
         $backGround = M('background');
         $delete['delete'] = 0 ;
         $by = I('get.by');
@@ -24,6 +21,7 @@ class BackgroundAction extends Action
         $listrows = I('get.listrows')?I('get.listrows'):10;
         $field = 'education_add,update,remark,delete';
         $p = isset($_GET['p'])?$_GET['p']:1;
+        $type = isset($_GET['type'])?$_GET['type']:'all';
         switch ($by){
             case 'all':
                 $count = $backGround->order('s_name')->field($field,true)->where($delete)->count();
@@ -46,15 +44,40 @@ class BackgroundAction extends Action
                 $data = $backGround->order('s_name')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
                 break;
         }
-        if($search){
-            $map['s_name'] = array('like',$search.'%');
-            $where['delete'] = 0;
-            $this->assign('search',$search);
-            $data = $backGround->order('s_name')->where($where)->where($map)->field($field,true)->select();
+        if($search&&$type){
+            $backGroundMsg = M('background_msg');
+            switch ($type){
+                case 'all':
+                    $map['s_name'] = array('like','%'.$search.'%');
+                    break;
+                case 'time':
+                    $search = strtotime($search);
+                    $search = substr($search,0,6);
+                    $map['date'] = array('like',$search.'%');
+                    break;
+                case 'company':
+                    $map['company_name'] = array('like',$search.'%');
+                    $sIds = $backGroundMsg->where($map)->where($delete)->field('s_id')->select();
+                    foreach ($sIds as $k => $v){
+                        $sid[] = $v['s_id'];
+                    }
+                    unset($map);
+                    $map['Id'] = array("in",$sid);
+                    break;
+                case 'industry':
+                    $map['industry'] = array('like','%'.$search.'%');
+                    break;
+                default:
+                    $map['s_name'] = array('like','%'.$search.'%');
+                    break;
+            }
+            $data = $backGround->order('Id')->where($delete)->where($map)->field($field,true)->select();
         }
         foreach ($data as $k => $val){
             $data[$k]['msg_id'] = json_decode($val['msg_id']);
         }
+        $this->assign('search',$search);
+        $this->assign('type',$type);
         $this->assign('by',$by);
         $this->assign('data',$data);
         //分页设置
