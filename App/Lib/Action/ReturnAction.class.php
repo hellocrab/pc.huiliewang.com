@@ -11,10 +11,88 @@ class ReturnAction extends Action
         $title="回款";
         $this->assign("title",$title);
     }
+
     public function index(){
         $this->timeSearch();
-        //$this->assign('daterange',$this->timePlug());
+        //$this->assign('daterange',$this->timePlug()); bug.huiliewang.com
+        $d_contract = D('ContractView');
+        $by = isset($_GET['by']) ? trim($_GET['by']) : 'me';
+        $this->by = $by;
+        $where = array();
+        $below_ids = getPerByAction(MODULE_NAME,ACTION_NAME,true); //权限问题
+        // if(empty($_GET['owner_role_id'])){
+        // 	$where['contract.owner_role_id'] = array('in', $this->_permissionRes);
+        // }
+        $order = 'contract.update_time desc,contract.contract_id asc';
+        if($_GET['desc_order']){
+            $order = 'contract.'.trim($_GET['desc_order']).' desc,contract.contract_id asc';
+        }elseif($_GET['asc_order']){
+            $order = 'contract.'.trim($_GET['asc_order']).' asc,contract.contract_id asc';
+        }
+        switch ($by){
+            case 'create':
+                $where['creator_role_id'] = session('role_id');
+                break;
+            case 'sub' :
+                $where['contract.owner_role_id'] = array('in',implode(',', $below_ids));
+                break;
+            case 'subcreate' :
+                $where['creator_role_id'] = array('in',implode(',', $below_ids));
+                break;
+            case 'today' :
+                $where['due_time'] =  array('between',array(strtotime(date('Y-m-d')) -1 ,strtotime(date('Y-m-d')) + 86400));
+                break;
+            case 'week' :
+                $week = (date('w') == 0)?7:date('w');
+                $where['due_time'] =  array('between',array(strtotime(date('Y-m-d')) - ($week-1) * 86400 -1 ,strtotime(date('Y-m-d')) + (8-$week) * 86400));
+                break;
+            case 'month' :
+                $next_year = date('Y')+1;
+                $next_month = date('m')+1;
+                $month_time = date('m') ==12 ? strtotime($next_year.'-01-01') : strtotime(date('Y').'-'.$next_month.'-01');
+                $where['due_time'] = array('between',array(strtotime(date('Y-m-01')) -1 ,$month_time));
+                break;
+            case 'add' :
+                $order = 'contract.create_time desc,contract.contract_id asc';
+                break;
+            case 'deleted' :
+                $where['is_deleted'] = 1;
+                break;
+            case 'update' :
+                $order = 'contract.update_time desc,contract.contract_id asc';
+                break;
+            case 'me' :
+                $where['contract.owner_role_id'] = session('role_id');
+                break;
+            case 'check' :
+                $where['contract.is_checked'] = 1;
+                break;
+            case 'no_check' :
+                $where['contract.is_checked'] = 0;
+                break;
+            case 'refuse' :
+                $where['contract.is_checked'] = 2;
+                break;
+            case 'dqcontact' :
+                $days = C('defaultinfo.contract_alert_time') ? intval(C('defaultinfo.contract_alert_time')) : 30;
+                $temp_time = time()+$days*86400;
+                $where['contract.is_checked'] = 1;
+                $where['contract.contract_status'] = 0;
+                $where['contract.owner_role_id'] = session('role_id');
+                $where['end_date'] = array('elt',$temp_time);
+                break;
+            default: $where['contract.owner_role_id'] = array('in',getPerByAction(MODULE_NAME,ACTION_NAME));break;
+        }
+//        $list = $d_contract->where($where)->order($order)->select();
+//
+//        $condition =array();
+//        foreach ($list as $k=>$v){
+//            $condition[]= intval($v['customer_id']);
+//        }
+//        $where['customer_id'] = array('in',$condition);
         $list =  M('payment_planperiod')->join("LEFT JOIN mx_payment_plan ON mx_payment_plan.Id = mx_payment_planperiod.plan_id")->select();
+
+        // $list = M('paymet_planperiod')->join('LEFT JOIN mx_payment_plan ON mx_payment_plan.Id = mx_payment_planperiod.plan_id');
 
         $this->assign('list',$list);
         $this->display();
@@ -29,9 +107,87 @@ class ReturnAction extends Action
     }
     public function add(){
         $type = I('get.type');
+        $d_contract = D('ContractView');
+        $by = isset($_GET['by']) ? trim($_GET['by']) : 'me';
+        $this->by = $by;
+        $where = array();
+        $below_ids = getPerByAction(MODULE_NAME,ACTION_NAME,true); //权限问题
+        // if(empty($_GET['owner_role_id'])){
+        // 	$where['contract.owner_role_id'] = array('in', $this->_permissionRes);
+        // }
+        $order = 'contract.update_time desc,contract.contract_id asc';
+        if($_GET['desc_order']){
+            $order = 'contract.'.trim($_GET['desc_order']).' desc,contract.contract_id asc';
+        }elseif($_GET['asc_order']){
+            $order = 'contract.'.trim($_GET['asc_order']).' asc,contract.contract_id asc';
+        }
+        switch ($by){
+            case 'create':
+                $where['creator_role_id'] = session('role_id');
+                break;
+            case 'sub' :
+                $where['contract.owner_role_id'] = array('in',implode(',', $below_ids));
+                break;
+            case 'subcreate' :
+                $where['creator_role_id'] = array('in',implode(',', $below_ids));
+                break;
+            case 'today' :
+                $where['due_time'] =  array('between',array(strtotime(date('Y-m-d')) -1 ,strtotime(date('Y-m-d')) + 86400));
+                break;
+            case 'week' :
+                $week = (date('w') == 0)?7:date('w');
+                $where['due_time'] =  array('between',array(strtotime(date('Y-m-d')) - ($week-1) * 86400 -1 ,strtotime(date('Y-m-d')) + (8-$week) * 86400));
+                break;
+            case 'month' :
+                $next_year = date('Y')+1;
+                $next_month = date('m')+1;
+                $month_time = date('m') ==12 ? strtotime($next_year.'-01-01') : strtotime(date('Y').'-'.$next_month.'-01');
+                $where['due_time'] = array('between',array(strtotime(date('Y-m-01')) -1 ,$month_time));
+                break;
+            case 'add' :
+                $order = 'contract.create_time desc,contract.contract_id asc';
+                break;
+            case 'deleted' :
+                $where['is_deleted'] = 1;
+                break;
+            case 'update' :
+                $order = 'contract.update_time desc,contract.contract_id asc';
+                break;
+            case 'me' :
+                $where['contract.owner_role_id'] = session('role_id');
+                break;
+            case 'check' :
+                $where['contract.is_checked'] = 1;
+                break;
+            case 'no_check' :
+                $where['contract.is_checked'] = 0;
+                break;
+            case 'refuse' :
+                $where['contract.is_checked'] = 2;
+                break;
+            case 'dqcontact' :
+                $days = C('defaultinfo.contract_alert_time') ? intval(C('defaultinfo.contract_alert_time')) : 30;
+                $temp_time = time()+$days*86400;
+                $where['contract.is_checked'] = 1;
+                $where['contract.contract_status'] = 0;
+                $where['contract.owner_role_id'] = session('role_id');
+                $where['end_date'] = array('elt',$temp_time);
+                break;
+            default: $where['contract.owner_role_id'] = array('in',getPerByAction(MODULE_NAME,ACTION_NAME));break;
+        }
+        $list = $d_contract->where($where)->order($order)->select();
+
+        $this->assign('contract',$list);
         $this->assign('type',$type);
         $this->display();
 
+    }
+
+    public function contract(){
+        $customer_id = I("get.id");
+        $d_contract = D('ContractView');
+        $data = $d_contract->where(array('customer_id'=>intval($customer_id)))->find();
+        echo json_encode($data);
     }
 
     public function addd(){
@@ -41,6 +197,7 @@ class ReturnAction extends Action
             'contracttitle'=>$adata['contracttitle'],
             'total'=>intval($adata['total']),
             'signtime'=>$adata['signtime'],
+            'customer_id'=>intval($adata['customer_id'])
         );
         $plan_id = M('payment_plan')->add($plan);
         $num = 1;
