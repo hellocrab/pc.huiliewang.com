@@ -66,6 +66,70 @@
 			0% {color:#FF6D57;}
 			100%{color:#93A6B5;}
 		}
+		.loading{
+			width: 200px;
+			height: 200px;
+			position: absolute;
+			top:32%;
+			left:43%;
+			z-index: 999;
+		}
+		.loading1{
+			width: 205px;
+			top: -1%;
+			left: 3%;
+			position: absolute;
+		}
+		.loading2{
+			position: absolute;
+			width: 205px;
+			left: 3%;
+			top: -1%;
+			animation:loading2 1s infinite;
+			-webkit-animation:loading2 1s infinite;
+			/*transform-origin: 50% 50%;
+			-webkit-transform: rotate(45deg);
+			-webkit-transform-origin:50% 50%;*/
+		}
+		.loading3{
+			position: absolute;
+			width: 29px;
+			top: -7%;
+			left: 45%;
+			transform-origin:61% 393%;
+			animation:loading3 1s infinite;
+			-webkit-animation:loading3 1s infinite;
+		}
+		@keyframes loading2
+		{
+			from {transform: rotate(0deg)}
+			to {transform: rotate(360deg)}
+		}
+
+		@-webkit-keyframes loading2 /*Safari and Chrome*/
+		{
+			from {transform: rotate(0deg)}
+			to {transform: rotate(360deg)}
+		}
+		@keyframes loading3
+		{
+			from {transform: rotate(0deg)}
+			to {transform: rotate(360deg)}
+		}
+
+		@-webkit-keyframes loading3 /*Safari and Chrome*/
+		{
+			from {transform: rotate(0deg)}
+			to {transform: rotate(360deg)}
+		}
+		.backgroundDiv{
+			position: absolute;
+			background-color: rgba(0,0,0,0.5);
+			width: 100%;
+			height: 100%;
+			top:0;
+			z-index: 888;
+		}
 	</style>
 
 
@@ -824,6 +888,23 @@
                 setTimeout(function () {
                     $("#if"+zindex).animate({right:"10px"})
                 },1000)
+            }
+
+
+			// loading通用方法
+            function getStatus(status,timer,html) {
+                $.ajax({
+                    url:'/index.php?m=background&a=status&status='+status,
+                    type:'get',
+                    data:status,
+                    success:function (data) {
+                        if(data==1){
+                            $(".loading").remove();
+                            window.clearInterval(timer);
+                            html.fadeIn();
+                        }
+                    }
+                })
             }
 
 
