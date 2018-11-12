@@ -891,10 +891,11 @@ class BackgroundAction extends Action
                 }
             }
         }
+        $datetime = date("Ymd ", time());
         if(count($outList)<2){
-            $excelName = $outList[0]['s_name'].''.time();
+            $excelName = $outList[0]['s_name'].''.$datetime;
         }else{
-            $excelName = '对内背调'.time();
+            $excelName = '对内背调'.$datetime;
         }
         $this->exportExcel($outList,$excelName,$listKey);
         session('export_status', 0);
