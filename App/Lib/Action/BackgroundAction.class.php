@@ -891,7 +891,12 @@ class BackgroundAction extends Action
                 }
             }
         }
-        $this->exportExcel($outList,'backGroundMsg',$listKey);
+        if(count($outList)<2){
+            $excelName = $outList[0]['s_name'].''.time();
+        }else{
+            $excelName = '对内背调'.time();
+        }
+        $this->exportExcel($outList,$excelName,$listKey);
         session('export_status', 0);
     }
     function index_external(){
