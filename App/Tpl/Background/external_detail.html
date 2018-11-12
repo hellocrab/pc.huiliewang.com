@@ -444,10 +444,15 @@
 <script>
     $(document).ready(function(){
         $('.witness-div').on('mouseenter mouseleave',function (event) {
-            if(event.type=='mouseenter'){
-                $(this).parent().children('img').fadeIn();
+            var length = $(this).find('.witness').length;
+            if(length>3){
+                if(event.type=='mouseenter'){
+                    $(this).parent().children('img').fadeIn();
+                }else{
+                    $(this).parent().children('img').fadeOut(2000);
+                }
             }else{
-                $(this).parent().children('img').fadeOut(2000);
+                $(this).parent().find(".jt").css('display','none');
             }
         });
         $('.jt').on("click",function () {
