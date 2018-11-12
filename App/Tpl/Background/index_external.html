@@ -71,7 +71,8 @@
     }
     .msg-detail{
         background-color: white;
-        width: 1203px;height: 700px;
+        width: 1205px;
+        height: 700px;
         position: absolute;
         left: 225px;
         z-index: 9999;
@@ -423,6 +424,7 @@
                                                         '<img class="loading3" src="/Public/img/light.png">' +
                                                         '</div>';
                                                     var backgroundDiv = '<div class="backgroundDiv"></div>';
+                                                    $(backgroundDiv).appendTo("body");
                                                     $(loading).appendTo("body");
                                                     var timer = setInterval(function () {
                                                         getStatus(status,timer,msgdetail);

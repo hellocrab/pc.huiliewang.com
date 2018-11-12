@@ -15,7 +15,7 @@
         border-radius: 30px;
     }
     .header{
-        width: 1200px;
+        width: 1205px;
         height: 200px;
         background-color: rgb(56,53,119);
         border-radius: 30px;
@@ -465,6 +465,7 @@
         });
         $('.closeimg').on('click',function () {
             $(this).parent().parent().parent().fadeOut();
+            $('.backgroundDiv').remove();
         });
         $('.msg-edit').on('click',function () {
             var obj =$(this);
