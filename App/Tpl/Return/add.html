@@ -120,7 +120,13 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">对应客户：</label>
                                         <div class="col-md-6">
-                                            <input class="form-control required" type="text" id="name" name="name" value="">
+                                            <select class="form-control required" id="name" onchange="changeContract()">
+                                                <option value="">--客户--</option>
+                                                <volist name="contract" id="vo">
+                                                    <option value="{$vo.customer_id}">{$vo.customer_name}</option>
+                                                </volist>
+                                            </select>
+                                            <!--<input class="form-control required" type="text" id="name" name="name" value="">-->
                                             <span id="sketchTip"style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                         </div>
                                         <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -447,6 +453,21 @@
     function del(data) {
         $(data).parent().remove();
     }
+    function changeContract() {
+        var customer_id = $("#name").val();
+        if(customer_id != ''){
+            $.ajax({
+                type:'get',
+                url:'index.php?m=return&a=contract&id='+customer_id,
+                async:false,
+                success:function(data){
+                    $("#industry").val(data.contract_name);
+                    $("#department").val(data.price);
+                },
+                dataType:'json'
+            });
+        }
+    }
     $(document).ready(function(){
         // $('#bgsave').off().on("click",function(){
         //     var name = $("#name").val().trim();
@@ -456,8 +477,8 @@
         //     var department = $("#department").val().trim();
         //
         //     var school= $("#school").val().trim();
-        //     // var major=$("#major").val().trim();
-        //     // var education = $("#education").val().trim();
+        //     var major=$("#major").val().trim();
+        //     var education = $("#education").val().trim();
         //
         //
         //     var data = {"s_name":name,"industry":industry,"department":department,"school":school,"major":major,"education":education};
@@ -538,10 +559,11 @@
                             })
                             qcs.push(qc);
                         });
-                        var customer = $("#name").val().trim();
+                        var customer = $("#name option:selected").text().trim();
                         var contracttitle = $("#industry").val().trim();
                         var total =$("#department").val().trim();
                         var signtime = $("#school").val().trim();
+                        var customer_id = $('#name').val().trim();
                         $.ajax({
                             url:"/index.php?m=return&a=addd",
                             type:"post",
@@ -552,7 +574,7 @@
                                 'total':total,
                                 'signtime':signtime,
                                 'peroid':qcs,
-                                // 'paynum':paynum,
+                                'customer_id':customer_id,
                             },
                             success:function (data) {
                                 setTimeout(function(){
@@ -569,7 +591,7 @@
                         var paymethod = $("#paymethod").val().trim();
                         var paytype = $("#paytype").val().trim();
                         var receiver = $("#receiver").val().trim();
-                        var remark = $("#remark");
+                        var remark = $("#remark").val().trim();
                         $.ajax({
                                 url:"{:U('return/addcord')}",
                                 type:"post",
@@ -585,7 +607,9 @@
                                     'remark':remark
                                 },
                                 success:function (data) {
-                                    alert_crm(1);
+                                    setTimeout(function () {
+                                        window.location.href = "/index.php?m=return&a=backrecord";
+                                    })
                                 },dataType:'json'
                             }
                         );

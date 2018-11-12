@@ -11,6 +11,7 @@
 	<link rel="shortcut icon" href="__PUBLIC__/ico/favicon.png"/>
 	<script src="__PUBLIC__/style/js/jquery-2.1.1.js"></script>
 	<link type="text/css" href="__PUBLIC__/css/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
+	<!--<link type="text/css" rel="stylesheet" href="__PUBLIC__/css/background-detail.css">-->
 	<link type="text/css" href="__PUBLIC__/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="__PUBLIC__/resume_selector/common.41f94c00.css">
 	<link rel="stylesheet" href="__PUBLIC__/resume_selector/resume.search.12eb3a9b.css">
@@ -30,10 +31,10 @@
 			white-space:nowrap;
 		}
 		#header-top{
-		    position: fixed;
-		    /*width: 87.3%;*/
-		    right:0px;
-		    z-index: 102;
+			position: fixed;
+			/*width: 87.3%;*/
+			right:0px;
+			z-index: 102;
 		}
 		.sidebar-collapse{z-index:9999;}
 		.tooltip{width:85px;line-height:36px;}
@@ -58,15 +59,13 @@
 
 		/*闪烁效果*/
 		.crm_heart{
-		    animation:heart 1s ease infinite;
+			animation:heart 1s ease infinite;
 		}
 
 		@keyframes heart {
-	        0% {color:#FF6D57;}
-	        100%{color:#93A6B5;}
+			0% {color:#FF6D57;}
+			100%{color:#93A6B5;}
 		}
-
-
 	</style>
 
 
@@ -75,7 +74,7 @@
 	<!-- Sweet Alert -->
 	<link href="__PUBLIC__/style/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 	<link href="__PUBLIC__/style/css/style.css" rel="stylesheet">
-    <link href="__PUBLIC__/style/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+	<link href="__PUBLIC__/style/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 	<!-- Mainly scripts -->
 	<script src="__PUBLIC__/style/js/bootstrap.min.js"></script>
 	<script src="__PUBLIC__/js/daterangepicker/moment.min.js"></script>
@@ -110,460 +109,471 @@
 </head>
 <script>
 
-$(function(){
-    sessionStorage.removeItem("idskey");
-    sessionStorage.removeItem("nameskey");
+    $(function(){
+        sessionStorage.removeItem("idskey");
+        sessionStorage.removeItem("nameskey");
 
-	var innerHeight = window.innerHeight;
-	if(innerHeight < 768){
-		innerHeight = 768;
-	}
-	$("#page-wrapper").css("min-height",innerHeight);
-	$(window).resize(function(){
-		var innerHeight = window.innerHeight;
-		if(innerHeight < 768){
-			innerHeight = 768;
-		}
-		$("#page-wrapper").css("min-height",innerHeight);
-	});
-	$(".select2").select2({
-        placeholder: "--请选择--"
-        // allowClear: true
+        var innerHeight = window.innerHeight;
+        if(innerHeight < 768){
+            innerHeight = 768;
+        }
+        $("#page-wrapper").css("min-height",innerHeight);
+        $(window).resize(function(){
+            var innerHeight = window.innerHeight;
+            if(innerHeight < 768){
+                innerHeight = 768;
+            }
+            $("#page-wrapper").css("min-height",innerHeight);
+        });
+        $(".select2").select2({
+            placeholder: "--请选择--"
+            // allowClear: true
+        });
     });
-});
 </script>
 <!-- <body class="navbar fixed-sidebar"> -->
 <body class="navbar">
-	<div id="wrapper">
+<div id="wrapper">
 
-		<nav class="navbar-default navbar-static-side" role="navigation" style="width: 120px;">
-	        <div class="sidebar-collapse">
-	        	<?php
+	<nav class="navbar-default navbar-static-side" role="navigation" style="width: 120px;">
+		<div class="sidebar-collapse">
+			<?php
  $module_name = strtolower(MODULE_NAME); $action_name = strtolower(ACTION_NAME); $t = strtolower($_GET['t']); $module_list = array('customer','business','product','contract','finance','analytics','log','contacts','sendsms','setting'); $new_module_list = array(); foreach($module_list as $k=>$v){ switch($v){ case 'customer' : if (checkPerByAction('leads','index')) { $new_module_list[] = 'customer'; } elseif (checkPerByAction('customer','index')) { $new_module_list[] = 'customer'; } elseif (checkPerByAction('contacts','index')) { $new_module_list[] = 'customer'; } elseif (checkPerByAction('member','index')) { $new_module_list[] = 'customer'; } break; case 'business' : if (checkPerByAction('business','index')) { $new_module_list[] = 'business'; } break; case 'product' : if (checkPerByAction('product','index')) { $new_module_list[] = 'product'; } break; case 'contract' : if (checkPerByAction('contract','index')) { $new_module_list[] = 'contract'; } elseif (checkPerByAction('order','index')) { $new_module_list[] = 'contract'; } break; case 'finance' : if (checkPerByAction('finance','index_receivables')) { $new_module_list[] = 'finance'; } elseif (checkPerByAction('finance','index_receivingorder')) { $new_module_list[] = 'finance'; } elseif (checkPerByAction('finance','index_payables')) { $new_module_list[] = 'finance'; } elseif (checkPerByAction('finance','index_paymentorder')) { $new_module_list[] = 'finance'; } elseif (checkPerByAction('invoice','index')) { $new_module_list[] = 'finance'; } break; case 'analytics' : if (checkPerByAction('customer','analytics')) { $new_module_list[] = 'analytics'; } elseif (checkPerByAction('business','analytics')) { $new_module_list[] = 'analytics'; } elseif (checkPerByAction('finance','analytics')) { $new_module_list[] = 'analytics'; } elseif (checkPerByAction('product','analytics')) { $new_module_list[] = 'analytics'; } elseif (checkPerByAction('leads','analytics')) { $new_module_list[] = 'analytics'; } elseif (checkPerByAction('contract','analytics')) { $new_module_list[] = 'analytics'; } elseif (checkPerByAction('log','analytics')) { $new_module_list[] = 'analytics'; } elseif (checkPerByAction('kaoqin','analytics')) { $new_module_list[] = 'analytics'; } elseif (checkPerByAction('kaoqin','record')) { $new_module_list[] = 'analytics'; } break; case 'log' : if (checkPerByAction('log','index')) { $new_module_list[] = 'log'; } elseif (checkPerByAction('examine','index')) { $new_module_list[] = 'log'; } elseif (checkPerByAction('knowledge','index')) { $new_module_list[] = 'log'; } elseif (checkPerByAction('announcement','index')) { $new_module_list[] = 'log'; } elseif (checkPerByAction('sign','index')) { $new_module_list[] = 'log'; } elseif (checkPerByAction('event','index')) { $new_module_list[] = 'log'; } elseif (checkPerByAction('task','index')) { $new_module_list[] = 'log'; } elseif (checkPerByAction('kaoqin','index')) { $new_module_list[] = 'log'; } break; case 'contacts' : if (checkPerByAction('user','contacts')) { $new_module_list[] = 'contacts'; } break; case 'sendsms' : if (checkPerByAction('setting','sendsms')) { $new_module_list[] = 'sendsms'; } break; case 'setting' : if (checkPerByAction('user','index')) { $new_module_list[] = 'setting'; } elseif (checkPerByAction('kaoqin','setting')) { $new_module_list[] = 'setting'; } break; } } $m_scene_default = M('SceneDefault'); $m_scene = M('Scene'); $customer_default_scene = $m_scene_default->where(array('role_id'=>session('role_id'),'module'=>'customer'))->getField('scene_id'); if (!$customer_default_scene) { $customer_default_info = $m_scene->where(array('module'=>'customer','type'=>1))->order('id asc')->find(); } else { $customer_default_info = $m_scene->where(array('id'=>$customer_default_scene))->find(); } if ($customer_default_info['type'] == 1) { $customer_url = U('customer/index','by='.$customer_default_info['by']); } else { $customer_url = U('customer/index','scene_id='.$customer_default_info['id']); } $authorize_setting = C('AUTHORIZE_SETTING'); $days_remaining = '100'; if ($authorize_setting['NUM'] <= 5 && !empty($authorize_setting['OPENTIME']) && $authorize_setting['OPENTIME'] > '20171116') { if ($authorize_setting['NUM'] > 2) { $days_remaining = round((strtotime($authorize_setting['ENDTIME'])-time())/86400); $authorize_setting['ENDTIME'] = date('Y年m月d日',strtotime($authorize_setting['ENDTIME'])); } else { $authorize_setting['ENDTIME'] = '永久免费'; } } else { if (($authorize_setting['NUM'] > 5)) { $days_remaining = round((strtotime($authorize_setting['ENDTIME'])-time())/86400); $authorize_setting['ENDTIME'] = date('Y年m月d日',strtotime($authorize_setting['ENDTIME'])); } else { $authorize_setting['ENDTIME'] = '永久免费'; } } ?>
-	            <ul class="nav metismenu left-side" id="side-menu" >
-	                <li class="nav-header" style="padding:6px 21px 21px;">
-	                    <br>
-	                    <?php
- $img = M('User')->where('user_id = %d', session('user_id'))->getField('img'); $defaultinfo_info = M('Config')->where('name = "defaultinfo"')->find(); $defaultinfo = unserialize($defaultinfo_info['value']); ?>
-	                    <div class="logo-element" style="margin: -17px -25px;">
-	                    	<?php if($defaultinfo['logo_min_thumb_path']): ?><img class="img-circle" src="<?php echo ($defaultinfo['logo_min_thumb_path']); ?>" style="width: 38px;height: 38px;margin-right:0px;" alt="<?php echo ($defaultinfo['name']); ?>">
-	                    	<?php else: ?>
-	                    		<img class="img-circle" src="__PUBLIC__/img/logo2.png" style="width: 38px;height: 38px;margin-right:0px;" alt="MXCRM"><?php endif; ?>
-	                    </div>
-	                </li>
-	                <li >
-	                	<a data-toggle="tooltip" data-placement="right" data-original-title="首页" <?php if($module_name == 'index'): ?>class="active"<?php endif; ?> href="<?php echo U('index/index');?>"><i class="fa fa-home"></i><span class="menu_code">首页</span></a>
-	                </li>
-
-	                <?php if (in_array('customer',$new_module_list)): ?>
-	                <li >
-	                	<a data-toggle="tooltip" data-placement="right" data-original-title="客户管理" <?php if(($module_name == 'customer' && $action_name != 'analytics') || $module_name == 'contacts' || $module_name == 'member'): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('customer','index')): ?>href="<?php echo ($customer_url); ?>"<?php elseif(checkPerByAction('contacts','index')): ?>href="<?php echo U('contacts/index');?>"<?php elseif(checkPerByAction('leads','index')): ?>href="<?php echo U('leads/index');?>"<?php else: ?>href="<?php echo U('customer/index','by=me');?>"<?php endif; ?> ><i class="fa fa-user"></i><span class="menu_code">客户</span></a>
-	                </li>
-	                <?php endif; ?>
-	                <?php if (in_array('business',$new_module_list)): ?>
-	                <li >
-	                	<a data-toggle="tooltip" data-placement="right" data-original-title="项目管理" <?php if($module_name == 'business' && $action_name != 'analytics'): ?>class="active"<?php endif; ?> href="<?php echo U('business/index');?>" ><i class="fa fa-suitcase"></i><span class="menu_code">项目</span></a>
-	                </li>
-	                <?php endif; ?>
-
-	                <li>
-	                	<a data-toggle="tooltip" data-placement="right" data-original-title="人才管理" <?php if($module_name == 'product' && $action_name != 'category'): ?>class="active"<?php endif; ?> href="<?php echo U('product/index');?>"><i class="fa fa-inbox"></i><span class="menu_code">人才</span></a>
-	                </li>
-
-	                <?php if (in_array('contract',$new_module_list)): ?>
-					<li>
-	                	<a data-toggle="tooltip" data-placement="right" data-original-title="合同订单" <?php if(($module_name == 'contract' && $action_name != 'analytics' && $action_name != 'collection' && $action_name != 'examine') || $module_name == 'order'): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('contract','index')): ?>href="<?php echo U('contract/index');?>"<?php elseif(checkPerByAction('order','index')): ?>href="<?php echo U('order/index');?>"<?php endif; ?>><i class="fa fa-file-text"></i><span class="menu_code">合同</span></a>
-	                </li>
-	                <?php endif; ?>
-
-
-
-
-					<li>
-	                	<a data-toggle="tooltip" data-placement="right" data-original-title="财务发票" <?php if(($module_name == 'invoice' || $module_name == 'finance')): ?>class="active"<?php endif; ?> href="<?php echo U('finance/index');?>"><i class="fa fa-credit-card"></i><span class="menu_code">财务</span></a>
-	                </li>
-	              
-	                <?php if (in_array('analytics',$new_module_list)): ?>
-					<li>
-	                	<a data-toggle="tooltip" data-placement="right" data-original-title="报表分析" <?php if($action_name == 'collection' || $action_name == 'analytics' || $action_name == 'record'|| $action_name == 'projecttrend'|| $action_name == 'resume'|| $action_name == 'project'|| $action_name == 'customer'|| ($action_name == 'department' && $module_name == 'leads')|| $action_name == 'business'|| $action_name == 'achievement'|| $action_name == 'weektrend'|| $action_name == 'monthtrend'): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('leads','analytics')): ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php elseif(checkPerByAction('customer','analytics')): ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php elseif(checkPerByAction('business','analytics')): ?>href="<?php echo U('business/analytics','content_id=1');?>"<?php elseif(checkPerByAction('finance','analytics')): ?>href="<?php echo U('finance/analytics','content_id=1');?>"<?php elseif(checkPerByAction('product','analytics')): ?>href="<?php echo U('product/analytics','content_id=1');?>"<?php elseif(checkPerByAction('log','analytics')): ?>href="<?php echo U('log/analytics','content_id=1');?>"<?php else: ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php endif; ?> ><i class="fa fa-area-chart"></i><span class="menu_code">报表</span></a>
-	                </li>
-	                <?php endif; ?>
-
-
-					<li>
-						<a data-toggle="tooltip" data-placement="right" data-original-title="积分业绩" <?php if(($module_name == 'integral')): ?>class="active"<?php endif; ?> href="<?php echo U('integral/index');?>"><i class="fa fa-leaf"></i><span class="menu_code">积分</span></a>
-					</li>
-					<li>
-						<a data-toggle="tooltip" data-placement="right" data-original-title="培训管理" <?php if(($module_name == 'train' || $module_name == 'teacher')): ?>class="active"<?php endif; ?> href="<?php echo U('train/index');?>"><i class="fa fa-graduation-cap" style="width: 14px;"></i><span class="menu_code">培训</span></a>
-					</li>
-	                <?php if (in_array('log',$new_module_list)): ?>
-					<li>
-	                	<a data-toggle="tooltip" data-placement="right" data-original-title="日程" <?php if($module_name == 'log' && $action_name != 'analytics' || ($module_name == 'examine' && $action_name != 'analytics') || $module_name == 'announcement' || ($module_name == 'knowledge' && $action_name != 'category') || $module_name == 'sign' || $module_name == 'event' || $module_name == 'task' || ($module_name == 'kaoqin' && $action_name == 'index')): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('event','index')): ?>href="<?php echo U('event/index');?>"<?php elseif(checkPerByAction('examine','index')): ?>href="<?php echo U('examine/index');?>"<?php elseif(checkPerByAction('knowledge','index')): ?>href="<?php echo U('knowledge/index');?>"<?php elseif(checkPerByAction('announcement','index')): ?>href="<?php echo U('announcement/index');?>"<?php elseif(checkPerByAction('sign','index')): ?>href="<?php echo U('sign/index');?>"<?php elseif(checkPerByAction('event','index')): ?>href="<?php echo U('event/index');?>"<?php elseif(checkPerByAction('task','index')): ?>href="<?php echo U('task/index');?>"<?php endif; ?>><i class="fa fa-desktop"></i><span class="menu_code">日程</span></a>
-	                </li>
-	                <?php endif; ?>
-	                <!--<?php if (in_array('contacts',$new_module_list)): ?>-->
-	                <!--<li>-->
-	                	<!--<a data-toggle="tooltip" data-placement="right" data-original-title="通讯录" <?php if($module_name == 'user' && ($action_name == 'contacts' || $action_name == 'view')): ?>class="active"<?php endif; ?> href="<?php echo U('user/contacts');?>" ><i class="fa fa-phone-square"></i></a>-->
-	                <!--</li>-->
-	                <!--<?php endif; ?>-->
-	                <!--<?php if (in_array('sendsms',$new_module_list)): ?>-->
-					<!--<li>-->
-	                	<!--<a data-toggle="tooltip" data-placement="right" data-original-title="营销" <?php if($action_name == 'sendsms' || $action_name == 'smsrecord' || $action_name == 'sendemail' || $module_name == 'email' || $module_name == 'sms'): ?>class="active"<?php endif; ?> href="<?php echo U('setting/sendsms');?>"><i class="fa fa-envelope"></i></a>-->
-	                <!--</li>-->
-	                <!--<?php endif; ?>-->
-					<!---->
-
-	                <?php if (in_array('setting',$new_module_list)): ?>
-	                <li>
-	                	<a data-toggle="tooltip" data-placement="right" data-original-title="系统设置" <?php if(($module_name == 'setting' && ($action_name != 'sendsms' && $action_name != 'smsrecord' && $action_name != 'sendemail')) || ($module_name == 'user' && $action_name != 'contacts' && $action_name != 'view') || $action_name == 'category' || ($module_name == 'kaoqin' && $action_name != 'analytics' && $action_name != 'record' && $action_name != 'index') || ($module_name == 'contract' && $action_name == 'examine')): ?>class="active"<?php endif; ?> <?php if(session('?admin')): ?>href="<?php echo U('setting/defaultinfo');?>"<?php elseif(checkPerByAction('user','index')): ?>href="<?php echo U('user/index');?>"<?php elseif(checkPerByAction('kaoqin','setting')): ?>href="<?php echo U('kaoqin/setting');?>"<?php else: ?>href="<?php echo U('setting/defaultinfo');?>"<?php endif; ?> ><i class="fa fa-cog"></i><span class="menu_code">系统</span></a>
-	                </li>
-	                <?php endif; ?>
-	            </ul>
-	        </div>
-	    </nav>
-		<div id="page-wrapper" class="gray-bg" style="background:#e6e9f0">
-    		<div class="row border-bottom white-bg" style="box-shadow: 0px 4px 13px -8px #5A5A5A;z-index: 102;">
-				<nav class="navbar navbar-default nav-head navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<ul class="nav metismenu left-side" id="side-menu" >
+				<li class="nav-header" style="padding:6px 21px 21px;">
+					<br>
 					<?php
+ $img = M('User')->where('user_id = %d', session('user_id'))->getField('img'); $defaultinfo_info = M('Config')->where('name = "defaultinfo"')->find(); $defaultinfo = unserialize($defaultinfo_info['value']); ?>
+					<div class="logo-element" style="margin: -17px -25px;">
+						<?php if($defaultinfo['logo_min_thumb_path']): ?><img class="img-circle" src="<?php echo ($defaultinfo['logo_min_thumb_path']); ?>" style="width: 38px;height: 38px;margin-right:0px;" alt="<?php echo ($defaultinfo['name']); ?>">
+							<?php else: ?>
+							<img class="img-circle" src="__PUBLIC__/img/logo2.png" style="width: 38px;height: 38px;margin-right:0px;" alt="MXCRM"><?php endif; ?>
+					</div>
+				</li>
+				<li >
+					<a data-toggle="tooltip" data-placement="right" data-original-title="首页" <?php if($module_name == 'index'): ?>class="active"<?php endif; ?> href="<?php echo U('index/index');?>"><i class="fa fa-home"></i><span class="menu_code">首页</span></a>
+				</li>
+
+				<?php if (in_array('customer',$new_module_list)): ?>
+				<li >
+					<a data-toggle="tooltip" data-placement="right" data-original-title="客户管理" <?php if(($module_name == 'customer' && $action_name != 'analytics') || $module_name == 'contacts' || $module_name == 'member'): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('customer','index')): ?>href="<?php echo ($customer_url); ?>"<?php elseif(checkPerByAction('contacts','index')): ?>href="<?php echo U('contacts/index');?>"<?php elseif(checkPerByAction('leads','index')): ?>href="<?php echo U('leads/index');?>"<?php else: ?>href="<?php echo U('customer/index','by=me');?>"<?php endif; ?> ><i class="fa fa-user"></i><span class="menu_code">客户</span></a>
+				</li>
+				<?php endif; ?>
+				<?php if (in_array('business',$new_module_list)): ?>
+				<li >
+					<a data-toggle="tooltip" data-placement="right" data-original-title="项目管理" <?php if($module_name == 'business' && $action_name != 'analytics'): ?>class="active"<?php endif; ?> href="<?php echo U('business/index');?>" ><i class="fa fa-suitcase"></i><span class="menu_code">项目</span></a>
+				</li>
+				<?php endif; ?>
+
+				<li>
+					<a data-toggle="tooltip" data-placement="right" data-original-title="人才管理" <?php if($module_name == 'product' && $action_name != 'category'): ?>class="active"<?php endif; ?> href="<?php echo U('product/index');?>"><i class="fa fa-inbox"></i><span class="menu_code">人才</span></a>
+				</li>
+
+				<?php if (in_array('contract',$new_module_list)): ?>
+				<li>
+					<a data-toggle="tooltip" data-placement="right" data-original-title="合同订单" <?php if(($module_name == 'contract' && $action_name != 'analytics' && $action_name != 'collection' && $action_name != 'examine') || $module_name == 'order'): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('contract','index')): ?>href="<?php echo U('contract/index');?>"<?php elseif(checkPerByAction('order','index')): ?>href="<?php echo U('order/index');?>"<?php endif; ?>><i class="fa fa-file-text"></i><span class="menu_code">合同</span></a>
+				</li>
+				<?php endif; ?>
+
+				<li>
+					<a data-toggle="tooltip" data-placement="right" data-original-title="财务发票" <?php if(($module_name == 'invoice' || $module_name == 'finance')): ?>class="active"<?php endif; ?> href="<?php echo U('finance/index');?>"><i class="fa fa-credit-card"></i><span class="menu_code">财务</span></a>
+				</li>
+
+				<?php if (in_array('analytics',$new_module_list)): ?>
+				<li>
+					<a data-toggle="tooltip" data-placement="right" data-original-title="报表分析" <?php if($action_name == 'collection' || $action_name == 'analytics' || $action_name == 'record'|| $action_name == 'projecttrend'|| $action_name == 'resume'|| $action_name == 'project'|| $action_name == 'customer'|| ($action_name == 'department' && $module_name == 'leads')|| $action_name == 'business'|| $action_name == 'achievement'|| $action_name == 'weektrend'|| $action_name == 'monthtrend' || $action_name == 'yieldrate' || $action_name == 'departmentrate'): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('leads','analytics')): ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php elseif(checkPerByAction('customer','analytics')): ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php elseif(checkPerByAction('business','analytics')): ?>href="<?php echo U('business/analytics','content_id=1');?>"<?php elseif(checkPerByAction('finance','analytics')): ?>href="<?php echo U('finance/analytics','content_id=1');?>"<?php elseif(checkPerByAction('product','analytics')): ?>href="<?php echo U('product/analytics','content_id=1');?>"<?php elseif(checkPerByAction('log','analytics')): ?>href="<?php echo U('log/analytics','content_id=1');?>"<?php else: ?>href="<?php echo U('leads/analytics','content_id=1');?>"<?php endif; ?> ><i class="fa fa-area-chart"></i><span class="menu_code">报表</span></a>
+				</li>
+				<?php endif; ?>
+
+				<li>
+					<a data-toggle="tooltip" data-placement="right" data-original-title="职级升降" <?php if(($module_name == 'integral')): ?>class="active"<?php endif; ?> href="<?php echo U('integral/index');?>"><i class="fa fa-leaf"></i><span class="menu_code">职级</span></a>
+				</li>
+				<li>
+					<a data-toggle="tooltip" data-placement="right" data-original-title="培训管理" <?php if(($module_name == 'train' || $module_name == 'teacher')): ?>class="active"<?php endif; ?> href="<?php echo U('train/index');?>"><i class="fa fa-graduation-cap" style="width: 14px;"></i><span class="menu_code">培训</span></a>
+				</li>
+				<?php if (in_array('log',$new_module_list)): ?>
+				<li>
+					<a data-toggle="tooltip" data-placement="right" data-original-title="背景调查" <?php if($module_name == 'background' && $action_name != 'background'): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('background','index')): ?>href="<?php echo U('background/index');?>"<?php elseif(checkPerByAction('examine','index')): ?>href="<?php echo U('examine/index');?>"<?php elseif(checkPerByAction('knowledge','index')): ?>href="<?php echo U('knowledge/index');?>"<?php elseif(checkPerByAction('announcement','index')): ?>href="<?php echo U('announcement/index');?>"<?php elseif(checkPerByAction('sign','index')): ?>href="<?php echo U('sign/index');?>"<?php elseif(checkPerByAction('background','index')): ?>href="<?php echo U('background/index');?>"<?php elseif(checkPerByAction('background','index')): ?>href="<?php echo U('background/index');?>"<?php endif; ?>><i class="fa fa-user"></i><span class="menu_code">背调</span></a>
+				</li>
+				<?php endif; ?>
+				<?php if (in_array('log',$new_module_list)): ?>
+				<li>
+					<a data-toggle="tooltip" data-placement="right" data-original-title="回款" <?php if(($module_name == 'return' || $module_name == 'return' )): ?>class="active"<?php endif; ?> href="<?php echo U('Return/index');?>"><i class="fa fa-credit-card"></i><span class="menu_code">回款</span></a>
+				</li>
+				<?php endif; ?>
+				<?php if (in_array('log',$new_module_list)): ?>
+				<li>
+					<a data-toggle="tooltip" data-placement="right" data-original-title="日程" <?php if($module_name == 'log' && $action_name != 'analytics' || ($module_name == 'examine' && $action_name != 'analytics') || $module_name == 'announcement' || ($module_name == 'knowledge' && $action_name != 'category') || $module_name == 'sign' || $module_name == 'event' || $module_name == 'task' || ($module_name == 'kaoqin' && $action_name == 'index')): ?>class="active"<?php endif; ?> <?php if(checkPerByAction('event','index')): ?>href="<?php echo U('event/index');?>"<?php elseif(checkPerByAction('examine','index')): ?>href="<?php echo U('examine/index');?>"<?php elseif(checkPerByAction('knowledge','index')): ?>href="<?php echo U('knowledge/index');?>"<?php elseif(checkPerByAction('announcement','index')): ?>href="<?php echo U('announcement/index');?>"<?php elseif(checkPerByAction('sign','index')): ?>href="<?php echo U('sign/index');?>"<?php elseif(checkPerByAction('event','index')): ?>href="<?php echo U('event/index');?>"<?php elseif(checkPerByAction('task','index')): ?>href="<?php echo U('task/index');?>"<?php endif; ?>><i class="fa fa-desktop"></i><span class="menu_code">日程</span></a>
+				</li>
+				<?php endif; ?>
+
+				<!--<?php if (in_array('contacts',$new_module_list)): ?>-->
+				<!--<li>-->
+				<!--<a data-toggle="tooltip" data-placement="right" data-original-title="通讯录" <?php if($module_name == 'user' && ($action_name == 'contacts' || $action_name == 'view')): ?>class="active"<?php endif; ?> href="<?php echo U('user/contacts');?>" ><i class="fa fa-phone-square"></i></a>-->
+				<!--</li>-->
+				<!--<?php endif; ?>-->
+				<!--<?php if (in_array('sendsms',$new_module_list)): ?>-->
+				<!--<li>-->
+				<!--<a data-toggle="tooltip" data-placement="right" data-original-title="营销" <?php if($action_name == 'sendsms' || $action_name == 'smsrecord' || $action_name == 'sendemail' || $module_name == 'email' || $module_name == 'sms'): ?>class="active"<?php endif; ?> href="<?php echo U('setting/sendsms');?>"><i class="fa fa-envelope"></i></a>-->
+				<!--</li>-->
+				<!--<?php endif; ?>-->
+
+				<?php if (in_array('setting',$new_module_list)): ?>
+				<li>
+					<a data-toggle="tooltip" data-placement="right" data-original-title="系统设置" <?php if(($module_name == 'setting' && ($action_name != 'sendsms' && $action_name != 'smsrecord' && $action_name != 'sendemail')) || ($module_name == 'user' && $action_name != 'contacts' && $action_name != 'view') || $action_name == 'category' || ($module_name == 'kaoqin' && $action_name != 'analytics' && $action_name != 'record' && $action_name != 'index') || ($module_name == 'contract' && $action_name == 'examine')): ?>class="active"<?php endif; ?> <?php if(session('?admin')): ?>href="<?php echo U('setting/defaultinfo');?>"<?php elseif(checkPerByAction('user','index')): ?>href="<?php echo U('user/index');?>"<?php elseif(checkPerByAction('kaoqin','setting')): ?>href="<?php echo U('kaoqin/setting');?>"<?php else: ?>href="<?php echo U('setting/defaultinfo');?>"<?php endif; ?> ><i class="fa fa-cog"></i><span class="menu_code">系统</span></a>
+				</li>
+				<?php endif; ?>
+			</ul>
+		</div>
+	</nav>
+	<div id="page-wrapper" class="gray-bg" style="background:#e6e9f0">
+		<div class="row border-bottom white-bg" style="box-shadow: 0px 4px 13px -8px #5A5A5A;z-index: 102;">
+			<nav class="navbar navbar-default nav-head navbar-static-top" role="navigation" style="margin-bottom: 0">
+				<?php
  $module_name = strtolower(MODULE_NAME); $action_name = strtolower(ACTION_NAME); $t = strtolower($_GET['t']); ?>
-					<ul class="nav navbar-nav navbar-left navbar-form-custom" style="min-width:60%;">
-						<?php if ($module_name == 'index'): ?>
-							<li <?php if($module_name == 'index' && $action_name == 'index'): ?>class="active"<?php endif; ?> ><a href="<?php echo U('index/index');?>"><span class="fa fa-home" style="display:inline"></span>&nbsp;&nbsp;首页</a></li>
-						<?php elseif($action_name == 'analytics' || $action_name == 'collection' || $action_name == 'city_analytics' || $action_name == 'record'): ?>
-							<li <?php if($action_name == 'analytics' || $action_name == 'city_analytics' || $action_name == 'record'): ?>class="active"<?php endif; ?>><a href="<?php echo U('customer/analytics');?>"><span class="fa fa-area-chart" style="display:inline"></span>&nbsp;&nbsp;数据分析</a></li>
-						<?php elseif ($module_name == 'customer' && $action_name != 'analytics' && $action_name != 'city_analytics' || $module_name == 'contacts' || $module_name == 'member' || $module_name == 'leads') : ?>
-							<!--<li <?php if($module_name == 'leads' && $_GET['by'] != 'public'): ?>class="active"<?php endif; ?> ><a href="<?php echo U('leads/index');?>"><span class="fa fa fa-child" style="display:inline"></span>&nbsp;&nbsp;线索</a></li>-->
-							<!--<li <?php if($module_name == 'leads' && $_GET['by'] == 'public'): ?>class="active"<?php endif; ?> ><a href="<?php echo U('leads/index','by=public');?>"><span class="fa fa fa-child" style="display:inline"></span>&nbsp;&nbsp;线索池</a></li>-->
-							<li <?php if($module_name == 'customer' && $_GET['content'] != 'resource' && $_GET['content'] != 'city_analytics'): ?>class="active"<?php endif; ?> ><a href="<?php echo ($customer_url); ?>"><span class="fa fa-user" style="display:inline"></span>&nbsp;&nbsp;客户</a></li>
-							<li <?php if($_GET['content'] == 'resource'): ?>class="active"<?php endif; ?>><a href="<?php echo U('customer/index','by=me&content=resource');?>"><span class="fa fa-group" style="display:inline"></span>&nbsp;&nbsp;客户池</a></li>
-							<li <?php if($module_name == 'contacts'): ?>class="active"<?php endif; ?>><a href="<?php echo U('contacts/index');?>"><span class="fa fa-phone-square" style="display:inline"></span>&nbsp;&nbsp;客户联系人</a></li>
-						<?php elseif($module_name == 'business' && $action_name != 'analytics'): ?>
-							<li class="active"><a href="<?php echo U('business/index');?>"><span class="fa fa-suitcase" style="display:inline"></span>&nbsp;&nbsp;项目管理</a></li>
-						<?php elseif($module_name == 'product' && $action_name = 'index'): ?>
-							<li class="active"><a href="<?php echo U('product/index');?>"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;人才管理</a></li>
-						<?php elseif($module_name == 'integral' && $action_name = 'index'): ?>
-							<li <?php if($action_name == 'index' &&$_GET['via'] == ''): ?>class="active"<?php endif; ?>><a href="<?php echo U('integral/index');?>"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;专业猎头</a></li>
-							<li <?php if($_GET['via'] == internet): ?>class="active"<?php endif; ?> > <a href="<?php echo U('integral/internet','via=internet');?>"> <span class="fa fa-group" style="display:inline"></span>&nbsp;&nbsp;互联网+</a></li>
-						<?php elseif($module_name == 'contract' || $module_name == 'order'): ?>
-							<li <?php if($module_name == 'contract'): ?>class="active"<?php endif; ?>><a href="<?php echo U('contract/index');?>"><span class="fa fa-list-alt" style="display:inline"></span>&nbsp;&nbsp;合同</a></li>
-						<?php
+				<ul class="nav navbar-nav navbar-left navbar-form-custom" style="min-width:60%;">
+					<?php if ($module_name == 'index'): ?>
+					<li <?php if($module_name == 'index' && $action_name == 'index'): ?>class="active"<?php endif; ?> ><a href="<?php echo U('index/index');?>"><span class="fa fa-home" style="display:inline"></span>&nbsp;&nbsp;首页</a></li>
+					<?php elseif($action_name == 'analytics' || $action_name == 'collection' || $action_name == 'city_analytics' || $action_name == 'record'): ?>
+					<li <?php if($action_name == 'analytics' || $action_name == 'city_analytics' || $action_name == 'record'): ?>class="active"<?php endif; ?>><a href="<?php echo U('customer/analytics');?>"><span class="fa fa-area-chart" style="display:inline"></span>&nbsp;&nbsp;数据分析</a></li>
+					<?php elseif ($module_name == 'customer' && $action_name != 'analytics' && $action_name != 'city_analytics' || $module_name == 'contacts' || $module_name == 'member' || $module_name == 'leads') : ?>
+					<!--<li <?php if($module_name == 'leads' && $_GET['by'] != 'public'): ?>class="active"<?php endif; ?> ><a href="<?php echo U('leads/index');?>"><span class="fa fa fa-child" style="display:inline"></span>&nbsp;&nbsp;线索</a></li>-->
+					<!--<li <?php if($module_name == 'leads' && $_GET['by'] == 'public'): ?>class="active"<?php endif; ?> ><a href="<?php echo U('leads/index','by=public');?>"><span class="fa fa fa-child" style="display:inline"></span>&nbsp;&nbsp;线索池</a></li>-->
+					<li <?php if($module_name == 'customer' && $_GET['content'] != 'resource' && $_GET['content'] != 'city_analytics'): ?>class="active"<?php endif; ?> ><a href="<?php echo ($customer_url); ?>"><span class="fa fa-user" style="display:inline"></span>&nbsp;&nbsp;客户</a></li>
+					<li <?php if($_GET['content'] == 'resource'): ?>class="active"<?php endif; ?>><a href="<?php echo U('customer/index','by=me&content=resource');?>"><span class="fa fa-group" style="display:inline"></span>&nbsp;&nbsp;客户池</a></li>
+					<li <?php if($module_name == 'contacts'): ?>class="active"<?php endif; ?>><a href="<?php echo U('contacts/index');?>"><span class="fa fa-phone-square" style="display:inline"></span>&nbsp;&nbsp;客户联系人</a></li>
+					<?php elseif($module_name == 'business' && $action_name != 'analytics'): ?>
+					<li class="active"><a href="<?php echo U('business/index');?>"><span class="fa fa-suitcase" style="display:inline"></span>&nbsp;&nbsp;项目管理</a></li>
+					<?php elseif($module_name == 'product' && $action_name = 'index'): ?>
+					<li class="active"><a href="<?php echo U('product/index');?>"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;人才管理</a></li>
+					<?php elseif($module_name == 'integral' && $action_name = 'index'): ?>
+					<li <?php if($action_name == 'index' &&$_GET['via'] == ''): ?>class="active"<?php endif; ?>><a href="<?php echo U('integral/index');?>"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;专业猎头</a></li>
+					<li <?php if($_GET['via'] == internet): ?>class="active"<?php endif; ?> > <a href="<?php echo U('integral/internet','via=internet');?>"> <span class="fa fa-group" style="display:inline"></span>&nbsp;&nbsp;互联网+</a></li>
+					<?php elseif($module_name == 'contract' || $module_name == 'order'): ?>
+					<li <?php if($module_name == 'contract'): ?>class="active"<?php endif; ?>><a href="<?php echo U('contract/index');?>"><span class="fa fa-list-alt" style="display:inline"></span>&nbsp;&nbsp;合同</a></li>
+					<?php elseif($module_name == 'background' || $module_name == 'index'): ?>
+					<li <?php if($action_name == 'index'||$action_name == 'add'||$action_name == 'add_more'||$action_name == 'edit'): ?>class="active"<?php endif; ?> ><a href="<?php echo U('background/index');?>"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对内背景调查</a></li>
+					<li <?php if($action_name == 'index_external'||$action_name == 'add_external'||$action_name == 'add_more_external'): ?>class="active"<?php endif; ?> ><a href="<?php echo U('background/index_external');?>"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对外背景调查</a></li>
+					<?php elseif($module_name == 'return' || $module_name == 'index'): ?>
+					<li <?php if($action_name == 'index'||$action_name == 'backrecord'||$action_name == 'ticketrecord'||$action_name == 'add'): ?>class="active"<?php endif; ?> ><a href="<?php echo U('return/index');?>"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;回款</a></li>
+					<?php
  elseif($module_name == 'train' || $module_name == 'teacher'): ?>
-						<li <?php if($module_name == 'finance'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index');?>"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;课程管理</a></li>
-						<li <?php if($module_name == 'finance'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index');?>"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;考试管理</a></li>
-						<li <?php if($module_name == 'teacher'): ?>class="active"<?php endif; ?>><a href="<?php echo U('teacher/index');?>"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;教师后台</a></li>
-						<?php elseif($module_name == 'finance' || $module_name == 'invoice'): ?>
-							<!--<li <?php if($module_name == 'finance' && $t == 'receivingorder'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index','t=receivingorder');?>"><span class="fa fa-money" style="display:inline"></span>&nbsp;&nbsp;回款单</a></li>-->
-							<!--<li <?php if($module_name == 'finance' && $t == 'payables'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index','t=payables');?>"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;应付款</a></li>-->
-							<!--<li <?php if($module_name == 'finance' && $t == 'paymentorder'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index','t=paymentorder');?>"><span class="fa fa-money" style="display:inline"></span>&nbsp;&nbsp;付款单</a></li>-->
-							<?php
+					<li <?php if($module_name == 'finance'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index');?>"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;课程管理</a></li>
+					<li <?php if($module_name == 'finance'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index');?>"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;考试管理</a></li>
+					<li <?php if($module_name == 'teacher'): ?>class="active"<?php endif; ?>><a href="<?php echo U('teacher/index');?>"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;教师后台</a></li>
+					<?php elseif($module_name == 'finance' || $module_name == 'invoice'): ?>
+					<!--<li <?php if($module_name == 'finance' && $t == 'receivingorder'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index','t=receivingorder');?>"><span class="fa fa-money" style="display:inline"></span>&nbsp;&nbsp;回款单</a></li>-->
+					<!--<li <?php if($module_name == 'finance' && $t == 'payables'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index','t=payables');?>"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;应付款</a></li>-->
+					<!--<li <?php if($module_name == 'finance' && $t == 'paymentorder'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index','t=paymentorder');?>"><span class="fa fa-money" style="display:inline"></span>&nbsp;&nbsp;付款单</a></li>-->
+					<?php
  if(checkPerByAction('invoice','index')){ ?>
-							<li <?php if($module_name == 'invoice'): ?>class="active"<?php endif; ?>><a href="<?php echo U('invoice/index');?>"><span class="fa fa-bookmark" style="display:inline"></span>&nbsp;&nbsp;发票</a></li>
-						<?php
+					<li <?php if($module_name == 'invoice'): ?>class="active"<?php endif; ?>><a href="<?php echo U('invoice/index');?>"><span class="fa fa-bookmark" style="display:inline"></span>&nbsp;&nbsp;发票</a></li>
+					<?php
  } ?>
 
-                            <li <?php if($module_name == 'finance'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index');?>"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;发票分配明细汇总</a></li>
-						<?php elseif($module_name == 'log' || $module_name =='examine' || ($module_name == 'knowledge' && $action_name != 'category') || $module_name == 'announcement' || $module_name == 'sign' || $module_name == 'event' || $module_name == 'task' || ($module_name == 'kaoqin' && $action_name == 'index') ): ?>
-							<!--<li <?php if($module_name == 'log'): ?>class="active"<?php endif; ?>><a href="<?php echo U('log/index');?>"><span class="fa fa-pencil-square" style="display:inline"></span>&nbsp;&nbsp;工作日志</a></li>-->
-							<!--<li <?php if($module_name == 'examine'): ?>class="active"<?php endif; ?>><a href="<?php echo U('examine/index');?>"><span class="fa fa-check-square-o" style="display:inline"></span>&nbsp;&nbsp;审批</a></li>-->
-							<li <?php if($module_name == 'knowledge' && $action_name != 'category'): ?>class="active"<?php endif; ?>><a href="<?php echo U('knowledge/index');?>"><span class="fa fa-book" style="display:inline"></span>&nbsp;&nbsp;知识</a></li>
-							<li <?php if($module_name == 'announcement'): ?>class="active"<?php endif; ?>><a href="<?php echo U('announcement/index');?>"><span class="fa fa-volume-up" style="display:inline"></span>&nbsp;&nbsp;公告</a></li>
-							<!--<li <?php if($module_name == 'sign'): ?>class="active"<?php endif; ?>><a href="<?php echo U('sign/index');?>"><span class="fa fa-map-pin" style="display:inline"></span>&nbsp;&nbsp;定位签到</a></li>-->
-							<li <?php if($module_name == 'event'): ?>class="active"<?php endif; ?>><a href="<?php echo U('event/index');?>"><span class="fa fa-calendar" style="display:inline"></span>&nbsp;&nbsp;日程</a></li>
-							<li <?php if($module_name == 'task'): ?>class="active"<?php endif; ?>><a href="<?php echo U('task/index');?>"><span class="fa fa-tasks" style="display:inline"></span>&nbsp;&nbsp;任务</a></li>
-							<!--<li <?php if($module_name == 'kaoqin'): ?>class="active"<?php endif; ?>><a href="<?php echo U('kaoqin/index');?>"><span class="fa fa-hand-pointer-o" style="display:inline"></span>&nbsp;&nbsp;考勤月历</a></li>-->
-						<?php elseif(($module_name == 'setting' && ($action_name =='sendsms' || $action_name =='smsrecord' || $action_name =='sendemail'))|| $module_name == 'email' || $module_name == 'sms'): ?>
-							<li <?php if(($module_name == 'setting' && $action_name == 'sendsms')|| $module_name == 'sms'): ?>class="active"<?php endif; ?>><a href="<?php echo U('setting/sendsms');?>"><span class="fa fa-comments-o" style="display:inline"></span>&nbsp;&nbsp;<?php echo L('SEND_SMS');?></a></li>
-							<li <?php if($module_name == 'setting' && $action_name == 'smsrecord'): ?>class="active"<?php endif; ?>><a href="<?php echo U('setting/smsrecord');?>"><span class="fa fa-envelope" style="display:inline"></span>&nbsp;&nbsp;<?php echo L('SMS_RECORD');?></a></li>
-							<li <?php if(($module_name == 'setting' && $action_name == 'sendemail')|| $module_name == 'email'): ?>class="active"<?php endif; ?>><a href="<?php echo U('setting/sendemail');?>"><span class="fa fa-folder" style="display:inline"></span>&nbsp;&nbsp;<?php echo L('SEND_EMAIL');?></a></li>
-						<?php elseif(($module_name == 'user' && $action_name != 'contacts' && $action_name != 'view') || ($module_name == 'setting' && ($action_name !='sendsms' && $action_name !='smsrecord' && $action_name !='sendemail')) || $action_name == 'category' || ($module_name == 'accountsetting') || ($module_name == 'kaoqin' && $action_name == 'setting') ): ?>
-							<li <?php if($module_name == 'user' && $action_name == 'edit' && ($_GET['id'] == '' || $_GET['id'] == session('role_id'))): ?>class="active"<?php endif; ?>>
-								<a href="<?php echo U('user/edit');?>"><span class="fa fa-user" style="display:inline"></span>&nbsp;&nbsp;个人中心</a>
+					<li <?php if($module_name == 'finance'): ?>class="active"<?php endif; ?>><a href="<?php echo U('finance/index');?>"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;发票分配明细汇总</a></li>
+					<?php elseif($module_name == 'log' || $module_name =='examine' || ($module_name == 'knowledge' && $action_name != 'category') || $module_name == 'announcement' || $module_name == 'sign' || $module_name == 'event' || $module_name == 'task' || ($module_name == 'kaoqin' && $action_name == 'index') ): ?>
+					<!--<li <?php if($module_name == 'log'): ?>class="active"<?php endif; ?>><a href="<?php echo U('log/index');?>"><span class="fa fa-pencil-square" style="display:inline"></span>&nbsp;&nbsp;工作日志</a></li>-->
+					<!--<li <?php if($module_name == 'examine'): ?>class="active"<?php endif; ?>><a href="<?php echo U('examine/index');?>"><span class="fa fa-check-square-o" style="display:inline"></span>&nbsp;&nbsp;审批</a></li>-->
+					<li <?php if($module_name == 'knowledge' && $action_name != 'category'): ?>class="active"<?php endif; ?>><a href="<?php echo U('knowledge/index');?>"><span class="fa fa-book" style="display:inline"></span>&nbsp;&nbsp;知识</a></li>
+					<li <?php if($module_name == 'announcement'): ?>class="active"<?php endif; ?>><a href="<?php echo U('announcement/index');?>"><span class="fa fa-volume-up" style="display:inline"></span>&nbsp;&nbsp;公告</a></li>
+					<!--<li <?php if($module_name == 'sign'): ?>class="active"<?php endif; ?>><a href="<?php echo U('sign/index');?>"><span class="fa fa-map-pin" style="display:inline"></span>&nbsp;&nbsp;定位签到</a></li>-->
+					<li <?php if($module_name == 'event'): ?>class="active"<?php endif; ?>><a href="<?php echo U('event/index');?>"><span class="fa fa-calendar" style="display:inline"></span>&nbsp;&nbsp;日程</a></li>
+					<li <?php if($module_name == 'task'): ?>class="active"<?php endif; ?>><a href="<?php echo U('task/index');?>"><span class="fa fa-tasks" style="display:inline"></span>&nbsp;&nbsp;任务</a></li>
+					<!--<li <?php if($module_name == 'kaoqin'): ?>class="active"<?php endif; ?>><a href="<?php echo U('kaoqin/index');?>"><span class="fa fa-hand-pointer-o" style="display:inline"></span>&nbsp;&nbsp;考勤月历</a></li>-->
+					<?php elseif(($module_name == 'setting' && ($action_name =='sendsms' || $action_name =='smsrecord' || $action_name =='sendemail'))|| $module_name == 'email' || $module_name == 'sms'): ?>
+					<li <?php if(($module_name == 'setting' && $action_name == 'sendsms')|| $module_name == 'sms'): ?>class="active"<?php endif; ?>><a href="<?php echo U('setting/sendsms');?>"><span class="fa fa-comments-o" style="display:inline"></span>&nbsp;&nbsp;<?php echo L('SEND_SMS');?></a></li>
+					<li <?php if($module_name == 'setting' && $action_name == 'smsrecord'): ?>class="active"<?php endif; ?>><a href="<?php echo U('setting/smsrecord');?>"><span class="fa fa-envelope" style="display:inline"></span>&nbsp;&nbsp;<?php echo L('SMS_RECORD');?></a></li>
+					<li <?php if(($module_name == 'setting' && $action_name == 'sendemail')|| $module_name == 'email'): ?>class="active"<?php endif; ?>><a href="<?php echo U('setting/sendemail');?>"><span class="fa fa-folder" style="display:inline"></span>&nbsp;&nbsp;<?php echo L('SEND_EMAIL');?></a></li>
+					<?php elseif(($module_name == 'user' && $action_name != 'contacts' && $action_name != 'view') || ($module_name == 'setting' && ($action_name !='sendsms' && $action_name !='smsrecord' && $action_name !='sendemail')) || $action_name == 'category' || ($module_name == 'accountsetting') || ($module_name == 'kaoqin' && $action_name == 'setting') ): ?>
+					<li <?php if($module_name == 'user' && $action_name == 'edit' && ($_GET['id'] == '' || $_GET['id'] == session('role_id'))): ?>class="active"<?php endif; ?>>
+					<a href="<?php echo U('user/edit');?>"><span class="fa fa-user" style="display:inline"></span>&nbsp;&nbsp;个人中心</a>
+					</li>
+					<li <?php if($module_name == 'setting' || ($module_name == 'user' && $action_name != 'edit') || $action_name == 'category' || ($module_name == 'user' && $action_name == 'edit' && $_GET['id'] != session('role_id') && $_GET['id'] != '') || ($module_name == 'accountsetting') || ($module_name == 'kaoqin' && $action_name == 'setting')): ?>class="active"<?php endif; ?>><a href="<?php echo U('user/index');?>"><span class="fa fa-cog" style="display:inline"></span>&nbsp;&nbsp;系统设置</a></li>
+					<?php elseif($module_name == 'user' && ($action_name == 'contacts' || $action_name == 'view')): ?>
+					<li <?php if($module_name == 'user'): ?>class="active"<?php endif; ?>><a href="<?php echo U('user/contacts');?>"><span class="fa fa-phone-square" style="display:inline"></span>&nbsp;&nbsp;通讯录</a></li>
+					<?php elseif($module_name == 'message'): ?>
+					<li <?php if($module_name == 'message'): ?>class="active"<?php endif; ?>><a href="<?php echo U('message/index');?>"><span class="fa fa-bank" style="display:inline"></span>&nbsp;&nbsp;消息中心</a></li>
+					<?php endif; ?>
+				</ul>
+				<ul class="nav navbar-top-links navbar-right" style="margin-right:0px;">
+					<li class="dropdown" style="">
+						<a class="dropdown-toggle count-info" id="todo_url"  data-toggle="dropdown" href="#" title="待办事项">
+							<img src="__PUBLIC__/img/remain.png" alt="" /><div class="label label-info" style="background-color: #FA7252;" id="todo_num"></div>
+						</a>
+						<ul class="dropdown-menu dropdown-alerts folder-list m-b-md" style="width:250px;">
+							<?php $contract_examine_role_ids = M('ContractExamine')->getField('role_id',true); ?>
+							<?php if (checkPerByAction('contract','check') || in_array(session('role_id'),$contract_examine_role_ids)): ?>
+							<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('contract/index','contract_checked=1&by=all');?>"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;待审核的合同<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_check_contract_num"></span></a></li>
+							<?php endif; ?>
+							<?php if (checkPerByAction('finance','check')): ?>
+							<!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('finance/index','t=receivingorder&status[value]=0&by=all');?>"><i class="fa fa-money"></i>&nbsp;&nbsp;待审核的回款<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_receivables_num"></span></a></li>-->
+							<?php endif; ?>
+							<?php if (checkPerByAction('examine','index')): ?>
+							<!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('examine/index','by=me_examine&examining=1');?>"><i class="fa fa-check-square-o"></i>&nbsp;&nbsp;待处理的审批流<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_examine_num"></span></a></li>-->
+							<?php endif; ?>
+							<?php if (checkPerByAction('contract','index')): ?>
+							<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('contract/index','by=dqcontact');?>"><i class="fa fa-user"></i>&nbsp;&nbsp;合同到期提醒<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_dqcontact_num"></span></a></li>
+							<?php endif; ?>
+
+							<?php if (checkPerByAction('finance','index_receivables')): ?>
+							<!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('finance/index','t=receivables&r_status=1&by=me');?>"><i class="fa fa-money"></i>&nbsp;&nbsp;应收款提醒<span class="label label-info pull-right" style="background-color: #FA7252;" id="receivables_num"></span></a></li>-->
+							<?php endif; ?>
+							<?php if (checkPerByAction('customer','index')): ?>
+							<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('customer/index','by=todaycontact');?>"><i class="fa fa-user"></i>&nbsp;&nbsp;今日需跟进客户<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_follow_customer_num"></span></a></li>
+							<?php endif; ?>
+						</ul>
+					</li>
+					<li class="dropdown" style="">
+						<a class="dropdown-toggle count-info" id="event_url" data-toggle="dropdown" href="#" title="今日日程">
+							<img src="__PUBLIC__/img/event.png" alt="" /><span class="label label-warning" id="event_num"></span>
+						</a>
+						<ul class="dropdown-menu dropdown-alerts">
+							<li class="list-group" role="presentation" id="event_group" style="height:220px;display:none;">
+								<div class="full-height-scroll" id="event_list" data-height="220px" data-plugin="slimScroll" style="overflow: hidden; width: auto;">
+								</div>
 							</li>
-							<li <?php if($module_name == 'setting' || ($module_name == 'user' && $action_name != 'edit') || $action_name == 'category' || ($module_name == 'user' && $action_name == 'edit' && $_GET['id'] != session('role_id') && $_GET['id'] != '') || ($module_name == 'accountsetting') || ($module_name == 'kaoqin' && $action_name == 'setting')): ?>class="active"<?php endif; ?>><a href="<?php echo U('user/index');?>"><span class="fa fa-cog" style="display:inline"></span>&nbsp;&nbsp;系统设置</a></li>
-						<?php elseif($module_name == 'user' && ($action_name == 'contacts' || $action_name == 'view')): ?>
-							<li <?php if($module_name == 'user'): ?>class="active"<?php endif; ?>><a href="<?php echo U('user/contacts');?>"><span class="fa fa-phone-square" style="display:inline"></span>&nbsp;&nbsp;通讯录</a></li>
-						<?php elseif($module_name == 'message'): ?>
-							<li <?php if($module_name == 'message'): ?>class="active"<?php endif; ?>><a href="<?php echo U('message/index');?>"><span class="fa fa-bank" style="display:inline"></span>&nbsp;&nbsp;消息中心</a></li>
-						<?php endif; ?>
-					</ul>
-					<ul class="nav navbar-top-links navbar-right" style="margin-right:0px;">
-						<li class="dropdown" style="">
-		                    <a class="dropdown-toggle count-info" id="todo_url"  data-toggle="dropdown" href="#" title="待办事项">
-		                        <img src="__PUBLIC__/img/remain.png" alt="" /><div class="label label-info" style="background-color: #FA7252;" id="todo_num"></div>
-		                    </a>
-	                   		<ul class="dropdown-menu dropdown-alerts folder-list m-b-md" style="width:250px;">
-	                   			<?php $contract_examine_role_ids = M('ContractExamine')->getField('role_id',true); ?>
-	                   			<?php if (checkPerByAction('contract','check') || in_array(session('role_id'),$contract_examine_role_ids)): ?>
-			            			<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('contract/index','contract_checked=1&by=all');?>"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;待审核的合同<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_check_contract_num"></span></a></li>
-			            		<?php endif; ?>
-								<?php if (checkPerByAction('finance','check')): ?>
-			            			<!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('finance/index','t=receivingorder&status[value]=0&by=all');?>"><i class="fa fa-money"></i>&nbsp;&nbsp;待审核的回款<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_receivables_num"></span></a></li>-->
-			            		<?php endif; ?>
-								<?php if (checkPerByAction('examine','index')): ?>
-			            			<!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('examine/index','by=me_examine&examining=1');?>"><i class="fa fa-check-square-o"></i>&nbsp;&nbsp;待处理的审批流<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_examine_num"></span></a></li>-->
-								<?php endif; ?>
-								<?php if (checkPerByAction('contract','index')): ?>
-									<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('contract/index','by=dqcontact');?>"><i class="fa fa-user"></i>&nbsp;&nbsp;合同到期提醒<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_dqcontact_num"></span></a></li>
-								<?php endif; ?>
-
-								<?php if (checkPerByAction('finance','index_receivables')): ?>
-			            			<!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('finance/index','t=receivables&r_status=1&by=me');?>"><i class="fa fa-money"></i>&nbsp;&nbsp;应收款提醒<span class="label label-info pull-right" style="background-color: #FA7252;" id="receivables_num"></span></a></li>-->
-			            		<?php endif; ?>
-			            		<?php if (checkPerByAction('customer','index')): ?>
-			            			<li style="border-bottom:1px dashed #e7eaec !important;"><a href="<?php echo U('customer/index','by=todaycontact');?>"><i class="fa fa-user"></i>&nbsp;&nbsp;今日需跟进客户<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_follow_customer_num"></span></a></li>
-			            		<?php endif; ?>
-	                   		</ul>
-		                </li>
-		                <li class="dropdown" style="">
-		                    <a class="dropdown-toggle count-info" id="event_url" data-toggle="dropdown" href="#" title="今日日程">
-		                        <img src="__PUBLIC__/img/event.png" alt="" /><span class="label label-warning" id="event_num"></span>
-		                    </a>
-	                   		<ul class="dropdown-menu dropdown-alerts">
-			            		<li class="list-group" role="presentation" id="event_group" style="height:220px;display:none;">
-	                        		<div class="full-height-scroll" id="event_list" data-height="220px" data-plugin="slimScroll" style="overflow: hidden; width: auto;">
-                                    </div>
-                        		</li>
-                        		<li>
-			                        <div class="text-center link-block">
-			                            <a href="<?php echo U('event/index');?>">
-			                                <strong>查看全部日程</strong>
-			                                <i class="fa fa-angle-right"></i>
-			                            </a>
-			                        </div>
-			                    </li>
-			            		<li class="divider" style="height:0px;"></li>
-	                   		</ul>
-		                </li>
-		                <li class="dropdown">
-		                    <a class="dropdown-toggle count-info" id="message_url" data-toggle="dropdown" href="#" title="站内信">
-		                        <img src="__PUBLIC__/img/bell.png" alt="" /><span class="label label-primary" id="message_num"></span>
-		                    </a>
-	                    	<ul class="dropdown-menu dropdown-alerts" style="width:365px;">
-	                    		<li class="list-group" role="presentation" id="message_group" style="height:220px;display:none;">
-	                        		<div class="full-height-scroll" id="message_list" data-height="220px" data-plugin="slimScroll" style="overflow: hidden; width: auto;">
-	                        		</div>
-	                        	</li>
-	                    		<li>
-			                        <div class="text-center link-block">
-			                            <a href="<?php echo U('message/index');?>">
-			                                <strong>站内信列表</strong>
-			                                <i class="fa fa-angle-right"></i>
-			                            </a>
-			                        </div>
-			                    </li>
-			                    <li class="divider" style="height:0px;"></li>
-	                    	</ul>
-		                </li>
-		                <li style="padding-left: 30px;">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding: 2px;">
-								<?php
+							<li>
+								<div class="text-center link-block">
+									<a href="<?php echo U('event/index');?>">
+										<strong>查看全部日程</strong>
+										<i class="fa fa-angle-right"></i>
+									</a>
+								</div>
+							</li>
+							<li class="divider" style="height:0px;"></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle count-info" id="message_url" data-toggle="dropdown" href="#" title="站内信">
+							<img src="__PUBLIC__/img/bell.png" alt="" /><span class="label label-primary" id="message_num"></span>
+						</a>
+						<ul class="dropdown-menu dropdown-alerts" style="width:365px;">
+							<li class="list-group" role="presentation" id="message_group" style="height:220px;display:none;">
+								<div class="full-height-scroll" id="message_list" data-height="220px" data-plugin="slimScroll" style="overflow: hidden; width: auto;">
+								</div>
+							</li>
+							<li>
+								<div class="text-center link-block">
+									<a href="<?php echo U('message/index');?>">
+										<strong>站内信列表</strong>
+										<i class="fa fa-angle-right"></i>
+									</a>
+								</div>
+							</li>
+							<li class="divider" style="height:0px;"></li>
+						</ul>
+					</li>
+					<li style="padding-left: 30px;">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding: 2px;">
+							<?php
  $img = M('User')->where('user_id = %d', session('user_id'))->getField('thumb_path'); ?>
-								<?php if($img != ''): ?><img alt="头像" style="height:38px;width:38px" class="img-circle" src="<?php echo ($img); ?>" />
+							<?php if($img != ''): ?><img alt="头像" style="height:38px;width:38px" class="img-circle" src="<?php echo ($img); ?>" />
 								<?php else: ?>
-									<img alt="头像" style="height:38px;width:38px" class="img-circle" src="__PUBLIC__/img/avatar_default.png" /><?php endif; ?>
-							</a>
-							<ul class="dropdown-menu">
-								<li><a href="<?php echo U('user/edit');?>">个人资料</a></li>
-                                <li><a href="<?php echo U('setting/lockscreen');?>">一键锁屏</a></li>
-								<li class="divider"></li>
-								<li><a class="logout" href="javascript:void(0);"><?php echo L('EXIT');?></a></li>
-							</ul>
-						</li>
-		            </ul>
-				</nav>
-    		</div>
-			<div class="modal inmodal" id="Profile" tabindex="-1" role="dialog" aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content animated bounceInRight">
+								<img alt="头像" style="height:38px;width:38px" class="img-circle" src="__PUBLIC__/img/avatar_default.png" /><?php endif; ?>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="<?php echo U('user/edit');?>">个人资料</a></li>
+							<li><a href="<?php echo U('setting/lockscreen');?>">一键锁屏</a></li>
+							<li class="divider"></li>
+							<li><a class="logout" href="javascript:void(0);"><?php echo L('EXIT');?></a></li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		<div class="modal inmodal" id="Profile" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content animated bounceInRight">
 
-					</div>
 				</div>
 			</div>
-			<!-- 模态框 -->
-			<div class="modal inmodal fade" id="Modal_login" tabindex="-1"  style=" overflow:auto; border:1px solid #000000;" role="dialog" >
-			    <div class="modal-dialog modal-md" style="width:700px;">
-			        <div class="modal-content" id="login_modal">
+		</div>
+		<!-- 模态框 -->
+		<div class="modal inmodal fade" id="Modal_login" tabindex="-1"  style=" overflow:auto; border:1px solid #000000;" role="dialog" >
+			<div class="modal-dialog modal-md" style="width:700px;">
+				<div class="modal-content" id="login_modal">
 
-			        </div>
-			    </div>
+				</div>
 			</div>
+		</div>
 
 
-<script type="text/javascript">
+		<script type="text/javascript">
 
-$(document).on('click','#authorize',function(){
-	$('#Modal_anthorize').modal('show');
-});
+            $(document).on('click','#authorize',function(){
+                $('#Modal_anthorize').modal('show');
+            });
 
-$('[data-toggle="tooltip"]').tooltip({html:true});
-/*时间插件*/
-$('.date').datepicker({
-  format: "yyyy-mm-dd",
-  todayBtn: "linked",
-  keyboardNavigation: false,
-  forceParse: false,
-  calendarWeeks: true,
-  autoclose: true
-});
-$("#dialog-message-send").dialog({
-    autoOpen: false,
-    modal: true,
-	width: 800,
-	maxHeight: 600,
-	position: ["center",100]
-});
+            $('[data-toggle="tooltip"]').tooltip({html:true});
+			/*时间插件*/
+            $('.date').datepicker({
+                format: "yyyy-mm-dd",
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+            $("#dialog-message-send").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 800,
+                maxHeight: 600,
+                position: ["center",100]
+            });
 
-$(function(){
-	/*站内信*/
-	message_tips();
-	login_tips();
-	$("#header_send_message").click(function(){
-		$('#dialog-message-send').dialog('open');
-		$('#dialog-message-send').load('<?php echo U("message/send");?>');
-	});
-	/*让复选框默认取消选择*/
-	//$(':checkbox').prop('checked', false);
+            $(function(){
+				/*站内信*/
+                message_tips();
+                login_tips();
+                $("#header_send_message").click(function(){
+                    $('#dialog-message-send').dialog('open');
+                    $('#dialog-message-send').load('<?php echo U("message/send");?>');
+                });
+				/*让复选框默认取消选择*/
+                //$(':checkbox').prop('checked', false);
 
-	/*记录菜单隐藏状态*/
-	$(".navbar-minimalize").click(function(){
-		var arr,reg = new RegExp("(^| )mini-navbar=([^;]*)(;|$)");
-		arr = document.cookie.match(reg);
-		if(arr){
-			var nav_status = unescape(arr[2]) == 1 ? 0:1;
-		}else{
-			var nav_status = 1;
-		}
-		document.cookie = "mini-navbar="+nav_status;
-	});
-});
+				/*记录菜单隐藏状态*/
+                $(".navbar-minimalize").click(function(){
+                    var arr,reg = new RegExp("(^| )mini-navbar=([^;]*)(;|$)");
+                    arr = document.cookie.match(reg);
+                    if(arr){
+                        var nav_status = unescape(arr[2]) == 1 ? 0:1;
+                    }else{
+                        var nav_status = 1;
+                    }
+                    document.cookie = "mini-navbar="+nav_status;
+                });
+            });
 
-function salert(){
-	var txt = "<?php if(is_array($alert["content"])): foreach($alert["content"] as $k=>$v): if(is_array($v)): foreach($v as $kk=>$vv): echo ($vv); endforeach; endif; endforeach; endif; ?>";
-	if(txt != ''){
-		swal(txt, "", "<?php echo ($alert['type'][0]); ?>")
-	}
-}
+            function salert(){
+                var txt = "<?php if(is_array($alert["content"])): foreach($alert["content"] as $k=>$v): if(is_array($v)): foreach($v as $kk=>$vv): echo ($vv); endforeach; endif; endforeach; endif; ?>";
+                if(txt != ''){
+                    swal(txt, "", "<?php echo ($alert['type'][0]); ?>")
+                }
+            }
 
-/*退出提示*/
-$('.logout').click(function () {
-	swal({
-		title: "确定退出登录?",
-		type: "warning",
-		showCancelButton: true,
-		confirmButtonColor: "#DD6B55",
-		confirmButtonText: "确定",
-		cancelButtonText: "取消",
-		closeOnConfirm: false
-        },
-		function (isConfirm) {
-			if (isConfirm) {
-				window.location="<?php echo U('user/logout');?>";
-			}
-		}
-	);
-});
+			/*退出提示*/
+            $('.logout').click(function () {
+                swal({
+                        title: "确定退出登录?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "确定",
+                        cancelButtonText: "取消",
+                        closeOnConfirm: false
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            window.location="<?php echo U('user/logout');?>";
+                        }
+                    }
+                );
+            });
 
-/*提交失败返回前一页*/
-var href = "<?php echo ($error); ?>";
-if(href != '' && href != null){
-	swal({
-		title: "添加失败!",type: "error",
-		confirmButtonColor: "#DD6B55",
-		confirmButtonText: "返回",
-		closeOnConfirm: false
-	},
-	function(){
-		location.href = 'javascript:history.back(-1)';
-	});
-}
-var login_show = 0;
-function login_tips(){
-	$.get("<?php echo U('message/logintips');?>", function(data){
-		var is_login = data.data['is_login'];
-        if(is_login == 0 && login_show != 1){
-        	 $.ajax({
-		        type: "GET",
-		        url: "<?php echo U('user/loginajax');?>",
-		        async: true,
-		        success: function(data) {
-		            if(data.status != 2){
-		                $("#login_modal").parent().removeClass("modal-lg").addClass("modal-md");
-			            $url = "<?php echo U('user/loginajax');?>";
-			            $('#Modal_login').modal('show');
-			            login_show = 1;
-			            $('#login_modal').load($url);
-		            }else{
-		            	 login_show = 1;
-		            }
-		        }
-		    });
-        }
-	},'json')
-	setTimeout('login_tips()',20000);
-}
+			/*提交失败返回前一页*/
+            var href = "<?php echo ($error); ?>";
+            if(href != '' && href != null){
+                swal({
+                        title: "添加失败!",type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "返回",
+                        closeOnConfirm: false
+                    },
+                    function(){
+                        location.href = 'javascript:history.back(-1)';
+                    });
+            }
+            var login_show = 0;
+            function login_tips(){
+                $.get("<?php echo U('message/logintips');?>", function(data){
+                    var is_login = data.data['is_login'];
+                    if(is_login == 0 && login_show != 1){
+                        $.ajax({
+                            type: "GET",
+                            url: "<?php echo U('user/loginajax');?>",
+                            async: true,
+                            success: function(data) {
+                                if(data.status != 2){
+                                    $("#login_modal").parent().removeClass("modal-lg").addClass("modal-md");
+                                    $url = "<?php echo U('user/loginajax');?>";
+                                    $('#Modal_login').modal('show');
+                                    login_show = 1;
+                                    $('#login_modal').load($url);
+                                }else{
+                                    login_show = 1;
+                                }
+                            }
+                        });
+                    }
+                },'json')
+                setTimeout('login_tips()',20000);
+            }
 
-/*轮询*/
-var mark_count = 1;//标记第一次弹出
-/*初始默认值*/
-var msg_num = '0,0';
+			/*轮询*/
+            var mark_count = 1;//标记第一次弹出
+			/*初始默认值*/
+            var msg_num = '0,0';
 
-function message_tips(){
-	$.get("<?php echo U('message/tips');?>", function(data){
-        var is_lock = data.data['is_lock'];
-        if(is_lock == 1){
-            location.href = "<?php echo U('setting/lockscreen');?>";
-        }
-		//卡片提醒显示与隐藏
-		var message_html = '';
-		var new_num = data.data['message']+','+data.data['contract_count'];
+            function message_tips(){
+                $.get("<?php echo U('message/tips');?>", function(data){
+                    var is_lock = data.data['is_lock'];
+                    if(is_lock == 1){
+                        location.href = "<?php echo U('setting/lockscreen');?>";
+                    }
+                    //卡片提醒显示与隐藏
+                    var message_html = '';
+                    var new_num = data.data['message']+','+data.data['contract_count'];
 
-		//待办事项
-		$('#header_check_contract_num').html(data.data['check_contract_num']);
-		$('#header_dqcontact_num').html(data.data['contract_num']);
-		$('#header_examine_num').html(data.data['examine_num']);
-		$('#header_receivables_num').html(data.data['receivingorder_num']);
-		$('#receivables_num').html(data.data['receivables_num']);
-		$('#header_follow_customer_num').html(data.data['today_customer']);
-		if (data.data['todo_num']) {
-			$('#todo_num').html(data.data['todo_num']);
-		} else {
-			$('#todo_num').html('');
-		}
+                    //待办事项
+                    $('#header_check_contract_num').html(data.data['check_contract_num']);
+                    $('#header_dqcontact_num').html(data.data['contract_num']);
+                    $('#header_examine_num').html(data.data['examine_num']);
+                    $('#header_receivables_num').html(data.data['receivingorder_num']);
+                    $('#receivables_num').html(data.data['receivables_num']);
+                    $('#header_follow_customer_num').html(data.data['today_customer']);
+                    if (data.data['todo_num']) {
+                        $('#todo_num').html(data.data['todo_num']);
+                    } else {
+                        $('#todo_num').html('');
+                    }
 
-		//导航提醒实时写入数值
-		if(data.data['message'] != 0 && data.data['message'] != ''){
-			$('#message_group').show();
-			//桌面提醒
-			if(data.data['data_list']){
-				$(data.data['data_list']).each(function(k, v){
-					if (data.data['data_list_count'] < 3) {
-						animateMessage(v.role_info.thumb_path, v.role_info.full_name, v.content_msubstr);
-					}
-				    aaa(v.role_info.thumb_path, v.role_info.full_name, v.content, v.url_link);
-				});
-			}
-			$('#message_num').html(data.data['message']);
-			$('#message_list').html('');
-			if(data.data['message_num'] != 0 && data.data['message_num'] != ''){
-				message_html += '<a href="<?php echo U('message/index');?>" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
+                    //导航提醒实时写入数值
+                    if(data.data['message'] != 0 && data.data['message'] != ''){
+                        $('#message_group').show();
+                        //桌面提醒
+                        if(data.data['data_list']){
+                            $(data.data['data_list']).each(function(k, v){
+                                if (data.data['data_list_count'] < 3) {
+                                    animateMessage(v.role_info.thumb_path, v.role_info.full_name, v.content_msubstr);
+                                }
+                                aaa(v.role_info.thumb_path, v.role_info.full_name, v.content, v.url_link);
+                            });
+                        }
+                        $('#message_num').html(data.data['message']);
+                        $('#message_list').html('');
+                        if(data.data['message_num'] != 0 && data.data['message_num'] != ''){
+                            message_html += '<a href="<?php echo U('message/index');?>" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
 		                    <div style="padding:0 10px;">\
 		                        <img src="__PUBLIC__/img/Messenger.png" title="小助手"> 您有<strong>'+data.data['message_num']+'</strong>条消息待查看\
 		                        <span class="pull-right text-muted small" style="line-height:30px;">'+data.data['message_time']+'前</span>\
 		                    </div>\
 		                </a>';
-			}
+                        }
 
-			if(data.data['message_announcement_count'] != 0 && data.data['message_announcement_count'] != ''){
-				message_html += '<a href="<?php echo U('message/index','by=announcement');?>" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
+                        if(data.data['message_announcement_count'] != 0 && data.data['message_announcement_count'] != ''){
+                            message_html += '<a href="<?php echo U('message/index','by=announcement');?>" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
 		                    <div style="padding:0 10px;">\
 		                        <img src="__PUBLIC__/img/System.png" title="系统公告"> 您有<strong>'+data.data['message_announcement_count']+'</strong>条公告信息待查看\
 		                        <span class="pull-right text-muted small" style="line-height:30px;">'+data.data['announcement_time']+'前</span>\
 		                    </div>\
 		                </a>';
-			}
-			if(data.data['role_message_list']){
-				$(data.data['role_message_list']).each(function(k, v){
-				    message_html += '<a href="<?php echo U('message/message_view','to_role_id=');?>'+v.role_id+'" title="点击回复" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;" >\
+                        }
+                        if(data.data['role_message_list']){
+                            $(data.data['role_message_list']).each(function(k, v){
+                                message_html += '<a href="<?php echo U('message/message_view','to_role_id=');?>'+v.role_id+'" title="点击回复" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;" >\
 	                            <div class="dropdown-messages-box" style="padding:0 10px;">\
 	                                <div class="pull-left">\
 	                                    <img alt="image" class="img-circle" src="'+v.thumb_path+'">&nbsp;\
@@ -575,88 +585,88 @@ function message_tips(){
 	                                </div>\
 	                            </div>\
 	                        </a>';
-				});
-			}
-			$('#message_list').append(message_html);
-		}else{
-			$('#message_group').hide();
-		}
-		//日程提醒
-		var event_temp = '';
-		if(data.data['event_list'] != 0 && data.data['event_list'] != ''){
-			$('#event_group').show();
-			$('#event_list').html('');
-			$('#event_num').html(data.data['event_num']);
-			$.each(data.data['event_list'], function(k, v){
-				event_temp += '<a href="<?php echo U('event/index');?>" title="点击查看" style="padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;width:100%;">\
+                            });
+                        }
+                        $('#message_list').append(message_html);
+                    }else{
+                        $('#message_group').hide();
+                    }
+                    //日程提醒
+                    var event_temp = '';
+                    if(data.data['event_list'] != 0 && data.data['event_list'] != ''){
+                        $('#event_group').show();
+                        $('#event_list').html('');
+                        $('#event_num').html(data.data['event_num']);
+                        $.each(data.data['event_list'], function(k, v){
+                            event_temp += '<a href="<?php echo U('event/index');?>" title="点击查看" style="padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;width:100%;">\
 	                                <div style="overflow:hidden;padding:0 10px;">\
 	                                	<span class="pull-left" style="color:'+v.color+';line-height:26px;"><i class="fa fa-circle"></i>&nbsp;&nbsp;'+v.subject+'</span><br>\
 	                                    <small class="text-muted pull-right" style="margin-top: 5px;">'+v.between_date+'</small>\
 	                                </div>\
 	                            </a>';
-			});
-			$('#event_list').append(event_temp);
-		}else{
-			$('#event_group').hide();
-		}
-	},'json')
-	setTimeout('message_tips()',30000);
-}
+                        });
+                        $('#event_list').append(event_temp);
+                    }else{
+                        $('#event_group').hide();
+                    }
+                },'json')
+                setTimeout('message_tips()',30000);
+            }
 
-/*head 特效*/
-$('.nav-head .navbar-left li').mouseover(function(){
-	$(this).find('a span').css("color", '#ffb173');
-});
+			/*head 特效*/
+            $('.nav-head .navbar-left li').mouseover(function(){
+                $(this).find('a span').css("color", '#ffb173');
+            });
 
-$('.nav-head .navbar-left li').mouseout(function(){
-	$(this).find('a span').css("color", '#e6e9f2');
-});
-</script>
+            $('.nav-head .navbar-left li').mouseout(function(){
+                $(this).find('a span').css("color", '#e6e9f2');
+            });
+		</script>
 
-<script type="text/javascript">
-function aaa(icon, name, content, url_link){
-    var t = new Date().toLocaleString();
-    var options={
-        dir: "ltr",
-        lang: "utf-8",
-        icon: icon,
-        body: content
-    };
-    if(Notification && Notification.permission === "granted"){
-        var n = new Notification(name + t, options);
-        //5秒后自动关闭
-        n.onshow = function(){
-            setTimeout(function () {
-	            n.close();
-	        }, 5000)
-        };
-        n.onclick = function() {
-            // alert("You clicked me!");
-            window.location = url_link;
-            n.close();
-        };
-        n.onclose = function(){
-            console.log("notification closed!");
-        };
-        n.onerror = function() {
-            console.log("An error accured");
-        }
-    }
-}
+		<script type="text/javascript">
+            function aaa(icon, name, content, url_link){
+                var t = new Date().toLocaleString();
+                var options={
+                    dir: "ltr",
+                    lang: "utf-8",
+                    icon: icon,
+                    body: content
+                };
+                if(Notification && Notification.permission === "granted"){
+                    var n = new Notification(name + t, options);
+                    //5秒后自动关闭
+                    n.onshow = function(){
+                        setTimeout(function () {
+                            n.close();
+                        }, 5000)
+                    };
+                    n.onclick = function() {
+                        // alert("You clicked me!");
+                        window.location = url_link;
+                        n.close();
+                    };
+                    n.onclose = function(){
+                        console.log("notification closed!");
+                    };
+                    n.onerror = function() {
+                        console.log("An error accured");
+                    }
+                }
+            }
 
-function mouseoveriframe(width,zindex,url) {
-    $("#if"+zindex).remove();
-    var height=$(window).height()-70;
-    var iframebox="<iframe id='if"+zindex+"' src='"+url+"'  scrolling='yes' width='"+width+"' height='"+height+"' style='position: fixed;box-shadow: -5px -5px 10px #bbb;border: 2px solid #eee;z-index: "+zindex+";right: -"+width+"px;top: 70px;'></iframe>";
+            function mouseoveriframe(width,zindex,url) {
+                $("#if"+zindex).remove();
+                var height=$(window).height()-70;
+                var iframebox="<iframe id='if"+zindex+"' src='"+url+"'  scrolling='yes' width='"+width+"' height='"+height+"' style='position: fixed;box-shadow: -5px -5px 10px #bbb;border: 2px solid #eee;z-index: "+zindex+";right: -"+width+"px;top: 70px;'></iframe>";
 //    var button='<button class="btn btn-xs btn-primary" type="button" style="">关闭</button>';
 
-    $('body').append(iframebox);
+                $('body').append(iframebox);
 //    $("#title-show").append(button);
 
-    setTimeout(function () {
-        $("#if"+zindex).animate({right:"10px"})
-    },1000)
-}
+                setTimeout(function () {
+                    $("#if"+zindex).animate({right:"10px"})
+                },1000)
+            }
 
 
 
@@ -664,7 +674,7 @@ function mouseoveriframe(width,zindex,url) {
 
 
 
-</script>
+		</script>
 
 <link href="__PUBLIC__/css/litebox.css" rel="stylesheet" type="text/css">
 <script src="__PUBLIC__/js/PCASClass.js" type="text/javascript"></script>
