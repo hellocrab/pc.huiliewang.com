@@ -261,38 +261,36 @@
         ]
     },
     {
-        "name": "swiftmailer/swiftmailer",
-        "version": "v5.4.12",
-        "version_normalized": "5.4.12.0",
+        "name": "qiniu/php-sdk",
+        "version": "v7.2.7",
+        "version_normalized": "7.2.7.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/swiftmailer/swiftmailer.git",
-            "reference": "181b89f18a90f8925ef805f950d47a7190e9b950"
+            "url": "https://github.com/qiniu/php-sdk.git",
+            "reference": "88d11a5857ebc6871204e9be6ceec54bf5f381e6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/181b89f18a90f8925ef805f950d47a7190e9b950",
-            "reference": "181b89f18a90f8925ef805f950d47a7190e9b950",
+            "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/88d11a5857ebc6871204e9be6ceec54bf5f381e6",
+            "reference": "88d11a5857ebc6871204e9be6ceec54bf5f381e6",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
         "require-dev": {
-            "mockery/mockery": "~0.9.1",
-            "symfony/phpunit-bridge": "~3.2"
+            "phpunit/phpunit": "~4.0",
+            "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2018-07-31T09:26:32+00:00",
+        "time": "2018-11-06T13:34:32+00:00",
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.4-dev"
-            }
-        },
         "installation-source": "dist",
         "autoload": {
+            "psr-4": {
+                "Qiniu\\": "src/Qiniu"
+            },
             "files": [
-                "lib/swift_required.php"
+                "src/Qiniu/functions.php"
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -301,71 +299,18 @@
         ],
         "authors": [
             {
-                "name": "Chris Corbyn"
-            },
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
+                "name": "Qiniu",
+                "email": "sdk@qiniu.com",
+                "homepage": "http://www.qiniu.com"
             }
         ],
-        "description": "Swiftmailer, free feature-rich PHP mailer",
-        "homepage": "https://swiftmailer.symfony.com",
+        "description": "Qiniu Resource (Cloud) Storage SDK for PHP",
+        "homepage": "http://developer.qiniu.com/",
         "keywords": [
-            "email",
-            "mail",
-            "mailer"
-        ]
-    },
-    {
-        "name": "yuan1994/tp-mailer",
-        "version": "v0.2.4",
-        "version_normalized": "0.2.4.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/yuan1994/tp-mailer.git",
-            "reference": "7fe9b64d69be67a325a2708368b99edf44d17981"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/yuan1994/tp-mailer/zipball/7fe9b64d69be67a325a2708368b99edf44d17981",
-            "reference": "7fe9b64d69be67a325a2708368b99edf44d17981",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4.0",
-            "swiftmailer/swiftmailer": "^5.4"
-        },
-        "time": "2016-12-10T11:54:45+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "mailer\\": "src/mailer"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache 2.0"
-        ],
-        "authors": [
-            {
-                "name": "yuan1994",
-                "email": "tianpian0805@gmail.com",
-                "homepage": "https://github.com/yuan1994/tp-mailer/",
-                "role": "Owner"
-            }
-        ],
-        "description": "A powerful and beautiful php mailer for All of ThinkPHP and Other PHP Frameworks based SwiftMailer",
-        "homepage": "https://github.com/yuan1994/tp-mailer/",
-        "keywords": [
-            "mail",
-            "mailer",
-            "phpmailer",
-            "swiftmailer",
-            "thinkphp",
-            "tp",
-            "tp-mailer",
-            "tp5-mailer"
+            "cloud",
+            "qiniu",
+            "sdk",
+            "storage"
         ]
     },
     {
