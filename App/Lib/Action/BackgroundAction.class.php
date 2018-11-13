@@ -369,8 +369,16 @@ class BackgroundAction extends Action
                 }
                 foreach ($msg as $k => $v){
                     foreach ($v as $key => $val){
-                        $val[] = $sId[$k]['Id'];
-                        $msgData[] = $val;
+                        $msgCheckNull = 0;
+                        foreach ($val as $keys =>$vals){
+                            if($vals==null){
+                                $msgCheckNull++;
+                            }
+                        }
+                        if($msgCheckNull==0){
+                            $val[] = $sId[$k]['Id'];
+                            $msgData[] = $val;
+                        }
                     }
                 }
                 $backGroundMSgName= array('company_name','enter_time','out_time','position','witness','witness_add','tel','adress','work_performance','bz','reasons','health','salary','date','s_id');
@@ -388,25 +396,48 @@ class BackgroundAction extends Action
                 }else{
                     $backGroundMsg->commit();
                 }
-
                 //更新background表 msg_id 字段
                 foreach ($sId as $k => $v){
                     $sId[$k] = $v['Id'];
                 }
                 $map['s_id'] = array('in',$sId);
                 $msgId = $backGroundMsg->where($map)->field('Id,s_id')->select();
-                for($i = 0;$i<(count($msgId)/2);$i++){
+                /*for($i = 0;$i<(count($msgId)/2);$i++){
                     $idList1["msg_id"] = $msgId[$i*2]['Id'];
                     $idList2["msg_id"] = $msgId[$i*2+1]['Id'];
                     $msgIdData[$i] =array($idList1,$idList2);
-                }
-                foreach ($msgIdData as $k => $v){
-                    $msgIdData[$k] = json_encode($v);
+                }*/
+                dump($msgId);
+                foreach ($msgId as $k =>$v){
+                    foreach ($msgId as $key => $val){
+                        if($v['s_id']==$val['s_id']&&$v['Id ']!=$val['Id']){
+                            unset($msgId[$key]);
+                            $msgId1['msg_id']=$v['Id'];
+                            $msgId2['msg_id']=$val['Id'];
+                            if($msgId1!=$msgId2){
+                                $msgIdData[$val['s_id']] = json_encode(array($msgId1,$msgId2));
+                            }else{
+                                $msgIdData[$val['s_id']] = json_encode($msgId1);
+                            }
+                        }
+                    }
                 }
                 //以下代码待修改
                 $backGround->startTrans();
-                foreach ($sId as $k => $v){
+                /*foreach ($sId as $k => $v){
                     $where['Id'] = $v;
+                    $map['msg_id'] = $msgIdData[$k];
+                    $result3 = $backGround->where($where)->setField($map);
+                    if($result3){
+                        $backGround->commit();
+                    }
+                    else{
+                        $backGround->rollback();
+                    }
+                }*/
+                foreach ($msgIdData as $k=>$v){
+                    $where['Id'] = $k;
+                    unset($map);
                     $map['msg_id'] = $msgIdData[$k];
                     $result3 = $backGround->where($where)->setField($map);
                     if($result3){
