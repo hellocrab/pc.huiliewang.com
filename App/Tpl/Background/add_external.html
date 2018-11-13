@@ -749,10 +749,16 @@
                    contentType :false, // 不设置Content-type请求头
                    success:function (msg) {
                         if(msg=="true"){
-                            alert_crm("添加成功");
-                            setTimeout(function () {
-                                window.location = "/index.php?m=background&a=index_external";
-                            },1000);
+                            swal({
+                                title:'保存成功',
+                                text:'点击确定返回上一页',
+                                type:"success",
+                                confirmButtonText: "确定"
+                            },function (isConfirm) {
+                                if(isConfirm){
+                                    window.location.href="/index.php?m=background&a=index_external";
+                                }
+                            });
                         }
                    },
                    error:{

@@ -358,14 +358,6 @@
                }
            }
         });
-        function checkTextInput(text,type) {
-            switch (type){
-                case 'name':
-                        const name =  /[A-Za-z0-9_\-\u4e00-\u9fa5]+/;
-                        return name.test(text);
-                    break;
-            }
-        }
         $('#bgsave').off().on("click",function(){
             var goon = 0;
             $(document).find("span").each(function () {
@@ -417,10 +409,16 @@
                         data:data,
                         success:function (success) {
                             if(success.status){
-                                alert_crm("提交成功！");
-                                setTimeout(function () {
-                                    window.location.href="/index.php?m=background&a=index";
-                                },1000)
+                                swal({
+                                    title:'保存成功',
+                                    text:'点击确定返回上一页',
+                                    type:"success",
+                                    confirmButtonText: "确定"
+                                },function (isConfirm) {
+                                    if(isConfirm){
+                                        window.location.href="/index.php?m=background&a=index";
+                                    }
+                                });
                             }
                         },
                         error:function (error) {

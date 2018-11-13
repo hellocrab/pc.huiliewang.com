@@ -308,6 +308,7 @@
                                                     msgdetail.find('.name').text(data['bg']['name']);
                                                     msgdetail.find('.industry').text(data['bg']['industry']);
                                                     msgdetail.find('.jobs').text(data['bg']['jobs']);
+                                                    msgdetail.find('.delete').attr('data-id',data['bg']['Id']);
                                                     //msgdetail.find('.photo').children().eq(0).attr("src",data['bg']['id_pic_src']);
                                                     var body  = $('.bodyshow');
                                                     //基本信息
@@ -481,8 +482,20 @@
                                                         data:{Id:ids},
                                                         success: function (data) {
                                                             if (data.status == 1) {
-                                                                swal("删除成功！", "您已经永久删除了信息！", "success");
-                                                                location.reload();
+                                                                    swal({
+                                                                        title:"删除成功",
+                                                                        text:"您已经永久删除了信息",
+                                                                        type:"success",
+                                                                        confirmButtonText: "确定"
+                                                                    },
+                                                                /*"删除成功！", "您已经永久删除了信息！", "success"*/
+                                                                    function (isConfirm) {
+                                                                        if(isConfirm){
+                                                                            location.reload();
+                                                                            console.log(12);
+                                                                        }
+                                                                    }
+                                                                );
                                                             } else {
                                                                 swal({
                                                                     title: "操作失败！",
@@ -534,8 +547,16 @@
                                                     async: false,
                                                     success: function (data) {
                                                         if (data.status == 1) {
-                                                            swal("删除成功！", "您已经永久删除了信息！", "success");
-                                                            location.reload();
+                                                            swal({
+                                                                title:'删除成功',
+                                                                text:'您已经永久删除该条信息！',
+                                                                type:"success",
+                                                                confirmButtonText: "确定"
+                                                            },function (isConfirm) {
+                                                                if(isConfirm){
+                                                                    location.reload();
+                                                                }
+                                                            });
                                                         } else {
                                                             swal({
                                                                 title: "操作失败！",
