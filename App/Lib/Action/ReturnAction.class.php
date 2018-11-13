@@ -14,7 +14,7 @@ class ReturnAction extends Action
 
     public function index(){
         $this->timeSearch();
-        //$this->assign('daterange',$this->timePlug()); bug.huiliewang.com
+        //$this->assign('daterange',$this->timePlug());
         $d_contract = D('ContractView');
         $by = isset($_GET['by']) ? trim($_GET['by']) : 'me';
         $this->by = $by;

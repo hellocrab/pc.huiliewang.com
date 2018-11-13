@@ -41,7 +41,7 @@ class BackgroundAction extends Action
                 break;
             default:
                 $count = $backGround->order('s_name')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('s_name')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
+                $data = $backGround->order('Id')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
                 break;
         }
         if($search&&$type){
@@ -51,7 +51,9 @@ class BackgroundAction extends Action
                     $map['s_name'] = array('like','%'.$search.'%');
                     break;
                 case 'time':
+                    dump($search);
                     $search = strtotime($search);
+                     exit;
                     $search = substr($search,0,6);
                     $map['date'] = array('like',$search.'%');
                     break;
