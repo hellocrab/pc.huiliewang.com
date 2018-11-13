@@ -1391,5 +1391,8 @@ class BackgroundAction extends Action
         }
         return $data;
     }
+    //对外背调修改保存
+    function save_one(){
 
+    }
 }

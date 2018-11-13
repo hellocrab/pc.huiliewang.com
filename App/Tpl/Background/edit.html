@@ -491,10 +491,16 @@
                 data:data,
                 success:function (success) {
                     if(success.status=='true'){
-                        alert_crm("修改成功！");
-                        setTimeout(function () {
-                            window.location.reload();
-                        },500)
+                        swal({
+                            title:'修改成功',
+                            text:'点击确定返回！',
+                            type:"success",
+                            confirmButtonText: "确定"
+                        },function (isConfirm) {
+                            if(isConfirm){
+                                window.location='/index.php?m=background&a=index';
+                            }
+                        });
                     }else{
                         alert_crm("修改失败！");
                     }
