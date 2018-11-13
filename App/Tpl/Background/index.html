@@ -162,7 +162,7 @@
                                             <elseif condition="$type eq 'company'"/><input type="text" style="width:160px;" placeholder="请输入公司名称"  class="form-control short_search " name="search" value="{$search}" data-type="all" />
                                             <elseif condition="$type eq 'industry'"/><input type="text" style="width:160px;" placeholder="请输入行业名称"  class="form-control short_search " name="search" value="{$search}" data-type="all" />
                                             <elseif condition="$type eq ''"/><input type="text" style="width:160px;" placeholder="请输入行业名称"  class="form-control short_search " name="search" value="{$search}" data-type="all" />
-                                            <elseif condition="$type eq 'time'"/><input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="{$search}" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd &quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" />
+                                            <elseif condition="$type eq 'time'"/><input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd HH:mm:ss &quot;,maxDate:&quot;%y-%M-%d&quot;})" readonly="readonly" />
                                         </if>
                                         <span class="input-group-btn">
 										    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-search"></i></button>
