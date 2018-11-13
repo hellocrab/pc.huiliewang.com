@@ -223,7 +223,7 @@
                                                 </td>
                                                 <td style="display: none">id</td>
                                                 <td>姓名</td>
-                                                <td>事业部</td>
+                                                <td style="padding-left: 35px">事业部</td>
                                                 <td>学校</td>
                                                 <td>专业</td>
                                                 <td>学历</td>
@@ -255,7 +255,10 @@
                                                             <td>
                                                                 <span>{$vo|date="Y-m-d",###}</span>
                                                             </td>
-
+                                                            <elseif condition="$k eq 'department'"/>
+                                                            <td style="padding-left: 35px">
+                                                                <span>{$vo}</span>
+                                                            </td>
                                                             <else/>
                                                             <td>
                                                                 <span>{$vo}</span>
