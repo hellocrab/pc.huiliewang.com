@@ -898,19 +898,19 @@ class BackgroundAction extends Action
     function output($data,$by){
         switch ($by){
             case 'all':
-                $order = 's_name';
+                $order = 'Id';
                 break;
             case 'time':
-                $order = 'date desc';
+                $order = 'Id';
                 break;
             case 'company':
-                $order = 's_name';
+                $order = 'Id';
                 break;
             case 'industry':
-                $order = 'industry';
+                $order = 'Id';
                 break;
             default:
-                $order = 's_name';
+                $order = 'Id';
                 break;
         }
         $map['Id'] = array('in',explode(',',$data));
