@@ -963,9 +963,13 @@ class BackgroundAction extends Action
         $p = isset($_GET['p'])?$_GET['p']:1;
         $field = 'name,jobs,tocompany,industry,bz,Id';
         $search = I('get.search');
-        $by = I('get.by');
+        $type = I('get.type')==null?'name':I('get.type');
+        if($type!='name'||$type!='tocompany'||$type!='jobs'||$type!='industry'){
+            $type = 'name';
+        }
+        $by = 'Id';
         if($search!=''){
-            $where['name']=array('like',$search.'%');
+            $where[$type]=array('like','%'.$search.'%');
             $count = $exBackground->where($where)->count();
             $data = $exBackground->where($where)->field($field)->page($p.','.$listrows)->order($by)->select();
             $this->assign('data',$data);
@@ -981,6 +985,7 @@ class BackgroundAction extends Action
         $data = $Page->show();
         $this->assign('page',$data);
         $this->assign('listrows',$listrows);
+        $this->assign('type',$type);
         $this->assign('search',$search);
         $this->display();
     }

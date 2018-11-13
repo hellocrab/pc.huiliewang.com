@@ -270,7 +270,7 @@
         left: 225px;
     }
     .work-div>img:nth-child(5){
-        right: 35px;
+        right: -1px;
     }
     /*滚动条*/
     .body::-webkit-scrollbar {
@@ -416,7 +416,7 @@
                     <div class="lable-input"><label>入职时间：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
                     <div class="lable-input"><label>离职时间：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
                     <div class="lable-input"><label>任职职位：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
-                    <input type="button" class="msg-edit" value="修改" style="top: -410px;left: 170px;">
+                    <input type="button" class="msg-edit" value="修改" style="top: -37px;left: 170px;height: 20px;">
                 </div>
                 <div class="witness-div">
                     <div class="witness">
@@ -449,11 +449,14 @@
                 if(event.type=='mouseenter'){
                     $(this).parent().children('img').fadeIn();
                 }else{
-                    $(this).parent().children('img').fadeOut(2000);
+                    $(this).parent().children('img').fadeOut(500);
                 }
             }else{
-                $(this).parent().find(".jt").css('display','none');
+                $(this).parent().children('img').fadeOut();
             }
+        });
+        $('.jt').on('mouseenter',function () {
+            $(this).css('display','block');
         });
         $('.jt').on("click",function () {
             var obj =$(this);
@@ -469,7 +472,7 @@
             }
         });
         $('.closeimg').on('click',function () {
-            $(this).parent().parent().parent().fadeOut();
+            $(this).parent().parent().parent().fadeOut(500);
             $('.backgroundDiv').remove();
         });
         $('.msg-edit').on('click',function () {

@@ -167,9 +167,16 @@
                                 <div class="input-group">
                                     <input type="hidden" name="m" value="background"/>
                                     <input type="hidden" name="a" value="index_external"/>
+                                    <input id="s-type" type="hidden" name="type" value="{$type}">
                                     <!-- <input type="hidden" name="field" value="name"/>
                                      <input type="hidden" name="condition" value="contains"/>-->
-                                    <input id="short_search" type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control " name="search" value="{$search}" />
+                                    <if condition="$type eq 'name'">
+                                        <input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="{$search}" />
+                                        <elseif condition="$type eq 'jobs'"/><input type="text" style="width:160px;" placeholder="请输入岗位"  class="form-control short_search" name="search" value="{$search}" />
+                                        <elseif condition="$type eq 'tocompany'"/><input type="text" style="width:160px;" placeholder="请输入公司名称"  class="form-control short_search" name="search" value="{$search}" />
+                                        <elseif condition="$type eq 'industry'"/><input type="text" style="width:160px;" placeholder="请输入行业"  class="form-control short_search" name="search" value="{$search}" />
+                                        <else /><input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="{$search}" />
+                                    </if>
                                     <span class="input-group-btn">
 										    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-search"></i></button>
 									    </span>
@@ -177,7 +184,7 @@
                                 <!--&nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
 
                             </li>&nbsp;&nbsp;
-                            <div class="btn-group ">
+                            <!--<div class="btn-group ">
                                 <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
@@ -186,18 +193,17 @@
                                         <li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出2</a></li>
                                     </if>
                                 </ul>
-                            </div>
+                            </div>-->
                         </ul>
                     </form>
                     <ul class="breadcrum pull-right" style="margin-bottom: 0px">
                         <li>
                             <div class="input-group">
-                                <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-bottom:5px;">
-                                    <option value="{:U('background/index_external','by=name&'.$by_parameter)}" <if condition = "$by eq 'name'">selected="selected"</if>>全部员工(姓名)</option>
-                                    <option value="{:U('background/index_external','by=Id&'.$by_parameter)}" <if condition = "$by eq 'Id'">selected="selected"</if>>录入时间</option>
-                                    <option value="{:U('background/index_external','by=tocompany&'.$by_parameter)}" <if condition = "$by eq 'tocompany'">selected="selected"</if>>推荐公司名</option>
-                                    <option value="{:U('background/index_external','by=jobs&'.$by_parameter)}" <if condition = "$by eq 'jobs'">selected="selected"</if>>岗位</option>
-                                    <option value="{:U('background/index_external','by=industry&'.$by_parameter)}" <if condition = "$by eq 'industry'">selected="selected"</if>>行业
+                                <select class="form-control" onchange="searchtype(this)" style="margin-bottom:5px;">
+                                    <option value="name" <if condition = "$type eq 'name'">selected="selected"</if>>全部员工</option>
+                                    <option value="tocompany" <if condition = "$type eq 'tocompany'">selected="selected"</if>>推荐公司名</option>
+                                    <option value="jobs" <if condition = "$type eq 'jobs'">selected="selected"</if>>岗位</option>
+                                    <option value="industry" <if condition = "$type eq 'industry'">selected="selected"</if>>行业
                                 </select>
                             </div>
                         </li>

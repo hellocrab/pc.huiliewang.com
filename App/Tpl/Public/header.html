@@ -936,6 +936,12 @@
                         $('.short_search').removeAttr('onFocus');
                         $('.short_search').removeAttr('readonly');
 					    break;
+                    case 'name':
+                        $('#s-type').after(html);
+                        $('.short_search').attr('placeholder','请输入人才姓名');
+                        $('.short_search').removeAttr('onFocus');
+                        $('.short_search').removeAttr('readonly');
+                        break;
 					case 'time':
                         $('#s-type').after(html);
                         $('.short_search').attr('placeholder','请选择日期');
@@ -949,6 +955,18 @@
                     case 'industry':
                         $('#s-type').after(html);
                         $('.short_search').attr('placeholder','请输入行业');
+                        $('.short_search').removeAttr('onFocus');
+                        $('.short_search').removeAttr('readonly');
+                        break;
+					case 'jobs':
+                        $('#s-type').after(html);
+                        $('.short_search').attr('placeholder','请输入岗位');
+                        $('.short_search').removeAttr('onFocus');
+                        $('.short_search').removeAttr('readonly');
+					    break;
+                    case 'tocompany':
+                        $('#s-type').after(html);
+                        $('.short_search').attr('placeholder','请输入公司名称');
                         $('.short_search').removeAttr('onFocus');
                         $('.short_search').removeAttr('readonly');
                         break;
