@@ -6,19 +6,11 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitfc8912469f0e0880696bfc016ce46f55
 {
-    public static $files = array (
-        '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
-    );
-
     public static $prefixLengthsPsr4 = array (
         'Z' => 
         array (
             'Zend\\Stdlib\\' => 12,
             'Zend\\Escaper\\' => 13,
-        ),
-        'Q' => 
-        array (
-            'Qiniu\\' => 6,
         ),
         'P' => 
         array (
@@ -35,10 +27,6 @@ class ComposerStaticInitfc8912469f0e0880696bfc016ce46f55
         'Zend\\Escaper\\' => 
         array (
             0 => __DIR__ . '/..' . '/zendframework/zend-escaper/src',
-        ),
-        'Qiniu\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu',
         ),
         'PhpOffice\\PhpWord\\' => 
         array (
