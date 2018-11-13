@@ -372,8 +372,16 @@
                                                             data:id,
                                                             success: function (data) {
                                                                 if (data.status == 1) {
-                                                                    swal("删除成功！", "您已经永久删除了信息！", "success");
-                                                                    location.reload();
+                                                                    swal({
+                                                                        title:'删除成功',
+                                                                        text:'您已经永久删除该条信息！',
+                                                                        type:"success",
+                                                                        confirmButtonText: "确定"
+                                                                    },function (isConfirm) {
+                                                                        if(isConfirm){
+                                                                            location.reload();
+                                                                        }
+                                                                    });
                                                                 } else {
                                                                     swal({
                                                                         title: "操作失败！",
@@ -425,8 +433,16 @@
                                                         async: false,
                                                         success: function (data) {
                                                             if (data.status == 1) {
-                                                                swal("删除成功！", "您已经永久删除了信息！", "success");
-                                                                location.reload();
+                                                                swal({
+                                                                    title:'删除成功',
+                                                                    text:'您已经永久删除该条信息！',
+                                                                    type:"success",
+                                                                    confirmButtonText: "确定"
+                                                                },function (isConfirm) {
+                                                                    if(isConfirm){
+                                                                        location.reload();
+                                                                    }
+                                                                });
                                                             } else {
                                                                 swal({
                                                                     title: "操作失败！",

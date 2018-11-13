@@ -290,19 +290,24 @@ class BackgroundAction extends Action
         $sheet = $objPHPExcelReader->getSheet(0);        // 读取第一个工作表(编号从 0 开始)
         $highestRow = $sheet->getHighestRow();           // 取得总行数
         $highestColumn = $sheet->getHighestColumn();     // 取得总列数
-        $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM', 'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ', 'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM', 'BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ');
-        //读取员工基本信息
-        $res_arr = array();
-        for ($row = 5; $row <= $highestRow; $row++) {
-            $row_arr = array();
-            for ($column = 0; $arr[$column] != 'AG'; $column++) {
-                $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
-                $row_arr[] = $val;
-            }
+        if($highestColumn=="AF"){
+            $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM', 'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ', 'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM', 'BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ');
+            //读取员工基本信息
+            $res_arr = array();
+            for ($row = 5; $row <= $highestRow; $row++) {
+                $row_arr = array();
+                for ($column = 0; $arr[$column] != 'AG'; $column++) {
+                    $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
+                    $row_arr[] = $val;
+                }
 
-            $res_arr[] = $row_arr;
+                $res_arr[] = $row_arr;
+            }
+            return $res_arr;
+        }else{
+            return "false";
         }
-        return $res_arr;
+
     }
     function upload(){
         $time = time();
@@ -315,100 +320,105 @@ class BackgroundAction extends Action
             $complete_path = time().".".$type;
             move_uploaded_file($file['tmp_name'][0],$upload_path_name);
             $data = $this->excelToArray($complete_path);
-            //数据拆分取得$back,$msg
-            foreach ($data as $key => $val){
-                foreach ($val as $k => $v){
-                    if($k<6){
-                        $backArr[] = $v;
-                    }elseif($k<19){
-                        $msgArrList1[] = $v;
-                    }elseif($k<32){
-                        $msgArrList2[] = $v;
+            if($data=='false'){
+                echo 'false';
+            }else{
+                //数据拆分取得$back,$msg
+                foreach ($data as $key => $val){
+                    foreach ($val as $k => $v){
+                        if($k<6){
+                            $backArr[] = $v;
+                        }elseif($k<19){
+                            $msgArrList1[] = $v;
+                        }elseif($k<32){
+                            $msgArrList2[] = $v;
+                        }
+                    }
+                    $backArr[] = $time;
+                    $msgArrList1[] = $time;
+                    $msgArrList2[] = $time;
+                    $msgArr = array($msgArrList1,$msgArrList2);
+                    $back[] = $backArr;
+                    $msg[] =$msgArr;
+                    unset($backArr);
+                    unset($msgArrList1);
+                    unset($msgArrList2);
+                    unset($msgArr);
+                }
+                //整理数据键值更名为字段名存入background表的数据为 $backData
+                $backGroundName = array('s_name','department','school','major','education','industry','date');
+                foreach ($back as $k => $v){
+                    foreach ($v as $key => $val){
+                        $backData[$k][$backGroundName[$key]] = $val;
                     }
                 }
-                $backArr[] = $time;
-                $msgArrList1[] = $time;
-                $msgArrList2[] = $time;
-                $msgArr = array($msgArrList1,$msgArrList2);
-                $back[] = $backArr;
-                $msg[] =$msgArr;
-                unset($backArr);
-                unset($msgArrList1);
-                unset($msgArrList2);
-                unset($msgArr);
-            }
-            //整理数据键值更名为字段名存入background表的数据为 $backData
-            $backGroundName = array('s_name','department','school','major','education','industry','date');
-            foreach ($back as $k => $v){
-                foreach ($v as $key => $val){
-                    $backData[$k][$backGroundName[$key]] = $val;
-                }
-            }
-            $backGround = M('background');
-            $backGroundMsg = M('background_msg');
-            $backGround->startTrans();
-            $result = $backGround->addAll($backData);//添加员工数据进入数据库
-            if(!$result){
-                $backGround->rollback();
-            }else{
-                $backGround->commit();
-            }
-            $backGround->rollback();
-            $count = count($backData);
-            //获取所添加员工的 id 集合
-            $sIdList = $backGround->field('Id')->order('id desc')->limit($count)->select();
-            //重排列$sIdList 顺序
-            for($i =count($sIdList)-1;$i>=0;$i--){
-                $sId[] = $sIdList[$i];
-            }
-            foreach ($msg as $k => $v){
-                foreach ($v as $key => $val){
-                    $val[] = $sId[$k]['Id'];
-                    $msgData[] = $val;
-                }
-            }
-            $backGroundMSgName= array('company_name','enter_time','out_time','position','witness','witness_add','tel','adress','work_performance','bz','reasons','health','salary','date','s_id');
-            //整理数据键值更名为字段名存入background_msg表的数据为 $backMsgData
-            foreach ($msgData as $k => $v){
-                foreach ($v as $key => $val){
-                    $list[$backGroundMSgName[$key]] = $val;
-                }
-                $backMsgData[] = $list;
-            }
-            $backGroundMsg->startTrans();
-            $result2 = $backGroundMsg->addAll($backMsgData);
-            if(!$result2){
-                $backGroundMsg->rollback();
-            }else{
-                $backGroundMsg->commit();
-            }
-
-            //更新background表 msg_id 字段
-            foreach ($sId as $k => $v){
-                $sId[$k] = $v['Id'];
-            }
-            $map['s_id'] = array('in',$sId);
-            $msgId = $backGroundMsg->where($map)->field('Id,s_id')->select();
-            for($i = 0;$i<(count($msgId)/2);$i++){
-                $idList1["msg_id"] = $msgId[$i*2]['Id'];
-                $idList2["msg_id"] = $msgId[$i*2+1]['Id'];
-                $msgIdData[$i] =array($idList1,$idList2);
-            }
-            foreach ($msgIdData as $k => $v){
-                $msgIdData[$k] = json_encode($v);
-            }
-            //以下代码待修改
-            $backGround->startTrans();
-            foreach ($sId as $k => $v){
-                $where['Id'] = $v;
-                $map['msg_id'] = $msgIdData[$k];
-                $result3 = $backGround->where($where)->setField($map);
-                if($result3){
+                $backGround = M('background');
+                $backGroundMsg = M('background_msg');
+                $backGround->startTrans();
+                $result = $backGround->addAll($backData);//添加员工数据进入数据库
+                if(!$result){
+                    $backGround->rollback();
+                }else{
                     $backGround->commit();
                 }
-                else{
-                    $backGround->rollback();
+                $backGround->rollback();
+                $count = count($backData);
+                //获取所添加员工的 id 集合
+                $sIdList = $backGround->field('Id')->order('id desc')->limit($count)->select();
+                //重排列$sIdList 顺序
+                for($i =count($sIdList)-1;$i>=0;$i--){
+                    $sId[] = $sIdList[$i];
                 }
+                foreach ($msg as $k => $v){
+                    foreach ($v as $key => $val){
+                        $val[] = $sId[$k]['Id'];
+                        $msgData[] = $val;
+                    }
+                }
+                $backGroundMSgName= array('company_name','enter_time','out_time','position','witness','witness_add','tel','adress','work_performance','bz','reasons','health','salary','date','s_id');
+                //整理数据键值更名为字段名存入background_msg表的数据为 $backMsgData
+                foreach ($msgData as $k => $v){
+                    foreach ($v as $key => $val){
+                        $list[$backGroundMSgName[$key]] = $val;
+                    }
+                    $backMsgData[] = $list;
+                }
+                $backGroundMsg->startTrans();
+                $result2 = $backGroundMsg->addAll($backMsgData);
+                if(!$result2){
+                    $backGroundMsg->rollback();
+                }else{
+                    $backGroundMsg->commit();
+                }
+
+                //更新background表 msg_id 字段
+                foreach ($sId as $k => $v){
+                    $sId[$k] = $v['Id'];
+                }
+                $map['s_id'] = array('in',$sId);
+                $msgId = $backGroundMsg->where($map)->field('Id,s_id')->select();
+                for($i = 0;$i<(count($msgId)/2);$i++){
+                    $idList1["msg_id"] = $msgId[$i*2]['Id'];
+                    $idList2["msg_id"] = $msgId[$i*2+1]['Id'];
+                    $msgIdData[$i] =array($idList1,$idList2);
+                }
+                foreach ($msgIdData as $k => $v){
+                    $msgIdData[$k] = json_encode($v);
+                }
+                //以下代码待修改
+                $backGround->startTrans();
+                foreach ($sId as $k => $v){
+                    $where['Id'] = $v;
+                    $map['msg_id'] = $msgIdData[$k];
+                    $result3 = $backGround->where($where)->setField($map);
+                    if($result3){
+                        $backGround->commit();
+                    }
+                    else{
+                        $backGround->rollback();
+                    }
+                }
+                echo 'success';
             }
         }
     }
@@ -1008,7 +1018,7 @@ class BackgroundAction extends Action
             $id = I('post.');
             if((int)$id['Id']){
                 $exBackground = M('external_background');
-                $bg = $exBackground->field('name,jobs,tocompany,industry,id_pic_src,bz,idnumber')->where($id)->find();
+                $bg = $exBackground->field('Id,name,jobs,tocompany,industry,id_pic_src,bz,idnumber')->where($id)->find();
                 $exBackgroundEdu = M('external_background_edu');
                 $edu = $exBackgroundEdu->where('c_id ='.$id['Id'])->field('c_id',true)->select();
                 $exBackgroundQc = M('external_background_qc');
@@ -1182,94 +1192,99 @@ class BackgroundAction extends Action
             $complete_path = time().".".$type;
             move_uploaded_file($file['tmp_name'][0],$upload_path_name);
             $data = $this->ex_excelToArray($complete_path);
-            //dump($data);
-            //数据拆分
-            //ex_background表
-            foreach ($data as $key => $val){
-                foreach ($val as $k => $v){
-                    if($k<=6){
-                        $bg[$key][] = $v;
-                    }elseif ($k>6&&$k<=13){
-                        $edu[$key*2][] = $v;
-                    }elseif($k>13&&$k<=20){
-                        $edu[$key*2+1][] = $v;
-                    }elseif ($k>20&&$k<=25){
-                        $qc[$key*2][] = $v;
-                    }elseif($k>25&&$k<=30){
-                        $qc[$key*2+1][] = $v;
-                    }elseif($k>30&&$k<=34){
-                        $work[$key*2][] = $v;
-                    }elseif($k>74&&$k<=78){
-                        $work[$key*2+1][] = $v;
-                    }elseif($k>34&&$k<=44){
-                        $witness[$key*8][] = $v;
-                    }elseif($k>44&&$k<=54){
-                        $witness[$key*8+1][] = $v;
-                    }elseif($k>54&&$k<=64){
-                        $witness[$key*8+2][] = $v;
+            if($data!='false'){
+                //dump($data);
+                //数据拆分
+                //ex_background表
+                foreach ($data as $key => $val){
+                    foreach ($val as $k => $v){
+                        if($k<=6){
+                            $bg[$key][] = $v;
+                        }elseif ($k>6&&$k<=13){
+                            $edu[$key*2][] = $v;
+                        }elseif($k>13&&$k<=20){
+                            $edu[$key*2+1][] = $v;
+                        }elseif ($k>20&&$k<=25){
+                            $qc[$key*2][] = $v;
+                        }elseif($k>25&&$k<=30){
+                            $qc[$key*2+1][] = $v;
+                        }elseif($k>30&&$k<=34){
+                            $work[$key*2][] = $v;
+                        }elseif($k>74&&$k<=78){
+                            $work[$key*2+1][] = $v;
+                        }elseif($k>34&&$k<=44){
+                            $witness[$key*8][] = $v;
+                        }elseif($k>44&&$k<=54){
+                            $witness[$key*8+1][] = $v;
+                        }elseif($k>54&&$k<=64){
+                            $witness[$key*8+2][] = $v;
+                        }
+                        elseif($k>64&&$k<=74){
+                            $witness[$key*8+3][] = $v;
+                        }
+                        elseif($k>78&&$k<=88){
+                            $witness[$key*8+4][] = $v;
+                        }
+                        elseif($k>88&&$k<=98){
+                            $witness[$key*8+5][] = $v;
+                        }
+                        elseif($k>98&&$k<=108){
+                            $witness[$key*8+6][] = $v;
+                        }elseif($k>108&&$k<=118){
+                            $witness[$key*8+7][] = $v;
+                        }
                     }
-                    elseif($k>64&&$k<=74){
-                        $witness[$key*8+3][] = $v;
-                    }
-                    elseif($k>78&&$k<=88){
-                        $witness[$key*8+4][] = $v;
-                    }
-                    elseif($k>88&&$k<=98){
-                        $witness[$key*8+5][] = $v;
-                    }
-                    elseif($k>98&&$k<=108){
-                        $witness[$key*8+6][] = $v;
-                    }elseif($k>108&&$k<=118){
-                        $witness[$key*8+7][] = $v;
+                }
+                $exBg = M('external_background');
+                $exBg->startTrans();
+                $bg = $this->data_keys_change($bg,'bg');
+                $edu =  $this->data_keys_change($edu,'edu');
+                $qc = $this->data_keys_change($qc,'qc');
+                $work = $this->data_keys_change($work,'work');
+                $witness = $this->data_keys_change($witness,'witness');
+
+                $exBgResult = $exBg->addAll($bg);
+                if(!$exBgResult){
+                    $exBg->rollback();
+                }else{
+                    $exBg->commit();
+                    $cIds = $exBg->field('Id')->order('Id desc')->limit(count($bg))->select();
+                    $cIds = $this->array_order_id($cIds);//升序排列cid
+                    $edu  = $this->data_add_id($edu,$cIds,2,'c_id');
+                    $qc = $this->data_add_id($qc,$cIds,2,'c_id');
+                    $work = $this->data_add_id($work,$cIds,2,'c_id');
+                    $exEdu = M('external_background_edu');
+                    $exEdu->startTrans();
+                    $exEduResult = $exEdu->addAll($edu);
+                    $exQc = D('external_background_qc');
+                    $exQc->startTrans();
+                    $exQcResult = $exQc->addAll($qc);
+                    $exWork = M('external_background_work');
+                    $exWork->startTrans();
+                    $exWorkResult = $exWork->addAll($work);
+                    if(!$exEduResult&&!$exQcResult&&!$exWorkResult){
+                        $exEdu->rollback();
+                        $exQc->rollback();
+                        $exWork->rollback();
+                    }else{
+                        $exEdu->commit();
+                        $exQc->commit();
+                        $exWork->commit();
+                        $wIds = $exWork->order('Id desc')->limit(count($work))->field('Id')->select();
+                        $wIds = $this->array_order_id($wIds);
+                        $witness = $this->data_add_id($witness,$wIds,4,'w_id');
+                        $exWitness = M('external_background_witness');
+                        $exWitnessResult = $exWitness->addAll($witness);
+                        if($exWitnessResult){
+                            $exWitness->commit();
+                        }else{
+                            $exWitness->rollback();
+                        }
                     }
                 }
             }
-            $exBg = M('external_background');
-            $exBg->startTrans();
-            $bg = $this->data_keys_change($bg,'bg');
-            $edu =  $this->data_keys_change($edu,'edu');
-            $qc = $this->data_keys_change($qc,'qc');
-            $work = $this->data_keys_change($work,'work');
-            $witness = $this->data_keys_change($witness,'witness');
-
-            $exBgResult = $exBg->addAll($bg);
-            if(!$exBgResult){
-                $exBg->rollback();
-            }else{
-                $exBg->commit();
-                $cIds = $exBg->field('Id')->order('Id desc')->limit(count($bg))->select();
-                $cIds = $this->array_order_id($cIds);//升序排列cid
-                $edu  = $this->data_add_id($edu,$cIds,2,'c_id');
-                $qc = $this->data_add_id($qc,$cIds,2,'c_id');
-                $work = $this->data_add_id($work,$cIds,2,'c_id');
-                $exEdu = M('external_background_edu');
-                $exEdu->startTrans();
-                $exEduResult = $exEdu->addAll($edu);
-                $exQc = D('external_background_qc');
-                $exQc->startTrans();
-                $exQcResult = $exQc->addAll($qc);
-                $exWork = M('external_background_work');
-                $exWork->startTrans();
-                $exWorkResult = $exWork->addAll($work);
-                if(!$exEduResult&&!$exQcResult&&!$exWorkResult){
-                    $exEdu->rollback();
-                    $exQc->rollback();
-                    $exWork->rollback();
-                }else{
-                    $exEdu->commit();
-                    $exQc->commit();
-                    $exWork->commit();
-                    $wIds = $exWork->order('Id desc')->limit(count($work))->field('Id')->select();
-                    $wIds = $this->array_order_id($wIds);
-                    $witness = $this->data_add_id($witness,$wIds,4,'w_id');
-                    $exWitness = M('external_background_witness');
-                    $exWitnessResult = $exWitness->addAll($witness);
-                    if($exWitnessResult){
-                        $exWitness->commit();
-                    }else{
-                        $exWitness->rollback();
-                    }
-                }
+            else{
+                echo 'false';
             }
         }
     }
@@ -1282,20 +1297,25 @@ class BackgroundAction extends Action
 
         $sheet = $objPHPExcelReader->getSheet(0);        // 读取第一个工作表(编号从 0 开始)
         $highestRow = $sheet->getHighestRow();           // 取得总行数
-        //$highestColumn = $sheet->getHighestColumn();     // 取得总列数
-        $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM', 'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ', 'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM', 'BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ','EA','EB','EC','ED','EE','EF','EG','EH','EI','EJ','EK','EL','EM','EN','EO','EP','EQ','ER','ES','ET','EU','EV','EW','EX','EY','EZ');
-        //读取员工基本信息
-        $res_arr = array();
-        for ($row = 3; $row <= $highestRow; $row++) {
-            $row_arr = array();
-            for ($column = 0; $arr[$column] != 'DP'; $column++) {
-                $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
-                $row_arr[] = $val;
-            }
+        $highestColumn = $sheet->getHighestColumn();     // 取得总列数
+        if($highestColumn=='DO'){
+            $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM', 'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ', 'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM', 'BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ','EA','EB','EC','ED','EE','EF','EG','EH','EI','EJ','EK','EL','EM','EN','EO','EP','EQ','ER','ES','ET','EU','EV','EW','EX','EY','EZ');
+            //读取员工基本信息
+            $res_arr = array();
+            for ($row = 3; $row <= $highestRow; $row++) {
+                $row_arr = array();
+                for ($column = 0; $arr[$column] != 'DP'; $column++) {
+                    $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
+                    $row_arr[] = $val;
+                }
 
-            $res_arr[] = $row_arr;
+                $res_arr[] = $row_arr;
+            }
+            return $res_arr;
+        }else{
+            echo 'false';
         }
-        return $res_arr;
+
     }
     function array_keys_change($keys,$data){
         foreach ($data as $key => $val){
