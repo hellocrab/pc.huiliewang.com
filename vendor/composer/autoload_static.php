@@ -6,31 +6,11 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitfc8912469f0e0880696bfc016ce46f55
 {
-    public static $files = array (
-        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
-        '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
-        '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
-    );
-
     public static $prefixLengthsPsr4 = array (
-        't' => 
-        array (
-            'think\\composer\\' => 15,
-            'think\\captcha\\' => 14,
-            'think\\' => 6,
-        ),
-        'm' => 
-        array (
-            'mailer\\' => 7,
-        ),
         'Z' => 
         array (
             'Zend\\Stdlib\\' => 12,
             'Zend\\Escaper\\' => 13,
-        ),
-        'Q' => 
-        array (
-            'Qiniu\\' => 6,
         ),
         'P' => 
         array (
@@ -40,22 +20,6 @@ class ComposerStaticInitfc8912469f0e0880696bfc016ce46f55
     );
 
     public static $prefixDirsPsr4 = array (
-        'think\\composer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/topthink/think-installer/src',
-        ),
-        'think\\captcha\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/topthink/think-captcha/src',
-        ),
-        'think\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/thinkphp/library/think',
-        ),
-        'mailer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/yuan1994/tp-mailer/src/mailer',
-        ),
         'Zend\\Stdlib\\' => 
         array (
             0 => __DIR__ . '/..' . '/zendframework/zend-stdlib/src',
@@ -63,10 +27,6 @@ class ComposerStaticInitfc8912469f0e0880696bfc016ce46f55
         'Zend\\Escaper\\' => 
         array (
             0 => __DIR__ . '/..' . '/zendframework/zend-escaper/src',
-        ),
-        'Qiniu\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu',
         ),
         'PhpOffice\\PhpWord\\' => 
         array (
