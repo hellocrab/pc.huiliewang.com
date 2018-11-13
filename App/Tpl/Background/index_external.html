@@ -401,26 +401,29 @@
                                                         input.eq(3).children('input[type="text"]').val(data['work'][i]['position']);
                                                         input.eq(3).children('i').addClass(checkiClass(data['work'],i,'position_add'));
                                                         body.find('.work').eq(i).after(work);
-                                                        removeobj(body.find('.witness'));
-                                                        for(let j=0;j<data['work'][i]['witness'].length;j++){
-                                                            var witness =  body.find('.witness').eq(0).clone(true);
-                                                            witness.css('left','0');
-                                                            var witnessData = data['work'][i]['witness'];
-                                                            witness.children('span').text('证明人 '+(j+1));
-                                                            witness.children('span').attr({'data-id':witnessData[j]['Id'],'data-type':'witness'});
-                                                            var witInput = witness.find('input[type="text"]');
-                                                            witInput.eq(0).val(witnessData[j]['witness']);
-                                                            witInput.eq(1).val(witnessData[j]['position']);
-                                                            witInput.eq(2).val(witnessData[j]['tel']);
-                                                            witInput.eq(3).val(witnessData[j]['relationship']);
-                                                            witInput.eq(4).val(witnessData[j]['method']);
-                                                            /* witInput.eq(5).val(witnessData['witness']);*/
-                                                            witInput.eq(5).val(witnessData[j]['performance']);
-                                                            witInput.eq(6).val(witnessData[j]['badrecord']);
-                                                            witInput.eq(7).val(witnessData[j]['reason']);
-                                                            witInput.eq(8).val(witnessData[j]['train']);
-                                                            witInput.eq(9).val(witnessData[j]['compete']);
-                                                            $(witness).appendTo(body.find('.witness-div'));
+                                                        if(data['work'][i]['witness']!=null){
+                                                            var witnessDiv = body.find('.work').eq(i+1);
+                                                            removeobj(witnessDiv.find('.witness'));
+                                                            for(let j=0;j<data['work'][i]['witness'].length;j++){
+                                                                var witness =  witnessDiv.find('.witness').eq(0).clone(true);
+                                                                witness.css('left','0');
+                                                                var witnessData = data['work'][i]['witness'];
+                                                                witness.children('span').text('证明人 '+(j+1));
+                                                                witness.children('span').attr({'data-id':witnessData[j]['Id'],'data-type':'witness'});
+                                                                var witInput = witness.find('input[type="text"]');
+                                                                witInput.eq(0).val(witnessData[j]['witness']);
+                                                                witInput.eq(1).val(witnessData[j]['position']);
+                                                                witInput.eq(2).val(witnessData[j]['tel']);
+                                                                witInput.eq(3).val(witnessData[j]['relationship']);
+                                                                witInput.eq(4).val(witnessData[j]['method']);
+                                                                witInput.eq(5).val(witnessData[j]['performance']);
+                                                                witInput.eq(6).val(witnessData[j]['badrecord']);
+                                                                witInput.eq(7).val(witnessData[j]['reason']);
+                                                                witInput.eq(8).val(witnessData[j]['train']);
+                                                                witInput.eq(9).val(witnessData[j]['compete']);
+                                                                witnessDiv.find('.witness-div').append(witness);
+                                                            }
+                                                            witnessDiv.find('.witness').eq(0).remove();
                                                         }
                                                     }
                                                     body.find('.work').eq(0).remove();

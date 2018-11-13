@@ -1220,7 +1220,6 @@ class BackgroundAction extends Action
             move_uploaded_file($file['tmp_name'][0],$upload_path_name);
             $data = $this->ex_excelToArray($complete_path);
             if($data!='false'){
-                //dump($data);
                 //数据拆分
                 //ex_background表
                 foreach ($data as $key => $val){
@@ -1269,7 +1268,6 @@ class BackgroundAction extends Action
                 $qc = $this->data_keys_change($qc,'qc');
                 $work = $this->data_keys_change($work,'work');
                 $witness = $this->data_keys_change($witness,'witness');
-
                 $exBgResult = $exBg->addAll($bg);
                 if(!$exBgResult){
                     $exBg->rollback();
@@ -1277,9 +1275,9 @@ class BackgroundAction extends Action
                     $exBg->commit();
                     $cIds = $exBg->field('Id')->order('Id desc')->limit(count($bg))->select();
                     $cIds = $this->array_order_id($cIds);//升序排列cid
-                    $edu  = $this->data_add_id($edu,$cIds,2,'c_id');
-                    $qc = $this->data_add_id($qc,$cIds,2,'c_id');
-                    $work = $this->data_add_id($work,$cIds,2,'c_id');
+                    $edu  = $this->ex_delete_null($this->data_add_id($edu,$cIds,2,'c_id'));
+                    $qc = $this->ex_delete_null($this->data_add_id($qc,$cIds,2,'c_id'));
+                    $work = $this->ex_delete_null($this->data_add_id($work,$cIds,2,'c_id'));
                     $exEdu = M('external_background_edu');
                     $exEdu->startTrans();
                     $exEduResult = $exEdu->addAll($edu);
@@ -1299,7 +1297,7 @@ class BackgroundAction extends Action
                         $exWork->commit();
                         $wIds = $exWork->order('Id desc')->limit(count($work))->field('Id')->select();
                         $wIds = $this->array_order_id($wIds);
-                        $witness = $this->data_add_id($witness,$wIds,4,'w_id');
+                        $witness = $this->ex_delete_null($this->data_add_id($witness,$wIds,4,'w_id'));
                         $exWitness = M('external_background_witness');
                         $exWitnessResult = $exWitness->addAll($witness);
                         if($exWitnessResult){
@@ -1314,6 +1312,21 @@ class BackgroundAction extends Action
                 echo 'false';
             }
         }
+    }
+    //删除为空数据
+    function ex_delete_null($data){
+        foreach ($data as $k => $v){
+            $n = 0;
+            foreach ($v as $key => $val){
+                if($val==null){
+                    $n++;
+                }
+            }
+            if($n==7||$n==4||$n==5||$n==10){
+                unset($data[$k]);
+            }
+        }
+        return $data;
     }
     function ex_excelToArray($name){
         require_once 'Base/Lib/Classes/PHPExcel/IOFactory.php';
@@ -1392,6 +1405,17 @@ class BackgroundAction extends Action
         for($i=0;$i<count($ids);$i++){
             for($k=0;$k<$count;$k++){
                 $data[$i*$count+$k][$type] =$ids[$i]['Id'];
+            }
+        }
+        foreach ($data as $key => $val){
+            $n = 0;
+            foreach ($val as $keys => $vals){
+                if($keys==$type){
+                    $n++;
+                }
+            }
+            if($n==0){
+                unset($data[$key]);
             }
         }
         return $data;
