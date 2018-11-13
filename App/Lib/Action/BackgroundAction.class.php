@@ -426,30 +426,23 @@ class BackgroundAction extends Action
                 }
                 //以下代码待修改
                 $backGround->startTrans();
-                /*foreach ($sId as $k => $v){
-                    $where['Id'] = $v;
-                    $map['msg_id'] = $msgIdData[$k];
-                    $result3 = $backGround->where($where)->setField($map);
-                    if($result3){
-                        $backGround->commit();
-                    }
-                    else{
-                        $backGround->rollback();
-                    }
-                }*/
+                $backGroundCheck = 0;
                 foreach ($msgIdData as $k=>$v){
                     $where['Id'] = $k;
                     unset($map);
                     $map['msg_id'] = $msgIdData[$k];
                     $result3 = $backGround->where($where)->setField($map);
-                    if($result3){
-                        $backGround->commit();
-                    }
-                    else{
-                        $backGround->rollback();
+                    if(!$result3){
+                        $backGroundCheck++;
                     }
                 }
-                echo 'success';
+                if($backGroundCheck>0){
+                    $backGround->rollback();
+                    echo 'false';
+                }else{
+                    $backGround->commit();
+                    echo 'success';
+                }
             }
         }
     }

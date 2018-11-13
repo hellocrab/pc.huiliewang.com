@@ -916,6 +916,16 @@
                     }
                 }
             })
+            function isNull() {
+                var i = 0;
+                $(document).find('.required').each(function () {
+                    if($(this).css('display')!='none'&&$(this).val()==''){
+                        i++;
+                        console.log($(this));
+                    }
+                })
+				return i;
+            }
             function searchtype(data) {
                 $('#s-type').attr('value',$(data).val());
                 var html = '<input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd HH:mm:ss &quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" />';
@@ -944,6 +954,5 @@
                         $('.short_search').removeAttr('readonly');
                         break;
 				}
-
             }
 		</script>
