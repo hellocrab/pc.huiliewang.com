@@ -1190,7 +1190,7 @@ class BackgroundAction extends Action
             $complete_path = time().".".$type;
             move_uploaded_file($file['tmp_name'][0],$upload_path_name);
             $data = $this->ex_excelToArray($complete_path);
-            if($data=='false'){
+            if($data!='false'){
                 //dump($data);
                 //数据拆分
                 //ex_background表
