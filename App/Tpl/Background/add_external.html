@@ -189,7 +189,7 @@
                                 <div  class="form-group tb-1">
                                     <label class="col-md-3 control-label">身份证号：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required idnumber" type="text" id="idnumber" name="idnumber" value="">
+                                        <input class="form-control required idnumber" type="text" id="idnumber" name="idnumber" onchange="checkValue('idnum',this)" maxlength="18">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                     <div class="col-md-2 fileinput">
@@ -207,9 +207,9 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">毕业院校：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control required school edu-input" type="text" id="school" name="school" value="">
+                                                <input class="form-control required" type="text"  name="school" value="">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_1sure" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -219,9 +219,9 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">学历类型：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control required educationType edu-input" type="text" id="educationType" name="educationType" value="">
+                                                <input class="form-control required" type="text"  name="educationType" value="">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_1sure1" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure1" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure1" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -231,9 +231,9 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">专业：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control required major edu-input" type="text" id="major" name="major" value="">
+                                                <input class="form-control required" type="text" name="major" value="">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_1sure2" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure2" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure2" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -243,9 +243,9 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">入学时间：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control text-center  required enter_time edu-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;width: 100%">
+                                                <input class="form-control text-center  required " data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="newentertime" style="height: 32px;width: 100%">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_1sure3" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure3" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure3" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -257,7 +257,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control text-center  required out_time edu-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="outtime" style="height: 32px;width: 100%">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_1sure4" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure4" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure4" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -269,7 +269,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control required promisenum edu-input" type="text" value="">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_1sure5" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure5" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure5" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -281,7 +281,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control required msgbelong edu-input" type="text" value="" name="xxly">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_1sure6"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure6" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure6" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -310,7 +310,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control text-center timerinput required enter_time qc-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="hdsj" style="height: 32px;width: 100%">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_2sure"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_2sure" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_2sure" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -322,7 +322,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control text-center timerinput required out_time qc-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="yxsj" style="height: 32px;width: 100%">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_2sure1"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_2sure1" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_2sure1" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -334,7 +334,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control required promisenum qc-input" type="text" value="" name="zsnx">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_2sure2"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_2sure2" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_2sure2" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -346,7 +346,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control required msgbelong qc-input" type="text" value="" name="ly">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_2sure3"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_2sure3" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_2sure3" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -358,7 +358,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control required promisenum qc-input" type="text" value="" name="bh">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_2sure4" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_2sure4" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_2sure4" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -386,7 +386,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control required work-input " type="text" value="" name="gsmc">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="sur_1" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="sur_1" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="sur_1" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -398,7 +398,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control text-center timerinput required enter_time work-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="rzsj" style="height: 32px;width: 100%">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="sur_2" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="sur_2" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="sur_2" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -410,7 +410,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control text-center timerinput required out_time work-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="lzsj" style="height: 32px;width: 100%">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="sur_3" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="sur_3" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="sur_3" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -422,7 +422,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control required promisenum work-input" type="text" value="" name="rzzw">
                                             </div>
-                                            <div class="col-md-3" style="height: 32px;padding-top: 3px">
+                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="sur_4" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="sur_4" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="sur_4" value="2"><img src="/Public/img/notsure.png" alt=""></label>
@@ -743,9 +743,20 @@
                 neweducation = $(this).parent().children().eq(1).clone(true);
             }
             var n = 0;
+            //为文本输入框添加新name
+            let q = 0;
+            $(document).find('input[type="text"]').each(function () {
+                if($(this).css('display')!='none'){
+                    $(this).attr('name',$(this).attr('name')+q);
+                    q++;
+                }
+            });
+            //radio 分组
             neweducation.children().each(function () {
                 n++;
                 $(this).children(".col-md-4").children("input").val("");
+                /*var htmlName = $(this).children(".col-md-4").children("input").attr('name');
+                $(this).children(".col-md-4").children("input").attr("name",htmlName+addclickcount);*/
                 $(this).children(".col-md-3").eq(0).children("label").each(function () {
                     var inputradio =  $(this).children("input");
                     inputradio.attr("name","addsure_"+n+"_"+addclickcount);
@@ -753,6 +764,16 @@
                 });
                 $(this).children(".col-md-3").eq(1).children("input").css("display","none");
                 $(this).children(".col-md-3").eq(1).children("input").val("");
+            });
+            //radio 默认选择设置
+            neweducation.find('.radiodiv').each(function () {
+               $(this).children().find('input[type="radio"]').eq(0).prop("checked","checked");
+            });
+            //隐藏input默认值
+            neweducation.find('input[type="text"]').each(function () {
+                if($(this).css('display')=='none'){
+                    $(this).val('sure');
+                }
             });
             $(this).before(neweducation);
             //清空上传按钮及预览图

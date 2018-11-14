@@ -1140,6 +1140,7 @@ class BackgroundAction extends Action
                     }
                 }
             }
+
             //写入数据库
             $exBackground = M('external_background');
             $exBackgroundEdu = M('external_background_edu');
@@ -1192,8 +1193,8 @@ class BackgroundAction extends Action
                     }else{
                         $exBackgroundWork->rollback();
                     }
-                    $this->ajaxReturn('true');
                 }
+                $this->ajaxReturn('true');
             }else{
                 $exBackground->rollback();
             }

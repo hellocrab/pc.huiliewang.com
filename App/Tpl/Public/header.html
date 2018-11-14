@@ -972,4 +972,29 @@
                         break;
 				}
             }
+            function checkValue(data,obj) {
+                let regex;
+                let msg;
+                switch (data){
+					case 'idnum':
+                        regex = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                        msg = '身份证号码有误！';
+					    break;
+				}
+                /*let html ='<label id="'+$(obj).attr("id")+'-error" class="error" for="'+$(obj).attr("id")+'" style="display: inline-block;"><i class="fa fa-times-circle">'+msg+'</i></label>';*/
+                let span = '<span>'+msg+'</span>';
+                let text = $(obj).val();
+				if(text!=''){
+                    let result = regex.test(text);
+                    let span = $(obj).parent().find('span');
+                    console.log()
+                    if(!result){
+                        if(span.length==0){
+                            $(obj).after(span);
+						}
+                    }else{
+						span.remove();
+                    }
+				}
+            }
 		</script>
