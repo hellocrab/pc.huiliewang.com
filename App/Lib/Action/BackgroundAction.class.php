@@ -6,7 +6,6 @@
  * Date: 2018/10/12
  * Time: 15:11
  */
-
 class BackgroundAction extends Action
 {
     public function _initialize(){
@@ -51,9 +50,7 @@ class BackgroundAction extends Action
                     $map['s_name'] = array('like','%'.$search.'%');
                     break;
                 case 'time':
-                    dump($search);
                     $search = strtotime($search);
-                     exit;
                     $search = substr($search,0,6);
                     $map['date'] = array('like',$search.'%');
                     break;
