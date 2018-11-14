@@ -56,7 +56,7 @@ class BackgroundAction extends Action
                     $map['date'] = array('like',$search.'%');
                     break;
                 case 'company':
-                    $map['company_name'] = array('like',$search.'%');
+                    $map['company_name'] = array('like','%'.$search.'%');
                     $sIds = $backGroundMsg->where($map)->where($delete)->field('s_id')->select();
                     foreach ($sIds as $k => $v){
                         $sid[] = $v['s_id'];
@@ -167,7 +167,7 @@ class BackgroundAction extends Action
             $where['s_id'] = $id;
             $where['delete'] = 0;
             $data = $backGround->where("Id =".$id)->find();
-            $msgList = $backGroundMsg->where($where)->select();
+            $msgList = $backGroundMsg->where($where)->order('Id')->select();
             $this->assign('id',$id);
             $this->assign('data',$data);
             $this->assign('msglist',$msgList);
@@ -184,45 +184,38 @@ class BackgroundAction extends Action
         $time = time();
         $backGround = M('background');
         $backGroundMsg = M('background_msg');
-        unset($data['bgmsgs']);
+        $status = 0;
         foreach ($bgmsgDatas as $k => $v){
-            if (count($v)>13){
-                $v['update'] = $time;
-                $msgId[] = $v['id'];//需要更新背调信息ID集合
-                $update[$k] = $v;
-            }//需要更新的背调信息
-            else{
-                $v['date'] = $time;
+            if($v['id']){
+                $msgMap['Id'] = $v['id'];
+                unset($v['id']);
+                $rUpdate = $backGroundMsg->where($msgMap)->setField($v);
+                if($rUpdate){
+                    $status++;
+                }
+            }else{
                 $v['s_id'] = $id;
-                $add[] = $v;
-            }//新增背调信息
-        }
-        if (count($add)>0){
-            $r3 = $backGroundMsg->addAll($add);//若存在新增背调信息则写入数据库
-        }
-        $map['Id'] = array('in',$msgId);
-        $date = $backGroundMsg->where($map)->field('id,date')->select();//获取录入日期
-        foreach ($update as $k => $v){
-            foreach ($date as $key => $val){
-                if ($val['id']=$v['id']){
-                    $update[$k]['date'] = (int)$val['date'];
+                $v['date'] = $time;
+                $rAdd = $backGroundMsg->add($v);
+                if($rAdd){
+                    $status++;
                 }
             }
-            $update[$k]['s_id'] = $id;
         }
-        $r1 = $backGroundMsg->where($map)->setField($delete);//删除更改前背调信息
-        $r2 = $backGroundMsg->addAll($update);//添加新的背调信息
-        //更新员工信息表背调字段
-        unset($where);
-        $where['s_id'] = $id;
-        $where['delete'] = 0;
-        $bdmsg = $backGroundMsg->where($where)->field('id')->select();
-        $data['update'] = $time;
-        $r4 = $backGround->where('Id ='.$id)->setField($data);
-        $this->updatemsg($bdmsg,$id);
-        if($r1||$r2||$r3||$bgmsgDatas==''||$r4){
+        $sIds = $backGroundMsg->where(array('s_id'=>$id,'delete'=>'0'))->field('Id')->select();
+        foreach ($sIds as $k => $v){
+            $msgId[]=array('msg'=>$v['Id']);
+        }
+        $msgId = json_encode($msgId);
+        $data['msg_id'] = $msgId;
+        $rBg = $backGround->where(array('Id'=>$id))->setField($data);
+        if($rBg){
+            $status++;
+        }
+        if($status>0){
             echo '{"status":"true"}';
-        }else{
+        }
+        else{
             echo '{"status":"false"}';
         }
     }
@@ -319,7 +312,7 @@ class BackgroundAction extends Action
             move_uploaded_file($file['tmp_name'][0],$upload_path_name);
             $data = $this->excelToArray($complete_path);
             if($data=='false'){
-                echo 'false';
+                echo '{"type":"false"}';
             }else{
                 //数据拆分取得$back,$msg
                 foreach ($data as $key => $val){
@@ -367,6 +360,7 @@ class BackgroundAction extends Action
                 for($i =count($sIdList)-1;$i>=0;$i--){
                     $sId[] = $sIdList[$i];
                 }
+                //筛选空数据
                 foreach ($msg as $k => $v){
                     foreach ($v as $key => $val){
                         $msgCheckNull = 0;
@@ -375,7 +369,7 @@ class BackgroundAction extends Action
                                 $msgCheckNull++;
                             }
                         }
-                        if($msgCheckNull==0){
+                        if($msgCheckNull<13){
                             $val[] = $sId[$k]['Id'];
                             $msgData[] = $val;
                         }
@@ -389,6 +383,7 @@ class BackgroundAction extends Action
                     }
                     $backMsgData[] = $list;
                 }
+
                 $backGroundMsg->startTrans();
                 $result2 = $backGroundMsg->addAll($backMsgData);
                 if(!$result2){
@@ -407,7 +402,6 @@ class BackgroundAction extends Action
                     $idList2["msg_id"] = $msgId[$i*2+1]['Id'];
                     $msgIdData[$i] =array($idList1,$idList2);
                 }*/
-                dump($msgId);
                 foreach ($msgId as $k =>$v){
                     foreach ($msgId as $key => $val){
                         if($v['s_id']==$val['s_id']&&$v['Id ']!=$val['Id']){
@@ -436,10 +430,10 @@ class BackgroundAction extends Action
                 }
                 if($backGroundCheck>0){
                     $backGround->rollback();
-                    echo 'false';
+                    echo '{"type":"false"}';
                 }else{
                     $backGround->commit();
-                    echo 'success';
+                    echo '{"type":"success"}';
                 }
             }
         }
@@ -964,11 +958,15 @@ class BackgroundAction extends Action
         $field = 'name,jobs,tocompany,industry,bz,Id';
         $search = I('get.search');
         $type = I('get.type')==null?'name':I('get.type');
-        if($type!='name'||$type!='tocompany'||$type!='jobs'||$type!='industry'){
-            $type = 'name';
+        $typeAllow=array('name','tocompany','industry','jobs');
+        $typeN = 0;
+        foreach($typeAllow as $k =>$v){
+            if($v==$type){
+                $typeN++;
+            }
         }
         $by = 'Id';
-        if($search!=''){
+        if($search!=''&&$typeN>0){
             $where[$type]=array('like','%'.$search.'%');
             $count = $exBackground->where($where)->count();
             $data = $exBackground->where($where)->field($field)->page($p.','.$listrows)->order($by)->select();
@@ -1054,7 +1052,7 @@ class BackgroundAction extends Action
                 $work = $exBackgroundWork->where('c_id ='.$id['Id'])->field('c_id',true)->select();
                 $exBackgroundWitness = M('external_background_witness');
                 foreach ($work as $k => $v){
-                    $witness = $exBackgroundWitness->where('w_id ='.$v['Id'])->field('Id',true)->select();
+                    $witness = $exBackgroundWitness->where('w_id ='.$v['Id'])->select();
                     $work[$k]['witness'] = $witness;
                 }
                 $data['bg'] = $bg;
@@ -1144,6 +1142,7 @@ class BackgroundAction extends Action
                     }
                 }
             }
+
             //写入数据库
             $exBackground = M('external_background');
             $exBackgroundEdu = M('external_background_edu');
@@ -1196,8 +1195,8 @@ class BackgroundAction extends Action
                     }else{
                         $exBackgroundWork->rollback();
                     }
-                    $this->ajaxReturn('true');
                 }
+                $this->ajaxReturn('true');
             }else{
                 $exBackground->rollback();
             }
@@ -1302,6 +1301,7 @@ class BackgroundAction extends Action
                         $exWitnessResult = $exWitness->addAll($witness);
                         if($exWitnessResult){
                             $exWitness->commit();
+                            echo '{"type":"success"}';
                         }else{
                             $exWitness->rollback();
                         }
@@ -1309,7 +1309,7 @@ class BackgroundAction extends Action
                 }
             }
             else{
-                echo 'false';
+                echo '{"type":"false"}';
             }
         }
     }
@@ -1422,6 +1422,71 @@ class BackgroundAction extends Action
     }
     //对外背调修改保存
     function save_one(){
-
+        $data = I('post.');
+        switch ($data['type']){
+            case 'bg':
+                $exBackGround = M('external_background');
+                $map['name'] = $data['data'][0];
+                $map['idnumber'] = $data['data'][5];
+                $result = $exBackGround->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'edu':
+                $exBackGroundEdu = M('external_background_edu');
+                $keys  = array('school','edu_type','major','edu_num','msgbelong','enter_time','out_time');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k+1];
+                }
+                $result = $exBackGroundEdu->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'qc':
+                $exBackGroundQc = M('external_background_qc');
+                $keys = array('qc_type','qc_num','get_time','out_time','qc_source');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k+1];
+                }
+                $result = $exBackGroundQc->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'work':
+                $exBackGroundWork = M('external_background_work');
+                $keys = array('company','enter_time','out_time','position');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k];
+                }
+                $result = $exBackGroundWork->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'witness':
+                $exBackGroundWitness = M('external_background_witness');
+                $keys = array('witness','position','tel','relationship','method','performance','badrecord','reason','train','compete');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k];
+                }
+                $result = $exBackGroundWitness->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+        }
     }
 }

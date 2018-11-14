@@ -120,28 +120,28 @@
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">行业：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="industry" name="industry" value="" text-type="name" maxlength="30" >
+                                        <input class="form-control required" type="text" id="industry" name="industry" value="" text-type="name" maxlength="20" >
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">事业部：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="department" name="department" value="" text-type="name">
+                                        <input class="form-control required" type="text" id="department" name="department" value="" text-type="name" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">学校：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="school" name="school" value="" text-type="name">
+                                        <input class="form-control required" type="text" id="school" name="school" value="" text-type="name" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">专业：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="major" name="major" value="" text-type="name" maxlength="30">
+                                        <input class="form-control required" type="text" id="major" name="major" value="" text-type="name" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
@@ -184,17 +184,17 @@
                                             '<input class="form-control text-center timerinput required out_time" data-name="out_time" id="workyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})"  readonly="readonly" text-type="name" name="outtime'+bgaddcount+'" style="height: 32px;">' +
                                             '</div>' +
                                             '</div>' +
-                                            '<div class="form-group" > <label class="col-sm-2 control-label">公司名称<span class="text-danger">*</span></label> <div class="col-sm-9"> <input class="form-control required company_name"  data-name="company_name" type="text" id="companyName" text-type="name" name="companyName'+bgaddcount+'" maxlength="30" /> </div> </div>' +
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">职位<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required position" data-name="position" type="text" id="jobPosition" text-type="name" name="jobPosition'+bgaddcount+'" maxlength="30" > </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">证明人姓名<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required witness" data-name="witness" type="text" text-type="name"  name="witness'+bgaddcount+'" maxlength="12" > </div> <label class="col-sm-2 control-label ">与背调人关系<span class="text-danger" style="position:relative;left:10px;top:-17px">*</span></label> <div class="col-sm-4"> <input class="form-control witness_add required" data-name="witness_add" type="text" id="depart" text-type="name" name="guanxi"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人电话<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required tel" data-name="tel" type="text" text-type="name" name="tel'+bgaddcount+'" maxlength="11" > </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人地址<span class="text-danger">*</span></label> <div class="col-sm-9"> <input class="form-control required adress" data-name="adress" type="text" text-type="name" name="address'+bgaddcount+'" maxlength="50" > </div> </div>'+
+                                            '<div class="form-group" > <label class="col-sm-2 control-label">公司名称<span class="text-danger">*</span></label> <div class="col-sm-9"> <input maxlength="20" class="form-control required company_name"  data-name="company_name" type="text" id="companyName" text-type="name" name="companyName'+bgaddcount+'" maxlength="30" /> </div> </div>' +
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">职位<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="20" class="form-control required position" data-name="position" type="text" id="jobPosition" text-type="name" name="jobPosition'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">证明人姓名<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="12" class="form-control required witness" data-name="witness" type="text" text-type="name"  name="witness'+bgaddcount+'" maxlength="12" > </div> <label class="col-sm-2 control-label ">与背调人关系<span class="text-danger" style="position:relative;left:10px;top:-17px">*</span></label> <div class="col-sm-4"> <input class="form-control witness_add required" data-name="witness_add" type="text" id="depart" text-type="name" name="guanxi'+bgaddcount+'"> </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人电话<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="11" class="form-control required tel" data-name="tel" type="text" text-type="name" name="tel'+bgaddcount+'" maxlength="11" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人地址<span class="text-danger">*</span></label> <div class="col-sm-9"> <input maxlength="30" class="form-control required adress" data-name="adress" type="text" text-type="name" name="address'+bgaddcount+'" maxlength="50" > </div> </div>'+
                                             '<div class="form-group"> <label class="col-sm-3 control-label">背调者在职期间工作情况：</label> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">工作表现<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required work_performance" data-name="work_performance" type="text" text-type="name"  name="performance'+bgaddcount+'" maxlength="30" > </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">优缺点<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required bz" data-name="bz" type="text" text-type="name" name="yqd'+bgaddcount+'" maxlength="30" > </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">离职原因<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required reasons" data-name="reasons" text-type="name" type="text" name="reason'+bgaddcount+'" maxlength="30" > </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">健康状况和不良记录<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required health" data-name="health" text-type="name" type="text" name="jl'+bgaddcount+'" maxlength="30" > </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">薪资<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required salary" data-name="salary" type="text" text-type="name" name="xz'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">工作表现<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="40" class="form-control required work_performance" data-name="work_performance" type="text" text-type="name"  name="performance'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">优缺点<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="40" class="form-control required bz" data-name="bz" type="text" text-type="name" name="yqd'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">离职原因<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="40" class="form-control required reasons" data-name="reasons" text-type="name" type="text" name="reason'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">健康状况和不良记录<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="40" class="form-control required health" data-name="health" text-type="name" type="text" name="jl'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">薪资<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="20" class="form-control required salary" data-name="salary" type="text" text-type="name" name="xz'+bgaddcount+'" maxlength="30" > </div> </div>'+
                                             '<button class="btn col-sm-offset-2 btn-danger btn-xs del" onclick="del(this)" type="button">删除</button>'+
                                             '</div>';
                                         $(".panel-footer").before(html);
@@ -384,7 +384,7 @@
                     });
                 }
             }else{
-                alert_crm("请输入完整信息！");
+                /*alert_crm("请输入完整信息！");*/
             }
         });
         $(document).on("click",".btnclosee",function (event) {

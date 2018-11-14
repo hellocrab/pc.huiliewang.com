@@ -90,7 +90,7 @@
 <div class="sPopupDiv none" id="jobdiv" style="float:left;"></div>
 <!--职位类别end-->
 <div class="wrapper wrapper-content animated fadeIn col-md-12">
-    <form class="form-horizontal" id="form" role="form" action="{:U('background/add')}" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" id="form" role="form" action="{:U('background/add')}" method="post" enctype="multipart/form-data" autocomplete="off">
         <input type='hidden' name="r" <present name="r">value="{$r}"</present>/>
         <input type='hidden' name="module" <present name="r">value="{$module}"</present>/>
         <input type='hidden' name="id" <present name="r">value="{$model_id}"</present>/>
@@ -110,48 +110,10 @@
                             </div>
                             <div  id="resume-search-form" class="col-md-8 add_body_form" style="margin-left:15px;">
                                 <input type="hidden" name="url" />
-                                <!--<div class="form-group">
-                                    <label class="col-md-3 control-label">上传简历：</label>
-                                    <div class="col-md-7" style="margin-left: -15px;">
-                                        <div class="submitfiles"></div>
-                                        <div class="col-md-4">
-                                            <select class="form-control required" id="standard"  aria-required="true">
-                                                <option value="原始简历">原始简历</option>
-                                                <option value="推荐报告">推荐报告</option>
-                                                <option value="背景调查">背景调查</option>
-                                                <option value="其他资料">其他资料</option>
-                                            </select>
-                                            <span id="standardTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="btn btn-default fileinput-button" style="width: 100%;">
-                                                <span>上传简历</span>
-                                                <input type="file"  id="uploadresume"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="btn btn-default textdialog" style="width: 100%;">
-                                                <span>粘贴简历</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
-                                </div>-->
-
-                                <!-- <div class="form-group">
-                                     <label class="col-md-3 control-label">加入项目：</label>
-                                     <div class="col-md-6">
-                                         <input type="hidden" name="business_id" id="business_id" value="{:I('pro_id')}">
-                                         <input class="form-control" placeholder="请点击选择需要加入的项目" type="text" name="business_name" id="business_name" value="{$project_name}" readonly="true" style="cursor:pointer;" title="请点击选择">
-                                     </div>
-                                 </div>-->
-
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">姓名：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="name" name="name" value="{$data[s_name]}">
+                                        <input class="form-control required" type="text" id="name" name="name" value="{$data[s_name]}" maxlength="12">
                                         <span id="sketchTip"style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -159,28 +121,28 @@
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">行业：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="industry" name="industry" value="{$data[industry]}">
+                                        <input class="form-control required" type="text" id="industry" name="industry" value="{$data[industry]}" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">事业部：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="department" name="department" value="{$data['department']}">
+                                        <input class="form-control required" type="text" id="department" name="department" value="{$data['department']}" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">学校：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="school" name="school" value="{$data['school']}">
+                                        <input class="form-control required" type="text" id="school" name="school" value="{$data['school']}" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">专业：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="major" name="major" value="{$data['major']}">
+                                        <input class="form-control required" type="text" id="major" name="major" value="{$data['major']}" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
@@ -206,51 +168,47 @@
                                     <label class="col-md-3 control-label">背调：</label>
                                     <div class="col-lg-9">
                                         <div class="panel panel-default bglist" style="padding-top: 20px;margin-right: 20px;margin-top: 10px;">
-                                            <volist name="msglist" id="vo">
+                                            <volist name="msglist" id="vo" key="k">
                                             <div style="background: none;border-bottom: 1px solid #ddd;padding-bottom: 10px;padding-top: 10px" class="panel-body3" data-id="{$vo['Id']}">
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>
                                                     <div class="col-sm-9">
-                                                        <input value="{$vo['enter_time']}" data-name="enter_time" class="form-control text-center timerinput required enter_time" id="workyearFrom" type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;"><span>-&gt;</span>
-                                                        <input value="{$vo['out_time']}" data-name="out_time" class="form-control text-center timerinput required out_time" id="workyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})"  readonly="readonly" name="workExp[endtime][]" style="height: 32px;">
-                                                        <!--<div class="checkbox checkbox-info checkbox-inline" style="vertical-align: baseline;">
-                                                            <input type="checkbox">
-                                                            <label>目前在职<span class="text-danger">*</span></label>
-                                                        </div>-->
+                                                        <input value="{$vo['enter_time']}" data-name="enter_time" class="form-control text-center timerinput required enter_time"  type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="newenter_time{$k}" style="height: 32px;"><span>-&gt;</span>
+                                                        <input value="{$vo['out_time']}" data-name="out_time" class="form-control text-center timerinput required out_time" id="workyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})"  readonly="readonly"  name="newout_time{$k}" style="height: 32px;">
                                                     </div>
                                                 </div>
                                                 <div class="form-group" >
                                                     <label class="col-sm-2 control-label">公司名称<span class="text-danger">*</span></label>
                                                     <div class="col-sm-9">
-                                                        <input value="{$vo['company_name']}" data-name="company_name" class="form-control required company_name" type="text" id="companyName" name="workExp[company][]"/>
+                                                        <input value="{$vo['company_name']}" data-name="company_name" class="form-control required company_name" type="text" id="companyName"  name="newcompany{$k}" maxlength="20"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">职位<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['position']}" data-name="position" class="form-control required position" type="text" id="jobPosition" name="workExp[jobPosition][]">
+                                                        <input value="{$vo['position']}" data-name="position" class="form-control required position" type="text"  name="newposition{$k}" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">证明人姓名<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['witness']}" data-name="witness" class="form-control required witness" type="text"  name="witness">
+                                                        <input value="{$vo['witness']}" data-name="witness" class="form-control required witness" type="text"  name="newwitness{$k}" maxlength="20">
                                                     </div>
                                                     <label class="col-sm-2 control-label">与背调人关系<span class="text-danger"></span></label>
                                                     <div class="col-sm-4">
-                                                        <input value="{$vo['witness_add']}" data-name="witness_add" class="form-control witness_add" type="text" name="witness_add">
+                                                        <input value="{$vo['witness_add']}" data-name="witness_add" class="form-control required witness_add" type="text" name="newrelationship{$k}" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">联系人电话<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['tel']}" data-name="tel" class="form-control required tel" type="text" name="tel">
+                                                        <input value="{$vo['tel']}" data-name="tel" class="form-control required tel" type="text" name="newtel{$k}" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">联系人地址<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['adress']}" data-name="adress" class="form-control required adress" type="text" name="tel">
+                                                        <input value="{$vo['adress']}" data-name="adress" class="form-control required adress" type="text" name="newaddress{$k}" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -259,31 +217,31 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">工作表现<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['work_performance']}" data-name="work_performance" class="form-control required work_performance" type="text"  name="performance">
+                                                        <input value="{$vo['work_performance']}" data-name="work_performance" class="form-control required work_performance" type="text"  name="newperformance{$k}" maxlength="40">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">优缺点<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['bz']}" data-name="bz" class="form-control required bz" type="text" name="bz">
+                                                        <input value="{$vo['bz']}" data-name="bz" class="form-control required bz" type="text" name="newyqd{$k}" maxlength="40">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">离职原因<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['reasons']}" data-name="reasons"  class="form-control required reasons" type="text" name="reasons">
+                                                        <input value="{$vo['reasons']}" data-name="reasons"  class="form-control required reasons" type="text" name="newreason{$k}" maxlength="40">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">健康状况和不良记录<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['health']}" data-name="health" class="form-control required health" type="text"  name="healthy">
+                                                        <input value="{$vo['health']}" data-name="health" class="form-control required health" type="text"  name="newrecord{$k}" maxlength="40">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">薪资<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['salary']}" data-name="salary" class="form-control required salary" type="text" id="jobPosition" name="workExp[jobPosition][]">
+                                                        <input value="{$vo['salary']}" data-name="salary" class="form-control required salary" type="text" id="jobPosition" name="newsalary{$k}" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <button class="btn col-sm-offset-2 btn-danger btn-xs bddelete" style="margin-bottom: 10px" type="button" onclick="bgdelete(this)">删除</button>
@@ -296,30 +254,35 @@
                                     </div>
                                 </div>
                                 <script>
+                                    function del(data) {
+                                        $(data).parent().remove();
+                                    }
+                                    var bgaddcount = 0;
                                     function bgadd() {
                                         var html ='';
-                                        html ='<div style="background: none;border-top:1px solid #ddd;padding-top: 10px" class="panel-body3 bdmsg">' +
+                                        html ='<div style="background: none;border-bottom:1px solid #ddd;padding-bottom: 10px;padding-top:10px" class="panel-body3 bdmsg">' +
                                             '<div class="form-group">' +
                                             '<label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>' +
                                             '<div class="col-sm-9">' +
-                                            '<input class="form-control text-center timerinput required enter_time" data-name="enter_time" id="workyearFrom"  type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;">->' +
-                                            '<input class="form-control text-center timerinput required out_time" data-name="out_time" id="workyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})"  readonly="readonly" name="workExp[endtime][]" style="height: 32px;">' +
+                                            '<input class="form-control text-center timerinput required enter_time" data-name="enter_time" id="workyearFrom"  type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" text-type="name" name="intime'+bgaddcount+'" style="height: 32px;">->' +
+                                            '<input class="form-control text-center timerinput required out_time" data-name="out_time" id="workyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})"  readonly="readonly" text-type="name" name="outtime'+bgaddcount+'" style="height: 32px;">' +
                                             '</div>' +
                                             '</div>' +
-                                            '<div class="form-group" > <label class="col-sm-2 control-label">公司名称<span class="text-danger">*</span></label> <div class="col-sm-9"> <input class="form-control required company_name"  data-name="company_name" type="text" id="companyName" name="workExp[company][]"/> </div> </div>' +
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">职位<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required position" data-name="position" type="text" id="jobPosition" name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">证明人姓名<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required witness" data-name="witness" type="text"  name="workExp[jobPosition][]"> </div> <label class="col-sm-2 control-label ">与背调人关系<span class="text-danger"></span></label> <div class="col-sm-4"> <input class="form-control witness_add" data-name="witness_add" type="text" id="depart" name="workExp[depart][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人电话<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required tel" data-name="tel" type="text" name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人地址<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required adress" data-name="adress" type="text" name="workExp[jobPosition][]"> </div> </div>'+
+                                            '<div class="form-group" > <label class="col-sm-2 control-label">公司名称<span class="text-danger">*</span></label> <div class="col-sm-9"> <input class="form-control required company_name"  data-name="company_name" type="text" id="companyName" text-type="name" name="companyName'+bgaddcount+'" maxlength="30" /> </div> </div>' +
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">职位<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required position" data-name="position" type="text" id="jobPosition" text-type="name" name="jobPosition'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">证明人姓名<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required witness" data-name="witness" type="text" text-type="name"  name="witness'+bgaddcount+'" maxlength="12" > </div> <label class="col-sm-2 control-label ">与背调人关系<span class="text-danger" style="position:relative;left:10px;top:-17px">*</span></label> <div class="col-sm-4"> <input class="form-control witness_add required" data-name="witness_add" type="text" id="depart" text-type="name" name="guanxi'+bgaddcount+'"> </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人电话<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required tel" data-name="tel" type="text" text-type="name" name="tel'+bgaddcount+'" maxlength="11" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人地址<span class="text-danger">*</span></label> <div class="col-sm-9"> <input class="form-control required adress" data-name="adress" type="text" text-type="name" name="address'+bgaddcount+'" maxlength="50" > </div> </div>'+
                                             '<div class="form-group"> <label class="col-sm-3 control-label">背调者在职期间工作情况：</label> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">工作表现<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required work_performance" data-name="work_performance" type="text"  name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">优缺点<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required bz" data-name="bz" type="text" name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">离职原因<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required reasons" data-name="reasons" type="text" name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">健康状况和不良记录<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required health" data-name="health" type="text" name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">薪资<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required salary" data-name="salary" type="text" name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<button class="btn col-sm-offset-2 btn-danger btn-xs bddelete" onclick="bgdelete(this)" style="margin-bottom:10px" type="button">删除</button>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">工作表现<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required work_performance" data-name="work_performance" type="text" text-type="name"  name="performance'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">优缺点<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required bz" data-name="bz" type="text" text-type="name" name="yqd'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">离职原因<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required reasons" data-name="reasons" text-type="name" type="text" name="reason'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">健康状况和不良记录<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required health" data-name="health" text-type="name" type="text" name="jl'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">薪资<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required salary" data-name="salary" type="text" text-type="name" name="xz'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<button class="btn col-sm-offset-2 btn-danger btn-xs del" onclick="del(this)" type="button">删除</button>'+
                                             '</div>';
                                         $(".panel-footer").before(html);
+                                        bgaddcount++;
                                     }
                                     function bgdelete(data){
                                         var id = $(data).parent().attr("data-id");
@@ -449,66 +412,71 @@
     });
     $(document).ready(function(){
         $('#bgsave').off().on("click",function(){
-            var id = $('#sid').attr("data-id");
-            var name = $("#name").val().trim();
-            var industry = $("#industry").val().trim();
-            var department = $("#department").val().trim();
-            var school = $("#school").val().trim();
-            var major = $("#major").val().trim();
-            var education = $("#education").val().trim();
-            var data = {"s_name":name,"industry":industry,"department":department,"school":school,"major":major,"education":education};
-            var bgmsgs = new Array();
-            $(".panel-body3").each(function () {
-                var bgmsg ={};
-                $(this).children("div").each(function () {
-                    $(this).children("div").children("input").each(function () {
-                        if($(this).val()) {
-                            bgmsg[$(this).attr("data-name")] = $(this).val().trim();
-                        }else{
-                            return false;
-                            alert_crm("请输入完整信息！");
-                        }
-                    })
-                });
-                if(JSON.stringify(bgmsg) != "{}"){
-                    if($(this).attr("data-id")){
-                        bgmsg['id']=$(this).attr("data-id");
-                        bgmsgs.push(bgmsg);
-                    }else{
-                        bgmsgs.push(bgmsg);
-                    }
-                }else{
-                    return false;
-                }
-            });
-            if(JSON.stringify(bgmsgs) != "{}"){
-                data.bgmsgs = bgmsgs;
-            }
-            $.ajax({
-                url:'/index.php?m=background&a=save&id='+id,
-                type:'post',
-                dataType:'json',
-                data:data,
-                success:function (success) {
-                    if(success.status=='true'){
-                        swal({
-                            title:'修改成功',
-                            text:'点击确定返回！',
-                            type:"success",
-                            confirmButtonText: "确定"
-                        },function (isConfirm) {
-                            if(isConfirm){
-                                window.location='/index.php?m=background&a=index';
+            var goon = isNull();
+            if(goon==0){
+                var id = $('#sid').attr("data-id");
+                var name = $("#name").val().trim();
+                var industry = $("#industry").val().trim();
+                var department = $("#department").val().trim();
+                var school = $("#school").val().trim();
+                var major = $("#major").val().trim();
+                var education = $("#education").val().trim();
+                var data = {"s_name":name,"industry":industry,"department":department,"school":school,"major":major,"education":education};
+                var bgmsgs = new Array();
+                $(".panel-body3").each(function () {
+                    var bgmsg ={};
+                    $(this).children("div").each(function () {
+                        $(this).children("div").children("input").each(function () {
+                            if($(this).val()) {
+                                bgmsg[$(this).attr("data-name")] = $(this).val().trim();
+                            }else{
+                                return false;
+                                alert_crm("请输入完整信息！");
                             }
-                        });
+                        })
+                    });
+                    if(JSON.stringify(bgmsg) != "{}"){
+                        if($(this).attr("data-id")){
+                            bgmsg['id']=$(this).attr("data-id");
+                            bgmsgs.push(bgmsg);
+                        }else{
+                            bgmsgs.push(bgmsg);
+                        }
                     }else{
+                        return false;
+                    }
+                });
+                if(JSON.stringify(bgmsgs) != "{}"){
+                    data.bgmsgs = bgmsgs;
+                }
+                $.ajax({
+                    url:'/index.php?m=background&a=save&id='+id,
+                    type:'post',
+                    dataType:'json',
+                    data:data,
+                    success:function (success) {
+                        if(success.status=='true'){
+                            swal({
+                                title:'修改成功',
+                                text:'点击确定返回！',
+                                type:"success",
+                                confirmButtonText: "确定"
+                            },function (isConfirm) {
+                                if(isConfirm){
+                                    window.location='/index.php?m=background&a=index';
+                                }
+                            });
+                        }else{
+                            alert_crm("没有修改任何信息！");
+                        }
+                    },
+                    error:function () {
                         alert_crm("修改失败！");
                     }
-                },
-                error:function () {
-                    alert_crm("修改失败！");
-                }
-            })
+                })
+            }else{
+                /*alert_crm("请输入完整信息！");*/
+            }
         });
         $(document).on("click",".btnclosee",function (event) {
             var width=$("#right-sidebar-log").width();

@@ -221,7 +221,13 @@
         url: '/index.php?m=background&a=ex_excel_upload',
         maxFileSize: 100,
         allowed: ['xls', 'xlsx'],
-        maxNumberOfFiles:1
+        maxNumberOfFiles:1,
+        responseValidation:{
+            validationKey: 'type',
+            resultKey: 'success',
+            success: 'success',
+            error: 'error'
+        }
     });
 </script>
 
