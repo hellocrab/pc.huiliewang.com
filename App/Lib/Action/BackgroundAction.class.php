@@ -524,7 +524,7 @@ class BackgroundAction extends Action
         $table->addRow();
         $table->addCell(2500)->addText('身份信息核实',array('宋体'=>true,'size'=>14));
         $table->addCell(6500);
-        $table->addRow();
+        $table->addRow(); 
         $table->addCell(2500)->addText('学历信息核实',array('宋体'=>true,'size'=>14));
         $table->addCell(6500);
         $table->addRow();
