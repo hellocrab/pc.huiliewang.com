@@ -474,6 +474,7 @@
         $('.closeimg').on('click',function () {
             $(this).parent().parent().parent().fadeOut(500);
             $('.backgroundDiv').remove();
+            window.location='/index.php?m=background&a=index_external';
         });
         $('.msg-edit').on('click',function () {
             var obj =$(this);
@@ -498,7 +499,21 @@
                         if(success==0){
                             alert_crm("未修改！");
                         }else if(success>0||success=='success'){
-                            alert_crm("修改成功!");
+                            swal({
+                                title: "修改成功",
+                                text: "是否继续修改？",
+                                type: "success",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "确定",
+                                cancelButtonText:'返回列表',
+                                closeOnConfirm:true,
+                                closeOnCancel:false
+                            },function (isConfirm) {
+                                if(!isConfirm){
+                                    window.location='index.php?m=background&a=index_external';
+                                }
+                            })
                         }
                         text.attr('readonly','readonly');
                         text.css({'border':'none','height':'22px'});

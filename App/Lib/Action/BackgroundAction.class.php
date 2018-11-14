@@ -1054,7 +1054,7 @@ class BackgroundAction extends Action
                 $work = $exBackgroundWork->where('c_id ='.$id['Id'])->field('c_id',true)->select();
                 $exBackgroundWitness = M('external_background_witness');
                 foreach ($work as $k => $v){
-                    $witness = $exBackgroundWitness->where('w_id ='.$v['Id'])->field('Id',true)->select();
+                    $witness = $exBackgroundWitness->where('w_id ='.$v['Id'])->select();
                     $work[$k]['witness'] = $witness;
                 }
                 $data['bg'] = $bg;
@@ -1422,6 +1422,71 @@ class BackgroundAction extends Action
     }
     //对外背调修改保存
     function save_one(){
-
+        $data = I('post.');
+        switch ($data['type']){
+            case 'bg':
+                $exBackGround = M('external_background');
+                $map['name'] = $data['data'][0];
+                $map['idnumber'] = $data['data'][5];
+                $result = $exBackGround->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'edu':
+                $exBackGroundEdu = M('external_background_edu');
+                $keys  = array('school','edu_type','major','edu_num','msgbelong','enter_time','out_time');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k+1];
+                }
+                $result = $exBackGroundEdu->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'qc':
+                $exBackGroundQc = M('external_background_qc');
+                $keys = array('qc_type','qc_num','get_time','out_time','qc_source');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k+1];
+                }
+                $result = $exBackGroundQc->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'work':
+                $exBackGroundWork = M('external_background_work');
+                $keys = array('company','enter_time','out_time','position');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k];
+                }
+                $result = $exBackGroundWork->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'witness':
+                $exBackGroundWitness = M('external_background_witness');
+                $keys = array('witness','position','tel','relationship','method','performance','badrecord','reason','train','compete');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k];
+                }
+                $result = $exBackGroundWitness->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+        }
     }
 }
