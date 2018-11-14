@@ -449,7 +449,7 @@
                 if(event.type=='mouseenter'){
                     $(this).parent().children('img').fadeIn();
                 }else{
-                    $(this).parent().children('img').fadeOut(500);
+                    $(this).parent().children('img').fadeOut(2000);
                 }
             }else{
                 $(this).parent().children('img').fadeOut();
@@ -472,8 +472,8 @@
             }
         });
         $('.closeimg').on('click',function () {
-            $(this).parent().parent().parent().fadeOut(500);
-            $('.backgroundDiv').remove();
+           /* $(this).parent().parent().parent().fadeOut(500);
+            $('.backgroundDiv').remove();*/
             window.location='/index.php?m=background&a=index_external';
         });
         $('.msg-edit').on('click',function () {
