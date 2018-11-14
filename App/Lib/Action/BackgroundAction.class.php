@@ -400,7 +400,6 @@ class BackgroundAction extends Action
                     $idList2["msg_id"] = $msgId[$i*2+1]['Id'];
                     $msgIdData[$i] =array($idList1,$idList2);
                 }*/
-                dump($msgId);
                 foreach ($msgId as $k =>$v){
                     foreach ($msgId as $key => $val){
                         if($v['s_id']==$val['s_id']&&$v['Id ']!=$val['Id']){
@@ -429,10 +428,10 @@ class BackgroundAction extends Action
                 }
                 if($backGroundCheck>0){
                     $backGround->rollback();
-                    echo 'false';
+                    echo '{"type":"false"}';
                 }else{
                     $backGround->commit();
-                    echo 'success';
+                    echo '{"type":"success"}';
                 }
             }
         }
@@ -1299,6 +1298,7 @@ class BackgroundAction extends Action
                         $exWitnessResult = $exWitness->addAll($witness);
                         if($exWitnessResult){
                             $exWitness->commit();
+                            echo '{"type":"success"}';
                         }else{
                             $exWitness->rollback();
                         }
@@ -1306,7 +1306,7 @@ class BackgroundAction extends Action
                 }
             }
             else{
-                echo 'false';
+                echo '{"type":"false"}';
             }
         }
     }
