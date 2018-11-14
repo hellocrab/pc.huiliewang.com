@@ -957,11 +957,15 @@ class BackgroundAction extends Action
         $field = 'name,jobs,tocompany,industry,bz,Id';
         $search = I('get.search');
         $type = I('get.type')==null?'name':I('get.type');
-        if($type!='name'||$type!='tocompany'||$type!='jobs'||$type!='industry'){
-            $type = 'name';
+        $typeAllow=array('name','tocompany','industry','jobs');
+        $typeN = 0;
+        foreach($typeAllow as $k =>$v){
+            if($v==$type){
+                $typeN++;
+            }
         }
         $by = 'Id';
-        if($search!=''){
+        if($search!=''&&$typeN>0){
             $where[$type]=array('like','%'.$search.'%');
             $count = $exBackground->where($where)->count();
             $data = $exBackground->where($where)->field($field)->page($p.','.$listrows)->order($by)->select();

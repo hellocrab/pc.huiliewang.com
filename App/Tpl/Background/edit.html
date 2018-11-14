@@ -113,7 +113,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">姓名：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="name" name="name" value="{$data[s_name]}">
+                                        <input class="form-control required" type="text" id="name" name="name" value="{$data[s_name]}" maxlength="12">
                                         <span id="sketchTip"style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -121,28 +121,28 @@
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">行业：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="industry" name="industry" value="{$data[industry]}">
+                                        <input class="form-control required" type="text" id="industry" name="industry" value="{$data[industry]}" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">事业部：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="department" name="department" value="{$data['department']}">
+                                        <input class="form-control required" type="text" id="department" name="department" value="{$data['department']}" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">学校：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="school" name="school" value="{$data['school']}">
+                                        <input class="form-control required" type="text" id="school" name="school" value="{$data['school']}" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">专业：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="major" name="major" value="{$data['major']}">
+                                        <input class="form-control required" type="text" id="major" name="major" value="{$data['major']}" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
@@ -180,35 +180,35 @@
                                                 <div class="form-group" >
                                                     <label class="col-sm-2 control-label">公司名称<span class="text-danger">*</span></label>
                                                     <div class="col-sm-9">
-                                                        <input value="{$vo['company_name']}" data-name="company_name" class="form-control required company_name" type="text" id="companyName"  name="newcompany{$k}"/>
+                                                        <input value="{$vo['company_name']}" data-name="company_name" class="form-control required company_name" type="text" id="companyName"  name="newcompany{$k}" maxlength="20"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">职位<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['position']}" data-name="position" class="form-control required position" type="text"  name="newposition{$k}">
+                                                        <input value="{$vo['position']}" data-name="position" class="form-control required position" type="text"  name="newposition{$k}" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">证明人姓名<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['witness']}" data-name="witness" class="form-control required witness" type="text"  name="newwitness{$k}">
+                                                        <input value="{$vo['witness']}" data-name="witness" class="form-control required witness" type="text"  name="newwitness{$k}" maxlength="20">
                                                     </div>
                                                     <label class="col-sm-2 control-label">与背调人关系<span class="text-danger"></span></label>
                                                     <div class="col-sm-4">
-                                                        <input value="{$vo['witness_add']}" data-name="witness_add" class="form-control required witness_add" type="text" name="newrelationship{$k}">
+                                                        <input value="{$vo['witness_add']}" data-name="witness_add" class="form-control required witness_add" type="text" name="newrelationship{$k}" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">联系人电话<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['tel']}" data-name="tel" class="form-control required tel" type="text" name="newtel{$k}">
+                                                        <input value="{$vo['tel']}" data-name="tel" class="form-control required tel" type="text" name="newtel{$k}" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">联系人地址<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['adress']}" data-name="adress" class="form-control required adress" type="text" name="newaddress{$k}">
+                                                        <input value="{$vo['adress']}" data-name="adress" class="form-control required adress" type="text" name="newaddress{$k}" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -217,31 +217,31 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">工作表现<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['work_performance']}" data-name="work_performance" class="form-control required work_performance" type="text"  name="newperformance{$k}">
+                                                        <input value="{$vo['work_performance']}" data-name="work_performance" class="form-control required work_performance" type="text"  name="newperformance{$k}" maxlength="40">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">优缺点<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['bz']}" data-name="bz" class="form-control required bz" type="text" name="newyqd{$k}">
+                                                        <input value="{$vo['bz']}" data-name="bz" class="form-control required bz" type="text" name="newyqd{$k}" maxlength="40">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">离职原因<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['reasons']}" data-name="reasons"  class="form-control required reasons" type="text" name="newreason{$k}">
+                                                        <input value="{$vo['reasons']}" data-name="reasons"  class="form-control required reasons" type="text" name="newreason{$k}" maxlength="40">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">健康状况和不良记录<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['health']}" data-name="health" class="form-control required health" type="text"  name="newrecord{$k}">
+                                                        <input value="{$vo['health']}" data-name="health" class="form-control required health" type="text"  name="newrecord{$k}" maxlength="40">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">薪资<span class="text-danger">*</span></label>
                                                     <div class="col-sm-3">
-                                                        <input value="{$vo['salary']}" data-name="salary" class="form-control required salary" type="text" id="jobPosition" name="newsalary{$k}">
+                                                        <input value="{$vo['salary']}" data-name="salary" class="form-control required salary" type="text" id="jobPosition" name="newsalary{$k}" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <button class="btn col-sm-offset-2 btn-danger btn-xs bddelete" style="margin-bottom: 10px" type="button" onclick="bgdelete(this)">删除</button>
