@@ -269,7 +269,7 @@
                                                             <span class="ygid">{$vo}</span>
                                                         </td>
                                                         <elseif condition="$k eq 'name'"/>
-                                                        <td class="bdcount hxr_detail" >
+                                                        <td class="bdcount hxr_detail">
                                                             <span data-id="{$val['Id']}">{$vo}</span>
                                                         </td>
                                                         <else/>
@@ -1134,6 +1134,7 @@
                             ids=encodeURIComponent(ids);
                             window.open('/index.php?m=background&a=readyOutPutt&ids='+ids);
                         }
+                        swal("数据导出成功！","","success");
                         //remainTime();
                         /* $.ajax({
                          url:'{:U("background/output")}',
@@ -1210,7 +1211,6 @@
                     console.log(data);
                     swal("温馨提示！", "状态修改成功！", "success");
                     window.location=location;
-
                 },
                 error:function () {
 
