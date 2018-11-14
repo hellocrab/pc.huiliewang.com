@@ -56,7 +56,7 @@ class BackgroundAction extends Action
                     $map['date'] = array('like',$search.'%');
                     break;
                 case 'company':
-                    $map['company_name'] = array('like',$search.'%');
+                    $map['company_name'] = array('like','%'.$search.'%');
                     $sIds = $backGroundMsg->where($map)->where($delete)->field('s_id')->select();
                     foreach ($sIds as $k => $v){
                         $sid[] = $v['s_id'];
