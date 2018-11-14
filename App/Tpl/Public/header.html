@@ -918,9 +918,18 @@
                     }
                 }
             })
+            function isNull() {
+                var i = 0;
+                $(document).find('.required').each(function () {
+                    if($(this).css('display')!='none'&&$(this).val()==''){
+                        i++;
+                    }
+                })
+				return i;
+            }
             function searchtype(data) {
                 $('#s-type').attr('value',$(data).val());
-                var html = '<input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd HH:mm:ss &quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" />';
+                var html = '<input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd HH:mm:ss &quot;,maxDate:&quot;%y-%M-%d&quot;})" readonly="readonly" />';
                 $('.short_search').remove();
                 switch ($(data).val()){
 					case 'all':
@@ -929,6 +938,12 @@
                         $('.short_search').removeAttr('onFocus');
                         $('.short_search').removeAttr('readonly');
 					    break;
+                    case 'name':
+                        $('#s-type').after(html);
+                        $('.short_search').attr('placeholder','请输入人才姓名');
+                        $('.short_search').removeAttr('onFocus');
+                        $('.short_search').removeAttr('readonly');
+                        break;
 					case 'time':
                         $('#s-type').after(html);
                         $('.short_search').attr('placeholder','请选择日期');
@@ -945,7 +960,18 @@
                         $('.short_search').removeAttr('onFocus');
                         $('.short_search').removeAttr('readonly');
                         break;
+					case 'jobs':
+                        $('#s-type').after(html);
+                        $('.short_search').attr('placeholder','请输入岗位');
+                        $('.short_search').removeAttr('onFocus');
+                        $('.short_search').removeAttr('readonly');
+					    break;
+                    case 'tocompany':
+                        $('#s-type').after(html);
+                        $('.short_search').attr('placeholder','请输入公司名称');
+                        $('.short_search').removeAttr('onFocus');
+                        $('.short_search').removeAttr('readonly');
+                        break;
 				}
-
             }
 		</script>

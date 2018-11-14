@@ -162,37 +162,18 @@
                                             <elseif condition="$type eq 'company'"/><input type="text" style="width:160px;" placeholder="请输入公司名称"  class="form-control short_search " name="search" value="{$search}" data-type="all" />
                                             <elseif condition="$type eq 'industry'"/><input type="text" style="width:160px;" placeholder="请输入行业名称"  class="form-control short_search " name="search" value="{$search}" data-type="all" />
                                             <elseif condition="$type eq ''"/><input type="text" style="width:160px;" placeholder="请输入行业名称"  class="form-control short_search " name="search" value="{$search}" data-type="all" />
-                                            <elseif condition="$type eq 'time'"/><input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="{$search}" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd &quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" />
+                                            <elseif condition="$type eq 'time'"/><input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd HH:mm:ss &quot;,maxDate:&quot;%y-%M-%d&quot;})" readonly="readonly" />
                                         </if>
                                         <span class="input-group-btn">
 										    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-search"></i></button>
 									    </span>
                                     </div>
-                                    <!--&nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
-
                                 </li>&nbsp;&nbsp;
-                                <!--<div class="btn-group ">
-                                    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
 
-                                        <if condition = "checkPerByAction('product','excelexport')">
-                                            <li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出2</a></li>
-                                        </if>
-                                    </ul>
-                                </div>-->
                             </ul>
                         </form>
                         <ul class="breadcrum pull-right" style="margin-bottom: 0px">
                             <li>
-                                <!--<div class="input-group">
-                                    <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-bottom:5px;">
-                                        <option value="{:U('background/index','by=all&'.$by_parameter)}" <if condition = "$by eq 'all'">selected="selected"</if>>全部员工</option>
-                                        <option value="{:U('background/index','by=time&'.$by_parameter)}" <if condition = "$by eq 'time'">selected="selected"</if>>录入时间</option>
-                                        <option value="{:U('background/index','by=company&'.$by_parameter)}" <if condition = "$by eq 'company'">selected="selected"</if>>公司名称</option>
-                                        <option value="{:U('background/index','by=industry&'.$by_parameter)}" <if condition = "$by eq 'industry'">selected="selected"</if>>所属行业
-                                    </select>
-                                </div>-->
                                 <div class="input-group">
                                     <select class="form-control" onchange="searchtype(this)" style="margin-bottom:5px;">
                                         <option value="all" <if condition = "$type eq 'all'">selected="selected"</if>>全部员工</option>
@@ -242,7 +223,7 @@
                                                 </td>
                                                 <td style="display: none">id</td>
                                                 <td>姓名</td>
-                                                <td>事业部</td>
+                                                <td style="padding-left: 35px">事业部</td>
                                                 <td>学校</td>
                                                 <td>专业</td>
                                                 <td>学历</td>
@@ -274,7 +255,10 @@
                                                             <td>
                                                                 <span>{$vo|date="Y-m-d",###}</span>
                                                             </td>
-
+                                                            <elseif condition="$k eq 'department'"/>
+                                                            <td style="padding-left: 35px">
+                                                                <span>{$vo}</span>
+                                                            </td>
                                                             <else/>
                                                             <td>
                                                                 <span>{$vo}</span>

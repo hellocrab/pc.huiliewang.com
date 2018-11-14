@@ -131,7 +131,7 @@
 <div class="sPopupDiv none" id="jobdiv" style="float:left;"></div>
 <!--职位类别end-->
 <div class="wrapper wrapper-content animated fadeIn col-md-12">
-    <form class="form-horizontal" id="form" role="form" action="{:U('background/add')}" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" id="form" role="form" action="{:U('background/add')}" method="post" enctype="multipart/form-data" autocomplete="off">
         <input type='hidden' name="r" <present name="r">value="{$r}"</present>/>
         <input type='hidden' name="module" <present name="r">value="{$module}"</present>/>
         <input type='hidden' name="id" <present name="r">value="{$model_id}"</present>/>
@@ -151,44 +151,6 @@
                             </div>
                             <div  id="resume-search-form" class="col-md-8 add_body_form" style="margin-left:15px;">
                                 <input type="hidden" name="url" />
-                                <!--<div class="form-group">
-                                    <label class="col-md-3 control-label">上传简历：</label>
-                                    <div class="col-md-7" style="margin-left: -15px;">
-                                        <div class="submitfiles"></div>
-                                        <div class="col-md-4">
-                                            <select class="form-control required" id="standard"  aria-required="true">
-                                                <option value="原始简历">原始简历</option>
-                                                <option value="推荐报告">推荐报告</option>
-                                                <option value="背景调查">背景调查</option>
-                                                <option value="其他资料">其他资料</option>
-                                            </select>
-                                            <span id="standardTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="btn btn-default fileinput-button" style="width: 100%;">
-                                                <span>上传简历</span>
-                                                <input type="file"  id="uploadresume"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="btn btn-default textdialog" style="width: 100%;">
-                                                <span>粘贴简历</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
-                                </div>-->
-
-                                <!-- <div class="form-group">
-                                     <label class="col-md-3 control-label">加入项目：</label>
-                                     <div class="col-md-6">
-                                         <input type="hidden" name="business_id" id="business_id" value="{:I('pro_id')}">
-                                         <input class="form-control" placeholder="请点击选择需要加入的项目" type="text" name="business_name" id="business_name" value="{$project_name}" readonly="true" style="cursor:pointer;" title="请点击选择">
-                                     </div>
-                                 </div>-->
-
                                 <div class="form-group tb-1">
                                     <label class="col-md-3 control-label">姓名：</label>
                                     <div class="col-md-6">
@@ -293,7 +255,7 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">毕业时间：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control text-center  required out_time edu-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;width: 100%">
+                                                <input class="form-control text-center  required out_time edu-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="outtime" style="height: 32px;width: 100%">
                                             </div>
                                             <div class="col-md-3" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_1sure4" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
@@ -317,7 +279,7 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">信息来源：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control required msgbelong edu-input" type="text" value="">
+                                                <input class="form-control required msgbelong edu-input" type="text" value="" name="xxly">
                                             </div>
                                             <div class="col-md-3" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_1sure6"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
@@ -346,7 +308,7 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">获得时间：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control text-center timerinput required enter_time qc-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;width: 100%">
+                                                <input class="form-control text-center timerinput required enter_time qc-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="hdsj" style="height: 32px;width: 100%">
                                             </div>
                                             <div class="col-md-3" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_2sure"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
@@ -358,7 +320,7 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">有效时间：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control text-center timerinput required out_time qc-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;width: 100%">
+                                                <input class="form-control text-center timerinput required out_time qc-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="yxsj" style="height: 32px;width: 100%">
                                             </div>
                                             <div class="col-md-3" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_2sure1"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
@@ -370,7 +332,7 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">证书类型：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control required promisenum qc-input" type="text" value="">
+                                                <input class="form-control required promisenum qc-input" type="text" value="" name="zsnx">
                                             </div>
                                             <div class="col-md-3" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_2sure2"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
@@ -382,7 +344,7 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">信息来源：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control required msgbelong qc-input" type="text" value="">
+                                                <input class="form-control required msgbelong qc-input" type="text" value="" name="ly">
                                             </div>
                                             <div class="col-md-3" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_2sure3"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
@@ -394,7 +356,7 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">证书编号：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control required promisenum qc-input" type="text" value="">
+                                                <input class="form-control required promisenum qc-input" type="text" value="" name="bh">
                                             </div>
                                             <div class="col-md-3" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_2sure4" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
@@ -422,7 +384,7 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">公司名称：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control required work-input " type="text" value="">
+                                                <input class="form-control required work-input " type="text" value="" name="gsmc">
                                             </div>
                                             <div class="col-md-3" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="sur_1" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
@@ -434,7 +396,7 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">入职时间：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control text-center timerinput required enter_time work-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;width: 100%">
+                                                <input class="form-control text-center timerinput required enter_time work-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="rzsj" style="height: 32px;width: 100%">
                                             </div>
                                             <div class="col-md-3" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="sur_2" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
@@ -446,7 +408,7 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">离职时间：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control text-center timerinput required out_time work-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;width: 100%">
+                                                <input class="form-control text-center timerinput required out_time work-input" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="lzsj" style="height: 32px;width: 100%">
                                             </div>
                                             <div class="col-md-3" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="sur_3" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
@@ -458,7 +420,7 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">任职职位：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control required promisenum work-input" type="text" value="">
+                                                <input class="form-control required promisenum work-input" type="text" value="" name="rzzw">
                                             </div>
                                             <div class="col-md-3" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="sur_4" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
@@ -474,61 +436,61 @@
                                                 <div class="col-md-10 col-md-push-2 bottom-10">
                                                     <lable class="col-md-5 col-md-pull-3 control-label">姓名：</lable>
                                                     <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input">
+                                                        <input type="text" class="form-control required witness-input" name="wxm">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-10 col-md-push-2 bottom-10">
                                                     <lable class="col-md-5 col-md-pull-3 control-label">岗位：</lable>
                                                     <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input">
+                                                        <input type="text" class="form-control required witness-input" name="wgw">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-10 col-md-push-2 bottom-10">
                                                     <lable class="col-md-5 col-md-pull-3 control-label">电话：</lable>
                                                     <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input">
+                                                        <input type="text" class="form-control required witness-input" name="wtel">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-10 col-md-push-2 bottom-10">
                                                     <lable class="col-md-5 col-md-pull-3 control-label">与被调查人关系：</lable>
                                                     <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input">
+                                                        <input type="text" class="form-control required witness-input" name="wgx">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-10 col-md-push-2 bottom-10">
                                                     <lable class="col-md-5 col-md-pull-3 control-label">调查方式：</lable>
                                                     <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input">
+                                                        <input type="text" class="form-control required witness-input" name="wdcfs">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-10 col-md-push-2 bottom-10">
                                                     <lable class="col-md-5 col-md-pull-3 control-label">在职期间工作情况：</lable>
                                                     <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input">
+                                                        <input type="text" class="form-control required witness-input" name="wqk">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-10 col-md-push-2 bottom-10">
                                                     <lable class="col-md-5 col-md-pull-3 control-label">是否有违纪违规/不良记录：</lable>
                                                     <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input">
+                                                        <input type="text" class="form-control required witness-input" name="wjl">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-10 col-md-push-2 bottom-10">
                                                     <lable class="col-md-5 col-md-pull-3 control-label">离职原因：</lable>
                                                     <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input">
+                                                        <input type="text" class="form-control required witness-input" name="wreason">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-10 col-md-push-2 bottom-10">
                                                     <lable class="col-md-5 col-md-pull-3 control-label">有否培训协议：</lable>
                                                     <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input">
+                                                        <input type="text" class="form-control required witness-input" name="wpxxy">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-10 col-md-push-2 bottom-10">
                                                     <lable class="col-md-5 col-md-pull-3 control-label">有否竞业协议：</lable>
                                                     <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input">
+                                                        <input type="text" class="form-control required witness-input" name="wjzxy">
                                                         <!--<input type="text" class="form-control required witness-input data-for" style="display: none">-->
                                                     </div>
                                                 </div>
@@ -544,7 +506,7 @@
                                 <div  class="form-group tb-1">
                                     <label class="col-md-3 control-label">备注：</label>
                                     <div class="col-md-7">
-                                        <textarea name="bz" id="bz" cols="30" rows="5" class="form-control required consultant"></textarea>
+                                        <textarea name="bz" id="bz" cols="30" rows="5" class="form-control consultant" maxlength="200"></textarea>
                                     </div>
                                 </div>
 
@@ -599,8 +561,8 @@
             <div class="clearfix" id="tfoot_page">
                 <div class="ibox-content" style="border-top: none;">
                     <div class="col-sm-offset-2" style="text-align:center;margin-left:0px;">
-                        <input class="btn btn-primary commit" value="保存" type="button">
-                        <input class="btn btn-default" type="button" onclick="javascript:history.go(-1)" value="{:L('RETURN')}"/>
+                        <button class="btn btn-primary commit" value="保存">保存</button>
+                        <input class="btn btn-default" type="button" onclick="window.location='/index.php?m=background&a=index_external'" value="{:L('RETURN')}"/>
                     </div>
                 </div>
             </div>
@@ -674,24 +636,11 @@
         });
         $("input[value='0']").parent().parent().next().children("input[type='text']").val('sure');
         //检测是否填写所有文本框，若已填写完毕则提交
-        $(".commit").on("click",function () {
+        $(".commit").off().on("click",function () {
             //验证
-            var check = 0;
-            var input = $(document).find("input[type='text']");
-            input.each(function () {
-                var display = $(this).css("display");
-                if(display!="none"){
-                    if($(this).val()==""){
-                        check = 1;
-                        $(this).addClass("error");
-                        if($(this).next().length<1){
-                            $(this).after('<label class="error"><i class="fa fa-times-circle"></i>  不能为空！</label>');
-                        }
-                    }
-                }
-            });
+            var goon = isNull();
             //提交或返回未填写提示
-            if(check==0){
+            if(goon==0){
                 var files = $(document).find("input[type='file']");
                 var formFile = new FormData();
                 //取得图片
@@ -850,6 +799,7 @@
         $(".radiobtn").on("click",function () {
             if($(this).children('input').attr('value')==1){
                 $(this).parent().next().children("input").css("display","block");
+                $(this).parent().next().children("input").val("请输入实际信息！");
             }else{
                 $(this).parent().next().children("input").css("display","none");
             }
