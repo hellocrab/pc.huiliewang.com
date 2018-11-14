@@ -167,7 +167,7 @@ class BackgroundAction extends Action
             $where['s_id'] = $id;
             $where['delete'] = 0;
             $data = $backGround->where("Id =".$id)->find();
-            $msgList = $backGroundMsg->where($where)->select();
+            $msgList = $backGroundMsg->where($where)->order('Id')->select();
             $this->assign('id',$id);
             $this->assign('data',$data);
             $this->assign('msglist',$msgList);
@@ -184,45 +184,38 @@ class BackgroundAction extends Action
         $time = time();
         $backGround = M('background');
         $backGroundMsg = M('background_msg');
-        unset($data['bgmsgs']);
+        $status = 0;
         foreach ($bgmsgDatas as $k => $v){
-            if (count($v)>13){
-                $v['update'] = $time;
-                $msgId[] = $v['id'];//需要更新背调信息ID集合
-                $update[$k] = $v;
-            }//需要更新的背调信息
-            else{
-                $v['date'] = $time;
+            if($v['id']){
+                $msgMap['Id'] = $v['id'];
+                unset($v['id']);
+                $rUpdate = $backGroundMsg->where($msgMap)->setField($v);
+                if($rUpdate){
+                    $status++;
+                }
+            }else{
                 $v['s_id'] = $id;
-                $add[] = $v;
-            }//新增背调信息
-        }
-        if (count($add)>0){
-            $r3 = $backGroundMsg->addAll($add);//若存在新增背调信息则写入数据库
-        }
-        $map['Id'] = array('in',$msgId);
-        $date = $backGroundMsg->where($map)->field('id,date')->select();//获取录入日期
-        foreach ($update as $k => $v){
-            foreach ($date as $key => $val){
-                if ($val['id']=$v['id']){
-                    $update[$k]['date'] = (int)$val['date'];
+                $v['date'] = $time;
+                $rAdd = $backGroundMsg->add($v);
+                if($rAdd){
+                    $status++;
                 }
             }
-            $update[$k]['s_id'] = $id;
         }
-        $r1 = $backGroundMsg->where($map)->setField($delete);//删除更改前背调信息
-        $r2 = $backGroundMsg->addAll($update);//添加新的背调信息
-        //更新员工信息表背调字段
-        unset($where);
-        $where['s_id'] = $id;
-        $where['delete'] = 0;
-        $bdmsg = $backGroundMsg->where($where)->field('id')->select();
-        $data['update'] = $time;
-        $r4 = $backGround->where('Id ='.$id)->setField($data);
-        $this->updatemsg($bdmsg,$id);
-        if($r1||$r2||$r3||$bgmsgDatas==''||$r4){
+        $sIds = $backGroundMsg->where(array('s_id'=>$id,'delete'=>'0'))->field('Id')->select();
+        foreach ($sIds as $k => $v){
+            $msgId[]=array('msg'=>$v['Id']);
+        }
+        $msgId = json_encode($msgId);
+        $data['msg_id'] = $msgId;
+        $rBg = $backGround->where(array('Id'=>$id))->setField($data);
+        if($rBg){
+            $status++;
+        }
+        if($status>0){
             echo '{"status":"true"}';
-        }else{
+        }
+        else{
             echo '{"status":"false"}';
         }
     }
