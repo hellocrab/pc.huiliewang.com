@@ -352,7 +352,7 @@
     /*增添用户计划*/
     function add_user(obj){
         $("#dep_modal").parent().removeClass("modal-lg").addClass("modal-md");
-        var url = "{:U('user/user_add')}";
+        var url = "{:U('return/add_new')}";
         $('#Modal').modal('show');
         $('#dep_modal').load(url);
     }

@@ -12,6 +12,10 @@ class ReturnAction extends Action
         $this->assign("title",$title);
     }
 
+    public function add_new(){
+        $this->display();
+    }
+
     public function index(){
         $this->timeSearch();
         //$this->assign('daterange',$this->timePlug());
