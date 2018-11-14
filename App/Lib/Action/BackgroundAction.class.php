@@ -312,7 +312,7 @@ class BackgroundAction extends Action
             move_uploaded_file($file['tmp_name'][0],$upload_path_name);
             $data = $this->excelToArray($complete_path);
             if($data=='false'){
-                echo 'false';
+                echo '{"type":"false"}';
             }else{
                 //数据拆分取得$back,$msg
                 foreach ($data as $key => $val){
@@ -360,6 +360,7 @@ class BackgroundAction extends Action
                 for($i =count($sIdList)-1;$i>=0;$i--){
                     $sId[] = $sIdList[$i];
                 }
+                //筛选空数据
                 foreach ($msg as $k => $v){
                     foreach ($v as $key => $val){
                         $msgCheckNull = 0;
@@ -368,7 +369,7 @@ class BackgroundAction extends Action
                                 $msgCheckNull++;
                             }
                         }
-                        if($msgCheckNull==0){
+                        if($msgCheckNull<13){
                             $val[] = $sId[$k]['Id'];
                             $msgData[] = $val;
                         }
@@ -382,6 +383,7 @@ class BackgroundAction extends Action
                     }
                     $backMsgData[] = $list;
                 }
+
                 $backGroundMsg->startTrans();
                 $result2 = $backGroundMsg->addAll($backMsgData);
                 if(!$result2){
