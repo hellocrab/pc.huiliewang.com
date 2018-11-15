@@ -934,7 +934,7 @@
             }
             function searchtype(data) {
                 $('#s-type').attr('value',$(data).val());
-                var html = '<input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd HH:mm:ss &quot;,maxDate:&quot;%y-%M-%d&quot;})" readonly="readonly" />';
+                var html = '<input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd  &quot;,maxDate:&quot;%y-%M-%d&quot;})" readonly="readonly" />';
                 $('.short_search').remove();
                 switch ($(data).val()){
 					case 'all':
@@ -991,7 +991,6 @@
                 /*let html ='<label id="'+$(obj).attr("id")+'-error" class="error" for="'+$(obj).attr("id")+'" style="display: inline-block;"><i class="fa fa-times-circle">'+msg+'</i></label>';*/
                 let span = '<span class="spanerror"><i class="fa fa-times-circle"></i>&nbsp;'+msg+'</span>';
                 let text = $(obj).val();
-                console.log(text);
 				if(text!=''){
 				    if($(obj).parent().find('label').length>0){
                         $(obj).parent().find('span').remove();

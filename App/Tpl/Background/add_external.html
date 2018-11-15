@@ -189,7 +189,7 @@
                                 <div  class="form-group tb-1">
                                     <label class="col-md-3 control-label">身份证号：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required idnumber" type="text" id="idnumber" name="idnumber" onchange="checkValue('idnum',this)" onkeydown="checkValue('idnum',this)" onkeyup="checkValue('idnum',this)" maxlength="18">
+                                        <input class="form-control required idnumber" type="text" id="idnumber" name="idnumber"  onkeydown="checkValue('idnum',this)" onkeyup="checkValue('idnum',this)" maxlength="18">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                     <div class="col-md-2 fileinput">
@@ -243,14 +243,14 @@
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">入学时间：</lable>
                                             <div class="col-md-4">
-                                                <input class="form-control text-center  required edu-input " data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="newentertime" style="height: 32px;width: 100%">
+                                                <input class="form-control text-center  required edu-input " id="eduenter" data-name="enter_time"  type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;%y-%M-%d&quot;})" readonly="readonly" name="newentertime" style="height: 32px;width: 100%">
                                             </div>
                                             <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                 <label class="radiobtn"><input type="radio" name="is_1sure3" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure3" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure3" value="2"><img src="/Public/img/notsure.png" alt=""></label>
                                             </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newentertime" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" style="display: none"></div>
+                                            <div class="col-md-3"><input type="text"  class="form-control required edu-input" name="newentertime" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" style="display: none"></div>
                                         </div>
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">毕业时间：</lable>
@@ -262,7 +262,7 @@
                                                 <label class="radiobtn"><input type="radio" name="is_1sure4" value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                 <label class="radiobtn"><input type="radio" name="is_1sure4" value="2"><img src="/Public/img/notsure.png" alt=""></label>
                                             </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newouttime" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" style="display: none"></div>
+                                            <div class="col-md-3"><input type="text" id="eduout" class="form-control required edu-input" name="newouttime" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:#F{$dp.$D(&quot;eduenter&quot;)}})" readonly="readonly" style="display: none"></div>
                                         </div>
                                         <div class="col-md-12 bottom-10">
                                             <lable class="col-md-2 control-label">证书编号：</lable>
