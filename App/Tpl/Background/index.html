@@ -210,29 +210,29 @@
                         <div class="ibox-content clearfix" id="table_container" style="z-index: 1;">
                             <form id="form1" action="" method="Post" style="position:relative;">
                                 <div id="table_div" class="nicescroll">
-                                    <table class="table table-hover table-striped table_thead_fixed" id="tab_Test3">
-                                        <if condition="$data eq null">
-                                            <div style="background-color:#fff;"><include file="Public:nodata" /></div>
-                                            <else/>
-                                            <tr id="childNodes_num" class="tabTh">
-                                                <td style="max-width: 60px;width:74px;padding:0 10px 0 7px;">
-                                                    <div class="checkbox checkbox-primary">
-                                                        <input type="checkbox" class="check_all"/>
-                                                        <label for=""></label>
-                                                    </div>
-                                                </td>
-                                                <td style="display: none">id</td>
-                                                <td>姓名</td>
-                                                <td style="padding-left: 35px">事业部</td>
-                                                <td>学校</td>
-                                                <td>专业</td>
-                                                <td>学历</td>
-                                                <td>录入时间</td>
-                                                <td>背调信息数</td>
-                                                <td>行业</td>
-                                                <td>操作</td>
-                                            </tr>
-                                            <tbody>
+                                <table class="table table-hover table-striped table_thead_fixed" id="tab_Test3">
+                                    <if condition="$data eq null">
+                                        <div style="background-color:#fff;"><include file="Public:nodata" /></div>
+                                     <else/>
+                                        <tr id="childNodes_num" class="tabTh">
+                                            <td style="max-width: 60px;width:74px;padding:0 10px 0 7px;">
+                                                <div class="checkbox checkbox-primary">
+                                                    <input type="checkbox" class="check_all"/>
+                                                    <label for=""></label>
+                                                </div>
+                                            </td>
+                                            <!--<td style="display: none">id</td>-->
+                                            <td>姓名</td>
+                                            <td style="padding-left: 35px">事业部</td>
+                                            <td>学校</td>
+                                            <td>专业</td>
+                                            <td>学历</td>
+                                            <td>录入时间</td>
+                                            <td>背调信息数</td>
+                                            <td>行业</td>
+                                            <td>操作</td>
+                                        </tr>
+                                        <tbody>
                                             <volist name="data" id="val" key="k">
                                                 <tr class="controls_tr">
                                                     <td>
@@ -241,209 +241,25 @@
                                                             <label for=""></label>
                                                         </div>
                                                     </td>
-                                                    <foreach name="val" item="vo" key="k">
-                                                        <if condition="$k eq 'Id' ">
-                                                            <td style="display: none">
-                                                                <span class="ygid">{$vo}</span>
-                                                            </td>
-                                                            <elseif condition="$k eq 'msg_id'"/>
-                                                            <td class="bdcount">
-                                                                <span >{$vo|count}</span>
-                                                            </td>
-
-                                                            <elseif condition="$k eq 'date'" />
-                                                            <td>
-                                                                <span>{$vo|date="Y-m-d",###}</span>
-                                                            </td>
-                                                            <elseif condition="$k eq 'department'"/>
-                                                            <td style="padding-left: 35px">
-                                                                <span>{$vo}</span>
-                                                            </td>
-                                                            <else/>
-                                                            <td>
-                                                                <span>{$vo}</span>
-                                                            </td>
-                                                        </if>
-                                                    </foreach>
+                                                    <td><span>{$val['s_name']}</span></td>
+                                                    <td><span>{$val['department']}</span></td>
+                                                    <td><span>{$val['school']}</span></td>
+                                                    <td><span>{$val['major']}</span></td>
+                                                    <td><span>{$val['education']}</span></td>
+                                                    <td><span>{$val['date']|date='Y-m-d',###}</span></td>
+                                                    <td class="bdcount"><span>{$val['msg_id']|count}</span></td>
+                                                    <td><span>{$val['industry']}</span></td>
                                                     <td>
                                                         <span class="label label-primary editstatus openbg" style="cursor: pointer" data-id="{$val['Id']}">查看 </span>
                                                         <span class="label label-primary editstatus bgedit" style="cursor: pointer;margin-left: 10px" data-id="{$val['Id']}">修改 </span>
                                                         <span class="label label-danger editstatus bgdelete" style="cursor: pointer;margin-left: 10px" data-id="{$val['Id']}">删除 </span>
                                                     </td>
                                                 </tr>
-                                                <!--
-                                                                                                <tr class="controls_tr"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调</td></tr><tr><td>公司名: <span>南方新华</span></td><td>入职时间：<span>2018-8</span></td><td>离职时间：<span>2018-9</span></td><td>职位：<span>提莫</span></td></tr><tr><td>证明人：<span>职位</span></td><td>与证明人：<span>关系</span></td><td>联系电话：<span>职位</span></td><td>联系地址：<span>职位</span></td></tr><tr><td>薪资：<span>123</span></td><td>工作表现：<span>职位</span></td><td>优缺点：<span>职位</span></td><td>离职原因：<span>关系</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>职位</span></td></tr></table></td></tr>
-                                                -->
                                             </volist>
-                                            <tbody>
-                                        </if>
-                                    </table>
+                                        <tbody>
+                                    </if>
+                                </table>
                                 </div>
-                                <script>
-                                    function timestampToTime(timestamp) {
-                                        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                                        var Y = date.getFullYear() + '-';
-                                        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-                                        var D = date.getDate() + ' ';
-                                        var h = date.getHours() + ':';
-                                        var m = date.getMinutes() + ':';
-                                        var s = date.getSeconds();
-                                        return Y+M+D+h+m+s;
-                                    }
-                                    timestampToTime(1403058804);
-                                    function shouqi(data) {
-                                        var count = $(data).parent().parent().children(".bdcount").children("span").text();
-                                        var tr = $(data).parent().parent();
-                                        for(let i=0;i<count;i++){
-                                            tr.next().remove();
-                                        }
-                                        $(data).prev().css('display','inline');
-                                        $(data).remove();
-                                    }
-                                    $(document).ready(function () {
-                                        $(".openbg").on("click",function () {
-                                            var id = {"s_id":$(this).attr('data-id')};
-                                            var obj = $(this);
-                                            $.ajax({
-                                                url:"/index.php?m=background&a=bdopen",
-                                                type:"post",
-                                                async:true,
-                                                data:id,
-                                                dataType:"json",
-                                                success:function (database) {
-                                                    if(!database){alert_crm('该员工还没有背调信息！')}
-                                                    else{
-                                                        for(let i = 0;i<database.length;i++){
-                                                            var html='<tr class="controls_tr"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调'+(i+1)+'</td></tr><tr><td>公司名: <span>'+database[i]['company_name']+'</span></td><td>入职时间：<span>'+database[i]['enter_time']+'</span></td><td>离职时间：<span>'+database[i]['out_time']+'</span></td><td>职位：<span>'+database[i]['position']+'</span></td></tr><tr><td>证明人：<span>'+database[i]['witness']+'</span></td><td>与证明人：<span>'+database[i]['witness_add']+'</span></td><td>联系电话：<span>'+database[i]['tel']+'</span></td><td>联系地址：<span>'+database[i]['adress']+'</span></td></tr><tr><td>薪资：<span>'+database[i]['salary']+'</span></td><td>工作表现：<span>'+database[i]['work_performance']+'</span></td><td>优缺点：<span>'+database[i]['bz']+'</span></td><td>离职原因：<span>'+database[i]['reasons']+'</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>'+database[i]['health']+'</span></td></tr></table></td></tr>';
-                                                            obj.parent().parent().after(html);
-                                                            /*if(i%2==0){
-                                                             var html='<tr class="controls_tr bgtbs"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调'+i+'</td></tr><tr><td>公司名: <span>'+database[i]['company_name']+'</span></td><td>入职时间：<span>2018-8</span></td><td>离职时间：<span>2018-9</span></td><td>职位：<span>提莫</span></td></tr><tr><td>证明人：<span>职位</span></td><td>与证明人：<span>关系</span></td><td>联系电话：<span>职位</span></td><td>联系地址：<span>职位</span></td></tr><tr><td>薪资：<span>123</span></td><td>工作表现：<span>职位</span></td><td>优缺点：<span>职位</span></td><td>离职原因：<span>关系</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>职位</span></td></tr></table></td></tr>';
-                                                             $(this).parent().parent().after(html);
-                                                             }else{
-                                                             var html='<tr class="controls_tr bgtbs"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调'+i+'</td></tr><tr><td>公司名: <span>'+database[i]['company_name']+'</span></td><td>入职时间：<span>2018-8</span></td><td>离职时间：<span>2018-9</span></td><td>职位：<span>提莫</span></td></tr><tr><td>证明人：<span>职位</span></td><td>与证明人：<span>关系</span></td><td>联系电话：<span>职位</span></td><td>联系地址：<span>职位</span></td></tr><tr><td>薪资：<span>123</span></td><td>工作表现：<span>职位</span></td><td>优缺点：<span>职位</span></td><td>离职原因：<span>关系</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>职位</span></td></tr></table></td></tr>';
-                                                             $(this).parent().parent().after(html);
-                                                             }*/
-                                                        }
-                                                        obj.after('<span class="label label-primary editstatus" style="cursor: pointer;margin-left: 10px" onclick="shouqi(this)">收起 </span>');
-                                                        obj.css('display','none');
-                                                    }
-                                                },
-                                                error:function (error) {
-                                                    //alert_crm(error)
-                                                }
-                                            })
-                                        });
-                                        $(".bgdelete").on("click",function () {
-                                            var id = $(this).attr("data-id");
-                                            id = {"id":id,"type":"all"};
-                                            swal({
-                                                    title: "您确定要删除员工信息吗？",
-                                                    text: "删除后将无法恢复，请谨慎操作！",
-                                                    type: "warning",
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: "#DD6B55",
-                                                    confirmButtonText: "是的，我要删除！",
-                                                    cancelButtonText:'让我再考虑一下…',
-                                                    closeOnConfirm:false,
-                                                    closeOnCancel:false
-                                                },
-                                                function(isConfirm){
-                                                    if (isConfirm) {
-                                                        $.ajax({
-                                                            url:"/index.php?m=background&a=delete",
-                                                            type:"post",
-                                                            async:true,
-                                                            data:id,
-                                                            success: function (data) {
-                                                                if (data.status == 1) {
-                                                                    swal({
-                                                                        title:'删除成功',
-                                                                        text:'您已经永久删除该条信息！',
-                                                                        type:"success",
-                                                                        confirmButtonText: "确定"
-                                                                    },function (isConfirm) {
-                                                                        if(isConfirm){
-                                                                            location.reload();
-                                                                        }
-                                                                    });
-                                                                } else {
-                                                                    swal({
-                                                                        title: "操作失败！",
-                                                                        text:data.info,
-                                                                        type: "error"
-                                                                    })
-                                                                    return false;
-                                                                }
-                                                            },
-                                                            dataType: 'json'
-                                                        });
-                                                    } else {
-                                                        swal("已取消","您取消了删除操作！","error");
-                                                    }
-                                                });
-                                        });
-                                    });
-                                    $(".bgedit").on("click",function () {
-                                        var id = $(this).attr("data-id");
-                                        id = parseInt(id);
-                                        window.location.href="/index.php?m=background&a=edit&id="+id;
-                                    });
-                                    $('#delete').click(function(){
-                                        var id_array = new Array();
-                                        $("input.check_list:checked").each(function(){
-                                            id_array.push($(this).val());
-                                        });
-                                        if(id_array.length == 0){
-                                            alert_crm('{:L('YOU_HAVE_NOT_CHOSEN_ANY_CUSTOMERS')}');
-                                            return false;
-                                        }
-                                        swal({
-                                                title: "您确定要删除员工信息吗？",
-                                                text: "删除后将无法恢复，请谨慎操作！",
-                                                type: "warning",
-                                                showCancelButton: true,
-                                                confirmButtonColor: "#DD6B55",
-                                                confirmButtonText: "是的，我要删除！",
-                                                cancelButtonText:'让我再考虑一下…',
-                                                closeOnConfirm:false,
-                                                closeOnCancel:false
-                                            },
-                                            function(isConfirm){
-                                                if (isConfirm) {
-                                                    $.ajax({
-                                                        type:'post',
-                                                        url: "{:U('background/deleteall')}",
-                                                        data: {customer_id: id_array},
-                                                        async: false,
-                                                        success: function (data) {
-                                                            if (data.status == 1) {
-                                                                swal({
-                                                                    title:'删除成功',
-                                                                    text:'您已经永久删除该条信息！',
-                                                                    type:"success",
-                                                                    confirmButtonText: "确定"
-                                                                },function (isConfirm) {
-                                                                    if(isConfirm){
-                                                                        location.reload();
-                                                                    }
-                                                                });
-                                                            } else {
-                                                                swal({
-                                                                    title: "操作失败！",
-                                                                    text:data.info,
-                                                                    type: "error"
-                                                                })
-                                                                return false;
-                                                            }
-                                                        },
-                                                        dataType: 'json'
-                                                    });
-                                                } else {
-                                                    swal("已取消","您取消了删除操作！","error");
-                                                }
-                                            });
-                                    })
-                                </script>
                                 <div id="tfoot_div" class="clearfix">
                                     <div class="clearfix" id="tfoot_page">
                                         <if condition="$fields_search || $_GET['field']">
@@ -460,6 +276,171 @@
         </div>
     </div>
 </div>
+<script>
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        var D = date.getDate() + ' ';
+        var h = date.getHours() + ':';
+        var m = date.getMinutes() + ':';
+        var s = date.getSeconds();
+        return Y+M+D+h+m+s;
+    }
+    timestampToTime(1403058804);
+    function shouqi(data) {
+        var count = $(data).parent().parent().children(".bdcount").children("span").text();
+        var tr = $(data).parent().parent();
+        for(let i=0;i<count;i++){
+            tr.next().remove();
+        }
+        $(data).prev().css('display','inline');
+        $(data).remove();
+    }
+    $(document).ready(function () {
+        $(".openbg").on("click",function () {
+            var id = {"s_id":$(this).attr('data-id')};
+            var obj = $(this);
+            $.ajax({
+                url:"/index.php?m=background&a=bdopen",
+                type:"post",
+                async:true,
+                data:id,
+                dataType:"json",
+                success:function (database) {
+                    if(!database){alert_crm('该员工还没有背调信息！')}
+                    else{
+                        for(let i = 0;i<database.length;i++){
+                            var html='<tr class="controls_tr"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调'+(i+1)+'</td></tr><tr><td>公司名: <span>'+database[i]['company_name']+'</span></td><td>入职时间：<span>'+database[i]['enter_time']+'</span></td><td>离职时间：<span>'+database[i]['out_time']+'</span></td><td>职位：<span>'+database[i]['position']+'</span></td></tr><tr><td>证明人：<span>'+database[i]['witness']+'</span></td><td>与证明人：<span>'+database[i]['witness_add']+'</span></td><td>联系电话：<span>'+database[i]['tel']+'</span></td><td>联系地址：<span>'+database[i]['adress']+'</span></td></tr><tr><td>薪资：<span>'+database[i]['salary']+'</span></td><td>工作表现：<span>'+database[i]['work_performance']+'</span></td><td>优缺点：<span>'+database[i]['bz']+'</span></td><td>离职原因：<span>'+database[i]['reasons']+'</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>'+database[i]['health']+'</span></td></tr></table></td></tr>';
+                            obj.parent().parent().after(html);
+                            /*if(i%2==0){
+                             var html='<tr class="controls_tr bgtbs"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调'+i+'</td></tr><tr><td>公司名: <span>'+database[i]['company_name']+'</span></td><td>入职时间：<span>2018-8</span></td><td>离职时间：<span>2018-9</span></td><td>职位：<span>提莫</span></td></tr><tr><td>证明人：<span>职位</span></td><td>与证明人：<span>关系</span></td><td>联系电话：<span>职位</span></td><td>联系地址：<span>职位</span></td></tr><tr><td>薪资：<span>123</span></td><td>工作表现：<span>职位</span></td><td>优缺点：<span>职位</span></td><td>离职原因：<span>关系</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>职位</span></td></tr></table></td></tr>';
+                             $(this).parent().parent().after(html);
+                             }else{
+                             var html='<tr class="controls_tr bgtbs"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调'+i+'</td></tr><tr><td>公司名: <span>'+database[i]['company_name']+'</span></td><td>入职时间：<span>2018-8</span></td><td>离职时间：<span>2018-9</span></td><td>职位：<span>提莫</span></td></tr><tr><td>证明人：<span>职位</span></td><td>与证明人：<span>关系</span></td><td>联系电话：<span>职位</span></td><td>联系地址：<span>职位</span></td></tr><tr><td>薪资：<span>123</span></td><td>工作表现：<span>职位</span></td><td>优缺点：<span>职位</span></td><td>离职原因：<span>关系</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>职位</span></td></tr></table></td></tr>';
+                             $(this).parent().parent().after(html);
+                             }*/
+                        }
+                        obj.after('<span class="label label-primary editstatus" style="cursor: pointer;margin-left: 10px" onclick="shouqi(this)">收起 </span>');
+                        obj.css('display','none');
+                    }
+                },
+                error:function (error) {
+                    //alert_crm(error)
+                }
+            })
+        });
+        $(".bgdelete").on("click",function () {
+            var id = $(this).attr("data-id");
+            id = {"id":id,"type":"all"};
+            swal({
+                    title: "您确定要删除员工信息吗？",
+                    text: "删除后将无法恢复，请谨慎操作！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的，我要删除！",
+                    cancelButtonText:'让我再考虑一下…',
+                    closeOnConfirm:false,
+                    closeOnCancel:false
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        $.ajax({
+                            url:"/index.php?m=background&a=delete",
+                            type:"post",
+                            async:true,
+                            data:id,
+                            success: function (data) {
+                                if (data.status == 1) {
+                                    swal({
+                                        title:'删除成功',
+                                        text:'您已经永久删除该条信息！',
+                                        type:"success",
+                                        confirmButtonText: "确定"
+                                    },function (isConfirm) {
+                                        if(isConfirm){
+                                            location.reload();
+                                        }
+                                    });
+                                } else {
+                                    swal({
+                                        title: "操作失败！",
+                                        text:data.info,
+                                        type: "error"
+                                    })
+                                    return false;
+                                }
+                            },
+                            dataType: 'json'
+                        });
+                    } else {
+                        swal("已取消","您取消了删除操作！","error");
+                    }
+                });
+        });
+    });
+    $(".bgedit").on("click",function () {
+        var id = $(this).attr("data-id");
+        id = parseInt(id);
+        window.location.href="/index.php?m=background&a=edit&id="+id;
+    });
+    $('#delete').click(function(){
+        var id_array = new Array();
+        $("input.check_list:checked").each(function(){
+            id_array.push($(this).val());
+        });
+        if(id_array.length == 0){
+            alert_crm('{:L('YOU_HAVE_NOT_CHOSEN_ANY_CUSTOMERS')}');
+            return false;
+        }
+        swal({
+                title: "您确定要删除员工信息吗？",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的，我要删除！",
+                cancelButtonText:'让我再考虑一下…',
+                closeOnConfirm:false,
+                closeOnCancel:false
+            },
+            function(isConfirm){
+                if (isConfirm) {
+                    $.ajax({
+                        type:'post',
+                        url: "{:U('background/deleteall')}",
+                        data: {customer_id: id_array},
+                        async: false,
+                        success: function (data) {
+                            if (data.status == 1) {
+                                swal({
+                                    title:'删除成功',
+                                    text:'您已经永久删除该条信息！',
+                                    type:"success",
+                                    confirmButtonText: "确定"
+                                },function (isConfirm) {
+                                    if(isConfirm){
+                                        location.reload();
+                                    }
+                                });
+                            } else {
+                                swal({
+                                    title: "操作失败！",
+                                    text:data.info,
+                                    type: "error"
+                                })
+                                return false;
+                            }
+                        },
+                        dataType: 'json'
+                    });
+                } else {
+                    swal("已取消","您取消了删除操作！","error");
+                }
+            });
+    })
+</script>
 <div style="display:none" id="dialog-field-search" title="高级搜索">
     <form class="form-inline" id="searchForm" action="" method="get">
         <div id="search_add" style="width:550px;float:left;">
