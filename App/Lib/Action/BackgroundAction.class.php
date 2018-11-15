@@ -831,7 +831,7 @@ class BackgroundAction extends Action
         $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][1]['train'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('是否有竞业协议:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][0]['compete'],array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][1]['compete'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('3.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
         $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][2]['witness'].'/'.$witness[2][2]['position'],array('宋体'=>true,'size'=>14));
