@@ -1129,28 +1129,13 @@
                         closeOnConfirm: false,
                         animation: "slide-from-top",
                         showLoaderOnConfirm: true
-                    }, function(isConfirm){
-                        if(isConfirm){
-                            ids=encodeURIComponent(ids);
-                            window.open('/index.php?m=background&a=readyOutPutt&ids='+ids);
-                        }
-                        swal("数据导出成功！","","success");
-                        //remainTime();
-                        /* $.ajax({
-                         url:'{:U("background/output")}',
-                         data:dataId,
-                         type:'post',
-                         success:function () {
+                    }, function(){
 
-                         },
-                         error:function () {
-
-                         },
-                         dataType:'json'
-                         })*/
-                        // $.get("/index.php?m=background&a=readyOutPut",dataId,function (data) {
-                        //
-                        // });
+                        $.get("/index.php?m=background&a=readyOutPutt",dataId,function (data) {
+                            swal("数据导出成功！","","success");
+                        });
+                        
+                        window.open('/index.php?m=background&a=readyOutPutt&ids='+ids);
 
                     });
                 }else{

@@ -446,7 +446,6 @@ class BackgroundAction extends Action
     }
     //word 导出
     function readyOutPutt(){
-
         require_once  __DIR__ ."/../../../vendor/phpoffice/phpword/bootstrap.php";
         include_once  __DIR__ ."/../../../vendor/phpoffice/phpword/samples/Sample_Header.php";
 
@@ -860,7 +859,6 @@ class BackgroundAction extends Action
         ob_clean();
         flush();
         $objWriter->save('php://output');
-
     }
     function exportExcel($list,$filename,$indexKey=array()){
         require_once 'Base/Lib/Classes/PHPExcel/IOFactory.php';

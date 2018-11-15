@@ -11,9 +11,26 @@ class ReturnAction extends Action
         $title="回款";
         $this->assign("title",$title);
     }
-
+    //展示合同
     public function add_new(){
+        $d_contract = D('ContractView');
+        $contract = $d_contract->select();
+        $this->assign('contract',$contract);
         $this->display();
+    }
+    //ajax展示客户
+    public function contractChanged(){
+        $c_id = $_POST['contract_id'];
+        $customer_id = M('contract')->where(array('contract_id'=>intval($c_id)))->field('customer_id');
+        dump($customer_id);exit;
+        $customer_name = M('customer')->where(array('customer_id'=>intval($customer_id)))->field('customer_name');
+        dump($customer_name);
+        echo json_encode($c_id);
+    }
+
+    //新增回款计划,存入数据库
+    public function plan_add(){
+        dump($_POST);exit;
     }
 
     public function index(){
