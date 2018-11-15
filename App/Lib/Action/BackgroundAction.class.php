@@ -18,6 +18,7 @@ class BackgroundAction extends Action
         $delete['delete'] = 0 ;
         $by = I('get.by');
         $search = I('get.search');
+        $this->assign('search',$search);
         $listrows = I('get.listrows')?I('get.listrows'):10;
         $field = 'education_add,update,remark,delete';
         $p = isset($_GET['p'])?$_GET['p']:1;
@@ -52,7 +53,7 @@ class BackgroundAction extends Action
                     break;
                 case 'time':
                     $search = strtotime($search);
-                    $search = substr($search,0,6);
+                    $search = substr($search,0,5);
                     $map['date'] = array('like',$search.'%');
                     break;
                 case 'company':
@@ -76,7 +77,6 @@ class BackgroundAction extends Action
         foreach ($data as $k => $val){
             $data[$k]['msg_id'] = json_decode($val['msg_id']);
         }
-        $this->assign('search',$search);
         $this->assign('type',$type);
         $this->assign('by',$by);
         $this->assign('data',$data);
