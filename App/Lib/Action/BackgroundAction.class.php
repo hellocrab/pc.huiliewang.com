@@ -767,7 +767,7 @@ class BackgroundAction extends Action
         $table->addRow();
         $table->addCell(2500)->addText('业绩及团队管理能力:',array('宋体'=>true,'size'=>14));
         $table->addCell(6500,array('gridSpan'=>4));
-
+//
         $section->addTextBreak();
         $section->addTextBreak();
         $section->addTextBreak();
