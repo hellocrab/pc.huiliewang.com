@@ -991,6 +991,7 @@
                 /*let html ='<label id="'+$(obj).attr("id")+'-error" class="error" for="'+$(obj).attr("id")+'" style="display: inline-block;"><i class="fa fa-times-circle">'+msg+'</i></label>';*/
                 let span = '<span class="spanerror"><i class="fa fa-times-circle"></i>&nbsp;'+msg+'</span>';
                 let text = $(obj).val();
+                console.log(text);
 				if(text!=''){
 				    if($(obj).parent().find('label').length>0){
                         $(obj).parent().find('span').remove();
