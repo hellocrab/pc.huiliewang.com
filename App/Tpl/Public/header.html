@@ -61,7 +61,14 @@
 		.crm_heart{
 			animation:heart 1s ease infinite;
 		}
-
+		.spanerror{
+			color: #cc5965;
+			display: inline-block;
+			margin-left: 5px;
+			font-weight: 700;
+			line-height: 20px;
+			margin-bottom: 5px;
+		}
 		@keyframes heart {
 			0% {color:#FF6D57;}
 			100%{color:#93A6B5;}
@@ -456,7 +463,7 @@
 					<!--<li <if condition = "$module_name eq 'leads' && $_GET['by'] neq 'public'">class="active"</if> ><a href="{:U('leads/index')}"><span class="fa fa fa-child" style="display:inline"></span>&nbsp;&nbsp;线索</a></li>-->
 					<!--<li <if condition = "$module_name eq 'leads' && $_GET['by'] eq 'public'">class="active"</if> ><a href="{:U('leads/index','by=public')}"><span class="fa fa fa-child" style="display:inline"></span>&nbsp;&nbsp;线索池</a></li>-->
 					<li <if condition = "$module_name eq 'customer' && $_GET['content'] neq 'resource' && $_GET['content'] neq 'city_analytics'">class="active"</if> ><a href="{$customer_url}"><span class="fa fa-user" style="display:inline"></span>&nbsp;&nbsp;客户</a></li>
-					<li <if condition = "$_GET['content'] eq 'resource'">class="active"</if>><a href="{:U('customer/index','by=me&content=resource')}"><span class="fa fa-group" style="display:inline"></span>&nbsp;&nbsp;客户池</a></li>
+					<li <if condition = "$_GET['content'] eq 'resource'">class="active"</if>><a href="{:U('customer/index','by=me&content=resource')}"><span class="fa fa-group" style="display:inline"></span>&nbsp;&nbsp;客户公海</a></li>
 					<li <if condition = "$module_name eq 'contacts'">class="active"</if>><a href="{:U('contacts/index')}"><span class="fa fa-phone-square" style="display:inline"></span>&nbsp;&nbsp;客户联系人</a></li>
 					<?php elseif($module_name == 'business' && $action_name != 'analytics'): ?>
 					<li class="active"><a href="{:U('business/index')}"><span class="fa fa-suitcase" style="display:inline"></span>&nbsp;&nbsp;项目管理</a></li>
@@ -972,6 +979,36 @@
                         $('.short_search').removeAttr('onFocus');
                         $('.short_search').removeAttr('readonly');
                         break;
+				}
+            }
+            function checkValue(data,obj) {
+                let regex;
+                let msg;
+                switch (data){
+					case 'idnum':
+                        regex = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                        msg = '身份证号码有误！';
+					    break;
+				}
+                /*let html ='<label id="'+$(obj).attr("id")+'-error" class="error" for="'+$(obj).attr("id")+'" style="display: inline-block;"><i class="fa fa-times-circle">'+msg+'</i></label>';*/
+                let span = '<span class="spanerror"><i class="fa fa-times-circle"></i>&nbsp;'+msg+'</span>';
+                let text = $(obj).val();
+                console.log(text);
+				if(text!=''){
+				    if($(obj).parent().find('label').length>0){
+                        $(obj).parent().find('span').remove();
+					}
+                    let result = regex.test(text);
+                    let checkspan = $(obj).parent().find('span');
+                    if(!result){
+                        if(checkspan.length==0){
+                            $(obj).after(span);
+						}
+                    }else{
+                        $(obj).parent().find('span').remove();
+                    }
+				}else{
+				    $(obj).parent().find('span').remove();
 				}
             }
 		</script>

@@ -55,7 +55,7 @@ class BackgroundAction extends Action
                     $map['date'] = array('like',$search.'%');
                     break;
                 case 'company':
-                    $map['company_name'] = array('like',$search.'%');
+                    $map['company_name'] = array('like','%'.$search.'%');
                     $sIds = $backGroundMsg->where($map)->where($delete)->field('s_id')->select();
                     foreach ($sIds as $k => $v){
                         $sid[] = $v['s_id'];
@@ -311,7 +311,7 @@ class BackgroundAction extends Action
             move_uploaded_file($file['tmp_name'][0],$upload_path_name);
             $data = $this->excelToArray($complete_path);
             if($data=='false'){
-                echo 'false';
+                echo '{"type":"false"}';
             }else{
                 //数据拆分取得$back,$msg
                 foreach ($data as $key => $val){
@@ -359,6 +359,7 @@ class BackgroundAction extends Action
                 for($i =count($sIdList)-1;$i>=0;$i--){
                     $sId[] = $sIdList[$i];
                 }
+                //筛选空数据
                 foreach ($msg as $k => $v){
                     foreach ($v as $key => $val){
                         $msgCheckNull = 0;
@@ -367,7 +368,7 @@ class BackgroundAction extends Action
                                 $msgCheckNull++;
                             }
                         }
-                        if($msgCheckNull==0){
+                        if($msgCheckNull<13){
                             $val[] = $sId[$k]['Id'];
                             $msgData[] = $val;
                         }
@@ -381,6 +382,7 @@ class BackgroundAction extends Action
                     }
                     $backMsgData[] = $list;
                 }
+
                 $backGroundMsg->startTrans();
                 $result2 = $backGroundMsg->addAll($backMsgData);
                 if(!$result2){
@@ -399,7 +401,6 @@ class BackgroundAction extends Action
                     $idList2["msg_id"] = $msgId[$i*2+1]['Id'];
                     $msgIdData[$i] =array($idList1,$idList2);
                 }*/
-                dump($msgId);
                 foreach ($msgId as $k =>$v){
                     foreach ($msgId as $key => $val){
                         if($v['s_id']==$val['s_id']&&$v['Id ']!=$val['Id']){
@@ -428,10 +429,10 @@ class BackgroundAction extends Action
                 }
                 if($backGroundCheck>0){
                     $backGround->rollback();
-                    echo 'false';
+                    echo '{"type":"false"}';
                 }else{
                     $backGround->commit();
-                    echo 'success';
+                    echo '{"type":"success"}';
                 }
             }
         }
@@ -1160,6 +1161,7 @@ class BackgroundAction extends Action
                     }
                 }
             }
+
             //写入数据库
             $exBackground = M('external_background');
             $exBackgroundEdu = M('external_background_edu');
@@ -1212,8 +1214,8 @@ class BackgroundAction extends Action
                     }else{
                         $exBackgroundWork->rollback();
                     }
-                    $this->ajaxReturn('true');
                 }
+                $this->ajaxReturn('true');
             }else{
                 $exBackground->rollback();
             }
@@ -1318,6 +1320,7 @@ class BackgroundAction extends Action
                         $exWitnessResult = $exWitness->addAll($witness);
                         if($exWitnessResult){
                             $exWitness->commit();
+                            echo '{"type":"success"}';
                         }else{
                             $exWitness->rollback();
                         }
@@ -1325,7 +1328,7 @@ class BackgroundAction extends Action
                 }
             }
             else{
-                echo 'false';
+                echo '{"type":"false"}';
             }
         }
     }

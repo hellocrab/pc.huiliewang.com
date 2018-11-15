@@ -115,7 +115,20 @@
         url: '/index.php?m=background&a=upload',
         maxFileSize: 100,
         allowed: ['xls', 'xlsx'],
-        maxNumberOfFiles:1
+        maxNumberOfFiles:1,
+        errorHandler:{
+            method: function (msg,type) {
+                alert_crm('文件格式错误！');
+            },
+            success:'success',
+            error:'error'
+        },
+        responseValidation:{
+            validationKey: 'type',
+            resultKey: 'success',
+            success: 'success',
+            error: 'error'
+        }
     });
 </script>
 
