@@ -61,7 +61,14 @@
 		.crm_heart{
 			animation:heart 1s ease infinite;
 		}
-
+		.spanerror{
+			color: #cc5965;
+			display: inline-block;
+			margin-left: 5px;
+			font-weight: 700;
+			line-height: 20px;
+			margin-bottom: 5px;
+		}
 		@keyframes heart {
 			0% {color:#FF6D57;}
 			100%{color:#93A6B5;}
@@ -982,19 +989,23 @@
 					    break;
 				}
                 /*let html ='<label id="'+$(obj).attr("id")+'-error" class="error" for="'+$(obj).attr("id")+'" style="display: inline-block;"><i class="fa fa-times-circle">'+msg+'</i></label>';*/
-                let span = '<span>'+msg+'</span>';
+                let span = '<span class="spanerror"><i class="fa fa-times-circle"></i>&nbsp;'+msg+'</span>';
                 let text = $(obj).val();
 				if(text!=''){
+				    if($(obj).parent().find('label').length>0){
+                        $(obj).parent().find('span').remove();
+					}
                     let result = regex.test(text);
-                    let span = $(obj).parent().find('span');
-                    console.log()
+                    let checkspan = $(obj).parent().find('span');
                     if(!result){
-                        if(span.length==0){
+                        if(checkspan.length==0){
                             $(obj).after(span);
 						}
                     }else{
-						span.remove();
+                        $(obj).parent().find('span').remove();
                     }
+				}else{
+				    $(obj).parent().find('span').remove();
 				}
             }
 		</script>
