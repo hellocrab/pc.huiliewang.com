@@ -478,7 +478,9 @@
 					<li <if condition = "$action_name eq 'index'||$action_name eq 'add'||$action_name eq 'add_more'||$action_name eq 'edit'">class="active"</if> ><a href="{:U('background/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对内背景调查</a></li>
 					<li <if condition = "$action_name eq 'index_external'||$action_name eq 'add_external'||$action_name eq 'add_more_external'">class="active"</if> ><a href="{:U('background/index_external')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对外背景调查</a></li>
 					<?php elseif($module_name == 'return' || $module_name == 'index'): ?>
-					<li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class="active"</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;回款</a></li>
+					<li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class="active"</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;回款计划</a></li>
+					<li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class=""</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;回款记录</a></li>
+					<li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class=""</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;开票记录</a></li>
 					<?php
 							elseif($module_name == 'train' || $module_name == 'teacher'): ?>
 					<li <if condition = "$module_name eq 'finance'">class="active"</if>><a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;课程管理</a></li>

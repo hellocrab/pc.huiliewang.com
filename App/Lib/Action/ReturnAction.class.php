@@ -12,6 +12,10 @@ class ReturnAction extends Action
         $this->assign("title",$title);
     }
 
+    public function add_new(){
+        $this->display();
+    }
+
     public function index(){
         $this->timeSearch();
         //$this->assign('daterange',$this->timePlug());
@@ -83,17 +87,15 @@ class ReturnAction extends Action
                 break;
             default: $where['contract.owner_role_id'] = array('in',getPerByAction(MODULE_NAME,ACTION_NAME));break;
         }
-//        $list = $d_contract->where($where)->order($order)->select();
-//
-//        $condition =array();
-//        foreach ($list as $k=>$v){
-//            $condition[]= intval($v['customer_id']);
-//        }
-//        $where['customer_id'] = array('in',$condition);
+
         $list =  M('payment_planperiod')->join("LEFT JOIN mx_payment_plan ON mx_payment_plan.Id = mx_payment_planperiod.plan_id")->select();
-
-        // $list = M('paymet_planperiod')->join('LEFT JOIN mx_payment_plan ON mx_payment_plan.Id = mx_payment_planperiod.plan_id');
-
+//汇总计算
+        $addMoney = 0;
+        foreach ($list as $k=>$v){
+            $data = explode(" 元",$v['money']);
+            $addMoney+=intval($data[0]);
+        }
+        $this->assign('money_total',$addMoney);
         $this->assign('list',$list);
         $this->display();
     }
