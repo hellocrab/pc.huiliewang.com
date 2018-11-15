@@ -171,11 +171,11 @@
                                     <!-- <input type="hidden" name="field" value="name"/>
                                      <input type="hidden" name="condition" value="contains"/>-->
                                     <if condition="$type eq 'name'">
-                                        <input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="{$search}" />
-                                        <elseif condition="$type eq 'jobs'"/><input type="text" style="width:160px;" placeholder="请输入岗位"  class="form-control short_search" name="search" value="{$search}" />
-                                        <elseif condition="$type eq 'tocompany'"/><input type="text" style="width:160px;" placeholder="请输入公司名称"  class="form-control short_search" name="search" value="{$search}" />
-                                        <elseif condition="$type eq 'industry'"/><input type="text" style="width:160px;" placeholder="请输入行业"  class="form-control short_search" name="search" value="{$search}" />
-                                        <else /><input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="{$search}" />
+                                        <input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="" />
+                                        <elseif condition="$type eq 'jobs'"/><input type="text" style="width:160px;" placeholder="请输入岗位"  class="form-control short_search" name="search" value="" />
+                                        <elseif condition="$type eq 'tocompany'"/><input type="text" style="width:160px;" placeholder="请输入公司名称"  class="form-control short_search" name="search" value="" />
+                                        <elseif condition="$type eq 'industry'"/><input type="text" style="width:160px;" placeholder="请输入行业"  class="form-control short_search" name="search" value="" />
+                                        <else /><input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="" />
                                     </if>
                                     <span class="input-group-btn">
 										    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-search"></i></button>
