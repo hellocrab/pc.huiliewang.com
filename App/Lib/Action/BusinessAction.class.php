@@ -152,7 +152,6 @@ class BusinessAction extends Action{
 				}else{
 					$where['_string'] = 'business.name like "%'.$search.'%"';
 				}
-
 			}else{
 				switch ($condition) {
 					case "is" : $where[$field] = array('eq',$search);break;

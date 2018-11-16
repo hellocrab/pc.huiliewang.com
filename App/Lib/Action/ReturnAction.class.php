@@ -13,24 +13,69 @@ class ReturnAction extends Action
     }
     //展示合同
     public function add_new(){
-        $d_contract = D('ContractView');
-        $contract = $d_contract->select();
-        $this->assign('contract',$contract);
+//        $d_contract = D('ContractView');
+//        $contract = $d_contract->select();
+        //根据权限查找判断
+        $d_v_business = D('BusinessView');
+        $business = $d_v_business->select();
+        $this->assign('business',$business);
         $this->display();
     }
     //ajax展示客户
     public function contractChanged(){
-        $c_id = $_POST['contract_id'];
-        $customer_id = M('contract')->where(array('contract_id'=>intval($c_id)))->field('customer_id');
-        dump($customer_id);exit;
-        $customer_name = M('customer')->where(array('customer_id'=>intval($customer_id)))->field('customer_name');
-        dump($customer_name);
-        echo json_encode($c_id);
+        $b_id = $_POST['business_id'];
+        $customer_id = M("business")->where(array('business_id'=>intval($b_id)))->getField('customer_id');
+        $customer_name = M('customer')->where(array('customer_id'=>intval($customer_id) ))->getField('name');
+        $data['business_id']= $b_id;
+        $data['customer_id']=$customer_id;
+        $data['customer_name'] = $customer_name;
+        echo json_encode($data);
     }
 
     //新增回款计划,存入数据库
     public function plan_add(){
-        dump($_POST);exit;
+        $data = $_POST;
+        //期次 nums
+        $nums = $data['num'];
+        $customer_id = $data['customer_id'];
+        $business_id = $data['business_id'];
+        $customer = $data['customer'];
+        $planed_money = $data['planed_money'];
+        $data = array(
+            'nums'=>$nums,
+            'customer'=>$customer,
+            'customer_id'=>$customer_id,
+            'business_id'=>$business_id,
+            'total'=>$planed_money
+            );
+        $plan_id =  M("payment_plan")->add($data);
+        $flag = false;
+        for( $i = 1 ; $i<=$nums ;$i++ ){
+            $data = array(
+                'plan_id'=>$plan_id,
+                'num'=>$i,
+                'money'=>$data['money'.$i],
+                'property'=>$data['property'.$i],
+            );
+            $period_id = M('payment_planperiod')->add($data);
+            if(empty($period_id)) $flag=true;
+        }
+
+        if($plan_id){
+            if($flag){
+                $success = array(
+                    'status' => 1,
+                    'info' => '添加成功!',
+                );
+                $this->ajaxReturn($success);
+            }
+        }else{
+            $error = array(
+                'status'  => 0,
+                'info' => '添加失败!',
+            );
+            $this->ajaxReturn($error);
+        }
     }
 
     public function index(){

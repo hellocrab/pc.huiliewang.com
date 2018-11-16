@@ -851,14 +851,26 @@ class BackgroundAction extends Action
         $table->addCell(6500,array('gridSpan'=>4));
 
         //缓冲输出
+        \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord,'Word2007');
         $fileName = "背景调查报表".date("Ymd");
-        header("Content-type: application/vnd.ms-word");
-        header("Content-Disposition:attachment;filename=".$fileName.".docx");
-        header('Cache-Control: max-age=0');
+//        header("pragma:public");
+//        header("Content-type: application/vnd.ms-word;charset=utf-8;");
+//        header("Content-Disposition:attachment;filename=".$fileName.".docx");
+//        header('Cache-Control: max-age=0');
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+        header("Content-Type:application/force-download");
+        header("Content-Type:application/vnd.ms-word");
+        header("Content-Type:application/octet-stream");
+        header("Content-Type:application/download");;
+        header('Content-Disposition:attachment;filename="'.$fileName.'.xls"');
+        header("Content-Transfer-Encoding:binary");
         ob_clean();
         flush();
         $objWriter->save('php://output');
+        exit;
     }
     function exportExcel($list,$filename,$indexKey=array()){
         require_once 'Base/Lib/Classes/PHPExcel/IOFactory.php';
