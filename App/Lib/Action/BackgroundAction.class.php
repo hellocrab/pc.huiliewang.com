@@ -15,35 +15,13 @@ class BackgroundAction extends Action
     public function index(){
         $backGround = M('background');
         $delete['delete'] = 0 ;
-        $by = I('get.by');
         $search = I('get.search');
         $this->assign('search',$search);
         $listrows = I('get.listrows')?I('get.listrows'):10;
         $field = 'education_add,update,remark,delete';
         $p = isset($_GET['p'])?$_GET['p']:1;
         $type = isset($_GET['type'])?$_GET['type']:'all';
-        switch ($by){
-            case 'all':
-                $count = $backGround->order('s_name')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('s_name')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            case 'time':
-                $count = $backGround->order('date desc')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('date desc')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            case 'company':
-                $count = $backGround->order('s_name')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('s_name')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            case 'industry':
-                $count = $backGround->order('industry')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('industry')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            default:
-                $count = $backGround->order('Id desc')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('Id desc')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-        }
+        $count = $backGround->where($delete)->count();
         if($search&&$type){
             $backGroundMsg = M('background_msg');
             switch ($type){
@@ -51,9 +29,10 @@ class BackgroundAction extends Action
                     $map['s_name'] = array('like','%'.$search.'%');
                     break;
                 case 'time':
-                    $search = strtotime($search);
-                    $search = substr($search,0,5);
-                    $map['date'] = array('like',$search.'%');
+                    $searchStart = strtotime($search);
+                    $searchEnd = date('Y-m-d H:i:s',strtotime("+1day",$searchStart));
+                    $searchEnd = strtotime($searchEnd);
+                    $map['date'] = array('between',array($searchStart,$searchEnd));
                     break;
                 case 'company':
                     $map['company_name'] = array('like','%'.$search.'%');
@@ -72,12 +51,13 @@ class BackgroundAction extends Action
                     break;
             }
             $data = $backGround->order('Id desc')->where($delete)->where($map)->field($field,true)->select();
+        }else{
+            $data = $backGround->order('Id desc')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
         }
         foreach ($data as $k => $val){
             $data[$k]['msg_id'] = json_decode($val['msg_id']);
         }
         $this->assign('type',$type);
-        $this->assign('by',$by);
         $this->assign('data',$data);
         //分页设置
         import('@.ORG.Page');//导入分页类
