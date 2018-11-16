@@ -40,8 +40,8 @@ class BackgroundAction extends Action
                 $data = $backGround->order('industry')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
                 break;
             default:
-                $count = $backGround->order('s_name')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('Id')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
+                $count = $backGround->order('Id desc')->field($field,true)->where($delete)->count();
+                $data = $backGround->order('Id desc')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
                 break;
         }
         if($search&&$type){
@@ -71,7 +71,7 @@ class BackgroundAction extends Action
                     $map['s_name'] = array('like','%'.$search.'%');
                     break;
             }
-            $data = $backGround->order('Id')->where($delete)->where($map)->field($field,true)->select();
+            $data = $backGround->order('Id desc')->where($delete)->where($map)->field($field,true)->select();
         }
         foreach ($data as $k => $val){
             $data[$k]['msg_id'] = json_decode($val['msg_id']);
@@ -984,7 +984,7 @@ class BackgroundAction extends Action
                 $typeN++;
             }
         }
-        $by = 'Id';
+        $by = 'Id desc';
         if($search!=''&&$typeN>0){
             $where[$type]=array('like','%'.$search.'%');
             $count = $exBackground->where($where)->count();
