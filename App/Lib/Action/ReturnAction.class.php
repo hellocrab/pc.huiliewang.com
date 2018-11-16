@@ -41,25 +41,27 @@ class ReturnAction extends Action
         $business_id = $data['business_id'];
         $customer = $data['customer'];
         $planed_money = $data['planed_money'];
-        $data = array(
+        $data1 = array(
             'nums'=>$nums,
             'customer'=>$customer,
             'customer_id'=>$customer_id,
             'business_id'=>$business_id,
             'total'=>$planed_money
             );
-        $plan_id =  M("payment_plan")->add($data);
+        $plan_id =  M("payment_plan")->add($data1);
         $flag = false;
         for( $i = 1 ; $i<=$nums ;$i++ ){
-            $data = array(
+            $data2 = array(
                 'plan_id'=>$plan_id,
                 'num'=>$i,
                 'money'=>$data['money'.$i],
                 'property'=>$data['property'.$i],
             );
-            $period_id = M('payment_planperiod')->add($data);
+            $period_id = M('payment_planperiod')->add($data2);
             if(empty($period_id)) $flag=true;
+            dump($data);
         }
+exit;
 
         if($plan_id){
             if($flag){

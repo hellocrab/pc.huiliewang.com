@@ -853,7 +853,7 @@ class BackgroundAction extends Action
         //缓冲输出
         \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord,'Word2007');
-        $fileName = "背景调查报表".date("Ymd");
+        $fileName = $background[0]['name'].date("Ymd");
 //        header("pragma:public");
 //        header("Content-type: application/vnd.ms-word;charset=utf-8;");
 //        header("Content-Disposition:attachment;filename=".$fileName.".docx");
@@ -865,7 +865,7 @@ class BackgroundAction extends Action
         header("Content-Type:application/vnd.ms-word");
         header("Content-Type:application/octet-stream");
         header("Content-Type:application/download");;
-        header('Content-Disposition:attachment;filename="'.$fileName.'.xls"');
+        header('Content-Disposition:attachment;filename="'.$fileName.'.docx"');
         header("Content-Transfer-Encoding:binary");
         ob_clean();
         flush();
