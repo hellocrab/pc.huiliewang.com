@@ -476,7 +476,7 @@
 					<li <if condition = "$module_name eq 'contract'">class="active"</if>><a href="{:U('contract/index')}"><span class="fa fa-list-alt" style="display:inline"></span>&nbsp;&nbsp;合同</a></li>
 					<?php elseif($module_name == 'background' || $module_name == 'index'): ?>
 					<li <if condition = "$action_name eq 'index'||$action_name eq 'add'||$action_name eq 'add_more'||$action_name eq 'edit'">class="active"</if> ><a href="{:U('background/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对内背景调查</a></li>
-					<li <if condition = "$action_name eq 'index_external'||$action_name eq 'add_external'||$action_name eq 'add_more_external'">class="active"</if> ><a href="{:U('background/index_external')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对外背景调查</a></li>
+					<li <if condition = "$action_name eq 'index_external'||$action_name eq 'add_external'||$action_name eq 'add_more_external'||$action_name eq 'edit_external'">class="active"</if> ><a href="{:U('background/index_external')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对外背景调查</a></li>
 					<?php elseif($module_name == 'return' || $module_name == 'index'): ?>
 					<li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class="active"</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;回款计划</a></li>
 					<li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class=""</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;回款记录</a></li>
@@ -986,7 +986,7 @@
                 let msg;
                 switch (data){
 					case 'idnum':
-                        regex = /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i ;
+                        regex = /^[1-9]\d{5}(19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/ ;
                         msg = '身份证号码有误！';
 					    break;
 				}

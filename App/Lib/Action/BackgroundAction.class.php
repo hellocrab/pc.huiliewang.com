@@ -419,7 +419,7 @@ class BackgroundAction extends Action
     }
     function readyOutPut(){
         $get = I("get.ids");
-        $by  = I('get.by');
+        $by  = 'all';
         if($get){
             $this->output($get,$by);
         }
@@ -891,7 +891,7 @@ class BackgroundAction extends Action
     function output($data,$by){
         switch ($by){
             case 'all':
-                $order = 'Id';
+                $order = 'Id desc';
                 break;
             case 'time':
                 $order = 'Id';
@@ -1486,6 +1486,39 @@ class BackgroundAction extends Action
                     echo '0';
                 }
                 break;
+        }
+    }
+    function edit_external(){
+        if(IS_POST){
+
+        }else{
+            $Id = I('get.Id')==''?'0':(int)I('get.Id');
+            $externalBg = M('external_background');
+            $bg = $externalBg->where(array('Id'=>$Id))->find();
+            $this->assign('bg',$bg);
+            $externalEdu = M('external_background_edu');
+            $edu  = $externalEdu->where(array('c_id'=>$Id))->select();
+            $this->assign('edu',$edu);
+            $externalQc = M('external_background_qc');
+            $qc = $externalQc->where(array('c_id'=>$Id))->select();
+            $this->assign('qc',$qc);
+            $externalWork = M('external_background_work');
+            $work = $externalWork->where(array('c_id'=>$Id))->select();
+            foreach ($work as $key => $val){
+                $workId[] = $val['Id'];
+            }
+            $externalWitness = M('external_background_witness');
+            $witnessMap['w_id'] = array('in',$workId);
+            $witness = $externalWitness->where($witnessMap)->select();
+            foreach ($work as $key => $val){
+                foreach ($witness as $k => $v){
+                    if($val['Id']==$v['w_id']){
+                        $work[$key]['witness'][] = $v;
+                    }
+                }
+            }
+            $this->assign('work',$work);
+            $this->display();
         }
     }
 }

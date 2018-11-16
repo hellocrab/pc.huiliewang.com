@@ -303,6 +303,7 @@
         background-image: url("./Public/img/true.png");
         background-size: 15px 15px;
         left: 5px;
+        cursor:pointer;
     }
     .i-wrong:after{
         content: '';
@@ -313,6 +314,7 @@
         background-image: url("./Public/img/wrong.png");
         background-size: 15px 15px;
         left: 5px;
+        cursor:pointer;
     }
     .i-notsure:after{
         content: '';
@@ -323,6 +325,7 @@
         background-image: url("./Public/img/notsure.png");
         background-size: 15px 15px;
         left: 5px;
+        cursor:pointer;
     }
 </style>
 <div class="msgbody">
@@ -387,7 +390,7 @@
             </div>-->
             <div class="width-550-div edu">
                 <span>学历证书</span>
-                <div class="lable-input"><label>证书名称：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
+                <div class="lable-input"><label>证书名称：</label><input type="text" readonly="readonly" value="Steve Jobs"><!--<i class="i-true"></i>--></div>
                 <div class="lable-input"><label>毕业院校：</label><input type="text" readonly="readonly" value="男"><i class="i-notsure"></i></div>
                 <div class="lable-input"><label>学历类型：</label><input type="text" readonly="readonly" value="1955/2/24"><i class="i-wrong"></i></div>
                 <div class="lable-input"><label>专业：</label><input type="text" readonly="readonly" value="18983160353"><i class="i-true" style="position: relative;left: 30px"></i></div>
@@ -443,6 +446,22 @@
 </div>
 <script>
     $(document).ready(function(){
+        $('.msgbody').find('i').on('click',function () {
+            let obj = $(this);
+            let objClass = obj.attr('class');
+            obj.removeClass(objClass);
+            switch (objClass){
+                case 'i-true':
+                    obj.addClass('i-wrong');
+                    break;
+                case 'i-wrong':
+                    obj.addClass('i-notsure');
+                    break;
+                case 'i-notsure':
+                    obj.addClass('i-true');
+                    break;
+            }
+        });
         $('.witness-div').on('mouseenter mouseleave',function (event) {
             var length = $(this).find('.witness').length;
             if(length>3){
