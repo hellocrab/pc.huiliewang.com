@@ -858,15 +858,21 @@ class BackgroundAction extends Action
 //        header("Content-type: application/vnd.ms-word;charset=utf-8;");
 //        header("Content-Disposition:attachment;filename=".$fileName.".docx");
 //        header('Cache-Control: max-age=0');
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-        header("Content-Type:application/force-download");
+//        header("Pragma: public");
+//        header("Expires: 0");
+//        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+//        header("Content-Type:application/force-download");
+//        header("Content-Type:application/vnd.ms-word");
+//        header("Content-Type:application/octet-stream");
+//        header("Content-Type:application/download");
+//        header('Content-Disposition:attachment;filename="'.$fileName.'.doc"');
+//        header("Content-Transfer-Encoding:binary");
+//
+        header("Cache-Control:no-cache,must-revalidate");
+        header("Pragma:no-cache");
         header("Content-Type:application/vnd.ms-word");
-        header("Content-Type:application/octet-stream");
-        header("Content-Type:application/download");
-        header('Content-Disposition:attachment;filename="'.$fileName.'.xls"');
-        header("Content-Transfer-Encoding:binary");
+        header("Content-Disposition:attachment;filename=".$fileName.".doc");
+
         ob_clean();
         flush();
         $objWriter->save('php://output');
