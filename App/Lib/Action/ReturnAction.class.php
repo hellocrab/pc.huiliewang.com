@@ -39,6 +39,7 @@ class ReturnAction extends Action
         $nums = $data['num'];
         $customer_id = $data['customer_id'];
         $business_id = $data['business_id'];
+        $business = $data['business'];
         $customer = $data['customer'];
         $planed_money = $data['planed_money'];
         $data1 = array(
@@ -46,10 +47,11 @@ class ReturnAction extends Action
             'customer'=>$customer,
             'customer_id'=>$customer_id,
             'business_id'=>$business_id,
+            'business'=>$business,
             'total'=>$planed_money
             );
         $plan_id =  M("payment_plan")->add($data1);
-        $flag = false;
+        $flag = true;
         for( $i = 1 ; $i<=$nums ;$i++ ){
             $data2 = array(
                 'plan_id'=>$plan_id,
@@ -58,12 +60,10 @@ class ReturnAction extends Action
                 'property'=>$data['property'.$i],
             );
             $period_id = M('payment_planperiod')->add($data2);
-            if(empty($period_id)) $flag=true;
-            dump($data);
-        }
-exit;
+            if(empty($period_id)) $flag=false;
 
-        if($plan_id){
+        }
+        if(!empty($plan_id)){
             if($flag){
                 $success = array(
                     'status' => 1,
@@ -71,13 +71,14 @@ exit;
                 );
                 $this->ajaxReturn($success);
             }
-        }else{
+        }
+
             $error = array(
                 'status'  => 0,
                 'info' => '添加失败!',
             );
             $this->ajaxReturn($error);
-        }
+
     }
 
     public function index(){
