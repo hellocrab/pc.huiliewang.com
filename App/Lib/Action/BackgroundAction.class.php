@@ -864,8 +864,8 @@ class BackgroundAction extends Action
         header("Content-Type:application/force-download");
         header("Content-Type:application/vnd.ms-word");
         header("Content-Type:application/octet-stream");
-        header("Content-Type:application/download");;
-        header('Content-Disposition:attachment;filename="'.$fileName.'.docx"');
+        header("Content-Type:application/download");
+        header('Content-Disposition:attachment;filename="'.$fileName.'.xls"');
         header("Content-Transfer-Encoding:binary");
         ob_clean();
         flush();
