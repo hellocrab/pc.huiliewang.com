@@ -741,7 +741,7 @@
                     /* alert_crm("还有未输入的必填文本框！")*/
                 }
             }else{
-                alert_crm('请输入正确的身份证号码');
+
             }
         });
         //验证文本框输入值
@@ -841,13 +841,13 @@
             neweducation.find(".msgdelete").removeAttr("data-id");
 
         });
-        function asd() {
-            console.log(1);
-        }
+        let promiseClick = 0;
         $(".add-promise").on("click",function () {
             var promise = $(this).parent().children().eq(1).clone(true);
+            promiseClick++;
             promise.children().each(function () {
                 $(this).children("div").children("input").val("");
+                $(this).children("div").children("input").attr("name",$(this).children("div").children("input").attr("name")+promiseClick);
             });
             promise.children(".msgdelete").css("display","block");
             //清空ID span

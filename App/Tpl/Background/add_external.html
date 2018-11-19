@@ -805,13 +805,13 @@
             fileInput.attr("name",$(this).parent().find("input[type='file']").last().attr("name")+fileInputCount);
 
         });
-        function asd() {
-            console.log(1);
-        }
+        let promiseClick = 0;
         $(".add-promise").on("click",function () {
             var promise = $(this).parent().children().eq(1).clone(true);
+            promiseClick++;
             promise.children().each(function () {
                 $(this).children("div").children("input").val("");
+                $(this).children("div").children("input").attr("name",$(this).children("div").children("input").attr("name")+promiseClick);
             });
             promise.children(".msgdelete").css("display","block");
             var witnessCount = parseInt($(this).parent().parent().children(".witness-count").val());
@@ -828,6 +828,7 @@
             obj.parent().parent().children().last().prev().is(obj.parent())?check=0:check=1;
             if(check==0){
                 obj.parent().fadeOut(500);
+                obj.parent().parent().parent().find('.witness-count').val(obj.parent().parent().find('.promise-people').length-1);
                 setTimeout(function () {
                     obj.parent().remove();
                 },500)
