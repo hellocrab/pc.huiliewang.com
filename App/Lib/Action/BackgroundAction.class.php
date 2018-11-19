@@ -1490,7 +1490,101 @@ class BackgroundAction extends Action
     }
     function edit_external(){
         if(IS_POST){
+            $data = I('post.');
+            $id = I('get.Id');
+            //整理数据
+            $bgKey = ['Id','name','jobs','tocompany','industry','consultant','idnumber','bz'];
+            $bg = $this->keys_to_data($bgKey,explode(',',$data['bg']));
+            $eduKey = ['Id','school','school_add','edu_type','edu_type_add','major','major_add','enter_time','enter_time_add','out_time','out_time_add','edu_num','edu_num_add','msgbelong','msgbelong_add'];
+            $edu = $this->keys_to_data($eduKey,explode(',',$data['edu']));
+            $qcKey = ['Id','get_time','get_time_add','out_time','out_time_add','qc_type','qc_type_add','qc_source','qc_source_add','qc_num','qc_num_add'];
+            $qc = $this->keys_to_data($qcKey,explode(',',$data['qc']));
+            $workKey = ['Id','company','company_add','enter_time','enter_time_add','out_time','out_time_add','position','position_add','witness_count'];
+            $work = $this->keys_to_data($workKey,explode(',',$data['work']));
+            $witnessKey = ['Id','witness','position','tel','relationship','method','performance','badrecord','reason','train','compete'];
+            $witness = $this->keys_to_data($witnessKey,explode(',',$data['witness']));
+            //数据添加存入图片路径和上传图片
+            if(!empty($_FILES)){
+                $pics = $_FILES;
+                //移动所上传图片
+                $picName = array_keys($pics);
+                foreach ($picName as $key => $val){
+                    $type = end(explode('.',$pics[$val]['name']));
+                    $name = reset(explode('.',$pics[$val]['name']));
+                    if($val =="id"){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/idpic/".time()."_".$name.".".$type;
+                        $idPath = end(explode('/Uploads',$path));
+                        $bg[0]['id_pic_src'] = $idPath;
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }elseif(count(explode("edu",$val))>=2){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/edu/".time()."_".$name.".".$type;
+                        $arr['src'] = end(explode('/Uploads',$path));
+                        $arr['for'] = end(explode("edu",$val))==''?'0':end(explode("edu",$val));
+                        $eduPath[] = $arr;
+                        foreach ($eduPath as $k => $v){
+                            $edu[$v['for']]['edu_pic_src'] = $v['src'];
+                        }//对应数据存入图片地址
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }elseif (count(explode("qc",$val))>=2){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/qc/".time()."_".$name.".".$type;
+                        $arr['src'] = end(explode('/Uploads',$path));
+                        $arr['for'] = end(explode("qc",$val))==''?'0':end(explode("qc",$val));
+                        $qcPath[] = $arr;
+                        foreach ($qcPath as $k => $v){
+                            $qc[$v['for']]['qc_pic_src'] = $v['src'];
+                        }//对应数据存入图片地址
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }
+                }
+            }
+            $externalBg = M('external_background');
+            $externalEdu = M('external_background_edu');
+            $externalQc = M('external_background_qc');
+            $externalWork = M('external_background_work');
+            $externalWitness = M('external_background_witness');
+            $result = 0;
+            $externalBg->where(array('Id'=>$bg[0]['Id']))->setField($bg[0])?true:$result++;
 
+            //新增数据与修改数据分别储存
+            foreach ($edu as $k =>$v){
+                if($v['Id']=='NaN'){
+                    unset($v['Id']);
+                    $v['c_id'] = $id;
+                    $eduAdd[] = $v;
+                }else{
+                    $externalEdu->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                }
+            }
+            $externalEdu->addAll($eduAdd)?true:$result++;
+            foreach ($qc as $k =>$v){
+                if($v['Id']=='NaN'){
+                    unset($v['Id']);
+                    $v['c_id'] = $id;
+                    $qcAdd[] = $v;
+                }else{
+                    $externalQc->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                }
+            }
+            $externalQc->addAll($qcAdd)?true:$result++;
+            foreach ($work as $k =>$v){
+                if($v['Id']=='NaN'){
+                    unset($v['Id']);
+                    $v['c_id'] = $id;
+                    $workAdd[] = $v;
+                }else{
+                    $externalWork->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                }
+            }
+            $externalWork->addAll($workAdd)?true:$result++;
+            foreach ($witness as $k =>$v){
+                if($v['Id']!='NaN'){
+                    $externalWitness->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                }else{
+
+                }
+            }
+            dump($work);
+            dump($witness);
         }else{
             $Id = I('get.Id')==''?'0':(int)I('get.Id');
             $externalBg = M('external_background');
@@ -1520,5 +1614,15 @@ class BackgroundAction extends Action
             $this->assign('work',$work);
             $this->display();
         }
+    }
+    //键值对应数据方法 对外背调修改调用
+    function keys_to_data($keys,$data){
+        $count = count($data)/count($keys);
+        for($i=0;$i<$count;$i++){
+            foreach ($keys as $k =>$v){
+                $newData[$i][$v] = $data[$k+($i*count($keys))];
+            }
+        }
+        return $newData;
     }
 }

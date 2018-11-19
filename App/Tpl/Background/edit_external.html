@@ -15,6 +15,9 @@
         position: relative;
         overflow: hidden;
     }
+    .img-responsive{
+        max-width: 240px;
+    }
     .note-codable{
         display: none;
         width: 100%;
@@ -151,6 +154,7 @@
                             </div>
                             <div  id="resume-search-form" class="col-md-8 add_body_form" style="margin-left:15px;">
                                 <input type="hidden" name="url" />
+                                <span id="bgId" style="display: none;">{$bg['Id']}</span>
                                 <div class="form-group tb-1">
                                     <label class="col-md-3 control-label">姓名：</label>
                                     <div class="col-md-6">
@@ -200,313 +204,325 @@
                                         <img class="img-responsive" style="margin: 10px auto" <if condition="$bg['id_pic_src'] neq ''">src="/Uploads{$bg['id_pic_src']}"</if> >
                                     </div>
                                 </div>
-                                <volist name="edu" id="vo">
-                                    <div  class="form-group">
+                                <div  class="form-group">
                                     <label class="col-md-3 control-label">学历证书：</label>
-                                    <div class="col-md-11 col-md-push-3 education" style="margin-top: 10px;padding-top: 50px;background-color: rgb(230, 233, 240);position: relative">
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">毕业院校：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control required edu-input" type="text"  name="school" value="{$vo['school']}">
+                                        <volist name="edu" id="vo" key="k">
+                                            <div class="col-md-11 col-md-push-3 education" style="margin-top: 10px;padding-top: 50px;background-color: rgb(230, 233, 240);position: relative">
+                                                <span data-type="Id" class="edu-input" style="display: none">{$vo['Id']}</span>
+                                                <div class="col-md-12 bottom-10">
+                                                    <lable class="col-md-2 control-label">毕业院校：</lable>
+                                                    <div class="col-md-4">
+                                                        <input class="form-control required edu-input" type="text"  name="school" value="{$vo['school']}">
+                                                    </div>
+                                                    <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure_id_{$vo['Id']}" <if condition="$vo['school_add'] eq 'sure'||$vo['school_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure_id_{$vo['Id']}" <if condition="$vo['school_add'] neq 'sure'&&$vo['school_add'] neq 'notsure'&&$vo['school_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure_id_{$vo['Id']}" <if condition="$vo['school_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                    </div>
+                                                    <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newbyyx" value="{$vo['school_add']}"<if condition="$vo['school_add'] eq 'sure'||$vo['school_add'] eq 'notsure'||$vo['school_add'] eq ''">style="display: none" </if>> </div>
+                                                </div>
+                                                <div class="col-md-12 bottom-10">
+                                                    <lable class="col-md-2 control-label">学历类型：</lable>
+                                                    <div class="col-md-4">
+                                                        <input class="form-control required edu-input" type="text"  name="educationType" value="{$vo['edu_type']}">
+                                                    </div>
+                                                    <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure1_id_{$vo['Id']}" <if condition="$vo['edu_type_add'] eq 'sure'||$vo['edu_type_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure1_id_{$vo['Id']}" <if condition="$vo['edu_type_add'] neq 'sure'&&$vo['edu_type_add'] neq 'notsure'&&$vo['edu_type_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure1_id_{$vo['Id']}" <if condition="$vo['edu_type_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                    </div>
+                                                    <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newxlnx" value="{$vo['edu_type_add']}" <if condition="$vo['edu_type_add'] eq 'sure'||$vo['edu_type_add'] eq 'notsure'||$vo['edu_type_add'] eq ''">style="display: none" </if>></div>
+                                                </div>
+                                                <div class="col-md-12 bottom-10">
+                                                    <lable class="col-md-2 control-label">专业：</lable>
+                                                    <div class="col-md-4">
+                                                        <input class="form-control required edu-input" type="text" name="major" value="{$vo['major']}">
+                                                    </div>
+                                                    <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure2_id_{$vo['Id']}" <if condition="$vo['major_add'] eq 'sure'||$vo['major_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure2_id_{$vo['Id']}" <if condition="$vo['major_add'] neq 'sure'&&$vo['major_add'] neq 'notsure'&&$vo['major_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure2_id_{$vo['Id']}" <if condition="$vo['major_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                    </div>
+                                                    <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newzy" value="{$vo['major_add']}" <if condition="$vo['major_add'] eq 'sure'||$vo['major_add'] eq 'notsure'||$vo['major_add'] eq ''">style="display: none" </if>></div>
+                                                </div>
+                                                <div class="col-md-12 bottom-10">
+                                                    <lable class="col-md-2 control-label">入学时间：</lable>
+                                                    <div class="col-md-4">
+                                                        <input class="form-control text-center  required edu-input "  data-name="enter_time"  type="text" placeholder="年-月" value="{$vo['enter_time']}" id="eduenter" data-type="startid_{$vo['Id']}" onfocus="let end ='eduoutid_{$vo['Id']}';WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D('')}&quot;})" readonly="readonly" name="newentertime" style="height: 32px;width: 100%">
+                                                    </div>
+                                                    <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure3_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure3_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['enter_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure3_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                    </div>
+                                                    <div class="col-md-3"><input type="text"  class="form-control required edu-input" name="newentertime" placeholder="年-月" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['enter_time_add'] neq ''">value="{$vo['enter_time_add']}"</if>   <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq ''">value="{$vo['enter_time']}"</if> <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq 'notsure'||$vo['enter_time_add'] eq ''">style="display: none" </if> id="eduenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'eduout_add\')}&quot;})" readonly="readonly"></div>
+                                                </div>
+                                                <div class="col-md-12 bottom-10">
+                                                    <lable class="col-md-2 control-label">毕业时间：</lable>
+                                                    <div class="col-md-4">
+                                                        <input class="form-control text-center  required out_time edu-input" data-name="enter_time"  type="text" placeholder="年-月" value="{$vo['out_time']}" id="eduout" data-type="end"  onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'eduenter\')}&quot;})" readonly="readonly" name="outtime" style="height: 32px;width: 100%">
+                                                    </div>
+                                                    <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure4_id_{$vo['Id']}" <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure4_id_{$vo['Id']}" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure4_id_{$vo['Id']}" <if condition="$vo['out_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                    </div>
+                                                    <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newouttime" placeholder="年-月" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">value="{$vo['out_time_add']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq ''">value="{$vo['out_time']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq 'notsure'||$vo['out_time_add'] eq ''">style="display: none" </if> id="eduout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'eduenter_add\')}&quot;})"  readonly="readonly"></div>
+                                                </div>
+                                                <div class="col-md-12 bottom-10">
+                                                    <lable class="col-md-2 control-label">证书编号：</lable>
+                                                    <div class="col-md-4">
+                                                        <input class="form-control required promisenum edu-input" type="text" name="zsbh" value="{$vo['edu_num']}">
+                                                    </div>
+                                                    <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure5_id_{$vo['Id']}" <if condition="$vo['edu_num_add'] eq 'sure'||$vo['edu_num_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure5_id_{$vo['Id']}" <if condition="$vo['edu_num_add'] neq 'sure'&&$vo['edu_num_add'] neq 'notsure'&&$vo['edu_num_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure5_id_{$vo['Id']}" <if condition="$vo['edu_num_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                    </div>
+                                                    <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newedunum" value="{$vo['edu_num_add']}" <if condition="$vo['edu_num_add'] eq 'sure'||$vo['edu_num_add'] eq 'notsure'||$vo['edu_num_add'] eq ''">style="display:none"</if> ></div>
+                                                </div>
+                                                <div class="col-md-12 bottom-10">
+                                                    <lable class="col-md-2 control-label">信息来源：</lable>
+                                                    <div class="col-md-4">
+                                                        <input class="form-control required msgbelong edu-input" type="text" value="{$vo['msgbelong']}" name="xxly">
+                                                    </div>
+                                                    <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure6_id_{$vo['Id']}" <if condition="$vo['msgbelong_add'] eq 'sure'||$vo['msgbelong_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure6_id_{$vo['Id']}" <if condition="$vo['msgbelong_add'] neq 'sure'&&$vo['msgbelong_add'] neq 'notsure'&&$vo['msgbelong_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                        <label class="radiobtn"><input type="radio" name="is_1sure6_id_{$vo['Id']}" <if condition="$vo['msgbelong_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                    </div>
+                                                    <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newedubelong" value="{$vo['msgbelong_add']}" <if condition="$vo['msgbelong_add'] eq 'sure'||$vo['msgbelong_add'] eq 'notsure'||$vo['edu_num_add'] eq ''">style="display:none"</if> ></div>
+                                                </div>
+                                                <div class="col-md-12 bottom-10">
+                                                    <div class="col-md-2 fileinput col-md-push-9">
+                                                        <span class="btn btn-success btn-xs">上传学历证书照片</span>
+                                                        <input type="file" class="btn btn-success btn-xs" accept="image/*" <if condition="$k eq '1'">name="edu"<elseif condition="$k gt '1'"/>name="edu{$k-1}" </if> onchange="filechange(this)">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <img class="img-responsive" <if condition="$vo['edu_pic_src'] neq ''">src="/Uploads{$vo['edu_pic_src']}"</if> style="margin: 10px auto" >
+                                                    </div>
+                                                </div>
+                                                <div class="msgdelete" style="display: none"><img src="/Public/img/grayclose.png" style="width: 15px" ></div>
                                             </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_1sure" <if condition="$vo['school_add'] eq 'sure'||$vo['school_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure" <if condition="$vo['school_add'] neq 'sure'&&$vo['school_add'] neq 'notsure'">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure" <if condition="$vo['school_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newbyyx" value="{$vo['school_add']}"<if condition="$vo['school_add'] eq 'sure'||$vo['school_add'] eq 'notsure'">style="display: none" </if>> </div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">学历类型：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control required edu-input" type="text"  name="educationType" value="{$vo['edu_type']}">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_1sure1" <if condition="$vo['edu_type_add'] eq 'sure'||$vo['edu_type_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure1" <if condition="$vo['edu_type_add'] neq 'sure'&&$vo['edu_type_add'] neq 'notsure'">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure1" <if condition="$vo['edu_type_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newxlnx" value="{$vo['edu_type_add']}" <if condition="$vo['edu_type_add'] eq 'sure'||$vo['edu_type_add'] eq 'notsure'">style="display: none" </if>></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">专业：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control required edu-input" type="text" name="major" value="{$vo['major']}">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_1sure2" <if condition="$vo['major_add'] eq 'sure'||$vo['major_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure2" <if condition="$vo['major_add'] neq 'sure'&&$vo['major_add'] neq 'notsure'">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure2" <if condition="$vo['major_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newzy" value="{$vo['major_add']}" <if condition="$vo['major_add'] eq 'sure'||$vo['major_add'] eq 'notsure'">style="display: none" </if>></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">入学时间：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control text-center  required edu-input "  data-name="enter_time"  type="text" placeholder="年-月" value="{$vo['enter_time']}" id="eduenter" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'eduout\')}&quot;})" readonly="readonly" name="newentertime" style="height: 32px;width: 100%">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_1sure3" <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure3" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure3" <if condition="$vo['enter_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text"  class="form-control required edu-input" name="newentertime" placeholder="年-月" value="{$vo['enter_time_add']}" <if condition="$vo['major_add'] eq 'sure'||$vo['major_add'] eq 'notsure'">style="display: none" </if> id="eduenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'eduout_add\')}&quot;})" readonly="readonly"></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">毕业时间：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control text-center  required out_time edu-input" data-name="enter_time"  type="text" placeholder="年-月" value="{$vo['out_time']}" id="eduout" data-type="end"  onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'eduenter\')}&quot;})" readonly="readonly" name="outtime" style="height: 32px;width: 100%">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_1sure4"<if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure4" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure4" <if condition="$vo['out_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newouttime" placeholder="年-月" value="{$vo['out_time_add']}" id="eduout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'eduenter_add\')}&quot;})"  readonly="readonly"></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">证书编号：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control required promisenum edu-input" type="text" name="zsbh" value="">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_1sure5" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure5" value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure5" value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newedunum" style="display: none"></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">信息来源：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control required msgbelong edu-input" type="text" value="" name="xxly">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_1sure6"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure6" value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_1sure6" value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newedubelong" style="display: none"></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <div class="col-md-2 fileinput col-md-push-9">
-                                                <span class="btn btn-success btn-xs">上传学历证书照片</span>
-                                                <input type="file" class="btn btn-success btn-xs" accept="image/*" name="edu" onchange="filechange(this)">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <img class="img-responsive" style="margin: 10px auto" >
-                                            </div>
-                                        </div>
-                                        <div class="msgdelete" style="display: none"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
-                                    </div>
+                                        </volist>
                                     <input type="button" class="btn btn-success btn-xs col-md-push-9 col-md-3 add-input" value="添加新的学历证书" style="margin-top: 10px">
                                 </div>
-                                </volist>
+
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">资格证书：</label>
-                                    <div class="col-md-11 col-md-push-3 education" style="margin-top: 10px;padding-top: 50px;background-color: rgb(230, 233, 240);position: relative">
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">获得时间：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control text-center timerinput required enter_time qc-input" data-name="enter_time"  type="text" placeholder="年-月" id="qcenter" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'qcout\')}&quot;})"  readonly="readonly" name="hdsj" style="height: 32px;width: 100%">
+                                    <volist name="qc" id="vo" key="k">
+                                        <div class="col-md-11 col-md-push-3 education" style="margin-top: 10px;padding-top: 50px;background-color: rgb(230, 233, 240);position: relative">
+                                            <span data-type="Id" style="display: none" class="qc-input">{$vo['Id']}</span>
+                                            <div class="col-md-12 bottom-10">
+                                                <lable class="col-md-2 control-label">获得时间：</lable>
+                                                <div class="col-md-4">
+                                                    <input class="form-control text-center timerinput required enter_time qc-input" data-name="enter_time"  type="text" placeholder="年-月" value="{$vo['get_time']}" id="qcenter" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'qcout\')}&quot;})"  readonly="readonly" name="hdsj" style="height: 32px;width: 100%">
+                                                </div>
+                                                <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure_id_{$vo['Id']}" <if condition="$vo['get_time_add'] eq 'sure'||$vo['get_time_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure_id_{$vo['Id']}" <if condition="$vo['get_time_add'] neq 'sure'&&$vo['get_time_add'] neq 'notsure'&&$vo['get_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure_id_{$vo['Id']}" <if condition="$vo['get_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                </div>
+                                                <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcentertime" placeholder="年-月" <if condition="$vo['get_time_add'] neq 'sure'&&$vo['get_time_add'] neq 'notsure'&&$vo['get_time_add'] neq ''">value="{$vo['get_time_add']}"</if>   <if condition="$vo['get_time_add'] eq 'sure'||$vo['get_time_add'] eq ''">value="{$vo['get_time_add']}"</if> <if condition="$vo['get_time_add'] eq 'sure'||$vo['get_time_add'] eq 'notsure'||$vo['get_time_add'] eq ''">style="display: none" </if> id="qcenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'qcout_add\')}&quot;})" readonly="readonly"></div>
                                             </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_2sure"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_2sure" value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_2sure" value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                            <div class="col-md-12 bottom-10">
+                                                <lable class="col-md-2 control-label">有效时间：</lable>
+                                                <div class="col-md-4">
+                                                    <input class="form-control text-center timerinput required out_time qc-input" data-name="enter_time"  type="text" placeholder="年-月" value="{$vo['out_time']}" id="qcout" data-type="end"  onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'qcenter\')}&quot;})" readonly="readonly" name="yxsj" style="height: 32px;width: 100%">
+                                                </div>
+                                                <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure1_id_{$vo['Id']}" <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure1_id_{$vo['Id']}" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure1_id_{$vo['Id']}" <if condition="$vo['out_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                </div>
+                                                <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcouttime" placeholder="年-月" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">value="{$vo['out_time_add']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq ''">value="{$vo['out_time']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq 'notsure'||$vo['out_time_add'] eq ''">style="display: none" </if> id="qcout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'qcenter_add\')}&quot;})" readonly="readonly"></div>
                                             </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcentertime" placeholder="年-月" id="qcenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'qcout_add\')}&quot;})" readonly="readonly" style="display: none"></div>
+                                            <div class="col-md-12 bottom-10">
+                                                <lable class="col-md-2 control-label">证书类型：</lable>
+                                                <div class="col-md-4">
+                                                    <input class="form-control required promisenum qc-input" type="text" value="{$vo['qc_type']}" name="zsnx">
+                                                </div>
+                                                <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure2_id_{$vo['Id']}" <if condition="$vo['qc_type_add'] eq 'sure'||$vo['qc_type_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure2_id_{$vo['Id']}" <if condition="$vo['qc_type_add'] neq 'sure'&&$vo['qc_type_add'] neq 'notsure'&&$vo['qc_type_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure2_id_{$vo['Id']}" <if condition="$vo['qc_type_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                </div>
+                                                <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqctype" value="{$vo['qc_type_add']}" <if condition="$vo['qc_type_add'] eq 'sure'||$vo['qc_type_add'] eq 'notsure'||$vo['qc_type_add'] eq ''">style="display:none"</if> ></div>
+                                            </div>
+                                            <div class="col-md-12 bottom-10">
+                                                <lable class="col-md-2 control-label">信息来源：</lable>
+                                                <div class="col-md-4">
+                                                    <input class="form-control required msgbelong qc-input" type="text" value="{$vo['qc_source']}" name="ly">
+                                                </div>
+                                                <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure3_id_{$vo['Id']}" <if condition="$vo['qc_source_add'] eq 'sure'||$vo['qc_source_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure3_id_{$vo['Id']}" <if condition="$vo['qc_source_add'] neq 'sure'&&$vo['qc_source_add'] neq 'notsure'&&$vo['qc_source_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure3_id_{$vo['Id']}" <if condition="$vo['qc_source_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                </div>
+                                                <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcbelong" value="{$vo['qc_source_add']}" <if condition="$vo['qc_source_add'] eq 'sure'||$vo['qc_source_add'] eq 'notsure'||$vo['qc_source_add'] eq ''">style="display:none"</if>></div>
+                                            </div>
+                                            <div class="col-md-12 bottom-10">
+                                                <lable class="col-md-2 control-label">证书编号：</lable>
+                                                <div class="col-md-4">
+                                                    <input class="form-control required promisenum qc-input" type="text" value="{$vo['qc_num']}" name="bh">
+                                                </div>
+                                                <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure4_id_{$vo['Id']}" <if condition="$vo['qc_num_add'] eq 'sure'||$vo['qc_num_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure4_id_{$vo['Id']}" <if condition="$vo['qc_num_add'] neq 'sure'&&$vo['qc_num_add'] neq 'notsure'&&$vo['qc_num_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="is_2sure4_id_{$vo['Id']}" <if condition="$vo['qc_num_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                </div>
+                                                <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcnum" value="{$vo['qc_num_add']}" <if condition="$vo['qc_num_add'] eq 'sure'||$vo['qc_num_add'] eq 'notsure'||$vo['qc_num_add'] eq ''">style="display:none"</if>></div>
+                                            </div>
+                                            <div class="col-md-12 bottom-10">
+                                                <div class="col-md-2 fileinput col-md-push-9">
+                                                    <span class="btn btn-success btn-xs">上传资格证书照片</span>
+                                                    <input type="file" class="btn btn-success btn-xs" accept="image/*" <if condition="$k eq '1'">name="qc"<elseif condition="$k gt '1'"/>name="qc{$k-1}" </if> onchange="filechange(this)">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <img class="img-responsive" <if condition="$vo['qc_pic_src'] neq ''">src="/Uploads{$vo['qc_pic_src']}"</if> style="margin: 10px auto" >
+                                                </div>
+                                            </div>
+                                            <div class="msgdelete" style="display: none"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
                                         </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">有效时间：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control text-center timerinput required out_time qc-input" data-name="enter_time"  type="text" placeholder="年-月" id="qcout" data-type="end"  onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'qcenter\')}&quot;})" readonly="readonly" name="yxsj" style="height: 32px;width: 100%">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_2sure1"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_2sure1" value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_2sure1" value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcouttime" placeholder="年-月" id="qcout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'qcenter_add\')}&quot;})" readonly="readonly" style="display: none"></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">证书类型：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control required promisenum qc-input" type="text" value="" name="zsnx">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_2sure2"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_2sure2" value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_2sure2" value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqctype" style="display: none"></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">信息来源：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control required msgbelong qc-input" type="text" value="" name="ly">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_2sure3"  checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_2sure3" value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_2sure3" value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcbelong" style="display: none"></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">证书编号：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control required promisenum qc-input" type="text" value="" name="bh">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="is_2sure4" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_2sure4" value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="is_2sure4" value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcnum" style="display: none"></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <div class="col-md-2 fileinput col-md-push-9">
-                                                <span class="btn btn-success btn-xs">上传资格证书照片</span>
-                                                <input type="file" class="btn btn-success btn-xs" accept="image/*" name="qc" onchange="filechange(this)">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <img class="img-responsive" style="margin: 10px auto" >
-                                            </div>
-                                        </div>
-                                        <div class="msgdelete" style="display: none"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
-                                    </div>
+                                    </volist>
                                     <input type="button" class="btn btn-success btn-xs col-md-push-9 col-md-3 add-input" value="添加新的资格证书" style="margin-top: 10px">
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">工作经历：</label>
-                                    <div class="col-md-11 col-md-push-3 education" style="margin-top: 10px;padding-top: 50px;background-color: rgb(230, 233, 240);position: relative">
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">公司名称：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control required work-input " type="text" value="" name="gsmc">
+                                    <volist name="work" id="vo">
+                                        <div class="col-md-11 col-md-push-3 education" style="margin-top: 10px;padding-top: 50px;background-color: rgb(230, 233, 240);position: relative">
+                                            <span style="display: none" class="work-input" data-type="Id">{$vo['Id']}</span>
+                                            <div class="col-md-12 bottom-10">
+                                                <lable class="col-md-2 control-label">公司名称：</lable>
+                                                <div class="col-md-4">
+                                                    <input class="form-control required work-input " type="text" value="{$vo['company']}" name="gsmc">
+                                                </div>
+                                                <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                    <label class="radiobtn"><input type="radio" name="sur_1_id_{$vo['Id']}" <if condition="$vo['company_add'] eq 'sure'||$vo['company_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="sur_1_id_{$vo['Id']}" <if condition="$vo['company_add'] neq 'sure'&&$vo['company_add'] neq 'notsure'&&$vo['company_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="sur_1_id_{$vo['Id']}" <if condition="$vo['company_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                </div>
+                                                <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkcompany" value="{$vo['company_add']}" <if condition="$vo['company_add'] eq 'sure'||$vo['company_add'] eq 'notsure'||$vo['company_add'] eq ''">style="display:none"</if>></div>
                                             </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="sur_1" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="sur_1" value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="sur_1" value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                            <div class="col-md-12 bottom-10">
+                                                <lable class="col-md-2 control-label">入职时间：</lable>
+                                                <div class="col-md-4">
+                                                    <input class="form-control text-center timerinput required enter_time work-input" data-name="enter_time"  type="text" placeholder="年-月" value="{$vo['enter_time']}" id="workenter" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'workout\')}&quot;})" readonly="readonly" name="rzsj" style="height: 32px;width: 100%">
+                                                </div>
+                                                <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                    <label class="radiobtn"><input type="radio" name="sur_2_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="sur_2_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['get_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="sur_2_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                </div>
+                                                <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkentertime" placeholder="年-月" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['enter_time_add'] neq ''">value="{$vo['enter_time_add']}"</if> <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq ''">value="{$vo['enter_time_add']}"</if> <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq 'notsure'||$vo['enter_time_add'] eq ''">style="display: none" </if> id="workenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'workout_add\')}&quot;})" readonly="readonly"></div>
                                             </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkcompany" style="display: none"></div>
+                                            <div class="col-md-12 bottom-10">
+                                                <lable class="col-md-2 control-label">离职时间：</lable>
+                                                <div class="col-md-4">
+                                                    <input class="form-control text-center timerinput required out_time work-input" data-name="enter_time"  type="text" placeholder="年-月" value="{$vo['out_time']}" id="workout" data-type="end"  onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'workenter\')}&quot;})" readonly="readonly" name="lzsj" style="height: 32px;width: 100%">
+                                                </div>
+                                                <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                    <label class="radiobtn"><input type="radio" name="sur_3_id_{$vo['Id']}" <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="sur_3_id_{$vo['Id']}" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="sur_3_id_{$vo['Id']}" <if condition="$vo['out_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                </div>
+                                                <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkouttime" placeholder="年-月" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">value="{$vo['out_time_add']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq ''">value="{$vo['out_time']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq 'notsure'||$vo['out_time_add'] eq ''">style="display: none" </if> id="workout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'workenter_add\')}&quot;})" readonly="readonly" style="display: none"></div>
+                                            </div>
+                                            <div class="col-md-12 bottom-10">
+                                                <lable class="col-md-2 control-label">任职职位：</lable>
+                                                <div class="col-md-4">
+                                                    <input class="form-control required promisenum work-input" type="text" value="{$vo['position']}" name="rzzw">
+                                                </div>
+                                                <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
+                                                    <label class="radiobtn"><input type="radio" name="sur_4_id_{$vo['Id']}" <if condition="$vo['position_add'] eq 'sure'||$vo['position_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="sur_4_id_{$vo['Id']}" <if condition="$vo['position_add'] neq 'sure'&&$vo['position_add'] neq 'notsure'&&$vo['position_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="sur_4_id_{$vo['Id']}" <if condition="$vo['position_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
+                                                </div>
+                                                <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkposition" value="{$vo['position_add']}" <if condition="$vo['position_add'] eq 'sure'||$vo['position_add'] eq 'notsure'||$vo['position_add'] eq ''">style="display:none"</if>></div>
+                                            </div>
+                                            <input type="text" value="{$vo['witness']|count}" class="witness-count work-input" readonly="readonly">
+                                                <div class="col-md-12 bottom-10 p-p">
+                                                    <lable class="col-md-2 control-label">证明人：</lable>
+                                                    <volist name="vo['witness']" id="val">
+                                                        <div class="col-md-11  promise-people">
+                                                            <span data-type="Id" style="display: none" class="witness-input">{$val['Id']}</span>
+                                                            <div class="col-md-10 col-md-push-2 bottom-10">
+                                                                <lable class="col-md-5 col-md-pull-3 control-label">姓名：</lable>
+                                                                <div class="col-md-4 col-md-pull-3">
+                                                                    <input type="text" class="form-control required witness-input" name="wxm" value="{$val['witness']}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-10 col-md-push-2 bottom-10">
+                                                                <lable class="col-md-5 col-md-pull-3 control-label">岗位：</lable>
+                                                                <div class="col-md-4 col-md-pull-3">
+                                                                    <input type="text" class="form-control required witness-input" name="wgw" value="{$val['position']}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-10 col-md-push-2 bottom-10">
+                                                                <lable class="col-md-5 col-md-pull-3 control-label">电话：</lable>
+                                                                <div class="col-md-4 col-md-pull-3">
+                                                                    <input type="text" class="form-control required witness-input" name="wtel" value="{$val['tel']}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-10 col-md-push-2 bottom-10">
+                                                                <lable class="col-md-5 col-md-pull-3 control-label">与被调查人关系：</lable>
+                                                                <div class="col-md-4 col-md-pull-3">
+                                                                    <input type="text" class="form-control required witness-input" name="wgx" value="{$val['relationship']}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-10 col-md-push-2 bottom-10">
+                                                                <lable class="col-md-5 col-md-pull-3 control-label">调查方式：</lable>
+                                                                <div class="col-md-4 col-md-pull-3">
+                                                                    <input type="text" class="form-control required witness-input" name="wdcfs" value="{$val['method']}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-10 col-md-push-2 bottom-10">
+                                                                <lable class="col-md-5 col-md-pull-3 control-label">在职期间工作情况：</lable>
+                                                                <div class="col-md-4 col-md-pull-3">
+                                                                    <input type="text" class="form-control required witness-input" name="wqk" value="{$val['performance']}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-10 col-md-push-2 bottom-10">
+                                                                <lable class="col-md-5 col-md-pull-3 control-label">是否有违纪违规/不良记录：</lable>
+                                                                <div class="col-md-4 col-md-pull-3">
+                                                                    <input type="text" class="form-control required witness-input" name="wjl" value="{$val['badrecord']}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-10 col-md-push-2 bottom-10">
+                                                                <lable class="col-md-5 col-md-pull-3 control-label">离职原因：</lable>
+                                                                <div class="col-md-4 col-md-pull-3">
+                                                                    <input type="text" class="form-control required witness-input" name="wreason" value="{$val['reason']}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-10 col-md-push-2 bottom-10">
+                                                                <lable class="col-md-5 col-md-pull-3 control-label">有否培训协议：</lable>
+                                                                <div class="col-md-4 col-md-pull-3">
+                                                                    <input type="text" class="form-control required witness-input" name="wpxxy" value="{$val['train']}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-10 col-md-push-2 bottom-10">
+                                                                <lable class="col-md-5 col-md-pull-3 control-label">有否竞业协议：</lable>
+                                                                <div class="col-md-4 col-md-pull-3">
+                                                                    <input type="text" class="form-control required witness-input" name="wjzxy" value="{$val['compete']}">
+                                                                    <!--<input type="text" class="form-control required witness-input data-for" style="display: none">-->
+                                                                </div>
+                                                            </div>
+                                                            <div class="msgdelete" style="display: none;"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
+                                                        </div>
+                                                    </volist>
+                                                    <div class="col-md-2 col-md-push-9 add-promise"><input class="button btn btn-success btn-xs" type="button" value="添加证明人"></div>
+                                                </div>
+                                            <div class="msgdelete" style="display: none"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
                                         </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">入职时间：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control text-center timerinput required enter_time work-input" data-name="enter_time"  type="text" placeholder="年-月" id="workenter" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'workout\')}&quot;})" readonly="readonly" name="rzsj" style="height: 32px;width: 100%">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="sur_2" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="sur_2" value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="sur_2" value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkentertime" placeholder="年-月" id="workenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'workout_add\')}&quot;})" readonly="readonly" style="display: none"></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">离职时间：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control text-center timerinput required out_time work-input" data-name="enter_time"  type="text" placeholder="年-月" id="workout" data-type="end"  onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'workenter\')}&quot;})" readonly="readonly" name="lzsj" style="height: 32px;width: 100%">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="sur_3" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="sur_3" value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="sur_3" value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkouttime" placeholder="年-月" id="workout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'workenter_add\')}&quot;})" readonly="readonly" style="display: none"></div>
-                                        </div>
-                                        <div class="col-md-12 bottom-10">
-                                            <lable class="col-md-2 control-label">任职职位：</lable>
-                                            <div class="col-md-4">
-                                                <input class="form-control required promisenum work-input" type="text" value="" name="rzzw">
-                                            </div>
-                                            <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
-                                                <label class="radiobtn"><input type="radio" name="sur_4" checked="checked" value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="sur_4" value="1"><img src="/Public/img/wrong.png" alt=""></label>
-                                                <label class="radiobtn"><input type="radio" name="sur_4" value="2"><img src="/Public/img/notsure.png" alt=""></label>
-                                            </div>
-                                            <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkposition" style="display: none"></div>
-                                        </div>
-                                        <input type="text" value="1" class="witness-count work-input" readonly="readonly">
-                                        <div class="col-md-12 bottom-10 p-p">
-                                            <lable class="col-md-2 control-label">证明人：</lable>
-                                            <div class="col-md-11  promise-people">
-                                                <div class="col-md-10 col-md-push-2 bottom-10">
-                                                    <lable class="col-md-5 col-md-pull-3 control-label">姓名：</lable>
-                                                    <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input" name="wxm">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10 col-md-push-2 bottom-10">
-                                                    <lable class="col-md-5 col-md-pull-3 control-label">岗位：</lable>
-                                                    <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input" name="wgw">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10 col-md-push-2 bottom-10">
-                                                    <lable class="col-md-5 col-md-pull-3 control-label">电话：</lable>
-                                                    <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input" name="wtel">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10 col-md-push-2 bottom-10">
-                                                    <lable class="col-md-5 col-md-pull-3 control-label">与被调查人关系：</lable>
-                                                    <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input" name="wgx">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10 col-md-push-2 bottom-10">
-                                                    <lable class="col-md-5 col-md-pull-3 control-label">调查方式：</lable>
-                                                    <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input" name="wdcfs">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10 col-md-push-2 bottom-10">
-                                                    <lable class="col-md-5 col-md-pull-3 control-label">在职期间工作情况：</lable>
-                                                    <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input" name="wqk">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10 col-md-push-2 bottom-10">
-                                                    <lable class="col-md-5 col-md-pull-3 control-label">是否有违纪违规/不良记录：</lable>
-                                                    <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input" name="wjl">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10 col-md-push-2 bottom-10">
-                                                    <lable class="col-md-5 col-md-pull-3 control-label">离职原因：</lable>
-                                                    <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input" name="wreason">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10 col-md-push-2 bottom-10">
-                                                    <lable class="col-md-5 col-md-pull-3 control-label">有否培训协议：</lable>
-                                                    <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input" name="wpxxy">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10 col-md-push-2 bottom-10">
-                                                    <lable class="col-md-5 col-md-pull-3 control-label">有否竞业协议：</lable>
-                                                    <div class="col-md-4 col-md-pull-3">
-                                                        <input type="text" class="form-control required witness-input" name="wjzxy">
-                                                        <!--<input type="text" class="form-control required witness-input data-for" style="display: none">-->
-                                                    </div>
-                                                </div>
-                                                <div class="msgdelete" style="display: none;"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
-                                            </div>
-                                            <div class="col-md-2 col-md-push-9 add-promise"><input class="button btn btn-success btn-xs" type="button" value="添加证明人"></div>
-                                        </div>
-                                        <div class="msgdelete" style="display: none"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
-                                    </div>
+                                    </volist>
+
                                     <input type="button" class="btn btn-success btn-xs col-md-push-9 col-md-3 add-input" value="添加新的工作经历" style="margin-top: 10px">
                                 </div>
 
                                 <div  class="form-group tb-1">
                                     <label class="col-md-3 control-label">备注：</label>
                                     <div class="col-md-7">
-                                        <textarea name="bz" id="bz" cols="30" rows="5" class="form-control consultant" maxlength="200"></textarea>
+                                        <textarea name="bz" id="bz" cols="30" rows="5" class="form-control consultant" maxlength="200" value="{$bg['bz']}"></textarea>
                                     </div>
                                 </div>
 
@@ -652,16 +668,17 @@
                 //取得external_background表数据
                 var tb1 = $(document).find(".tb-1");
                 var tbData1 = new Array();
+                tbData1.push(parseInt($("#bgId").text()));
                 tb1.each(function () {
-                    let text = $(this).find("input[type='text']").val()||$(this).find("textarea").val();
+                    let text = $(this).find("input[type='text']").val()||$(this).find("textarea").val()||$(this).find("span").text();
                     tbData1.push(text);
-                })
+                });
                 formFile.append("bg",tbData1);
                 //取得external_background_edu表数据
                 var tb2 = $(document).find(".edu-input");
                 var tbData2 = new Array();
                 tb2.each(function () {
-                    let text = $(this).val();
+                    let text = $(this).val()||parseInt($(this).text());
                     tbData2.push(text);
                 });
                 formFile.append("edu",tbData2);
@@ -669,7 +686,7 @@
                 var tb3 = $(document).find(".qc-input");
                 var tbData3 = new Array();
                 tb3.each(function () {
-                    let text = $(this).val();
+                    let text = $(this).val()||parseInt($(this).text());
                     tbData3.push(text);
                 });
                 formFile.append("qc",tbData3);
@@ -677,7 +694,7 @@
                 var tb4 = $(document).find(".work-input");
                 var tbData4 = new Array();
                 tb4.each(function () {
-                    let text = $(this).val();
+                    let text = $(this).val()||parseInt($(this).text());
                     tbData4.push(text);
                 });
                 formFile.append("work",tbData4);
@@ -686,12 +703,13 @@
                 var tb5 = $(document).find(".witness-input");
                 var tbData5 = new Array();
                 tb5.each(function () {
-                    let text = $(this).val();
+                    let text = $(this).val()||parseInt($(this).text());
                     tbData5.push(text);
                 });
                 formFile.append("witness",tbData5);
+                var bgId = parseInt($("#bgId").text());
                 $.ajax({
-                    url:"{:U('background/add_external')}",
+                    url:"/index.php?m=background&a=edit_external&Id="+bgId,
                     type:"post",
                     data:formFile,
                     processData :false,
@@ -799,6 +817,12 @@
             input.val("");
             var pic = thisbefore.children(".msgdelete").prev().children().eq(1).children("img");
             pic.removeAttr("src");
+            //清空span里ID
+            neweducation.find("span").each(function () {
+                if($(this).attr('data-type')=='Id'){
+                    $(this).text("");
+                }
+            });
             //添加上传input name
             var fileInput = $(this).prev().find("input[type='file']");
             var fileInputCount = fileInput.parent().parent().parent().parent().children().length-3;
@@ -814,6 +838,8 @@
                 $(this).children("div").children("input").val("");
             });
             promise.children(".msgdelete").css("display","block");
+            //清空ID span
+            promise.find("span").text("");
             var witnessCount = parseInt($(this).parent().parent().children(".witness-count").val());
             if(witnessCount<4){
                 $(this).parent().parent().children(".witness-count").val(witnessCount+1);
