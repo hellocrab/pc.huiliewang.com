@@ -154,7 +154,7 @@ class ReturnAction extends Action
         }
 
         $list =  M('payment_planperiod')->join("LEFT JOIN mx_payment_plan ON mx_payment_plan.Id = mx_payment_planperiod.plan_id")->select();
-//汇总计算
+
         $addMoney = 0;
         foreach ($list as $k=>$v){
             $data = explode(" 元",$v['money']);
