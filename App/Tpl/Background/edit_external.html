@@ -16,7 +16,7 @@
         overflow: hidden;
     }
     .img-responsive{
-        max-width: 240px;
+        max-width: 80%;
     }
     .note-codable{
         display: none;
@@ -255,7 +255,7 @@
                                                         <label class="radiobtn"><input type="radio" name="is_1sure3_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['enter_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                         <label class="radiobtn"><input type="radio" name="is_1sure3_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
                                                     </div>
-                                                    <div class="col-md-3"><input type="text"  class="form-control required edu-input" name="newentertime" placeholder="年-月" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['enter_time_add'] neq ''">value="{$vo['enter_time_add']}"</if>   <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq ''">value="{$vo['enter_time']}"</if> <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq 'notsure'||$vo['enter_time_add'] eq ''">style="display: none" </if> id="eduenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'eduout_add\')}&quot;})" readonly="readonly"></div>
+                                                    <div class="col-md-3"><input type="text"  class="form-control required edu-input" name="newentertime" placeholder="年-月" value="{$vo['enter_time_add']}" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['enter_time_add'] neq ''">style="dispaly:block"<else/>style="display:none"</if> id="eduenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'eduout_add\')}&quot;})" readonly="readonly"></div>
                                                 </div>
                                                 <div class="col-md-12 bottom-10">
                                                     <lable class="col-md-2 control-label">毕业时间：</lable>
@@ -267,7 +267,7 @@
                                                         <label class="radiobtn"><input type="radio" name="is_1sure4_id_{$vo['Id']}" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                         <label class="radiobtn"><input type="radio" name="is_1sure4_id_{$vo['Id']}" <if condition="$vo['out_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
                                                     </div>
-                                                    <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newouttime" placeholder="年-月" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">value="{$vo['out_time_add']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq ''">value="{$vo['out_time']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq 'notsure'||$vo['out_time_add'] eq ''">style="display: none" </if> id="eduout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'eduenter_add\')}&quot;})"  readonly="readonly"></div>
+                                                    <div class="col-md-3"><input type="text" class="form-control required edu-input" name="newouttime" placeholder="年-月" value="{$vo['out_time_add']}" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">style="display:block"<else/>style="display:none"</if> id="eduout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'eduenter_add\')}&quot;})"  readonly="readonly"></div>
                                                 </div>
                                                 <div class="col-md-12 bottom-10">
                                                     <lable class="col-md-2 control-label">证书编号：</lable>
@@ -302,7 +302,7 @@
                                                         <img class="img-responsive" <if condition="$vo['edu_pic_src'] neq ''">src="/Uploads{$vo['edu_pic_src']}"</if> style="margin: 10px auto" >
                                                     </div>
                                                 </div>
-                                                <div class="msgdelete" style="display: none"><img src="/Public/img/grayclose.png" style="width: 15px" ></div>
+                                                <div class="msgdelete" data-type="edu" data-id="{$vo['Id']}"> <img src="/Public/img/grayclose.png" style="width: 15px" ></div>
                                             </div>
                                         </volist>
                                     <input type="button" class="btn btn-success btn-xs col-md-push-9 col-md-3 add-input" value="添加新的学历证书" style="margin-top: 10px">
@@ -323,7 +323,7 @@
                                                     <label class="radiobtn"><input type="radio" name="is_2sure_id_{$vo['Id']}" <if condition="$vo['get_time_add'] neq 'sure'&&$vo['get_time_add'] neq 'notsure'&&$vo['get_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                     <label class="radiobtn"><input type="radio" name="is_2sure_id_{$vo['Id']}" <if condition="$vo['get_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
                                                 </div>
-                                                <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcentertime" placeholder="年-月" <if condition="$vo['get_time_add'] neq 'sure'&&$vo['get_time_add'] neq 'notsure'&&$vo['get_time_add'] neq ''">value="{$vo['get_time_add']}"</if>   <if condition="$vo['get_time_add'] eq 'sure'||$vo['get_time_add'] eq ''">value="{$vo['get_time_add']}"</if> <if condition="$vo['get_time_add'] eq 'sure'||$vo['get_time_add'] eq 'notsure'||$vo['get_time_add'] eq ''">style="display: none" </if> id="qcenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'qcout_add\')}&quot;})" readonly="readonly"></div>
+                                                <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcentertime" placeholder="年-月" value="{$vo['get_time_add']}" <if condition="$vo['get_time_add'] neq 'sure'&&$vo['get_time_add'] neq 'notsure'&&$vo['get_time_add'] neq ''">style="display:block"<else/>style="display:none"</if> id="qcenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'qcout_add\')}&quot;})" readonly="readonly"></div>
                                             </div>
                                             <div class="col-md-12 bottom-10">
                                                 <lable class="col-md-2 control-label">有效时间：</lable>
@@ -335,7 +335,7 @@
                                                     <label class="radiobtn"><input type="radio" name="is_2sure1_id_{$vo['Id']}" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                     <label class="radiobtn"><input type="radio" name="is_2sure1_id_{$vo['Id']}" <if condition="$vo['out_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
                                                 </div>
-                                                <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcouttime" placeholder="年-月" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">value="{$vo['out_time_add']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq ''">value="{$vo['out_time']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq 'notsure'||$vo['out_time_add'] eq ''">style="display: none" </if> id="qcout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'qcenter_add\')}&quot;})" readonly="readonly"></div>
+                                                <div class="col-md-3"><input type="text" class="form-control required qc-input" name="newqcouttime" placeholder="年-月" value="{$vo['out_time_add']}" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''"> style="display:block"<else/>style="display:none"</if> id="qcout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'qcenter_add\')}&quot;})" readonly="readonly"></div>
                                             </div>
                                             <div class="col-md-12 bottom-10">
                                                 <lable class="col-md-2 control-label">证书类型：</lable>
@@ -382,7 +382,7 @@
                                                     <img class="img-responsive" <if condition="$vo['qc_pic_src'] neq ''">src="/Uploads{$vo['qc_pic_src']}"</if> style="margin: 10px auto" >
                                                 </div>
                                             </div>
-                                            <div class="msgdelete" style="display: none"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
+                                            <div class="msgdelete" data-id="{$vo['Id']}" data-type="qc"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
                                         </div>
                                     </volist>
                                     <input type="button" class="btn btn-success btn-xs col-md-push-9 col-md-3 add-input" value="添加新的资格证书" style="margin-top: 10px">
@@ -414,7 +414,7 @@
                                                     <label class="radiobtn"><input type="radio" name="sur_2_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['get_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                     <label class="radiobtn"><input type="radio" name="sur_2_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
                                                 </div>
-                                                <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkentertime" placeholder="年-月" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['enter_time_add'] neq ''">value="{$vo['enter_time_add']}"</if> <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq ''">value="{$vo['enter_time_add']}"</if> <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq 'notsure'||$vo['enter_time_add'] eq ''">style="display: none" </if> id="workenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'workout_add\')}&quot;})" readonly="readonly"></div>
+                                                <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkentertime" placeholder="年-月" value="{$vo['enter_time_add']}" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['enter_time_add'] neq ''"> style="display:block"<else/>style="display:none"</if> id="workenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(\'workout_add\')}&quot;})" readonly="readonly"></div>
                                             </div>
                                             <div class="col-md-12 bottom-10">
                                                 <lable class="col-md-2 control-label">离职时间：</lable>
@@ -426,7 +426,7 @@
                                                     <label class="radiobtn"><input type="radio" name="sur_3_id_{$vo['Id']}" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                     <label class="radiobtn"><input type="radio" name="sur_3_id_{$vo['Id']}" <if condition="$vo['out_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
                                                 </div>
-                                                <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkouttime" placeholder="年-月" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''">value="{$vo['out_time_add']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq ''">value="{$vo['out_time']}"</if> <if condition="$vo['out_time_add'] eq 'sure'||$vo['out_time_add'] eq 'notsure'||$vo['out_time_add'] eq ''">style="display: none" </if> id="workout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'workenter_add\')}&quot;})" readonly="readonly" style="display: none"></div>
+                                                <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkouttime" placeholder="年-月" value="{$vo['out_time_add']}" <if condition="$vo['out_time_add'] neq 'sure'&&$vo['out_time_add'] neq 'notsure'&&$vo['out_time_add'] neq ''"> style="display:block"<else/>style="display:none"</if> id="workout_add" data-type="end" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(\'workenter_add\')}&quot;})" readonly="readonly" style="display: none"></div>
                                             </div>
                                             <div class="col-md-12 bottom-10">
                                                 <lable class="col-md-2 control-label">任职职位：</lable>
@@ -446,6 +446,7 @@
                                                     <volist name="vo['witness']" id="val">
                                                         <div class="col-md-11  promise-people">
                                                             <span data-type="Id" style="display: none" class="witness-input">{$val['Id']}</span>
+                                                            <span data-type="wId" style="display: none" class="witness-input">{$val['w_id']}</span>
                                                             <div class="col-md-10 col-md-push-2 bottom-10">
                                                                 <lable class="col-md-5 col-md-pull-3 control-label">姓名：</lable>
                                                                 <div class="col-md-4 col-md-pull-3">
@@ -507,12 +508,12 @@
                                                                     <!--<input type="text" class="form-control required witness-input data-for" style="display: none">-->
                                                                 </div>
                                                             </div>
-                                                            <div class="msgdelete" style="display: none;"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
+                                                            <div class="msgdelete" data-id="{$val['Id']}" data-type="witness"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
                                                         </div>
                                                     </volist>
                                                     <div class="col-md-2 col-md-push-9 add-promise"><input class="button btn btn-success btn-xs" type="button" value="添加证明人"></div>
                                                 </div>
-                                            <div class="msgdelete" style="display: none"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
+                                            <div class="msgdelete" data-id="{$vo['Id']}" data-type="work"><img src="/Public/img/grayclose.png" style="width: 15px" alt=""></div>
                                         </div>
                                     </volist>
 
@@ -522,7 +523,7 @@
                                 <div  class="form-group tb-1">
                                     <label class="col-md-3 control-label">备注：</label>
                                     <div class="col-md-7">
-                                        <textarea name="bz" id="bz" cols="30" rows="5" class="form-control consultant" maxlength="200" value="{$bg['bz']}"></textarea>
+                                        <textarea name="bz" id="bz" cols="30" rows="5" class="form-control consultant" maxlength="200" value="{$bg['bz']}">{$bg['bz']}</textarea>
                                     </div>
                                 </div>
 
@@ -634,13 +635,15 @@
             alert('请选择文件');
             $(data).parent().next().children('img').attr("src", "");
         }else{
-            /*var url = '';
-             var reader = new FileReader();//新建一个FileReader
-             reader.readAsText(files[0], "UTF-8");//读取文件
-             reader.onload = function(evt){ //读取完文件之后会回来这里
-             var fileString = evt.target.result;
-             }*/
-            $(data).parent().next().children('img').attr("src", window.URL.createObjectURL(files[0]));
+            if(files[0]['size']<=20*1024*1024){
+                if(files[0]['type'].indexOf('image')!=-1){
+                    $(data).parent().next().children('img').attr("src", window.URL.createObjectURL(files[0]));
+                }else{
+                    alert_crm("该文件不是图片!");
+                }
+            }else{
+                alert_crm("图片大于20Mb！");
+            }
         }
     }
     $(document).ready(function(){
@@ -656,85 +659,89 @@
             //验证
             var goon = isNull();
             //提交或返回未填写提示
-            if(goon==0){
-                var files = $(document).find("input[type='file']");
-                var formFile = new FormData();
-                //取得图片
-                files.each(function () {
-                    if($(this).val()){
-                        formFile.append($(this).attr("name"),$(this)[0]["files"][0]);
-                    }
-                });
-                //取得external_background表数据
-                var tb1 = $(document).find(".tb-1");
-                var tbData1 = new Array();
-                tbData1.push(parseInt($("#bgId").text()));
-                tb1.each(function () {
-                    let text = $(this).find("input[type='text']").val()||$(this).find("textarea").val()||$(this).find("span").text();
-                    tbData1.push(text);
-                });
-                formFile.append("bg",tbData1);
-                //取得external_background_edu表数据
-                var tb2 = $(document).find(".edu-input");
-                var tbData2 = new Array();
-                tb2.each(function () {
-                    let text = $(this).val()||parseInt($(this).text());
-                    tbData2.push(text);
-                });
-                formFile.append("edu",tbData2);
-                //取得external_background_qc表数据
-                var tb3 = $(document).find(".qc-input");
-                var tbData3 = new Array();
-                tb3.each(function () {
-                    let text = $(this).val()||parseInt($(this).text());
-                    tbData3.push(text);
-                });
-                formFile.append("qc",tbData3);
-                //取得external_background_work表数据
-                var tb4 = $(document).find(".work-input");
-                var tbData4 = new Array();
-                tb4.each(function () {
-                    let text = $(this).val()||parseInt($(this).text());
-                    tbData4.push(text);
-                });
-                formFile.append("work",tbData4);
-
-                //取得external_background_witness表数据
-                var tb5 = $(document).find(".witness-input");
-                var tbData5 = new Array();
-                tb5.each(function () {
-                    let text = $(this).val()||parseInt($(this).text());
-                    tbData5.push(text);
-                });
-                formFile.append("witness",tbData5);
-                var bgId = parseInt($("#bgId").text());
-                $.ajax({
-                    url:"/index.php?m=background&a=edit_external&Id="+bgId,
-                    type:"post",
-                    data:formFile,
-                    processData :false,
-                    contentType :false, // 不设置Content-type请求头
-                    success:function (msg) {
-                        if(msg=="true"){
-                            swal({
-                                title:'保存成功',
-                                text:'点击确定返回上一页',
-                                type:"success",
-                                confirmButtonText: "确定"
-                            },function (isConfirm) {
-                                if(isConfirm){
-                                    window.location.href="/index.php?m=background&a=index_external";
-                                }
-                            });
+            if($('.spanerror').length<1){
+                if(goon==0){
+                    var files = $(document).find("input[type='file']");
+                    var formFile = new FormData();
+                    //取得图片
+                    files.each(function () {
+                        if($(this).val()){
+                            formFile.append($(this).attr("name"),$(this)[0]["files"][0]);
                         }
-                    },
-                    error:{
+                    });
+                    //取得external_background表数据
+                    var tb1 = $(document).find(".tb-1");
+                    var tbData1 = new Array();
+                    tbData1.push(parseInt($("#bgId").text()));
+                    tb1.each(function () {
+                        let text = $(this).find("input[type='text']").val()||$(this).find("textarea").val()||$(this).find("span").text();
+                        tbData1.push(text);
+                    });
+                    formFile.append("bg",tbData1);
+                    //取得external_background_edu表数据
+                    var tb2 = $(document).find(".edu-input");
+                    var tbData2 = new Array();
+                    tb2.each(function () {
+                        let text = $(this).val()||parseInt($(this).text());
+                        tbData2.push(text);
+                    });
+                    formFile.append("edu",tbData2);
+                    //取得external_background_qc表数据
+                    var tb3 = $(document).find(".qc-input");
+                    var tbData3 = new Array();
+                    tb3.each(function () {
+                        let text = $(this).val()||parseInt($(this).text());
+                        tbData3.push(text);
+                    });
+                    formFile.append("qc",tbData3);
+                    //取得external_background_work表数据
+                    var tb4 = $(document).find(".work-input");
+                    var tbData4 = new Array();
+                    tb4.each(function () {
+                        let text = $(this).val()||parseInt($(this).text());
+                        tbData4.push(text);
+                    });
+                    formFile.append("work",tbData4);
 
-                    },
-                    dataType:"json"
-                })
+                    //取得external_background_witness表数据
+                    var tb5 = $(document).find(".witness-input");
+                    var tbData5 = new Array();
+                    tb5.each(function () {
+                        let text = $(this).val()||parseInt($(this).text());
+                        tbData5.push(text);
+                    });
+                    formFile.append("witness",tbData5);
+                    var bgId = parseInt($("#bgId").text());
+                    $.ajax({
+                        url:"/index.php?m=background&a=edit_external&Id="+bgId,
+                        type:"post",
+                        data:formFile,
+                        processData :false,
+                        contentType :false, // 不设置Content-type请求头
+                        success:function (msg) {
+                            if(msg=="success"){
+                                swal({
+                                    title:'保存成功',
+                                    text:'点击确定返回上一页',
+                                    type:"success",
+                                    confirmButtonText: "确定"
+                                },function (isConfirm) {
+                                    if(isConfirm){
+                                        window.location.href="/index.php?m=background&a=index_external";
+                                    }
+                                });
+                            }
+                        },
+                        error:{
+
+                        },
+                        dataType:"json"
+                    })
+                }else{
+                    /* alert_crm("还有未输入的必填文本框！")*/
+                }
             }else{
-                /* alert_crm("还有未输入的必填文本框！")*/
+                alert_crm('请输入正确的身份证号码');
             }
         });
         //验证文本框输入值
@@ -817,9 +824,11 @@
             input.val("");
             var pic = thisbefore.children(".msgdelete").prev().children().eq(1).children("img");
             pic.removeAttr("src");
-            //清空span里ID
+            //清空span里Id,wId
             neweducation.find("span").each(function () {
                 if($(this).attr('data-type')=='Id'){
+                    $(this).text("");
+                }else if($(this).attr('data-type')=='wId'){
                     $(this).text("");
                 }
             });
@@ -827,6 +836,9 @@
             var fileInput = $(this).prev().find("input[type='file']");
             var fileInputCount = fileInput.parent().parent().parent().parent().children().length-3;
             fileInput.attr("name",$(this).parent().find("input[type='file']").last().attr("name")+fileInputCount);
+            //删除按钮属性清空
+            neweducation.find(".msgdelete").removeAttr("data-type");
+            neweducation.find(".msgdelete").removeAttr("data-id");
 
         });
         function asd() {
@@ -839,7 +851,14 @@
             });
             promise.children(".msgdelete").css("display","block");
             //清空ID span
-            promise.find("span").text("");
+            promise.find("span").each(function(){
+                if($(this).attr('data-type')=='Id'){
+                    $(this).text("");
+                }
+            });
+            //清空delete按钮属性
+            promise.find('.msgdelete').removeAttr('data-type');
+            promise.find('.msgdelete').removeAttr('data-id');
             var witnessCount = parseInt($(this).parent().parent().children(".witness-count").val());
             if(witnessCount<4){
                 $(this).parent().parent().children(".witness-count").val(witnessCount+1);
@@ -851,17 +870,146 @@
         $(".msgdelete").on("click",function () {
             var obj = $(this);
             var check = 0;
-            obj.parent().parent().children().last().prev().is(obj.parent())?check=0:check=1;
-            if(check==0){
-                obj.parent().fadeOut(500);
-                setTimeout(function () {
-                    obj.parent().remove();
-                },500)
-            }else{
-                alert_crm("请从最后一个删除！");
+            let count = obj.prev().find('.promise-people').length+1;
+            if(obj.parent().parent().find('.msgdelete').length>1&&obj.attr('data-type')!='work'){
+                if(obj.attr('data-id')!=null&&obj.attr('data-type')!=null){
+                    let type = obj.attr('data-type');
+                    let id = obj.attr('data-id');
+                    let data = {Id:id,type:type};
+                    swal({
+                        title: "您确定要删除该条信息吗？",
+                        text: "删除后将无法恢复，请谨慎操作！",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "是的，我要删除！",
+                        cancelButtonText:'让我再考虑一下…',
+                        closeOnConfirm:false,
+                        closeOnCancel:false
+                    },function (isConfirm) {
+                        if(isConfirm){
+                            $.ajax({
+                                url:'/index.php?m=background&a=delete_one',
+                                type:'post',
+                                data:data,
+                                success:function (msg) {
+                                    if(msg=="success"){
+                                        swal({
+                                            title:'删除成功',
+                                            text:'您已经永久删除该条信息！',
+                                            type:"success",
+                                            confirmButtonText: "确定"
+                                        },function (isConfirm) {
+                                            if(isConfirm){
+                                                obj.parent().fadeOut(500);
+                                                if(obj.parent().parent().parent().find('.witness-count').length==1){
+                                                    obj.parent().parent().parent().find('.witness-count').val(obj.parent().parent().find('.promise-people').length-1);
+                                                }
+                                                setTimeout(function () {
+                                                    obj.parent().remove();
+                                                },500);
+                                            }
+                                        });
+                                    }else{
+                                        swal({
+                                            title: "操作失败！",
+                                            text:data.info,
+                                            type: "error"
+                                        })
+                                        return false;
+                                    }
+                                }
+                            })
+                        }else{
+                            swal("已取消","您取消了删除操作！","error");
+                        }
+                    });
+                }else{
+                    obj.parent().parent().children().last().prev().is(obj.parent())?check=0:check=1;
+                    if(check==0){
+                        obj.parent().fadeOut(500);
+                        if(obj.parent().parent().parent().find('.witness-count').length==1){
+                            obj.parent().parent().parent().find('.witness-count').val(obj.parent().parent().find('.promise-people').length-1);
+                        }
+                        setTimeout(function () {
+                            obj.parent().remove();
+                        },500);
+                    }else{
+                        alert_crm("请从最后一个删除！");
+                    }
+                }
+            }else if(obj.attr('data-type')=='work'&&obj.parent().parent().find('.msgdelete').length>count){
+                if(obj.attr('data-id')!=null&&obj.attr('data-type')!=null){
+                    let type = obj.attr('data-type');
+                    let id = obj.attr('data-id');
+                    let data = {Id:id,type:type};
+                    swal({
+                        title: "您确定要删除该条信息吗？",
+                        text: "删除后将无法恢复，请谨慎操作！",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "是的，我要删除！",
+                        cancelButtonText:'让我再考虑一下…',
+                        closeOnConfirm:false,
+                        closeOnCancel:false
+                    },function (isConfirm) {
+                        if(isConfirm){
+                            $.ajax({
+                                url:'/index.php?m=background&a=delete_one',
+                                type:'post',
+                                data:data,
+                                success:function (msg) {
+                                    if(msg=="success"){
+                                        swal({
+                                            title:'删除成功',
+                                            text:'您已经永久删除该条信息！',
+                                            type:"success",
+                                            confirmButtonText: "确定"
+                                        },function (isConfirm) {
+                                            if(isConfirm){
+                                                obj.parent().fadeOut(500);
+                                                if(obj.parent().parent().parent().find('.witness-count').length==1){
+                                                    obj.parent().parent().parent().find('.witness-count').val(obj.parent().parent().find('.promise-people').length-1);
+                                                }
+                                                setTimeout(function () {
+                                                    obj.parent().remove();
+                                                },500);
+                                            }
+                                        });
+                                    }else{
+                                        swal({
+                                            title: "操作失败！",
+                                            text:data.info,
+                                            type: "error"
+                                        })
+                                        return false;
+                                    }
+                                }
+                            })
+                        }else{
+                            swal("已取消","您取消了删除操作！","error");
+                        }
+                    });
+                }else{
+                    obj.parent().parent().children().last().prev().is(obj.parent())?check=0:check=1;
+                    if(check==0){
+                        obj.parent().fadeOut(500);
+                        if(obj.parent().parent().parent().find('.witness-count').length==1){
+                            obj.parent().parent().parent().find('.witness-count').val(obj.parent().parent().find('.promise-people').length-1);
+                        }
+                        setTimeout(function () {
+                            obj.parent().remove();
+                        },500);
+                    }else{
+                        alert_crm("请从最后一个删除！");
+                    }
+                }
             }
-
-        })
+            else{
+                alert_crm("至少保留一条信息！")
+            }
+        });
         $(".radiobtn").on("click",function () {
             if($(this).children('input').attr('value')==1){
                 $(this).parent().next().children("input").css("display","block");
