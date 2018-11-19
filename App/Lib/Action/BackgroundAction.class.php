@@ -15,34 +15,13 @@ class BackgroundAction extends Action
     public function index(){
         $backGround = M('background');
         $delete['delete'] = 0 ;
-        $by = I('get.by');
         $search = I('get.search');
+        $this->assign('search',$search);
         $listrows = I('get.listrows')?I('get.listrows'):10;
         $field = 'education_add,update,remark,delete';
         $p = isset($_GET['p'])?$_GET['p']:1;
         $type = isset($_GET['type'])?$_GET['type']:'all';
-        switch ($by){
-            case 'all':
-                $count = $backGround->order('s_name')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('s_name')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            case 'time':
-                $count = $backGround->order('date desc')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('date desc')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            case 'company':
-                $count = $backGround->order('s_name')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('s_name')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            case 'industry':
-                $count = $backGround->order('industry')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('industry')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            default:
-                $count = $backGround->order('s_name')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('Id')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-        }
+        $count = $backGround->where($delete)->count();
         if($search&&$type){
             $backGroundMsg = M('background_msg');
             switch ($type){
@@ -50,9 +29,10 @@ class BackgroundAction extends Action
                     $map['s_name'] = array('like','%'.$search.'%');
                     break;
                 case 'time':
-                    $search = strtotime($search);
-                    $search = substr($search,0,6);
-                    $map['date'] = array('like',$search.'%');
+                    $searchStart = strtotime($search);
+                    $searchEnd = date('Y-m-d H:i:s',strtotime("+1day",$searchStart));
+                    $searchEnd = strtotime($searchEnd);
+                    $map['date'] = array('between',array($searchStart,$searchEnd));
                     break;
                 case 'company':
                     $map['company_name'] = array('like','%'.$search.'%');
@@ -70,14 +50,14 @@ class BackgroundAction extends Action
                     $map['s_name'] = array('like','%'.$search.'%');
                     break;
             }
-            $data = $backGround->order('Id')->where($delete)->where($map)->field($field,true)->select();
+            $data = $backGround->order('Id desc')->where($delete)->where($map)->field($field,true)->select();
+        }else{
+            $data = $backGround->order('Id desc')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
         }
         foreach ($data as $k => $val){
             $data[$k]['msg_id'] = json_decode($val['msg_id']);
         }
-        $this->assign('search',$search);
         $this->assign('type',$type);
-        $this->assign('by',$by);
         $this->assign('data',$data);
         //分页设置
         import('@.ORG.Page');//导入分页类
@@ -439,7 +419,7 @@ class BackgroundAction extends Action
     }
     function readyOutPut(){
         $get = I("get.ids");
-        $by  = I('get.by');
+        $by  = 'all';
         if($get){
             $this->output($get,$by);
         }
@@ -927,7 +907,7 @@ class BackgroundAction extends Action
     function output($data,$by){
         switch ($by){
             case 'all':
-                $order = 'Id';
+                $order = 'Id desc';
                 break;
             case 'time':
                 $order = 'Id';
@@ -1000,7 +980,7 @@ class BackgroundAction extends Action
                 $typeN++;
             }
         }
-        $by = 'Id';
+        $by = 'Id desc';
         if($search!=''&&$typeN>0){
             $where[$type]=array('like','%'.$search.'%');
             $count = $exBackground->where($where)->count();
@@ -1523,5 +1503,142 @@ class BackgroundAction extends Action
                 }
                 break;
         }
+    }
+    function edit_external(){
+        if(IS_POST){
+            $data = I('post.');
+            $id = I('get.Id');
+            //整理数据
+            $bgKey = ['Id','name','jobs','tocompany','industry','consultant','idnumber','bz'];
+            $bg = $this->keys_to_data($bgKey,explode(',',$data['bg']));
+            $eduKey = ['Id','school','school_add','edu_type','edu_type_add','major','major_add','enter_time','enter_time_add','out_time','out_time_add','edu_num','edu_num_add','msgbelong','msgbelong_add'];
+            $edu = $this->keys_to_data($eduKey,explode(',',$data['edu']));
+            $qcKey = ['Id','get_time','get_time_add','out_time','out_time_add','qc_type','qc_type_add','qc_source','qc_source_add','qc_num','qc_num_add'];
+            $qc = $this->keys_to_data($qcKey,explode(',',$data['qc']));
+            $workKey = ['Id','company','company_add','enter_time','enter_time_add','out_time','out_time_add','position','position_add','witness_count'];
+            $work = $this->keys_to_data($workKey,explode(',',$data['work']));
+            $witnessKey = ['Id','witness','position','tel','relationship','method','performance','badrecord','reason','train','compete'];
+            $witness = $this->keys_to_data($witnessKey,explode(',',$data['witness']));
+            //数据添加存入图片路径和上传图片
+            if(!empty($_FILES)){
+                $pics = $_FILES;
+                //移动所上传图片
+                $picName = array_keys($pics);
+                foreach ($picName as $key => $val){
+                    $type = end(explode('.',$pics[$val]['name']));
+                    $name = reset(explode('.',$pics[$val]['name']));
+                    if($val =="id"){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/idpic/".time()."_".$name.".".$type;
+                        $idPath = end(explode('/Uploads',$path));
+                        $bg[0]['id_pic_src'] = $idPath;
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }elseif(count(explode("edu",$val))>=2){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/edu/".time()."_".$name.".".$type;
+                        $arr['src'] = end(explode('/Uploads',$path));
+                        $arr['for'] = end(explode("edu",$val))==''?'0':end(explode("edu",$val));
+                        $eduPath[] = $arr;
+                        foreach ($eduPath as $k => $v){
+                            $edu[$v['for']]['edu_pic_src'] = $v['src'];
+                        }//对应数据存入图片地址
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }elseif (count(explode("qc",$val))>=2){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/qc/".time()."_".$name.".".$type;
+                        $arr['src'] = end(explode('/Uploads',$path));
+                        $arr['for'] = end(explode("qc",$val))==''?'0':end(explode("qc",$val));
+                        $qcPath[] = $arr;
+                        foreach ($qcPath as $k => $v){
+                            $qc[$v['for']]['qc_pic_src'] = $v['src'];
+                        }//对应数据存入图片地址
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }
+                }
+            }
+            $externalBg = M('external_background');
+            $externalEdu = M('external_background_edu');
+            $externalQc = M('external_background_qc');
+            $externalWork = M('external_background_work');
+            $externalWitness = M('external_background_witness');
+            $result = 0;
+            $externalBg->where(array('Id'=>$bg[0]['Id']))->setField($bg[0])?true:$result++;
+
+            //新增数据与修改数据分别储存
+            foreach ($edu as $k =>$v){
+                if($v['Id']=='NaN'){
+                    unset($v['Id']);
+                    $v['c_id'] = $id;
+                    $eduAdd[] = $v;
+                }else{
+                    $externalEdu->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                }
+            }
+            $externalEdu->addAll($eduAdd)?true:$result++;
+            foreach ($qc as $k =>$v){
+                if($v['Id']=='NaN'){
+                    unset($v['Id']);
+                    $v['c_id'] = $id;
+                    $qcAdd[] = $v;
+                }else{
+                    $externalQc->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                }
+            }
+            $externalQc->addAll($qcAdd)?true:$result++;
+            foreach ($work as $k =>$v){
+                if($v['Id']=='NaN'){
+                    unset($v['Id']);
+                    $v['c_id'] = $id;
+                    $workAdd[] = $v;
+                }else{
+                    $externalWork->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                }
+            }
+            $externalWork->addAll($workAdd)?true:$result++;
+            foreach ($witness as $k =>$v){
+                if($v['Id']!='NaN'){
+                    $externalWitness->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                }else{
+
+                }
+            }
+            dump($work);
+            dump($witness);
+        }else{
+            $Id = I('get.Id')==''?'0':(int)I('get.Id');
+            $externalBg = M('external_background');
+            $bg = $externalBg->where(array('Id'=>$Id))->find();
+            $this->assign('bg',$bg);
+            $externalEdu = M('external_background_edu');
+            $edu  = $externalEdu->where(array('c_id'=>$Id))->select();
+            $this->assign('edu',$edu);
+            $externalQc = M('external_background_qc');
+            $qc = $externalQc->where(array('c_id'=>$Id))->select();
+            $this->assign('qc',$qc);
+            $externalWork = M('external_background_work');
+            $work = $externalWork->where(array('c_id'=>$Id))->select();
+            foreach ($work as $key => $val){
+                $workId[] = $val['Id'];
+            }
+            $externalWitness = M('external_background_witness');
+            $witnessMap['w_id'] = array('in',$workId);
+            $witness = $externalWitness->where($witnessMap)->select();
+            foreach ($work as $key => $val){
+                foreach ($witness as $k => $v){
+                    if($val['Id']==$v['w_id']){
+                        $work[$key]['witness'][] = $v;
+                    }
+                }
+            }
+            $this->assign('work',$work);
+            $this->display();
+        }
+    }
+    //键值对应数据方法 对外背调修改调用
+    function keys_to_data($keys,$data){
+        $count = count($data)/count($keys);
+        for($i=0;$i<$count;$i++){
+            foreach ($keys as $k =>$v){
+                $newData[$i][$v] = $data[$k+($i*count($keys))];
+            }
+        }
+        return $newData;
     }
 }

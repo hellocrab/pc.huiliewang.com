@@ -476,7 +476,7 @@
 					<li <if condition = "$module_name eq 'contract'">class="active"</if>><a href="{:U('contract/index')}"><span class="fa fa-list-alt" style="display:inline"></span>&nbsp;&nbsp;合同</a></li>
 					<?php elseif($module_name == 'background' || $module_name == 'index'): ?>
 					<li <if condition = "$action_name eq 'index'||$action_name eq 'add'||$action_name eq 'add_more'||$action_name eq 'edit'">class="active"</if> ><a href="{:U('background/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对内背景调查</a></li>
-					<li <if condition = "$action_name eq 'index_external'||$action_name eq 'add_external'||$action_name eq 'add_more_external'">class="active"</if> ><a href="{:U('background/index_external')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对外背景调查</a></li>
+					<li <if condition = "$action_name eq 'index_external'||$action_name eq 'add_external'||$action_name eq 'add_more_external'||$action_name eq 'edit_external'">class="active"</if> ><a href="{:U('background/index_external')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对外背景调查</a></li>
 					<?php elseif($module_name == 'return' || $module_name == 'index'): ?>
 					<li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class="active"</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;回款计划</a></li>
 					<li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class=""</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;回款记录</a></li>
@@ -936,7 +936,7 @@
             }
             function searchtype(data) {
                 $('#s-type').attr('value',$(data).val());
-                var html = '<input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd HH:mm:ss &quot;,maxDate:&quot;%y-%M-%d&quot;})" readonly="readonly" />';
+                var html = '<input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd  &quot;,maxDate:&quot;%y-%M-%d&quot;})" readonly="readonly" />';
                 $('.short_search').remove();
                 switch ($(data).val()){
 					case 'all':
@@ -986,14 +986,13 @@
                 let msg;
                 switch (data){
 					case 'idnum':
-                        regex = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                        regex = /^[1-9]\d{5}(19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/ ;
                         msg = '身份证号码有误！';
 					    break;
 				}
                 /*let html ='<label id="'+$(obj).attr("id")+'-error" class="error" for="'+$(obj).attr("id")+'" style="display: inline-block;"><i class="fa fa-times-circle">'+msg+'</i></label>';*/
                 let span = '<span class="spanerror"><i class="fa fa-times-circle"></i>&nbsp;'+msg+'</span>';
                 let text = $(obj).val();
-                console.log(text);
 				if(text!=''){
 				    if($(obj).parent().find('label').length>0){
                         $(obj).parent().find('span').remove();

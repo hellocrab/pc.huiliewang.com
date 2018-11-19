@@ -160,7 +160,7 @@
                         <a href="{:U('background/add_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 新增候选人</a>
                         <a href="{:U('background/add_more_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 批量导入候选人</a>
                     </ul>
-                    <form class="form-inline" id="" action="" method="get">
+                    <form class="form-inline" id="" action="" autocomplete="off" method="get">
                         <ul class="breadcrum pull-right" style="margin-bottom: 0px">
                             <li>
                                 搜索：
@@ -171,11 +171,11 @@
                                     <!-- <input type="hidden" name="field" value="name"/>
                                      <input type="hidden" name="condition" value="contains"/>-->
                                     <if condition="$type eq 'name'">
-                                        <input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="{$search}" />
-                                        <elseif condition="$type eq 'jobs'"/><input type="text" style="width:160px;" placeholder="请输入岗位"  class="form-control short_search" name="search" value="{$search}" />
-                                        <elseif condition="$type eq 'tocompany'"/><input type="text" style="width:160px;" placeholder="请输入公司名称"  class="form-control short_search" name="search" value="{$search}" />
-                                        <elseif condition="$type eq 'industry'"/><input type="text" style="width:160px;" placeholder="请输入行业"  class="form-control short_search" name="search" value="{$search}" />
-                                        <else /><input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="{$search}" />
+                                        <input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="" />
+                                        <elseif condition="$type eq 'jobs'"/><input type="text" style="width:160px;" placeholder="请输入岗位"  class="form-control short_search" name="search" value="" />
+                                        <elseif condition="$type eq 'tocompany'"/><input type="text" style="width:160px;" placeholder="请输入公司名称"  class="form-control short_search" name="search" value="" />
+                                        <elseif condition="$type eq 'industry'"/><input type="text" style="width:160px;" placeholder="请输入行业"  class="form-control short_search" name="search" value="" />
+                                        <else /><input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="" />
                                     </if>
                                     <span class="input-group-btn">
 										    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-search"></i></button>
@@ -279,6 +279,7 @@
                                                     </if>
                                                 </foreach>
                                                 <td>
+                                                    <span class="label label-primary editstatus bgedit" style="cursor: pointer;margin-left: 10px" data-id="{$val['Id']}">修改 </span>
                                                     <span class="label label-danger editstatus bgdelete" style="cursor: pointer;margin-left: 10px" data-id="{$val['Id']}">删除 </span>
                                                 </td>
                                             </tr>
@@ -525,7 +526,7 @@
                                 $(".bgedit").on("click",function () {
                                     var id = $(this).attr("data-id");
                                     id = parseInt(id);
-                                    window.location.href="/index.php?m=background&a=edit&id="+id;
+                                    window.location.href="/index.php?m=background&a=edit_external&Id="+id;
                                 });
                                 $('#delete').click(function(){
                                     var id_array = new Array();
