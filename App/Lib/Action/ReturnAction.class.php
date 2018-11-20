@@ -72,7 +72,6 @@ class ReturnAction extends Action
                 $this->ajaxReturn($success);
             }
         }
-
             $error = array(
                 'status'  => 0,
                 'info' => '添加失败!',
@@ -81,10 +80,70 @@ class ReturnAction extends Action
 
     }
 
+    public function edit_plan(){
+        $business_id = $_GET['plan_id'];
+        $plan_id = $_GET['plan'];
+        $plan = M("payment_plan")->where(array('Id'=>$plan_id))->find();
+        $periods = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
+        $d_v_business = D('BusinessView');
+        $business = $d_v_business->where(array('business_id'=>$business_id))->find();
+//        dump($periods);exit;
+
+        $this->assign('business',$business);
+        $this->assign('plan',$plan);
+        $this->assign('periods',$periods);
+        $this->display();
+    }
+
+    public function delete(){
+        $period_id = $_POST['period_id'];
+        $plan_id = $_POST['plan_id'];
+        M("payment_planperiod")->where(array('Id'=>intval($period_id)))->delete();
+        $update = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
+        foreach ($update as $k => $v){
+            $data = array('num'=>($k+1));
+            M("payment_planperiod")->where(array('Id'=>intval($v['Id'])))->save($data);
+        }
+        echo '{"status":"1"}';
+    }
+    // 回款计划的编辑
+    public function plan_edit(){
+        $plan_id = intval($_POST['plan_id']);
+        $customer = $_POST['customer'];
+        $person = $_POST['person'];
+        $contract = $_POST['contract'];
+        $department = $_POST['department'];
+        $total = intval($_POST['total']);
+        $nums = intval($_POST['nums']);
+        $add_num = intval($_POST['add_nums']);
+
+        $data = array(
+            'customer'=>$customer,
+            'business'=>$contract,
+            'total'=>$total,
+            'nums'=>$add_num
+        );
+
+        M("payment_plan")->where(array('Id'=>$plan_id))->save($data);
+
+        if($add_num>$nums)
+        for($i=($nums+1);$i>2&&$i<=$add_num;$i++){
+            $data1 = array(
+                'plan_id'=>$plan_id,
+                'num'=>$i,
+                'money'=>$_POST['money'.$i],
+                'property'=>$_POST['property'.$i],
+            );
+            M('payment_planperiod')->add($data1);
+        }
+        $this->ajaxReturn(1,'success',1);
+    }
+
     public function index(){
         $this->timeSearch();
         //$this->assign('daterange',$this->timePlug());
         $d_contract = D('ContractView');
+        $payment_plan = M("payment_plan")->select();
         $by = isset($_GET['by']) ? trim($_GET['by']) : 'me';
         $this->by = $by;
         $where = array();
@@ -152,16 +211,25 @@ class ReturnAction extends Action
                 break;
             default: $where['contract.owner_role_id'] = array('in',getPerByAction(MODULE_NAME,ACTION_NAME));break;
         }
-
-        $list =  M('payment_planperiod')->join("LEFT JOIN mx_payment_plan ON mx_payment_plan.Id = mx_payment_planperiod.plan_id")->select();
-
-        $addMoney = 0;
-        foreach ($list as $k=>$v){
-            $data = explode(" 元",$v['money']);
-            $addMoney+=intval($data[0]);
+        $data = array();$i = 0;
+        foreach ($payment_plan as $k => $v){
+            $arr = M('payment_planperiod')->where(array('plan_id'=>intval($v['Id'])))->select();
+            foreach ($arr as $k1 => $v1){
+                $data[$i]['Id'] = $v['Id'] ;
+                $data[$i]['customer'] = $v['customer'];
+                $data[$i]['customer_id']=$v['customer_id'];
+                $data[$i]['business'] = $v['business'];
+                $data[$i]['business_id']=$v['business_id'];
+                $data[$i]['total']=$v['total'];
+                $data[$i]['num'] = $v1['num'];
+                $data[$i]['money'] = $v1['money'];
+                $data[$i]['property'] = $v1['property'];
+                $data[$i]['status'] = $v1['status'];
+                $data[$i]['period_id'] = $v1['Id'];
+                $i++;
+            }
         }
-        $this->assign('money_total',$addMoney);
-        $this->assign('list',$list);
+        $this->assign('plist',$data);
         $this->display();
     }
     public function backRecord(){
