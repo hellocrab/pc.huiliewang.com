@@ -719,7 +719,7 @@
                         processData :false,
                         contentType :false, // 不设置Content-type请求头
                         success:function (msg) {
-                            if(msg=="success"){
+                            if(msg=='success'){
                                 swal({
                                     title:'保存成功',
                                     text:'点击确定返回上一页',
@@ -729,6 +729,13 @@
                                     if(isConfirm){
                                         window.location.href="/index.php?m=background&a=index_external";
                                     }
+                                });
+                            }else if(msg=='none'){
+                                swal({
+                                    title:'没有修改',
+                                    text:'',
+                                    type:"error",
+                                    confirmButtonText: "确定"
                                 });
                             }
                         },

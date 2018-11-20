@@ -1543,7 +1543,7 @@ class BackgroundAction extends Action
             $externalWork = M('external_background_work');
             $externalWitness = M('external_background_witness');
             $result = 0;
-            $externalBg->where(array('Id'=>$bg[0]['Id']))->setField($bg[0])?true:$result++;
+            $externalBg->where(array('Id'=>$bg[0]['Id']))->setField($bg[0])?$result++:false;
 
             //新增数据与修改数据分别储存
             foreach ($edu as $k =>$v){
@@ -1552,23 +1552,23 @@ class BackgroundAction extends Action
                     $v['c_id'] = $id;
                     $eduAdd[] = $v;
                 }else{
-                    $externalEdu->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                    $externalEdu->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
                 }
             }
-            $externalEdu->addAll($eduAdd)?true:$result++;
+            $externalEdu->addAll($eduAdd)?$result++:false;
             foreach ($qc as $k =>$v){
                 if($v['Id']=='NaN'){
                     unset($v['Id']);
                     $v['c_id'] = $id;
                     $qcAdd[] = $v;
                 }else{
-                    $externalQc->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                    $externalQc->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
                 }
             }
-            $externalQc->addAll($qcAdd)?true:$result++;
+            $externalQc->addAll($qcAdd)?$result++:false;
             foreach ($witness as $k =>$v){
                 if($v['Id']!='NaN'){
-                    $externalWitness->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                    $externalWitness->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
                 }
                 else{
                     if($v['w_id']!='NaN'){
@@ -1578,7 +1578,7 @@ class BackgroundAction extends Action
                     }
                 }
             }
-            $externalWitness->addAll($witnessAddWid)?true:$result++;
+            $externalWitness->addAll($witnessAddWid)?$result++:false;
             $wCount = 0;
             foreach ($work as $k =>$v){
                 if($v['Id']=='NaN'){
@@ -1592,9 +1592,9 @@ class BackgroundAction extends Action
                         $newData[$i] = $witnessAdd[$wCount];
                         $wCount++;
                     }
-                    $externalWitness->addAll($newData)?true:$result++;
+                    $externalWitness->addAll($newData)?$result++:false;
                 }else{
-                    $externalWork->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                    $externalWork->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
                 }
             }
             if($result>0){
