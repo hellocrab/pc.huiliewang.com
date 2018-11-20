@@ -146,9 +146,9 @@
                                 <span id="to_product"><a href="javascript:void(0)" id="favorite"><i class="fa fa-star-o"></i>&nbsp;收藏</a></span>
                             </li>
                         </if>-->
-                        <li>
+                        <!--<li>
                             <span><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>导出</a></span>
-                        </li>
+                        </li>-->
                         <li>
                             <span><a id="delete" href="javascript:void(0);" class="link"><i class="fa fa-times"></i>&nbsp;删除</a></span>
                         </li>
@@ -343,7 +343,7 @@
                                                         edu.children("span").attr({'data-id':data['edu'][i]['Id'],'data-type':'edu'});
                                                         var input = edu.find('.lable-input');
                                                         input.find('i').attr("class","");
-                                                        input.eq(0).children('input[type="text"]').val(data['edu'][i]['school']+'毕业证');
+                                                        input.eq(0).children('input[type="text"]').val(data['edu'][i]['school']);
                                                         input.eq(0).children('i').addClass('i-true');
                                                         input.eq(1).children('input[type="text"]').val(data['edu'][i]['school']);
                                                         input.eq(1).children('i').addClass(checkiClass(data['edu'],i,'school_add'));
