@@ -224,7 +224,7 @@
                             <form id="form1" action="" method="Post" style="position:relative;">
                                 <div id="table_div" class="nicescroll">
                                     <table class="table table-hover table-striped table_thead_fixed" id="tab_Test3">
-                                        <if condition="$list eq null">
+                                        <if condition="$plist eq null">
                                             <div style="background-color:#fff;"><include file="Public:nodata" /></div>
                                             <else/>
                                             <tr id="childNodes_num" class="tabTh">
@@ -244,22 +244,24 @@
                                                 <td>删除</td>
                                             </tr>
                                             <tbody>
-                                            <tr class="controls_tr">
-                                                <td>
-                                                    <div class="checkbox checkbox-primary">
-                                                        <input name="product_id[]" class="check_list" type="checkbox" value="{$vo.eid}" <if condition="$vo['is_deleted'] eq '0'">rel1="0"<else/>rel1="1"</if>/>
-                                                        <label for=""></label>
-                                                    </div>
-                                                </td>
-                                                <td data-id=""><a href="javascript:void(0);">XXX战略策划总监</a></td>
-                                                <td>2018/11/13</td>
-                                                <td>3</td>
-                                                <td>￥100000</td>
-                                                <td>￥0</td>
-                                                <td>呀哈哈</td>
-                                                <td>未完成</td>
-                                                <td>嘻嘻</td>
-                                            </tr>
+                                            <volist name="plist" id="vo">
+                                                <tr class="controls_tr">
+                                                    <td>
+                                                        <div class="checkbox checkbox-primary">
+                                                            <input name="product_id[]" class="check_list" type="checkbox" value="{$vo.business_id}" />
+                                                            <label for=""></label>
+                                                        </div>
+                                                    </td>
+                                                    <td data-id=""><a href="javascript:void(0);" onclick="edit_plan('{$vo.business_id}','{$vo.Id}');">{$vo.business}</a></td>
+                                                    <td>2018/11/13</td>
+                                                    <td>{$vo.num}</td>
+                                                    <td>{$vo.total}</td>
+                                                    <td>￥0</td>
+                                                    <td>{$vo.customer}</td>
+                                                    <td>{$vo.status}</td>
+                                                    <td><a href="javascript:void(0);" onclick="deleteBusiness('{$vo.period_id}')">删除</a></td>
+                                                </tr>
+                                            </volist>
                                             <!--<volist name="list" id="vo">-->
                                                 <!--<tr class="controls_tr">-->
                                                     <!--<td>-->
@@ -340,6 +342,10 @@
 <link href="__PUBLIC__/css/litebox.css" rel="stylesheet">
 
 <script type="text/javascript">
+    /**删除回款项目计划*/
+    function deleteBusiness(obj) {
+        alert(obj);
+    }
     /*模态框关闭或打开 先清除内容*/
     $(".modal").on("hide.bs.modal", function() {
         $(this).removeData("bs.modal");
@@ -356,7 +362,13 @@
         $('#Modal').modal('show');
         $('#dep_modal').load(url);
     }
-
+    /*编辑计划*/
+    function edit_plan (obj,obj1){
+        $("#dep_modal").parent().removeClass("modal-lg").addClass("modal-md");
+        var url = "{:U('return/edit_plan')}";
+        $('#Modal').modal('show');
+        $('#dep_modal').load(url+"&plan_id="+obj+"&plan="+obj1);
+    }
     $(".controls_tr").mouseenter(function(){
         $(this).find(".controls").show();
     }).mouseleave(function(){
