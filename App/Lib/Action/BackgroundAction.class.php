@@ -1534,7 +1534,7 @@ class BackgroundAction extends Action
             $qc = $this->keys_to_data($qcKey,explode(',',$data['qc']));
             $workKey = ['Id','company','company_add','enter_time','enter_time_add','out_time','out_time_add','position','position_add','witness_count'];
             $work = $this->keys_to_data($workKey,explode(',',$data['work']));
-            $witnessKey = ['Id','witness','position','tel','relationship','method','performance','badrecord','reason','train','compete'];
+            $witnessKey = ['Id','w_id','witness','position','tel','relationship','method','performance','badrecord','reason','train','compete'];
             $witness = $this->keys_to_data($witnessKey,explode(',',$data['witness']));
             //数据添加存入图片路径和上传图片
             if(!empty($_FILES)){
@@ -1576,7 +1576,7 @@ class BackgroundAction extends Action
             $externalWork = M('external_background_work');
             $externalWitness = M('external_background_witness');
             $result = 0;
-            $externalBg->where(array('Id'=>$bg[0]['Id']))->setField($bg[0])?true:$result++;
+            $externalBg->where(array('Id'=>$bg[0]['Id']))->setField($bg[0])?$result++:false;
 
             //新增数据与修改数据分别储存
             foreach ($edu as $k =>$v){
@@ -1585,39 +1585,61 @@ class BackgroundAction extends Action
                     $v['c_id'] = $id;
                     $eduAdd[] = $v;
                 }else{
-                    $externalEdu->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                    $externalEdu->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
                 }
             }
-            $externalEdu->addAll($eduAdd)?true:$result++;
+            $externalEdu->addAll($eduAdd)?$result++:false;
             foreach ($qc as $k =>$v){
                 if($v['Id']=='NaN'){
                     unset($v['Id']);
                     $v['c_id'] = $id;
                     $qcAdd[] = $v;
                 }else{
-                    $externalQc->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                    $externalQc->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
                 }
             }
-            $externalQc->addAll($qcAdd)?true:$result++;
+            $externalQc->addAll($qcAdd)?$result++:false;
+            foreach ($witness as $k =>$v){
+                if($v['Id']!='NaN'){
+                    $externalWitness->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
+                }
+                else{
+                    if($v['w_id']!='NaN'){
+                        $witnessAddWid[] = $v;
+                    }else{
+                        $witnessAdd[] = $v;
+                    }
+                }
+            }
+            $externalWitness->addAll($witnessAddWid)?$result++:false;
+            $wCount = 0;
             foreach ($work as $k =>$v){
                 if($v['Id']=='NaN'){
                     unset($v['Id']);
+                    unset($newData);
                     $v['c_id'] = $id;
-                    $workAdd[] = $v;
+                    $externalWork->add($v)?true:$result++;
+                    $wId = $externalWork->order('Id desc')->field('Id')->find();
+                    for($i=0;$i<$v['witness_count'];$i++){
+                        $witnessAdd[$wCount]['w_id'] = $wId['Id'];
+                        $newData[$i] = $witnessAdd[$wCount];
+                        $wCount++;
+                    }
+                    $externalWitness->addAll($newData)?$result++:false;
                 }else{
-                    $externalWork->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
+                    $externalWork->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
                 }
             }
-            $externalWork->addAll($workAdd)?true:$result++;
-            foreach ($witness as $k =>$v){
-                if($v['Id']!='NaN'){
-                    $externalWitness->where(array('Id'=>$v['Id']))->setField($v)?true:$result++;
-                }else{
+            if($result>0){
+                $this->ajaxReturn('success');
+            }
+            elseif ($result==0){
+                $this->ajaxReturn('none');
+            }
+            else{
+                $this->ajaxReturn($result);
+            }
 
-                }
-            }
-            dump($work);
-            dump($witness);
         }else{
             $Id = I('get.Id')==''?'0':(int)I('get.Id');
             $externalBg = M('external_background');
@@ -1657,5 +1679,32 @@ class BackgroundAction extends Action
             }
         }
         return $newData;
+    }
+    function delete_one(){
+        $data =  I('post.');
+        $where['Id'] = $data['Id'];
+        switch ($data['type']){
+            case 'edu':
+                M('external_background_edu')->where($where)->delete()?$this->ajaxReturn('success'):$this->ajaxReturn('false');;
+                break;
+            case 'qc':
+                M('external_background_qc')->where($where)->delete()?$this->ajaxReturn('success'):$this->ajaxReturn('false');;
+                break;
+            case 'work':
+                $r1 = M('external_background_work')->where($where)->delete();
+                $r2 = M('external_background_witness')->where(array('w_id'=>$data['Id']))->delete();
+                if($r1||$r2){
+                    $this->ajaxReturn('success');
+                }else{
+                    $this->ajaxReturn('false');
+                }
+                break;
+            case 'witness':
+                M('external_background_witness')->where($where)->delete()?$this->ajaxReturn('success'):$this->ajaxReturn('false');;
+                break;
+            default:
+                $this->ajaxReturn('false');
+                break;
+        }
     }
 }

@@ -375,7 +375,7 @@
                 <div class="lable-input" style="display: none"><label>邮箱：</label><input type="text" readonly="readonly" value=""></div>
                 <div class="lable-input"><label>身份证号：</label><input type="text" readonly="readonly" value="500382199801263573" style="width: 168px" maxlength="18"></div>
                 <img class="id-card-img">
-                <input type="button" class="msg-edit" value="修改">
+                <!--<input type="button" class="msg-edit" value="修改">-->
             </div>
             <!--<div class="width-550-div">
                 <span>合作信息</span>
@@ -398,7 +398,7 @@
                 <div class="lable-input"><label>信息来源：</label><input type="text" readonly="readonly" value="500382199801263573"><i class="i-true"></i></div>
                 <div class="lable-input" style="margin-right: 12px"><label>入学时间：</label><input type="text" readonly="readonly" value="2018/01/01" style="width: 100px" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"><i class="i-true"></i></div>
                 <div class="lable-input" style="margin-right: 12px"><label>毕业时间：</label><input type="text" readonly="readonly" value="2018/01/01" style="width: 100px" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"><i class="i-true"></i></div>
-                <input type="button" class="msg-edit" value="修改">
+                <!--<input type="button" class="msg-edit" value="修改">-->
             </div>
             <div class="width-550-div qc">
                 <span>资格证书</span>
@@ -408,7 +408,7 @@
                 <div class="lable-input"><label>获得时间：</label><input type="text" readonly="readonly" value="591013798@qq.com" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"><i class="i-true"></i></div>
                 <div class="lable-input"><label>有效时间：</label><input type="text" readonly="readonly" value="591013798@qq.com" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"><i class="i-true"></i></div>
                 <div class="lable-input"><label>信息来源：</label><input type="text" readonly="readonly" value="500382199801263573"><i class="i-true"></i></div>
-                <input type="button" class="msg-edit" value="修改">
+                <!--<input type="button" class="msg-edit" value="修改">-->
             </div>
             <div style="clear: both"></div>
             <div class="work-div work">
@@ -419,7 +419,7 @@
                     <div class="lable-input"><label>入职时间：</label><input type="text" readonly="readonly" value="Steve Jobs" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"  ><i class="i-true"></i></div>
                     <div class="lable-input"><label>离职时间：</label><input type="text" readonly="readonly" value="Steve Jobs" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"><i class="i-true"></i></div>
                     <div class="lable-input"><label>任职职位：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
-                    <input type="button" class="msg-edit" value="修改" style="top: -37px;left: 170px;height: 20px;">
+                    <!--<input type="button" class="msg-edit" value="修改" style="top: -37px;left: 170px;height: 20px;">-->
                 </div>
                 <div class="witness-div">
                     <div class="witness">
@@ -435,7 +435,7 @@
                         <div class="lable-input"><label>离职原因：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                         <div class="lable-input"><label>有否培训协议：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 100px"></div>
                         <div class="lable-input"><label>有否竞争协议：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 100px"></div>
-                        <input type="button" class="msg-edit" value="修改">
+                       <!-- <input type="button" class="msg-edit" value="修改">-->
                     </div>
                 </div>
                 <img class="jt" src="Public/img/left.png" alt="left">
@@ -446,6 +446,9 @@
 </div>
 <script>
     $(document).ready(function(){
+        $('.edit').on('click',function () {
+            window.location='/index.php?m=background&a=edit_external&Id='+$(this).attr('data-id');
+        });
         $('.msgbody').find('i').on('click',function () {
             let obj = $(this);
             let objClass = obj.attr('class');

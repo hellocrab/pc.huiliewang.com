@@ -158,7 +158,7 @@
                 <div class="row " id="title-show">
                     <ul class="nav pull-left" style="margin:2px 0 0 15px;">
                         <a href="{:U('background/add_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 新增候选人</a>
-                        <a href="{:U('background/add_more_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 批量导入候选人</a>
+                        <!--<a href="{:U('background/add_more_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 批量导入候选人</a>-->
                     </ul>
                     <form class="form-inline" id="" action="" autocomplete="off" method="get">
                         <ul class="breadcrum pull-right" style="margin-bottom: 0px">
@@ -310,6 +310,7 @@
                                                     var sex = idnumber.substr(16,1)%2==0?'女':'男';
                                                     $('.sex-width').children("span").text(sex);
                                                     var msgdetail = $('.msg-detail');
+                                                    msgdetail.find('.edit').attr('data-id',data['bg']['Id']);
                                                     $(msgdetail).find('input[type="text"]').attr('readonly','readonly');
                                                     $(msgdetail).find('input[type="text"]').css('border','none');
                                                     msgdetail.find('.name').text(data['bg']['name']);
@@ -343,7 +344,7 @@
                                                         edu.children("span").attr({'data-id':data['edu'][i]['Id'],'data-type':'edu'});
                                                         var input = edu.find('.lable-input');
                                                         input.find('i').attr("class","");
-                                                        input.eq(0).children('input[type="text"]').val(data['edu'][i]['school']+'毕业证');
+                                                        input.eq(0).children('input[type="text"]').val(data['edu'][i]['school']);
                                                         input.eq(0).children('i').addClass('i-true');
                                                         input.eq(1).children('input[type="text"]').val(data['edu'][i]['school']);
                                                         input.eq(1).children('i').addClass(checkiClass(data['edu'],i,'school_add'));
