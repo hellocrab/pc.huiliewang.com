@@ -446,6 +446,9 @@
 </div>
 <script>
     $(document).ready(function(){
+        $('.edit').on('click',function () {
+            window.location='/index.php?m=background&a=edit_external&Id='+$(this).attr('data-id');
+        });
         $('.msgbody').find('i').on('click',function () {
             let obj = $(this);
             let objClass = obj.attr('class');

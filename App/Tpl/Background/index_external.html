@@ -310,6 +310,7 @@
                                                     var sex = idnumber.substr(16,1)%2==0?'女':'男';
                                                     $('.sex-width').children("span").text(sex);
                                                     var msgdetail = $('.msg-detail');
+                                                    msgdetail.find('.edit').attr('data-id',data['bg']['Id']);
                                                     $(msgdetail).find('input[type="text"]').attr('readonly','readonly');
                                                     $(msgdetail).find('input[type="text"]').css('border','none');
                                                     msgdetail.find('.name').text(data['bg']['name']);
