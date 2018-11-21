@@ -424,6 +424,14 @@ class BackgroundAction extends Action
             $this->output($get,$by);
         }
     }
+
+    private static function exchange($str){
+        if(empty($str)|| $str=="sure")
+            return "核实";
+        else
+            return "";
+    }
+
     //word 导出
     function readyOutPutt(){
         require_once  __DIR__ ."/../../../vendor/phpoffice/phpword/bootstrap.php";
@@ -538,27 +546,27 @@ class BackgroundAction extends Action
         $table->addRow();
         $table->addCell(1800)->addText('学历类型',array('宋体'=>true,'size'=>15));
         $table->addCell(3600)->addText($edu[0]['edu_type'],array('宋体'=>true,'size'=>15));
-        $table->addCell(3600);
+        $table->addCell(3600)->addText(self::exchange($edu[0]['edu_type_add']),array('宋体'=>true,'size'=>15));
         $table->addRow();
         $table->addCell(1800)->addText('专业',array('宋体'=>true,'size'=>15));
         $table->addCell(3600)->addText($edu[0]['major'],array('宋体'=>true,'size'=>15));
-        $table->addCell(3600);
+        $table->addCell(3600)->addText(self::exchange($edu[0]['major_add']),array('宋体'=>true,'size'=>15));
         $table->addRow();
         $table->addCell(1800)->addText('入学时间',array('宋体'=>true,'size'=>15));
         $table->addCell(3600)->addText($edu[0]['enter_time'],array('宋体'=>true,'size'=>15));
-        $table->addCell(3600);
+        $table->addCell(3600)->addText(self::exchange($edu[0]['enter_time_add']),array('宋体'=>true,'size'=>15));
         $table->addRow();
         $table->addCell(1800)->addText('毕业时间',array('宋体'=>true,'size'=>15));
         $table->addCell(3600)->addText($edu[0]['out_time'],array('宋体'=>true,'size'=>15));
-        $table->addCell(3600);
+        $table->addCell(3600)->addText(self::exchange($edu[0]['out_time_add']),array('宋体'=>true,'size'=>15));
         $table->addRow();
         $table->addCell(1800)->addText('证书编号',array('宋体'=>true,'size'=>15));
         $table->addCell(3600)->addText($edu[0]['edu_num'],array('宋体'=>true,'size'=>15));
-        $table->addCell(3600);
+        $table->addCell(3600)->addText(self::exchange($edu[0]['edu_num_add']),array('宋体'=>true,'size'=>15));
         $table->addRow();
         $table->addCell(1800)->addText('信息来源',array('宋体'=>true,'size'=>15));
         $table->addCell(3600)->addText($edu[0]['msgbelong'],array('宋体'=>true,'size'=>15));
-        $table->addCell(3600);
+        $table->addCell(3600)->addText(self::exchange($edu[0]['msgbelong_add']),array('宋体'=>true,'size'=>15));
         $section->addTextBreak();$section->addTextBreak();$section->addTextBreak(); $section->addTextBreak();
         $section->addText('三、专业资格',array('宋体(正文)'=>true,'bold'=>true,'size'=>15));
         $section->addTextBreak();
@@ -572,15 +580,15 @@ class BackgroundAction extends Action
         $table->addRow();
         $table->addCell(1800)->addText('证书名称',array('宋体'=>true,'size'=>15));
         $table->addCell(3600)->addText($qc[0]['qc_type'],array('宋体'=>true,'size'=>15));
-        $table->addCell(3600);
+        $table->addCell(3600)->addText(self::exchange($qc[0]['qc_type_add']),array('宋体'=>true,'size'=>15));
         $table->addRow();
         $table->addCell(1800)->addText('证书号码',array('宋体'=>true,'size'=>15));
         $table->addCell(3600)->addText($qc[0]['qc_num'],array('宋体'=>true,'size'=>15));
-        $table->addCell(3600);
+        $table->addCell(3600)->addText(self::exchange($qc[0]['qc_num_add']),array('宋体'=>true,'size'=>15));
         $table->addRow();
         $table->addCell(1800)->addText('获证时间',array('宋体'=>true,'size'=>15));
         $table->addCell(3600)->addText($qc[0]['get_time'],array('宋体'=>true,'size'=>15));
-        $table->addCell(3600);
+        $table->addCell(3600)->addText(self::exchange($qc[0]['get_time_add']),array('宋体'=>true,'size'=>15));
         $table->addRow();
         $table->addCell(1800)->addText('信息来源',array('宋体'=>true,'size'=>15));
         $table->addCell(7200,array('gridSpan'=>2))->addText($qc[0]['qc_source'],array('宋体'=>true,'size'=>15));
@@ -595,7 +603,10 @@ class BackgroundAction extends Action
         $table->addCell(6500,array('gridSpan'=>4))->addText($work[0]['company'],array('宋体'=>true,'size'=>15));
         $table->addRow();
         $table->addCell(2500)->addText('在职时间:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($work[0]['enter_time'],array('宋体'=>true,'size'=>14));
+        if(!empty($work[0]['enter_time']))
+            $table->addCell(6500,array('gridSpan'=>4))->addText($work[0]['enter_time'].'  ——  '.$work[0]['out_time'],array('宋体'=>true,'size'=>14));
+        else
+            $table->addCell(6500,array('gridSpan'=>4));
         $table->addRow();
         $table->addCell(2500)->addText('职位:',array('宋体'=>true,'size'=>14));
         $table->addCell(6500,array('gridSpan'=>4))->addText($work[0]['position'],array('宋体'=>true,'size'=>14));
@@ -676,7 +687,10 @@ class BackgroundAction extends Action
         $table->addCell(6500,array('gridSpan'=>4))->addText($work[1]['company'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('在职时间:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($work[1]['enter_time'],array('宋体'=>true,'size'=>14));
+        if(!empty($work[1]['enter_time']))
+            $table->addCell(6500,array('gridSpan'=>4))->addText($work[1]['enter_time'].'  ——  '.$work[1]['out_time'],array('宋体'=>true,'size'=>14));
+        else
+            $table->addCell(6500,array('gridSpan'=>4));
         $table->addRow();
         $table->addCell(2500)->addText('职位:',array('宋体'=>true,'size'=>14));
         $table->addCell(6500,array('gridSpan'=>4))->addText($work[1]['position'],array('宋体'=>true,'size'=>14));
@@ -760,7 +774,10 @@ class BackgroundAction extends Action
         $table->addCell(6500,array('gridSpan'=>4))->addText($work[2]['company'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('在职时间:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($work[2]['enter_time'],array('宋体'=>true,'size'=>14));
+        if(!empty($work[2]['enter_time']))
+            $table->addCell(6500,array('gridSpan'=>4))->addText($work[2]['enter_time'].'  ——  '.$work[2]['out_time'],array('宋体'=>true,'size'=>14));
+        else
+            $table->addCell(6500,array('gridSpan'=>4));
         $table->addRow();
         $table->addCell(2500)->addText('职位:',array('宋体'=>true,'size'=>14));
         $table->addCell(6500,array('gridSpan'=>4))->addText($work[2]['position'],array('宋体'=>true,'size'=>14));
