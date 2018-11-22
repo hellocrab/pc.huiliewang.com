@@ -1,5 +1,5 @@
 <?php
-if (strpos($_SERVER['SERVER_ADDR'], '192.168.116.18') !== FALSE) {//测试环境
+if (strpos($_SERVER['SERVER_ADDR'], '192.168.116.27') !== FALSE) {//测试环境
     return array(
         'DB_TYPE' => 'mysqli',
         'DB_HOST' => 'localhost',
