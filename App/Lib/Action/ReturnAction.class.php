@@ -21,6 +21,17 @@ class ReturnAction extends Action
         $this->assign('business',$business);
         $this->display();
     }
+
+    //ajax展示负责人
+    public function personChanged(){
+        $per_id = $_POST['person_id'];
+        $role_id = M("user")->where(array('user_id'=>intval($per_id)))->getField('role_id');
+        $position_id = M("role")->where(array('role_id'=>intval($role_id)))->getField('position_id');
+        $department_id = M("position")->where(array('position_id'=>intval($position_id)))->getField('department_id');
+        $department =  M("role_department")->where(array('department_id'=>intval($department_id)))->getField('name');
+        echo json_encode($department);
+    }
+
     //ajax展示客户
     public function contractChanged(){
         $b_id = $_POST['business_id'];
@@ -58,10 +69,10 @@ class ReturnAction extends Action
                 'num'=>$i,
                 'money'=>$data['money'.$i],
                 'property'=>$data['property'.$i],
+                'ontime'=>$data['time'.$i]
             );
             $period_id = M('payment_planperiod')->add($data2);
             if(empty($period_id)) $flag=false;
-
         }
         if(!empty($plan_id)){
             if($flag){
@@ -88,13 +99,25 @@ class ReturnAction extends Action
         $d_v_business = D('BusinessView');
         $business = $d_v_business->where(array('business_id'=>$business_id))->find();
 //        dump($periods);exit;
-
+        $business_all =  $d_v_business->select();
+        $user = M("user") -> select();
+//        dump($user);exit;
+        $this->assign('user',$user);
+        $this->assign('business_all',$business_all);
         $this->assign('business',$business);
         $this->assign('plan',$plan);
         $this->assign('periods',$periods);
         $this->display();
     }
 
+    //删除回款计划
+    public function deletePlan(){
+        $plan_id = $_POST['plan_id'];
+        M("payment_plan")->where(array("Id"=>intval($plan_id)))->delete();
+        M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->delete();
+        echo '{"status":"1"}';
+    }
+    //删除期次
     public function delete(){
         $period_id = $_POST['period_id'];
         $plan_id = $_POST['plan_id'];

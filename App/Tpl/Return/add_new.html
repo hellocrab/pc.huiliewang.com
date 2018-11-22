@@ -3,6 +3,12 @@
 <style>
     .close{font-size:34px;font-weight:400;color:#fff;}
     .close:hover{color:#fff;}
+    input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+        -webkit-appearance:textfield;
+    }
+    input[type="number"]{
+        -moz-appearance:textfield;
+    }
 </style>
 <div class="modal-header" style="padding:3px 10px;">
     <b style="font-size:16px;">新增回款计划</b>
@@ -78,7 +84,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>期次金额：</label>
                 <div class="col-sm-6">
-                    <input required="required" id="money1" rel="require" rell="期次金额" onblur="propertyCalculate(this);" name="money1" type="number" class="form-control checkit">
+                    <input id="money1" rel="require" rell="期次金额" onblur="propertyCalculate(this);" name="money1" type="number" class="form-control checkit">
                 </div>元
                 <div class="col-sm-3 error_msg" id="money1Tip"></div>
             </div>
@@ -88,6 +94,14 @@
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>期次占比：</label>
                 <div class="col-sm-6">
                     <input type="text" id="property1" required="required" readonly="readonly" name="property1" class="form-control checkit">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                </div>
+                <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>回款时间：</label>
+                <div class="col-sm-6">
+                    <input type="date" id="time1" required="required" name="time1" class="form-control checkit">
                 </div>
             </div>
             <div class="form-group ">
@@ -102,16 +116,24 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>期次金额：</label>
                 <div class="col-sm-6">
-                    <input type="number" required="required" id="money2" name="money2" rel="require" rell="期次金额" onblur="propertyCalculate(this);" class="form-control checkit">
+                    <input type="number" id="money2" name="money2" rel="require" rell="期次金额" onblur="propertyCalculate(this);" class="form-control checkit">
                 </div>元
                 <div class="col-sm-3 error_msg" id="money2Tip"></div>
             </div>
-            <div class="form-group remark">
+            <div class="form-group">
                 <div class="col-sm-1">
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>期次占比：</label>
                 <div class="col-sm-6">
                     <input type="text" id="property2" required="required" readonly="readonly" onblur="" name="property2" class="form-control checkit">
+                </div>
+            </div>
+            <div class="form-group remark">
+                <div class="col-sm-1">
+                </div>
+                <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>回款时间：</label>
+                <div class="col-sm-6">
+                    <input type="date" id="time2" required="required" name="time2" class="form-control checkit">
                 </div>
             </div>
         </div>
@@ -137,7 +159,6 @@
                 $(str).val(property+"%");
             }
         }
-
     }
 
     function contractChanged() {
@@ -160,18 +181,23 @@
         if(num>2){
             $(".remark").last().prev().remove();
             $(".remark").last().prev().remove();
+            $(".remark").last().prev().remove();
             $(".remark").last().remove();
             num--;
-        }
+        }else {
+            swal("至少有两条回款期次！","","warning");
+        };
         $("#num").html(num);
     }
     function add() {
         num ++;
         $(".remark").last().after("<div class='form-group'><div class='col-sm-1'></div><div class='col-sm-6'><div>第"+num+"次回款</div></div></div>" +
             "<div class='form-group'><div class='col-sm-1'></div><label class='control-label col-sm-3' style='width: 110px;'><span style='color: #FF0011;'>*</span>期次金额:</label>" +
-            "<div class='col-sm-6'><input id='money"+num+"' name='money"+num+"' required='required' rel='require' rell='期次金额' onblur='propertyCalculate(this);' type='number' class='form-control checkit'></div>元<div class='col-sm-3 error_msg' id='money"+num+"Tip'></div></div>" +
+            "<div class='col-sm-6'><input id='money"+num+"' name='money"+num+"' rel='require' rell='期次金额' onblur='propertyCalculate(this);' type='number' class='form-control checkit'></div>元<div class='col-sm-3 error_msg' id='money"+num+"Tip'></div></div>" +
             "<div class='form-group remark'><div class='col-sm-1'></div><label class='control-label col-sm-3' style='width: 110px;'><span style='color: #FF0011;'>*</span>期次占比:</label>" +
-            "<div class='col-sm-6'><input type='text' required='required' readonly='readonly' id='property"+num+"' name='property"+num+"' class='form-control chekit'></div></div>");
+            "<div class='col-sm-6'><input type='text' required='required' readonly='readonly' id='property"+num+"' name='property"+num+"' class='form-control chekit'></div></div>" +
+            "<div class='form-group remark'><div class='col-sm-1'></div><label class='control-label col-sm-3' style='width: 110px;'><span style='color: #FF0011;'>*</span>回款时间:</label>" +
+            "<div class='col-sm-6'><input type='date' required='required' id='time"+num+"' name='time"+num+"' class='form-control chekit'></div></div>");
         $("#num").html(num);
     }
     $('#number').blur(function(){

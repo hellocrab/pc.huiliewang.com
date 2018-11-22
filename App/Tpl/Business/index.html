@@ -198,7 +198,7 @@ $(function(){
 										<td style="width: 20px;padding-left: 20px">
 											<div class="checkbox checkbox-primary">
 												<input type="checkbox" class="check_all"/>
-												<label for=""></label>
+												<label for=" "></label>
 											</div>
 										</td>
 										<td style="">&nbsp;</td>
@@ -243,7 +243,7 @@ $(function(){
 												</a>
 											</td>
 											<td>
-												<if condition ="$vo['set_top'] eq 1">
+												<if condition="$vo['set_top'] eq 1">
 													<a style="border-left: 5px solid #ffb07b;padding-left: 5px;" class="" href="{:U('business/view','id='.$vo['business_id'])}" rel="{$vo['business_id']}">{$vo['name']}</a>
 													<else />
 													<a style="padding-left: 5px;" class="" href="{:U('business/view','id='.$vo['business_id'])}" rel="{$vo['business_id']}">{$vo['name']}</a>

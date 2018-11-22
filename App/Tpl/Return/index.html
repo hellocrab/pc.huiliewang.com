@@ -259,37 +259,9 @@
                                                     <td>￥0</td>
                                                     <td>{$vo.customer}</td>
                                                     <td>{$vo.status}</td>
-                                                    <td><a href="javascript:void(0);" onclick="deleteBusiness('{$vo.period_id}')">删除</a></td>
+                                                    <td><a href="javascript:void(0);" onclick="deleteBusiness('{$vo.Id}')">删除</a></td>
                                                 </tr>
                                             </volist>
-                                            <!--<volist name="list" id="vo">-->
-                                                <!--<tr class="controls_tr">-->
-                                                    <!--<td>-->
-                                                        <!--<div class="checkbox checkbox-primary">-->
-                                                            <!--<input name="product_id[]" class="check_list" type="checkbox" value="{$vo.eid}" <if condition="$vo['is_deleted'] eq '0'">rel1="0"<else/>rel1="1"</if>/>-->
-                                                            <!--<label for=""></label>-->
-                                                        <!--</div>-->
-                                                    <!--</td>-->
-                                                    <!--<td data-id="{$vo['user_id']}" > {$vo.full_name}</td>-->
-                                                    <!--<td>{$vo.department_name}</td>-->
-                                                    <!--<td>{$vo.rank_name}</td>-->
-                                                    <!--<volist name="month_yj" id="v">-->
-                                                        <!--<td><input type="text" readonly="readonly" style="width: 70px;" value="{$vo[$v]}"></td>-->
-                                                    <!--</volist>-->
-                                                    <!--<td>{$vo.total}</td>-->
-                                                    <!--<td>-->
-                                                        <!--<if condition="$vo['position_info'] eq -1 and ($vo['current_month'] eq 6 or $vo['current_month'] eq 12)"><a class="label label-danger jjstatus" style="color: white;" data-id="{$vo['user_id']}">取消降级 </a>-->
-                                                            <!--<elseif condition="$vo['position_info'] eq 1 "/><a class="label label-primary sjstatus" style="color: white;" data-id="{$vo['user_id']}">取消升级 </a>-->
-                                                            <!--<else/>-->
-                                                            <!--正常-->
-                                                        <!--</if>-->
-                                                    <!--</td>-->
-                                                    <!--<td>-->
-                                                        <!--<input type="button" class="btn btn-xs  btn-info xiugai" value="修改" onclick="edittext(this)" >-->
-                                                        <!--<input type="button" class="btn btn-xs  btn-success baocun" value="保存" onclick="savetext(this)" style="display: none">-->
-                                                    <!--</td>-->
-                                                <!--</tr>-->
-                                            <!--</volist>-->
                                             <tbody>
                                         </if>
                                     </table>
@@ -344,7 +316,51 @@
 <script type="text/javascript">
     /**删除回款项目计划*/
     function deleteBusiness(obj) {
-        alert(obj);
+        swal({
+                title: "您确定要删除当前回款计划吗？",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的，我要删除！",
+                cancelButtonText:'让我再考虑一下…',
+                closeOnConfirm:false,
+                closeOnCancel:false
+            },
+            function(isConfirm){
+                if (isConfirm) {
+                    $.ajax({
+                        url:"/index.php?m=return&a=deletePlan",
+                        type:"post",
+                        async:true,
+                        data:{ plan_id :obj},
+                        success: function (data) {
+                            if (data.status == 1) {
+                                swal({
+                                    title:'删除成功',
+                                    text:'您已经永久删除该条信息！',
+                                    type:"success",
+                                    confirmButtonText: "确定"
+                                },function (isConfirm) {
+                                    if(isConfirm){
+                                        location.reload();
+                                    }
+                                });
+                            } else {
+                                swal({
+                                    title: "操作失败！",
+                                    text:data.info,
+                                    type: "error"
+                                })
+                                return false;
+                            }
+                        },
+                        dataType: 'json'
+                    });
+                } else {
+                    swal("已取消","您取消了删除操作！","error");
+                }
+            });
     }
     /*模态框关闭或打开 先清除内容*/
     $(".modal").on("hide.bs.modal", function() {
@@ -399,15 +415,6 @@
         width: width,
         maxHeight: 400,
         position: ["center",100]
-        // buttons: {
-        // 	"确定": function () {
-        // 		$('#excelimport_dialog').submit();
-        // 		$(this).dialog("close");
-        // 	},
-        // 	"取消": function () {
-        // 		$(this).dialog("close");
-        // 	}
-        // }
     });
 
     /*添加筛选条件*/

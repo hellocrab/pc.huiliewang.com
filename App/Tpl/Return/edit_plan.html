@@ -3,6 +3,12 @@
 <style>
     .close{font-size:34px;font-weight:400;color:#fff;}
     .close:hover{color:#fff;}
+    input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+        -webkit-appearance:textfield;
+    }
+    input[type="number"]{
+        -moz-appearance:textfield;
+    }
 </style>
 <div class="modal-header" style="padding:3px 10px;">
     <b style="font-size:16px;">回款计划详情</b>
@@ -87,16 +93,38 @@
                     <th colspan="2"><span class="fa fa-th-list">&nbsp;项目回款详细信息</span></th>
                 </tr>
                 <tr>
-                    <td class="col-md-2">对应客户:</td>
-                    <td class="col-md-4"><input id="customer" class="form-control checkit" rel="require" rell="客户" name="customer"><div class="error_msg" id="customerTip"></div></td>
+                    <td>对应项目:</td>
+                    <td>
+                        <select id="contract" class="form-control checkit" rel="require" rell="合同" name="contract" onchange="contractChanged();">
+                            <option value=" ">--对应项目--</option>
+                            <volist name="business_all" id="vo">
+                                <option value="{$vo['business_id']}">{$vo['name']}</option>
+                            </volist>
+                        </select>
+                        <!--<input id="contract" class="form-control checkit" rel="require" rell="合同" name="contract">-->
+                        <div class="error_msg" id="contractTip"></div>
+                    </td>
                     <td class="col-md-2">负责人:</td>
-                    <td class="col-md-4"><input id="person" class="form-control checkit" rel="require" rell="负责人" name="person"><div class="error_msg" id="personTip"></div></td>
+                    <td class="col-md-4">
+                        <select id="person" name="person" class="form-control checkit" rel="require" rell="负责人" onchange="personChanged();">
+                            <option value=" ">--负责人--</option>
+                            <volist name="user" id="vo">
+                                <option value="{$vo.user_id}">{$vo.name}</option>
+                            </volist>
+                        </select>
+                        <!--<input id="person" class="form-control checkit" rel="require" rell="负责人" name="person">-->
+                        <div class="error_msg" id="personTip"></div>
+                    </td>
                 </tr>
                 <tr>
-                    <td>对应项目:</td>
-                    <td><input id="contract" class="form-control checkit" rel="require" rell="合同" name="contract"><div class="error_msg" id="contractTip"></div></td>
+                    <td class="col-md-2">对应客户:</td>
+                    <td class="col-md-4">
+                        <input id="customer" class="form-control" readonly="readonly"  name="customer">
+                    </td>
                     <td>所属部门:</td>
-                    <td><input id="department" class="form-control checkit" rel="require" rell="部门" name="department"><div class="error_msg" id="departmentTip"></div></td>
+                    <td>
+                        <input id="dename" class="form-control" readonly="readonly" name="department">
+                    </td>
                 </tr>
                 <tr >
                     <td></td>
@@ -140,6 +168,33 @@
     </form>
 </div>
 <script>
+    function personChanged() {
+        var person = $("#person").val();
+        $.ajax({
+            type: "post",
+            async:false,
+            url: "{:U('return/personChanged')}",
+            data: {person_id:person},
+            dataType: "json",
+            success : function(result){
+                $("#dename").val(result);
+            }
+        });
+    }
+    function contractChanged() {
+        var bvalue = $("#contract").val();
+        $.ajax({
+            type: "post",
+            async:false,
+            url: "{:U('return/contractChanged')}",
+            data: {business_id:bvalue},
+            dataType: "json",
+            success : function(result){
+                $("#customer").val(result.customer_name);
+            }
+        });
+    }
+
     var num = $("#nums").html();
     function minusedit(obj,pid,obj1) {
         if(obj1 == undefined){
@@ -205,7 +260,7 @@
             "<th><input name='num"+num+"' type='hidden' readonly='readonly' style='width:90%;' value='"+num+"'>"+num+"</th>" +
             "<th><input name='money"+num+"' type='number'style='width:90%;' ></th>" +
             "<th><input name='property"+num+"' type='text' readonly='readonly' style='width:90%;'></th>" +
-            "<th><input name='time"+num+"' type='date' style='width:100%;'></th>" +
+            "<th><input name='time"+num+"' type='date' style='width:90%;'></th>" +
             "<th><input name='remark"+num+"' type='text' style='width:100%;'></th></tr>");
         $("#add_nums").val(num);
     }

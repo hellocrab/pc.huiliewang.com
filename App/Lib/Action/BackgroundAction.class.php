@@ -864,7 +864,6 @@ class BackgroundAction extends Action
 //        header("Content-Type:application/download");
 //        header('Content-Disposition:attachment;filename="'.$fileName.'.doc"');
 //        header("Content-Transfer-Encoding:binary");
-//
         header("Cache-Control:no-cache,must-revalidate");
         header("Pragma:no-cache");
         header("Content-Type:application/vnd.ms-word");
