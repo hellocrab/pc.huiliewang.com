@@ -15,7 +15,7 @@
         border-radius: 30px;
     }
     .header{
-        width: 1200px;
+        width: 1205px;
         height: 200px;
         background-color: rgb(56,53,119);
         border-radius: 30px;
@@ -270,7 +270,7 @@
         left: 225px;
     }
     .work-div>img:nth-child(5){
-        right: 35px;
+        right: -1px;
     }
     /*滚动条*/
     .body::-webkit-scrollbar {
@@ -303,6 +303,7 @@
         background-image: url("./Public/img/true.png");
         background-size: 15px 15px;
         left: 5px;
+        cursor:pointer;
     }
     .i-wrong:after{
         content: '';
@@ -313,6 +314,7 @@
         background-image: url("./Public/img/wrong.png");
         background-size: 15px 15px;
         left: 5px;
+        cursor:pointer;
     }
     .i-notsure:after{
         content: '';
@@ -323,6 +325,7 @@
         background-image: url("./Public/img/notsure.png");
         background-size: 15px 15px;
         left: 5px;
+        cursor:pointer;
     }
 </style>
 <div class="msgbody">
@@ -354,7 +357,7 @@
         </div>
         <div class="caozuo">
             <img class="edit" src="Public/img/rewrite.png" alt="">
-            <img class="delete" src="Public/img/Delete.png" alt="">
+            <img class="delete bgdelete" src="Public/img/Delete.png" data-id="">
         </div>
         <div class="closeimg">
             <img src="Public/img/close.png" alt="">
@@ -370,9 +373,9 @@
                 <div class="lable-input"><label>出生时间：</label><input type="text" readonly="readonly" value="" style="width: 150px"></div>
                 <div class="lable-input" style="display: none"><label>联系电话：</label><input type="text" readonly="readonly" value="" style="width: 150px"></div>
                 <div class="lable-input" style="display: none"><label>邮箱：</label><input type="text" readonly="readonly" value=""></div>
-                <div class="lable-input"><label>身份证号：</label><input type="text" readonly="readonly" value="500382199801263573" style="width: 168px"></div>
+                <div class="lable-input"><label>身份证号：</label><input type="text" readonly="readonly" value="500382199801263573" style="width: 168px" maxlength="18"></div>
                 <img class="id-card-img">
-                <input type="button" class="msg-edit" value="修改">
+                <!--<input type="button" class="msg-edit" value="修改">-->
             </div>
             <!--<div class="width-550-div">
                 <span>合作信息</span>
@@ -387,25 +390,25 @@
             </div>-->
             <div class="width-550-div edu">
                 <span>学历证书</span>
-                <div class="lable-input"><label>证书名称：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
+                <div class="lable-input"><label>证书名称：</label><input type="text" readonly="readonly" value="Steve Jobs"><!--<i class="i-true"></i>--></div>
                 <div class="lable-input"><label>毕业院校：</label><input type="text" readonly="readonly" value="男"><i class="i-notsure"></i></div>
                 <div class="lable-input"><label>学历类型：</label><input type="text" readonly="readonly" value="1955/2/24"><i class="i-wrong"></i></div>
                 <div class="lable-input"><label>专业：</label><input type="text" readonly="readonly" value="18983160353"><i class="i-true" style="position: relative;left: 30px"></i></div>
                 <div class="lable-input"><label>证书编号：</label><input type="text" readonly="readonly" value="591013798@qq.com"><i class="i-true"></i></div>
                 <div class="lable-input"><label>信息来源：</label><input type="text" readonly="readonly" value="500382199801263573"><i class="i-true"></i></div>
-                <div class="lable-input" style="margin-right: 12px"><label>入学时间：</label><input type="text" readonly="readonly" value="2018/01/01" style="width: 100px"><i class="i-true"></i></div>
-                <div class="lable-input" style="margin-right: 12px"><label>毕业时间：</label><input type="text" readonly="readonly" value="2018/01/01" style="width: 100px"><i class="i-true"></i></div>
-                <input type="button" class="msg-edit" value="修改">
+                <div class="lable-input" style="margin-right: 12px"><label>入学时间：</label><input type="text" readonly="readonly" value="2018/01/01" style="width: 100px" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"><i class="i-true"></i></div>
+                <div class="lable-input" style="margin-right: 12px"><label>毕业时间：</label><input type="text" readonly="readonly" value="2018/01/01" style="width: 100px" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"><i class="i-true"></i></div>
+                <!--<input type="button" class="msg-edit" value="修改">-->
             </div>
             <div class="width-550-div qc">
                 <span>资格证书</span>
                 <div class="lable-input" style="display: none"><label>证书名称：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
                 <div class="lable-input"><label>证书名称：</label><input type="text" readonly="readonly" value="男"><i class="i-notsure"></i></div>
                 <div class="lable-input"><label>证书编号：</label><input type="text" readonly="readonly" value="18983160353"><i class="i-true"></i></div>
-                <div class="lable-input"><label>获得时间：</label><input type="text" readonly="readonly" value="591013798@qq.com"><i class="i-true"></i></div>
-                <div class="lable-input"><label>有效时间：</label><input type="text" readonly="readonly" value="591013798@qq.com"><i class="i-true"></i></div>
+                <div class="lable-input"><label>获得时间：</label><input type="text" readonly="readonly" value="591013798@qq.com" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"><i class="i-true"></i></div>
+                <div class="lable-input"><label>有效时间：</label><input type="text" readonly="readonly" value="591013798@qq.com" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"><i class="i-true"></i></div>
                 <div class="lable-input"><label>信息来源：</label><input type="text" readonly="readonly" value="500382199801263573"><i class="i-true"></i></div>
-                <input type="button" class="msg-edit" value="修改">
+                <!--<input type="button" class="msg-edit" value="修改">-->
             </div>
             <div style="clear: both"></div>
             <div class="work-div work">
@@ -413,10 +416,10 @@
                 <div>
                     <span style="display: none"></span>
                     <div class="lable-input"><label>公司名称：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 195px"><i class="i-true"></i></div>
-                    <div class="lable-input"><label>入职时间：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
-                    <div class="lable-input"><label>离职时间：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
+                    <div class="lable-input"><label>入职时间：</label><input type="text" readonly="readonly" value="Steve Jobs" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"  ><i class="i-true"></i></div>
+                    <div class="lable-input"><label>离职时间：</label><input type="text" readonly="readonly" value="Steve Jobs" placeholder="年-月" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly"><i class="i-true"></i></div>
                     <div class="lable-input"><label>任职职位：</label><input type="text" readonly="readonly" value="Steve Jobs"><i class="i-true"></i></div>
-                    <input type="button" class="msg-edit" value="修改" style="top: -410px;left: 170px;">
+                    <!--<input type="button" class="msg-edit" value="修改" style="top: -37px;left: 170px;height: 20px;">-->
                 </div>
                 <div class="witness-div">
                     <div class="witness">
@@ -432,7 +435,7 @@
                         <div class="lable-input"><label>离职原因：</label><input type="text" readonly="readonly" value="Steve Jobs"></div>
                         <div class="lable-input"><label>有否培训协议：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 100px"></div>
                         <div class="lable-input"><label>有否竞争协议：</label><input type="text" readonly="readonly" value="Steve Jobs" style="width: 100px"></div>
-                        <input type="button" class="msg-edit" value="修改">
+                       <!-- <input type="button" class="msg-edit" value="修改">-->
                     </div>
                 </div>
                 <img class="jt" src="Public/img/left.png" alt="left">
@@ -443,12 +446,39 @@
 </div>
 <script>
     $(document).ready(function(){
-        $('.witness-div').on('mouseenter mouseleave',function (event) {
-            if(event.type=='mouseenter'){
-                $(this).parent().children('img').fadeIn();
-            }else{
-                $(this).parent().children('img').fadeOut(2000);
+        $('.edit').on('click',function () {
+            window.location='/index.php?m=background&a=edit_external&Id='+$(this).attr('data-id');
+        });
+        $('.msgbody').find('i').on('click',function () {
+            let obj = $(this);
+            let objClass = obj.attr('class');
+            obj.removeClass(objClass);
+            switch (objClass){
+                case 'i-true':
+                    obj.addClass('i-wrong');
+                    break;
+                case 'i-wrong':
+                    obj.addClass('i-notsure');
+                    break;
+                case 'i-notsure':
+                    obj.addClass('i-true');
+                    break;
             }
+        });
+        $('.witness-div').on('mouseenter mouseleave',function (event) {
+            var length = $(this).find('.witness').length;
+            if(length>3){
+                if(event.type=='mouseenter'){
+                    $(this).parent().children('img').fadeIn();
+                }else{
+                    $(this).parent().children('img').fadeOut(2000);
+                }
+            }else{
+                $(this).parent().children('img').fadeOut();
+            }
+        });
+        $('.jt').on('mouseenter',function () {
+            $(this).css('display','block');
         });
         $('.jt').on("click",function () {
             var obj =$(this);
@@ -464,7 +494,9 @@
             }
         });
         $('.closeimg').on('click',function () {
-            $(this).parent().parent().parent().fadeOut();
+           /* $(this).parent().parent().parent().fadeOut(500);
+            $('.backgroundDiv').remove();*/
+            window.location='/index.php?m=background&a=index_external';
         });
         $('.msg-edit').on('click',function () {
             var obj =$(this);
@@ -489,7 +521,21 @@
                         if(success==0){
                             alert_crm("未修改！");
                         }else if(success>0||success=='success'){
-                            alert_crm("修改成功!");
+                            swal({
+                                title: "修改成功",
+                                text: "是否继续修改？",
+                                type: "success",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "确定",
+                                cancelButtonText:'返回列表',
+                                closeOnConfirm:true,
+                                closeOnCancel:false
+                            },function (isConfirm) {
+                                if(!isConfirm){
+                                    window.location='index.php?m=background&a=index_external';
+                                }
+                            })
                         }
                         text.attr('readonly','readonly');
                         text.css({'border':'none','height':'22px'});

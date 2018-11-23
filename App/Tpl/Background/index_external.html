@@ -71,7 +71,8 @@
     }
     .msg-detail{
         background-color: white;
-        width: 1203px;height: 700px;
+        width: 1205px;
+        height: 700px;
         position: absolute;
         left: 225px;
         z-index: 9999;
@@ -127,375 +128,351 @@
 <div class="wrapper wrapper-content">
     <include file="Public:alert" />
     <!--<div style="position: absolute;width: 1200px;height: 700px;top: 50px;left:15%; background-color: black;z-index:999;">--></div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="ibox float-e-margins">
-                <div class="title-bar" style="position: relative;z-index: 99;">
-                    <div class="row  clearfix" id="title-hide" style="display:none;">
-                        <ul class="breadcrum pull-left">
-                            <li>已选中&nbsp;<span id="icheck_num"></span>&nbsp;项</li>
-                            <!--<if condition="$Think.get.by neq 'deleted'">
-                                <li class="single_btn"><a href="javascript:void(0)" id="edit_product"><i class="fa fa-pencil"></i>&nbsp;编辑</a></li>
-                            </if>
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="title-bar" style="position: relative;z-index: 99;">
+                <div class="row  clearfix" id="title-hide" style="display:none;">
+                    <ul class="breadcrum pull-left">
+                        <li>已选中&nbsp;<span id="icheck_num"></span>&nbsp;项</li>
+                        <!--<if condition="$Think.get.by neq 'deleted'">
+                            <li class="single_btn"><a href="javascript:void(0)" id="edit_product"><i class="fa fa-pencil"></i>&nbsp;编辑</a></li>
+                        </if>
 
-                            <if condition="$Think.get.by eq 'deleted'">
-                                <li class="single_btn"><a href="javascript:void(0)" id="unfavorite"><i class="fa fa-star-o"></i>&nbsp;取消收藏</a></li>
-                                <else />
-                                <li class="single_btn">
-                                    <span id="to_product"><a href="javascript:void(0)" id="favorite"><i class="fa fa-star-o"></i>&nbsp;收藏</a></span>
-                                </li>
-                            </if>-->
-                            <li>
-                                <span><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>导出</a></span>
+                        <if condition="$Think.get.by eq 'deleted'">
+                            <li class="single_btn"><a href="javascript:void(0)" id="unfavorite"><i class="fa fa-star-o"></i>&nbsp;取消收藏</a></li>
+                            <else />
+                            <li class="single_btn">
+                                <span id="to_product"><a href="javascript:void(0)" id="favorite"><i class="fa fa-star-o"></i>&nbsp;收藏</a></span>
                             </li>
-                            <li>
-                                <span><a id="delete" href="javascript:void(0);" class="link"><i class="fa fa-times"></i>&nbsp;删除</a></span>
-                            </li>
-                            <li class="last_li"><big><a class="fa fa-times pull-right" id="back-show"></a></big></li>
-                        </ul>
-                    </div>
-                    <div class="row " id="title-show">
-                        <ul class="nav pull-left" style="margin:2px 0 0 15px;">
-                            <a href="{:U('background/add_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 新增候选人</a>
-                            <a href="{:U('background/add_more_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 批量导入候选人</a>
-                        </ul>
-                        <form class="form-inline" id="" action="" method="get">
-                            <ul class="breadcrum pull-right" style="margin-bottom: 0px">
-                                <li>
-                                    搜索：
-                                    <div class="input-group">
-                                        <input type="hidden" name="m" value="background"/>
-                                        <input type="hidden" name="a" value="index_external"/>
-                                        <!-- <input type="hidden" name="field" value="name"/>
-                                         <input type="hidden" name="condition" value="contains"/>-->
-                                        <input id="short_search" type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control " name="search" value="{$search}" />
-                                        <span class="input-group-btn">
-										    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-search"></i></button>
-									    </span>
-                                    </div>
-                                    <!--&nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
-
-                                </li>&nbsp;&nbsp;
-                                <div class="btn-group ">
-                                    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-
-                                        <if condition = "checkPerByAction('product','excelexport')">
-                                            <li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出2</a></li>
-                                        </if>
-                                    </ul>
-                                </div>
-                            </ul>
-                        </form>
+                        </if>-->
+                        <li>
+                            <span><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>导出</a></span>
+                        </li>
+                        <li>
+                            <span><a id="delete" href="javascript:void(0);" class="link"><i class="fa fa-times"></i>&nbsp;删除</a></span>
+                        </li>
+                        <li class="last_li"><big><a class="fa fa-times pull-right" id="back-show"></a></big></li>
+                    </ul>
+                </div>
+                <div class="row " id="title-show">
+                    <ul class="nav pull-left" style="margin:2px 0 0 15px;">
+                        <a href="{:U('background/add_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 新增候选人</a>
+                        <!--<a href="{:U('background/add_more_external')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 批量导入候选人</a>-->
+                    </ul>
+                    <form class="form-inline" id="" action="" autocomplete="off" method="get">
                         <ul class="breadcrum pull-right" style="margin-bottom: 0px">
                             <li>
+                                搜索：
                                 <div class="input-group">
-                                    <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-bottom:5px;">
-                                        <option value="{:U('background/index_external','by=name&'.$by_parameter)}" <if condition = "$by eq 'name'">selected="selected"</if>>全部员工(姓名)</option>
-                                        <option value="{:U('background/index_external','by=Id&'.$by_parameter)}" <if condition = "$by eq 'Id'">selected="selected"</if>>录入时间</option>
-                                        <option value="{:U('background/index_external','by=tocompany&'.$by_parameter)}" <if condition = "$by eq 'tocompany'">selected="selected"</if>>推荐公司名</option>
-                                        <option value="{:U('background/index_external','by=jobs&'.$by_parameter)}" <if condition = "$by eq 'jobs'">selected="selected"</if>>岗位</option>
-                                        <option value="{:U('background/index_external','by=industry&'.$by_parameter)}" <if condition = "$by eq 'industry'">selected="selected"</if>>行业
-                                    </select>
+                                    <input type="hidden" name="m" value="background"/>
+                                    <input type="hidden" name="a" value="index_external"/>
+                                    <input id="s-type" type="hidden" name="type" value="{$type}">
+                                    <!-- <input type="hidden" name="field" value="name"/>
+                                     <input type="hidden" name="condition" value="contains"/>-->
+                                    <if condition="$type eq 'name'">
+                                        <input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="" />
+                                        <elseif condition="$type eq 'jobs'"/><input type="text" style="width:160px;" placeholder="请输入岗位"  class="form-control short_search" name="search" value="" />
+                                        <elseif condition="$type eq 'tocompany'"/><input type="text" style="width:160px;" placeholder="请输入公司名称"  class="form-control short_search" name="search" value="" />
+                                        <elseif condition="$type eq 'industry'"/><input type="text" style="width:160px;" placeholder="请输入行业"  class="form-control short_search" name="search" value="" />
+                                        <else /><input type="text" style="width:160px;" placeholder="请输入人才姓名"  class="form-control short_search" name="search" value="" />
+                                    </if>
+                                    <span class="input-group-btn">
+										    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-search"></i></button>
+									    </span>
                                 </div>
-                            </li>
+                                <!--&nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
+
+                            </li>&nbsp;&nbsp;
+                            <!--<div class="btn-group ">
+                                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+
+                                    <if condition = "checkPerByAction('product','excelexport')">
+                                        <li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出2</a></li>
+                                    </if>
+                                </ul>
+                            </div>-->
                         </ul>
+                    </form>
+                    <ul class="breadcrum pull-right" style="margin-bottom: 0px">
+                        <li>
+                            <div class="input-group">
+                                <select class="form-control" onchange="searchtype(this)" style="margin-bottom:5px;">
+                                    <option value="name" <if condition = "$type eq 'name'">selected="selected"</if>>全部员工</option>
+                                    <option value="tocompany" <if condition = "$type eq 'tocompany'">selected="selected"</if>>推荐公司名</option>
+                                    <option value="jobs" <if condition = "$type eq 'jobs'">selected="selected"</if>>岗位</option>
+                                    <option value="industry" <if condition = "$type eq 'industry'">selected="selected"</if>>行业
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" style="margin: 0;">
+                <div class="msg-detail"><include file="Background:external_detail" /></div>
+                <div class="pull-left" style="width:16.222%;color: #000;display: none;">
+                    <div class="ibox-title clearfix" style="padding-top: 4px;">
+                        <div class="detail-title clearfix">
+                            <div class="pull-left all-inline">
+                                <a href="{:U('product/index')}">
+                                    <span class="fa fa-inbox" style="font-size:18px;color:#667B8F"></span>&nbsp;
+                                    <span style="color:#667B8F">全部人才</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content" style="min-height: 300px;border-top: none;">
+                        <div id="left_list" class="full-height-scroll">
+                            <div id="knowledge-tree" >
+                                {$tree_code}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row" style="margin: 0;">
-                    <div class="msg-detail"><include file="Background:external_detail" /></div>
-                    <div class="pull-left" style="width:16.222%;color: #000;display: none;">
-                        <div class="ibox-title clearfix" style="padding-top: 4px;">
-                            <div class="detail-title clearfix">
-                                <div class="pull-left all-inline">
-                                    <a href="{:U('product/index')}">
-                                        <span class="fa fa-inbox" style="font-size:18px;color:#667B8F"></span>&nbsp;
-                                        <span style="color:#667B8F">全部人才</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ibox-content" style="min-height: 300px;border-top: none;">
-                            <div id="left_list" class="full-height-scroll">
-                                <div id="knowledge-tree" >
-                                    {$tree_code}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pull-right" style="width:100%">
-                        <div class="ibox-content clearfix" id="table_container" style="z-index: 1;">
-                            <form id="form1" action="" method="Post" style="position:relative;">
-                                <div id="table_div" class="nicescroll">
-                                    <table class="table table-hover table-striped table_thead_fixed" id="tab_Test3">
-                                        <if condition="$data    eq null">
-                                            <div style="background-color:#fff;"><include file="Public:nodata" /></div>
-                                            <else/>
-                                            <tr id="childNodes_num" class="tabTh">
-                                                <td style="max-width: 60px;width:74px;padding:0 10px 0 7px;">
+                <div class="pull-right" style="width:100%">
+                    <div class="ibox-content clearfix" id="table_container" style="z-index: 1;">
+                        <form id="form1" action="" method="Post" style="position:relative;">
+                            <div id="table_div" class="nicescroll">
+                                <table class="table table-hover table-striped table_thead_fixed" id="tab_Test3">
+                                    <if condition="$data    eq null">
+                                        <div style="background-color:#fff;"><include file="Public:nodata" /></div>
+                                        <else/>
+                                        <tr id="childNodes_num" class="tabTh">
+                                            <td style="max-width: 60px;width:74px;padding:0 10px 0 7px;">
+                                                <div class="checkbox checkbox-primary">
+                                                    <input type="checkbox" class="check_all"/>
+                                                    <label for=""></label>
+                                                </div>
+                                            </td>
+                                            <td style="display: none">id</td>
+                                            <td>姓名</td>
+                                            <td>岗位</td>
+                                            <td>推荐公司名称</td>
+                                            <td>行业</td>
+                                            <td>备注</td>
+                                            <td>操作</td>
+                                        </tr>
+                                        <tbody>
+                                        <volist name="data" id="val" key="k">
+                                            <tr class="controls_tr">
+                                                <td>
                                                     <div class="checkbox checkbox-primary">
-                                                        <input type="checkbox" class="check_all"/>
+                                                        <input name="product_id[]" class="check_list" type="checkbox" value="{$val['Id']}" <if condition="$vo['is_deleted'] eq '0'">rel1="0"<else/>rel1="1"</if>/>
                                                         <label for=""></label>
                                                     </div>
                                                 </td>
-                                                <td style="display: none">id</td>
-                                                <td>姓名</td>
-                                                <td>岗位</td>
-                                                <td>推荐公司名称</td>
-                                                <td>行业</td>
-                                                <td>备注</td>
-                                                <td>操作</td>
+                                                <foreach name="val" item="vo" key="k">
+                                                    <if condition="$k eq 'Id' ">
+                                                        <td style="display: none;">
+                                                            <span class="ygid">{$vo}</span>
+                                                        </td>
+                                                        <elseif condition="$k eq 'name'"/>
+                                                        <td class="bdcount hxr_detail">
+                                                            <span data-id="{$val['Id']}">{$vo}</span>
+                                                        </td>
+                                                        <else/>
+                                                        <td>
+                                                            <span>{$vo}</span>
+                                                        </td>
+                                                    </if>
+                                                </foreach>
+                                                <td>
+                                                    <span class="label label-primary editstatus bgedit" style="cursor: pointer;margin-left: 10px" data-id="{$val['Id']}">修改 </span>
+                                                    <span class="label label-danger editstatus bgdelete" style="cursor: pointer;margin-left: 10px" data-id="{$val['Id']}">删除 </span>
+                                                </td>
                                             </tr>
-                                            <tbody>
-                                            <volist name="data" id="val" key="k">
-                                                <tr class="controls_tr">
-                                                    <td>
-                                                        <div class="checkbox checkbox-primary">
-                                                            <input name="product_id[]" class="check_list" type="checkbox" value="{$val['Id']}" <if condition="$vo['is_deleted'] eq '0'">rel1="0"<else/>rel1="1"</if>/>
-                                                            <label for=""></label>
-                                                        </div>
-                                                    </td>
-                                                    <foreach name="val" item="vo" key="k">
-                                                        <if condition="$k eq 'Id' ">
-                                                            <td style="display: none;">
-                                                                <span class="ygid">{$vo}</span>
-                                                            </td>
-                                                            <elseif condition="$k eq 'name'"/>
-                                                            <td class="bdcount hxr_detail" >
-                                                                <span data-id="{$val['Id']}">{$vo}</span>
-                                                            </td>
-                                                            <else/>
-                                                            <td>
-                                                                <span>{$vo}</span>
-                                                            </td>
-                                                        </if>
-                                                    </foreach>
-                                                    <td>
-                                                        <span class="label label-danger editstatus bgdelete" style="cursor: pointer;margin-left: 10px" data-id="{$val['Id']}">删除 </span>
-                                                    </td>
-                                                </tr>
-                                                <!--
-                                                    <tr class="controls_tr"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调</td></tr><tr><td>公司名: <span>南方新华</span></td><td>入职时间：<span>2018-8</span></td><td>离职时间：<span>2018-9</span></td><td>职位：<span>提莫</span></td></tr><tr><td>证明人：<span>职位</span></td><td>与证明人：<span>关系</span></td><td>联系电话：<span>职位</span></td><td>联系地址：<span>职位</span></td></tr><tr><td>薪资：<span>123</span></td><td>工作表现：<span>职位</span></td><td>优缺点：<span>职位</span></td><td>离职原因：<span>关系</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>职位</span></td></tr></table></td></tr>
-                                                -->
-                                            </volist>
-                                            <tbody>
-                                        </if>
-                                    </table>
-                                </div>
-                                <script>
-                                    $(document).ready(function () {
-                                        $(".hxr_detail").on("click",function () {
+                                            <!--
+                                                <tr class="controls_tr"><td colspan="10"><table class="newtb" cellpadding="10" cellspacing="10" style="width: 100%"><tr><td colspan="4" style="text-align: center">背调</td></tr><tr><td>公司名: <span>南方新华</span></td><td>入职时间：<span>2018-8</span></td><td>离职时间：<span>2018-9</span></td><td>职位：<span>提莫</span></td></tr><tr><td>证明人：<span>职位</span></td><td>与证明人：<span>关系</span></td><td>联系电话：<span>职位</span></td><td>联系地址：<span>职位</span></td></tr><tr><td>薪资：<span>123</span></td><td>工作表现：<span>职位</span></td><td>优缺点：<span>职位</span></td><td>离职原因：<span>关系</span></td></tr><tr><td colspan="4">健康状况和不良记录：<span>职位</span></td></tr></table></td></tr>
+                                            -->
+                                        </volist>
+                                        <tbody>
+                                    </if>
+                                </table>
+                            </div>
+                            <script>
+                                $(document).ready(function () {
+                                    $(".hxr_detail").on("click",function () {
+                                        if($('.msg-detail').css("display")=='none'){
                                             var msg = {"Id":$(this).children('span').attr('data-id')};
-                                           $.ajax({
-                                               url:'{:U("background/hxr_detail")}',
-                                               type:'post',
-                                               async:true,
-                                               data:msg,
-                                               success:function (data) {
-                                                   data = JSON.parse(data);
-                                                   var idnumber = data['bg']['idnumber'];
-                                                   var birthday = idnumber.substr(6,8);
-                                                   var sex = idnumber.substr(16,1)%2==0?'女':'男';
-                                                   $('.sex-width').children("span").text(sex);
-                                                   var msgdetail = $('.msg-detail');
-                                                   $(msgdetail).find('input[type="text"]').attr('readonly','readonly');
-                                                   $(msgdetail).find('input[type="text"]').css('border','none');
-                                                   msgdetail.find('.name').text(data['bg']['name']);
-                                                   msgdetail.find('.industry').text(data['bg']['industry']);
-                                                   msgdetail.find('.jobs').text(data['bg']['jobs']);
-                                                   //msgdetail.find('.photo').children().eq(0).attr("src",data['bg']['id_pic_src']);
-                                                   var body  = $('.bodyshow');
-                                                   //基本信息
-                                                   var idimg = body.find('.bg').find('img');
-                                                   if(data['bg']['id_pic_src']==null){
-                                                       idimg.removeAttr('src');
-                                                       idimg.removeClass('id-card-img');
-                                                   }else{
-                                                       idimg.addClass('id-card-img');
-                                                       idimg.attr('src','Uploads'+data['bg']['id_pic_src']);
-                                                   }
-                                                   body.find('.bg').children('span').attr({'data-id':data['bg']['Id'],'data-type':'bg'});
-                                                   var bginputs = body.find('.bg').find('input[type="text"]');
-                                                   bginputs.eq(0).val(data['bg']['name']);
-                                                   bginputs.eq(1).val(sex);
-                                                   bginputs.eq(2).val(birthday);
-                                                   bginputs.eq(5).val(idnumber);
-                                                   //学历证书
-                                                   removeobj(body.find('.edu'));
-                                                   for(let i=0;i<data['edu'].length;i++){
-                                                       var  edu  = body.find('.edu').eq(0).clone(true);
-                                                       edu.children("span").text("学历证书 "+(i+1));
-                                                       edu.children("span").attr({'data-id':data['edu'][i]['Id'],'data-type':'edu'});
-                                                       var input = edu.find('.lable-input');
-                                                       input.find('i').attr("class","");
-                                                       input.eq(0).children('input[type="text"]').val(data['edu'][i]['school']+'毕业证');
-                                                       input.eq(0).children('i').addClass('i-true');
-                                                       input.eq(1).children('input[type="text"]').val(data['edu'][i]['school']);
-                                                       input.eq(1).children('i').addClass(checkiClass(data['edu'],i,'school_add'));
-                                                       input.eq(2).children('input[type="text"]').val(data['edu'][i]['edu_type']);
-                                                       input.eq(2).children('i').addClass(checkiClass(data['edu'],i,'edu_type_add'));
-                                                       input.eq(3).children('input[type="text"]').val(data['edu'][i]['major']);
-                                                       input.eq(3).children('i').addClass(checkiClass(data['edu'],i,'major_add'));
-                                                       input.eq(4).children('input[type="text"]').val(data['edu'][i]['edu_num']);
-                                                       input.eq(4).children('i').addClass(checkiClass(data['edu'],i,'edu_num_add'));
-                                                       input.eq(5).children('input[type="text"]').val(data['edu'][i]['msgbelong']);
-                                                       input.eq(5).children('i').addClass(checkiClass(data['edu'],i,'msgbelong_add'));
-                                                       input.eq(6).children('input[type="text"]').val(data['edu'][i]['enter_time']);
-                                                       input.eq(6).children('i').addClass(checkiClass(data['edu'],i,'enter_time_add'));
-                                                       input.eq(7).children('input[type="text"]').val(data['edu'][i]['out_time']);
-                                                       input.eq(7).children('i').addClass(checkiClass(data['edu'],i,'out_time_add'));
-                                                       body.find('.edu').eq(i).after(edu);
-                                                   }
-                                                   body.find('.edu').eq(0).remove();
-
-                                                   //资格证书
-                                                   removeobj(body.find('.qc'));
-                                                   for(let i=0;i<data['qc'].length;i++){
-                                                       var  qc  = body.find('.qc').eq(0).clone(true);
-                                                       qc.children("span").text("资格证书 "+(i+1));
-                                                       qc.children("span").attr({'data-id':data['qc'][i]['Id'],'data-type':'qc'});
-                                                       var input = qc.find('.lable-input');
-                                                       input.find('i').attr("class","");
-                                                       input.eq(1).children('input[type="text"]').val(data['qc'][i]['qc_type']);
-                                                       input.eq(1).children('i').addClass(checkiClass(data['qc'],i,'qc_type_add'));
-                                                       input.eq(2).children('input[type="text"]').val(data['qc'][i]['qc_num']);
-                                                       input.eq(2).children('i').addClass(checkiClass(data['qc'],i,'qc_num_add'));
-                                                       input.eq(3).children('input[type="text"]').val(data['qc'][i]['get_time']);
-                                                       input.eq(3).children('i').addClass(checkiClass(data['qc'],i,'get_time_add'));
-                                                       input.eq(4).children('input[type="text"]').val(data['qc'][i]['out_time']);
-                                                       input.eq(4).children('i').addClass(checkiClass(data['qc'],i,'out_time_add'));
-                                                       input.eq(5).children('input[type="text"]').val(data['qc'][i]['qc_source']);
-                                                       input.eq(5).children('i').addClass(checkiClass(data['qc'],i,'qc_source_add'));
-                                                       body.find('.qc').eq(i).after(qc);
-                                                   }
-                                                   body.find('.qc').eq(0).remove();
-
-                                                   //工作经历
-                                                   removeobj(body.find('.work'));
-                                                   for(let i=0;i<data['work'].length;i++){
-                                                       var  work  = body.find('.work').eq(0).clone(true);
-                                                       work.children("span").eq(0).text("工作经历 "+(i+1));
-                                                       work.find("span").eq(1).attr({'data-id':data['work'][i]['Id'],'data-type':'work'});
-                                                       var input = work.children('div').eq(0).find('.lable-input');
-                                                       input.find('i').attr("class","");
-                                                       input.eq(0).children('input[type="text"]').val(data['work'][i]['company']);
-                                                       input.eq(0).children('i').addClass(checkiClass(data['work'],i,'company_add'));
-                                                       input.eq(1).children('input[type="text"]').val(data['work'][i]['enter_time']);
-                                                       input.eq(1).children('i').addClass(checkiClass(data['work'],i,'enter_time_add'));
-                                                       input.eq(2).children('input[type="text"]').val(data['work'][i]['out_time']);
-                                                       input.eq(2).children('i').addClass(checkiClass(data['work'],i,'out_time_add'));
-                                                       input.eq(3).children('input[type="text"]').val(data['work'][i]['position']);
-                                                       input.eq(3).children('i').addClass(checkiClass(data['work'],i,'position_add'));
-                                                       body.find('.work').eq(i).after(work);
-                                                       removeobj(body.find('.witness'));
-                                                       for(let j=0;j<data['work'][i]['witness'].length;j++){
-                                                           var witness =  body.find('.witness').eq(0).clone(true);
-                                                           witness.css('left','0');
-                                                           var witnessData = data['work'][i]['witness'];
-                                                           witness.children('span').text('证明人 '+(j+1));
-                                                           witness.children('span').attr({'data-id':witnessData[j]['Id'],'data-type':'witness'});
-                                                           var witInput = witness.find('input[type="text"]');
-                                                           witInput.eq(0).val(witnessData[j]['witness']);
-                                                           witInput.eq(1).val(witnessData[j]['position']);
-                                                           witInput.eq(2).val(witnessData[j]['tel']);
-                                                           witInput.eq(3).val(witnessData[j]['relationship']);
-                                                           witInput.eq(4).val(witnessData[j]['method']);
-                                                          /* witInput.eq(5).val(witnessData['witness']);*/
-                                                           witInput.eq(5).val(witnessData[j]['performance']);
-                                                           witInput.eq(6).val(witnessData[j]['badrecord']);
-                                                           witInput.eq(7).val(witnessData[j]['reason']);
-                                                           witInput.eq(8).val(witnessData[j]['train']);
-                                                           witInput.eq(9).val(witnessData[j]['compete']);
-                                                           $(witness).appendTo(body.find('.witness-div'));
-                                                       }
-                                                   }
-                                                   body.find('.work').eq(0).remove();
-                                                   msgdetail.fadeIn();
-                                               }
-                                           })
-                                        });
-                                        /*function checkmsg(data,i,name_add,name) {
-                                            if(data[i][name_add]=='sure'||data[i][name_add]==null||data[i][name_add]=='notsure'){
-                                                return data[i][name];
-                                            }else{
-                                                return data[i][name_add];
-                                            }
-                                        }*/
-                                        function checkiClass(data,i,name_add) {
-                                            if(data[i][name_add]=='sure'){
-                                                return 'i-true';
-                                            }else if(data[i][name_add]==null){
-                                                return 'i-true';
-                                            }else if(data[i][name_add]=='notsure'){
-                                                return 'i-notsure';
-                                            }else{
-                                                return 'i-wrong';
-                                            }
-                                        }
-                                        //初始化弹窗页，删除多余信息
-                                        function removeobj(data) {
-                                            for(let i =1;i< data.length;i++){
-                                                data.eq(i).remove();
-                                            }
-                                        }
-                                        $(".bgdelete").on("click",function () {
-                                            var id = $(this).attr("data-id");
-                                            var ids = new Array();
-                                            ids.push(id);
-                                            swal({
-                                                    title: "您确定要删除员工信息吗？",
-                                                    text: "删除后将无法恢复，请谨慎操作！",
-                                                    type: "warning",
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: "#DD6B55",
-                                                    confirmButtonText: "是的，我要删除！",
-                                                    cancelButtonText:'让我再考虑一下…',
-                                                    closeOnConfirm:false,
-                                                    closeOnCancel:false
-                                                },
-                                                function(isConfirm){
-                                                    if (isConfirm) {
-                                                        $.ajax({
-                                                            url:"/index.php?m=background&a=ex_delete",
-                                                            type:"post",
-                                                            async:true,
-                                                            data:{Id:ids},
-                                                            success: function (data) {
-                                                                if (data.status == 1) {
-                                                                    swal("删除成功！", "您已经永久删除了信息！", "success");
-                                                                    location.reload();
-                                                                } else {
-                                                                    swal({
-                                                                        title: "操作失败！",
-                                                                        text:data.info,
-                                                                        type: "error"
-                                                                    })
-                                                                    return false;
-                                                                }
-                                                            },
-                                                            dataType: 'json'
-                                                        });
-                                                    } else {
-                                                        swal("已取消","您取消了删除操作！","error");
+                                            var status = 0;
+                                            getStatus(status);
+                                            $.ajax({
+                                                url:'{:U("background/hxr_detail")}',
+                                                type:'post',
+                                                async:false,
+                                                data:msg,
+                                                success:function (data) {
+                                                    data = JSON.parse(data);
+                                                    var idnumber = data['bg']['idnumber'];
+                                                    var birthday = idnumber.substr(6,8);
+                                                    var sex = idnumber.substr(16,1)%2==0?'女':'男';
+                                                    $('.sex-width').children("span").text(sex);
+                                                    var msgdetail = $('.msg-detail');
+                                                    msgdetail.find('.edit').attr('data-id',data['bg']['Id']);
+                                                    $(msgdetail).find('input[type="text"]').attr('readonly','readonly');
+                                                    $(msgdetail).find('input[type="text"]').css('border','none');
+                                                    msgdetail.find('.name').text(data['bg']['name']);
+                                                    msgdetail.find('.industry').text(data['bg']['industry']);
+                                                    msgdetail.find('.jobs').text(data['bg']['jobs']);
+                                                    msgdetail.find('.delete').attr('data-id',data['bg']['Id']);
+                                                    //msgdetail.find('.photo').children().eq(0).attr("src",data['bg']['id_pic_src']);
+                                                    var body  = $('.bodyshow');
+                                                    //基本信息
+                                                    var idimg = body.find('.bg').find('img');
+                                                    if(data['bg']['id_pic_src']==null){
+                                                        //idimg.removeAttr('src');
+                                                        idimg.css("display","none");
+                                                        idimg.removeClass('id-card-img');
+                                                    }else{
+                                                        idimg.addClass('id-card-img');
+                                                        idimg.attr('src','Uploads'+data['bg']['id_pic_src']);
+                                                        idimg.css("display","block");
                                                     }
-                                                });
-                                        });
-                                    });
-                                    $(".bgedit").on("click",function () {
-                                        var id = $(this).attr("data-id");
-                                        id = parseInt(id);
-                                        window.location.href="/index.php?m=background&a=edit&id="+id;
-                                    });
-                                    $('#delete').click(function(){
-                                        var id_array = new Array();
-                                        $("input.check_list:checked").each(function(){
-                                            id_array.push($(this).val());
-                                        });
-                                        if(id_array.length == 0){
-                                            alert_crm('{:L('YOU_HAVE_NOT_CHOSEN_ANY_CUSTOMERS')}');
-                                            return false;
+                                                    body.find('.bg').children('span').attr({'data-id':data['bg']['Id'],'data-type':'bg'});
+                                                    var bginputs = body.find('.bg').find('input[type="text"]');
+                                                    bginputs.eq(0).val(data['bg']['name']);
+                                                    bginputs.eq(1).val(sex);
+                                                    bginputs.eq(2).val(birthday);
+                                                    bginputs.eq(5).val(idnumber);
+                                                    //学历证书
+                                                    removeobj(body.find('.edu'));
+                                                    for(let i=0;i<data['edu'].length;i++){
+                                                        var  edu  = body.find('.edu').eq(0).clone(true);
+                                                        edu.children("span").text("学历证书 "+(i+1));
+                                                        edu.children("span").attr({'data-id':data['edu'][i]['Id'],'data-type':'edu'});
+                                                        var input = edu.find('.lable-input');
+                                                        input.find('i').attr("class","");
+                                                        input.eq(0).children('input[type="text"]').val(data['edu'][i]['school']);
+                                                        input.eq(0).children('i').addClass('i-true');
+                                                        input.eq(1).children('input[type="text"]').val(data['edu'][i]['school']);
+                                                        input.eq(1).children('i').addClass(checkiClass(data['edu'],i,'school_add'));
+                                                        input.eq(2).children('input[type="text"]').val(data['edu'][i]['edu_type']);
+                                                        input.eq(2).children('i').addClass(checkiClass(data['edu'],i,'edu_type_add'));
+                                                        input.eq(3).children('input[type="text"]').val(data['edu'][i]['major']);
+                                                        input.eq(3).children('i').addClass(checkiClass(data['edu'],i,'major_add'));
+                                                        input.eq(4).children('input[type="text"]').val(data['edu'][i]['edu_num']);
+                                                        input.eq(4).children('i').addClass(checkiClass(data['edu'],i,'edu_num_add'));
+                                                        input.eq(5).children('input[type="text"]').val(data['edu'][i]['msgbelong']);
+                                                        input.eq(5).children('i').addClass(checkiClass(data['edu'],i,'msgbelong_add'));
+                                                        input.eq(6).children('input[type="text"]').val(data['edu'][i]['enter_time']);
+                                                        input.eq(6).children('i').addClass(checkiClass(data['edu'],i,'enter_time_add'));
+                                                        input.eq(7).children('input[type="text"]').val(data['edu'][i]['out_time']);
+                                                        input.eq(7).children('i').addClass(checkiClass(data['edu'],i,'out_time_add'));
+                                                        body.find('.edu').eq(i).after(edu);
+                                                    }
+                                                    body.find('.edu').eq(0).remove();
+
+                                                    //资格证书
+                                                    removeobj(body.find('.qc'));
+                                                    for(let i=0;i<data['qc'].length;i++){
+                                                        var  qc  = body.find('.qc').eq(0).clone(true);
+                                                        qc.children("span").text("资格证书 "+(i+1));
+                                                        qc.children("span").attr({'data-id':data['qc'][i]['Id'],'data-type':'qc'});
+                                                        var input = qc.find('.lable-input');
+                                                        input.find('i').attr("class","");
+                                                        input.eq(1).children('input[type="text"]').val(data['qc'][i]['qc_type']);
+                                                        input.eq(1).children('i').addClass(checkiClass(data['qc'],i,'qc_type_add'));
+                                                        input.eq(2).children('input[type="text"]').val(data['qc'][i]['qc_num']);
+                                                        input.eq(2).children('i').addClass(checkiClass(data['qc'],i,'qc_num_add'));
+                                                        input.eq(3).children('input[type="text"]').val(data['qc'][i]['get_time']);
+                                                        input.eq(3).children('i').addClass(checkiClass(data['qc'],i,'get_time_add'));
+                                                        input.eq(4).children('input[type="text"]').val(data['qc'][i]['out_time']);
+                                                        input.eq(4).children('i').addClass(checkiClass(data['qc'],i,'out_time_add'));
+                                                        input.eq(5).children('input[type="text"]').val(data['qc'][i]['qc_source']);
+                                                        input.eq(5).children('i').addClass(checkiClass(data['qc'],i,'qc_source_add'));
+                                                        body.find('.qc').eq(i).after(qc);
+                                                    }
+                                                    body.find('.qc').eq(0).remove();
+
+                                                    //工作经历
+                                                    removeobj(body.find('.work'));
+                                                    for(let i=0;i<data['work'].length;i++){
+                                                        var  work  = body.find('.work').eq(0).clone(true);
+                                                        work.children("span").eq(0).text("工作经历 "+(i+1));
+                                                        work.find("span").eq(1).attr({'data-id':data['work'][i]['Id'],'data-type':'work'});
+                                                        var input = work.children('div').eq(0).find('.lable-input');
+                                                        input.find('i').attr("class","");
+                                                        input.eq(0).children('input[type="text"]').val(data['work'][i]['company']);
+                                                        input.eq(0).children('i').addClass(checkiClass(data['work'],i,'company_add'));
+                                                        input.eq(1).children('input[type="text"]').val(data['work'][i]['enter_time']);
+                                                        input.eq(1).children('i').addClass(checkiClass(data['work'],i,'enter_time_add'));
+                                                        input.eq(2).children('input[type="text"]').val(data['work'][i]['out_time']);
+                                                        input.eq(2).children('i').addClass(checkiClass(data['work'],i,'out_time_add'));
+                                                        input.eq(3).children('input[type="text"]').val(data['work'][i]['position']);
+                                                        input.eq(3).children('i').addClass(checkiClass(data['work'],i,'position_add'));
+                                                        body.find('.work').eq(i).after(work);
+                                                        if(data['work'][i]['witness']!=null){
+                                                            var witnessDiv = body.find('.work').eq(i+1);
+                                                            removeobj(witnessDiv.find('.witness'));
+                                                            for(let j=0;j<data['work'][i]['witness'].length;j++){
+                                                                var witness =  witnessDiv.find('.witness').eq(0).clone(true);
+                                                                witness.css('left','0');
+                                                                var witnessData = data['work'][i]['witness'];
+                                                                witness.children('span').text('证明人 '+(j+1));
+                                                                witness.children('span').attr({'data-id':witnessData[j]['Id'],'data-type':'witness'});
+                                                                var witInput = witness.find('input[type="text"]');
+                                                                witInput.eq(0).val(witnessData[j]['witness']);
+                                                                witInput.eq(1).val(witnessData[j]['position']);
+                                                                witInput.eq(2).val(witnessData[j]['tel']);
+                                                                witInput.eq(3).val(witnessData[j]['relationship']);
+                                                                witInput.eq(4).val(witnessData[j]['method']);
+                                                                witInput.eq(5).val(witnessData[j]['performance']);
+                                                                witInput.eq(6).val(witnessData[j]['badrecord']);
+                                                                witInput.eq(7).val(witnessData[j]['reason']);
+                                                                witInput.eq(8).val(witnessData[j]['train']);
+                                                                witInput.eq(9).val(witnessData[j]['compete']);
+                                                                witnessDiv.find('.witness-div').append(witness);
+                                                            }
+                                                            witnessDiv.find('.witness').eq(0).remove();
+                                                        }
+                                                    }
+                                                    body.find('.work').eq(0).remove();
+                                                    status = 1;
+                                                    var loading = '<div class="loading">' +
+                                                        '<img class="loading1" src="/Public/img/board.png">' +
+                                                        '<img class="loading2" src="/Public/img/circle.png">' +
+                                                        '<img class="loading3" src="/Public/img/light.png">' +
+                                                        '</div>';
+                                                    var backgroundDiv = '<div class="backgroundDiv"></div>';
+                                                    $(backgroundDiv).appendTo("body");
+                                                    $(loading).appendTo("body");
+                                                    var timer = setInterval(function () {
+                                                        getStatus(status,timer,msgdetail);
+                                                    },50);
+                                                }
+                                            });
                                         }
+                                    });
+                                    /*function checkmsg(data,i,name_add,name) {
+                                     if(data[i][name_add]=='sure'||data[i][name_add]==null||data[i][name_add]=='notsure'){
+                                     return data[i][name];
+                                     }else{
+                                     return data[i][name_add];
+                                     }
+                                     }*/
+                                    function checkiClass(data,i,name_add) {
+                                        if(data[i][name_add]=='sure'){
+                                            return 'i-true';
+                                        }else if(data[i][name_add]==null){
+                                            return 'i-true';
+                                        }else if(data[i][name_add]=='notsure'){
+                                            return 'i-notsure';
+                                        }else{
+                                            return 'i-wrong';
+                                        }
+                                    }
+                                    //初始化弹窗页，删除多余信息
+                                    function removeobj(data) {
+                                        for(let i =1;i< data.length;i++){
+                                            data.eq(i).remove();
+                                        }
+                                    }
+                                    $(".bgdelete").on("click",function () {
+                                        var id = $(this).attr("data-id");
+                                        var ids = new Array();
+                                        ids.push(id);
                                         swal({
                                                 title: "您确定要删除员工信息吗？",
                                                 text: "删除后将无法恢复，请谨慎操作！",
@@ -510,14 +487,26 @@
                                             function(isConfirm){
                                                 if (isConfirm) {
                                                     $.ajax({
-                                                        type:'post',
-                                                        url: "{:U('background/ex_delete')}",
-                                                        data: {Id: id_array},
-                                                        async: false,
+                                                        url:"/index.php?m=background&a=ex_delete",
+                                                        type:"post",
+                                                        async:true,
+                                                        data:{Id:ids},
                                                         success: function (data) {
                                                             if (data.status == 1) {
-                                                                swal("删除成功！", "您已经永久删除了信息！", "success");
-                                                                location.reload();
+                                                                    swal({
+                                                                        title:"删除成功",
+                                                                        text:"您已经永久删除了信息",
+                                                                        type:"success",
+                                                                        confirmButtonText: "确定"
+                                                                    },
+                                                                /*"删除成功！", "您已经永久删除了信息！", "success"*/
+                                                                    function (isConfirm) {
+                                                                        if(isConfirm){
+                                                                            location.reload();
+                                                                            console.log(12);
+                                                                        }
+                                                                    }
+                                                                );
                                                             } else {
                                                                 swal({
                                                                     title: "操作失败！",
@@ -533,23 +522,84 @@
                                                     swal("已取消","您取消了删除操作！","error");
                                                 }
                                             });
-                                    })
-                                </script>
-                                <div id="tfoot_div" class="clearfix">
-                                    <div class="clearfix" id="tfoot_page">
-                                        <if condition="$fields_search || $_GET['field']">
-                                            <span class="pull-left" style="margin-left:25px;margin-top:10px;">本次搜索结果<span style="color:#F8AC59"> {$count} </span>条数据<a href="{:U('product/index')}" class="btn" style="background:#fff;border:1px solid #ccc;margin-left:10px;color:#999;" id="clearnumber">清除搜索条件</a></span>
-                                        </if>
-                                        {$page}<include file="Public:listrows" />
-                                    </div>
+                                    });
+                                });
+                                $(".bgedit").on("click",function () {
+                                    var id = $(this).attr("data-id");
+                                    id = parseInt(id);
+                                    window.location.href="/index.php?m=background&a=edit_external&Id="+id;
+                                });
+                                $('#delete').click(function(){
+                                    var id_array = new Array();
+                                    $("input.check_list:checked").each(function(){
+                                        id_array.push($(this).val());
+                                    });
+                                    if(id_array.length == 0){
+                                        alert_crm('{:L('YOU_HAVE_NOT_CHOSEN_ANY_CUSTOMERS')}');
+                                        return false;
+                                    }
+                                    swal({
+                                            title: "您确定要删除员工信息吗？",
+                                            text: "删除后将无法恢复，请谨慎操作！",
+                                            type: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#DD6B55",
+                                            confirmButtonText: "是的，我要删除！",
+                                            cancelButtonText:'让我再考虑一下…',
+                                            closeOnConfirm:false,
+                                            closeOnCancel:false
+                                        },
+                                        function(isConfirm){
+                                            if (isConfirm) {
+                                                $.ajax({
+                                                    type:'post',
+                                                    url: "{:U('background/ex_delete')}",
+                                                    data: {Id: id_array},
+                                                    async: false,
+                                                    success: function (data) {
+                                                        if (data.status == 1) {
+                                                            swal({
+                                                                title:'删除成功',
+                                                                text:'您已经永久删除该条信息！',
+                                                                type:"success",
+                                                                confirmButtonText: "确定"
+                                                            },function (isConfirm) {
+                                                                if(isConfirm){
+                                                                    location.reload();
+                                                                }
+                                                            });
+                                                        } else {
+                                                            swal({
+                                                                title: "操作失败！",
+                                                                text:data.info,
+                                                                type: "error"
+                                                            })
+                                                            return false;
+                                                        }
+                                                    },
+                                                    dataType: 'json'
+                                                });
+                                            } else {
+                                                swal("已取消","您取消了删除操作！","error");
+                                            }
+                                        });
+                                })
+                            </script>
+                            <div id="tfoot_div" class="clearfix">
+                                <div class="clearfix" id="tfoot_page">
+                                    <if condition="$fields_search || $_GET['field']">
+                                        <span class="pull-left" style="margin-left:25px;margin-top:10px;">本次搜索结果<span style="color:#F8AC59"> {$count} </span>条数据<a href="{:U('product/index')}" class="btn" style="background:#fff;border:1px solid #ccc;margin-left:10px;color:#999;" id="clearnumber">清除搜索条件</a></span>
+                                    </if>
+                                    {$page}<include file="Public:listrows" />
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <div style="display:none" id="dialog-field-search" title="高级搜索">
     <form class="form-inline" id="searchForm" action="" method="get">
@@ -1031,7 +1081,6 @@
          });
          });*/
 
-
         $('#revert').click(function(){
             swal({
                     title: "确定要上架该人才吗？",
@@ -1087,6 +1136,7 @@
                             ids=encodeURIComponent(ids);
                             window.open('/index.php?m=background&a=readyOutPutt&ids='+ids);
                         }
+                        swal("数据导出成功！","","success");
                         //remainTime();
                         /* $.ajax({
                          url:'{:U("background/output")}',
@@ -1163,7 +1213,6 @@
                     console.log(data);
                     swal("温馨提示！", "状态修改成功！", "success");
                     window.location=location;
-
                 },
                 error:function () {
 

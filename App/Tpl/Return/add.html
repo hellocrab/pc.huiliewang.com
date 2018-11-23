@@ -1,0 +1,920 @@
+<include file="Public:header" />
+<link rel="stylesheet" href="__PUBLIC__/css/class.public.css" />
+<script src="__PUBLIC__/js/addResume.js"></script>
+
+<style>
+    body{overflow-y:hidden; }
+    #main_pic_prev{width: 120px;height: 120px;border: 1px dashed #d3d3d6;}
+    .add_body_title{
+        margin:15px auto 30px auto;
+    }
+    .form-horizontal .control-label{
+        text-align: right;
+    }
+    .fileinput-button1{
+        position: relative;
+        overflow: hidden;
+    }
+    .note-codable{
+        display: none;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 0;
+        font-family: Menlo,Monaco,monospace,sans-serif;
+        font-size: 14px;
+        color: #ccc;
+        background-color: #222;
+        border: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        box-shadow: none;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+        resize: none;
+    }
+    .timerinput{
+        width:120px; display:inline;height: 32px;background: #ffffff !important;
+    }
+    .resume_area{
+        width: 100%;
+        height: 100%;
+        resize: none;
+        outline: none;
+        padding: 20px;
+        border: none;
+    }
+
+    .btn{
+        line-height: 21px;
+    }
+    .form-control, .single-line{
+        left: 0 !important;
+    }
+    .deletebtn{
+        margin-bottom: 10px;
+    }
+    .btnclosee{
+        position: absolute;
+        right: 30px;
+        top:10px;
+    }
+    .submitfiles{
+        padding-left: 15px;
+    }
+    .youzhi input{
+        content: "";
+        display: inline-block;
+        width: 17px;
+        height: 17px;
+        margin-left: -20px;
+        border: 1px solid #cccccc;
+        border-radius: 3px;
+        background-color: #fff;
+    }
+
+</style>
+<script type="text/javascript" src="__PUBLIC__/js/PCASClass.js" ></script>
+<link rel="stylesheet" href="__PUBLIC__/css/jquery.fileupload.css" type="text/css" />
+<script>
+    $(function(){
+        $(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+        $(window).resize(function(){
+            $(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+        })
+    })
+</script>
+<!--职位类别start-->
+<div class="sPopupDiv none" id="jobdiv" style="float:left;"></div>
+<!--职位类别end-->
+<div class="wrapper wrapper-content animated fadeIn col-md-12">
+    <form class="form-horizontal" id="form" role="form" action="{:U('return/addd')}" method="post" enctype="multipart/form-data">
+        <input type='hidden' name="r" <present name="r">value="{$r}"</present>/>
+        <input type='hidden' name="module" <present name="r">value="{$module}"</present>/>
+        <input type='hidden' name="id" <present name="r">value="{$model_id}"</present>/>
+        <input type='hidden' name="eid" value="{:I('id')}"/>
+        <input type="hidden" id="type" value="{$type}">
+        <div class="ibox-content add_body" id="add_body">
+            <div class="row full-height-scroll">
+                <div class="col-md-12 add_body" >
+                    <div class="">
+                        <div class="row" >
+                            <div class="col-md-8 add_body_title">
+                                <div class="all-inline">
+                                    <span class="sq-tag"></span>
+                                    <div class="text-tag">
+                                        <span>
+                                            <if condition="$type eq 1">新增回款计划
+                                            <elseif condition="$type eq 2"/>新增回款记录
+                                                <elseif condition="$type eq 3"/>新增开票记录
+                                            </if>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <if condition="$type eq 1">
+                                <div  id="resume-search-form" class="col-md-8 add_body_form" style="margin-left:15px;">
+                                    <input type="hidden" name="url" />
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">对应客户：</label>
+                                        <div class="col-md-6">
+                                            <select class="form-control required" id="name" onchange="changeContract()">
+                                                <option value="">--客户--</option>
+                                                <volist name="contract" id="vo">
+                                                    <option value="{$vo.customer_id}">{$vo.customer_name}</option>
+                                                </volist>
+                                            </select>
+                                            <!--<input class="form-control required" type="text" id="name" name="name" value="">-->
+                                            <span id="sketchTip"style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                        </div>
+                                        <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    </div>
+                                    <div  class="form-group">
+                                        <label class="col-md-3 control-label">合同标题：</label>
+                                        <div class="col-md-6">
+                                            <input class="form-control required" type="text" id="industry" name="industry" value="">
+                                        </div>
+                                        <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    </div>
+                                    <div  class="form-group">
+                                        <label class="col-md-3 control-label">合同总金额：</label>
+                                        <div class="col-md-6">
+                                            <input class="form-control required" type="text" id="department" name="department" value="">
+                                        </div>
+                                        <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    </div>
+                                    <div  class="form-group">
+                                        <label class="col-md-3 control-label">签约日期：</label>
+                                        <div class="col-md-6">
+                                            <input class="form-control required " type="text" id="school" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd&quot;,maxDate:&quot;2038-01-01&quot;})" name="school" value="">
+                                        </div>
+                                        <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    </div>
+                                    <div class="form-group workExp">
+                                        <label class="col-md-3 control-label">分期列表：</label>
+                                        <div class="col-lg-9">
+                                            <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;margin-top: 10px;">
+                                                <div style="background: none;border-bottom:1px solid #ddd;padding-bottom: 10px;padding-top:10px" class="panel-body3 bdmsg">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">期次<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-9">
+                                                            <select style="width: 100%" onchange="addqc(this)" id="paynum">
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                                <option value="11">11</option>
+                                                                <option value="12">12</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group qc">
+                                                        <label class="col-sm-2 control-label">期次 1</label>
+                                                        <div class="col-sm-9">
+                                                            <div class="col-sm-3">
+                                                                <input class="form-control text-center timerinput required enter_time" data-name="timereceived" type="text" placeholder="计划回款日期" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <input class="form-control text-center required" type="text" placeholder="计划回款占比" data-name="proportion" name="paymentproperty">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <input class="form-control text-center required" type="text" onchange="yuan(this)" data-name="money" placeholder="计划回款金额" name="paymentmoney">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <input class="form-control text-center required" type="text" placeholder="备注" data-name="remark" name="paymentremark">
+                                                            </div>
+                                                        </div>
+                                                        <span class="text-danger">*</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <elseif condition="$type eq 2"/>
+                                    <div  class="col-md-8 add_body_form" style="margin-left:15px;">
+                                        <input type="hidden" name="url" />
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">回款日期：</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control timerinput required enter_time" data-name="enter_time" id="paytime" type="text" placeholder="" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;width: 100%">
+                                            </div>
+                                            <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">回款金额：</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control text-center required " id="paymoney" style="height: 32px;">
+                                            </div>
+                                            <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">对应客户：</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control text-center required" id="customer" style="height: 32px;">
+                                            </div>
+                                            <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">合同标题：</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control text-center required " id="contracttitle" style="height: 32px;">
+                                            </div>
+                                            <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">回款期次：</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control text-center required " id="period_id" style="height: 32px;">
+                                            </div>
+                                            <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">付款方式：</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control text-center required " id="paymethod" style="height: 32px;">
+                                            </div>
+                                            <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">回款类型：</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control text-center required " id="paytype" style="height: 32px;">
+                                            </div>
+                                            <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">收款人：</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control text-center required " id="receiver" style="height: 32px;">
+                                            </div>
+                                            <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">备注：</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control text-center required " id="remark" style="height: 32px;">
+                                            </div>
+                                            <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                        </div>
+
+                                        <elseif condition="$type eq 3"/>
+                                        <div  class="col-md-8 add_body_form" style="margin-left:15px;">
+                                            <input type="hidden" name="url" />
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">开票日期：</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control text-center timerinput required enter_time" data-name="enter_time" id="workyearFrom" type="text" placeholder="" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;width: 100%">
+                                                </div>
+                                                <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">票据内容：</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control text-center required " style="height: 32px;">
+                                                </div>
+                                                <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">开票金额：</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control text-center required " style="height: 32px;">
+                                                </div>
+                                                <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">对应客户：</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control text-center required " style="height: 32px;">
+                                                </div>
+                                                <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">合同标题：</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control text-center required " style="height: 32px;">
+                                                </div>
+                                                <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">票据类型：</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control text-center required " style="height: 32px;">
+                                                </div>
+                                                <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">发票号码：</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control text-center required " style="height: 32px;">
+                                                </div>
+                                                <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">经手人：</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control text-center required " style="height: 32px;">
+                                                </div>
+                                                <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">备注：</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control text-center required " style="height: 32px;">
+                                                </div>
+                                                <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            </div>
+                            </if>
+
+                            <script>
+                                function addqc(data) {
+                                    var count = parseInt($(data).val());
+                                    $(".qc").remove();
+                                    for(let i =0;i<count;i++){
+                                        var qc = '<div class="form-group qc"> <label class="col-sm-2 control-label">期次 '+(i+1)+'</label> <div class="col-sm-9"> <div class="col-sm-3"> <input class="form-control text-center timerinput required enter_time" data-name="enter_time" id="workyearFrom" type="text" placeholder="计划回款日期" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;"> </div> <div class="col-sm-3"> <input class="form-control text-center required" type="text" placeholder="计划回款占比"> </div> <div class="col-sm-3"> <input class="form-control text-center required" type="text" onchange="yuan(this)" placeholder="计划回款金额"> </div> <div class="col-sm-3"> <input class="form-control text-center required" type="text" placeholder="备注"> </div> </div> <span class="text-danger">*</span> </div>';
+                                        if(i==0){
+                                            $(data).parent().parent().after(qc);
+                                        }else{
+                                            $(qc).appendTo($(data).parent().parent().parent());
+                                        }
+                                    }
+                                }
+                                function yuan(data) {
+                                    var money = $(data).val();
+                                    money = money + " 元";
+                                    $(data).val(money);
+                                }
+                            </script>
+                            <volist name="field_list['data']" id="vo" key="key">
+                                <div class="form-group"  style="display: none;">
+                                    <label class="col-md-4 control-label">{$vo.name}：</label>
+                                    <if condition="$vo['form_type'] == 'textarea'">
+                                        <if condition = "$vo['tip_start'] eq 1">
+                                            <div class="col-md-6">
+                                                <textarea class="form-control" id="description" name="description" rows="5"></textarea>
+                                            </div>
+                                            <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            <else/>
+                                            <div class="col-md-8">
+                                                <textarea class="form-control" id="description1" name="description" rows="5"></textarea>
+                                            </div>
+                                        </if>
+                                        <elseif condition="$vo['form_type'] == 'address'"/>
+                                        <if condition = "$vo['tip_start'] eq 1">
+                                            <div class="col-md-7">
+                                                {$vo.html}
+                                            </div>
+                                            <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            <else/>
+                                            <div class="col-md-8">
+                                                {$vo.html}
+                                            </div>
+                                        </if>
+                                        <else/>
+                                        <div class="col-md-6">
+                                            {$vo.html}
+                                        </div>
+                                        <if condition = "$vo['tip_start'] eq 1 || $vo['field'] eq 'customer_id'">
+                                            <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            <else/>
+                                            <div class="col-md-2"></div>
+                                        </if>
+                                    </if>
+                                </div>
+                            </volist>
+                        </div>
+                        <div class="col-md-1 pull-right">
+                            <!-- <div style="height: 100%; border-right: 1px dashed gray;">&nbsp;sadf</div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<div id="tfoot_div" class="clearfix">
+    <div class="clearfix" id="tfoot_page">
+        <div class="ibox-content" style="border-top: none;">
+            <div class="col-sm-offset-2" style="text-align:center;margin-left:0px;">
+                <button type="submit" id="save_submit" class="btn btn-primary">保存</button>
+                <input class="btn btn-default" type="button" onclick="javascript:history.go(-1)" value="{:L('RETURN')}"/>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+</div>
+
+<div class="" style="display:none;" id="dialog-validate" title="{:L('TEST_RESULTS')}">
+    {:L('HAVE_THE_FOLLOWING_PRODUCTS_ARE_SIMILAR_TO_THE_PRODUCT_NAME')}
+    <div id="search_content"></div>
+</div>
+<div style="display:none;"  id="dialog-resume" title="粘贴简历">
+    <div class="form-group">
+        <label class="col-sm-1 control-label ng-binding">文件名称</label>
+        <div class="col-sm-11">
+            <input class="form-control ng-pristine ng-untouched ng-valid" type="text">
+        </div>
+        <div class="col-sm-12">
+            <textarea class="msd-elastic form-control parse-content" style="margin-top: 10px;height: 280px;width: 100%;outline: none;resize: none; overflow: hidden; word-wrap: break-word;"></textarea>
+        </div>
+    </div>
+</div>
+<div class="" style="display:none;" id="dialog-business" title="选择项目">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<link href="__PUBLIC__/css/selector.css" rel="stylesheet" />
+<script type="text/javascript" src="__PUBLIC__/js/uploadPreview.js"></script>
+<script src="__PUBLIC__/js/citydata.js"></script>
+<script src="__PUBLIC__/js/cityselector_o.js"></script>
+
+<script type="text/javascript">
+
+
+    //    lieselect();
+    //初始化上传图片
+    $("body").on('click','input[type="file"]', function(){
+//	var selector = $(this).attr('id');
+//	$("#"+selector).uploadPreview({ Img: selector+"_prev", Width: 120, Height: 120 });
+    });
+    function del(data) {
+        $(data).parent().remove();
+    }
+    function changeContract() {
+        var customer_id = $("#name").val();
+        if(customer_id != ''){
+            $.ajax({
+                type:'get',
+                url:'index.php?m=return&a=contract&id='+customer_id,
+                async:false,
+                success:function(data){
+                    $("#industry").val(data.contract_name);
+                    $("#department").val(data.price);
+                },
+                dataType:'json'
+            });
+        }
+    }
+    $(document).ready(function(){
+        // $('#bgsave').off().on("click",function(){
+        //     var name = $("#name").val().trim();
+        //
+        //     var industry = $("#industry").val().trim();
+        //
+        //     var department = $("#department").val().trim();
+        //
+        //     var school= $("#school").val().trim();
+        //     var major=$("#major").val().trim();
+        //     var education = $("#education").val().trim();
+        //
+        //
+        //     var data = {"s_name":name,"industry":industry,"department":department,"school":school,"major":major,"education":education};
+        //     var bgmsgs = new Array();
+        //
+        //     $(".panel-body3").each(function () {
+        //         var bgmsg ={};
+        //         $(this).children("div").each(function () {
+        //             $(this).children("div").children("input").each(function () {
+        //                 if($(this).val()) {
+        //                     bgmsg[$(this).attr("data-name")] = $(this).val().trim();
+        //                 }else{
+        //                     return false;
+        //                     alert_crm("请输入完整信息！");
+        //                 }
+        //             })
+        //         });
+        //         if(JSON.stringify(bgmsg) != "{}"){
+        //             if($(this).attr("data-id")){
+        //                 bgmsg['id']=$(this).attr("data-id");
+        //                 bgmsgs.push(bgmsg);
+        //             }else{
+        //                 bgmsgs.push(bgmsg);
+        //             }
+        //         }else{
+        //             return false;
+        //         }
+        //     });
+        //
+        //     if(JSON.stringify(bgmsgs) != "{}"){
+        //         data.bgmsgs = bgmsgs;
+        //     }
+        //     // if(name && industry && department && school && major &&education){
+        //     //     $.ajax({
+        //     //         url:"/index.php?m=return&a=add",
+        //     //         type:"post",
+        //     //         async:false,
+        //     //         dataType:"json",
+        //     //         data:data,
+        //     //         success:function (success) {
+        //     //             if(success.status){
+        //     //                 alert_crm("提交成功！");
+        //     //                 setTimeout(function () {
+        //     //                     window.location.href="/index.php?m=background&a=index";
+        //     //                 },1000)
+        //     //             }
+        //     //         },
+        //     //         error:function (error) {
+        //     //             alert_crm("提交失败！");
+        //     //         }
+        //     //     });
+        //     // }
+        // });
+        $(document).on("click",".btnclosee",function (event) {
+            var width=$("#right-sidebar-log").width();
+            if($("#right-sidebar-log").css('right') == '0px'){
+                $("#right-sidebar-log").animate({right:'-'+width+'px'}, 400);
+            }
+            $("#linetoggle").remove();
+        })
+
+        $(".jCitySelector").loadCitySelector();
+
+        $('#save_submit').prop('disabled',false);
+        /*form表单验证*/
+        $("#form").validate({
+            submitHandler:function(form){
+                $('#save_submit').off().on("click",function(){
+                    var type = $("#type").val().trim();
+                    if(type == 1){
+                        var qcs = new Array();
+                        $('.qc').each(function () {
+                            var qc = new Array();
+                            $(this).find('input').each(function () {
+                                // var attr = $(this).attr('data-name');
+                                var qcs = $(this).val();
+                                qc.push(qcs);
+                            })
+                            qcs.push(qc);
+                        });
+                        var customer = $("#name option:selected").text().trim();
+                        var contracttitle = $("#industry").val().trim();
+                        var total =$("#department").val().trim();
+                        var signtime = $("#school").val().trim();
+                        var customer_id = $('#name').val().trim();
+                        $.ajax({
+                            url:"/index.php?m=return&a=addd",
+                            type:"post",
+                            async:false,
+                            data:{
+                                'customer':customer,
+                                'contracttitle':contracttitle,
+                                'total':total,
+                                'signtime':signtime,
+                                'peroid':qcs,
+                                'customer_id':customer_id,
+                            },
+                            success:function (data) {
+                                setTimeout(function(){
+                                    window.location.href="/index.php?m=return&a=index";
+                                },500)
+                            }
+                        });
+                    }else if (type == 2){
+                        console.log(2);
+                        var paytime = $("#paytime").val().trim();
+                        var paymoney = $("#paymoney").val().trim();
+                        var customer1 = $("#customer").val().trim();
+                        var contracttitle1 = $("#contracttitle").val().trim();
+                        var paymethod = $("#paymethod").val().trim();
+                        var paytype = $("#paytype").val().trim();
+                        var receiver = $("#receiver").val().trim();
+                        var remark = $("#remark").val().trim();
+                        $.ajax({
+                                url:"{:U('return/addcord')}",
+                                type:"post",
+                                async:false,
+                                data:{
+                                    'paytime':paytime,
+                                    'paymoney':paymoney,
+                                    'customer':customer1,
+                                    'contracttitle':contracttitle1,
+                                    'paymethod':paymethod,
+                                    'paytype':paytype,
+                                    'receiver':receiver,
+                                    'remark':remark
+                                },
+                                success:function (data) {
+                                    setTimeout(function () {
+                                        window.location.href = "/index.php?m=return&a=backrecord";
+                                    })
+                                },dataType:'json'
+                            }
+                        );
+                    }
+
+                });
+
+            }
+        });
+
+        $("#uploadresume").on("change",function () {
+            var dataform = new FormData();
+            dataform.append("file",$('#uploadresume')[0].files[0]);
+//            dataform.append("resume",$('#uploadresume')[0].files[0]);
+//            dataform.append("secret_key","LR1snHUsXWzLHehzcZRbk9aENhZ0Nk0000047aff");
+
+            $.ajax({
+//                url:"https://api.youyun.com/v1/resume",
+                url:"/index.php?m=parse&a=index",
+                type:"post",
+                data:dataform,
+                processData:false,
+                contentType:false,
+                success:function(data){
+                    console.log(data);
+                    if(data){
+//                        location = "/index.php?m=product&a=edit&id="+data;
+                    }
+//                    var content=JSON.parse(data);
+//                    //内容解析显示在页面中
+//                    $("#name").val(content.name);
+//                    var sex=content.sex;
+//                    if(sex=="女"){
+//                        $("input[name=sex]").eq(1).prop("checked","checked");
+//                    }
+//                    $("#telphone").val(content.telphone);
+//                    $("#birthday").val(content.birthday);
+////                    $("#dqs").val(content.living);
+//                    $("#email").val(content.email);
+//                    $("#curSalary").val(content.wage_current);
+//                    $("input[name=url]").val(content.url);
+//                    $("input[data-selector=dqs]").attr("value",content.living);
+//                    $("input[data-selector=industry]").attr("value",content.hy);
+//                    $("input[data-selector=job_class]").attr("value",content.job_classid);
+////                    $("#dqs").val(content.living);
+////                    $("input[data-selector=dqs]").val(content.living);
+////                    $("input[data-selector=wantdqs]").val(wantdqs);
+//                    $("#wantdqs").val(content.wage_current);
+////                    lieselect();
+//                    var edu=content.edu;
+//                    $("#education option").each(function () {
+//                        if(edu==$(this).attr("value")){
+//                            $(this).attr("selected",true);
+//                        }
+//                    })
+//
+//                    var worksdata = content.workExp;
+//                    var edudata = content.eduExps;
+//                    var prodata = content.proExp;
+//                    if(worksdata){
+//                        $(".workExp .panel-body3").remove();
+//                        $.each(worksdata,function(i,v){
+//                            addWork(v);
+//                        });
+//                    }
+//
+//                    if(edudata){
+//                        $(".eduExp .addedu").hide();
+//                        $.each(edudata,function(i,v){
+//                            addEdu(v);
+//                        });
+//                        $("#degree option").each(function () {
+//                            if($(this).parent().attr("data-value")==$(this).val()){
+//                                $(this).attr("selected","selected");
+//                            }
+//                        })
+//                    }
+//
+//                    if(prodata){
+//                        $(".projectExp .addpro").hide();
+//                        $.each(prodata,function(i,v){
+//                            addPro(v);
+//                        });
+//                    }
+
+                    //出现右边的滑框
+//                    if($("#right-sidebar-log").css('right') != '0px'){
+//                        $("#right-sidebar-log").animate({right:'0px'}, 600);
+//                        $("#right-sidebar-log").css("width","60%");
+//                    }
+//                    $('#sidebar-container').html("<div class='btn btn-primary btnclosee'>关闭</div><textarea class='resume_area'>"+content.content+"</textarea>");
+//                    if($("#linetoggle").length>0){
+//                        return
+//                    }else{
+//                        $('#sidebar-container').before("<div id='linetoggle'><div class='btn_ico'></div></div>");
+//                    }
+                },
+                error:function(e){
+                    alert("错误！！");
+//                    window.clearInterval(timer);
+                }
+            });
+        })
+    });
+
+    $(function () {
+        $(document).on('click','.textdialog',function () {
+            $('#dialog-resume').dialog('open');
+        });
+
+        $('#business_name').click(function () {
+            $('#dialog-business').dialog('open');
+            $('#dialog-business').load("{:U('business/listdialog')}");
+        });
+    })
+
+    $("#dialog-business").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 800,
+        height: 400,
+        close: function () {
+            $(this).html("");
+        },
+        buttons: {
+            "{:L('OK')}": function () {
+                var item = $('input:radio[name="business"]:checked').val();
+                var name = $('input:radio[name="business"]:checked').parent().next().html();
+                if(item){
+                    $('#business_id').val(item);
+                    $('#business_name').val(name);
+                }
+                $(this).dialog("close");
+            },
+            "{:L('CANCEL')}": function () {
+                $(this).dialog("close");
+            }
+        },
+        position:["center",100]
+    });
+
+    $("#dialog-resume").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 1100,
+        maxHeight: 500,
+        buttons: {
+            "确定": function () {
+
+                $.ajax({
+                    type:"post",
+                    url:"{:U('parse/parse_action')}",
+                    data:{
+                        content:$(".parse-content").val()
+                    },
+                    success:function(data){
+                        var content=JSON.parse(data);
+                        //内容解析显示在页面中
+                        $("#name").val(content.name);
+                        var sex=content.sex;
+                        if(sex=="女"){
+                            $("input[name=sex]").eq(1).prop("checked","checked");
+                        }
+                        $("#telphone").val(content.telphone);
+                        $("#birthday").val(content.birthday);
+                        $("input[name=url]").val(content.url);
+//                    $("#dqs").val(content.living);
+                        $("#email").val(content.email);
+                        $("#curSalary").val(content.wage_current);
+//                    $("#dqs").val(content.living);
+                        $("input[data-selector=dqs]").attr("value",content.living);
+                        $("input[data-selector=industry]").attr("value",content.hy);
+                        $("input[data-selector=job_class]").attr("value",content.job_classid);
+//                    $("input[data-selector=dqs]").attr("value",content.living);
+//                    $("input[data-selector=wantdqs]").val(wantdqs);
+//                        $("#wantdqs").val(content.wage_current);
+
+                        var edu=content.edu;
+                        $("#education option").each(function () {
+                            if(edu==$(this).attr("value")){
+                                $(this).attr("selected",true);
+                            }
+                        })
+                        var worksdata = content.workExp;
+                        var edudata = content.eduExps;
+                        var prodata = content.proExp;
+                        if(worksdata){
+                            $(".workExp .panel-body3").remove();
+                            $.each(worksdata,function(i,v){
+                                addWork(v);
+                            });
+                        }
+
+                        if(edudata){
+                            $(".eduExp .addedu").hide();
+                            $.each(edudata,function(i,v){
+                                addEdu(v);
+                            });
+                        }
+
+                        if(prodata){
+                            $(".projectExp .addpro").hide();
+                            $.each(prodata,function(i,v){
+                                addPro(v);
+                            });
+                        }
+
+                        //出现右边的滑框
+//                        if($("#right-sidebar-log").css('right') != '0px'){
+//                            $("#right-sidebar-log").animate({right:'0px'}, 600);
+//                            $("#right-sidebar-log").css("width","60%");
+//                        }
+//                        $('#sidebar-container').html("<div class='btn btn-primary btnclosee'>关闭</div><textarea class='resume_area'>"+content.content+"</textarea>");
+                        if($("#linetoggle").length>0){
+                            return
+                        }else{
+                            $('#sidebar-container').before("<div id='linetoggle'><div class='btn_ico'></div></div>");
+                        }
+                    }
+                })
+
+                //追加产品信息
+                $(".se_product_").each(function(){
+
+                });
+                $(this).dialog("close");
+            },
+            "取消": function () {
+                $(this).dialog("close");
+            }
+        },
+        position: ["center", 100],
+        close:function(){
+//            $(this).html('');
+        }
+    });
+
+
+
+    $(function () {
+        $("body").on("click",".deletebtn",function () {
+            var item=$(this).closest(".panel").find(".panel-body3");
+            if(item.length==1){
+                item.closest(".col-lg-9").find(".adddefault").show();
+                item.parent().remove();
+            }
+            $(this).closest(".panel-body3").remove();
+        })
+    })
+
+</script>
+
+
+<include file="Public:footer" />
+
+
+
+<div id="right-sidebar-log">
+    <!--the css for jquery.mCustomScrollbar-->
+    <link rel="stylesheet" href="__PUBLIC__/emoji/css/jquery.mCustomScrollbar.min.css"/>
+    <!--the css for this plugin-->
+    <link rel="stylesheet" href="__PUBLIC__/emoji/css/jquery.emoji.css"/>
+    <!--(Optional) the js for jquery.mCustomScrollbar's addon-->
+    <script src="__PUBLIC__/emoji/js/jquery.mousewheel-3.0.6.min.js"></script>
+    <!--the js for jquery.mCustomScrollbar-->
+    <script src="__PUBLIC__/emoji/js/jquery.mCustomScrollbar.min.js"></script>
+    <!--the js for this plugin-->
+    <script src="__PUBLIC__/emoji/js/jquery.emoji.js"></script>
+
+    <!--<div class="sidebar-container" id="sidebar-container">-->
+
+    <!--</div>-->
+</div>
+
+<style>
+
+    .sidebar-container ul.nav-tabs li a{
+        background: #fff !important;
+        color: #a7b1c2 !important;
+        font-weight: 600 !important;
+        padding: 14px 20px 14px !important;
+        border-right: none !important;
+    }
+    .sidebar-container nav{
+        display: none;
+    }
+    .sidebar-container #page-wrapper{
+        margin-left: 0px;
+    }
+    #sidebar-container{
+        box-shadow: rgb(187, 187, 187) -1px 10px 10px;
+        border: 2px solid rgb(238, 238, 238);
+    }
+
+    #right-sidebar-log{
+        width: 60%;
+        right: -60%;
+        background-color: #fff;
+        position: fixed;
+        top: 60px;
+        z-index: 1009;
+        bottom: 0;
+        box-shadow: -5px -5px 1px #ccc;
+    }
+
+</style>
+<script src="__PUBLIC__/resume_selector/common.21a64352.js"></script>
+<script src="__PUBLIC__/resume_selector/resume.search.910ebde0.js "></script>

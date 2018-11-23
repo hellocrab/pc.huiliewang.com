@@ -6,7 +6,6 @@
  * Date: 2018/10/12
  * Time: 15:11
  */
-
 class BackgroundAction extends Action
 {
     public function _initialize(){
@@ -14,48 +13,51 @@ class BackgroundAction extends Action
         $this->assign("title",$title);
     }
     public function index(){
-       /* if(I('get.ac')){
-            $this->output();
-        }*/
         $backGround = M('background');
         $delete['delete'] = 0 ;
-        $by = I('get.by');
         $search = I('get.search');
+        $this->assign('search',$search);
         $listrows = I('get.listrows')?I('get.listrows'):10;
         $field = 'education_add,update,remark,delete';
         $p = isset($_GET['p'])?$_GET['p']:1;
-        switch ($by){
-            case 'all':
-                $count = $backGround->order('s_name')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('s_name')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            case 'time':
-                $count = $backGround->order('date desc')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('date desc')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            case 'company':
-                $count = $backGround->order('s_name')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('s_name')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            case 'industry':
-                $count = $backGround->order('industry')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('industry')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-            default:
-                $count = $backGround->order('s_name')->field($field,true)->where($delete)->count();
-                $data = $backGround->order('s_name')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
-                break;
-        }
-        if($search){
-            $map['s_name'] = array('like',$search.'%');
-            $where['delete'] = 0;
-            $this->assign('search',$search);
-            $data = $backGround->order('s_name')->where($where)->where($map)->field($field,true)->select();
+        $type = isset($_GET['type'])?$_GET['type']:'all';
+        $count = $backGround->where($delete)->count();
+        if($search&&$type){
+            $backGroundMsg = M('background_msg');
+            switch ($type){
+                case 'all':
+                    $map['s_name'] = array('like','%'.$search.'%');
+                    break;
+                case 'time':
+                    $searchStart = strtotime($search);
+                    $searchEnd = date('Y-m-d H:i:s',strtotime("+1day",$searchStart));
+                    $searchEnd = strtotime($searchEnd);
+                    $map['date'] = array('between',array($searchStart,$searchEnd));
+                    break;
+                case 'company':
+                    $map['company_name'] = array('like','%'.$search.'%');
+                    $sIds = $backGroundMsg->where($map)->where($delete)->field('s_id')->select();
+                    foreach ($sIds as $k => $v){
+                        $sid[] = $v['s_id'];
+                    }
+                    unset($map);
+                    $map['Id'] = array("in",$sid);
+                    break;
+                case 'industry':
+                    $map['industry'] = array('like','%'.$search.'%');
+                    break;
+                default:
+                    $map['s_name'] = array('like','%'.$search.'%');
+                    break;
+            }
+            $data = $backGround->order('Id desc')->where($delete)->where($map)->field($field,true)->select();
+        }else{
+            $data = $backGround->order('Id desc')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
         }
         foreach ($data as $k => $val){
             $data[$k]['msg_id'] = json_decode($val['msg_id']);
         }
-        $this->assign('by',$by);
+        $this->assign('type',$type);
         $this->assign('data',$data);
         //分页设置
         import('@.ORG.Page');//导入分页类
@@ -124,7 +126,7 @@ class BackgroundAction extends Action
                 $ids = $backGroundMsg->where($sId)->field('id')->select();
                 $msg = array();
                 foreach ($ids as $k => $v){
-                   $val['msg'] = $v['id'];
+                    $val['msg'] = $v['id'];
                     array_push($msg,$val);
                 }
                 $where['Id'] = $sId['s_id'];
@@ -144,7 +146,7 @@ class BackgroundAction extends Action
             $where['s_id'] = $id;
             $where['delete'] = 0;
             $data = $backGround->where("Id =".$id)->find();
-            $msgList = $backGroundMsg->where($where)->select();
+            $msgList = $backGroundMsg->where($where)->order('Id')->select();
             $this->assign('id',$id);
             $this->assign('data',$data);
             $this->assign('msglist',$msgList);
@@ -161,45 +163,38 @@ class BackgroundAction extends Action
         $time = time();
         $backGround = M('background');
         $backGroundMsg = M('background_msg');
-        unset($data['bgmsgs']);
+        $status = 0;
         foreach ($bgmsgDatas as $k => $v){
-            if (count($v)>13){
-                $v['update'] = $time;
-                $msgId[] = $v['id'];//需要更新背调信息ID集合
-                $update[$k] = $v;
-            }//需要更新的背调信息
-            else{
-                $v['date'] = $time;
+            if($v['id']){
+                $msgMap['Id'] = $v['id'];
+                unset($v['id']);
+                $rUpdate = $backGroundMsg->where($msgMap)->setField($v);
+                if($rUpdate){
+                    $status++;
+                }
+            }else{
                 $v['s_id'] = $id;
-                $add[] = $v;
-            }//新增背调信息
-        }
-        if (count($add)>0){
-            $r3 = $backGroundMsg->addAll($add);//若存在新增背调信息则写入数据库
-        }
-        $map['Id'] = array('in',$msgId);
-        $date = $backGroundMsg->where($map)->field('id,date')->select();//获取录入日期
-        foreach ($update as $k => $v){
-            foreach ($date as $key => $val){
-                if ($val['id']=$v['id']){
-                    $update[$k]['date'] = (int)$val['date'];
+                $v['date'] = $time;
+                $rAdd = $backGroundMsg->add($v);
+                if($rAdd){
+                    $status++;
                 }
             }
-            $update[$k]['s_id'] = $id;
         }
-        $r1 = $backGroundMsg->where($map)->setField($delete);//删除更改前背调信息
-        $r2 = $backGroundMsg->addAll($update);//添加新的背调信息
-        //更新员工信息表背调字段
-        unset($where);
-        $where['s_id'] = $id;
-        $where['delete'] = 0;
-        $bdmsg = $backGroundMsg->where($where)->field('id')->select();
-        $data['update'] = $time;
-        $r4 = $backGround->where('Id ='.$id)->setField($data);
-        $this->updatemsg($bdmsg,$id);
-        if($r1||$r2||$r3||$bgmsgDatas==''||$r4){
+        $sIds = $backGroundMsg->where(array('s_id'=>$id,'delete'=>'0'))->field('Id')->select();
+        foreach ($sIds as $k => $v){
+            $msgId[]=array('msg'=>$v['Id']);
+        }
+        $msgId = json_encode($msgId);
+        $data['msg_id'] = $msgId;
+        $rBg = $backGround->where(array('Id'=>$id))->setField($data);
+        if($rBg){
+            $status++;
+        }
+        if($status>0){
             echo '{"status":"true"}';
-        }else{
+        }
+        else{
             echo '{"status":"false"}';
         }
     }
@@ -265,19 +260,24 @@ class BackgroundAction extends Action
         $sheet = $objPHPExcelReader->getSheet(0);        // 读取第一个工作表(编号从 0 开始)
         $highestRow = $sheet->getHighestRow();           // 取得总行数
         $highestColumn = $sheet->getHighestColumn();     // 取得总列数
-        $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM', 'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ', 'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM', 'BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ');
-        //读取员工基本信息
-        $res_arr = array();
-        for ($row = 5; $row <= $highestRow; $row++) {
-            $row_arr = array();
-            for ($column = 0; $arr[$column] != 'AG'; $column++) {
-                $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
-                $row_arr[] = $val;
-            }
+        if($highestColumn=="AF"){
+            $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM', 'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ', 'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM', 'BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ');
+            //读取员工基本信息
+            $res_arr = array();
+            for ($row = 5; $row <= $highestRow; $row++) {
+                $row_arr = array();
+                for ($column = 0; $arr[$column] != 'AG'; $column++) {
+                    $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
+                    $row_arr[] = $val;
+                }
 
-            $res_arr[] = $row_arr;
+                $res_arr[] = $row_arr;
+            }
+            return $res_arr;
+        }else{
+            return "false";
         }
-        return $res_arr;
+
     }
     function upload(){
         $time = time();
@@ -290,109 +290,139 @@ class BackgroundAction extends Action
             $complete_path = time().".".$type;
             move_uploaded_file($file['tmp_name'][0],$upload_path_name);
             $data = $this->excelToArray($complete_path);
-            //数据拆分取得$back,$msg
-            foreach ($data as $key => $val){
-                foreach ($val as $k => $v){
-                    if($k<6){
-                        $backArr[] = $v;
-                    }elseif($k<19){
-                        $msgArrList1[] = $v;
-                    }elseif($k<32){
-                        $msgArrList2[] = $v;
+            if($data=='false'){
+                echo '{"type":"false"}';
+            }else{
+                //数据拆分取得$back,$msg
+                foreach ($data as $key => $val){
+                    foreach ($val as $k => $v){
+                        if($k<6){
+                            $backArr[] = $v;
+                        }elseif($k<19){
+                            $msgArrList1[] = $v;
+                        }elseif($k<32){
+                            $msgArrList2[] = $v;
+                        }
+                    }
+                    $backArr[] = $time;
+                    $msgArrList1[] = $time;
+                    $msgArrList2[] = $time;
+                    $msgArr = array($msgArrList1,$msgArrList2);
+                    $back[] = $backArr;
+                    $msg[] =$msgArr;
+                    unset($backArr);
+                    unset($msgArrList1);
+                    unset($msgArrList2);
+                    unset($msgArr);
+                }
+                //整理数据键值更名为字段名存入background表的数据为 $backData
+                $backGroundName = array('s_name','department','school','major','education','industry','date');
+                foreach ($back as $k => $v){
+                    foreach ($v as $key => $val){
+                        $backData[$k][$backGroundName[$key]] = $val;
                     }
                 }
-                $backArr[] = $time;
-                $msgArrList1[] = $time;
-                $msgArrList2[] = $time;
-                $msgArr = array($msgArrList1,$msgArrList2);
-                $back[] = $backArr;
-                $msg[] =$msgArr;
-                unset($backArr);
-                unset($msgArrList1);
-                unset($msgArrList2);
-                unset($msgArr);
-            }
-            //整理数据键值更名为字段名存入background表的数据为 $backData
-            $backGroundName = array('s_name','department','school','major','education','industry','date');
-            foreach ($back as $k => $v){
-                foreach ($v as $key => $val){
-                    $backData[$k][$backGroundName[$key]] = $val;
-                }
-            }
-            $backGround = M('background');
-            $backGroundMsg = M('background_msg');
-            $backGround->startTrans();
-            $result = $backGround->addAll($backData);//添加员工数据进入数据库
-            if(!$result){
-                $backGround->rollback();
-            }else{
-                $backGround->commit();
-            }
-            $backGround->rollback();
-            $count = count($backData);
-            //获取所添加员工的 id 集合
-            $sIdList = $backGround->field('Id')->order('id desc')->limit($count)->select();
-            //重排列$sIdList 顺序
-            for($i =count($sIdList)-1;$i>=0;$i--){
-                $sId[] = $sIdList[$i];
-            }
-            foreach ($msg as $k => $v){
-                foreach ($v as $key => $val){
-                    $val[] = $sId[$k]['Id'];
-                    $msgData[] = $val;
-                }
-            }
-            $backGroundMSgName= array('company_name','enter_time','out_time','position','witness','witness_add','tel','adress','work_performance','bz','reasons','health','salary','date','s_id');
-            //整理数据键值更名为字段名存入background_msg表的数据为 $backMsgData
-            foreach ($msgData as $k => $v){
-                foreach ($v as $key => $val){
-                    $list[$backGroundMSgName[$key]] = $val;
-                }
-                $backMsgData[] = $list;
-            }
-            $backGroundMsg->startTrans();
-            $result2 = $backGroundMsg->addAll($backMsgData);
-            if(!$result2){
-                $backGroundMsg->rollback();
-            }else{
-                $backGroundMsg->commit();
-            }
-
-            //更新background表 msg_id 字段
-            foreach ($sId as $k => $v){
-                $sId[$k] = $v['Id'];
-            }
-            $map['s_id'] = array('in',$sId);
-            $msgId = $backGroundMsg->where($map)->field('Id,s_id')->select();
-            for($i = 0;$i<(count($msgId)/2);$i++){
-                $idList1["msg_id"] = $msgId[$i*2]['Id'];
-                $idList2["msg_id"] = $msgId[$i*2+1]['Id'];
-                $msgIdData[$i] =array($idList1,$idList2);
-            }
-            foreach ($msgIdData as $k => $v){
-                $msgIdData[$k] = json_encode($v);
-            }
-            //以下代码待修改
-            $backGround->startTrans();
-            foreach ($sId as $k => $v){
-                $where['Id'] = $v;
-                $map['msg_id'] = $msgIdData[$k];
-                $result3 = $backGround->where($where)->setField($map);
-                if($result3){
+                $backGround = M('background');
+                $backGroundMsg = M('background_msg');
+                $backGround->startTrans();
+                $result = $backGround->addAll($backData);//添加员工数据进入数据库
+                if(!$result){
+                    $backGround->rollback();
+                }else{
                     $backGround->commit();
                 }
-                else{
+                $backGround->rollback();
+                $count = count($backData);
+                //获取所添加员工的 id 集合
+                $sIdList = $backGround->field('Id')->order('id desc')->limit($count)->select();
+                //重排列$sIdList 顺序
+                for($i =count($sIdList)-1;$i>=0;$i--){
+                    $sId[] = $sIdList[$i];
+                }
+                //筛选空数据
+                foreach ($msg as $k => $v){
+                    foreach ($v as $key => $val){
+                        $msgCheckNull = 0;
+                        foreach ($val as $keys =>$vals){
+                            if($vals==null){
+                                $msgCheckNull++;
+                            }
+                        }
+                        if($msgCheckNull<13){
+                            $val[] = $sId[$k]['Id'];
+                            $msgData[] = $val;
+                        }
+                    }
+                }
+                $backGroundMSgName= array('company_name','enter_time','out_time','position','witness','witness_add','tel','adress','work_performance','bz','reasons','health','salary','date','s_id');
+                //整理数据键值更名为字段名存入background_msg表的数据为 $backMsgData
+                foreach ($msgData as $k => $v){
+                    foreach ($v as $key => $val){
+                        $list[$backGroundMSgName[$key]] = $val;
+                    }
+                    $backMsgData[] = $list;
+                }
+
+                $backGroundMsg->startTrans();
+                $result2 = $backGroundMsg->addAll($backMsgData);
+                if(!$result2){
+                    $backGroundMsg->rollback();
+                }else{
+                    $backGroundMsg->commit();
+                }
+                //更新background表 msg_id 字段
+                foreach ($sId as $k => $v){
+                    $sId[$k] = $v['Id'];
+                }
+                $map['s_id'] = array('in',$sId);
+                $msgId = $backGroundMsg->where($map)->field('Id,s_id')->select();
+                /*for($i = 0;$i<(count($msgId)/2);$i++){
+                    $idList1["msg_id"] = $msgId[$i*2]['Id'];
+                    $idList2["msg_id"] = $msgId[$i*2+1]['Id'];
+                    $msgIdData[$i] =array($idList1,$idList2);
+                }*/
+                foreach ($msgId as $k =>$v){
+                    foreach ($msgId as $key => $val){
+                        if($v['s_id']==$val['s_id']&&$v['Id ']!=$val['Id']){
+                            unset($msgId[$key]);
+                            $msgId1['msg_id']=$v['Id'];
+                            $msgId2['msg_id']=$val['Id'];
+                            if($msgId1!=$msgId2){
+                                $msgIdData[$val['s_id']] = json_encode(array($msgId1,$msgId2));
+                            }else{
+                                $msgIdData[$val['s_id']] = json_encode($msgId1);
+                            }
+                        }
+                    }
+                }
+                //以下代码待修改
+                $backGround->startTrans();
+                $backGroundCheck = 0;
+                foreach ($msgIdData as $k=>$v){
+                    $where['Id'] = $k;
+                    unset($map);
+                    $map['msg_id'] = $msgIdData[$k];
+                    $result3 = $backGround->where($where)->setField($map);
+                    if(!$result3){
+                        $backGroundCheck++;
+                    }
+                }
+                if($backGroundCheck>0){
                     $backGround->rollback();
+                    echo '{"type":"false"}';
+                }else{
+                    $backGround->commit();
+                    echo '{"type":"success"}';
                 }
             }
         }
     }
-    function readyOutput(){
+    function readyOutPut(){
         $get = I("get.ids");
+        $by  = 'all';
         if($get){
-            $this->output($get);
+            $this->output($get,$by);
         }
-
     }
     //word 导出
     function readyOutPutt(){
@@ -403,13 +433,15 @@ class BackgroundAction extends Action
         //取出当前id的所有信息
         $get = I("get.ids");
         $userId = intval($get);
-        $background = M('external_background')->where(array('Id'=>$userId))->select();
-        $edu = M('external_background_edu')->where(array('cid'=>$userId))->select();
-        $qc = M('external_background_qc')->where(array('cid'=>$userId))->select();
 
+        $background = M('external_background')->where(array('Id'=>$userId))->select();
+        $edu = M('external_background_edu')->where(array('c_id'=>$userId))->select();
+        $qc = M('external_background_qc')->where(array('c_id'=>$userId))->select();
         $work = M('external_background_work')->where(array('c_id'=>$userId))->select();
-        $work_id = M('external_background_work')->where(array('c_id'=>$userId))->getField('Id');
-        $witness = M('external_background_witness')->where(array('w_id'=>intval($work_id)))->select();
+
+        foreach ($work as $k => $v){
+            $witness[$k] = M('external_background_witness')->where(array('w_id'=>intval($v['Id'])))->select();
+        }
 
         //Word文档样式的导出
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
@@ -473,7 +505,7 @@ class BackgroundAction extends Action
         $table->addRow();
         $table->addCell(2500)->addText('身份信息核实',array('宋体'=>true,'size'=>14));
         $table->addCell(6500);
-        $table->addRow();
+        $table->addRow(); 
         $table->addCell(2500)->addText('学历信息核实',array('宋体'=>true,'size'=>14));
         $table->addCell(6500);
         $table->addRow();
@@ -540,7 +572,7 @@ class BackgroundAction extends Action
         $table->addCell(3600)->addText('核实结果',array('宋体'=>true,'size'=>15));
         $table->addRow();
         $table->addCell(1800)->addText('证书名称',array('宋体'=>true,'size'=>15));
-        $table->addCell(3600);
+        $table->addCell(3600)->addText($qc[0]['qc_type'],array('宋体'=>true,'size'=>15));
         $table->addCell(3600);
         $table->addRow();
         $table->addCell(1800)->addText('证书号码',array('宋体'=>true,'size'=>15));
@@ -570,37 +602,37 @@ class BackgroundAction extends Action
         $table->addCell(6500,array('gridSpan'=>4))->addText($work[0]['position'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('1.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['witness'].'/'.$witness[0]['position'],array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][0]['witness'].'/'.$witness[0][0]['position'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['relationship'],array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][0]['relationship'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['method'],array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][0]['method'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['tel'],array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][0]['tel'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('被调查者在职期间的工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['performance'],array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][0]['performance'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('是否有不良记录:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0]['badrecord'],array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][0]['badrecord'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('2.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1]['witness'].'/'.$witness[0]['position'],array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][1]['witness'].'/'.$witness[0][1]['position'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText('人力资源',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][1]['relationship'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][1]['method'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][1]['tel'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][1]['performance'],array('宋体'=>true,'size'=>14));
         //第四页
         $section->addPageBreak();
         $section->addTextBreak();
@@ -608,22 +640,28 @@ class BackgroundAction extends Action
         $table = $section->addTable($spanTableStyleName);
         $table->addRow();
         $table->addCell(2500)->addText('离职原因:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][1]['reason'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('是否有培训协议:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][1]['train'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('是否有竞业协议:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][1]['compete'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('3.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
-        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2]['witness'].'/'.$witness[0]['position'],array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][2]['witness'].'/'.$witness[0][2]['position'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText('下级',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][2]['relationship'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][2]['method'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][2]['tel'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[0][2]['performance'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('业绩及团队管理能力:',array('宋体'=>true,'size'=>14));
         $table->addCell(6500,array('gridSpan'=>4));
@@ -636,37 +674,37 @@ class BackgroundAction extends Action
         $table->addCell(9000,array('gridSpan'=>5))->addText('调查企业二',array('宋体'=>true,'bold'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('公司名称:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($work[1]['company'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('在职时间:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($work[1]['enter_time'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('职位:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($work[1]['position'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('1.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][0]['witness'].'/'.$witness[1][0]['position'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText('上级',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][0]['relationship'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][0]['method'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][0]['tel'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('被调查者在职期间的工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][0]['performance'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('是否有不良记录:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][0]['badrecord'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('2.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][1]['witness'].'/'.$witness[1][1]['position'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText('人力资源',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][1]['relationship'],array('宋体'=>true,'size'=>14));
 
         //第五页
         $section->addPageBreak();
@@ -675,32 +713,38 @@ class BackgroundAction extends Action
         $table = $section->addTable($spanTableStyleName);
         $table->addRow();
         $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][1]['method'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][1]['tel'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][1]['performance'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('离职原因:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][1]['reason'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('是否有培训协议:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][1]['train'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('是否有竞业协议:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][1]['compete'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('3.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][2]['witness'].'/'.$witness[1][2]['position'],array('宋体'=>true,'size'=>14));
         $table = $section->addTable($spanTableStyleName);
         $table->addRow();
         $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText('下级',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][2]['relationship'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][2]['method'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][2]['tel'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[1][2]['performance'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('业绩及团队管理能力:',array('宋体'=>true,'size'=>14));
         $table->addCell(6500,array('gridSpan'=>4));
@@ -714,28 +758,28 @@ class BackgroundAction extends Action
         $table->addCell(9000,array('gridSpan'=>5))->addText('调查企业三',array('宋体'=>true,'bold'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('公司名称:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($work[2]['company'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('在职时间:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($work[2]['enter_time'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('职位:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($work[2]['position'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('1.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][0]['witness'].'/'.$witness[2][0]['position'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText('上级',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][0]['relationship'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][0]['method'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][0]['tel'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('被调查者在职期间的工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][0]['performance'],array('宋体'=>true,'size'=>14));
         //第六页
         $section->addPageBreak();
         $section->addTextBreak();
@@ -743,47 +787,53 @@ class BackgroundAction extends Action
         $table = $section->addTable($spanTableStyleName);
         $table->addRow();
         $table->addCell(2500)->addText('是否有不良记录:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][0]['badrecord'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('2.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][1]['witness'].'/'.$witness[2][1]['position'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText('人力资源',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][1]['relationship'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][1]['method'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][1]['tel'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][1]['performance'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('离职原因:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][1]['reson'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('是否有培训协议:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][1]['train'],array('宋体'=>true,'size'=>14));
+        $table->addRow();
+        $table->addCell(2500)->addText('是否有竞业协议:',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][0]['compete'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('3.证明人姓名/职位:',array('宋体'=>true,'size'=>13,'bold'=>true));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][2]['witness'].'/'.$witness[2][2]['position'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('与被调查人关系:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4))->addText('下级',array('宋体'=>true,'size'=>14));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][2]['relationship'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('调查方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][2]['method'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('证明人联系方式:',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][2]['tel'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('被调查者在职期间工作情况(根据证明人口述提供):',array('宋体'=>true,'size'=>14));
-        $table->addCell(6500,array('gridSpan'=>4));
+        $table->addCell(6500,array('gridSpan'=>4))->addText($witness[2][2]['performance'],array('宋体'=>true,'size'=>14));
         $table->addRow();
         $table->addCell(2500)->addText('业绩及团队管理能力:',array('宋体'=>true,'size'=>14));
         $table->addCell(6500,array('gridSpan'=>4));
 
         //缓冲输出
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord,'Word2007');
-        $fileName = "背景调查报表".date("YmdHis");
+        $fileName = "背景调查报表".date("Ymd");
         header("Content-type: application/vnd.ms-word");
         header("Content-Disposition:attachment;filename=".$fileName.".docx");
         header('Cache-Control: max-age=0');
@@ -832,20 +882,36 @@ class BackgroundAction extends Action
         header('Content-Disposition:attachment;filename="'.$filename.'.xls"');
         header("Content-Transfer-Encoding:binary");
         //$objWriter1 = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-       /* header("Content-Type: application/vnd.ms-excel;");
-        header("Content-Disposition:attachment;filename=背调信息".date('Y-m-d',mktime()).".xls");
-        header("Pragma:no-cache");
-        header("Expires:0");*/
+        /* header("Content-Type: application/vnd.ms-excel;");
+         header("Content-Disposition:attachment;filename=背调信息".date('Y-m-d',mktime()).".xls");
+         header("Pragma:no-cache");
+         header("Expires:0");*/
         $objWriter->save('php://output');
     }
-    function output($data){
-
+    function output($data,$by){
+        switch ($by){
+            case 'all':
+                $order = 'Id desc';
+                break;
+            case 'time':
+                $order = 'Id';
+                break;
+            case 'company':
+                $order = 'Id';
+                break;
+            case 'industry':
+                $order = 'Id';
+                break;
+            default:
+                $order = 'Id';
+                break;
+        }
         $map['Id'] = array('in',explode(',',$data));
         $map2['s_id'] = $map['Id'];
         $backGround = M('background');
-        $list1 = $backGround->where($map)->order('Id')->field('msg_id,remark,delete,update,date,education_add',true)->select();
+        $list1 = $backGround->where($map)->order($order)->field('msg_id,remark,delete,update,date,education_add',true)->select();
         $backGroundMsg = M('background_msg');
-        $list2 = $backGroundMsg->where($map2)->order('s_id')->select();
+        $list2 = $backGroundMsg->where($map2)->select();
         foreach ($list1 as $k => $v){
             foreach ($list2 as $key =>$val){
                 if($val['s_id']==$v['Id']){
@@ -859,23 +925,29 @@ class BackgroundAction extends Action
         for($i=0;$i<count($list);$i++){
             foreach ($listKey as $key => $val){
                 if($key<6){
-                   foreach ($list[$i] as $k => $v){
-                       if($k=='s_name'||$k=='department'||$k=='school'||$k=='major'||$k=='education'||$k=='industry'){
-                           $outList[$i][$k] = $v;
-                       }elseif($k=='msg'){
-                           foreach ($v as $K => $V){
-                               foreach ($V as $KEY => $VAL){
-                                   if($KEY=='company_name'||$KEY=='enter_time'||$KEY=='out_time'||$KEY=='position'||$KEY=='witness'||$KEY=='witness_add'||$KEY=='tel'||$KEY=='adress'||$KEY=='work_performance'||$KEY=='bz'||$KEY=='reasons'||$KEY=='health'||$KEY=='salary'){
+                    foreach ($list[$i] as $k => $v){
+                        if($k=='s_name'||$k=='department'||$k=='school'||$k=='major'||$k=='education'||$k=='industry'){
+                            $outList[$i][$k] = $v;
+                        }elseif($k=='msg'){
+                            foreach ($v as $K => $V){
+                                foreach ($V as $KEY => $VAL){
+                                    if($KEY=='company_name'||$KEY=='enter_time'||$KEY=='out_time'||$KEY=='position'||$KEY=='witness'||$KEY=='witness_add'||$KEY=='tel'||$KEY=='adress'||$KEY=='work_performance'||$KEY=='bz'||$KEY=='reasons'||$KEY=='health'||$KEY=='salary'){
                                         $outList[$i][$KEY."".$K] =$VAL;
-                                   }
-                               }
-                           }
-                       }
-                   }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-        $this->exportExcel($outList,'backGroundMsg',$listKey);
+        $datetime = date("Ymd ", time());
+        if(count($outList)<2){
+            $excelName = $outList[0]['s_name'].''.$datetime;
+        }else{
+            $excelName = '对内背调'.$datetime;
+        }
+        $this->exportExcel($outList,$excelName,$listKey);
         session('export_status', 0);
     }
     function index_external(){
@@ -884,9 +956,17 @@ class BackgroundAction extends Action
         $p = isset($_GET['p'])?$_GET['p']:1;
         $field = 'name,jobs,tocompany,industry,bz,Id';
         $search = I('get.search');
-        $by = I('get.by');
-        if($search!=''){
-            $where['name']=array('like',$search.'%');
+        $type = I('get.type')==null?'name':I('get.type');
+        $typeAllow=array('name','tocompany','industry','jobs');
+        $typeN = 0;
+        foreach($typeAllow as $k =>$v){
+            if($v==$type){
+                $typeN++;
+            }
+        }
+        $by = 'Id desc';
+        if($search!=''&&$typeN>0){
+            $where[$type]=array('like','%'.$search.'%');
             $count = $exBackground->where($where)->count();
             $data = $exBackground->where($where)->field($field)->page($p.','.$listrows)->order($by)->select();
             $this->assign('data',$data);
@@ -898,66 +978,71 @@ class BackgroundAction extends Action
         $this->assign('by',$by);
         //分页设置
         import('@.ORG.Page');//导入分页类
-            $Page = new Page($count,$listrows);
+        $Page = new Page($count,$listrows);
         $data = $Page->show();
         $this->assign('page',$data);
         $this->assign('listrows',$listrows);
+        $this->assign('type',$type);
         $this->assign('search',$search);
         $this->display();
     }
     //对外背调通用删除
     function ex_delete(){
-    if(IS_POST){
-        $id = I('post.');
-        $mapId['Id'] = array('in',$id['Id']);
-        $exBg = M('external_background');
-        $exBg->startTrans();
-        $bg = $exBg->where($mapId)->delete();
+        if(IS_POST){
+            $id = I('post.');
+            $mapId['Id'] = array('in',$id['Id']);
+            $exBg = M('external_background');
+            $exBg->startTrans();
+            $bg = $exBg->where($mapId)->delete();
 
-        $mapCid['c_id'] = array('in',$id['Id']);
-        $exEdu = M('external_background_edu');
-        $exEdu->startTrans();
-        $edu = $exEdu->where($mapCid)->delete();
+            $mapCid['c_id'] = array('in',$id['Id']);
+            $exEdu = M('external_background_edu');
+            $exEdu->startTrans();
+            $edu = $exEdu->where($mapCid)->delete();
 
-        $exQc = M('external_background_qc');
-        $exQc->startTrans();
-        $qc =$exQc->where($mapCid)->delete();
+            $exQc = M('external_background_qc');
+            $exQc->startTrans();
+            $qc =$exQc->where($mapCid)->delete();
 
-        $exWork =M('external_background_work');
-        $exWork->startTrans();
-        $work = $exWork->where($mapCid)->select();
-        $workResult = $exWork->where($mapCid)->delete();
+            $exWork =M('external_background_work');
+            $exWork->startTrans();
+            $work = $exWork->where($mapCid)->select();
+            $workResult = $exWork->where($mapCid)->delete();
 
-        foreach ($work as $k =>$v){
-            $wId[] = $v['Id'];
-        }
-        $mapWid['w_id'] = array('in',$wId);
-        $exWitness = M('external_background_witness');
-        $exWitness->startTrans();
-        $witness = $exWitness->where($mapWid)->delete();
-        if($bg||($edu&&$qc&&$workResult&&$witness)){
-            $exBg->commit();
-            $exEdu->commit();
-            $exQc->commit();
-            $exWork->commit();
-            $exWitness->commit();
-            echo '{"status":"1"}';
-        }else{
-            $exBg->rollback();
-            $exEdu->rollback();
-            $exQc->rollback();
-            $exWork->rollback();
-            $exWitness->rollback();
-            echo '{"status":"0"}';
+            foreach ($work as $k =>$v){
+                $wId[] = $v['Id'];
+            }
+            $mapWid['w_id'] = array('in',$wId);
+            $exWitness = M('external_background_witness');
+            $exWitness->startTrans();
+            $witness = $exWitness->where($mapWid)->delete();
+            if($bg||($edu&&$qc&&$workResult&&$witness)){
+                $exBg->commit();
+                $exEdu->commit();
+                $exQc->commit();
+                $exWork->commit();
+                $exWitness->commit();
+                echo '{"status":"1"}';
+            }else{
+                $exBg->rollback();
+                $exEdu->rollback();
+                $exQc->rollback();
+                $exWork->rollback();
+                $exWitness->rollback();
+                echo '{"status":"0"}';
+            }
         }
     }
-}
+    function status(){
+        $status = I('get.status');
+        echo $status;
+    }
     function hxr_detail(){
         if(IS_POST){
             $id = I('post.');
             if((int)$id['Id']){
                 $exBackground = M('external_background');
-                $bg = $exBackground->field('name,jobs,tocompany,industry,id_pic_src,bz,idnumber')->where($id)->find();
+                $bg = $exBackground->field('Id,name,jobs,tocompany,industry,id_pic_src,bz,idnumber')->where($id)->find();
                 $exBackgroundEdu = M('external_background_edu');
                 $edu = $exBackgroundEdu->where('c_id ='.$id['Id'])->field('c_id',true)->select();
                 $exBackgroundQc = M('external_background_qc');
@@ -966,7 +1051,7 @@ class BackgroundAction extends Action
                 $work = $exBackgroundWork->where('c_id ='.$id['Id'])->field('c_id',true)->select();
                 $exBackgroundWitness = M('external_background_witness');
                 foreach ($work as $k => $v){
-                    $witness = $exBackgroundWitness->where('w_id ='.$v['Id'])->field('Id',true)->select();
+                    $witness = $exBackgroundWitness->where('w_id ='.$v['Id'])->select();
                     $work[$k]['witness'] = $witness;
                 }
                 $data['bg'] = $bg;
@@ -1056,6 +1141,7 @@ class BackgroundAction extends Action
                     }
                 }
             }
+
             //写入数据库
             $exBackground = M('external_background');
             $exBackgroundEdu = M('external_background_edu');
@@ -1108,8 +1194,8 @@ class BackgroundAction extends Action
                     }else{
                         $exBackgroundWork->rollback();
                     }
-                    $this->ajaxReturn('true');
                 }
+                $this->ajaxReturn('true');
             }else{
                 $exBackground->rollback();
             }
@@ -1131,96 +1217,115 @@ class BackgroundAction extends Action
             $complete_path = time().".".$type;
             move_uploaded_file($file['tmp_name'][0],$upload_path_name);
             $data = $this->ex_excelToArray($complete_path);
-            //dump($data);
-            //数据拆分
-            //ex_background表
-            foreach ($data as $key => $val){
-                foreach ($val as $k => $v){
-                    if($k<=6){
-                        $bg[$key][] = $v;
-                    }elseif ($k>6&&$k<=13){
-                        $edu[$key*2][] = $v;
-                    }elseif($k>13&&$k<=20){
-                        $edu[$key*2+1][] = $v;
-                    }elseif ($k>20&&$k<=25){
-                        $qc[$key*2][] = $v;
-                    }elseif($k>25&&$k<=30){
-                        $qc[$key*2+1][] = $v;
-                    }elseif($k>30&&$k<=34){
-                        $work[$key*2][] = $v;
-                    }elseif($k>74&&$k<=78){
-                        $work[$key*2+1][] = $v;
-                    }elseif($k>34&&$k<=44){
-                        $witness[$key*8][] = $v;
-                    }elseif($k>44&&$k<=54){
-                        $witness[$key*8+1][] = $v;
-                    }elseif($k>54&&$k<=64){
-                        $witness[$key*8+2][] = $v;
+            if($data!='false'){
+                //数据拆分
+                //ex_background表
+                foreach ($data as $key => $val){
+                    foreach ($val as $k => $v){
+                        if($k<=6){
+                            $bg[$key][] = $v;
+                        }elseif ($k>6&&$k<=13){
+                            $edu[$key*2][] = $v;
+                        }elseif($k>13&&$k<=20){
+                            $edu[$key*2+1][] = $v;
+                        }elseif ($k>20&&$k<=25){
+                            $qc[$key*2][] = $v;
+                        }elseif($k>25&&$k<=30){
+                            $qc[$key*2+1][] = $v;
+                        }elseif($k>30&&$k<=34){
+                            $work[$key*2][] = $v;
+                        }elseif($k>74&&$k<=78){
+                            $work[$key*2+1][] = $v;
+                        }elseif($k>34&&$k<=44){
+                            $witness[$key*8][] = $v;
+                        }elseif($k>44&&$k<=54){
+                            $witness[$key*8+1][] = $v;
+                        }elseif($k>54&&$k<=64){
+                            $witness[$key*8+2][] = $v;
+                        }
+                        elseif($k>64&&$k<=74){
+                            $witness[$key*8+3][] = $v;
+                        }
+                        elseif($k>78&&$k<=88){
+                            $witness[$key*8+4][] = $v;
+                        }
+                        elseif($k>88&&$k<=98){
+                            $witness[$key*8+5][] = $v;
+                        }
+                        elseif($k>98&&$k<=108){
+                            $witness[$key*8+6][] = $v;
+                        }elseif($k>108&&$k<=118){
+                            $witness[$key*8+7][] = $v;
+                        }
                     }
-                    elseif($k>64&&$k<=74){
-                        $witness[$key*8+3][] = $v;
-                    }
-                    elseif($k>78&&$k<=88){
-                        $witness[$key*8+4][] = $v;
-                    }
-                    elseif($k>88&&$k<=98){
-                        $witness[$key*8+5][] = $v;
-                    }
-                    elseif($k>98&&$k<=108){
-                        $witness[$key*8+6][] = $v;
-                    }elseif($k>108&&$k<=118){
-                        $witness[$key*8+7][] = $v;
+                }
+                $exBg = M('external_background');
+                $exBg->startTrans();
+                $bg = $this->data_keys_change($bg,'bg');
+                $edu =  $this->data_keys_change($edu,'edu');
+                $qc = $this->data_keys_change($qc,'qc');
+                $work = $this->data_keys_change($work,'work');
+                $witness = $this->data_keys_change($witness,'witness');
+                $exBgResult = $exBg->addAll($bg);
+                if(!$exBgResult){
+                    $exBg->rollback();
+                }else{
+                    $exBg->commit();
+                    $cIds = $exBg->field('Id')->order('Id desc')->limit(count($bg))->select();
+                    $cIds = $this->array_order_id($cIds);//升序排列cid
+                    $edu  = $this->ex_delete_null($this->data_add_id($edu,$cIds,2,'c_id'));
+                    $qc = $this->ex_delete_null($this->data_add_id($qc,$cIds,2,'c_id'));
+                    $work = $this->ex_delete_null($this->data_add_id($work,$cIds,2,'c_id'));
+                    $exEdu = M('external_background_edu');
+                    $exEdu->startTrans();
+                    $exEduResult = $exEdu->addAll($edu);
+                    $exQc = D('external_background_qc');
+                    $exQc->startTrans();
+                    $exQcResult = $exQc->addAll($qc);
+                    $exWork = M('external_background_work');
+                    $exWork->startTrans();
+                    $exWorkResult = $exWork->addAll($work);
+                    if(!$exEduResult&&!$exQcResult&&!$exWorkResult){
+                        $exEdu->rollback();
+                        $exQc->rollback();
+                        $exWork->rollback();
+                    }else{
+                        $exEdu->commit();
+                        $exQc->commit();
+                        $exWork->commit();
+                        $wIds = $exWork->order('Id desc')->limit(count($work))->field('Id')->select();
+                        $wIds = $this->array_order_id($wIds);
+                        $witness = $this->ex_delete_null($this->data_add_id($witness,$wIds,4,'w_id'));
+                        $exWitness = M('external_background_witness');
+                        $exWitnessResult = $exWitness->addAll($witness);
+                        if($exWitnessResult){
+                            $exWitness->commit();
+                            echo '{"type":"success"}';
+                        }else{
+                            $exWitness->rollback();
+                        }
                     }
                 }
             }
-            $exBg = M('external_background');
-            $exBg->startTrans();
-            $bg = $this->data_keys_change($bg,'bg');
-            $edu =  $this->data_keys_change($edu,'edu');
-            $qc = $this->data_keys_change($qc,'qc');
-            $work = $this->data_keys_change($work,'work');
-            $witness = $this->data_keys_change($witness,'witness');
-
-            $exBgResult = $exBg->addAll($bg);
-            if(!$exBgResult){
-                $exBg->rollback();
-            }else{
-                $exBg->commit();
-                $cIds = $exBg->field('Id')->order('Id desc')->limit(count($bg))->select();
-                $cIds = $this->array_order_id($cIds);//升序排列cid
-                $edu  = $this->data_add_id($edu,$cIds,2,'c_id');
-                $qc = $this->data_add_id($qc,$cIds,2,'c_id');
-                $work = $this->data_add_id($work,$cIds,2,'c_id');
-                $exEdu = M('external_background_edu');
-                $exEdu->startTrans();
-                $exEduResult = $exEdu->addAll($edu);
-                $exQc = D('external_background_qc');
-                $exQc->startTrans();
-                $exQcResult = $exQc->addAll($qc);
-                $exWork = M('external_background_work');
-                $exWork->startTrans();
-                $exWorkResult = $exWork->addAll($work);
-                if(!$exEduResult&&!$exQcResult&&!$exWorkResult){
-                    $exEdu->rollback();
-                    $exQc->rollback();
-                    $exWork->rollback();
-                }else{
-                    $exEdu->commit();
-                    $exQc->commit();
-                    $exWork->commit();
-                    $wIds = $exWork->order('Id desc')->limit(count($work))->field('Id')->select();
-                    $wIds = $this->array_order_id($wIds);
-                    $witness = $this->data_add_id($witness,$wIds,4,'w_id');
-                    $exWitness = M('external_background_witness');
-                    $exWitnessResult = $exWitness->addAll($witness);
-                    if($exWitnessResult){
-                        $exWitness->commit();
-                    }else{
-                        $exWitness->rollback();
-                    }
-                }
+            else{
+                echo '{"type":"false"}';
             }
         }
+    }
+    //删除为空数据
+    function ex_delete_null($data){
+        foreach ($data as $k => $v){
+            $n = 0;
+            foreach ($v as $key => $val){
+                if($val==null){
+                    $n++;
+                }
+            }
+            if($n==7||$n==4||$n==5||$n==10){
+                unset($data[$k]);
+            }
+        }
+        return $data;
     }
     function ex_excelToArray($name){
         require_once 'Base/Lib/Classes/PHPExcel/IOFactory.php';
@@ -1231,20 +1336,25 @@ class BackgroundAction extends Action
 
         $sheet = $objPHPExcelReader->getSheet(0);        // 读取第一个工作表(编号从 0 开始)
         $highestRow = $sheet->getHighestRow();           // 取得总行数
-        //$highestColumn = $sheet->getHighestColumn();     // 取得总列数
-        $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM', 'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ', 'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM', 'BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ','EA','EB','EC','ED','EE','EF','EG','EH','EI','EJ','EK','EL','EM','EN','EO','EP','EQ','ER','ES','ET','EU','EV','EW','EX','EY','EZ');
-        //读取员工基本信息
-        $res_arr = array();
-        for ($row = 3; $row <= $highestRow; $row++) {
-            $row_arr = array();
-            for ($column = 0; $arr[$column] != 'DP'; $column++) {
-                $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
-                $row_arr[] = $val;
-            }
+        $highestColumn = $sheet->getHighestColumn();     // 取得总列数
+        if($highestColumn=='DO'){
+            $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM', 'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ', 'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM', 'BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ','EA','EB','EC','ED','EE','EF','EG','EH','EI','EJ','EK','EL','EM','EN','EO','EP','EQ','ER','ES','ET','EU','EV','EW','EX','EY','EZ');
+            //读取员工基本信息
+            $res_arr = array();
+            for ($row = 3; $row <= $highestRow; $row++) {
+                $row_arr = array();
+                for ($column = 0; $arr[$column] != 'DP'; $column++) {
+                    $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
+                    $row_arr[] = $val;
+                }
 
-            $res_arr[] = $row_arr;
+                $res_arr[] = $row_arr;
+            }
+            return $res_arr;
+        }else{
+            echo 'false';
         }
-        return $res_arr;
+
     }
     function array_keys_change($keys,$data){
         foreach ($data as $key => $val){
@@ -1296,7 +1406,272 @@ class BackgroundAction extends Action
                 $data[$i*$count+$k][$type] =$ids[$i]['Id'];
             }
         }
+        foreach ($data as $key => $val){
+            $n = 0;
+            foreach ($val as $keys => $vals){
+                if($keys==$type){
+                    $n++;
+                }
+            }
+            if($n==0){
+                unset($data[$key]);
+            }
+        }
         return $data;
     }
+    //对外背调修改保存
+    function save_one(){
+        $data = I('post.');
+        switch ($data['type']){
+            case 'bg':
+                $exBackGround = M('external_background');
+                $map['name'] = $data['data'][0];
+                $map['idnumber'] = $data['data'][5];
+                $result = $exBackGround->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'edu':
+                $exBackGroundEdu = M('external_background_edu');
+                $keys  = array('school','edu_type','major','edu_num','msgbelong','enter_time','out_time');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k+1];
+                }
+                $result = $exBackGroundEdu->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'qc':
+                $exBackGroundQc = M('external_background_qc');
+                $keys = array('qc_type','qc_num','get_time','out_time','qc_source');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k+1];
+                }
+                $result = $exBackGroundQc->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'work':
+                $exBackGroundWork = M('external_background_work');
+                $keys = array('company','enter_time','out_time','position');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k];
+                }
+                $result = $exBackGroundWork->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+            case 'witness':
+                $exBackGroundWitness = M('external_background_witness');
+                $keys = array('witness','position','tel','relationship','method','performance','badrecord','reason','train','compete');
+                foreach ($keys as $k => $v){
+                    $map[$v]=$data['data'][$k];
+                }
+                $result = $exBackGroundWitness->where(array('Id'=>$data['Id']))->setField($map);
+                if($result){
+                    echo '1';
+                }else{
+                    echo '0';
+                }
+                break;
+        }
+    }
+    function edit_external(){
+        if(IS_POST){
+            $data = I('post.');
+            $id = I('get.Id');
+            //整理数据
+            $bgKey = ['Id','name','jobs','tocompany','industry','consultant','idnumber','bz'];
+            $bg = $this->keys_to_data($bgKey,explode(',',$data['bg']));
+            $eduKey = ['Id','school','school_add','edu_type','edu_type_add','major','major_add','enter_time','enter_time_add','out_time','out_time_add','edu_num','edu_num_add','msgbelong','msgbelong_add'];
+            $edu = $this->keys_to_data($eduKey,explode(',',$data['edu']));
+            $qcKey = ['Id','get_time','get_time_add','out_time','out_time_add','qc_type','qc_type_add','qc_source','qc_source_add','qc_num','qc_num_add'];
+            $qc = $this->keys_to_data($qcKey,explode(',',$data['qc']));
+            $workKey = ['Id','company','company_add','enter_time','enter_time_add','out_time','out_time_add','position','position_add','witness_count'];
+            $work = $this->keys_to_data($workKey,explode(',',$data['work']));
+            $witnessKey = ['Id','w_id','witness','position','tel','relationship','method','performance','badrecord','reason','train','compete'];
+            $witness = $this->keys_to_data($witnessKey,explode(',',$data['witness']));
+            //数据添加存入图片路径和上传图片
+            if(!empty($_FILES)){
+                $pics = $_FILES;
+                //移动所上传图片
+                $picName = array_keys($pics);
+                foreach ($picName as $key => $val){
+                    $type = end(explode('.',$pics[$val]['name']));
+                    $name = reset(explode('.',$pics[$val]['name']));
+                    if($val =="id"){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/idpic/".time()."_".$name.".".$type;
+                        $idPath = end(explode('/Uploads',$path));
+                        $bg[0]['id_pic_src'] = $idPath;
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }elseif(count(explode("edu",$val))>=2){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/edu/".time()."_".$name.".".$type;
+                        $arr['src'] = end(explode('/Uploads',$path));
+                        $arr['for'] = end(explode("edu",$val))==''?'0':end(explode("edu",$val));
+                        $eduPath[] = $arr;
+                        foreach ($eduPath as $k => $v){
+                            $edu[$v['for']]['edu_pic_src'] = $v['src'];
+                        }//对应数据存入图片地址
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }elseif (count(explode("qc",$val))>=2){
+                        $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/qc/".time()."_".$name.".".$type;
+                        $arr['src'] = end(explode('/Uploads',$path));
+                        $arr['for'] = end(explode("qc",$val))==''?'0':end(explode("qc",$val));
+                        $qcPath[] = $arr;
+                        foreach ($qcPath as $k => $v){
+                            $qc[$v['for']]['qc_pic_src'] = $v['src'];
+                        }//对应数据存入图片地址
+                        move_uploaded_file($pics[$val]['tmp_name'],$path);
+                    }
+                }
+            }
+            $externalBg = M('external_background');
+            $externalEdu = M('external_background_edu');
+            $externalQc = M('external_background_qc');
+            $externalWork = M('external_background_work');
+            $externalWitness = M('external_background_witness');
+            $result = 0;
+            $externalBg->where(array('Id'=>$bg[0]['Id']))->setField($bg[0])?$result++:false;
 
+            //新增数据与修改数据分别储存
+            foreach ($edu as $k =>$v){
+                if($v['Id']=='NaN'){
+                    unset($v['Id']);
+                    $v['c_id'] = $id;
+                    $eduAdd[] = $v;
+                }else{
+                    $externalEdu->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
+                }
+            }
+            $externalEdu->addAll($eduAdd)?$result++:false;
+            foreach ($qc as $k =>$v){
+                if($v['Id']=='NaN'){
+                    unset($v['Id']);
+                    $v['c_id'] = $id;
+                    $qcAdd[] = $v;
+                }else{
+                    $externalQc->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
+                }
+            }
+            $externalQc->addAll($qcAdd)?$result++:false;
+            foreach ($witness as $k =>$v){
+                if($v['Id']!='NaN'){
+                    $externalWitness->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
+                }
+                else{
+                    if($v['w_id']!='NaN'){
+                        $witnessAddWid[] = $v;
+                    }else{
+                        $witnessAdd[] = $v;
+                    }
+                }
+            }
+            $externalWitness->addAll($witnessAddWid)?$result++:false;
+            $wCount = 0;
+            foreach ($work as $k =>$v){
+                if($v['Id']=='NaN'){
+                    unset($v['Id']);
+                    unset($newData);
+                    $v['c_id'] = $id;
+                    $externalWork->add($v)?true:$result++;
+                    $wId = $externalWork->order('Id desc')->field('Id')->find();
+                    for($i=0;$i<$v['witness_count'];$i++){
+                        $witnessAdd[$wCount]['w_id'] = $wId['Id'];
+                        $newData[$i] = $witnessAdd[$wCount];
+                        $wCount++;
+                    }
+                    $externalWitness->addAll($newData)?$result++:false;
+                }else{
+                    $externalWork->where(array('Id'=>$v['Id']))->setField($v)?$result++:false;
+                }
+            }
+            if($result>0){
+                $this->ajaxReturn('success');
+            }
+            elseif ($result==0){
+                $this->ajaxReturn('none');
+            }
+            else{
+                $this->ajaxReturn($result);
+            }
+
+        }else{
+            $Id = I('get.Id')==''?'0':(int)I('get.Id');
+            $externalBg = M('external_background');
+            $bg = $externalBg->where(array('Id'=>$Id))->find();
+            $this->assign('bg',$bg);
+            $externalEdu = M('external_background_edu');
+            $edu  = $externalEdu->where(array('c_id'=>$Id))->select();
+            $this->assign('edu',$edu);
+            $externalQc = M('external_background_qc');
+            $qc = $externalQc->where(array('c_id'=>$Id))->select();
+            $this->assign('qc',$qc);
+            $externalWork = M('external_background_work');
+            $work = $externalWork->where(array('c_id'=>$Id))->select();
+            foreach ($work as $key => $val){
+                $workId[] = $val['Id'];
+            }
+            $externalWitness = M('external_background_witness');
+            $witnessMap['w_id'] = array('in',$workId);
+            $witness = $externalWitness->where($witnessMap)->select();
+            foreach ($work as $key => $val){
+                foreach ($witness as $k => $v){
+                    if($val['Id']==$v['w_id']){
+                        $work[$key]['witness'][] = $v;
+                    }
+                }
+            }
+            $this->assign('work',$work);
+            $this->display();
+        }
+    }
+    //键值对应数据方法 对外背调修改调用
+    function keys_to_data($keys,$data){
+        $count = count($data)/count($keys);
+        for($i=0;$i<$count;$i++){
+            foreach ($keys as $k =>$v){
+                $newData[$i][$v] = $data[$k+($i*count($keys))];
+            }
+        }
+        return $newData;
+    }
+    function delete_one(){
+        $data =  I('post.');
+        $where['Id'] = $data['Id'];
+        switch ($data['type']){
+            case 'edu':
+                M('external_background_edu')->where($where)->delete()?$this->ajaxReturn('success'):$this->ajaxReturn('false');;
+                break;
+            case 'qc':
+                M('external_background_qc')->where($where)->delete()?$this->ajaxReturn('success'):$this->ajaxReturn('false');;
+                break;
+            case 'work':
+                $r1 = M('external_background_work')->where($where)->delete();
+                $r2 = M('external_background_witness')->where(array('w_id'=>$data['Id']))->delete();
+                if($r1||$r2){
+                    $this->ajaxReturn('success');
+                }else{
+                    $this->ajaxReturn('false');
+                }
+                break;
+            case 'witness':
+                M('external_background_witness')->where($where)->delete()?$this->ajaxReturn('success'):$this->ajaxReturn('false');;
+                break;
+            default:
+                $this->ajaxReturn('false');
+                break;
+        }
+    }
 }

@@ -32,7 +32,7 @@
 				<!-- <input class="btn btn-mini" id="putremove"  type="button" value="{:L('IN_THE_CUSTOMER_POOL')}"/> -->
 				<div class="checkbox checkbox-primary">
 					<input class="check_list" id="put_poor" type="checkbox">
-					<label for="put_poor">将导入客户全部放入客户池</label>
+					<label for="put_poor">将导入客户全部放入客户公海</label>
 				</div>
 			</td>
 		</tr>
@@ -148,7 +148,7 @@ $(function(){
 		}
 	);*/
 
-	//导入客户是否放入客户池
+	//导入客户是否放入客户公海
 	$('#put_poor').click(function(){
 		if ($(this).is(':checked')) {
 			$('#owner_id').val('');

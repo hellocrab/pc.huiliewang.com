@@ -156,7 +156,7 @@
 								<li><a id="batch_assign" href="javascript:void(0)"><i class="fa fa-share"></i>&nbsp;分配</a></li>
 								<else />
 								<if condition="$Think.get.by neq 'share'">
-									<li><a id="remove" href="javascript:void(0)"><i class="fa fa-users"></i>&nbsp;放入客户池</a></li>
+									<li><a id="remove" href="javascript:void(0)"><i class="fa fa-users"></i>&nbsp;放入客户公海</a></li>
 								</if>
 							</if>
 							<if condition="$Think.get.content neq 'resource'">
@@ -546,7 +546,7 @@
 														</a>
 														<?php } ?>
 														<if condition="!$vo['is_locked']">
-															<font color="#7486A8" title="{$vo['days']}天未跟进或{$vo['c_days']}天未签合同，将自动回归客户池">{$vo['days']}/{$vo['c_days']}</font>
+															<font color="#7486A8" title="{$vo['days']}天未跟进或{$vo['c_days']}天未签合同，将自动回归客户公海">{$vo['days']}/{$vo['c_days']}</font>
 															<else/>
 															<font color="#7486A8">已锁定</font>
 														</if>
