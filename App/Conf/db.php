@@ -9,14 +9,14 @@ if (strpos($_SERVER['SERVER_ADDR'], '192.168.116.27') !== FALSE) {//测试环境
         'DB_PWD' => '123456',
         'DB_PREFIX' => 'mx_',
     );
-} else if (strpos($_SERVER['SERVER_ADDR'], '::1') !== FALSE) { //本地环境
+} else if (strpos($_SERVER['SERVER_ADDR'], '192.168') !== FALSE) { //本地环境
     return array(
         'DB_TYPE' => 'mysqli',
-        'DB_HOST' => 'localhost',
+        'DB_HOST' => '192.168.116.27',
         'DB_PORT' => '3306',
         'DB_NAME' => 'pinping',
         'DB_USER' => 'root',
-        'DB_PWD' => 'root',
+        'DB_PWD' => '123456',
         'DB_PREFIX' => 'mx_',
     );
 } else {//线上环境
