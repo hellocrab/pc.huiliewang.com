@@ -98,7 +98,9 @@ class ReturnAction extends Action
         $periods = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
         $d_v_business = D('BusinessView');
         $business = $d_v_business->where(array('business_id'=>$business_id))->find();
-//        dump($periods);exit;
+        foreach ($periods as $k=>$v ){
+            $periods[$k]['plan_time'] = $periods[count($periods)-1]['ontime'];
+        }
         $business_all =  $d_v_business->select();
         $user = M("user") -> select();
 //        dump($user);exit;
@@ -121,6 +123,8 @@ class ReturnAction extends Action
     public function delete(){
         $period_id = $_POST['period_id'];
         $plan_id = $_POST['plan_id'];
+        $nums = $_POST['nums'];
+        M("payment_plan")->where(array('Id'=>intval($plan_id)))->save(array('nums'=>intval($nums)-1));
         M("payment_planperiod")->where(array('Id'=>intval($period_id)))->delete();
         $update = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
         foreach ($update as $k => $v){
@@ -130,19 +134,18 @@ class ReturnAction extends Action
         echo '{"status":"1"}';
     }
     // 回款计划的编辑
-    public function plan_edit(){
+    public function plan_edit(){exit;
         $plan_id = intval($_POST['plan_id']);
         $customer = $_POST['customer'];
         $person = $_POST['person'];
-        $contract = $_POST['contract'];
+        $contract = intval($_POST['contract']);
         $department = $_POST['department'];
-        $total = intval($_POST['total']);
+        $total = intval($_POST['total']); //计划总金额
         $nums = intval($_POST['nums']);
         $add_num = intval($_POST['add_nums']);
-
         $data = array(
             'customer'=>$customer,
-            'business'=>$contract,
+            'business'=>M("business")->where(array('business_id'=>$contract))->getField('name'),
             'total'=>$total,
             'nums'=>$add_num
         );
@@ -156,9 +159,14 @@ class ReturnAction extends Action
                 'num'=>$i,
                 'money'=>$_POST['money'.$i],
                 'property'=>$_POST['property'.$i],
+                'ontime'=>$_POST['time'.$i],
+                'remark'=>$_POST['remark'.$i]
             );
             M('payment_planperiod')->add($data1);
         }
+            for($j=1;$j<=$nums;$j++){
+                M("payment_planperiod")->where(array('plan_id'=>$plan_id,'num'=>$j))->save(array('property'=>$_POST['property'.$j]));
+            }
         $this->ajaxReturn(1,'success',1);
     }
 
@@ -234,23 +242,29 @@ class ReturnAction extends Action
                 break;
             default: $where['contract.owner_role_id'] = array('in',getPerByAction(MODULE_NAME,ACTION_NAME));break;
         }
-        $data = array();$i = 0;
-        foreach ($payment_plan as $k => $v){
-            $arr = M('payment_planperiod')->where(array('plan_id'=>intval($v['Id'])))->select();
-            foreach ($arr as $k1 => $v1){
-                $data[$i]['Id'] = $v['Id'] ;
-                $data[$i]['customer'] = $v['customer'];
-                $data[$i]['customer_id']=$v['customer_id'];
-                $data[$i]['business'] = $v['business'];
-                $data[$i]['business_id']=$v['business_id'];
-                $data[$i]['total']=$v['total'];
-                $data[$i]['num'] = $v1['num'];
-                $data[$i]['money'] = $v1['money'];
-                $data[$i]['property'] = $v1['property'];
-                $data[$i]['status'] = $v1['status'];
-                $data[$i]['period_id'] = $v1['Id'];
-                $i++;
-            }
+//        $data = array();$i = 0;
+//        foreach ($payment_plan as $k => $v){
+//            $arr = M('payment_planperiod')->where(array('plan_id'=>intval($v['Id'])))->select();
+//            foreach ($arr as $k1 => $v1){
+//                $data[$i]['Id'] = $v['Id'] ;
+//                $data[$i]['customer'] = $v['customer'];
+//                $data[$i]['customer_id']=$v['customer_id'];
+//                $data[$i]['business'] = $v['business'];
+//                $data[$i]['business_id']=$v['business_id'];
+//                $data[$i]['total']=$v['total'];
+//                $data[$i]['num'] = $v1['num'];
+//                $data[$i]['money'] = $v1['money'];
+//                $data[$i]['property'] = $v1['property'];
+//                $data[$i]['status'] = $v1['status'];
+//                $data[$i]['period_id'] = $v1['Id'];
+//                $i++;
+//            }
+//        }
+//        $this->assign('plist',$data);
+        $data = M("payment_plan")->select();
+        foreach ($data as $k => $v){
+            $time = M("payment_planperiod")->where(array('plan_id'=>intval($v['Id']),'num'=>$v['nums']))->getField('ontime');
+            $data[$k]['ontime'] = $time;
         }
         $this->assign('plist',$data);
         $this->display();

@@ -31,7 +31,7 @@
                     <td class="col-md-4">{$business.user_name}</td>
                 </tr>
                 <tr>
-                    <td>对应合同:</td>
+                    <td>对应项目:</td>
                     <td>{$plan.business}</td>
                     <td>所属部门:</td>
                     <td>{$business.department_name}</td>
@@ -76,11 +76,11 @@
                         <th>{$vo.num}</th>
                         <th>{$vo.money}</th>
                         <th>{$vo.property}</th>
-                        <th>2015</th>
+                        <th>{$vo.plan_time}</th>
                         <th>已回款</th>
                         <th>{$vo.status}</th>
                         <th>付款方式</th>
-                        <th>回款时间</th>
+                        <th>{$vo.ontime}</th>
                         <th>{$vo.remark}</th>
                     </tr>
                 </volist>
@@ -95,13 +95,12 @@
                 <tr>
                     <td>对应项目:</td>
                     <td>
-                        <select id="contract" class="form-control checkit" rel="require" rell="合同" name="contract" onchange="contractChanged();">
+                        <select id="contract" class="form-control checkit" rel="require" rell="合同" name="contract"  onchange="contractChanged();">
                             <option value=" ">--对应项目--</option>
                             <volist name="business_all" id="vo">
-                                <option value="{$vo['business_id']}">{$vo['name']}</option>
+                                <option value="{$vo['business_id']}" <if condition ="$plan['business'] eq $vo['name']">selected="selected"</if>>{$vo['name']}</option>
                             </volist>
                         </select>
-                        <!--<input id="contract" class="form-control checkit" rel="require" rell="合同" name="contract">-->
                         <div class="error_msg" id="contractTip"></div>
                     </td>
                     <td class="col-md-2">负责人:</td>
@@ -119,7 +118,7 @@
                 <tr>
                     <td class="col-md-2">对应客户:</td>
                     <td class="col-md-4">
-                        <input id="customer" class="form-control" readonly="readonly"  name="customer">
+                        <input id="customer" class="form-control" readonly="readonly"  name="customer" value="{$plan.business}">
                     </td>
                     <td>所属部门:</td>
                     <td>
@@ -133,7 +132,7 @@
                     <td>回款期次:</td>
                     <td id="nums">{$plan.nums}</td>
                     <td>计划回款总金额:</td>
-                    <td><input id="total" class="form-control checkit" rel="require" rell="客户" name="total"><div class="error_msg" id="totalTip"></div></td>
+                    <td><input id="total" class="form-control checkit" rel="require" onblur="checkTmoney();" rell="客户" name="total"><div class="error_msg" id="totalTip"></div></td>
                 </tr>
                 <tr>
                     <td>当前期次:</td>
@@ -147,19 +146,19 @@
                 <tr>
                     <th></th><th></th>
                     <th>回款期次</th>
-                    <th>期次计划回款金额</th>
+                    <th>期次回款金额</th>
                     <th>所占比例</th>
                     <th>计划时间</th>
                     <th>备注</th>
                 </tr>
-                <volist name="periods" id="vo">
+                <volist name="periods" key="k" id="vo">
                     <tr>
                         <td><button onclick="minusedit('{$vo.plan_id}','{$vo.Id}',this);" type="button" class="btn btn-white">-</button></td>
                         <td><button onclick="addedit();" type="button" class="btn btn-white">+</button></td>
                         <th>{$vo.num}</th>
-                        <th>{$vo.money}</th>
-                        <th>{$vo.property}</th>
-                        <th>2015</th>
+                        <th class="tmoney">{$vo.money}</th>
+                        <th>{$vo.property}</th><input name='property{$k}' type='hidden' value="">
+                        <th>{$vo.ontime}</th>
                         <th>{$vo.remark}</th>
                     </tr>
                 </volist>
@@ -168,6 +167,36 @@
     </form>
 </div>
 <script>
+    function checkTmoney() {
+        var planMoney = Number($("#total").val());
+        if(planMoney != 0 ){
+            var sum = 0 ;
+            $(".tmoney").each(function () {
+                var test = Number($(this).html());
+                sum += test;
+            });
+            $(".imoney").each(function () {
+                var test = Number($(this).val());
+                sum += test;
+            });
+            if(sum>planMoney) $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额应大于各期次金额总和</span>");
+            else {
+                $("#totalTip").html("");
+                $(".tmoney").each(function () {
+                    var tmo = Number($(this).html());
+                    $(this).next().html(parseFloat(tmo/planMoney*100).toFixed(2)+"%");
+                    $(this).next().next().val(parseFloat(tmo/planMoney*100).toFixed(2)+"%");
+                });
+                $(".imoney").each(function () {
+                    var property = (Number($(this).val())/planMoney*100).toFixed(2);
+                    var attr = $(this).attr('id');
+                    var num1 = parseInt(attr.substring(5));
+                    var str = "#property"+num1;
+                    $(str).val(property+"%");
+                });
+            }
+        }else $("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额！</span>");
+    }
     function personChanged() {
         var person = $("#person").val();
         $.ajax({
@@ -203,6 +232,7 @@
             $("#add_nums").val(num);
         }
         else {
+            if(num>2)
             swal({
                     title: "您确定要删除当前期次信息吗？",
                     text: "删除后将无法恢复，请谨慎操作！",
@@ -222,6 +252,7 @@
                             async:true,
                             data:{ plan_id:obj,
                                 period_id :pid,
+                                nums : Number($("#nums").html())
                             },
                             success: function (data) {
                                 if (data.status == 1) {
@@ -249,7 +280,8 @@
                     } else {
                         swal("已取消","您取消了删除操作！","error");
                     }
-                });
+                });else swal("至少有两条回款期次！","","warning");
+            //
         };
         return false;
     }
@@ -258,11 +290,38 @@
         $("#tlast").children().last().after("<tr><td><button onclick='minusedit();' type='button' class='btn btn-white'>-</button></td>" +
             "<td><button onclick='addedit();' type='button' class='btn btn-white'>+</button></td>" +
             "<th><input name='num"+num+"' type='hidden' readonly='readonly' style='width:90%;' value='"+num+"'>"+num+"</th>" +
-            "<th><input name='money"+num+"' type='number'style='width:90%;' ></th>" +
-            "<th><input name='property"+num+"' type='text' readonly='readonly' style='width:90%;'></th>" +
-            "<th><input name='time"+num+"' type='date' style='width:90%;'></th>" +
+            "<th><input id='money"+num+"' class='imoney required' onblur='propertyCalculate(this)' name='money"+num+"' type='number'style='width:90%;' ></th>" +
+            "<th><input id='property"+num+"' name='property"+num+"' type='text' readonly='readonly' style='width:90%;'></th>" +
+            "<th><input name='time"+num+"' required='required' class='required checkit' type='date' style='width:90%;'></th>" +
             "<th><input name='remark"+num+"' type='text' style='width:100%;'></th></tr>");
         $("#add_nums").val(num);
+    }
+    function propertyCalculate(obj) {
+        var planed_money = $("#total").val();
+        if(planed_money == ''){
+            $("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额！</span>");
+        }else {
+            $("#totalTip").html("");
+            if(obj.value != ''){
+                var  property = ((obj.value / planed_money )*100).toFixed(2);
+                var attr = obj.getAttribute('id');
+                var num1 = parseInt(attr.substring(5));
+                var str = "#property"+num1;
+                $(str).val(property+"%");
+            }
+            var ta  = 0;
+            $(".imoney").each(function () {
+                if(!Number($(this).val()))
+                    ta += 0;
+                else
+                    ta += parseFloat($(this).val());
+            });
+            $(".tmoney").each(function () {
+                ta += Number($(this).html());
+            });
+            if(ta>planed_money)
+                $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额应大于各期次金额总和</span>");else $("#msg").html("");
+        }
     }
     $(document).ready(function(){
         $("#edit").click(function () {
@@ -280,7 +339,13 @@
         $("#adbtn").click(function(){
             var bname = $("#business option:selected").html();
             $("#businessname").val(bname);
-            if(input_msg && before_submit()){
+            var time_flag = true;
+            $(".required").each(function () {
+                var time_html = $(this).val();
+                if(time_html == '') time_flag = false;
+            });
+            if(!time_flag) $("#lmsg").css('display','block'); else $("#lmsg").css('display','none');
+            if(input_msg && before_submit() && time_flag){
                 $.ajax({
                     type: "POST",
                     url: "{:U('plan_edit')}",
@@ -322,7 +387,8 @@
     });
 </script>
 <div id="baocun" class="modal-footer" style="padding:8px 22px;display: none;">
-    <button type="submit" id="adbtn" class="btn btn-primary">保存</button>
+    <div class='col-sm-12' id='lmsg' style='color: red;display: none;'>请补全期次金额或时间!</div>
+    <button type="button" id="adbtn" class="btn btn-primary">保存</button>
     <button type="button" id="back" class="btn btn-white" >取消</button>
 </div>
 <div id="bianji" class="modal-footer" style="padding:8px 22px;display: block;">

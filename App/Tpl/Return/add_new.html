@@ -60,7 +60,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>计划回款金额：</label>
                 <div class="col-sm-6">
-                    <input type="number" required="required" id="planed_money" onblur="clean(this);" name="planed_money" rel="require" rell="回款金额" class="form-control checkit" />
+                    <input type="number" id="planed_money" onblur="clean(this);" name="planed_money" rel="require" rell="回款金额" class="form-control checkit" />
                 </div>元
                 <div class="col-sm-3 error_msg" id="planed_moneyTip"></div>
             </div>
@@ -69,7 +69,7 @@
                 <div class="col-sm-1">
                 </div>
                 <div class="col-sm-5">
-                    计划回款期次：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn" onclick="minus();" style="border: solid gray 0.1px;">-</button>&nbsp;&nbsp;<span id="num">2</span>&nbsp;&nbsp;<button class="btn" onclick="add();" style="border: solid gray 0.1px;">+</button>
+                    计划回款期次：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn" type="button" onclick="minus();" style="border: solid gray 0.1px;">-</button>&nbsp;&nbsp;<span id="num">2</span>&nbsp;&nbsp;<button class="btn" type="button" onclick="add();" style="border: solid gray 0.1px;">+</button>
                 </div>
             </div>
             <div class="form-group ">
@@ -84,7 +84,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>期次金额：</label>
                 <div class="col-sm-6">
-                    <input id="money1" rel="require" rell="期次金额" onblur="propertyCalculate(this);" name="money1" type="number" class="form-control checkit">
+                    <input id="money1" rel="require" rell="期次金额" onblur="propertyCalculate(this);" name="money1" type="number" class="form-control checkit money">
                 </div>元
                 <div class="col-sm-3 error_msg" id="money1Tip"></div>
             </div>
@@ -93,7 +93,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>期次占比：</label>
                 <div class="col-sm-6">
-                    <input type="text" id="property1" required="required" readonly="readonly" name="property1" class="form-control checkit">
+                    <input type="text" id="property1" readonly="readonly" name="property1" class="form-control checkit">
                 </div>
             </div>
             <div class="form-group">
@@ -101,8 +101,9 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>回款时间：</label>
                 <div class="col-sm-6">
-                    <input type="date" id="time1" required="required" name="time1" class="form-control checkit">
+                    <input type="date" id="time1" rel="require" rell="回款时间" name="time1" class="form-control checkit">
                 </div>
+                <div class="col-sm-3 error_msg" id="time1Tip"></div>
             </div>
             <div class="form-group ">
                 <div class="col-sm-1">
@@ -116,7 +117,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>期次金额：</label>
                 <div class="col-sm-6">
-                    <input type="number" id="money2" name="money2" rel="require" rell="期次金额" onblur="propertyCalculate(this);" class="form-control checkit">
+                    <input type="number" id="money2" name="money2" rel="require" rell="期次金额" onblur="propertyCalculate(this);" class="form-control checkit money">
                 </div>元
                 <div class="col-sm-3 error_msg" id="money2Tip"></div>
             </div>
@@ -125,7 +126,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>期次占比：</label>
                 <div class="col-sm-6">
-                    <input type="text" id="property2" required="required" readonly="readonly" onblur="" name="property2" class="form-control checkit">
+                    <input type="text" id="property2" readonly="readonly" onblur="" name="property2" class="form-control checkit">
                 </div>
             </div>
             <div class="form-group remark">
@@ -133,16 +134,30 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>回款时间：</label>
                 <div class="col-sm-6">
-                    <input type="date" id="time2" required="required" name="time2" class="form-control checkit">
+                    <input type="date" id="time2" rel="require" rell="回款时间" name="time2" class="form-control checkit">
                 </div>
+                <div class="col-sm-3 error_msg" id="time2Tip"></div>
             </div>
         </div>
+        <div class="col-sm-offset-3 col-sm-10" id="msg" style="color: red;display: none;" > ！期次总金额不应超过计划总金额</div>
     </form>
 </div>
 <script>
     function clean(obj) {
-        if(obj.value != '')
-        $("#planed_moneyTip").html("");
+        if(obj.value != ''){
+            $("#planed_moneyTip").html("");
+            $(".money").each(function () {
+                var i = parseFloat($(this).val());
+                if(isNaN(i)){
+                    $(this).parent().parent().next().find("input").val("0.00%");
+                }else {
+                    var total = parseFloat(obj.value);
+                    var property = i/total*100;
+                    $(this).parent().parent().next().find("input").val(parseFloat(property)+"%");
+                }
+            });
+        }
+
     }
     
     function propertyCalculate(obj) {
@@ -158,6 +173,15 @@
                 var str = "#property"+num1;
                 $(str).val(property+"%");
             }
+            var ta  = 0;
+            $(".money").each(function () {
+                if(!Number($(this).val()))
+                    ta += 0;
+                else
+                    ta += parseFloat($(this).val());
+            });
+            if(ta>planed_money)
+                $("#msg").css('display',"block");else $("#msg").css('display',"none");
         }
     }
 
@@ -193,11 +217,11 @@
         num ++;
         $(".remark").last().after("<div class='form-group'><div class='col-sm-1'></div><div class='col-sm-6'><div>第"+num+"次回款</div></div></div>" +
             "<div class='form-group'><div class='col-sm-1'></div><label class='control-label col-sm-3' style='width: 110px;'><span style='color: #FF0011;'>*</span>期次金额:</label>" +
-            "<div class='col-sm-6'><input id='money"+num+"' name='money"+num+"' rel='require' rell='期次金额' onblur='propertyCalculate(this);' type='number' class='form-control checkit'></div>元<div class='col-sm-3 error_msg' id='money"+num+"Tip'></div></div>" +
-            "<div class='form-group remark'><div class='col-sm-1'></div><label class='control-label col-sm-3' style='width: 110px;'><span style='color: #FF0011;'>*</span>期次占比:</label>" +
-            "<div class='col-sm-6'><input type='text' required='required' readonly='readonly' id='property"+num+"' name='property"+num+"' class='form-control chekit'></div></div>" +
+            "<div class='col-sm-6'><input id='money"+num+"' name='money"+num+"' rel='require' rell='期次金额' onblur='propertyCalculate(this);' type='number' class='form-control checkit money'></div>元<div class='col-sm-3 error_msg' id='money"+num+"Tip'></div></div>" +
+            "<div class='form-group'><div class='col-sm-1'></div><label class='control-label col-sm-3' style='width: 110px;'><span style='color: #FF0011;'>*</span>期次占比:</label>" +
+            "<div class='col-sm-6'><input type='text' readonly='readonly' id='property"+num+"' name='property"+num+"' class='form-control checkit'></div></div>" +
             "<div class='form-group remark'><div class='col-sm-1'></div><label class='control-label col-sm-3' style='width: 110px;'><span style='color: #FF0011;'>*</span>回款时间:</label>" +
-            "<div class='col-sm-6'><input type='date' id='time"+num+"' name='time"+num+"' class='form-control chekit'></div></div>");
+            "<div class='col-sm-6'><input type='date' id='time"+num+"' name='time"+num+"' rel='require' rell='回款时间' class='form-control checkit'></div><div class='col-sm-3 error_msg' id='time"+num+"Tip'></div></div>");
         $("#num").html(num);
     }
     $('#number').blur(function(){
@@ -242,7 +266,17 @@
             $("#nums").val(num);
             var bname = $("#business option:selected").html();
             $("#businessname").val(bname);
-            if(input_msg && before_submit()){
+            var tp = parseFloat($("#planed_money").val());
+            var ta  = 0.00;
+            $(".money").each(function () {
+                ta += parseFloat($(this).val());
+            });
+            var flag = true;
+            if(before_submit() && ta>tp) {
+                flag = false;
+                $("#msg").css('display',"block");
+            }
+            if(input_msg && before_submit() && flag){
                 $.ajax({
                     type: "POST",
                     url: "{:U('plan_add')}",
@@ -282,28 +316,6 @@
             }
         });
     });
-    function changeRoleContent(){
-        department_id = $('#department').val();
-        if(department_id == ''){
-            $("#role").html('');
-        }else{
-            $.ajax({
-                type:'get',
-                url:'index.php?m=user&a=getPositionlistByDepartment&id='+department_id,
-                async:false,
-                success:function(data){
-                    options = '';
-                    if(data.data){
-                        $.each(data.data, function(k, v){
-                            options += '<option value="'+v.position_id+'">'+v.name+'</option>';
-                        });
-                    }
-                    $("#role").html(options);
-                },
-                dataType:'json'
-            });
-        }
-    }
     $('#role').click(
         function(){
             department_id = $('#department').val();
