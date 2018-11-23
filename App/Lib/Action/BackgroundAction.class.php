@@ -21,7 +21,7 @@ class BackgroundAction extends Action
         $field = 'education_add,update,remark,delete';
         $p = isset($_GET['p'])?$_GET['p']:1;
         $type = isset($_GET['type'])?$_GET['type']:'all';
-        if($search&&$type){
+        if($search!=''&&$type){
             $backGroundMsg = M('background_msg');
             switch ($type){
                 case 'all':
