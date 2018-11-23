@@ -21,11 +21,6 @@ class BackgroundAction extends Action
         $field = 'education_add,update,remark,delete';
         $p = isset($_GET['p'])?$_GET['p']:1;
         $type = isset($_GET['type'])?$_GET['type']:'all';
-        $count = $backGround->where($delete)->count();
-        $p_num = ceil($count/$listrows);
-        if($p_num<$p){
-            $p = $p_num;
-        }
         if($search&&$type){
             $backGroundMsg = M('background_msg');
             switch ($type){
@@ -54,8 +49,18 @@ class BackgroundAction extends Action
                     $map['s_name'] = array('like','%'.$search.'%');
                     break;
             }
-            $data = $backGround->order('Id desc')->where($delete)->where($map)->field($field,true)->select();
+            $count = $backGround->order('Id desc')->where($delete)->where($map)->field($field,true)->count();
+            $p_num = ceil($count/$listrows);
+            if($p_num<$p){
+                $p = $p_num;
+            }
+            $data = $backGround->order('Id desc')->where($delete)->where($map)->field($field,true)->page($p.','.$listrows)->select();
         }else{
+            $count = $backGround->where($delete)->count();
+            $p_num = ceil($count/$listrows);
+            if($p_num<$p){
+                $p = $p_num;
+            }
             $data = $backGround->order('Id desc')->field($field,true)->where($delete)->page($p.','.$listrows)->select();
         }
         foreach ($data as $k => $val){
@@ -971,7 +976,7 @@ class BackgroundAction extends Action
         $by = 'Id desc';
         if($search!=''&&$typeN>0){
             $where[$type]=array('like','%'.$search.'%');
-            $count = $exBackground->where($where)->count();
+            $count = $exBackground->where($where)->field($field)->order($by)->count();
             $p_num = ceil($count/$listrows);
             if($p_num<$p){
                 $p = $p_num;
