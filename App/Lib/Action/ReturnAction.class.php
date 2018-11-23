@@ -134,7 +134,7 @@ class ReturnAction extends Action
         echo '{"status":"1"}';
     }
     // 回款计划的编辑
-    public function plan_edit(){exit;
+    public function plan_edit(){
         $plan_id = intval($_POST['plan_id']);
         $customer = $_POST['customer'];
         $person = $_POST['person'];
