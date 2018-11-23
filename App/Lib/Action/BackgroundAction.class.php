@@ -22,6 +22,10 @@ class BackgroundAction extends Action
         $p = isset($_GET['p'])?$_GET['p']:1;
         $type = isset($_GET['type'])?$_GET['type']:'all';
         $count = $backGround->where($delete)->count();
+        $p_num = ceil($count/$listrows);
+        if($p_num<$p){
+            $p = $p_num;
+        }
         if($search&&$type){
             $backGroundMsg = M('background_msg');
             switch ($type){
@@ -968,10 +972,18 @@ class BackgroundAction extends Action
         if($search!=''&&$typeN>0){
             $where[$type]=array('like','%'.$search.'%');
             $count = $exBackground->where($where)->count();
+            $p_num = ceil($count/$listrows);
+            if($p_num<$p){
+                $p = $p_num;
+            }
             $data = $exBackground->where($where)->field($field)->page($p.','.$listrows)->order($by)->select();
             $this->assign('data',$data);
         }else{
             $count = $exBackground->count();
+            $p_num = ceil($count/$listrows);
+            if($p_num<$p){
+                $p = $p_num;
+            }
             $data = $exBackground->field($field)->page($p.','.$listrows)->order($by)->select();
             $this->assign('data',$data);
         }

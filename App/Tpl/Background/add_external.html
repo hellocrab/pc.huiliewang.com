@@ -640,7 +640,7 @@
             //验证
             var goon = isNull();
             //提交或返回未填写提示
-            if(goon==0){
+            if(goon==0&&$('.spanerror').length<1){
                 var files = $(document).find("input[type='file']");
                 var formFile = new FormData();
                 //取得图片
@@ -776,7 +776,7 @@
             });
             //重置时间选择框属性
             neweducation.find('input[type="text"]').each(function () {
-                if($(this).attr('placeholder'=='年-月')){
+                if($(this).attr('placeholder')=='年-月'){
                     let obj =$(this);
                     obj.removeAttr('onfocus');
                     obj.attr('id',obj.attr('id')+'_'+addclickcount);
@@ -831,7 +831,7 @@
                 obj.parent().parent().parent().find('.witness-count').val(obj.parent().parent().find('.promise-people').length-1);
                 setTimeout(function () {
                     obj.parent().remove();
-                },500)
+                },1)
             }else{
                 alert_crm("请从最后一个删除！");
             }

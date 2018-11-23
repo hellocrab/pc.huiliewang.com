@@ -411,7 +411,7 @@
                                                 </div>
                                                 <div class="col-md-3 radiodiv" style="height: 32px;padding-top: 3px">
                                                     <label class="radiobtn"><input type="radio" name="sur_2_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] eq 'sure'||$vo['enter_time_add'] eq ''">checked="checked"</if> value="0"><img src="/Public/img/true.png" alt=""></label>
-                                                    <label class="radiobtn"><input type="radio" name="sur_2_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['get_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
+                                                    <label class="radiobtn"><input type="radio" name="sur_2_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['enter_time_add'] neq ''">checked="checked"</if> value="1"><img src="/Public/img/wrong.png" alt=""></label>
                                                     <label class="radiobtn"><input type="radio" name="sur_2_id_{$vo['Id']}" <if condition="$vo['enter_time_add'] eq 'notsure'">checked="checked"</if> value="2"><img src="/Public/img/notsure.png" alt=""></label>
                                                 </div>
                                                 <div class="col-md-3"><input type="text" class="form-control required work-input" name="newworkentertime_{$k}" placeholder="年-月" value="{$vo['enter_time_add']}" <if condition="$vo['enter_time_add'] neq 'sure'&&$vo['enter_time_add'] neq 'notsure'&&$vo['enter_time_add'] neq ''"> style="display:block"<else/>style="display:none"</if> id="workenter_add" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;})" readonly="readonly"></div>
@@ -450,61 +450,61 @@
                                                             <div class="col-md-10 col-md-push-2 bottom-10">
                                                                 <lable class="col-md-5 col-md-pull-3 control-label">姓名：</lable>
                                                                 <div class="col-md-4 col-md-pull-3">
-                                                                    <input type="text" class="form-control required witness-input" name="wxm_{$key}" value="{$val['witness']}">
+                                                                    <input type="text" class="form-control required witness-input" name="wxm_{$k}_{$key}" value="{$val['witness']}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-10 col-md-push-2 bottom-10">
                                                                 <lable class="col-md-5 col-md-pull-3 control-label">岗位：</lable>
                                                                 <div class="col-md-4 col-md-pull-3">
-                                                                    <input type="text" class="form-control required witness-input" name="wgw_{$key}" value="{$val['position']}">
+                                                                    <input type="text" class="form-control required witness-input" name="wgw_{$k}_{$key}" value="{$val['position']}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-10 col-md-push-2 bottom-10">
                                                                 <lable class="col-md-5 col-md-pull-3 control-label">电话：</lable>
                                                                 <div class="col-md-4 col-md-pull-3">
-                                                                    <input type="text" class="form-control required witness-input" name="wtel_{$key}" value="{$val['tel']}">
+                                                                    <input type="text" class="form-control required witness-input" name="wtel_{$k}_{$key}" value="{$val['tel']}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-10 col-md-push-2 bottom-10">
                                                                 <lable class="col-md-5 col-md-pull-3 control-label">与被调查人关系：</lable>
                                                                 <div class="col-md-4 col-md-pull-3">
-                                                                    <input type="text" class="form-control required witness-input" name="wgx_{$key}" value="{$val['relationship']}">
+                                                                    <input type="text" class="form-control required witness-input" name="wgx_{$k}_{$key}" value="{$val['relationship']}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-10 col-md-push-2 bottom-10">
                                                                 <lable class="col-md-5 col-md-pull-3 control-label">调查方式：</lable>
                                                                 <div class="col-md-4 col-md-pull-3">
-                                                                    <input type="text" class="form-control required witness-input" name="wdcfs_{$key}" value="{$val['method']}">
+                                                                    <input type="text" class="form-control required witness-input" name="wdcfs_{$k}_{$key}" value="{$val['method']}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-10 col-md-push-2 bottom-10">
                                                                 <lable class="col-md-5 col-md-pull-3 control-label">在职期间工作情况：</lable>
                                                                 <div class="col-md-4 col-md-pull-3">
-                                                                    <input type="text" class="form-control required witness-input" name="wqk_{$key}" value="{$val['performance']}">
+                                                                    <input type="text" class="form-control required witness-input" name="wqk_{$k}_{$key}" value="{$val['performance']}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-10 col-md-push-2 bottom-10">
                                                                 <lable class="col-md-5 col-md-pull-3 control-label">是否有违纪违规/不良记录：</lable>
                                                                 <div class="col-md-4 col-md-pull-3">
-                                                                    <input type="text" class="form-control required witness-input" name="wjl_{$key}" value="{$val['badrecord']}">
+                                                                    <input type="text" class="form-control required witness-input" name="wjl_{$k}_{$key}" value="{$val['badrecord']}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-10 col-md-push-2 bottom-10">
                                                                 <lable class="col-md-5 col-md-pull-3 control-label">离职原因：</lable>
                                                                 <div class="col-md-4 col-md-pull-3">
-                                                                    <input type="text" class="form-control required witness-input" name="wreason_{$key}" value="{$val['reason']}">
+                                                                    <input type="text" class="form-control required witness-input" name="wreason_{$k}_{$key}" value="{$val['reason']}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-10 col-md-push-2 bottom-10">
                                                                 <lable class="col-md-5 col-md-pull-3 control-label">有否培训协议：</lable>
                                                                 <div class="col-md-4 col-md-pull-3">
-                                                                    <input type="text" class="form-control required witness-input" name="wpxxy_{$key}" value="{$val['train']}">
+                                                                    <input type="text" class="form-control required witness-input" name="wpxxy_{$k}_{$key}" value="{$val['train']}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-10 col-md-push-2 bottom-10">
                                                                 <lable class="col-md-5 col-md-pull-3 control-label">有否竞业协议：</lable>
                                                                 <div class="col-md-4 col-md-pull-3">
-                                                                    <input type="text" class="form-control required witness-input" name="wjzxy_{$key}" value="{$val['compete']}">
+                                                                    <input type="text" class="form-control required witness-input" name="wjzxy_{$k}_{$key}" value="{$val['compete']}">
                                                                     <!--<input type="text" class="form-control required witness-input data-for" style="display: none">-->
                                                                 </div>
                                                             </div>
