@@ -776,7 +776,7 @@
             });
             //重置时间选择框属性
             neweducation.find('input[type="text"]').each(function () {
-                if($(this).attr('placeholder')){
+                if($(this).attr('placeholder'=='年-月')){
                     let obj =$(this);
                     obj.removeAttr('onfocus');
                     obj.attr('id',obj.attr('id')+'_'+addclickcount);

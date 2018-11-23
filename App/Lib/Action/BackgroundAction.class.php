@@ -911,7 +911,7 @@ class BackgroundAction extends Action
         $backGround = M('background');
         $list1 = $backGround->where($map)->order($order)->field('msg_id,remark,delete,update,date,education_add',true)->select();
         $backGroundMsg = M('background_msg');
-        $list2 = $backGroundMsg->where($map2)->select();
+        $list2 = $backGroundMsg->where($map2)->where(array('delete'=>'0'))->select();
         foreach ($list1 as $k => $v){
             foreach ($list2 as $key =>$val){
                 if($val['s_id']==$v['Id']){
