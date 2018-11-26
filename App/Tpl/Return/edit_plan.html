@@ -131,7 +131,7 @@
                     <td>回款期次:</td>
                     <td id="nums">{$plan.nums}</td>
                     <td>计划回款总金额:</td>
-                    <td><input id="total" class="form-control checkit" rel="require" onblur="checkTmoney();" rell="客户" name="total"><div class="error_msg" id="totalTip"></div></td>
+                    <td><input id="total" class="form-control checkit" rel="require" onblur="checkTmoney();" rell="总金额" name="total" value="{$plan.total}"><div class="error_msg" id="totalTip"></div></td>
                 </tr>
                 <tr >
                     <td>实际回收期次:</td>
@@ -160,7 +160,7 @@
                     <tr>
                         <td><button onclick="minusedit('{$vo.plan_id}','{$vo.Id}',this);" type="button" class="btn btn-white">-</button></td>
                         <td><button onclick="addedit();" type="button" class="btn btn-white">+</button></td>
-                        <th>{$vo.num}</th>
+                        <th class="eachnum">{$vo.num}</th>
                         <th class="tmoney">{$vo.money}</th>
                         <th>{$vo.property}</th><input name='property{$k}' type='hidden' value="">
                         <th>{$vo.ontime}</th>
@@ -214,6 +214,7 @@
                 $("#dename").val(result);
             }
         });
+        $("#personTip").html("");
     }
     function contractChanged() {
         var bvalue = $("#contract").val();
@@ -227,6 +228,7 @@
                 $("#customer").val(result.customer_name);
             }
         });
+        $("#contractTip").html("");
     }
 
     var num = $("#nums").html();
@@ -263,12 +265,13 @@
                                 if (data.status == 1) {
                                     swal({
                                         title:'删除成功',
-                                        text:'您已经永久删除该条信息！',
+                                        text:'您已经永久删除该条计划！',
                                         type:"success",
                                         confirmButtonText: "确定"
                                     },function (isConfirm) {
                                         if(isConfirm){
-                                            location.reload();
+                                            obj1.parentNode.parentNode.remove();
+                                            $(".eachnum").html(i+1);
                                         }
                                     });
                                 } else {
@@ -286,7 +289,6 @@
                         swal("已取消","您取消了删除操作！","error");
                     }
                 });else swal("至少有两条回款期次！","","warning");
-            //
         };
         return false;
     }
@@ -342,15 +344,38 @@
             $("#planshow").css('display','block');
         });
         $("#adbtn").click(function(){
-            var bname = $("#business option:selected").html();
-            $("#businessname").val(bname);
+            // var bname = $("#business option:selected").html();
+            // $("#businessname").val(bname);
+            /*******/
+            var adbtn = true;
+            var planMoney = Number($("#total").val());
+            if(planMoney != 0 ){
+                var sum = 0 ;
+                $(".tmoney").each(function () {
+                    var test = Number($(this).html());
+                    sum += test;
+                });
+                $(".imoney").each(function () {
+                    var test = Number($(this).val());
+                    sum += test;
+                });
+                if(sum>planMoney) {
+                    $("#total").next().remove();
+                    $("#total").after("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额应大于各期次金额总和</span>");
+                    adbtn = false;
+                }
+                else {
+                    $("#total").next().html("");
+                }
+            }else {$("#total").after("<span style='color:#FF0011;'>请先填写计划金额！</span>"); adbtn = false;}
+            /***/
             var time_flag = true;
             $(".required").each(function () {
                 var time_html = $(this).val();
                 if(time_html == '') time_flag = false;
             });
             if(!time_flag) $("#lmsg").css('display','block'); else $("#lmsg").css('display','none');
-            if(input_msg && before_submit() && time_flag){
+            if(input_msg && before_submit() && time_flag && adbtn){
                 $.ajax({
                     type: "POST",
                     url: "{:U('plan_edit')}",

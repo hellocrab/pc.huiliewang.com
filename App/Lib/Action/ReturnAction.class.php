@@ -22,6 +22,7 @@ class ReturnAction extends Action
         $this->display();
     }
 
+//展示回款记录主页面
     //ajax展示负责人
     public function personChanged(){
         $per_id = $_POST['person_id'];
@@ -242,30 +243,31 @@ class ReturnAction extends Action
                 break;
             default: $where['contract.owner_role_id'] = array('in',getPerByAction(MODULE_NAME,ACTION_NAME));break;
         }
-//        $data = array();$i = 0;
-//        foreach ($payment_plan as $k => $v){
-//            $arr = M('payment_planperiod')->where(array('plan_id'=>intval($v['Id'])))->select();
-//            foreach ($arr as $k1 => $v1){
-//                $data[$i]['Id'] = $v['Id'] ;
-//                $data[$i]['customer'] = $v['customer'];
-//                $data[$i]['customer_id']=$v['customer_id'];
-//                $data[$i]['business'] = $v['business'];
-//                $data[$i]['business_id']=$v['business_id'];
-//                $data[$i]['total']=$v['total'];
-//                $data[$i]['num'] = $v1['num'];
-//                $data[$i]['money'] = $v1['money'];
-//                $data[$i]['property'] = $v1['property'];
-//                $data[$i]['status'] = $v1['status'];
-//                $data[$i]['period_id'] = $v1['Id'];
-//                $i++;
-//            }
-//        }
-//        $this->assign('plist',$data);
-        $data = M("payment_plan")->select();
+
+        //分页
+        if($_GET['listrows']){
+            $listrows = intval($_GET['listrows']);
+            $params[] = "listrows=" . intval($_GET['listrows']);
+        }else{
+            $listrows = 15;
+            $params[] = "listrows=15";
+        }
+        $this->listrows = $listrows;
+        import('@.ORG.Page');// 导入分页类
+        $count =M("payment_plan")->count() ? M("payment_plan")->count() : '0';
+        $p_num = ceil($count/$listrows);
+        $p = isset($_GET['p'])?$_GET['p']:1;
+        if($p_num<$p){
+            $p = $p_num;
+        }
+        $data = M("payment_plan")->Page($p.','.$listrows)->select();
         foreach ($data as $k => $v){
             $time = M("payment_planperiod")->where(array('plan_id'=>intval($v['Id']),'num'=>$v['nums']))->getField('ontime');
             $data[$k]['ontime'] = $time;
         }
+        $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
+        $show = $Page->show();// 显示分页栏
+        $this->assign('page',$show);// 赋值分页输出
         $this->assign('plist',$data);
         $this->display();
     }
