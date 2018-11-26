@@ -6,6 +6,14 @@
  * */
 class BusinessAction extends Action {
 
+    protected $pro_type = [
+        1 => '面试快',
+        2 => '入职快',
+        3 => '专业猎头',
+        4 => '慧简历',
+        5 => '其他'
+    ];
+
     /**
      * 用于判断权限
      * @permission 无限制
@@ -525,6 +533,7 @@ class BusinessAction extends Action {
         $this->listrows = $listrows;
         $this->assign('list', $list);
         $this->assign('count', $count);
+        $this->assign('pro_type', $this->pro_type);
         $this->alert = parseAlert();
         $this->display();
     }
@@ -700,7 +709,6 @@ class BusinessAction extends Action {
             $where['isdelete'] = '0';
             $company_list = M('customer')->where($where)->select();
             $this->company_list = $company_list;
-
             //自定义字段
             $this->field_list = field_list_html('add', 'business');
             $this->alert = parseAlert();
@@ -910,6 +918,7 @@ class BusinessAction extends Action {
         //自定义字段
         $this->field_list = M('Fields')->where(array('model' => 'business', 'field' => array('not in', array('name', 'status_id'))))->order('is_main desc, order_id asc')->select();
         $this->alert = parseAlert();
+        $this->assign('pro_type', $this->pro_type);
         $this->display();
     }
 
@@ -984,8 +993,8 @@ class BusinessAction extends Action {
 //var_dump($project);exit();
 
         $business = M("business")->where("business_id=%d", I("id"))->select();
-        $this->pro_type = $business[0]['pro_type'];
-//        var_dump($project);exit();
+        $pro_type = $business[0]['pro_type'];
+       
         $this->call_ico1 = array("接通电话" => "yijieting", "电话未接听" => "weijietong", "无效电话" => "konghao", "电话忙" => "guaduan");
         $this->call_ico2 = array("1" => "jxgenjin", "0" => "ztgenjin");
         $this->call_ico3 = array("1" => "mubiao", "0" => "buheshi");
@@ -1101,7 +1110,7 @@ class BusinessAction extends Action {
             $file_count++;
         }
         $this->info = $info;
-//        M("fine_project")
+        $this->assign('pro_type',$pro_type);
         $this->display();
     }
 
@@ -1258,12 +1267,12 @@ class BusinessAction extends Action {
         } elseif ($this->pro_type == "2") {//入职快
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3, "pass" => 4, "offer" => 5, "enter" => 6);
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职");
-        } else if ($this->pro_type == '4') {//慧简历
-            $this->process = array("calllist" => 0 );
-            $this->process_name = array("CallList");
-        } else {//专业猎头
+        } elseif ($this->pro_type == "3") {//专业猎头
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3, "pass" => 4, "offer" => 5, "enter" => 6, "safe" => 7);
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职", "过保");
+        } else if ($this->pro_type == '4') {//慧简历
+            $this->process = array("calllist" => 0);
+            $this->process_name = array("CallList");
         }
         $this->pro_count = count($this->process);
 
