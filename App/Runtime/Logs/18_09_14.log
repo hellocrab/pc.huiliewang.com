@@ -1,6 +1,0 @@
-[ 2018-09-14T06:44:36+08:00 ] 180.163.220.4 /index.php?m=user&a=login
-ERR: Table 'pinping.mx_carousel_images' doesn't exist
- [ SQL语句 ] : SHOW COLUMNS FROM `mx_carousel_images`
-ERR: Table 'pinping.mx_carousel_images' doesn't exist
- [ SQL语句 ] : SELECT * FROM `mx_carousel_images` ORDER BY listorder 
-

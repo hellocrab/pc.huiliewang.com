@@ -1167,7 +1167,6 @@ class ContractAction extends Action {
 			$p = $p_num;
 		}
 		$list = $d_contract->where($where)->page($p.','.$listrows)->order($order)->select();
-
 		import("@.ORG.Page");
 		$Page = new Page($count,$listrows);
 		if (!empty($_GET['by'])) {

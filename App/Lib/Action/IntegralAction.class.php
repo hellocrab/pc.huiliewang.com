@@ -175,6 +175,7 @@ class IntegralAction extends Action{
 
         //权限判断
         $below_ids = getPerByAction(MODULE_NAME,ACTION_NAME,false);
+
         if(intval($_GET['role'])){
             $role_ids = array(intval($_GET['role']));
         }else{

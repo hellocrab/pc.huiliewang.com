@@ -90,6 +90,7 @@
                             <div class="col-md-12">
                                 <span style="float: right;margin-top: 10px;margin-right: 60%;color: #cf5144;">支持xls、xlsx格式的背调表，一次最多上传1份,所上传的背调表请严格按照格式录入信息</span>
                                 <input type="file" multiple id="ssi-upload"/>
+                                <input type="button" class="btn btn-primary" value="返回" style="position: relative;left: 10px;top: 10px;width: 74px;" onclick="window.location='/index.php?m=background&a=index_external'">
                             </div>
                             <div class="col-md-12" style="background: #f5f5f5;height: 50px;line-height: 50px;display: none;">
                                 <div class="btn btn-primary fileinput-button" style="width: 100px;margin-left: 10px;">
@@ -219,7 +220,14 @@
     $('#ssi-upload').ssi_uploader({
         url: '/index.php?m=background&a=ex_excel_upload',
         maxFileSize: 100,
-        allowed: ['xls', 'xlsx']
+        allowed: ['xls', 'xlsx'],
+        maxNumberOfFiles:1,
+        responseValidation:{
+            validationKey: 'type',
+            resultKey: 'success',
+            success: 'success',
+            error: 'error'
+        }
     });
 </script>
 

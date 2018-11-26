@@ -90,7 +90,7 @@
 <div class="sPopupDiv none" id="jobdiv" style="float:left;"></div>
 <!--职位类别end-->
 <div class="wrapper wrapper-content animated fadeIn col-md-12">
-    <form class="form-horizontal" id="form" role="form" action="{:U('background/add')}" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" id="form" role="form" action="{:U('background/add')}" method="post" enctype="multipart/form-data" autocomplete="off">
         <input type='hidden' name="r" <present name="r">value="{$r}"</present>/>
         <input type='hidden' name="module" <present name="r">value="{$module}"</present>/>
         <input type='hidden' name="id" <present name="r">value="{$model_id}"</present>/>
@@ -110,77 +110,38 @@
                             </div>
                             <div  id="resume-search-form" class="col-md-8 add_body_form" style="margin-left:15px;">
                                 <input type="hidden" name="url" />
-                                <!--<div class="form-group">
-                                    <label class="col-md-3 control-label">上传简历：</label>
-                                    <div class="col-md-7" style="margin-left: -15px;">
-                                        <div class="submitfiles"></div>
-                                        <div class="col-md-4">
-                                            <select class="form-control required" id="standard"  aria-required="true">
-                                                <option value="原始简历">原始简历</option>
-                                                <option value="推荐报告">推荐报告</option>
-                                                <option value="背景调查">背景调查</option>
-                                                <option value="其他资料">其他资料</option>
-                                            </select>
-                                            <span id="standardTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="btn btn-default fileinput-button" style="width: 100%;">
-                                                <span>上传简历</span>
-                                                <input type="file"  id="uploadresume"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="btn btn-default textdialog" style="width: 100%;">
-                                                <span>粘贴简历</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
-                                </div>-->
-
-                               <!-- <div class="form-group">
-                                    <label class="col-md-3 control-label">加入项目：</label>
-                                    <div class="col-md-6">
-                                        <input type="hidden" name="business_id" id="business_id" value="{:I('pro_id')}">
-                                        <input class="form-control" placeholder="请点击选择需要加入的项目" type="text" name="business_name" id="business_name" value="{$project_name}" readonly="true" style="cursor:pointer;" title="请点击选择">
-                                    </div>
-                                </div>-->
-
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">姓名：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="name" name="name" value="">
-                                        <span id="sketchTip"style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                        <input class="form-control required" type="text" id="name" name="name" value="" text-type="name" maxlength="12">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">行业：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="industry" name="industry" value="">
+                                        <input class="form-control required" type="text" id="industry" name="industry" value="" text-type="name" maxlength="20" >
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">事业部：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="department" name="department" value="">
+                                        <input class="form-control required" type="text" id="department" name="department" value="" text-type="name" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">学校：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="school" name="school" value="">
+                                        <input class="form-control required" type="text" id="school" name="school" value="" text-type="name" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">专业：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" type="text" id="major" name="major" value="">
+                                        <input class="form-control required" type="text" id="major" name="major" value="" text-type="name" maxlength="20">
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
@@ -212,30 +173,32 @@
                                     </div>
                                 </div>
                                 <script>
+                                    var bgaddcount = 0;
                                     function bgadd() {
                                         var html ='';
                                         html ='<div style="background: none;border-bottom:1px solid #ddd;padding-bottom: 10px;padding-top:10px" class="panel-body3 bdmsg">' +
                                             '<div class="form-group">' +
                                             '<label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>' +
                                             '<div class="col-sm-9">' +
-                                            '<input class="form-control text-center timerinput required enter_time" data-name="enter_time" id="workyearFrom"  type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;">->' +
-                                            '<input class="form-control text-center timerinput required out_time" data-name="out_time" id="workyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;2038-01-01&quot;})"  readonly="readonly" name="workExp[endtime][]" style="height: 32px;">' +
+                                            '<input class="form-control text-center timerinput required enter_time" data-name="enter_time"   type="text" placeholder="年-月" id="workenter'+bgaddcount+'" data-type="start" onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,maxDate:&quot;#F{$dp.$D(workout'+bgaddcount+')}&quot;})" readonly="readonly" text-type="name" name="intime'+bgaddcount+'" style="height: 32px;">->' +
+                                            '<input class="form-control text-center timerinput required out_time" data-name="out_time"  type="text" placeholder="年-月"  id="workout'+bgaddcount+'" data-type="end"  onfocus="WdatePicker({dateFmt:&quot;yyyy-MM&quot;,minDate:&quot;#F{$dp.$D(workenter'+bgaddcount+')}&quot;})"  readonly="readonly" text-type="name" name="outtime'+bgaddcount+'" style="height: 32px;">' +
                                             '</div>' +
                                             '</div>' +
-                                            '<div class="form-group" > <label class="col-sm-2 control-label">公司名称<span class="text-danger">*</span></label> <div class="col-sm-9"> <input class="form-control required company_name"  data-name="company_name" type="text" id="companyName" name="workExp[company][]"/> </div> </div>' +
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">职位<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required position" data-name="position" type="text" id="jobPosition" name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">证明人姓名<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required witness" data-name="witness" type="text"  name="workExp[jobPosition][]"> </div> <label class="col-sm-2 control-label ">与背调人关系<span class="text-danger"></span></label> <div class="col-sm-4"> <input class="form-control witness_add" data-name="witness_add" type="text" id="depart" name="workExp[depart][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人电话<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required tel" data-name="tel" type="text" name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人地址<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required adress" data-name="adress" type="text" name="workExp[jobPosition][]"> </div> </div>'+
+                                            '<div class="form-group" > <label class="col-sm-2 control-label">公司名称<span class="text-danger">*</span></label> <div class="col-sm-9"> <input maxlength="20" class="form-control required company_name"  data-name="company_name" type="text" id="companyName" text-type="name" name="companyName'+bgaddcount+'" maxlength="30" /> </div> </div>' +
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">职位<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="20" class="form-control required position" data-name="position" type="text" id="jobPosition" text-type="name" name="jobPosition'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">证明人姓名<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="12" class="form-control required witness" data-name="witness" type="text" text-type="name"  name="witness'+bgaddcount+'" maxlength="12" > </div> <label class="col-sm-2 control-label ">与背调人关系<span class="text-danger" >*</span></label> <div class="col-sm-4"> <input class="form-control witness_add required" data-name="witness_add" type="text" id="depart" text-type="name" name="guanxi'+bgaddcount+'"> </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人电话<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="11" class="form-control required tel" data-name="tel" type="text" text-type="name" name="tel'+bgaddcount+'" maxlength="11" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">联系人地址<span class="text-danger">*</span></label> <div class="col-sm-9"> <input maxlength="30" class="form-control required adress" data-name="adress" type="text" text-type="name" name="address'+bgaddcount+'" maxlength="50" > </div> </div>'+
                                             '<div class="form-group"> <label class="col-sm-3 control-label">背调者在职期间工作情况：</label> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">工作表现<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required work_performance" data-name="work_performance" type="text"  name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">优缺点<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required bz" data-name="bz" type="text" name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">离职原因<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required reasons" data-name="reasons" type="text" name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">健康状况和不良记录<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required health" data-name="health" type="text" name="workExp[jobPosition][]"> </div> </div>'+
-                                            '<div class="form-group"> <label class="col-sm-2 control-label">薪资<span class="text-danger">*</span></label> <div class="col-sm-3"> <input class="form-control required salary" data-name="salary" type="text" name="workExp[jobPosition][]"> </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">工作表现<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="40" class="form-control required work_performance" data-name="work_performance" type="text" text-type="name"  name="performance'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">优缺点<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="40" class="form-control required bz" data-name="bz" type="text" text-type="name" name="yqd'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">离职原因<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="40" class="form-control required reasons" data-name="reasons" text-type="name" type="text" name="reason'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">健康状况和不良记录<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="40" class="form-control required health" data-name="health" text-type="name" type="text" name="jl'+bgaddcount+'" maxlength="30" > </div> </div>'+
+                                            '<div class="form-group"> <label class="col-sm-2 control-label">薪资<span class="text-danger">*</span></label> <div class="col-sm-3"> <input maxlength="20" class="form-control required salary" data-name="salary" type="text" text-type="name" name="xz'+bgaddcount+'" maxlength="30" > </div> </div>'+
                                             '<button class="btn col-sm-offset-2 btn-danger btn-xs del" onclick="del(this)" type="button">删除</button>'+
                                             '</div>';
                                         $(".panel-footer").before(html);
+                                        bgaddcount++;
                                     }
                                 </script>
                                 <volist name="field_list['data']" id="vo" key="key">
@@ -340,60 +303,88 @@
         $(data).parent().remove();
     }
     $(document).ready(function(){
-        $('#bgsave').off().on("click",function(){
-            var name = $("#name").val().trim();
-            var industry = $("#industry").val().trim();
-            var department = $("#department").val().trim();
-            var school= $("#school").val().trim();
-            var major=$("#major").val().trim();
-            var education = $("#education").val().trim();
-            var data = {"s_name":name,"industry":industry,"department":department,"school":school,"major":major,"education":education};
-            var bgmsgs = new Array();
-            $(".panel-body3").each(function () {
-                var bgmsg ={};
-                $(this).children("div").each(function () {
-                    $(this).children("div").children("input").each(function () {
-                        if($(this).val()) {
-                            bgmsg[$(this).attr("data-name")] = $(this).val().trim();
-                        }else{
-                            return false;
-                            alert_crm("请输入完整信息！");
-                        }
-                    })
-                });
-                if(JSON.stringify(bgmsg) != "{}"){
-                    if($(this).attr("data-id")){
-                        bgmsg['id']=$(this).attr("data-id");
-                        bgmsgs.push(bgmsg);
-                    }else{
-                        bgmsgs.push(bgmsg);
-                    }
+       /* $("input[type='text']").on('change',function () {
+           if($(this).css("display")!='none'){
+                var type = $(this).attr('text-type');
+                var text = $(this).val();
+                var obj = $(this);
+                var name = $(this).attr('name');
+                obj.parent().find("span").remove();
+                const error = '<span style="color: #cc5965;font-weight: 700;position: relative;top: -1px;font-size: 14px;margin-bottom: 5px;">请输入正确格式</span>';
+               if(checkTextInput(text,type)!=true){
+                    obj.css("border","1px dotted #cc5965");
+                    obj.after(error);
                 }else{
-                    return false;
-                }
-            });
-            if(JSON.stringify(bgmsgs) != "{}"){
-                data.bgmsgs = bgmsgs;
-            }
-            if(name && industry && department && school && major &&education){
-                $.ajax({
-                    url:"/index.php?m=background&a=add",
-                    type:"post",
-                    async:false,
-                    dataType:"json",
-                    data:data,
-                    success:function (success) {
-                        if(success.status){
-                            alert_crm("提交成功！");
-                            setTimeout(function () {
-                                window.location.href="/index.php?m=background&a=index";
-                            },1000)
+                   obj.parent().find("span").remove();
+                   obj.css("border","1px solid #d8e3ef");
+               }
+           }
+        });*/
+        $('#bgsave').off().on("click",function(){
+            var goon = isNull();
+            if(goon==0){
+                var name = $("#name").val().trim();
+                var industry = $("#industry").val().trim();
+                var department = $("#department").val().trim();
+                var school= $("#school").val().trim();
+                var major=$("#major").val().trim();
+                var education = $("#education").val().trim();
+                var data = {"s_name":name,"industry":industry,"department":department,"school":school,"major":major,"education":education};
+                var bgmsgs = new Array();
+                $(".panel-body3").each(function () {
+                    var bgmsg ={};
+                    $(this).children("div").each(function () {
+                        $(this).children("div").children("input").each(function () {
+                            if($(this).val()) {
+                                bgmsg[$(this).attr("data-name")] = $(this).val().trim();
+                            }else{
+                                return false;
+                                alert_crm("请输入完整信息！");
+                            }
+                        })
+                    });
+                    if(JSON.stringify(bgmsg) != "{}"){
+                        if($(this).attr("data-id")){
+                            bgmsg['id']=$(this).attr("data-id");
+                            bgmsgs.push(bgmsg);
+                        }else{
+                            bgmsgs.push(bgmsg);
                         }
-                    },
-                    error:function (error) {
-                        alert_crm("提交失败！");
+                    }else{
+                        return false;
                     }
                 });
+                if(JSON.stringify(bgmsgs) != "{}"){
+                    data.bgmsgs = bgmsgs;
+                }
+                if(name && industry && department && school && major &&education){
+                    $.ajax({
+                        url:"/index.php?m=background&a=add",
+                        type:"post",
+                        async:false,
+                        dataType:"json",
+                        data:data,
+                        success:function (success) {
+                            if(success.status){
+                                swal({
+                                    title:'保存成功',
+                                    text:'点击确定返回上一页',
+                                    type:"success",
+                                    confirmButtonText: "确定"
+                                },function (isConfirm) {
+                                    if(isConfirm){
+                                        window.location.href="/index.php?m=background&a=index";
+                                    }
+                                });
+                            }
+                        },
+                        error:function (error) {
+                            alert_crm("提交失败！");
+                        }
+                    });
+                }
+            }else{
+                /*alert_crm("请输入完整信息！");*/
             }
         });
         $(document).on("click",".btnclosee",function (event) {
