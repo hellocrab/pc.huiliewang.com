@@ -169,10 +169,10 @@ $(function(){
 										</span>
 										<select class="form-control" name="pro_type" id="pro_type" style="margin:0px 10px;width:150px;">
 											<option value="">--请选择项目类型--</option>
-											<option value="面试快">面试快</option>
-											<option value="入职快">入职快</option>
-											<option value="传统项目">传统项目</option>
-											<option value="其他">其他</option>
+											<option value="1">面试快</option>
+											<option value="2">入职快</option>
+											<option value="3">传统项目</option>
+											<option value="5">其他</option>
 										</select>
 										<select class="form-control" name="status_id" id="status_id" style="margin:0px 10px;width:150px;">
 											<option value="">--请选择--</option>
@@ -302,11 +302,11 @@ $(function(){
 																</if>
 															<else />
                                                                 <if  condition="$v['field'] eq 'pro_type'">
-                                                                    <if condition="$vo['pro_type'] eq '面试快'">
+                                                                    <if condition="$vo['pro_type'] eq '1'">
                                                                         <span class="label label-success">{$vo[$v['field']]}</span>
-                                                                        <elseif condition="$vo['pro_type'] eq '入职快'"/>
+                                                                        <elseif condition="$vo['pro_type'] eq '2'"/>
                                                                         <span class="label label-danger">{$vo[$v['field']]}</span>
-                                                                        <elseif condition="$vo['pro_type'] eq '传统项目'"/>
+                                                                        <elseif condition="$vo['pro_type'] eq '3'"/>
                                                                         <span class="label label-black">{$vo[$v['field']]}</span>
                                                                         <else/>
                                                                         <span class="label label-warning">其他</span>

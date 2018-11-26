@@ -75,11 +75,13 @@
                         <label class="col-sm-2 control-label">项目类型</label>
                         <div class="col-sm-4">
                             <p class="form-p color-a-edit">
-                                <if condition="$business_info['pro_type'] eq '面试快'">
+                                <if condition="$business_info['pro_type'] eq '1'">
                                     <span class="label label-success">{$business_info['pro_type']}</span>
-                                    <elseif condition="$business_info['pro_type'] eq '入职快'"/>
+                                    <elseif condition="$business_info['pro_type'] eq '2'"/>
                                     <span class="label label-danger">{$business_info['pro_type']}</span>
-                                    <elseif condition="$business_info['pro_type'] eq '传统项目'"/>
+                                    <elseif condition="$business_info['pro_type'] eq '3'"/>
+                                    <span class="label label-black">{$business_info['pro_type']}</span>
+                                    <elseif condition="$business_info['pro_type'] eq '4'"/>
                                     <span class="label label-black">{$business_info['pro_type']}</span>
                                     <else/>
                                     <span class="label label-warning">其他</span>
