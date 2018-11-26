@@ -25,14 +25,14 @@
                     <th colspan="2"><span class="fa fa-th-list">&nbsp;项目回款详细信息</span></th>
                 </tr>
                 <tr>
-                    <td class="col-md-2">对应客户:</td>
-                    <td class="col-md-4">{$plan.customer}</td>
+                    <td>对应项目:</td>
+                    <td>{$plan.business}</td>
                     <td class="col-md-2">负责人:</td>
                     <td class="col-md-4">{$business.user_name}</td>
                 </tr>
                 <tr>
-                    <td>对应项目:</td>
-                    <td>{$plan.business}</td>
+                    <td class="col-md-2">对应客户:</td>
+                    <td class="col-md-4">{$plan.customer}</td>
                     <td>所属部门:</td>
                     <td>{$business.department_name}</td>
                 </tr>
@@ -108,21 +108,20 @@
                         <select id="person" name="person" class="form-control checkit" rel="require" rell="负责人" onchange="personChanged();">
                             <option value=" ">--负责人--</option>
                             <volist name="user" id="vo">
-                                <option value="{$vo.user_id}">{$vo.name}</option>
+                                <option value="{$vo.user_id}" <if condition ="$business['user_name'] eq $vo['name']">selected="selected"</if>>{$vo.name}</option>
                             </volist>
                         </select>
-                        <!--<input id="person" class="form-control checkit" rel="require" rell="负责人" name="person">-->
                         <div class="error_msg" id="personTip"></div>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-2">对应客户:</td>
                     <td class="col-md-4">
-                        <input id="customer" class="form-control" readonly="readonly"  name="customer" value="{$plan.business}">
+                        <input id="customer" class="form-control" readonly="readonly"  name="customer" value="{$plan.customer}">
                     </td>
                     <td>所属部门:</td>
                     <td>
-                        <input id="dename" class="form-control" readonly="readonly" name="department">
+                        <input id="dename" class="form-control" readonly="readonly" name="department" value="{$business.department_name}">
                     </td>
                 </tr>
                 <tr >
@@ -133,6 +132,12 @@
                     <td id="nums">{$plan.nums}</td>
                     <td>计划回款总金额:</td>
                     <td><input id="total" class="form-control checkit" rel="require" onblur="checkTmoney();" rell="客户" name="total"><div class="error_msg" id="totalTip"></div></td>
+                </tr>
+                <tr >
+                    <td>实际回收期次:</td>
+                    <td>0</td>
+                    <td>已回款:</td>
+                    <td>0</td>
                 </tr>
                 <tr>
                     <td>当前期次:</td>
