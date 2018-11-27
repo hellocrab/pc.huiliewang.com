@@ -18,7 +18,7 @@
     <form id="ad_Form" class="form-horizontal m-t" method="post">
         <div id="planshow" class="col-md-12" style="display: block;">
             <input type="hidden" name="business_id" value="{$business.business_id}"/>
-            <input type="hidden" name="nums" value="{$plan.nums}">
+            <input type="hidden" id="pnums" name="nums" value="{$plan.nums}">
             <input id="add_nums" type="hidden" name="add_nums" value="{$plan.nums}">
             <table class="table form-inline" >
                 <tr>
@@ -95,23 +95,21 @@
                 <tr>
                     <td>对应项目:</td>
                     <td>
-                        <select id="contract" class="form-control checkit" rel="require" rell="合同" name="contract"  onchange="contractChanged();">
+                        <select name="contract"  onchange="contractChanged();">
                             <option value=" ">--对应项目--</option>
                             <volist name="business_all" id="vo">
                                 <option value="{$vo['business_id']}" <if condition ="$plan['business'] eq $vo['name']">selected="selected"</if>>{$vo['name']}</option>
                             </volist>
                         </select>
-                        <div class="error_msg" id="contractTip"></div>
                     </td>
                     <td class="col-md-2">负责人:</td>
                     <td class="col-md-4">
-                        <select id="person" name="person" class="form-control checkit" rel="require" rell="负责人" onchange="personChanged();">
+                        <select name="person"  onchange="personChanged();">
                             <option value=" ">--负责人--</option>
                             <volist name="user" id="vo">
                                 <option value="{$vo.user_id}" <if condition ="$business['user_name'] eq $vo['name']">selected="selected"</if>>{$vo.name}</option>
                             </volist>
                         </select>
-                        <div class="error_msg" id="personTip"></div>
                     </td>
                 </tr>
                 <tr>
@@ -131,7 +129,7 @@
                     <td>回款期次:</td>
                     <td id="nums">{$plan.nums}</td>
                     <td>计划回款总金额:</td>
-                    <td><input id="total" class="form-control checkit" rel="require" onblur="checkTmoney();" rell="总金额" name="total" value="{$plan.total}"><div class="error_msg" id="totalTip"></div></td>
+                    <td><input id="total" onblur="checkTmoney();" name="total" value="{$plan.total}"><div id="totalTip"></div></td>
                 </tr>
                 <tr >
                     <td>实际回收期次:</td>
@@ -162,7 +160,7 @@
                         <td><button onclick="addedit();" type="button" class="btn btn-white">+</button></td>
                         <th class="eachnum">{$vo.num}</th>
                         <th class="tmoney">{$vo.money}</th>
-                        <th>{$vo.property}</th><input name='property{$k}' type='hidden' value="">
+                        <th>{$vo.property}</th><input name='property{$k}' type='hidden' value="{$vo.property}">
                         <th>{$vo.ontime}</th>
                         <th>{$vo.remark}</th>
                     </tr>
@@ -186,7 +184,7 @@
             });
             if(sum>planMoney) $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额应大于各期次金额总和</span>");
             else {
-                $("#totalTip").html("");
+                $("#totalTip").html(" ");
                 $(".tmoney").each(function () {
                     var tmo = Number($(this).html());
                     $(this).next().html(parseFloat(tmo/planMoney*100).toFixed(2)+"%");
@@ -271,7 +269,14 @@
                                     },function (isConfirm) {
                                         if(isConfirm){
                                             obj1.parentNode.parentNode.remove();
-                                            $(".eachnum").html(i+1);
+                                            num--;
+                                            $("#pnums").val(num);
+                                            $("#nums").html(Number($("#nums").html())-1);
+                                            $(".eachnum").each(function (i) {
+                                                $(this).html(i+1);
+                                                $(this).next().next().next().attr('name','property'+(i+1));
+                                                $("#add_nums").val(num);
+                                            });
                                         }
                                     });
                                 } else {
@@ -344,9 +349,8 @@
             $("#planshow").css('display','block');
         });
         $("#adbtn").click(function(){
-            // var bname = $("#business option:selected").html();
-            // $("#businessname").val(bname);
             /*******/
+            //代码逻辑运算清理
             var adbtn = true;
             var planMoney = Number($("#total").val());
             if(planMoney != 0 ){
@@ -360,14 +364,15 @@
                     sum += test;
                 });
                 if(sum>planMoney) {
-                    $("#total").next().remove();
-                    $("#total").after("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额应大于各期次金额总和</span>");
+                    $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额应大于各期次金额总和</span>");
                     adbtn = false;
                 }
                 else {
-                    $("#total").next().html("");
+                    $("#totalTip").html("");
                 }
-            }else {$("#total").after("<span style='color:#FF0011;'>请先填写计划金额！</span>"); adbtn = false;}
+            }
+            else
+                {$("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额！</span>"); adbtn = false;}
             /***/
             var time_flag = true;
             $(".required").each(function () {
@@ -375,7 +380,7 @@
                 if(time_html == '') time_flag = false;
             });
             if(!time_flag) $("#lmsg").css('display','block'); else $("#lmsg").css('display','none');
-            if(input_msg && before_submit() && time_flag && adbtn){
+            if( before_submit() && time_flag && adbtn){
                 $.ajax({
                     type: "POST",
                     url: "{:U('plan_edit')}",
@@ -384,8 +389,8 @@
                     success: function(data) {
                         if(data.status == 1){
                             swal({
-                                title: "添加成功！",
-                                text: "跳转中!",
+                                title: "保存成功！",
+                                text: "自动刷新中...",
                                 type: "success"
                             });
                             $('#Modal').modal('hide');
@@ -419,7 +424,7 @@
 <div id="baocun" class="modal-footer" style="padding:8px 22px;display: none;">
     <div class='col-sm-12' id='lmsg' style='color: red;display: none;'>请补全期次金额或时间!</div>
     <button type="button" id="adbtn" class="btn btn-primary">保存</button>
-    <button type="button" id="back" class="btn btn-white" >取消</button>
+    <button type="button" id="back" class="btn btn-white" >返回</button>
 </div>
 <div id="bianji" class="modal-footer" style="padding:8px 22px;display: block;">
     <button type="button" id="edit" class="btn btn-primary">编辑</button>

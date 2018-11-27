@@ -104,7 +104,6 @@ class ReturnAction extends Action
         }
         $business_all =  $d_v_business->select();
         $user = M("user") -> select();
-//        dump($user);exit;
         $this->assign('user',$user);
         $this->assign('business_all',$business_all);
         $this->assign('business',$business);
@@ -122,10 +121,11 @@ class ReturnAction extends Action
     }
     //删除期次
     public function delete(){
+//        dump($_POST);exit;
         $period_id = $_POST['period_id'];
         $plan_id = $_POST['plan_id'];
         $nums = $_POST['nums'];
-        M("payment_plan")->where(array('Id'=>intval($plan_id)))->save(array('nums'=>intval($nums)-1));
+        M("payment_plan")->where(array('Id'=>intval($plan_id)))->save(array('nums'=>(intval($nums)-1)));
         M("payment_planperiod")->where(array('Id'=>intval($period_id)))->delete();
         $update = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
         foreach ($update as $k => $v){
@@ -136,6 +136,7 @@ class ReturnAction extends Action
     }
     // 回款计划的编辑
     public function plan_edit(){
+//        dump($_POST);exit;
         $plan_id = intval($_POST['plan_id']);
         $customer = $_POST['customer'];
         $person = $_POST['person'];
