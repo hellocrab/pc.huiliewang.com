@@ -865,6 +865,7 @@ class BusinessAction extends Action {
             //自定义字段
             $this->field_list = field_list_html('edit', 'business', $business_info);
             $this->alert = parseAlert();
+            $this->assign('pro_type', $this->pro_type);
             $this->display();
         }
     }
