@@ -1,8 +1,19 @@
 <?php
-if (strpos($_SERVER['SERVER_ADDR'], '192.168.116.27') !== FALSE) {//测试环境
+
+if (strpos($_SERVER['SERVER_ADDR'], '192.168.116.27') !== FALSE) {//测试环境1
     return array(
         'DB_TYPE' => 'mysqli',
         'DB_HOST' => 'localhost',
+        'DB_PORT' => '3306',
+        'DB_NAME' => 'pinping',
+        'DB_USER' => 'root',
+        'DB_PWD' => '123456',
+        'DB_PREFIX' => 'mx_',
+    );
+} else if (strpos($_SERVER['SERVER_ADDR'], '192.168.116.31') !== FALSE) {//测试环境2
+    return array(
+        'DB_TYPE' => 'mysqli',
+        'DB_HOST' => '192.168.116.27',
         'DB_PORT' => '3306',
         'DB_NAME' => 'pinping',
         'DB_USER' => 'root',
