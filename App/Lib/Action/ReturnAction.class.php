@@ -38,8 +38,10 @@ class ReturnAction extends Action
         $b_id = $_POST['business_id'];
         $customer_id = M("business")->where(array('business_id'=>intval($b_id)))->getField('customer_id');
         $customer_name = M('customer')->where(array('customer_id'=>intval($customer_id) ))->getField('name');
+        $nums = M("payment_plan")->where(array('customer_id'=>intval($customer_id),'business_id'=>intval($b_id)))->getField('nums');
+        $data['nums'] = intval($nums);
         $data['business_id']= $b_id;
-        $data['customer_id']=$customer_id;
+        $data['customer_id']= $customer_id;
         $data['customer_name'] = $customer_name;
         echo json_encode($data);
     }
@@ -104,6 +106,21 @@ class ReturnAction extends Action
         }
         $business_all =  $d_v_business->select();
         $user = M("user") -> select();
+        //已回款金额、状态、付款方式、回款时间计算
+        foreach ($periods as $k=>$v) {
+            $record = M("payment_record")->where(array('periodplan_id'=>intval($v['Id'])))->select();
+            $total = 0;
+            $method = '';$time = '';
+            foreach ($record as $k1 => $v1){
+                $total += floatval($v1['money']);
+                $method = $v1['paymethod'];
+                $time = $v1['paytime_modify'];
+            }
+            $periods[$k]['total'] = $total;
+            $periods[$k]['status'] = $total<floatval($v['money']) ? '未完成' : "完成";
+            $periods[$k]['method'] = $method;
+            $periods[$k]['paytime'] = $time;
+        }
         $this->assign('user',$user);
         $this->assign('business_all',$business_all);
         $this->assign('business',$business);
@@ -136,12 +153,10 @@ class ReturnAction extends Action
     }
     // 回款计划的编辑
     public function plan_edit(){
-//        dump($_POST);exit;
         $plan_id = intval($_POST['plan_id']);
         $customer = $_POST['customer'];
         $person = $_POST['person'];
         $contract = intval($_POST['contract']);
-        $department = $_POST['department'];
         $total = intval($_POST['total']); //计划总金额
         $nums = intval($_POST['nums']);
         $add_num = intval($_POST['add_nums']);
@@ -153,7 +168,8 @@ class ReturnAction extends Action
         );
 
         M("payment_plan")->where(array('Id'=>$plan_id))->save($data);
-
+        $business_id = M("payment_plan")->where(array('Id'=>$plan_id))->getField("business_id");
+        M("business")->where(array('business_id'=>intval($business_id)))->save(array('creator_role_id'=>intval($person)));
         if($add_num>$nums)
         for($i=($nums+1);$i>2&&$i<=$add_num;$i++){
             $data1 = array(
@@ -264,6 +280,16 @@ class ReturnAction extends Action
         $data = M("payment_plan")->Page($p.','.$listrows)->select();
         foreach ($data as $k => $v){
             $time = M("payment_planperiod")->where(array('plan_id'=>intval($v['Id']),'num'=>$v['nums']))->getField('ontime');
+            $periodplan = M("payment_planperiod")->where(array('plan_id'=>intval($v['Id'])))->select();
+            $e_total = 0;
+            foreach ($periodplan as $k1=>$v1){
+                $money = M('payment_record')->where(array('periodplan_id'=>$v1['Id']))->select();
+                foreach ($money as $k2 => $v2){
+                    $e_total += floatval($v2['money']);
+                }
+            }
+            $data[$k]['e_total'] = $e_total;
+            $data[$k]['status'] = $e_total<floatval($v['total']) ? '未完成' : '完成';
             $data[$k]['ontime'] = $time;
         }
         $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
@@ -400,12 +426,158 @@ class ReturnAction extends Action
             $start_time = strtotime(date('Y-m-01 00:00:00'));
             $end_time = strtotime(date('Y-m-d H:i:s'));
         }
-
         $this->start_time = $start_time;
         $this->end_time = $end_time;
         $this->start_date = date('Y-m-d',$start_time);
         $this->end_date = date('Y-m-d',$end_time);
     }
+
+    /**
+     * 回款记录
+     */
+    public function record_index(){
+
+        //分页
+        if($_GET['listrows']){
+            $listrows = intval($_GET['listrows']);
+            $params[] = "listrows=" . intval($_GET['listrows']);
+        }else{
+            $listrows = 15;
+            $params[] = "listrows=15";
+        }
+        $this->listrows = $listrows;
+        import('@.ORG.Page');// 导入分页类
+        $count =M("payment_record")->count() ? M("payment_record")->count() : '0';
+        $p_num = ceil($count/$listrows);
+        $p = isset($_GET['p'])?$_GET['p']:1;
+        if($p_num<$p){
+            $p = $p_num;
+        }
+        $data = M("payment_record")->Page($p.','.$listrows)->select();
+        foreach ($data as $k => $v){
+            $plan_id = M("payment_planperiod")->where(array('Id'=>intval($v['periodplan_id'])))->getField('plan_id');
+            $data[$k]['nums'] = M("payment_planperiod")->where(array('Id'=>intval($v['periodplan_id'])))->getField('num');
+            $data[$k]['customer'] = M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('customer');
+            $data[$k]['business'] = M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('business');
+        }
+        $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
+        $show = $Page->show();// 显示分页栏
+        $this->assign('page',$show);// 赋值分页输出
+        $this->assign('plist',$data);
+        $this->display();
+    }
+
+    //回款记录编辑修改
+    public function record_edit(){
+        $data = array(
+            'periodplan_id' => intval($_POST['periodplan_id']),
+            'paytime'=> $_POST['paytime'],
+            'createtime' => $_POST['createtime'],
+            'paytime_modify'=>$_POST['paytime_modify'],
+            'money' => $_POST['money'],
+            'paymethod' => $_POST['paymethod'],
+            'paytype' => intval($_POST['paytype']),
+            'creater' => $_POST['creater'],
+            'receiver' => $_POST['receiver'],
+            'delayed' => intval($_POST['delayed']),
+            'delayeddays' => $_POST['delayeddays'],
+            'remark' => $_POST['remark']
+        );
+        $flag = M("payment_record")->where(array('Id'=>intval($_POST['record_id'])))->save($data);
+        $person = $_POST['person'];
+        $department = $_POST['department'];
+        $period_id = M("payment_record")->where(array('Id'=>intval($_POST['record_id'])))->getField("periodplan_id");
+        $plan_id = M("payment_planperiod")->where(array('Id'=>intval($period_id)))->getField("plan_id");
+        $business_id = M("payment_plan")-> where(array('Id'=>intval($plan_id)))->getField("business_id");
+        $flag1 = M("business")->where(array('business_id'=>intval($business_id)))->save(array('creator_role_id'=>intval($person)));
+        $this->ajaxReturn(1,'success',1);
+    }
+
+    //回款记录编辑页显示
+    public function edit_record(){
+        $periodplan_id = intval($_GET['periodplan_id']);
+        $record_id = intval($_GET['Id']);
+        $record = M("payment_record")->where(array('Id'=>$record_id,'periodplan_id'=>$periodplan_id))->find();
+        $record['num'] = M("payment_planperiod")->where(array('Id'=>$periodplan_id))->getField('num');
+        $plan_id = M("payment_planperiod")->where(array('Id'=>$periodplan_id))->getField('plan_id');
+        $record['customer'] = M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('customer');
+        $record['nums'] = M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('nums');
+        $business_id = intval(M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('business_id'));
+        $d_v_business = D('BusinessView');
+        $business = $d_v_business->where(array('business_id'=>$business_id))->find();
+        $record['business'] = M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('business');
+        switch ($record['paytype']){
+            case '1': $record['paytype'] = '预付款';break;
+            case '2': $record['paytype'] = '首付款';break;
+            case '3': $record['paytype'] = '过保付款';break;
+            case '4': $record['paytype'] = '慧猎系列款';break;
+        }
+        switch ($record['delayed']){
+            case '1':$record['delayed'] = "逾期未完成";break;
+            case '2':$record['delayed'] = "逾期未回款";break;
+            case '3':$record['delayed'] = "逾期已完成";break;
+            case '4':$record['delayed'] = "未逾期";break;
+        }
+        $d_v_business = D('BusinessView');
+        $business_all =  $d_v_business->select();
+        $user = M("user") -> select();
+        $this->assign('user',$user);
+        $this->assign('business_all',$business_all);
+        $this->assign('business',$business);
+        $this->assign('record',$record);
+        $this->display();
+    }
+
+    //汇款记录的删除
+    public function deletePlanPeriod(){
+        $plan_id = $_POST['plan_id'];
+        M("payment_record")->where(array('Id'=>intval($plan_id)))->delete();
+        echo '{"status":"1"}';
+    }
+
+    //回款记录添加
+    public function record_add(){
+        $plan_id = M("payment_plan")->where(array('customer_id'=>intval($_POST['customer_id']),'business_id'=>intval($_POST['business_id'])))->getField('Id');
+        $period_id = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->getField('Id');
+        $plantime = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->getField('ontime');
+
+        $data = array(
+            'periodplan_id'=>intval($period_id),
+            'paytime'=>$_POST['date'],
+            'createtime'=>date("Y-m-d"),
+            'paytime_modify'=>$_POST['date'],
+            'money'=>$_POST['money'],
+            'paymethod'=>$_POST['method'],
+            'paytype'=>intval($_POST['type']),
+            'receiver'=>$_POST['payee'],
+            'delayeddays'=>(strtotime(strtotime($_POST['date'])-$plantime))<=0 ? 0 : (strtotime(strtotime($_POST['date'])-$plantime))/86400,
+            'remark'=>$_POST['remark']
+        );
+        $flag = M("payment_record")->add($data);
+        if(!empty($flag)) {
+            $success = array(
+                'status' => 1,
+                'info' => '添加成功!',
+            );
+            $this->ajaxReturn($success);
+        }
+        else {
+            $error = array(
+                'status'  => 0,
+                'info' => '添加失败!',
+            );
+            $this->ajaxReturn($error);
+        }
+    }
+
+    public function add_record(){
+        //根据权限查找判断
+        $d_v_business = D('BusinessView');
+        $business = $d_v_business->select();
+        $this->assign('business',$business);
+        $this->display();
+    }
+
     //时间插件处理
     public function timePlug(){
         //（计算开始、结束时间距今天的天数）

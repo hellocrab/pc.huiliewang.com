@@ -22,7 +22,7 @@
             <input id="add_nums" type="hidden" name="add_nums" value="{$plan.nums}">
             <table class="table form-inline" >
                 <tr>
-                    <th colspan="2"><span class="fa fa-th-list">&nbsp;项目回款详细信息</span></th>
+                    <th colspan="2"><span class="fa fa-th-list">&nbsp;回款计划详细信息</span></th>
                 </tr>
                 <tr>
                     <td>对应项目:</td>
@@ -76,11 +76,11 @@
                         <th>{$vo.num}</th>
                         <th>{$vo.money}</th>
                         <th>{$vo.property}</th>
-                        <th>{$vo.plan_time}</th>
-                        <th>已回款</th>
-                        <th>{$vo.status}</th>
-                        <th>付款方式</th>
                         <th>{$vo.ontime}</th>
+                        <th>{$vo.total}</th>
+                        <th>{$vo.status}</th>
+                        <th>{$vo.method}</th>
+                        <th>{$vo.plan_time}</th>
                         <th>{$vo.remark}</th>
                     </tr>
                 </volist>
@@ -95,7 +95,7 @@
                 <tr>
                     <td>对应项目:</td>
                     <td>
-                        <select name="contract"  onchange="contractChanged();">
+                        <select name="contract" id="contract" onchange="contractChanged();">
                             <option value=" ">--对应项目--</option>
                             <volist name="business_all" id="vo">
                                 <option value="{$vo['business_id']}" <if condition ="$plan['business'] eq $vo['name']">selected="selected"</if>>{$vo['name']}</option>
@@ -104,7 +104,7 @@
                     </td>
                     <td class="col-md-2">负责人:</td>
                     <td class="col-md-4">
-                        <select name="person"  onchange="personChanged();">
+                        <select name="person" id="person"  onchange="personChanged();">
                             <option value=" ">--负责人--</option>
                             <volist name="user" id="vo">
                                 <option value="{$vo.user_id}" <if condition ="$business['user_name'] eq $vo['name']">selected="selected"</if>>{$vo.name}</option>
@@ -349,8 +349,6 @@
             $("#planshow").css('display','block');
         });
         $("#adbtn").click(function(){
-            /*******/
-            //代码逻辑运算清理
             var adbtn = true;
             var planMoney = Number($("#total").val());
             if(planMoney != 0 ){
@@ -373,7 +371,6 @@
             }
             else
                 {$("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额！</span>"); adbtn = false;}
-            /***/
             var time_flag = true;
             $(".required").each(function () {
                 var time_html = $(this).val();

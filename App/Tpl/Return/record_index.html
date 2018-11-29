@@ -116,21 +116,21 @@
                     </div>
                     <div class="row " id="title-show" >
                         <!--<form class="form-inline" id="" action="" method="get">-->
-                            <!--<ul class="breadcrum pull-right" style="margin-bottom: 0px">-->
-                                <!--<div class="btn-group ">-->
-                                    <!--<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>-->
-                                    <!--</button>-->
-                                    <!--<ul class="dropdown-menu">-->
-                                        <!--<li><a id="import_excel" class="link" href="javascript:void(0);"><i class="fa fa-upload"></i>&nbsp;导入</a></li>-->
-                                        <!--&lt;!&ndash;<li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></li>&ndash;&gt;-->
-                                    <!--</ul>-->
-                                <!--</div>-->
-                            <!--</ul>-->
+                        <!--<ul class="breadcrum pull-right" style="margin-bottom: 0px">-->
+                        <!--<div class="btn-group ">-->
+                        <!--<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>-->
+                        <!--</button>-->
+                        <!--<ul class="dropdown-menu">-->
+                        <!--<li><a id="import_excel" class="link" href="javascript:void(0);"><i class="fa fa-upload"></i>&nbsp;导入</a></li>-->
+                        <!--&lt;!&ndash;<li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></li>&ndash;&gt;-->
+                        <!--</ul>-->
+                        <!--</div>-->
+                        <!--</ul>-->
                         <!--</form>-->
-                        <a href="javascript:void(0);" onclick="add_user(this)" class="btn btn-primary" style="position: relative;float: right;margin-right: 6%;">新增回款计划</a>
+                        <a href="javascript:void(0);" onclick="add_user(this)" class="btn btn-primary" style="position: relative;float: right;margin-right: 6%;">新增回款记录</a>
                         <form id="searchForm" class="form-group" method="get" style="margin-bottom: 0px;">
-                            <input type="hidden" name="m" value="integral" />
-                            <input type="hidden" name="a" value="index" />
+                            <input type="hidden" name="m" value="return" />
+                            <input type="hidden" name="a" value="record_index" />
                             <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
                                 <div class="input-group">
                                     <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="position_info" id="position_info" >
@@ -146,31 +146,9 @@
                                     </select>
                                 </div>
                             </div>
-                            <!--<if condition = "$_GET['dbname'] eq ''">-->
-                                <!--<div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">-->
-                                    <!--<div class="input-group">-->
-                                        <!--<select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="department" id="department" onchange="changeRole()">-->
-                                            <!--<option class="all" value="all">{:L('ALL')}</option>-->
-                                            <!--<volist name="departmentList" id="vo">-->
-                                                <!--<option value="{$vo.department_id}" <if condition="$_GET['department'] eq $vo['department_id']">selected</if>>{$vo.name}</option>-->
-                                            <!--</volist>-->
-                                        <!--</select>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">-->
-                                    <!--<div class="input-group">-->
-                                        <!--<select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="role" id="role" onchange="changeCondition()">-->
-                                            <!--<option class="all" value="all">{:L('ALL')}</option>-->
-                                            <!--<volist name="roleList" id="vo">-->
-                                                <!--<option value="{$vo.role_id}" <if condition="$_GET['role'] eq $vo['role_id']">selected</if>>{$vo.role_name}-{$vo.user_name}</option>-->
-                                            <!--</volist>-->
-                                        <!--</select>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</if>-->
                             <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
                                 <div class="input-group">
-                                    <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="department" id="department" onchange="changeRole()">
+                                    <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="department" id="status" onchange="changeRole()">
                                         <option class="all" value="all">回款状态</option>
                                         <option value="all" >全部</option>
                                         <option value="all" >完成</option>
@@ -179,20 +157,26 @@
                                     </select>
                                 </div>
                             </div>
-                            <!--<div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">-->
-                                <!--<div class="input-group">-->
-                                    <!--<select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="role" id="role" onchange="changeCondition()">-->
-                                        <!--<option class="all" value="all">合同所属部门</option>-->
-                                    <!--</select>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">-->
-                                <!--<div class="input-group">-->
-                                    <!--<select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="role" id="role" onchange="changeCondition()">-->
-                                        <!--<option class="all" value="all">合同负责人</option>-->
-                                    <!--</select>-->
-                                <!--</div>-->
-                            <!--</div>-->
+                            <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
+                                <div class="input-group">
+                                    <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="department" id="department" onchange="changeRole()">
+                                        <option class="all" value="all">合同所属部门</option>
+                                        <volist>
+
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
+                                <div class="input-group">
+                                    <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="department" id="department" onchange="changeRole()">
+                                        <option class="all" value="all">合同负责人</option>
+                                        <volist>
+
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="pull-left" style="margin-left: 20px;">
                                 <button type="submit" id="analytics_search" class="btn btn-primary">立即搜索</button>
                             </div>
@@ -237,31 +221,29 @@
                                                 <td>回款对应项目</td>
                                                 <td>计划回款日期</td>
                                                 <td>回款期次</td>
-                                                <td>计划回款金额</td>
-                                                <td>已回款金额</td>
+                                                <td>回款金额</td>
                                                 <td>对应客户</td>
-                                                <td>回款状态</td>
+                                                <td>更新时间</td>
                                                 <td>删除</td>
                                             </tr>
                                             <tbody>
-                                            <volist name="plist" id="vo">
-                                                <tr class="controls_tr">
-                                                    <td>
-                                                        <div class="checkbox checkbox-primary">
-                                                            <input name="product_id[]" class="check_list" type="checkbox" value="{$vo.business_id}" />
-                                                            <label for=""></label>
-                                                        </div>
-                                                    </td>
-                                                    <td data-id=""><a href="javascript:void(0);" onclick="edit_plan('{$vo.business_id}','{$vo.Id}');">{$vo.business}</a></td>
-                                                    <td>{$vo.ontime}</td>
-                                                    <td>{$vo.nums}</td>
-                                                    <td>{$vo.total}</td>
-                                                    <td>{$vo.e_total}</td>
-                                                    <td>{$vo.customer}</td>
-                                                    <td>{$vo.status}</td>
-                                                    <td><a href="javascript:void(0);" onclick="deleteBusiness('{$vo.Id}')">删除</a></td>
-                                                </tr>
-                                            </volist>
+                                                <volist name="plist" id="vo">
+                                                    <tr class="controls_tr">
+                                                        <td>
+                                                            <div class="checkbox checkbox-primary">
+                                                                <input name="product_id[]" class="check_list" type="checkbox" value="{$vo.business_id}" />
+                                                                <label for=""></label>
+                                                            </div>
+                                                        </td>
+                                                        <td data-id=""><a href="javascript:void(0);" onclick="edit_plan('{$vo.periodplan_id}','{$vo.Id}');">{$vo.business}</a></td>
+                                                        <td>{$vo.paytime}</td>
+                                                        <td>{$vo.nums}</td>
+                                                        <td>{$vo.money}</td>
+                                                        <td>{$vo.customer}</td>
+                                                        <td>{$vo.paytime_modify}</td>
+                                                        <td><a href="javascript:void(0);" onclick="deleteBusiness('{$vo.Id}')">删除</a></td>
+                                                    </tr>
+                                                </volist>
                                             <tbody>
                                         </if>
                                     </table>
@@ -303,7 +285,7 @@
 </div>
 <!-- 模态框 -->
 <div class="modal inmodal fade" id="Modal" tabindex="1" style="overflow:auto; border:1px solid #000000;" role="dialog" >
-    <div class="modal-dialog modal-md" style="width:1000px;">
+    <div class="modal-dialog modal-md" style="width:700px;">
         <div class="modal-content" id="dep_modal">
 
         </div>
@@ -312,6 +294,7 @@
 <script src="__PUBLIC__/js/images-loaded.min.js" type="text/javascript"></script>
 <script src="__PUBLIC__/js/litebox.min.js" type="text/javascript"></script>
 <link href="__PUBLIC__/css/litebox.css" rel="stylesheet">
+
 <script type="text/javascript">
     /**删除回款项目计划*/
     function deleteBusiness(obj) {
@@ -329,7 +312,7 @@
             function(isConfirm){
                 if (isConfirm) {
                     $.ajax({
-                        url:"/index.php?m=return&a=deletePlan",
+                        url:"/index.php?m=return&a=deletePlanPeriod",
                         type:"post",
                         async:true,
                         data:{ plan_id :obj},
@@ -370,19 +353,19 @@
     });
     /*让复选框默认取消选择*/
     $(':checkbox').prop('checked', false);
-    /*增添用户计划*/
+    /*增添回款记录*/
     function add_user(obj){
         $("#dep_modal").parent().removeClass("modal-lg").addClass("modal-md");
-        var url = "{:U('return/add_new')}";
+        var url = "{:U('return/add_record')}";
         $('#Modal').modal('show');
         $('#dep_modal').load(url);
     }
     /*编辑计划*/
     function edit_plan (obj,obj1){
         $("#dep_modal").parent().removeClass("modal-lg").addClass("modal-md");
-        var url = "{:U('return/edit_plan')}";
+        var url = "{:U('return/edit_record')}";
         $('#Modal').modal('show');
-        $('#dep_modal').load(url+"&plan_id="+obj+"&plan="+obj1);
+        $('#dep_modal').load(url+"&periodplan_id="+obj+"&Id="+obj1);
     }
     $(".controls_tr").mouseenter(function(){
         $(this).find(".controls").show();
@@ -791,7 +774,6 @@
         box-shadow: rgb(187, 187, 187) -1px 10px 10px;
         border: 2px solid rgb(238, 238, 238);
     }
-
     #right-sidebar-log{
         width: 60%;
         right: -60%;
