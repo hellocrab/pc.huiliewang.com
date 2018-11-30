@@ -46,14 +46,14 @@
                     <td>{$plan.total}</td>
                 </tr>
                 <tr >
-                    <td>实际回收期次:</td>
-                    <td>0</td>
+                    <td>实际回收笔数:</td>
+                    <td>{$plan.total_count}</td>
                     <td>已回款:</td>
-                    <td>0</td>
+                    <td>{$plan.money_backed}元</td>
                 </tr>
                 <tr>
                     <td>当前期次:</td>
-                    <td>0</td>
+                    <td>{$plan.backed_num}</td>
                     <td>实际回款状态:</td>
                     <td>逾期未完成</td>
                 </tr>
@@ -80,7 +80,7 @@
                         <th>{$vo.total}</th>
                         <th>{$vo.status}</th>
                         <th>{$vo.method}</th>
-                        <th>{$vo.plan_time}</th>
+                        <th>{$vo.paytime}</th>
                         <th>{$vo.remark}</th>
                     </tr>
                 </volist>
@@ -132,14 +132,14 @@
                     <td><input id="total" onblur="checkTmoney();" name="total" value="{$plan.total}"><div id="totalTip"></div></td>
                 </tr>
                 <tr >
-                    <td>实际回收期次:</td>
-                    <td>0</td>
+                    <td>实际回收笔数:</td>
+                    <td>{$plan.total_count}</td>
                     <td>已回款:</td>
-                    <td>0</td>
+                    <td>{$plan.money_backed}元</td>
                 </tr>
                 <tr>
                     <td>当前期次:</td>
-                    <td>0</td>
+                    <td>{$plan.backed_num}</td>
                     <td>实际回款状态:</td>
                     <td>逾期未完成</td>
                 </tr>

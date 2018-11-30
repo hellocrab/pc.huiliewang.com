@@ -484,6 +484,7 @@
 					<?php
 							elseif($module_name == 'train' || $module_name == 'teacher'): ?>
 					<li <if condition = "$module_name eq 'finance'">class="active"</if>><a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;课程管理</a></li>
+					<li <if condition = "$module_name eq 'finance'">class="active"</if>><a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;课程管理</a></li>
 					<li <if condition = "$module_name eq 'finance'">class="active"</if>><a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;考试管理</a></li>
 					<li <if condition = "$module_name eq 'teacher'">class="active"</if>><a href="{:U('teacher/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;教师后台</a></li>
 					<?php elseif($module_name == 'finance' || $module_name == 'invoice'): ?>

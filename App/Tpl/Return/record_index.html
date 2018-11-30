@@ -157,26 +157,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
-                                <div class="input-group">
-                                    <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="department" id="department" onchange="changeRole()">
-                                        <option class="all" value="all">合同所属部门</option>
-                                        <volist>
-
-                                        </volist>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
-                                <div class="input-group">
-                                    <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="department" id="department" onchange="changeRole()">
-                                        <option class="all" value="all">合同负责人</option>
-                                        <volist>
-
-                                        </volist>
-                                    </select>
-                                </div>
-                            </div>
                             <div class="pull-left" style="margin-left: 20px;">
                                 <button type="submit" id="analytics_search" class="btn btn-primary">立即搜索</button>
                             </div>
@@ -236,7 +216,7 @@
                                                             </div>
                                                         </td>
                                                         <td data-id=""><a href="javascript:void(0);" onclick="edit_plan('{$vo.periodplan_id}','{$vo.Id}');">{$vo.business}</a></td>
-                                                        <td>{$vo.paytime}</td>
+                                                        <td>{$vo.ontime}</td>
                                                         <td>{$vo.nums}</td>
                                                         <td>{$vo.money}</td>
                                                         <td>{$vo.customer}</td>

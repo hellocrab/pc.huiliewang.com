@@ -22,7 +22,7 @@
                 <div class="col-sm-1">
                 </div>
                 <div class="col-sm-7">
-                    <select name="business_id" id="business" class="form-control checkit" rel="require" rell="对应项目" onchange="contractChanged();">
+                    <select name="business_id" id="business" class="form-control checkit" rell="对应项目" onchange="contractChanged();">
                         <option value="">--回款对应项目--</option>
                         <volist name="business" id="vo">
                             <option value="{$vo['business_id']}">{$vo['name']}</option>
@@ -35,7 +35,7 @@
                 <div class="col-sm-1"></div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>回款对应客户:</label>
                 <div class="col-sm-6">
-                    <input type="text" style="width: 100%;" required="required" name="customer" id="customer" class="form-control" value="" readonly="readonly" >
+                    <input type="text" style="width: 100%;" name="customer" id="customer" class="form-control" value="" readonly="readonly" >
                 </div>
             </div>
             <div class="form-group">
@@ -43,7 +43,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>对应计划期次:</label>
                 <div class="col-sm-6">
-                    <select name="num" style="width: 100%;" id="nu" rel="require" rell="期次" class="form-control checkit">
+                    <select name="num" style="width: 100%;" id="nu" rell="期次" class="form-control checkit">
                         <option value="" id="first" selected="selected">0</option>
                     </select>
                 </div>
@@ -53,7 +53,7 @@
                 <div class="col-sm-3">
                 </div>
                 <div class="col-sm-6">
-                    <select name="type" id="period" rel="require" rell="回款类型" onchange="" style="width: 100%;" class="form-control checkit">
+                    <select name="type" id="period" rell="回款类型" onchange="" style="width: 100%;" class="form-control checkit">
                         <option value="" selected="selected">回款类型</option>
                         <option value="1" >预付款</option>
                         <option value="2" >首付款</option>
@@ -68,7 +68,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>回款日期：</label>
                 <div class="col-sm-6">
-                    <input type="date" id="date" rel="require" rell="回款日期" name="date" class="form-control checkit">
+                    <input type="date" id="date" rell="回款日期" name="date" class="form-control checkit">
                 </div>
                 <div class="col-sm-3 error_msg" id="dateTip"></div>
             </div>
@@ -77,7 +77,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>回款金额：</label>
                 <div class="col-sm-6">
-                    <input id="money" rel="require" rell="回款金额" name="money" type="number" class="form-control checkit money">
+                    <input id="money" rell="回款金额" name="money" type="number" class="form-control checkit money number">
                 </div>元
                 <div class="col-sm-3 error_msg" id="moneyTip"></div>
             </div>
@@ -86,7 +86,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>付款方式：</label>
                 <div class="col-sm-6">
-                    <input id="method" rel="require" rell="付款方式" name="method" type="text" class="form-control checkit">
+                    <input id="method" rell="付款方式" name="method" type="text" class="form-control checkit">
                 </div>
                 <div class="col-sm-3 error_msg" id="methodTip"></div>
             </div>
@@ -95,7 +95,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>收款人：</label>
                 <div class="col-sm-6">
-                    <input id="payee" rel="require" rell="收款人" name="payee" type="text" class="form-control checkit">
+                    <input id="payee" rell="收款人" name="payee" type="text" class="form-control checkit">
                 </div>
                 <div class="col-sm-3 error_msg" id="payeeTip"></div>
             </div>
@@ -112,6 +112,38 @@
     </form>
 </div>
 <script>
+    function beforecheck() {
+        $(".checkit").each(function () {
+            var id = "#"+$(this).attr('id')+"Tip";
+            if($(this).val()==''){
+                $(id).html("<span style='color: red;'>*此项为必填项</span>");
+                return false;
+            }else {
+                $(id).html("");
+                return true;
+            }
+        });
+        $(".number").each(function () {
+            var te = parseFloat($(this).val()) ;
+            var id = "#"+$(this).attr('id')+"Tip";
+            if(isNaN(te)){
+                $(id).html("<span style='color: red;'>*请填写数字</span>");
+                return false;
+            }
+            else  {
+                $(id).html("");
+                return true;
+            }
+        });
+        if($("#num").val()==0) {
+            $("#numTip").html("<span style='color: red;'>*请选择期次或其他项目</span>");
+            return false;
+        }else {
+            $("#numTip").html("");
+            return true;
+        }
+    }
+
     function contractChanged() {
         var bvalue = $("#business").val();
         $.ajax({
@@ -137,7 +169,7 @@
 
     $(document).ready(function(){
         $("#adbtn").click(function(){
-            if(input_msg && before_submit()){
+            if(beforecheck() && before_submit()){
                     swal({
                             title: "您确定要保存此回款记录吗？",
                             type: "warning",

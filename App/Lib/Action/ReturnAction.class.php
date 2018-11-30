@@ -107,8 +107,12 @@ class ReturnAction extends Action
         $business_all =  $d_v_business->select();
         $user = M("user") -> select();
         //已回款金额、状态、付款方式、回款时间计算
+        $plan['money_backed'] = 0;
+        $plan['total_count'] = 0;
+        $plan['backed_num'] = '未开始还款';
         foreach ($periods as $k=>$v) {
             $record = M("payment_record")->where(array('periodplan_id'=>intval($v['Id'])))->select();
+            if(count($record)) $plan['backed_num'] = $v['num'];
             $total = 0;
             $method = '';$time = '';
             foreach ($record as $k1 => $v1){
@@ -117,7 +121,9 @@ class ReturnAction extends Action
                 $time = $v1['paytime_modify'];
             }
             $periods[$k]['total'] = $total;
-            $periods[$k]['status'] = $total<floatval($v['money']) ? '未完成' : "完成";
+            $plan['money_backed'] += $total;
+            $plan['total_count'] += count($record);
+            $periods[$k]['status'] = $total < floatval($v['money']) ? '未完成' : "完成";
             $periods[$k]['method'] = $method;
             $periods[$k]['paytime'] = $time;
         }
@@ -459,10 +465,12 @@ class ReturnAction extends Action
             $data[$k]['nums'] = M("payment_planperiod")->where(array('Id'=>intval($v['periodplan_id'])))->getField('num');
             $data[$k]['customer'] = M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('customer');
             $data[$k]['business'] = M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('business');
+            $data[$k]['ontime'] = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($data[$k]['nums'])))->getField('ontime');
         }
         $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
         $show = $Page->show();// 显示分页栏
         $this->assign('page',$show);// 赋值分页输出
+//        dump($data);exit;
         $this->assign('plist',$data);
         $this->display();
     }
@@ -481,6 +489,7 @@ class ReturnAction extends Action
             'receiver' => $_POST['receiver'],
             'delayed' => intval($_POST['delayed']),
             'delayeddays' => $_POST['delayeddays'],
+            'overed' => intval($_POST['overed']),
             'remark' => $_POST['remark']
         );
         $flag = M("payment_record")->where(array('Id'=>intval($_POST['record_id'])))->save($data);
@@ -521,6 +530,7 @@ class ReturnAction extends Action
         $d_v_business = D('BusinessView');
         $business_all =  $d_v_business->select();
         $user = M("user") -> select();
+        $this->assign('full_name',$_SESSION['full_name']);
         $this->assign('user',$user);
         $this->assign('business_all',$business_all);
         $this->assign('business',$business);
@@ -540,7 +550,6 @@ class ReturnAction extends Action
         $plan_id = M("payment_plan")->where(array('customer_id'=>intval($_POST['customer_id']),'business_id'=>intval($_POST['business_id'])))->getField('Id');
         $period_id = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->getField('Id');
         $plantime = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->getField('ontime');
-
         $data = array(
             'periodplan_id'=>intval($period_id),
             'paytime'=>$_POST['date'],
@@ -550,7 +559,8 @@ class ReturnAction extends Action
             'paymethod'=>$_POST['method'],
             'paytype'=>intval($_POST['type']),
             'receiver'=>$_POST['payee'],
-            'delayeddays'=>(strtotime(strtotime($_POST['date'])-$plantime))<=0 ? 0 : (strtotime(strtotime($_POST['date'])-$plantime))/86400,
+            'delayeddays'=>(strtotime($_POST['date'])-strtotime($plantime))<=0 ? 0 : (strtotime($_POST['date'])-strtotime($plantime))/86400,
+//            'delayed'=> (strtotime(strtotime($_POST['date'])-$plantime))<=0 ? 4 ;
             'remark'=>$_POST['remark']
         );
         $flag = M("payment_record")->add($data);
