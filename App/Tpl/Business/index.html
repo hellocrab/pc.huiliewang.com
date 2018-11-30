@@ -134,6 +134,8 @@ $(function(){
 							<li class="single_btn business_btn"><a href="javascript:void(0)" id="remind"><i class="fa fa-bell-o"></i>&nbsp;提醒</a></li>
 							<li class="single_btn"><a href="javascript:void(0)" id="edit_business"><i class="fa fa-pencil"></i>&nbsp;编辑</a></li>
 							<li class="single_btn business_btn"><a href="javascript:void(0)" id="to_top"><i class="fa fa-arrow-up"></i><span id="to_top_span">&nbsp;置顶</span></a></li>
+							<li class="single_btn business_btn"><a href="javascript:void(0)" id="to_allot"><i class="fa fa-american-sign-language-interpreting"></i><span id="">&nbsp;分配</span></a></li>
+							<li class="single_btn business_btn"><a href="javascript:void(0)" id="to_share"><i class="fa fa-bell-o"></i><span id="">&nbsp;共享项目</span></a></li>
 							<if condition = "$_GET['content'] neq 'resource'">
 								<li><a id="delete" href="javascript:void(0)"><i class="fa fa-times"></i>&nbsp;删除</a></li>
 							</if>
@@ -328,6 +330,8 @@ $(function(){
 													<span class="label label-primary jinzhan_status cur">项目取消</span>
 													<elseif condition="$vo['status_id'] eq '100'"/>
 													<span class="label label-primary jinzhan_status cur">完成收款</span>
+													<elseif condition="$vo['status_id'] eq '4'" />
+													<span class="label label-danger jinzhan_status cur">等待分配</span>
 													<else/>
 													<span class="label label-warning jinzhan_status cur">进展中</span>
 												</if>
@@ -340,6 +344,7 @@ $(function(){
 															<option value="98" label="项目失败">项目失败</option>
 															<option value="3" label="项目取消">项目取消</option>
 															<option value="100" label="完成收款">完成收款</option>
+															<option value="4" label="等待分配">等待分配</option>
 														</select>
 														<span class="editable-buttons">
 															<button type="button" class="btn btn-primary jinzhan_btnedit">
@@ -353,7 +358,9 @@ $(function(){
 												</div>
 											</td>
 											<td>
-												<notempty name="vo.owner.full_name"><a class="role_info" rel="{$vo.owner.role_id}" href="javascript:void(0)">{$vo.owner.full_name}</a></notempty>
+												<volist name="vo.owner" id="item">
+													<notempty name="item.full_name"><a class="role_info" rel="{$item.role_id}" href="javascript:void(0)">{$item.full_name}</a></notempty>&nbsp;
+												</volist>
 											</td>
 											<td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>
 										</tr>
@@ -382,6 +389,15 @@ $(function(){
 	</div>
 </div>
 <div style="display:none" id="dialog-role-info" title="{:L('EMPLOYEE_INFORMATION')}">
+	<div class="spiner-example">
+		<div class="sk-spinner sk-spinner-three-bounce">
+			<div class="sk-bounce1"></div>
+			<div class="sk-bounce2"></div>
+			<div class="sk-bounce3"></div>
+		</div>
+	</div>
+</div>
+<div style="display:none;padding: 0" id="dialog-role-owner" title="选择项目负责人">
 	<div class="spiner-example">
 		<div class="sk-spinner sk-spinner-three-bounce">
 			<div class="sk-bounce1"></div>
@@ -893,6 +909,17 @@ $("#to_top").click(function(){
 	$("#form1").attr('action', '{:U("customer/settop","module=business&module_id=")}'+business_id);
 	$("#form1").submit();
 });
+$("#to_allot").click(function(){
+    //$role_id = $(this).attr('rel');
+    let business_id = $(this).attr('rel');
+    $('#dialog-role-owner').dialog('open');
+    $('#dialog-role-owner').load('{:U("Business/BusinessOwner","businessid=")}'+business_id);
+});
+$("#to_share").click(function(){
+    let business_id = $(this).attr('rel');
+    $('#dialog-role-owner').dialog('open');
+    $('#dialog-role-owner').load('{:U("Business/BusinessOwner","businessid=")}'+business_id);
+});
 
 $("#log_business").click(function(){
 	$('#dialog-log').dialog('open');
@@ -955,6 +982,13 @@ $("#dialog-role-info").dialog({
 	width: width,
 	maxHeight: 550,
 	position: ["center",100]
+});
+$("#dialog-role-owner").dialog({
+    autoOpen: false,
+    modal: true,
+    width: width,
+    maxHeight: 550,
+    position: ["center",100]
 });
 
 $(function(){

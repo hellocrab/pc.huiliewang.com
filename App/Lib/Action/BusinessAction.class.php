@@ -360,7 +360,12 @@ class BusinessAction extends Action{
 		//过滤空商机
 		// $where['code'] = array('neq','');
 		// $where['name'] = array('neq','..');
-		$list = $d_v_business->where($where)->order($order)->page($p.','.$listrows)->select();
+        $ownerWhere['business.owner_role_id'] = array('like',array($where['business.owner_role_id'],$where['business.owner_role_id'].',%','%,'.$where['business.owner_role_id'],'%,'.$where['business.owner_role_id'].',%'),'OR');
+        unset($where['business.owner_role_id']);
+		$list = $d_v_business->where($where)->where($ownerWhere)->order($order)->page($p.','.$listrows)->select();
+		/*dump($where);
+		dump($list);
+		exit;*/
 		$count =  $d_v_business->where($where)->count();
 		$p_num = ceil($count/$listrows);
 		if($p_num<$p){
@@ -398,7 +403,6 @@ class BusinessAction extends Action{
 		$m_r_business_product = M('RBusinessProduct');
 		$d_business_product = D('BusinessProductView');
 		$m_business_data = M('BusinessData');
-
 		foreach($list as $k => $v){
 			//判断附表
 			if (!$m_business_data->where(array('business_id'=>$v['business_id']))->find()) {
@@ -406,7 +410,9 @@ class BusinessAction extends Action{
 				$res_data['business_id'] = $v['business_id'];
 				$m_business_data->add($res_data);
 			}
-			$list[$k]['owner'] = $m_user->where('role_id = %d', $v['owner_role_id'])->field('full_name,role_id')->find();
+			$roleIds = explode(',',$v['owner_role_id']);
+			$where2['role_id'] = array('in',$roleIds);
+			$list[$k]['owner'] = $m_user->where($where2)->field('full_name,role_id')->select();
 			$list[$k]['creator'] = $m_user->where('role_id = %d', $v['creator_role_id'])->field('full_name,role_id')->find();
 			//相关客户
 			$list[$k]['customer_name'] = $m_customer->where('customer_id = %s',$v['customer_id'])->getField('name');
@@ -2721,4 +2727,131 @@ class BusinessAction extends Action{
 		$this->ajaxReturn($status_list,'',1);
 	}
 
+	/**
+     * 分配或共享
+     */
+	public function setBusinessOwner(){
+        if($this->isPost()){
+            $msg = I('post.');
+            $business = M('Business');
+            $whereBusiness['business_id'] = $msg['business_id'];
+            $ownerRoleId =$business->where($whereBusiness)->field('owner_role_id')->find();
+            $ownerRoleId = explode(',',$ownerRoleId['owner_role_id']);
+            $map = $ownerRoleId;
+            $roleId = $msg['role_id'];
+            $type = '0';
+            foreach ($ownerRoleId as $k => $v){
+                if($v==$roleId){
+                    $type = '1';
+                    unset($ownerRoleId[$k]);
+                }
+            }
+            if($type=='0'){
+                $map[] = $roleId;
+                $business->where($whereBusiness)->setField(array('owner_role_id'=>implode(',',$map)))?$this->ajaxReturn('0'):$this->ajaxReturn('1');
+            }else{
+                $business->where($whereBusiness)->setField(array('owner_role_id'=>implode(',',$ownerRoleId)))?$this->ajaxReturn('2'):$this->ajaxReturn('3');
+            }
+        }else{
+            $this->ajaxReturn('error');
+        }
+    }
+
+    /**
+     *分配列表及搜索功能
+     */
+    public function BusinessOwner(){
+        $listrows = isset($_GET['listrows'])?intval($_GET['listrows']):15;
+        $p = isset($_GET['p'])?intval($_GET['p']):1;
+        $roleDepartment = M('RoleDepartment');
+        $m_user = M('User');
+        $position = M('Position');
+        $role = M('Role');
+        $allDepartment = $roleDepartment->field('department_id,name')->order('name')->select();
+        $this->assign('all_department',$allDepartment);
+        if($this->isPost()){
+            $where = I('post.');
+            foreach ($where as $k =>$v){
+                if($v==''){
+                    unset($where[$k]);
+                }else{
+                    if($k=='department_id'){
+                        $positionId = $position->where(array('department_id'=>$v))->field('position_id')->select();
+                        if($positionId!='null'){
+                            foreach($positionId as $k => $v){
+                                $positionId[$k] = $v['position_id'];
+                            }
+                            $map['position_id'] = array('in',$positionId);
+                            $roleIds = $role->where($map)->field('role_id')->select();
+                        }else{
+                            $roleIds = null;
+                        }
+                    }
+                }
+            }
+            if($roleIds==null&&$where['department_id']==null){
+                $roleIds = $m_user->where($where)->field('role_id')->select();
+            }else{
+                if($where['full_name']!=''||$where['telephone']!=''){
+                    $roleIdsWhere = $m_user->where($where)->field('role_id')->select();
+                    $roleIdsDepartment = $roleIds;
+                    unset($roleIds);
+                    foreach ($roleIdsDepartment as $k => $v){
+                        foreach ($roleIdsWhere as $key =>$val){
+                            if($v==$val){
+                                $roleIds[]=$v;
+                            }
+                        }
+                    }
+                }
+            }
+            foreach ($roleIds as $k => $v){
+                $roleIds[$k] = $v['role_id'];
+            }
+            $return = implode(',',$roleIds);
+            $this->ajaxReturn($return);
+        }else{
+            if(I('get.businessid')||I('get.ids')){
+                $bid = I('get.businessid');
+                $business = M('Business');
+                $rId = I('get.ids');
+                if($bid!=''&&$rId==''){
+                    $roleId = $business->where(array('business_id'=>$bid))->field('owner_role_id')->find();
+                }else{
+                    $ownerRoleId = $business->where(array('business_id'=>$bid))->field('owner_role_id')->find();
+                    $ownerRoleId = explode(',',$ownerRoleId['owner_role_id']);
+                    $roleId['owner_role_id'] = I('get.ids');
+                }
+                $where['role_id'] = array('in',explode(',',$roleId['owner_role_id']));
+                $count = $m_user->where($where)->count();
+                $p_num = ceil($count/$listrows);
+                if($p_num<$p){
+                    $p = $p_num;
+                }
+                $data = $m_user->where($where)->field('user_id,full_name,telephone,role_id')->page($p.','.$listrows)->select();
+                foreach ($data as $k => $v){
+                    foreach ($ownerRoleId as $key =>$val){
+                        if($val==$v['role_id']){
+                            $data[$k]['check'] = 0;
+                            break;
+                        }else{
+                            $data[$k]['check'] = 1;
+                        }
+                    }
+                    $positionId = $role->where(array('role_id'=>$v['role_id']))->field('position_id')->find();
+                    $positionData = $position->where($positionId)->field('name,department_id')->find();
+                    $data[$k]['position_name'] = $positionData['name'];
+                    $departmentData =$roleDepartment->where(array('department_id'=>$positionData['department_id']))->field('name')->find();
+                    $data[$k]['department_name'] = $departmentData['name'];
+                }
+            }
+            import('@.ORG.Page');// 导入分页类
+            $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
+            $show  = $Page->show();// 分页显示输出
+            $this->assign('page',$show);// 赋值分页输出
+            $this->assign("listrows",$listrows);
+            $this->assign('data',$data);
+            $this->display();
+        }
+    }
 }

@@ -1,0 +1,151 @@
+<style>
+    .owner-search{
+        width: 100%;
+    }
+    .owner-search > tbody > tr > td:nth-child(1) {
+        width: 10%;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .owner-list{
+        width: 100%;
+        text-align: center;
+    }
+    .owner-list > tbody > tr{
+        height: 38px;
+    }
+    .owner-list > tbody > tr:nth-child(2n+1){
+        background-color: rgb(242,242,242);
+    }
+    .owner-list > tbody > tr:nth-child(2n){
+        background-color: #ffffff;
+    }
+    .owner-div{
+        padding-top: 20px;
+    }
+    .search-div{
+        padding: 10px;
+    }
+</style>
+<!--<form action="{:U('BusinessOwner')}" method="post">-->
+    <div class="search-div" data-id="{$_GET['businessid']}">
+        <table class="owner-search">
+            <tr>
+                <td>搜索</td>
+                <td><input type="text" class="full-name" placeholder="员工姓名" style="height: 30px"></td>
+                <td><input type="text" class="telephone" placeholder="员工手机号" style="height: 30px"></td>
+                <td>
+                    <select class="department_id" style="height: 30px">
+                        <option value="">请选择部门</option>
+                        <volist name="all_department" id="vo">
+                            <option value="{$vo['department_id']}">{$vo['name']}</option>
+                        </volist>
+                    </select>
+                </td>
+                <td><input type="button" value="搜索" class="btn btn-success"></td>
+            </tr>
+        </table>
+    </div>
+<!--</form>-->
+<div class="owner-div">
+    <if condition="$data eq null"><p>未找到符合条件的员工</p>
+        <else/>
+        <table class="owner-list">
+            <tr>
+                <td>姓名</td>
+                <td>手机号</td>
+                <td>部门</td>
+                <td>职位</td>
+                <td>操作</td>
+            </tr>
+            <volist name="data" id="vo">
+                <tr>
+                    <td>{$vo.full_name}</td>
+                    <td>{$vo.telephone}</td>
+                    <td>{$vo.department_name}</td>
+                    <td>{$vo.position_name}</td>
+                    <td><a data-id="{$vo.role_id}"><if condition="$vo.check eq 0">取消分配<else/>分配</if></a></td>
+                </tr>
+            </volist>
+        </table>
+    </if>
+</div>
+<div id="tfoot_div" class="clearfix small_window" style="margin-top: 10px">
+    <div class="clearfix" id="tfoot_page">
+        {$page}<include file="Public:small_listrows" />
+    </div>
+</div>
+<script type="text/javascript">
+    $(".owner-search").find('.btn-success').on('click',function () {
+        let name = $('.full-name').val().trim();
+        let tel  = $('.telephone').val().trim();
+        let department_id =$('.department_id').val();
+        let businessid = $('.search-div').attr('data-id');
+        $.ajax({
+            url:"{:U('business/BusinessOwner')}",
+            type:'post',
+            data:{'full_name':name,'telephone':tel,'department_id':department_id},
+            async:false,
+            success:function (ids) {
+                $('#dialog-role-owner').dialog('open');
+                $('#dialog-role-owner').load('/index.php?m=business&a=businessowner&ids='+ids+'&businessid='+businessid);
+            }
+        })
+    });
+    $('.owner-list').find('a').on('click',function(){
+        let businessId = $('.search-div').attr('data-id');
+        let roleId = $(this).attr('data-id');
+        $.ajax({
+            url:"{:U('business/setBusinessOwner')}",
+            type:'post',
+            data:{'business_id':businessId,'role_id':roleId},
+            success:function (msg) {
+                if(msg=='0'){
+                    swal({
+                        title:'设置成功',
+                        text:'点击刷新',
+                        type:"success",
+                        confirmButtonText: "确定"
+                    },function (isConfirm) {
+                        if(isConfirm){
+                            window.location.reload();
+                        }
+                    });
+                }else if(msg=='1'){
+                    swal({
+                        title:'设置失败',
+                        text:'点击刷新',
+                        type:"error",
+                        confirmButtonText: "确定"
+                    },function (isConfirm) {
+                        if(isConfirm){
+                            window.location.reload();
+                        }
+                    });
+                }else if(msg=='2'){
+                    swal({
+                        title:'取消成功',
+                        text:'点击刷新',
+                        type:"success",
+                        confirmButtonText: "确定"
+                    },function (isConfirm) {
+                        if(isConfirm){
+                            window.location.reload();
+                        }
+                    });
+                }else if(msg=='3'){
+                    swal({
+                        title:'取消失败',
+                        text:'点击刷新',
+                        type:"error",
+                        confirmButtonText: "确定"
+                    },function (isConfirm) {
+                        if(isConfirm){
+                            window.location.reload();
+                        }
+                    });
+                }
+            }
+        })
+    });
+</script>
