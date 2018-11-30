@@ -16,8 +16,15 @@ class ReturnAction extends Action
 //        $d_contract = D('ContractView');
 //        $contract = $d_contract->select();
         //根据权限查找判断
+        $test1 = M("payment_plan")->field('business_id')->select();
+        foreach ($test1 as $k => $v){
+            $test[]=intval($v['business_id']);
+        }
         $d_v_business = D('BusinessView');
-        $business = $d_v_business->select();
+        if(count($test))
+            $business = $d_v_business->where(['business_id'=>['not in',$test]])->select();
+        else
+            $business = $d_v_business->select();
         $this->assign('business',$business);
         $this->display();
     }
@@ -39,12 +46,24 @@ class ReturnAction extends Action
         $customer_id = M("business")->where(array('business_id'=>intval($b_id)))->getField('customer_id');
         $customer_name = M('customer')->where(array('customer_id'=>intval($customer_id) ))->getField('name');
         $nums = M("payment_plan")->where(array('customer_id'=>intval($customer_id),'business_id'=>intval($b_id)))->getField('nums');
+        $plan_id = M("payment_plan")->where(array('customer_id'=>intval($customer_id),'business_id'=>intval($b_id)))->getField("Id");
+        $num = M("payment_planperiod")->field('num')->where(array('plan_id'=>intval($plan_id),'status'=>0))->select();
+        $data['num'] = $num ;
         $data['nums'] = intval($nums);
         $data['business_id']= $b_id;
         $data['customer_id']= $customer_id;
         $data['customer_name'] = $customer_name;
         echo json_encode($data);
     }
+
+//    //ajax展示对应期次
+//    public function numChanged(){
+//        $b_id = $_POST['business_id'];
+//        $customer_id = M("business")->where(array('business_id'=>intval($b_id)))->getField('customer_id');
+//        $plan_id = M("payment_plan")->where(array('customer_id'=>intval($customer_id),'business_id'=>intval($b_id)))->getField("Id");
+//        $num = M("payment_planperiod")->field('num')->where(array('plan_id'=>intval($plan_id),'status'=>0))->select();
+//        dump($num);exit;
+//    }
 
     //新增回款计划,存入数据库
     public function plan_add(){
@@ -62,7 +81,8 @@ class ReturnAction extends Action
             'customer_id'=>$customer_id,
             'business_id'=>$business_id,
             'business'=>$business,
-            'total'=>$planed_money
+            'total'=>$planed_money,
+            'status'=>0
             );
         $plan_id =  M("payment_plan")->add($data1);
         $flag = true;
@@ -72,7 +92,7 @@ class ReturnAction extends Action
                 'num'=>$i,
                 'money'=>$data['money'.$i],
                 'property'=>$data['property'.$i],
-                'ontime'=>$data['time'.$i]
+                'ontime'=>$data['time'.$i],
             );
             $period_id = M('payment_planperiod')->add($data2);
             if(empty($period_id)) $flag=false;
@@ -110,6 +130,7 @@ class ReturnAction extends Action
         $plan['money_backed'] = 0;
         $plan['total_count'] = 0;
         $plan['backed_num'] = '未开始还款';
+        $plan['status'] = intval($plan['status']) == 0 ? '未完成' : '完成';
         foreach ($periods as $k=>$v) {
             $record = M("payment_record")->where(array('periodplan_id'=>intval($v['Id'])))->select();
             if(count($record)) $plan['backed_num'] = $v['num'];
@@ -283,16 +304,18 @@ class ReturnAction extends Action
         if($p_num<$p){
             $p = $p_num;
         }
-        $data = M("payment_plan")->Page($p.','.$listrows)->select();
+        $data = M("payment_plan")->Page($p.','.$listrows)->order('Id desc')->select();
         foreach ($data as $k => $v){
             $time = M("payment_planperiod")->where(array('plan_id'=>intval($v['Id']),'num'=>$v['nums']))->getField('ontime');
             $periodplan = M("payment_planperiod")->where(array('plan_id'=>intval($v['Id'])))->select();
             $e_total = 0;
+            $data[$k]['isdelete'] = 0;
             foreach ($periodplan as $k1=>$v1){
                 $money = M('payment_record')->where(array('periodplan_id'=>$v1['Id']))->select();
                 foreach ($money as $k2 => $v2){
                     $e_total += floatval($v2['money']);
                 }
+                if(count($money))  $data[$k]['isdelete'] = 1;
             }
             $data[$k]['e_total'] = $e_total;
             $data[$k]['status'] = $e_total<floatval($v['total']) ? '未完成' : '完成';
@@ -459,7 +482,7 @@ class ReturnAction extends Action
         if($p_num<$p){
             $p = $p_num;
         }
-        $data = M("payment_record")->Page($p.','.$listrows)->select();
+        $data = M("payment_record")->Page($p.','.$listrows)->order('Id desc')->select();
         foreach ($data as $k => $v){
             $plan_id = M("payment_planperiod")->where(array('Id'=>intval($v['periodplan_id'])))->getField('plan_id');
             $data[$k]['nums'] = M("payment_planperiod")->where(array('Id'=>intval($v['periodplan_id'])))->getField('num');
@@ -470,7 +493,6 @@ class ReturnAction extends Action
         $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
         $show = $Page->show();// 显示分页栏
         $this->assign('page',$show);// 赋值分页输出
-//        dump($data);exit;
         $this->assign('plist',$data);
         $this->display();
     }
@@ -481,7 +503,7 @@ class ReturnAction extends Action
             'periodplan_id' => intval($_POST['periodplan_id']),
             'paytime'=> $_POST['paytime'],
             'createtime' => $_POST['createtime'],
-            'paytime_modify'=>$_POST['paytime_modify'],
+            'paytime_modify'=>date('y-m-d'),
             'money' => $_POST['money'],
             'paymethod' => $_POST['paymethod'],
             'paytype' => intval($_POST['paytype']),
@@ -530,6 +552,7 @@ class ReturnAction extends Action
         $d_v_business = D('BusinessView');
         $business_all =  $d_v_business->select();
         $user = M("user") -> select();
+//        dump($record);exit;
         $this->assign('full_name',$_SESSION['full_name']);
         $this->assign('user',$user);
         $this->assign('business_all',$business_all);
@@ -548,19 +571,51 @@ class ReturnAction extends Action
     //回款记录添加
     public function record_add(){
         $plan_id = M("payment_plan")->where(array('customer_id'=>intval($_POST['customer_id']),'business_id'=>intval($_POST['business_id'])))->getField('Id');
+        $planMoney = M("payment_plan")->where(array('customer_id'=>intval($_POST['customer_id']),'business_id'=>intval($_POST['business_id'])))->getField('total');
         $period_id = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->getField('Id');
         $plantime = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->getField('ontime');
+        $planperiod_money = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->getField('money');
+        $periodplan = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
+        $e_total = 0;
+        foreach ($periodplan as $k1=>$v1){
+            $money = M('payment_record')->where(array('periodplan_id'=>$v1['Id']))->select();
+            foreach ($money as $k2 => $v2){
+                $e_total += floatval($v2['money']);
+            }
+        }
+        if(floatval($planMoney)>$e_total)
+            M("payment_plan")->where(array('customer_id'=>intval($_POST['customer_id']),'business_id'=>intval($_POST['business_id'])))->save(array('status'=>0));
+        else
+            M("payment_plan")->where(array('customer_id'=>intval($_POST['customer_id']),'business_id'=>intval($_POST['business_id'])))->save(array('status'=>1));
+        $record = M("payment_record")->field('money')->where(array('periodplan_id'=>intval($period_id)))->select();
+        $hs = floatval($_POST['money']);
+        if(count($record))
+            foreach ($record as $k=>$v){
+                $hs += floatval($v['money']);
+            }
+        if($hs>floatval($planperiod_money))
+            M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->save(array('status'=>1));
+        else
+            M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->save(array('status'=>0));
+        if((strtotime($_POST['date'])-strtotime($plantime))<=0)
+            $delayed = 4;
+        elseif ($hs==0)
+            $delayed = 2;
+        elseif ($hs>0 && $hs < floatval($planperiod_money))
+            $delayed = 1;
+        else $delayed = 3;
+
         $data = array(
             'periodplan_id'=>intval($period_id),
             'paytime'=>$_POST['date'],
             'createtime'=>date("Y-m-d"),
-            'paytime_modify'=>$_POST['date'],
+            'paytime_modify'=>date('y-m-d'),
             'money'=>$_POST['money'],
             'paymethod'=>$_POST['method'],
             'paytype'=>intval($_POST['type']),
             'receiver'=>$_POST['payee'],
             'delayeddays'=>(strtotime($_POST['date'])-strtotime($plantime))<=0 ? 0 : (strtotime($_POST['date'])-strtotime($plantime))/86400,
-//            'delayed'=> (strtotime(strtotime($_POST['date'])-$plantime))<=0 ? 4 ;
+            'delayed'=> $delayed,
             'remark'=>$_POST['remark']
         );
         $flag = M("payment_record")->add($data);
@@ -582,8 +637,7 @@ class ReturnAction extends Action
 
     public function add_record(){
         //根据权限查找判断
-        $d_v_business = D('BusinessView');
-        $business = $d_v_business->select();
+        $business = M("payment_plan")->where(array('status'=>0))->select();
         $this->assign('business',$business);
         $this->display();
     }

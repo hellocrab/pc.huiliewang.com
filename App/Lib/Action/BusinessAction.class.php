@@ -1951,6 +1951,16 @@ class BusinessAction extends Action{
 						}else{
 							if($m_business->where('business_id = %d', $v['business_id'])->delete()){
 								M('BusinessData')->where(array('business_id'=>$v['business_id']))->delete();
+								//删除回款计划和记录**************************************************************************
+								$plan_id = M("payment_plan")->where(array('business_id'=>$v['business_id']))->getField('Id');
+								M("payment_plan")->where(array('business_id'=>$v['business_id']))->delete();
+								$plan_period = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
+                                M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->delete();
+								if(count($plan_period))
+								    foreach ($plan_period as $k=>$v){
+								        M("payment_record")->where(array('periodplan'=>intval($v['Id'])))->delete();
+                                    }
+                                //*******************************************************************************************
 								actionLog($v['business_id']);
 								foreach ($r_module as $key2=>$value2) {
 									if(!is_int($key2)){
