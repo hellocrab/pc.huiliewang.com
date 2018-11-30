@@ -593,7 +593,7 @@ class ReturnAction extends Action
             foreach ($record as $k=>$v){
                 $hs += floatval($v['money']);
             }
-        if($hs>floatval($planperiod_money))
+        if($hs>=floatval($planperiod_money))
             M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->save(array('status'=>1));
         else
             M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->save(array('status'=>0));
