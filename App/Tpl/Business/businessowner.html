@@ -64,7 +64,11 @@
                     <td>{$vo.telephone}</td>
                     <td>{$vo.department_name}</td>
                     <td>{$vo.position_name}</td>
-                    <td><a data-id="{$vo.role_id}"><if condition="$vo.check eq 0">取消分配<else/>分配</if></a></td>
+                    <if condition="$_GET['ac'] eq 0">
+                        <td class="ac" data-id="{$_GET['ac']}"><a data-id="{$vo.role_id}"><if condition="$vo.check eq 0">取消分配<else/>分配</if></a></td>
+                        <elseif condition="$_GET['ac'] eq 1"/>
+                        <td class="ac" data-id="{$_GET['ac']}"><a data-id="{$vo.role_id}"><if condition="$vo.check eq 0">取消分享<else/>分享</if></a></td>
+                    </if>
                 </tr>
             </volist>
         </table>
@@ -81,6 +85,7 @@
         let tel  = $('.telephone').val().trim();
         let department_id =$('.department_id').val();
         let businessid = $('.search-div').attr('data-id');
+        let ac = $('.ac').attr('data-id');
         $.ajax({
             url:"{:U('business/BusinessOwner')}",
             type:'post',
@@ -88,7 +93,7 @@
             async:false,
             success:function (ids) {
                 $('#dialog-role-owner').dialog('open');
-                $('#dialog-role-owner').load('/index.php?m=business&a=businessowner&ids='+ids+'&businessid='+businessid);
+                $('#dialog-role-owner').load('/index.php?m=business&a=businessowner&ids='+ids+'&businessid='+businessid+'&ac='+ac);
             }
         })
     });

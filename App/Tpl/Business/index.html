@@ -910,15 +910,16 @@ $("#to_top").click(function(){
 	$("#form1").submit();
 });
 $("#to_allot").click(function(){
-    //$role_id = $(this).attr('rel');
     let business_id = $(this).attr('rel');
     $('#dialog-role-owner').dialog('open');
-    $('#dialog-role-owner').load('{:U("Business/BusinessOwner","businessid=")}'+business_id);
+    //$('#dialog-role-owner').load('{:U("Business/BusinessOwner","businessid=")}'+business_id);
+    $('#dialog-role-owner').load('/index.php?m=business&a=businessowner&businessid='+business_id+'&ac=0');
 });
 $("#to_share").click(function(){
     let business_id = $(this).attr('rel');
     $('#dialog-role-owner').dialog('open');
-    $('#dialog-role-owner').load('{:U("Business/BusinessOwner","businessid=")}'+business_id);
+    //$('#dialog-role-owner').load('{:U("Business/BusinessOwner","businessid=")}'+business_id);
+    $('#dialog-role-owner').load('/index.php?m=business&a=businessowner&businessid='+business_id+'&ac=1');
 });
 
 $("#log_business").click(function(){
