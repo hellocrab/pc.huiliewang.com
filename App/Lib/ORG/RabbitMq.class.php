@@ -3,7 +3,7 @@
 /**
  * @author yanghao <yh38615890@sina.cn>
  * @date 2018-11-14
- * @copyright (c) gandianli
+ * @copyright (c) 
  */
 
 class RabbitMq
