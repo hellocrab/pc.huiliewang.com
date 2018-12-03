@@ -215,7 +215,7 @@
                                                     <td>{$vo.e_total}</td>
                                                     <td>{$vo.customer}</td>
                                                     <td>{$vo.status}</td>
-                                                    <td><a href="javascript:void(0);" onclick="deleteBusiness('{$vo.Id}')">删除</a></td>
+                                                    <td><a href="javascript:void(0);" <if condition="$vo.isdelete eq 0"> onclick="deleteBusiness('{$vo.Id}')"<else /> style="color: #777777"</if>>删除</a></td>
                                                 </tr>
                                             </volist>
                                             <tbody>

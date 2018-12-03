@@ -25,7 +25,7 @@
                     <select name="business_id" id="business" class="form-control checkit" rell="对应项目" onchange="contractChanged();">
                         <option value="">--回款对应项目--</option>
                         <volist name="business" id="vo">
-                            <option value="{$vo['business_id']}">{$vo['name']}</option>
+                            <option value="{$vo['business_id']}">{$vo['business']}</option>
                         </volist>
                     </select>
                 </div>
@@ -43,7 +43,7 @@
                 </div>
                 <label class="control-label col-sm-3" style="width:110px;"><span style="color:#FF0011;">*</span>对应计划期次:</label>
                 <div class="col-sm-6">
-                    <select name="num" style="width: 100%;" id="nu" rell="期次" class="form-control checkit">
+                    <select name="num" style="width: 100%;" id="nu" rell="期次" onchange="getnu();" class="form-control checkit">
                         <option value="" id="first" selected="selected">0</option>
                     </select>
                 </div>
@@ -157,11 +157,14 @@
                 $("#customer").val(result.customer_name);
                 $("#business_id").val(result.business_id);
                 $("#customer_id").val(result.customer_id);
-                var nums = result.nums;
+                // var nums = result.nums;
                 var html = "";
-                for(var i = 1;i<=nums ;i++){
-                    html += "<option value='"+i+"'>"+i+"</option>";
-                }
+                // for(var i = 1;i<=nums ;i++){
+                //     html += "<option value='"+i+"'>"+i+"</option>";
+                // }
+                result.num.forEach(function (v,k,array) {
+                    html += "<option value='"+v.num+"'>"+v.num+"</option>";
+                });
                 $("#first").after(html);
             }
         });

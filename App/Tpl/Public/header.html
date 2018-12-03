@@ -408,9 +408,9 @@
 				<li>
 					<a data-toggle="tooltip" data-placement="right" data-original-title="职级升降" <if condition="($module_name eq 'integral')"> class="active"</if> href="{:U('integral/index')}"><i class="fa fa-leaf"></i><span class="menu_code">职级</span></a>
 				</li>
-				<li>
+<!--				<li>
 					<a data-toggle="tooltip" data-placement="right" data-original-title="培训管理" <if condition="($module_name eq 'train' || $module_name eq 'teacher')"> class="active"</if> href="{:U('train/index')}"><i class="fa fa-graduation-cap" style="width: 14px;"></i><span class="menu_code">培训</span></a>
-				</li>
+				</li>-->
 				<?php if (in_array('log',$new_module_list)): ?>
 				<li>
 					<a data-toggle="tooltip" data-placement="right" data-original-title="背景调查" <if condition="$module_name eq 'background' &&  $action_name neq 'background'"> class="active"</if> <if condition="checkPerByAction('background','index')">href="{:U('background/index')}"<elseif condition ="checkPerByAction('examine','index')" />href="{:U('examine/index')}"<elseif condition ="checkPerByAction('knowledge','index')" />href="{:U('knowledge/index')}"<elseif condition ="checkPerByAction('announcement','index')" />href="{:U('announcement/index')}"<elseif condition ="checkPerByAction('sign','index')" />href="{:U('sign/index')}"<elseif condition ="checkPerByAction('background','index')" />href="{:U('background/index')}"<elseif condition ="checkPerByAction('background','index')" />href="{:U('background/index')}"</if>><i class="fa fa-user"></i><span class="menu_code">背调</span></a>

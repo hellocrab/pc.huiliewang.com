@@ -55,7 +55,7 @@
                     <td>当前期次:</td>
                     <td>{$plan.backed_num}</td>
                     <td>实际回款状态:</td>
-                    <td>逾期未完成</td>
+                    <td>{$plan.status}</td>
                 </tr>
             </table>
             <table class="table">
@@ -182,7 +182,7 @@
                 var test = Number($(this).val());
                 sum += test;
             });
-            if(sum>planMoney) $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额应大于各期次金额总和</span>");
+            if(sum>planMoney) $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额小于各期次金额总和</span>");
             else {
                 $("#totalTip").html(" ");
                 $(".tmoney").each(function () {
@@ -332,7 +332,7 @@
                 ta += Number($(this).html());
             });
             if(ta>planed_money)
-                $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额应大于各期次金额总和</span>");else $("#msg").html("");
+                $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额小于各期次金额总和</span>");else $("#msg").html("");
         }
     }
     $(document).ready(function(){
@@ -362,7 +362,7 @@
                     sum += test;
                 });
                 if(sum>planMoney) {
-                    $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额应大于各期次金额总和</span>");
+                    $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额小于各期次金额总和</span>");
                     adbtn = false;
                 }
                 else {
