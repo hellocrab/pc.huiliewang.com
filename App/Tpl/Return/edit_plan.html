@@ -97,8 +97,10 @@
                     <td>
                         <select name="contract" id="contract" onchange="contractChanged();">
                             <option value=" ">--对应项目--</option>
+                            <option value="{$plan.Id}" selected="selected">{$plan.business}</option>
                             <volist name="business_all" id="vo">
-                                <option value="{$vo['business_id']}" <if condition ="$plan['business'] eq $vo['name']">selected="selected"</if>>{$vo['name']}</option>
+                                <!--<option value="{$vo['business_id']}" <if condition ="$plan['business'] eq $vo['name']">selected="selected"</if>>{$vo['name']}</option>-->
+                                <option value="{$vo['business_id']}">{$vo['name']}</option>
                             </volist>
                         </select>
                     </td>

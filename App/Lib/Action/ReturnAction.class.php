@@ -115,6 +115,16 @@ class ReturnAction extends Action
     }
 
     public function edit_plan(){
+        //根据权限查找判断
+//        $test1 = M("payment_plan")->field('business_id')->select();
+//        foreach ($test1 as $k => $v){
+//            $test[]=intval($v['business_id']);
+//        }
+//        $d_v_business = D('BusinessView');
+//        if(count($test))
+//            $business = $d_v_business->where(['business_id'=>['not in',$test]])->select();
+//        else
+//            $business = $d_v_business->select();
         $business_id = $_GET['plan_id'];
         $plan_id = $_GET['plan'];
         $plan = M("payment_plan")->where(array('Id'=>$plan_id))->find();
@@ -124,7 +134,15 @@ class ReturnAction extends Action
         foreach ($periods as $k=>$v ){
             $periods[$k]['plan_time'] = $periods[count($periods)-1]['ontime'];
         }
-        $business_all =  $d_v_business->select();
+        $test1 = M("payment_plan")->field('business_id')->select();
+        foreach ($test1 as $k => $v){
+            $test[]=intval($v['business_id']);
+        }
+        if(count($test))
+            $business_all = $d_v_business->where(['business_id'=>['not in',$test]])->select();
+        else
+            $business_all = $d_v_business->select();
+
         $user = M("user") -> select();
         //已回款金额、状态、付款方式、回款时间计算
         $plan['money_backed'] = 0;
