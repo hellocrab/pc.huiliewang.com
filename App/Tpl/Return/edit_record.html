@@ -94,7 +94,7 @@
                         <select name="contract" id="contract" class="form-control checkit" onchange="contractChanged();">
                             <option value="">--对应项目--</option>
                             <volist name="business_all" id="vo">
-                                <option value="{$vo['business_id']}" <if condition ="$record['business'] eq $vo['name']">selected="selected"</if>>{$vo['name']}</option>
+                                <option value="{$vo['business_id']}" <if condition ="$record['business'] eq $vo['business']">selected="selected"</if>>{$vo['business']}</option>
                             </volist>
                         </select>
                         <div id="contractTip" class="error_msg"></div>
@@ -123,12 +123,14 @@
                 <tr>
                     <td class="col-md-2">对应期次:</td>
                     <td class="col=md-4">
-                        <select id="num" class="form-control checkit" name="num">
-                            <option value="" selected="selected">0</option>
-                            <for start="1" end="$record.nums" comparison="elt">
-                                <option value="{$i}" <if condition ="$record['num'] eq $i">selected="selected"</if>>{$i}</option>
-                            </for>
-                        </select>
+                        <!--<select id="num" class="form-control checkit" name="num">-->
+                            <!--&lt;!&ndash;<option value="" selected="selected">0</option>&ndash;&gt;-->
+                            <!--<for start="1" end="$record.nums" comparison="elt">-->
+                                <!--&lt;!&ndash;<option value="{$i}" <if condition ="$record['num'] eq $i">selected="selected"</if>>{$i}</option>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<if condition ="$record['num'] eq $i"><option value="{$i}" >{$i}</option></if>&ndash;&gt;-->
+                            <!--</for>-->
+                        <!--</select>-->
+                        <input name="num" value="{$record.num}" class="form-control" readonly="readonly">
                         <div id="numTip" class="error_msg"></div>
                     </td>
                     <td class="col-md-2">收款人:</td>
@@ -153,7 +155,7 @@
                     </td>
                     <td class="col-md-2">创建时间:</td>
                     <td class="col=md-4">
-                        <input id="createtime" name="createtime" class="form-control checkit" type="date" value="{$record.createtime}"><div id="createtimeTip" class="error_msg"></div>
+                        <input id="createtime" name="createtime" readonly="readonly" class="form-control checkit" type="date" value="{$record.createtime}"><div id="createtimeTip" class="error_msg"></div>
                     </td>
                 </tr>
                 <tr>

@@ -269,7 +269,7 @@ class ReturnAction extends Action
         }
         $this->listrows = $listrows;
         import('@.ORG.Page');// 导入分页类
-        
+
         $p_num = ceil($count/$listrows);
         $p = isset($_GET['p'])?$_GET['p']:1;
         if($p_num<$p){
@@ -291,14 +291,14 @@ class ReturnAction extends Action
                 if(count($money))  $data[$k]['isdelete'] = 1;
             }
             $data[$k]['e_total'] = $e_total;
-            $data[$k]['status'] = $e_total<floatval($v['total']) ? '未完成' : '完成';
+//            $data[$k]['status'] = $e_total<floatval($v['total']) ? '未完成' : '完成';
+            $data[$k]['pstatus'] = intval($data[$k]['pstatus']) == 0 ? '未完成' : '完成';
             $data[$k]['ontime'] = $time;
         }
         $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
         $show = $Page->show();// 显示分页栏
         $this->assign('page',$show);// 赋值分页输出
         $this->assign('plist',$data);
-//        dump($data);
         $this->display();
     }
     public function backRecord(){
@@ -488,13 +488,23 @@ class ReturnAction extends Action
             'overed' => intval($_POST['overed']),
             'remark' => $_POST['remark']
         );
-        $flag = M("payment_record")->where(array('Id'=>intval($_POST['record_id'])))->save($data);
+        M("payment_record")->where(array('Id'=>intval($_POST['record_id'])))->save($data);
         $person = $_POST['person'];
-        $department = $_POST['department'];
+        //编辑期次回款状态，计划回款状态
+        M("payment_planperiod")->where(array('Id'=>intval($_POST['periodplan_id'])))->save(array('status'=>intval($_POST['overed'])));
+        $plan_id = M("payment_planperiod")->where(array('Id'=>intval($_POST['periodplan_id'])))->getField("plan_id");
+        $flag = true;
+        $planperiod = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
+        foreach ($planperiod as $k=>$v){
+             if (intval($v['status']) == 0){
+                 $flag = false ;
+             }
+        }
+        if($flag) M("payment_plan")->where(array('Id'=>intval($plan_id)))->save(array('pstatus'=>1));else M("payment_plan")->where(array('Id'=>intval($plan_id)))->save(array('pstatus'=>0));
         $period_id = M("payment_record")->where(array('Id'=>intval($_POST['record_id'])))->getField("periodplan_id");
         $plan_id = M("payment_planperiod")->where(array('Id'=>intval($period_id)))->getField("plan_id");
         $business_id = M("payment_plan")-> where(array('Id'=>intval($plan_id)))->getField("business_id");
-        $flag1 = M("business")->where(array('business_id'=>intval($business_id)))->save(array('creator_role_id'=>intval($person)));
+        M("business")->where(array('business_id'=>intval($business_id)))->save(array('creator_role_id'=>intval($person)));
         $this->ajaxReturn(1,'success',1);
     }
 
@@ -524,9 +534,9 @@ class ReturnAction extends Action
             case '4':$record['delayed'] = "未逾期";break;
         }
         $d_v_business = D('BusinessView');
-        $business_all =  $d_v_business->select();
+//        $business_all =  $d_v_business->select();
+        $business_all =  M("payment_plan")->where(array('status'=>0))->select();
         $user = M("user") -> select();
-//        dump($record);exit;
         $this->assign('full_name',$_SESSION['full_name']);
         $this->assign('user',$user);
         $this->assign('business_all',$business_all);
