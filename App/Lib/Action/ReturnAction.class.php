@@ -196,77 +196,29 @@ class ReturnAction extends Action
 
     public function index(){
         $this->timeSearch();
-        //$this->assign('daterange',$this->timePlug());
-        $d_contract = D('ContractView');
-        $payment_plan = M("payment_plan")->select();
-        $by = isset($_GET['by']) ? trim($_GET['by']) : 'me';
-        $this->by = $by;
+        $search_peoject = $_GET['search_project'] ? BaseUtils::getStr($_GET['search_project'],'string'): '';
+        $start_time = $_GET['start_time'] ? BaseUtils::getStr($_GET['start_time'],'string'): '';
+        $end_time = $_GET['end_time'] ? BaseUtils::getStr($_GET['end_time'],'string'): '';
+        
+        
         $where = array();
         $below_ids = getPerByAction(MODULE_NAME,ACTION_NAME,true); //权限问题
-        // if(empty($_GET['owner_role_id'])){
-        // 	$where['contract.owner_role_id'] = array('in', $this->_permissionRes);
-        // }
-        $order = 'contract.update_time desc,contract.contract_id asc';
-        if($_GET['desc_order']){
-            $order = 'contract.'.trim($_GET['desc_order']).' desc,contract.contract_id asc';
-        }elseif($_GET['asc_order']){
-            $order = 'contract.'.trim($_GET['asc_order']).' asc,contract.contract_id asc';
-        }
-        switch ($by){
-            case 'create':
-                $where['creator_role_id'] = session('role_id');
-                break;
-            case 'sub' :
-                $where['contract.owner_role_id'] = array('in',implode(',', $below_ids));
-                break;
-            case 'subcreate' :
-                $where['creator_role_id'] = array('in',implode(',', $below_ids));
-                break;
-            case 'today' :
-                $where['due_time'] =  array('between',array(strtotime(date('Y-m-d')) -1 ,strtotime(date('Y-m-d')) + 86400));
-                break;
-            case 'week' :
-                $week = (date('w') == 0)?7:date('w');
-                $where['due_time'] =  array('between',array(strtotime(date('Y-m-d')) - ($week-1) * 86400 -1 ,strtotime(date('Y-m-d')) + (8-$week) * 86400));
-                break;
-            case 'month' :
-                $next_year = date('Y')+1;
-                $next_month = date('m')+1;
-                $month_time = date('m') ==12 ? strtotime($next_year.'-01-01') : strtotime(date('Y').'-'.$next_month.'-01');
-                $where['due_time'] = array('between',array(strtotime(date('Y-m-01')) -1 ,$month_time));
-                break;
-            case 'add' :
-                $order = 'contract.create_time desc,contract.contract_id asc';
-                break;
-            case 'deleted' :
-                $where['is_deleted'] = 1;
-                break;
-            case 'update' :
-                $order = 'contract.update_time desc,contract.contract_id asc';
-                break;
-            case 'me' :
-                $where['contract.owner_role_id'] = session('role_id');
-                break;
-            case 'check' :
-                $where['contract.is_checked'] = 1;
-                break;
-            case 'no_check' :
-                $where['contract.is_checked'] = 0;
-                break;
-            case 'refuse' :
-                $where['contract.is_checked'] = 2;
-                break;
-            case 'dqcontact' :
-                $days = C('defaultinfo.contract_alert_time') ? intval(C('defaultinfo.contract_alert_time')) : 30;
-                $temp_time = time()+$days*86400;
-                $where['contract.is_checked'] = 1;
-                $where['contract.contract_status'] = 0;
-                $where['contract.owner_role_id'] = session('role_id');
-                $where['end_date'] = array('elt',$temp_time);
-                break;
-            default: $where['contract.owner_role_id'] = array('in',getPerByAction(MODULE_NAME,ACTION_NAME));break;
-        }
 
+        if($search_peoject){
+            $where['mx_payment_plan.business'] =  array('like','%'.$search_peoject.'%');
+        }
+        if($start_time && $end_time){
+            $where['pp.ontime'] = array('between',array($start_time,$end_time));
+        }
+        
+        if(!$start_time && $end_time){
+            $where['pp.ontime'] = array('between',array(date('Y-m-d',strtotime("-1years",strtotime($end_time))),$end_time));//自动计算1年前的 日期
+        }
+        
+        if(!$end_time && $start_time){
+            $where['pp.ontime'] = array('between',array($start_time,date('Y-m-d',strtotime("+1years",strtotime($start_time)))));//自动计算1年后的 日期
+        }
+        
         //分页
         if($_GET['listrows']){
             $listrows = intval($_GET['listrows']);
@@ -277,16 +229,18 @@ class ReturnAction extends Action
         }
         $this->listrows = $listrows;
         import('@.ORG.Page');// 导入分页类
-        $count =M("payment_plan")->count() ? M("payment_plan")->count() : '0';
+        
         $p_num = ceil($count/$listrows);
         $p = isset($_GET['p'])?$_GET['p']:1;
         if($p_num<$p){
             $p = $p_num;
         }
-        $data = M("payment_plan")->Page($p.','.$listrows)->select();
+        $data = M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->Page($p.','.$listrows)->select();
+        $count =M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->count() ? count($data) : '0';
+        
         foreach ($data as $k => $v){
-            $time = M("payment_planperiod")->where(array('plan_id'=>intval($v['Id']),'num'=>$v['nums']))->getField('ontime');
-            $periodplan = M("payment_planperiod")->where(array('plan_id'=>intval($v['Id'])))->select();
+            $time = M("payment_planperiod")->where(array('plan_id'=>intval($v['plan_id']),'num'=>$v['nums']))->getField('ontime');
+            $periodplan = M("payment_planperiod")->where(array('plan_id'=>intval($v['plan_id'])))->select();
             $e_total = 0;
             foreach ($periodplan as $k1=>$v1){
                 $money = M('payment_record')->where(array('periodplan_id'=>$v1['Id']))->select();
