@@ -55,10 +55,10 @@
                     <td>当前期次:</td>
                     <td>{$plan.backed_num}</td>
                     <td>实际回款状态:</td>
-                    <td>{$plan.status}</td>
+                    <td id="infact">{$plan.status}</td>
                 </tr>
             </table>
-            <table class="table">
+            <table class="table" id="hasRadio">
                 <tr><td></td></tr>
                 <tr>
                     <th>回款期次</th>
@@ -69,9 +69,10 @@
                     <th>回款状态</th>
                     <th>付款方式</th>
                     <th>回款时间</th>
+                    <th>是否完成</th>
                     <th>备注</th>
                 </tr>
-                <volist name="periods" id="vo">
+                <volist name="periods" key="k" id="vo">
                     <tr>
                         <th>{$vo.num}</th>
                         <th>{$vo.money}</th>
@@ -81,6 +82,10 @@
                         <th>{$vo.status}</th>
                         <th>{$vo.method}</th>
                         <th>{$vo.paytime}</th>
+                        <th>
+                            <input type="radio" rell="{$vo.Id}" name="status{$k}"<if condition="$vo['status'] eq '未完成'"> checked="checked"</if> value="0">否
+                            <input type="radio" rell="{$vo.Id}" name="status{$k}" <if condition="$vo['status'] eq '完成'"> checked="checked"</if> value="1">是
+                        </th>
                         <th>{$vo.remark}</th>
                     </tr>
                 </volist>
@@ -143,7 +148,7 @@
                     <td>当前期次:</td>
                     <td>{$plan.backed_num}</td>
                     <td>实际回款状态:</td>
-                    <td>逾期未完成</td>
+                    <td>{$plan.status}</td>
                 </tr>
             </table>
             <table class="table" id="tlast">
@@ -338,6 +343,55 @@
         }
     }
     $(document).ready(function(){
+        $('input[type=radio]').change(function() {
+            var pid = $(this).attr('rell');
+            var pv = $(this).val();
+            swal({
+                    title: "您确定要修改当前期次回款状态吗？",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的，我要修改！",
+                    cancelButtonText:'让我再考虑一下…',
+                    closeOnConfirm:false,
+                    closeOnCancel:false
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        $.ajax({
+                            url:"/index.php?m=return&a=modifyStatus",
+                            type:"post",
+                            async:true,
+                            data:{ period_id : pid,
+                                status_value : pv,
+                            },
+                            success: function (data) {
+                                if (data.status == 1) {
+                                    swal({
+                                        title:'修改成功',
+                                        type:"success",
+                                        confirmButtonText: "确定"
+                                    },function (isConfirm) {
+                                        if(isConfirm){
+                                            $("#infact").html(data.statuss);
+                                        }
+                                    });
+                                } else {
+                                    swal({
+                                        title: "操作失败！",
+                                        text:data.info,
+                                        type: "error"
+                                    })
+                                    return false;
+                                }
+                            },
+                            dataType: 'json'
+                        });
+                    } else {
+                        swal("已取消","您取消了修改操作！","error");
+                    }
+                })
+               });
         $("#edit").click(function () {
             $("#bianji").css('display','none');
             $("#baocun").css('display','block');

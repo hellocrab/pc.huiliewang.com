@@ -56,14 +56,27 @@ class ReturnAction extends Action
         echo json_encode($data);
     }
 
-//    //ajax展示对应期次
-//    public function numChanged(){
-//        $b_id = $_POST['business_id'];
-//        $customer_id = M("business")->where(array('business_id'=>intval($b_id)))->getField('customer_id');
-//        $plan_id = M("payment_plan")->where(array('customer_id'=>intval($customer_id),'business_id'=>intval($b_id)))->getField("Id");
-//        $num = M("payment_planperiod")->field('num')->where(array('plan_id'=>intval($plan_id),'status'=>0))->select();
-//        dump($num);exit;
-//    }
+    //ajax展示对应期次
+    public function modifyStatus(){
+        $flag = M("payment_planperiod")->where(array("Id"=>intval($_POST['period_id'])))->save(array('status'=>intval($_POST['status_value'])));
+//        dump($flag);exit;
+        $plan_id = M("payment_planperiod")->where(array("Id"=>intval($_POST['period_id'])))->getField("plan_id");
+        $data = M("payment_planperiod")->where(array("plan_id"=>intval($plan_id)))->select();
+        $tt = true;
+        $statuss = '';
+        foreach ($data as $k=>$v){
+            if(intval($v['status'])==0) $tt = false;
+        }
+        if($tt){
+            M("payment_plan")->where(array("Id"=>intval($plan_id)))->save(array('status'=>1));
+            $statuss = '完成';
+        }
+        else{
+            M("payment_plan")->where(array("Id"=>intval($plan_id)))->save(array('status'=>0));
+            $statuss = '未完成';
+        }
+        if($flag) echo '{"status":"1","statuss":"'.$statuss.'"}';else echo '{"status":"2","statuss":"'.$statuss.'""}';
+    }
 
     //新增回款计划,存入数据库
     public function plan_add(){
@@ -164,6 +177,10 @@ class ReturnAction extends Action
             $plan['money_backed'] += $total;
             $plan['total_count'] += count($record);
             $periods[$k]['status'] = $total < floatval($v['money']) ? '未完成' : "完成";
+            if($total > floatval($v['money']))
+                M("payment_planperiod")->where(array('Id'=>intval($v['Id'])))->save(array('status'=>1));
+            else
+                M("payment_planperiod")->where(array('Id'=>intval($v['Id'])))->save(array('status'=>0));
             $periods[$k]['method'] = $method;
             $periods[$k]['paytime'] = $time;
         }
@@ -199,7 +216,9 @@ class ReturnAction extends Action
     }
     // 回款计划的编辑
     public function plan_edit(){
+//        dump($_POST);exit;
         $plan_id = intval($_POST['plan_id']);
+        $bus_id = intval($_POST['business_id']);
         $customer = $_POST['customer'];
         $person = $_POST['person'];
         $contract = intval($_POST['contract']);
@@ -208,11 +227,10 @@ class ReturnAction extends Action
         $add_num = intval($_POST['add_nums']);
         $data = array(
             'customer'=>$customer,
-            'business'=>M("business")->where(array('business_id'=>$contract))->getField('name'),
+            'business'=>M("business")->where(array('business_id'=>$bus_id))->getField('name'),
             'total'=>$total,
             'nums'=>$add_num
         );
-
         M("payment_plan")->where(array('Id'=>$plan_id))->save($data);
         $business_id = M("payment_plan")->where(array('Id'=>$plan_id))->getField("business_id");
         M("business")->where(array('business_id'=>intval($business_id)))->save(array('creator_role_id'=>intval($person)));

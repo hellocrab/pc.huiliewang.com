@@ -155,7 +155,7 @@
                     </td>
                     <td class="col-md-2">创建时间:</td>
                     <td class="col=md-4">
-                        <input id="createtime" name="createtime" readonly="readonly"  class="form-control checkit" type="date" value="{$record.createtime}"><div id="createtimeTip" class="error_msg"></div>
+                        <input id="createtime" name="createtime" readonly="readonly" class="form-control checkit" type="date" value="{$record.createtime}"><div id="createtimeTip" class="error_msg"></div>
                     </td>
                 </tr>
                 <tr>
@@ -207,8 +207,8 @@
                     <td class="col=md-4">
                         <input id="delayeddays" class="form-control checkit number" name="delayeddays" type="number" value="{$record.delayeddays}"><div id="delayeddaysTip" class="error_msg"></div>
                     </td>
-                    <td class="col-md-2">是否已完成</td>
-                    <td class="col=md-4">
+                    <td class="col-md-2" style="display:none;">是否已完成</td>
+                    <td class="col=md-4" style="display: none;">
                         <input type="radio" name="overed" <if condition ="$record['overed'] eq 0">checked="checked"</if> value="0">否
                         <input type="radio" name="overed" <if condition ="$record['overed'] eq 1">checked="checked"</if> value="1">是
                     </td>
