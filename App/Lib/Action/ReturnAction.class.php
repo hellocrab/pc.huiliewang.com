@@ -125,15 +125,16 @@ class ReturnAction extends Action
 //            $business = $d_v_business->where(['business_id'=>['not in',$test]])->select();
 //        else
 //            $business = $d_v_business->select();
-        $business_id = $_GET['plan_id'];
-        $plan_id = $_GET['plan'];
-        $plan = M("payment_plan")->where(array('Id'=>$plan_id))->find();
+        $business_id = $_GET['plan_id']; //
+        $plan_id = $_GET['plan'];  //
+        $plan = M("payment_plan")->where(array('Id'=>intval($plan_id)))->find();
         $periods = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
         $d_v_business = D('BusinessView');
         $business = $d_v_business->where(array('business_id'=>$business_id))->find();
         foreach ($periods as $k=>$v ){
             $periods[$k]['plan_time'] = $periods[count($periods)-1]['ontime'];
         }
+
         $test1 = M("payment_plan")->field('business_id')->select();
         foreach ($test1 as $k => $v){
             $test[]=intval($v['business_id']);
@@ -274,7 +275,7 @@ class ReturnAction extends Action
         if($p_num<$p){
             $p = $p_num;
         }
-        $data = M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->Page($p.','.$listrows)->select();
+        $data = M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->order("mx_payment_plan.Id desc")->Page($p.','.$listrows)->select();
         $count =M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->count() ? count($data) : '0';
 
         foreach ($data as $k => $v){
@@ -297,6 +298,7 @@ class ReturnAction extends Action
         $show = $Page->show();// 显示分页栏
         $this->assign('page',$show);// 赋值分页输出
         $this->assign('plist',$data);
+//        dump($data);
         $this->display();
     }
     public function backRecord(){

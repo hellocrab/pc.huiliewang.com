@@ -208,14 +208,14 @@
                                                             <label for=""></label>
                                                         </div>
                                                     </td>
-                                                    <td data-id=""><a href="javascript:void(0);" onclick="edit_plan('{$vo.business_id}', '{$vo.Id}');">{$vo.business}</a></td>
+                                                    <td data-id=""><a href="javascript:void(0);" onclick="edit_plan('{$vo.business_id}', '{$vo.plan_id}');">{$vo.business}</a></td>
                                                     <td>{$vo.ontime}</td>
                                                     <td>{$vo.nums}</td>
                                                     <td>{$vo.total}</td>
                                                     <td>{$vo.e_total}</td>
                                                     <td>{$vo.customer}</td>
                                                     <td>{$vo.status}</td>
-                                                    <td><a href="javascript:void(0);" <if condition="$vo.isdelete eq 0"> onclick="deleteBusiness('{$vo.Id}')"<else /> style="color: #777777"</if>>删除</a></td>
+                                                    <td><a href="javascript:void(0);" <if condition="$vo.isdelete eq 0"> onclick="deleteBusiness('{$vo.plan_id}')"<else /> style="color: #777777"</if>>删除</a></td>
                                                 </tr>
                                             </volist>
                                             <tbody>
