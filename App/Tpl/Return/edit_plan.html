@@ -84,7 +84,7 @@
                         <th>{$vo.paytime}</th>
                         <th>
                             <input type="radio" rell="{$vo.Id}" name="status{$k}"<if condition="$vo['status'] eq '未完成'"> checked="checked"</if> value="0">否
-                            <input type="radio" rell="{$vo.Id}" name="status{$k}" <if condition="$vo['status'] eq '完成'"> checked="checked"</if> value="1">是
+                            <input type="radio" rell="{$vo.Id}" name="status{$k}"<if condition="$vo['status'] eq '完成'"> checked="checked"</if> value="1">是
                         </th>
                         <th>{$vo.remark}</th>
                     </tr>
@@ -164,7 +164,7 @@
                 </tr>
                 <volist name="periods" key="k" id="vo">
                     <tr>
-                        <td><button onclick="minusedit('{$vo.plan_id}','{$vo.Id}',this);" type="button" class="btn btn-white">-</button></td>
+                        <td><button onclick="minusedit('{$vo.plan_id}','{$vo.Id}',this);" type="button" class="btn btn-white minus">-</button></td>
                         <td><button onclick="addedit();" type="button" class="btn btn-white">+</button></td>
                         <th class="eachnum">{$vo.num}</th>
                         <th class="tmoney">{$vo.money}</th>
@@ -233,7 +233,6 @@
             success : function(result){
                 $("#customer").val(result.customer_name);
                 $("#customer_id").val(result.customer_id);
-                // $("#b_id").val(result.business_id);
             }
         });
         $("#contractTip").html("");
@@ -241,13 +240,17 @@
 
     var num = $("#nums").html();
     function minusedit(obj,pid,obj1) {
+        var numtotal = 0;
+        $(".minus").each(function () {
+            numtotal++;
+        });
         if(obj1 == undefined){
             $("#tlast").children().last().remove();
             num--;
             $("#add_nums").val(num);
         }
         else {
-            if(num>2)
+            if(num>2 && numtotal >2)
             swal({
                     title: "您确定要删除当前期次信息吗？",
                     text: "删除后将无法恢复，请谨慎操作！",
@@ -303,7 +306,7 @@
                     } else {
                         swal("已取消","您取消了删除操作！","error");
                     }
-                });else swal("至少有两条回款期次！","","warning");
+                });else swal("系统至少有两条回款期次！","你可尝试添加期次再删除","warning");
         };
         return false;
     }
@@ -350,6 +353,7 @@
             var pid = $(this).attr('rell');
             var pv = $(this).val();
             var ob= $(this).parent().prev().prev().prev();
+            var cnew = $(this).parent().find("input:not(:checked)");
             swal({
                     title: "您确定要修改当前期次回款状态吗？",
                     type: "warning",
@@ -393,6 +397,7 @@
                             dataType: 'json'
                         });
                     } else {
+                        cnew.prop('checked',true);
                         swal("已取消","您取消了修改操作！","error");
                     }
                 })

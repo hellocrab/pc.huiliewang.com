@@ -182,7 +182,7 @@ class ReturnAction extends Action
 //            $periods[$k]['status'] = $total < floatval($v['money']) ? '未完成' : "完成";
 //            if($total > floatval($v['money']))
 //                M("payment_planperiod")->where(array('Id'=>intval($v['Id'])))->save(array('status'=>1));
-//            else  
+//            else
 //                M("payment_planperiod")->where(array('Id'=>intval($v['Id'])))->save(array('status'=>0));
             $periods[$k]['method'] = $method;
             $periods[$k]['paytime'] = $time;
@@ -215,11 +215,18 @@ class ReturnAction extends Action
             $data = array('num'=>($k+1));
             M("payment_planperiod")->where(array('Id'=>intval($v['Id'])))->save($data);
         }
+        //修改计划状态
+        $period = M("payment_planperiod")->where(array('Id'=>intval($period_id)))->select();
+        $flag = true ;
+        foreach ($period as $k=>$v){
+            $flag = intval($v['status']) == 0 ? false:true;
+        }
+        if($flag) M('payment_plan')->where(array('Id'=>intval($plan_id)))->save(array('pstatus'=>1));
+        else M('payment_plan')->where(array('Id'=>intval($plan_id)))->save(array('pstatus'=>0));
         echo '{"status":"1"}';
     }
     // 回款计划的编辑
     public function plan_edit(){
-//        dump($_POST);exit;
         $plan_id = intval($_POST['plan_id']);
         $bus_id = intval($_POST['business_id']);
         $customer = $_POST['customer'];
@@ -240,7 +247,7 @@ class ReturnAction extends Action
         $business_id = M("payment_plan")->where(array('Id'=>$plan_id))->getField("business_id");
         M("business")->where(array('business_id'=>intval($business_id)))->save(array('creator_role_id'=>intval($person)));
         if($add_num>$nums)
-        for($i=($nums+1);$i>2&&$i<=$add_num;$i++){
+        for($i=($nums+1);$i>1&&$i<=$add_num;$i++){
             $data1 = array(
                 'plan_id'=>$plan_id,
                 'num'=>$i,
