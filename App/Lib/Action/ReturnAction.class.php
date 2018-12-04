@@ -219,6 +219,7 @@ class ReturnAction extends Action
     }
     // 回款计划的编辑
     public function plan_edit(){
+        dump($_POST);exit;
         $plan_id = intval($_POST['plan_id']);
         $bus_id = intval($_POST['business_id']);
         $customer = $_POST['customer'];
@@ -229,7 +230,7 @@ class ReturnAction extends Action
         $add_num = intval($_POST['add_nums']);
         $data = array(
             'customer'=>$customer,
-            'customer_id'=> $person,
+            'customer_id'=> intval($_POST['customer_id']),
             'business_id'=>$contract,
             'business'=>M("business")->where(array('business_id'=>$contract))->getField('name'),
             'total'=>$total,
