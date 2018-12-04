@@ -182,7 +182,7 @@ class ReturnAction extends Action
 //            $periods[$k]['status'] = $total < floatval($v['money']) ? '未完成' : "完成";
 //            if($total > floatval($v['money']))
 //                M("payment_planperiod")->where(array('Id'=>intval($v['Id'])))->save(array('status'=>1));
-//            else
+//            else  
 //                M("payment_planperiod")->where(array('Id'=>intval($v['Id'])))->save(array('status'=>0));
             $periods[$k]['method'] = $method;
             $periods[$k]['paytime'] = $time;
