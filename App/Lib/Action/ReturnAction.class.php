@@ -69,7 +69,7 @@ class ReturnAction extends Action
         }
         if($tt){
             M("payment_plan")->where(array("Id"=>intval($plan_id)))->save(array('pstatus'=>1));
-            $statuss = '完成'; 
+            $statuss = '完成';
         }
         else{
             M("payment_plan")->where(array("Id"=>intval($plan_id)))->save(array('pstatus'=>0));
@@ -164,7 +164,7 @@ class ReturnAction extends Action
         $plan['money_backed'] = 0;
         $plan['total_count'] = 0;
         $plan['backed_num'] = '未开始还款';
-        $plan['status'] = intval($plan['status']) == 0 ? '未完成' : '完成';
+        $plan['status'] = intval($plan['pstatus']) == 0 ? '未完成' : '完成';
         foreach ($periods as $k=>$v) {
             $record = M("payment_record")->where(array('periodplan_id'=>intval($v['Id'])))->select();
             if(count($record)) $plan['backed_num'] = $v['num'];
