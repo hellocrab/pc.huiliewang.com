@@ -219,7 +219,7 @@ class ReturnAction extends Action
     }
     // 回款计划的编辑
     public function plan_edit(){
-        dump($_POST);exit;
+//        dump($_POST);exit;
         $plan_id = intval($_POST['plan_id']);
         $bus_id = intval($_POST['business_id']);
         $customer = $_POST['customer'];
