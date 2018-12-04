@@ -1953,12 +1953,12 @@ class BusinessAction extends Action{
 								M('BusinessData')->where(array('business_id'=>$v['business_id']))->delete();
 								//删除回款计划和记录**************************************************************************
 								$plan_id = M("payment_plan")->where(array('business_id'=>$v['business_id']))->getField('Id');
-								M("payment_plan")->where(array('business_id'=>$v['business_id']))->delete();
+								M("payment_plan")->where(array('business_id'=>$v['business_id']))->delete(); //删除计划
 								$plan_period = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
                                 M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->delete();
 								if(count($plan_period))
 								    foreach ($plan_period as $k=>$v){
-								        M("payment_record")->where(array('periodplan'=>intval($v['Id'])))->delete();
+								        M("payment_record")->where(array('periodplan_id'=>intval($v['Id'])))->delete();
                                     }
                                 //*******************************************************************************************
 								actionLog($v['business_id']);

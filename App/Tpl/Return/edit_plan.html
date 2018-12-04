@@ -17,7 +17,7 @@
 <div class="modal-body clearfix">
     <form id="ad_Form" class="form-horizontal m-t" method="post">
         <div id="planshow" class="col-md-12" style="display: block;">
-            <input type="hidden" name="business_id" value="{$business.business_id}"/>
+            <input type="hidden" id="b_id" name="business_id" value="{$business.business_id}"/>
             <input type="hidden" id="pnums" name="nums" value="{$plan.nums}">
             <input id="add_nums" type="hidden" name="add_nums" value="{$plan.nums}">
             <table class="table form-inline" >
@@ -102,7 +102,7 @@
                     <td>
                         <select name="contract" id="contract" onchange="contractChanged();">
                             <option value=" ">--对应项目--</option>
-                            <option value="{$plan.Id}" selected="selected">{$plan.business}</option>
+                            <option value="{$plan.business_id}" selected="selected">{$plan.business}</option>
                             <volist name="business_all" id="vo">
                                 <!--<option value="{$vo['business_id']}" <if condition ="$plan['business'] eq $vo['name']">selected="selected"</if>>{$vo['name']}</option>-->
                                 <option value="{$vo['business_id']}">{$vo['name']}</option>
@@ -112,7 +112,7 @@
                     <td class="col-md-2">负责人:</td>
                     <td class="col-md-4">
                         <select name="person" id="person"  onchange="personChanged();">
-                            <option value=" ">--负责人--</option>
+                            <option value="">--负责人--</option>
                             <volist name="user" id="vo">
                                 <option value="{$vo.user_id}" <if condition ="$business['user_name'] eq $vo['name']">selected="selected"</if>>{$vo.name}</option>
                             </volist>
@@ -123,6 +123,7 @@
                     <td class="col-md-2">对应客户:</td>
                     <td class="col-md-4">
                         <input id="customer" class="form-control" readonly="readonly"  name="customer" value="{$plan.customer}">
+                        <input id="customer_id" type="hidden" name="customer_id" value="{$plan.customer_id}">
                     </td>
                     <td>所属部门:</td>
                     <td>
@@ -231,6 +232,8 @@
             dataType: "json",
             success : function(result){
                 $("#customer").val(result.customer_name);
+                $("#customer_id").val(result.customer_id);
+                // $("#b_id").val(result.business_id);
             }
         });
         $("#contractTip").html("");
@@ -346,6 +349,7 @@
         $('input[type=radio]').change(function() {
             var pid = $(this).attr('rell');
             var pv = $(this).val();
+            var ob= $(this).parent().prev().prev().prev();
             swal({
                     title: "您确定要修改当前期次回款状态吗？",
                     type: "warning",
@@ -374,6 +378,7 @@
                                     },function (isConfirm) {
                                         if(isConfirm){
                                             $("#infact").html(data.statuss);
+                                            ob.html(data.current_status);
                                         }
                                     });
                                 } else {
