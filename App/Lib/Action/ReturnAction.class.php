@@ -173,7 +173,7 @@ class ReturnAction extends Action
             foreach ($record as $k1 => $v1){
                 $total += floatval($v1['money']);
                 $method = $v1['paymethod'];
-                $time = $v1['paytime_modify'];
+                $time = $v1['paytime'];
             }
             $periods[$k]['total'] = $total;
             $plan['money_backed'] += $total;
@@ -514,7 +514,19 @@ class ReturnAction extends Action
         M("payment_record")->where(array('Id'=>intval($_POST['record_id'])))->save($data);
         $person = $_POST['person'];
         //编辑期次回款状态，计划回款状态
-        M("payment_planperiod")->where(array('Id'=>intval($_POST['periodplan_id'])))->save(array('status'=>intval($_POST['overed'])));
+//        M("payment_planperiod")->where(array('Id'=>intval($_POST['periodplan_id'])))->save(array('status'=>intval($_POST['overed'])));
+        $planperiod_money = M("payment_planperiod")->where(array('Id'=>intval($_POST['periodplan_id'])))->getField('money');//取出当前期次的金额
+        $record = M("payment_record")->field('money')->where(array('periodplan_id'=>intval($_POST['periodplan_id'])))->select();
+        $hs = 0;
+        if(count($record))
+            foreach ($record as $k=>$v){
+                $hs += floatval($v['money']);
+            }
+        if($hs>=floatval($planperiod_money))
+            M("payment_planperiod")->where(array('Id'=>intval($_POST['periodplan_id'])))->save(array('status'=>1));
+        else
+            M("payment_planperiod")->where(array('Id'=>intval($_POST['periodplan_id'])))->save(array('status'=>0));
+        //对应计划状态的修改
         $plan_id = M("payment_planperiod")->where(array('Id'=>intval($_POST['periodplan_id'])))->getField("plan_id");
         $flag = true;
         $planperiod = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
@@ -570,8 +582,30 @@ class ReturnAction extends Action
 
     //汇款记录的删除
     public function deletePlanPeriod(){
-        $plan_id = $_POST['plan_id'];
+        $plan_id = $_POST['plan_id']; //获取回款记录的id
+        //记录删除 ，对应期次和计划状态修改
+        $period_id = M("payment_record")->where(array('Id'=>intval($plan_id)))->getField('periodplan_id');//取出对应期次ID
         M("payment_record")->where(array('Id'=>intval($plan_id)))->delete();
+        $plan = M('payment_planperiod')->where(array('Id'=>intval($period_id)))->getField('plan_id'); //取出对应的计划id
+        $planperiod_money = M('payment_planperiod')->where(array('Id'=>intval($period_id)))->getField('money');
+        $record = M("payment_record")->field('money')->where(array('periodplan_id'=>intval($period_id)))->select();
+        $hs = 0;
+        if(count($record))
+            foreach ($record as $k=>$v){
+                $hs += floatval($v['money']);
+            }
+        if($hs>=floatval($planperiod_money))
+            M("payment_planperiod")->where(array('Id'=>intval($period_id)))->save(array('status'=>1));
+        else
+            M("payment_planperiod")->where(array('Id'=>intval($period_id)))->save(array('status'=>0));
+        //回款记录添加时，对应计划状态修改
+        $period = M("payment_planperiod")->where(array('Id'=>intval($period_id)))->select();
+        $flag = true ;
+        foreach ($period as $k=>$v){
+            $flag = intval($v['status']) == 0 ? false:true;
+        }
+        if($flag) M('payment_plan')->where(array('Id'=>intval($plan)))->save(array('pstatus'=>1));
+        else M('payment_plan')->where(array('Id'=>intval($plan)))->save(array('pstatus'=>0));
         echo '{"status":"1"}';
     }
 
@@ -606,6 +640,15 @@ class ReturnAction extends Action
             M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->save(array('status'=>1));
         else
             M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($_POST['num'])))->save(array('status'=>0));
+        //回款记录添加时，对应计划状态修改
+         $period = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id)))->select();
+         $flag = true ;
+         foreach ($period as $k=>$v){
+             $flag = intval($v['status']) == 0 ? false:true;
+         }
+        if($flag) M('payment_plan')->where(array('Id'=>intval($plan_id)))->save(array('pstatus'=>1));
+         else M('payment_plan')->where(array('Id'=>intval($plan_id)))->save(array('pstatus'=>0));
+         //
         if((strtotime($_POST['date'])-strtotime($plantime))<=0)
             $delayed = 4;
         elseif ($hs==0)
