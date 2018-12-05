@@ -152,7 +152,7 @@
                     $(this).parent().parent().next().find("input").val("0.00%");
                 }else {
                     var total = parseFloat(obj.value);
-                    var property = i/total*100;
+                    var property = (i/total*100).toFixed(2); 
                     $(this).parent().parent().next().find("input").val(parseFloat(property)+"%");
                 }
             });
@@ -169,7 +169,7 @@
             }
         }
     }
-    
+    //
     function propertyCalculate(obj) {
         var planed_money = $("#planed_money").val();
         if(planed_money == ''){
@@ -177,7 +177,7 @@
         }else {
             $("#planed_moneyTip").html("");
             if(obj.value != ''){
-                var  property = ((obj.value / planed_money )*100).toFixed(2);
+                var  property = parseFloat(((obj.value / planed_money )*100)).toFixed(2);
                 var attr = obj.getAttribute('id');
                 var num1 = parseInt(attr.substring(5));
                 var str = "#property"+num1;
