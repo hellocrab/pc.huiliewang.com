@@ -106,80 +106,20 @@ object(stdClass)#11 (85) {
   'job_type_text' =>  job_type_text
   'now_job_type' => now_job_type
   'now_industry' =>  now_industry
-  ["files"]=>
-  array(3) {
-    [0]=>
-    object(stdClass)#15 (6) {
-      ["is_del"]=>
-      int(0)
-      ["file_id"]=>
-      string(32) "266e870832ed48a7893d2136490b4beb"
-      ["file_source_id"]=>
-      string(20) "PP_NFXH_FILE_1179176"
-      ["file_name"]=>
-      string(12) "7495484.html"
-      ["file_url"]=>
-      string(45) "PP_NFXH_012cccbe3d2c462198c39d2c60223e98.html"
-      ["modify_time"]=>
-      int(1540035574607)
-    }
-    [1]=>
-    object(stdClass)#16 (6) {
-      ["is_del"]=>
-      int(0)
-      ["file_id"]=>
-      string(32) "bd987daadd7d4244ada64ad0c32768f2"
-      ["file_source_id"]=>
-      NULL
-      ["file_name"]=>
-      string(17) "简历附件.html"
-      ["file_url"]=>
-      string(37) "39dfcb08508549b6b0589318748897b3.html"
-      ["modify_time"]=>
-      int(1543370514755)
-    }
-    [2]=>
-    object(stdClass)#17 (6) {
-      ["is_del"]=>
-      int(0)
-      ["file_id"]=>
-      string(32) "dda60109fcab4e469d39fdc390bf6c4c"
-      ["file_source_id"]=>
-      NULL
-      ["file_name"]=>
-      string(17) "简历附件.html"
-      ["file_url"]=>
-      string(37) "ee3413c4e12442859c6d2d1921520fa9.html"
-      ["modify_time"]=>
-      int(1544008359041)
-    }
-  }
-  ["labels"]=>
-  NULL
-  ["expect_job_types"]=>
-  array(1) {
-    [0]=>
-    int(15)
-  }
-  ["expect_job_type_text"]=>
-  string(15) "计算机软件"
-  ["expect_citys"]=>
-  array(1) {
-    [0]=>
-    string(9) "010000000"
-  }
-  ["expect_city_text"]=>
-  NULL
-  ["expect_position"]=>
-  string(15) "研发工程师"
-  ["work_status"]=>
-  NULL
-  ["work_status_text"]=>
-  NULL
-  ["work_status_remark"]=>
-  NULL
-  ["secrecy"]=>
-  NULL
+  'labels' => label
+  <<'expect_job_types' => industry>> 
+  'expect_job_type_text' =>expect_job_type_text
+  <<'expect_citys' =>intentCity>>
+  'expect_city_text' => expect_city_text
+  'expect_position' => job_class
+  'work_status' => work_status
+  'work_status_text' => curStatus
+  'work_status_remark' => work_status_remark
+  'secrecy' => secrecy
+  'start_working_year' => startWorkyear
+  self_evaluation => 'data.evaluate'
+  language_text => language
+  
   ["work_expers"]=>
   array(7) {
     [0]=>
@@ -540,6 +480,7 @@ object(stdClass)#11 (85) {
       }
     }
   }
+  
   ["project_expers"]=>
   array(7) {
     [0]=>
@@ -705,6 +646,7 @@ object(stdClass)#11 (85) {
       NULL
     }
   }
+  
   ["educationals"]=>
   array(1) {
     [0]=>
@@ -749,13 +691,12 @@ object(stdClass)#11 (85) {
       NULL
     }
   }
+  
   ["language_text"]=>
   NULL
   ["certificates"]=>
   NULL
-  ["self_evaluation"]=>
-  string(458) "精通JavaScript,j2ee等相关技术,熟练掌握Tomcat,resin,Web服务器的部署与配置,熟练掌握Linux,maven,redis等相关技术,SSH,spring MVC,nutz,spring Boot框架,有能力和信心胜任所赋予的职责以及面对任何困难和挑战,办事认真、态度严谨、组织能力和协调能力强,勤奋好学,与人和善,具有良好的团队协作精神和工作能力,能够承受一定的工作压力,按时按量的完成工作任务。"
-  ["start_working_year"]=>
+  [""]=>
   int(2012)
   ["owner"]=>
   int(1517)
@@ -832,3 +773,54 @@ object(stdClass)#11 (85) {
   ["sourceChannelName"]=>
   string(6) "卓聘"
 }
+
+ >>
+  ["files"]=>
+  array(3) {
+    [0]=>
+    object(stdClass)#15 (6) {
+      ["is_del"]=>
+      int(0)
+      ["file_id"]=>
+      string(32) "266e870832ed48a7893d2136490b4beb"
+      ["file_source_id"]=>
+      string(20) "PP_NFXH_FILE_1179176"
+      ["file_name"]=>
+      string(12) "7495484.html"
+      ["file_url"]=>
+      string(45) "PP_NFXH_012cccbe3d2c462198c39d2c60223e98.html"
+      ["modify_time"]=>
+      int(1540035574607)
+    }
+    [1]=>
+    object(stdClass)#16 (6) {
+      ["is_del"]=>
+      int(0)
+      ["file_id"]=>
+      string(32) "bd987daadd7d4244ada64ad0c32768f2"
+      ["file_source_id"]=>
+      NULL
+      ["file_name"]=>
+      string(17) "简历附件.html"
+      ["file_url"]=>
+      string(37) "39dfcb08508549b6b0589318748897b3.html"
+      ["modify_time"]=>
+      int(1543370514755)
+    }
+    [2]=>
+    object(stdClass)#17 (6) {
+      ["is_del"]=>
+      int(0)
+      ["file_id"]=>
+      string(32) "dda60109fcab4e469d39fdc390bf6c4c"
+      ["file_source_id"]=>
+      NULL
+      ["file_name"]=>
+      string(17) "简历附件.html"
+      ["file_url"]=>
+      string(37) "ee3413c4e12442859c6d2d1921520fa9.html"
+      ["modify_time"]=>
+      int(1544008359041)
+    }
+  }
+  >>
