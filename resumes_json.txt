@@ -1,0 +1,879 @@
+object(stdClass)#11 (85) {
+  ["_id"]=>
+  string(24) "5bc04a8a496d138e8c136160"
+  ["user_id"]=>
+  int(1517)
+  ["company_id"]=>
+  int(246)
+  ["projects"]=>
+  array(2) {
+    [0]=>
+    object(stdClass)#12 (5) {
+      ["project_id"]=>
+      int(76504)
+      ["user_id"]=>
+      int(3546)
+      ["resume_snapshot_id"]=>
+      NULL
+      ["stage"]=>
+      int(0)
+      ["modify_time"]=>
+      int(1543370686177)
+    }
+    [1]=>
+    object(stdClass)#13 (5) {
+      ["project_id"]=>
+      int(59397)
+      ["user_id"]=>
+      int(3532)
+      ["resume_snapshot_id"]=>
+      NULL
+      ["stage"]=>
+      int(0)
+      ["modify_time"]=>
+      int(1544008359978)
+    }
+  }
+  ["source_id"]=>
+  string(15) "PP_NFXH_1179176"
+  ["source"]=>
+  int(3)
+  ["source_channel"]=>
+  int(102)
+  ["source_url"]=>
+  NULL
+  ["archive_url"]=>
+  NULL
+  ["create_time"]=>
+  int(1483846906000)
+  ["modify_time"]=>
+  int(1544008359041)
+  ["is_del"]=>
+  int(0)
+  ["effective_user_id"]=>
+  int(1517)
+  ["effective_modify_time"]=>
+  int(1539328650796)
+  ["is_collect"]=>
+  string(1) "0"
+  ["resume_iumind"]=>
+  object(stdClass)#14 (9) {
+    ["persent"]=>
+    int(0)
+    ["persent_desc"]=>
+    NULL
+    ["month"]=>
+    NULL
+    ["dongji"]=>
+    NULL
+    ["xuqiu"]=>
+    NULL
+    ["kaolu"]=>
+    NULL
+    ["sync_fail_reason"]=>
+    NULL
+    ["fail_reasons"]=>
+    NULL
+    ["synchronized_date"]=>
+    int(1543370691507)
+  }
+  ["name"]=>
+  string(9) "王炜亮"
+  ["birth_year"]=>
+  int(1985)
+  ["birth_month"]=>
+  int(6)
+  ["birth_date"]=>
+  NULL
+  ["sex"]=>
+  int(1)
+  ["sex_text"]=>
+  string(3) "男"
+  ["mobile"]=>
+  string(11) "13641288234"
+  ["email"]=>
+  string(16) "siluwoai@126.com"
+  ["other_contacts"]=>
+  string(33) "烟台13641288234siluwoai@126.com"
+  ["avatar"]=>
+  NULL
+  ["marital_status"]=>
+  int(1)
+  ["marital_status_text"]=>
+  string(0) ""
+  ["child"]=>
+  NULL
+  ["child_age"]=>
+  NULL
+  ["city_id"]=>
+  string(9) "010100000"
+  ["city_id_text"]=>
+  NULL
+  ["hkadr_id"]=>
+  string(0) ""
+  ["hkadr_id_text"]=>
+  NULL
+  ["native_place_id"]=>
+  string(9) "162100000"
+  ["native_place_id_text"]=>
+  NULL
+  ["resume_code"]=>
+  int(1454273)
+  ["constellation"]=>
+  NULL
+  ["constellation_text"]=>
+  NULL
+  ["wechat_number"]=>
+  string(0) ""
+  ["wechat_qr"]=>
+  NULL
+  ["qq_number"]=>
+  string(0) ""
+  ["microblog"]=>
+  string(0) ""
+  ["blood_type"]=>
+  string(0) ""
+  ["blood_type_text"]=>
+  string(0) ""
+  ["linkedin"]=>
+  string(0) ""
+  ["company"]=>
+  string(30) "北京网聘咨询有限公司"
+  ["department"]=>
+  string(0) ""
+  ["position"]=>
+  string(15) "研发工程师"
+  ["job_type"]=>
+  NULL
+  ["job_type_text"]=>
+  NULL
+  ["now_job_type"]=>
+  NULL
+  ["now_industry"]=>
+  NULL
+  ["files"]=>
+  array(3) {
+    [0]=>
+    object(stdClass)#15 (6) {
+      ["is_del"]=>
+      int(0)
+      ["file_id"]=>
+      string(32) "266e870832ed48a7893d2136490b4beb"
+      ["file_source_id"]=>
+      string(20) "PP_NFXH_FILE_1179176"
+      ["file_name"]=>
+      string(12) "7495484.html"
+      ["file_url"]=>
+      string(45) "PP_NFXH_012cccbe3d2c462198c39d2c60223e98.html"
+      ["modify_time"]=>
+      int(1540035574607)
+    }
+    [1]=>
+    object(stdClass)#16 (6) {
+      ["is_del"]=>
+      int(0)
+      ["file_id"]=>
+      string(32) "bd987daadd7d4244ada64ad0c32768f2"
+      ["file_source_id"]=>
+      NULL
+      ["file_name"]=>
+      string(17) "简历附件.html"
+      ["file_url"]=>
+      string(37) "39dfcb08508549b6b0589318748897b3.html"
+      ["modify_time"]=>
+      int(1543370514755)
+    }
+    [2]=>
+    object(stdClass)#17 (6) {
+      ["is_del"]=>
+      int(0)
+      ["file_id"]=>
+      string(32) "dda60109fcab4e469d39fdc390bf6c4c"
+      ["file_source_id"]=>
+      NULL
+      ["file_name"]=>
+      string(17) "简历附件.html"
+      ["file_url"]=>
+      string(37) "ee3413c4e12442859c6d2d1921520fa9.html"
+      ["modify_time"]=>
+      int(1544008359041)
+    }
+  }
+  ["labels"]=>
+  NULL
+  ["expect_job_types"]=>
+  array(1) {
+    [0]=>
+    int(15)
+  }
+  ["expect_job_type_text"]=>
+  string(15) "计算机软件"
+  ["expect_citys"]=>
+  array(1) {
+    [0]=>
+    string(9) "010000000"
+  }
+  ["expect_city_text"]=>
+  NULL
+  ["expect_position"]=>
+  string(15) "研发工程师"
+  ["work_status"]=>
+  NULL
+  ["work_status_text"]=>
+  NULL
+  ["work_status_remark"]=>
+  NULL
+  ["secrecy"]=>
+  NULL
+  ["work_expers"]=>
+  array(7) {
+    [0]=>
+    object(stdClass)#18 (9) {
+      ["work_exper_id"]=>
+      string(32) "f195214813524bcdadd578123999324d"
+      ["start_date"]=>
+      int(1496246400000)
+      ["end_date"]=>
+      int(1527782400000)
+      ["company_name"]=>
+      string(30) "北京网聘咨询有限公司"
+      ["company_introduction"]=>
+      string(0) ""
+      ["salary"]=>
+      string(5) "18.00"
+      ["salary_remark"]=>
+      string(0) ""
+      ["reasons_for_leaving"]=>
+      string(0) ""
+      ["position_expers"]=>
+      array(1) {
+        [0]=>
+        object(stdClass)#19 (11) {
+          ["position_exper_id"]=>
+          string(32) "5888056a76524e0a8f670f78b427f92a"
+          ["start_date"]=>
+          int(1496246400000)
+          ["end_date"]=>
+          int(1527782400000)
+          ["position"]=>
+          string(15) "研发工程师"
+          ["city_id"]=>
+          string(0) ""
+          ["city_text"]=>
+          string(0) ""
+          ["report_to"]=>
+          string(0) ""
+          ["underling_num"]=>
+          NULL
+          ["department"]=>
+          string(0) ""
+          ["responsibility"]=>
+          string(119) "主要负责校园招聘事业部后台管理系统部分功能模块开发,前台展示及后台接口开发/维护。"
+          ["performance"]=>
+          string(0) ""
+        }
+      }
+    }
+    [1]=>
+    object(stdClass)#20 (9) {
+      ["work_exper_id"]=>
+      string(32) "c1dbf2c7d69a4022b18ce2869b299eef"
+      ["start_date"]=>
+      int(1435680000000)
+      ["end_date"]=>
+      int(1496246400000)
+      ["company_name"]=>
+      string(30) "家视天下科技有限公司"
+      ["company_introduction"]=>
+      string(0) ""
+      ["salary"]=>
+      string(5) "18.00"
+      ["salary_remark"]=>
+      string(0) ""
+      ["reasons_for_leaving"]=>
+      string(0) ""
+      ["position_expers"]=>
+      array(2) {
+        [0]=>
+        object(stdClass)#21 (11) {
+          ["position_exper_id"]=>
+          string(32) "903900992733498a8643ee52acbf7fe1"
+          ["start_date"]=>
+          int(1435680000000)
+          ["end_date"]=>
+          int(1496246400000)
+          ["position"]=>
+          string(19) "java高级工程师"
+          ["city_id"]=>
+          string(0) ""
+          ["city_text"]=>
+          string(0) ""
+          ["report_to"]=>
+          string(0) ""
+          ["underling_num"]=>
+          NULL
+          ["department"]=>
+          string(0) ""
+          ["responsibility"]=>
+          string(140) "主要负责电视盒子对应的java后台开发,数据模型搭建,cms管理系统,增值系统,直播相关业功能的前后端开发。"
+          ["performance"]=>
+          string(0) ""
+        }
+        [1]=>
+        object(stdClass)#22 (11) {
+          ["position_exper_id"]=>
+          string(32) "c927bbc5ce7b4548802fab6a6f60432e"
+          ["start_date"]=>
+          int(1435680000000)
+          ["end_date"]=>
+          int(1496246400000)
+          ["position"]=>
+          string(15) "高级工程师"
+          ["city_id"]=>
+          string(0) ""
+          ["city_text"]=>
+          string(0) ""
+          ["report_to"]=>
+          string(0) ""
+          ["underling_num"]=>
+          NULL
+          ["department"]=>
+          string(0) ""
+          ["responsibility"]=>
+          string(142) "主要负责电视盒子对应的 java 后台开发,数据模型搭建,cms管理系统,增值系统,直播相关业功能的前后端开发。"
+          ["performance"]=>
+          string(0) ""
+        }
+      }
+    }
+    [2]=>
+    object(stdClass)#23 (9) {
+      ["work_exper_id"]=>
+      string(32) "0a493735ed5843b4aedd0e1738dd5436"
+      ["start_date"]=>
+      int(1417363200000)
+      ["end_date"]=>
+      int(1433088000000)
+      ["company_name"]=>
+      string(44) "软通动力信息技术(集团有限公司)"
+      ["company_introduction"]=>
+      NULL
+      ["salary"]=>
+      NULL
+      ["salary_remark"]=>
+      NULL
+      ["reasons_for_leaving"]=>
+      string(0) ""
+      ["position_expers"]=>
+      array(1) {
+        [0]=>
+        object(stdClass)#24 (11) {
+          ["position_exper_id"]=>
+          string(32) "4781a1075b0843e588d6a85792d9c35c"
+          ["start_date"]=>
+          int(1417363200000)
+          ["end_date"]=>
+          int(1433088000000)
+          ["position"]=>
+          string(21) "主管软件工程师"
+          ["city_id"]=>
+          NULL
+          ["city_text"]=>
+          NULL
+          ["report_to"]=>
+          string(0) ""
+          ["underling_num"]=>
+          NULL
+          ["department"]=>
+          string(0) ""
+          ["responsibility"]=>
+          string(289) "15000-25000,工作描述：负责中证(中国证监会)风险监测系统的部分功能开发和技术支持。参与证监会中央数据库OLTP项目中数据处理过程建设方案的技术文档编写。参与中央数据库OLTP项目数据处理框架搭建和前期铺垫工作。"
+          ["performance"]=>
+          NULL
+        }
+      }
+    }
+    [3]=>
+    object(stdClass)#25 (9) {
+      ["work_exper_id"]=>
+      string(32) "086577b37a9f403096986a37de5cd122"
+      ["start_date"]=>
+      int(1417363200000)
+      ["end_date"]=>
+      int(1433088000000)
+      ["company_name"]=>
+      string(32) "软通动力信息技术( 集团"
+      ["company_introduction"]=>
+      string(0) ""
+      ["salary"]=>
+      string(5) "18.00"
+      ["salary_remark"]=>
+      string(0) ""
+      ["reasons_for_leaving"]=>
+      string(0) ""
+      ["position_expers"]=>
+      array(1) {
+        [0]=>
+        object(stdClass)#26 (11) {
+          ["position_exper_id"]=>
+          string(32) "aae6a411c6e14ffd964e95d36f745508"
+          ["start_date"]=>
+          int(1417363200000)
+          ["end_date"]=>
+          int(1433088000000)
+          ["position"]=>
+          string(21) "主管软件工程师"
+          ["city_id"]=>
+          string(0) ""
+          ["city_text"]=>
+          string(0) ""
+          ["report_to"]=>
+          string(0) ""
+          ["underling_num"]=>
+          NULL
+          ["department"]=>
+          string(0) ""
+          ["responsibility"]=>
+          string(262) "负责中证(中国证监会)风险监测系统的部分功能开发和技术支持。参与证监会中央数据库OLTP项目中数据处理过程建设方案的技术文档编写。参与中央数据库OLTP项目数据处理框架搭建和前期铺垫工作。"
+          ["performance"]=>
+          string(0) ""
+        }
+      }
+    }
+    [4]=>
+    object(stdClass)#27 (9) {
+      ["work_exper_id"]=>
+      string(32) "a51b4a1c1c31477592195fe315079687"
+      ["start_date"]=>
+      int(1351699200000)
+      ["end_date"]=>
+      int(1417363200000)
+      ["company_name"]=>
+      string(44) "阡陌时空信息科技(北京)有限公司"
+      ["company_introduction"]=>
+      NULL
+      ["salary"]=>
+      NULL
+      ["salary_remark"]=>
+      NULL
+      ["reasons_for_leaving"]=>
+      string(0) ""
+      ["position_expers"]=>
+      array(1) {
+        [0]=>
+        object(stdClass)#28 (11) {
+          ["position_exper_id"]=>
+          string(32) "68c583f224224f10b99b3214ac970bec"
+          ["start_date"]=>
+          int(1351699200000)
+          ["end_date"]=>
+          int(1417363200000)
+          ["position"]=>
+          string(21) "软件研发工程师"
+          ["city_id"]=>
+          NULL
+          ["city_text"]=>
+          NULL
+          ["report_to"]=>
+          string(0) ""
+          ["underling_num"]=>
+          NULL
+          ["department"]=>
+          string(0) ""
+          ["responsibility"]=>
+          string(362) "java)|10001-15000,工作描述：负责多模块的后台业务逻辑,数据库操作。独立开发微信工具包,此包是微信公众账号所用,目前已经有很多功能,并担任微信开发组长和crm管理系统的技术支持。协助开发巴图鲁汽车交易平台,b2b电子商务平台。用Delphi协助项目经理开发汽车crm管理系统。"
+          ["performance"]=>
+          NULL
+        }
+      }
+    }
+    [5]=>
+    object(stdClass)#29 (9) {
+      ["work_exper_id"]=>
+      string(32) "7f9e5c3a3a7242418d612e63ef63ddc4"
+      ["start_date"]=>
+      int(1296489600000)
+      ["end_date"]=>
+      int(1346428800000)
+      ["company_name"]=>
+      string(19) "德方物流)物流"
+      ["company_introduction"]=>
+      string(0) ""
+      ["salary"]=>
+      NULL
+      ["salary_remark"]=>
+      string(0) ""
+      ["reasons_for_leaving"]=>
+      string(0) ""
+      ["position_expers"]=>
+      array(1) {
+        [0]=>
+        object(stdClass)#30 (11) {
+          ["position_exper_id"]=>
+          string(32) "f751064a06dc4071b6a96871f6cfa289"
+          ["start_date"]=>
+          int(1296489600000)
+          ["end_date"]=>
+          int(1346428800000)
+          ["position"]=>
+          string(15) "软件工程师"
+          ["city_id"]=>
+          string(0) ""
+          ["city_text"]=>
+          string(0) ""
+          ["report_to"]=>
+          string(0) ""
+          ["underling_num"]=>
+          NULL
+          ["department"]=>
+          string(0) ""
+          ["responsibility"]=>
+          string(297) "本人角色：
+主要负责车务管理,车务管理主要包括司机管理,证照管理,日常管理,车辆状态等,采用SSH完成开发,采用POI完成司机档案信息的导入和导出。系统的设计主要遵循实用性、稳定性、高效性、灵活性等原则
+ 
+(化生医药)"
+          ["performance"]=>
+          string(0) ""
+        }
+      }
+    }
+    [6]=>
+    object(stdClass)#31 (9) {
+      ["work_exper_id"]=>
+      string(32) "58c92ba0656e44348946a2fdac86d870"
+      ["start_date"]=>
+      int(1212249600000)
+      ["end_date"]=>
+      int(1349020800000)
+      ["company_name"]=>
+      string(36) "烟台金网科技有限责任公司"
+      ["company_introduction"]=>
+      NULL
+      ["salary"]=>
+      NULL
+      ["salary_remark"]=>
+      NULL
+      ["reasons_for_leaving"]=>
+      string(0) ""
+      ["position_expers"]=>
+      array(1) {
+        [0]=>
+        object(stdClass)#32 (11) {
+          ["position_exper_id"]=>
+          string(32) "1f10ae0760ea4dcca80cdfc8dee455eb"
+          ["start_date"]=>
+          int(1212249600000)
+          ["end_date"]=>
+          int(1349020800000)
+          ["position"]=>
+          string(15) "软件工程师"
+          ["city_id"]=>
+          NULL
+          ["city_text"]=>
+          NULL
+          ["report_to"]=>
+          string(0) ""
+          ["underling_num"]=>
+          NULL
+          ["department"]=>
+          string(0) ""
+          ["responsibility"]=>
+          string(136) "java)|4001-6000,工作描述：编码,编码后简单测试。主要负责后台业务逻辑,数据操作,页面具体的功能实现。"
+          ["performance"]=>
+          NULL
+        }
+      }
+    }
+  }
+  ["project_expers"]=>
+  array(7) {
+    [0]=>
+    object(stdClass)#33 (10) {
+      ["is_del"]=>
+      int(0)
+      ["start_date"]=>
+      int(1420041600000)
+      ["end_date"]=>
+      int(1433088000000)
+      ["project_exper_id"]=>
+      string(32) "078271d2843747e3a2584a8ca84e09b1"
+      ["project_name"]=>
+      string(0) ""
+      ["company_name"]=>
+      NULL
+      ["position"]=>
+      string(0) ""
+      ["description"]=>
+      string(141) "中央数据库OLTP项目软件环境：Win7+Tomcat+MariaDB+JDK1.8+checkstyle+findbugs+Linux...开发工具：Eclipse+navicat+powerdesign... "
+      ["responsibility"]=>
+      string(855) "本人角色：主管软件工程师参与证监会中央数据库OLTP项目中数据处理过程建设方案的技术文档编写。参与中央数据库OLTP项目数据处理框架搭建和前期铺垫工作。项目描述：中央数据库OLTP项目主要包括：中央数据库建设、公共组件、数据处理过程、权限管理这几大模块。这里只描述数据处理过程,数据处理过程提供中央数据库统一的数据访问处理接口和基础服务模块,支撑本地和远程的数据访问请求,提高数据库系统的安全性,保证数据访问效率。数据处理过程的接口调用形式为jar包形式。因证监会各监管系统较多,所以进行集中统一规范管理。数据处理过程采用的是spring+Mybatis框架,其具体实现是根据各系统需要开发对应的接口,提供对应的数据。"
+      ["performance"]=>
+      NULL
+    }
+    [1]=>
+    object(stdClass)#34 (10) {
+      ["is_del"]=>
+      int(0)
+      ["start_date"]=>
+      int(1417363200000)
+      ["end_date"]=>
+      int(1427817600000)
+      ["project_exper_id"]=>
+      string(32) "3a909320c1634ccdaef66f936eb30daf"
+      ["project_name"]=>
+      string(0) ""
+      ["company_name"]=>
+      NULL
+      ["position"]=>
+      string(0) ""
+      ["description"]=>
+      string(106) "风险监测系统软件环境：Win7+Tomcat+Mysql+JDK1.7+Linux开发工具：Eclipse+navicat+powerdesign "
+      ["responsibility"]=>
+      string(605) "本人角色：主管软件工程师负责指数展示模块,专项检测部分功能模块的前后端技术实现及技术支持和测试。项目描述：风险监测系统后端用spring+Mybatis框架+java+mysql。前端用的是html+js+jQuey...。此系统大部分用的是图表显示,主要用于风险评估和针对某些业务的查询。对系统采用的百度的Echarts作为前端主要功能插件来展现。风险监测系统模块分为指数展示、专项检测、压力测试、分析工具等。其中专项检测内有沪港通监测、融资融卷业务、股票质押式回购。"
+      ["performance"]=>
+      NULL
+    }
+    [2]=>
+    object(stdClass)#35 (10) {
+      ["is_del"]=>
+      int(0)
+      ["start_date"]=>
+      int(1375286400000)
+      ["end_date"]=>
+      int(1417363200000)
+      ["project_exper_id"]=>
+      string(32) "6d1859cc41a54f05866d6592b1f29f01"
+      ["project_name"]=>
+      string(0) ""
+      ["company_name"]=>
+      NULL
+      ["position"]=>
+      string(0) ""
+      ["description"]=>
+      string(241) "微信公众平台开发软件环境：Win7+Tomcat+Mysql+JDK1.6+Linux开发工具：Eclipse+navicat+powerdesign 
+巴图鲁汽车配件交易平台软件环境：Window+Tomcat+SQLServer+JDK1.7+Nginx开发工具：Eclipse+navicat+powerdesign "
+      ["responsibility"]=>
+      string(1019) "本人角色：软件开发工程师,微信开发组组长主要负责微信公众平台工具包的开发：包括接收响应用户发的消息(语音,图文,等等),主推消息给用户(图文,语音,等等),用户自定义菜单,获取用户基本信息,等等。页面：活动,购物车,互动,会员得一些相关操作如入会,二维码,账单等。微信对应的后台管理系统：会员模块,互动,店面,消费,代金券,积分,报表,导出资料,等等。包括微信的token服务。lbs服务,前端,后端架构搭建,数据库结构设计及功能实现,和app的接口定义及衔接。订阅号和服务号进度把控。crm客户管理后台架构搭建和前端设计及功能实现。项目描述：项目用的是springMVC+commondbutils框架,前端用的是html+js+jQuey...。前端发请求到controller,用controller来控制service,然后再由service调用不同的DaoBean。每个Dao配对应的xml,此xml是sql语句对应数据库的各种操作,然后返回对应的jsonmessage。"
+      ["performance"]=>
+      NULL
+    }
+    [3]=>
+    object(stdClass)#36 (10) {
+      ["is_del"]=>
+      int(0)
+      ["start_date"]=>
+      int(1351699200000)
+      ["end_date"]=>
+      int(1372608000000)
+      ["project_exper_id"]=>
+      string(32) "53dd19ba9e8c48acabb0fc21e885019f"
+      ["project_name"]=>
+      string(0) ""
+      ["company_name"]=>
+      NULL
+      ["position"]=>
+      string(0) ""
+      ["description"]=>
+      string(116) "汽车crm管理系统软件环境：Win7+Tomcat+Mysql+JDK1.6+Linux开发工具：Eclipse+navicat+powerdesign+Delphi "
+      ["responsibility"]=>
+      string(478) "本人角色：软件开发工程师主要负责会员模块,后端业务逻辑,报表部分,车辆模块,商品信息的部分,预存/储值,库存的部分的功能实现和功能测试及项目发布。项目描述：项目用的是springMVC+commondbutills框架,前端发请求到controller,用controller来控制service,然后再由service调用不同的DaoBean。每个Dao配对应的xml,此xml是sql语句对应数据库的各种操作,然后返回对应的jsonmessage。"
+      ["performance"]=>
+      NULL
+    }
+    [4]=>
+    object(stdClass)#37 (10) {
+      ["is_del"]=>
+      int(0)
+      ["start_date"]=>
+      int(1296489600000)
+      ["end_date"]=>
+      int(1346428800000)
+      ["project_exper_id"]=>
+      string(32) "d2a4f474c136433193c6659a31bce7ac"
+      ["project_name"]=>
+      string(0) ""
+      ["company_name"]=>
+      NULL
+      ["position"]=>
+      string(0) ""
+      ["description"]=>
+      string(107) "德方物流)物流系统软件环境：Window+Tomcat+SQLServer+JDK1.5开发工具：MyEclipse+uedit+SSMSE "
+      ["responsibility"]=>
+      string(819) "本人角色：软件工程师主要负责车务管理,车务管理主要包括司机管理,证照管理,日常管理,车辆状态等,采用SSH完成开发,采用POI完成司机档案信息的导入和导出。系统的设计主要遵循实用性、稳定性、高效性、灵活性等原则项目描述：项目描述：提供从物品下线、入库、分拨、运输、配送到客户的全程跟踪管理系统;并根据实际需要满足合作伙伴之间的客户协同,实现信息共享,本系统主要包括调度管理、订单管理、技术管理、车务管理、安全管理、客户管理和系统管理。项目采用SSH架构,Struts作为控制层,采用Spring来管理业务对象和事务,持久化采用Hibernate,采用JFreechart完成图形报表的输出,采用POI完成Excel的导入导出功能."
+      ["performance"]=>
+      NULL
+    }
+    [5]=>
+    object(stdClass)#38 (10) {
+      ["is_del"]=>
+      int(0)
+      ["start_date"]=>
+      int(1241107200000)
+      ["end_date"]=>
+      int(1293811200000)
+      ["project_exper_id"]=>
+      string(32) "019762ef3bc245b392ef4fd1550dc5ac"
+      ["project_name"]=>
+      string(0) ""
+      ["company_name"]=>
+      NULL
+      ["position"]=>
+      string(0) ""
+      ["description"]=>
+      string(128) "化生医药)代理商管理信息系统软件环境：Window+Tomcat+Oracle+JRE1.5开发工具：MyEclipse+uedit+PLSQLDeveloper "
+      ["responsibility"]=>
+      string(1149) "本人角色：软件工程师负责库存管理系统设计和开发,采用Ajax实现下拉联动及表单验证对药品管理员的验证,对药品数据的增,删,改,查。完成多种记录操作。本系统具有以下的特点：?具有良好的系统系能、有好的用户界面?较高的处理效率,便于使用和维护?采用成熟的技术开发,系统尽可能地简化药品管理员的重复工作,提高工作效率.项目描述：该系统主要管理各地的代理商库存情况和返点情况,该系统主要包括库存管理,返点管理、基础数据管理、系统管理,统计报表等模块项目描述：项目采用SSH架构,其中Struts作为控制器,;Hibernate作为数据持久层,简化数据库操作;使用Spring的IoC和AOP管理对象和事务。SSH框架使得整个系统更加稳定和安全,同时提高了系统的可维护性和可扩展性。项目采用MVC架构,使用Hibernate、JavaBean等充当模型层,JSP、EL和Struts标签等充当视图层,Struts核心控件ActionServlet和Action等充当控制器。项目同时采用Ajax技术,实现级联菜单和表单验证等,提高用户体验。"
+      ["performance"]=>
+      NULL
+    }
+    [6]=>
+    object(stdClass)#39 (10) {
+      ["is_del"]=>
+      int(0)
+      ["start_date"]=>
+      int(1214841600000)
+      ["end_date"]=>
+      int(1241107200000)
+      ["project_exper_id"]=>
+      string(32) "cba43d323e134bd7a55db6d390191109"
+      ["project_name"]=>
+      string(0) ""
+      ["company_name"]=>
+      NULL
+      ["position"]=>
+      string(0) ""
+      ["description"]=>
+      string(112) "华兴电子信息管理系统软件环境：Window+Tomcat+SQLServer+JDK1.5开发工具：MyEclipse+uedit+SSMSE "
+      ["responsibility"]=>
+      string(380) "本人角色：软件工程师参与订单管理,产品入库,出库。信息维护等开发和测试。项目描述：项目描述：主要是便于商品的管理和维护以保证前端系统展现的数据完整正确。项目采用SSH架构,Struts作为控制层,采用Spring来管理业务对象和事务,持久化采用Hibernate,采用POI完成Excel的导入导出功能。"
+      ["performance"]=>
+      NULL
+    }
+  }
+  ["educationals"]=>
+  array(1) {
+    [0]=>
+    object(stdClass)#40 (10) {
+      ["is_del"]=>
+      int(0)
+      ["start_date"]=>
+      int(1093968000000)
+      ["end_date"]=>
+      int(1212249600000)
+      ["educational_id"]=>
+      string(32) "b854dc71a14c443e848bfac13104cd1c"
+      ["school"]=>
+      string(18) "山东鲁东大学"
+      ["school_category"]=>
+      NULL
+      ["profession"]=>
+      string(24) "计算机科学与技术"
+      ["education"]=>
+      int(4)
+      ["education_text"]=>
+      NULL
+      ["recruitment"]=>
+      NULL
+    }
+  }
+  ["languages"]=>
+  array(1) {
+    [0]=>
+    object(stdClass)#41 (6) {
+      ["language"]=>
+      string(6) "英语"
+      ["proficiency"]=>
+      string(0) ""
+      ["grade"]=>
+      NULL
+      ["languageOther"]=>
+      NULL
+      ["listen_speak"]=>
+      NULL
+      ["read_write"]=>
+      NULL
+    }
+  }
+  ["language_text"]=>
+  NULL
+  ["certificates"]=>
+  NULL
+  ["self_evaluation"]=>
+  string(458) "精通JavaScript,j2ee等相关技术,熟练掌握Tomcat,resin,Web服务器的部署与配置,熟练掌握Linux,maven,redis等相关技术,SSH,spring MVC,nutz,spring Boot框架,有能力和信心胜任所赋予的职责以及面对任何困难和挑战,办事认真、态度严谨、组织能力和协调能力强,勤奋好学,与人和善,具有良好的团队协作精神和工作能力,能够承受一定的工作压力,按时按量的完成工作任务。"
+  ["start_working_year"]=>
+  int(2012)
+  ["owner"]=>
+  int(1517)
+  ["latest_stage"]=>
+  NULL
+  ["is_recommend"]=>
+  NULL
+  ["resume_remark"]=>
+  NULL
+  ["create_user"]=>
+  object(stdClass)#42 (5) {
+    ["user_id"]=>
+    int(1517)
+    ["avatar"]=>
+    string(87) "http://wx.qlogo.cn/mmhead/Q3auHgzwzM5XLtiaB7YiaNicldib10J34Ij0h8hfRpUSANEMNTfLLd5vnQ/46"
+    ["cn_name"]=>
+    string(9) "田鑫星"
+    ["mobile"]=>
+    string(11) "13983123943"
+    ["email"]=>
+    string(21) "jxxh2016hr@nfxhlt.com"
+  }
+  ["ownerDto"]=>
+  object(stdClass)#43 (5) {
+    ["user_id"]=>
+    int(1517)
+    ["avatar"]=>
+    string(87) "http://wx.qlogo.cn/mmhead/Q3auHgzwzM5XLtiaB7YiaNicldib10J34Ij0h8hfRpUSANEMNTfLLd5vnQ/46"
+    ["cn_name"]=>
+    string(9) "田鑫星"
+    ["mobile"]=>
+    string(11) "13983123943"
+    ["email"]=>
+    string(21) "jxxh2016hr@nfxhlt.com"
+  }
+  ["working_life"]=>
+  int(7)
+  ["now_resume_salary"]=>
+  object(stdClass)#44 (6) {
+    ["salary_tax"]=>
+    NULL
+    ["salary_type"]=>
+    NULL
+    ["month_num"]=>
+    NULL
+    ["salary_month"]=>
+    NULL
+    ["salary_year"]=>
+    NULL
+    ["salary_remark"]=>
+    NULL
+  }
+  ["expect_resume_salary"]=>
+  object(stdClass)#45 (6) {
+    ["salary_tax"]=>
+    NULL
+    ["salary_type"]=>
+    int(1)
+    ["month_num"]=>
+    NULL
+    ["salary_month"]=>
+    NULL
+    ["salary_year"]=>
+    int(180000)
+    ["salary_remark"]=>
+    NULL
+  }
+  ["invalidReason"]=>
+  NULL
+  ["recommend_tmpl"]=>
+  NULL
+  ["isEffective"]=>
+  int(1)
+  ["sourceChannelName"]=>
+  string(6) "卓聘"
+}
