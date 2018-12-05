@@ -77,80 +77,35 @@ object(stdClass)#11 (85) {
     ["synchronized_date"]=>
     int(1543370691507)
   }
-  ["name"]=>
-  string(9) "王炜亮"
-  ["birth_year"]=>
-  int(1985)
-  ["birth_month"]=>
-  int(6)
-  ["birth_date"]=>
-  NULL
-  ["sex"]=>
-  int(1)
-  ["sex_text"]=>
-  string(3) "男"
-  ["mobile"]=>
-  string(11) "13641288234"
-  ["email"]=>
-  string(16) "siluwoai@126.com"
-  ["other_contacts"]=>
-  string(33) "烟台13641288234siluwoai@126.com"
-  ["avatar"]=>
-  NULL
-  ["marital_status"]=>
-  int(1)
-  ["marital_status_text"]=>
-  string(0) ""
-  ["child"]=>
-  NULL
-  ["child_age"]=>
-  NULL
-  ["city_id"]=>
-  string(9) "010100000"
-  ["city_id_text"]=>
-  NULL
-  ["hkadr_id"]=>
-  string(0) ""
-  ["hkadr_id_text"]=>
-  NULL
-  ["native_place_id"]=>
-  string(9) "162100000"
-  ["native_place_id_text"]=>
-  NULL
-  ["resume_code"]=>
-  int(1454273)
-  ["constellation"]=>
-  NULL
-  ["constellation_text"]=>
-  NULL
-  ["wechat_number"]=>
-  string(0) ""
-  ["wechat_qr"]=>
-  NULL
-  ["qq_number"]=>
-  string(0) ""
-  ["microblog"]=>
-  string(0) ""
-  ["blood_type"]=>
-  string(0) ""
-  ["blood_type_text"]=>
-  string(0) ""
-  ["linkedin"]=>
-  string(0) ""
-  ["company"]=>
-  string(30) "北京网聘咨询有限公司"
-  ["department"]=>
-  string(0) ""
-  ["position"]=>
-  string(15) "研发工程师"
-  ["job_type"]=>
-  NULL
-  ["job_type_text"]=>
-  NULL
-  ["now_job_type"]=>
-  NULL
-  ["now_industry"]=>
-  NULL
+  name=>'name'
+  birth_year-birth_month => 'birthday'
+  sex=>'sex' 1:男 2:女 
+  mobile => 'telephone'
+  email => 'email'
+  <<other_contacts>>
+  <<avatar>>
+  'marital_status'=> marital_status
+  <<'city_id' => location>>
+  <<hkadr_id>>
+  <<hkadr_id_text>>
+  <<native_place_id>>
+  <<native_place_id_text>>
+  <<constellation>>
+  <<constellation_text>>
+  'wechat_number' => wechat_number
+  'wechat_qr' => wechat_qr
+  'qq_number' => qq_number
+  'microblog' => microblog
+  'blood_type' => blood_type
+  'blood_type_text' => blood_type_text
+  'linkedin' => linkedin
+  'company' => curCompany
+  'department' => curDepartment
+  'position' => curPosition
+  'job_type'=> job_type
+  'job_type_text' =>  job_type_text
+  'now_job_type' => now_job_type
+  'now_industry' =>  now_industry
   ["files"]=>
   array(3) {
     [0]=>
