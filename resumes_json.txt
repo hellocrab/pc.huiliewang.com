@@ -77,48 +77,23 @@ object(stdClass)#11 (85) {
     ["synchronized_date"]=>
     int(1543370691507)
   }
-  name=>'name'
-  birth_year-birth_month => 'birthday'
-  sex=>'sex' 1:男 2:女 
-  mobile => 'telephone'
-  email => 'email'
+
+
   <<other_contacts>>
   <<avatar>>
-  'marital_status'=> marital_status
   <<'city_id' => location>>
   <<hkadr_id>>
   <<hkadr_id_text>>
   <<native_place_id>>
   <<native_place_id_text>>
   <<constellation>>
-  <<constellation_text>>
-  'wechat_number' => wechat_number
-  'wechat_qr' => wechat_qr
-  'qq_number' => qq_number
-  'microblog' => microblog
-  'blood_type' => blood_type
-  'blood_type_text' => blood_type_text
-  'linkedin' => linkedin
-  'company' => curCompany
-  'department' => curDepartment
-  'position' => curPosition
-  'job_type'=> job_type
-  'job_type_text' =>  job_type_text
-  'now_job_type' => now_job_type
-  'now_industry' =>  now_industry
-  'labels' => label
-  <<'expect_job_types' => industry>> 
-  'expect_job_type_text' =>expect_job_type_text
+  <<constellation_text>> 
+  
+  <<'expect_job_types' => industry>>
   <<'expect_citys' =>intentCity>>
-  'expect_city_text' => expect_city_text
-  'expect_position' => job_class
-  'work_status' => work_status
-  'work_status_text' => curStatus
-  'work_status_remark' => work_status_remark
-  'secrecy' => secrecy
-  'start_working_year' => startWorkyear
+  
+  
   self_evaluation => 'data.evaluate'
-  language_text => language
   
   ["work_expers"]=>
   array(7) {
@@ -647,32 +622,6 @@ object(stdClass)#11 (85) {
     }
   }
   
-  ["educationals"]=>
-  array(1) {
-    [0]=>
-    object(stdClass)#40 (10) {
-      ["is_del"]=>
-      int(0)
-      ["start_date"]=>
-      int(1093968000000)
-      ["end_date"]=>
-      int(1212249600000)
-      ["educational_id"]=>
-      string(32) "b854dc71a14c443e848bfac13104cd1c"
-      ["school"]=>
-      string(18) "山东鲁东大学"
-      ["school_category"]=>
-      NULL
-      ["profession"]=>
-      string(24) "计算机科学与技术"
-      ["education"]=>
-      int(4)
-      ["education_text"]=>
-      NULL
-      ["recruitment"]=>
-      NULL
-    }
-  }
   ["languages"]=>
   array(1) {
     [0]=>
@@ -696,8 +645,6 @@ object(stdClass)#11 (85) {
   NULL
   ["certificates"]=>
   NULL
-  [""]=>
-  int(2012)
   ["owner"]=>
   int(1517)
   ["latest_stage"]=>

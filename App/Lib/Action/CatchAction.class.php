@@ -133,6 +133,73 @@ class CatchAction extends Action {
                     }
                     $content = json_decode($result['result']['content']);
                     $data = $content->data;
+
+                    $insert_data = [
+                        'name' => $data->name,
+                        'birthday' => $data->birth_year . '-' . $data->birth_month,
+                        'sex' => $data->sex == 1 ? 2 : 1,
+                        'telephone' => $data->mobile,
+                        'email' => $data->email,
+                        'wechat_number' => $data->wechat_number,
+                        'wechat_qr' => $data->wechat_qr,
+                        'qq_number' => $data->qq_number,
+                        'microblog' => $data->microblog,
+                        'blood_type' => $data->blood_type,
+                        'blood_type_text' => $data->blood_type_text,
+                        'linkedin' => $data->linkedin,
+                        'curCompany' => $data->curCompany,
+                        'curDepartment' => $data->curDepartment,
+                        'curPosition' => $data->curPosition,
+                        'job_type' => $data->job_type,
+                        'job_type_text' => $data->job_type_text,
+                        'now_job_type' => $data->now_job_type,
+                        'now_industry' => $data->now_industry,
+                        'label' => $data->labels,
+                        'expect_job_type_text' => $data->expect_job_type_text,
+                        'expect_city_text' => $data->expect_city_text,
+                        'job_class' => $data->expect_position,
+                        'work_status' => $data->work_status,
+                        'curStatus' => $data->curStatus,
+                        'work_status_remark' => $data->work_status_remark,
+                        'secrecy' => $data->secrecy,
+                        'startWorkyear' => $data->start_working_year,
+                    ];
+
+                    switch ($data->marital_status_text) {
+                        case '保密' :
+                            $insert_data['marital_status'] = 3;
+                            break;
+                        case '已婚' :
+                            $insert_data['marital_status'] = 2;
+                            break;
+                        case '未婚' :
+                            $insert_data['marital_status'] = 1;
+                            break;
+                        default :
+                            $insert_data['marital_status'] = 1;
+                            break;
+                    }
+
+                    M('resume')->add($insert_data);
+                    $eid = M()->getLastInsID();
+
+                    //edu
+                    $educationals = $data->educationals;
+                    foreach ($educationals as $edu) {
+                        $edu_data = [
+                            'eid' => $eid,
+                            'starttime' => $data->start_date,
+                            'endtime' => $data->end_date,
+                            'schoolName' => $data->school,
+                            'majorName' => $data->profession,
+                            'degree' => $data->education,
+                            'school_category' => $data->school_category,
+                            'recruitment' => $data->recruitment
+                          ];
+                        M('resume_edu')->add($edu_data);
+                    }
+
+                    M('resume_data')->add(['language' => $data->language_text]);
                     var_dump($data);
                     exit;
                 }

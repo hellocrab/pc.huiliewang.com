@@ -937,6 +937,8 @@ class ProductAction extends Action {
         $resume['sex'] = $resume['sex'] = 1 ? "男" : "女";
         $this->resume_work = M("resume_work")->where("eid=%d", $eid)->select();
         $this->resume_data = M("resume_data")->where("eid=%d", $eid)->select();
+        
+        //edu 
         $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
         $this->resume_project = M("resume_project")->where("eid=%d", $eid)->select();
         $map['eid'] = $resume['eid'];
