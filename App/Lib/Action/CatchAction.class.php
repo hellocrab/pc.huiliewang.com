@@ -130,12 +130,28 @@ class CatchAction extends Action {
                     if (empty($result)) {
                         $this->userlogin();
                         $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                        $result = Curl::send($this->resumes, $resumes_data, 'get', '', 1, Curl::CONTENT_TYPE_JSON, $header);
                     }
                     $content = json_decode($result['result']['content']);
                     $data = $content->data;
+                   
 
                     $insert_data = [
                         'name' => $data->name,
+                        'creator_role_id' => 0,
+                        'addtime' => 0,
+                        'lastupdate' => 0,
+                        'file_path' => '',
+                        'hits' => 0,
+                        'status' => 0,
+                        'integrity' => 80,
+                        'basic_info' => 0,
+                        'r_status' => '',
+                        'location' => '',
+                        'wantsalary' => 0,
+                        'url' => '',
+                        'language' => $data->language_text,
+                        'evaluate' => $data->self_evaluation,
                         'birthday' => $data->birth_year . '-' . $data->birth_month,
                         'sex' => $data->sex == 1 ? 2 : 1,
                         'telephone' => $data->mobile,
@@ -154,7 +170,7 @@ class CatchAction extends Action {
                         'job_type_text' => $data->job_type_text,
                         'now_job_type' => $data->now_job_type,
                         'now_industry' => $data->now_industry,
-                        'label' => $data->labels,
+                        'label' => '',//$data->labels,
                         'expect_job_type_text' => $data->expect_job_type_text,
                         'expect_city_text' => $data->expect_city_text,
                         'job_class' => $data->expect_position,
@@ -185,23 +201,67 @@ class CatchAction extends Action {
 
                     //edu
                     $educationals = $data->educationals;
+
                     foreach ($educationals as $edu) {
                         $edu_data = [
                             'eid' => $eid,
-                            'starttime' => $data->start_date,
-                            'endtime' => $data->end_date,
-                            'schoolName' => $data->school,
-                            'majorName' => $data->profession,
-                            'degree' => $data->education,
-                            'school_category' => $data->school_category,
-                            'recruitment' => $data->recruitment
-                          ];
+                            'starttime' => $edu->start_date,
+                            'endtime' => $edu->end_date,
+                            'schoolName' => $edu->school,
+                            'majorName' => $edu->profession,
+                            'degree' => $edu->education,
+                            'school_category' => $edu->school_category,
+                            'recruitment' => $edu->recruitment
+                        ];
                         M('resume_edu')->add($edu_data);
                     }
 
-                    M('resume_data')->add(['language' => $data->language_text]);
-                    var_dump($data);
-                    exit;
+                    //work
+                    $work_expers = $data->work_expers;
+                    foreach ($work_expers as $we) {
+                        $work_data = [
+                            'eid' => $eid,
+                            'work_exper_id' => $we->work_exper_id,
+                            'starttime' => $we->start_date,
+                            'endtime' => $we->endtime,
+                            'company' => $we->company_name,
+                            'companyDes' => $we->company_introduction,
+                            'salary' => $we->salary,
+                            'salary_remark' => $we->salary_remark,
+                            'reasons_for_leaving' => $we->reasons_for_leaving
+                        ];
+                        M('resume_work')->add($work_data);
+                        $work_id = M()->getLastInsID();
+
+                        //position
+                        $position_expers = $we->position_expers;
+                        foreach ($position_expers as $pe) {
+                            $position_data = [
+                                'work_id' => $work_id,
+                                'position_exper_id' => $pe->position_exper_id,
+                                'start_date' => $pe->start_date,
+                                'end_date' => $pe->end_date,
+                                'position' => $pe->position,
+                                'city_id' => $pe->city_id,
+                                'city_text' => $pe->city_text,
+                                'report_to' => $pe->report_to,
+                                'underling_num' => $pe->underling_num,
+                                'department' => $pe->department,
+                                'responsibility' => $pe->responsibility,
+                                'performance' => $pe->performance
+                            ];
+                            M('resume_work_position')->add($work_data);
+                        }
+                    }
+
+
+                    //data
+                    $resumes_data = [
+                        'language' => $data->language_text,
+                        'evaluate' => $data->self_evaluation,
+                        'eid' => $eid
+                    ];
+                    M('resume_data')->add($resumes_data);
                 }
             } else {
                 exit();
