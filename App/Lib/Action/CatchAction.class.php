@@ -134,7 +134,7 @@ class CatchAction extends Action {
                     }
                     $content = json_decode($result['result']['content']);
                     $data = $content->data;
-                   
+
 
                     $insert_data = [
                         'name' => $data->name,
@@ -170,7 +170,7 @@ class CatchAction extends Action {
                         'job_type_text' => $data->job_type_text,
                         'now_job_type' => $data->now_job_type,
                         'now_industry' => $data->now_industry,
-                        'label' => '',//$data->labels,
+                        'label' => '', //$data->labels,
                         'expect_job_type_text' => $data->expect_job_type_text,
                         'expect_city_text' => $data->expect_city_text,
                         'job_class' => $data->expect_position,
@@ -201,7 +201,6 @@ class CatchAction extends Action {
 
                     //edu
                     $educationals = $data->educationals;
-
                     foreach ($educationals as $edu) {
                         $edu_data = [
                             'eid' => $eid,
@@ -222,8 +221,8 @@ class CatchAction extends Action {
                         $work_data = [
                             'eid' => $eid,
                             'work_exper_id' => $we->work_exper_id,
-                            'starttime' => $we->start_date,
-                            'endtime' => $we->endtime,
+                            'starttime' => strlen($we->start_date) > 10 ? substr($we->start_date, 0, 10) : $we->start_date,
+                            'endtime' => strlen($we->end_date) > 10 ? substr($we->end_date, 0, 10) : $we->end_date,
                             'company' => $we->company_name,
                             'companyDes' => $we->company_introduction,
                             'salary' => $we->salary,
@@ -239,8 +238,8 @@ class CatchAction extends Action {
                             $position_data = [
                                 'work_id' => $work_id,
                                 'position_exper_id' => $pe->position_exper_id,
-                                'start_date' => $pe->start_date,
-                                'end_date' => $pe->end_date,
+                                'start_date' => strlen($we->start_date) > 10 ? substr($we->start_date, 0, 10) : $we->start_date,
+                                'end_date' => strlen($we->end_date) > 10 ? substr($we->end_date, 0, 10) : $we->end_date,
                                 'position' => $pe->position,
                                 'city_id' => $pe->city_id,
                                 'city_text' => $pe->city_text,
@@ -250,10 +249,30 @@ class CatchAction extends Action {
                                 'responsibility' => $pe->responsibility,
                                 'performance' => $pe->performance
                             ];
-                            M('resume_work_position')->add($work_data);
+                            M('resume_work_position')->add($position_data);
                         }
                     }
 
+                    //project
+                    $project_expers = $data->project_expers;
+                    if (!empty($project_expers)) {
+                        foreach ($project_expers as $pro_e) {
+                            $project_data = [
+                                'eid' => $eid,
+                                'addtime' => 0,
+                                'starttime' => strlen($pro_e->start_date) > 10 ? substr($pro_e->start_date, 0, 10) : $pro_e->start_date,
+                                'endtime' => strlen($pro_e->end_date) > 10 ? substr($pro_e->end_date, 0, 10) : $pro_e->end_date,
+                                'proName' => $pro_e->project_name,
+                                'proOffice' => $pro_e->position,
+                                'proDes' => $pro_e->description,
+                                'proCompany' => $pro_e->company_name,
+                                'project_exper_id' => $pro_e->project_exper_id,
+                                'responsibility' => $pro_e->responsibility,
+                                'performance' => $pro_e->performance
+                            ];
+                            M('resume_project')->add($project_data);
+                        }
+                    }
 
                     //data
                     $resumes_data = [
@@ -262,12 +281,15 @@ class CatchAction extends Action {
                         'eid' => $eid
                     ];
                     M('resume_data')->add($resumes_data);
+
+                    M('catch_resumes_limit')->where(['id' => $res['id']])->save(['status' => 1]);
                 }
             } else {
+
                 exit();
             }
         } catch (Exception $ex) {
-            
+            M('catch_resumes_limit')->where(['id' => $res['id']])->save(['status' => 2]);
         }
     }
 
