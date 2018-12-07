@@ -51,6 +51,8 @@ abstract class Action {
      * @access public
      */
     public function __construct() {
+        import('@.ORG.ApiClient');
+        import('@.ORG.BaseUtils');
         tag('action_begin',$this->config);
         //控制器初始化
         if(method_exists($this,'_initialize'))
