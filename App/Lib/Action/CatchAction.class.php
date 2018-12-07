@@ -139,8 +139,8 @@ class CatchAction extends Action {
                     $insert_data = [
                         'name' => $data->name,
                         'creator_role_id' => 0,
-                        'addtime' => 0,
-                        'lastupdate' => 0,
+                        'addtime' => strlen($data->create_time) > 10 ? substr($data->create_time, 0, 10) : $data->create_time,
+                        'lastupdate' => strlen($data->modify_time) > 10 ? substr($data->modify_time, 0, 10) : $data->modify_time,
                         'file_path' => '',
                         'hits' => 0,
                         'status' => 0,

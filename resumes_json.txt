@@ -34,6 +34,7 @@ object(stdClass)#11 (85) {
       int(1544008359978)
     }
   }
+
   ["source_id"]=>
   string(15) "PP_NFXH_1179176"
   ["source"]=>
@@ -44,10 +45,7 @@ object(stdClass)#11 (85) {
   NULL
   ["archive_url"]=>
   NULL
-  ["create_time"]=>
-  int(1483846906000)
-  ["modify_time"]=>
-  int(1544008359041)
+
   ["is_del"]=>
   int(0)
   ["effective_user_id"]=>
