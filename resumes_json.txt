@@ -5,6 +5,7 @@ object(stdClass)#11 (85) {
   int(1517)
   ["company_id"]=>
   int(246)
+
   ["projects"]=>
   array(2) {
     [0]=>
@@ -88,28 +89,7 @@ object(stdClass)#11 (85) {
   <<'expect_job_types' => industry>>
   <<'expect_citys' =>intentCity>>
  
-  
-  ["languages"]=>
-  array(1) {
-    [0]=>
-    object(stdClass)#41 (6) {
-      ["language"]=>
-      string(6) "英语"
-      ["proficiency"]=>
-      string(0) ""
-      ["grade"]=>
-      NULL
-      ["languageOther"]=>
-      NULL
-      ["listen_speak"]=>
-      NULL
-      ["read_write"]=>
-      NULL
-    }
-  }
-  
-  ["language_text"]=>
-  NULL
+ 
   ["certificates"]=>
   NULL
   ["owner"]=>
@@ -120,32 +100,7 @@ object(stdClass)#11 (85) {
   NULL
   ["resume_remark"]=>
   NULL
-  ["create_user"]=>
-  object(stdClass)#42 (5) {
-    ["user_id"]=>
-    int(1517)
-    ["avatar"]=>
-    string(87) "http://wx.qlogo.cn/mmhead/Q3auHgzwzM5XLtiaB7YiaNicldib10J34Ij0h8hfRpUSANEMNTfLLd5vnQ/46"
-    ["cn_name"]=>
-    string(9) "田鑫星"
-    ["mobile"]=>
-    string(11) "13983123943"
-    ["email"]=>
-    string(21) "jxxh2016hr@nfxhlt.com"
-  }
-  ["ownerDto"]=>
-  object(stdClass)#43 (5) {
-    ["user_id"]=>
-    int(1517)
-    ["avatar"]=>
-    string(87) "http://wx.qlogo.cn/mmhead/Q3auHgzwzM5XLtiaB7YiaNicldib10J34Ij0h8hfRpUSANEMNTfLLd5vnQ/46"
-    ["cn_name"]=>
-    string(9) "田鑫星"
-    ["mobile"]=>
-    string(11) "13983123943"
-    ["email"]=>
-    string(21) "jxxh2016hr@nfxhlt.com"
-  }
+
   ["working_life"]=>
   int(7)
   ["now_resume_salary"]=>

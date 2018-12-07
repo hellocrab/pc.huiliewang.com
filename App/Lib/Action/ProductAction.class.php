@@ -2,9 +2,21 @@
 
 class ProductAction extends Action {
 
+    protected static $degree = [
+        1 > '高中',
+        2 => '中专',
+        3 => '大专',
+        4 => '本科',
+        5 => '硕士',
+        6 => '博士',
+        7 => 'MBA/EMBA',
+        8 => '博士后'
+    ];
+
     public function _initialize() {
         $title = "人才管理";
         $this->assign("title", $title);
+
 //		$action = array(
 //			'permission'=>array('getProductByBusiness'),
 //			'allow'=>array('adddialog','editdialog', 'allproductdialog','validate','check','delimg','sortimg','mutildialog','changecontent','getmonthlyamount','getmonthlysales','getcurrentstatus','mutildialog_product_contract','mutildialog_product','advance_search','categorylist')
@@ -843,10 +855,18 @@ class ProductAction extends Action {
         $resume = D("ResumeView")->where("resume.eid=%d", $eid)->find();
         $resume['label'] = explode(",", $resume['label']);
         if ($resume['startWorkyear']) {
-            $resume['exp'] = date("Y") - date("Y", $resume['startWorkyear']) . "年工作经验";
+            $resume['exp'] = date("Y") - $resume['startWorkyear'] . "年工作经验";
         }
         if ($resume['location']) {
             $resume['location'] = $city_name[$resume['location']];
+        }
+        if ($resume['birthYear']) {
+            $resume['age'] = date("Y") - $resume['birthYear'];
+        }
+        if (!$resume['birthMouth']) {
+            $resume['birthMouth'] = '';
+        } else {
+            $resume['birthMouth'] = '-' . $resume['birthMouth'];
         }
 
 
@@ -915,31 +935,32 @@ class ProductAction extends Action {
         }
 
         if ($resume['job_class']) {
-
-            $job_class = explode(",", $resume['job_class']);
-            $resume['job_class'] = "";
+            $job_class = explode(";", $resume['job_class']);
+            $resume['job_class'] = [];
             foreach ($job_class as $list) {
-                $resume['job_class'][] = $job_name[$list];
+                $resume['job_class'][] = $list;
             }
-//            $resume['job_class'] = implode(",",$arr);
         }
 
         if ($resume['industry']) {
-//            $arr= "";
             $industry = explode(",", $resume['industry']);
             $resume['industry'] = "";
             foreach ($industry as $list) {
                 $resume['industry'][] = $industry_name[$list];
             }
-//            $resume['industry'] = implode(",",$arr);
         }
+        $resume['now_industry'] = $resume['now_industry'];
 
         $resume['sex'] = $resume['sex'] = 1 ? "男" : "女";
         $this->resume_work = M("resume_work")->where("eid=%d", $eid)->select();
         $this->resume_data = M("resume_data")->where("eid=%d", $eid)->select();
-        
+
         //edu 
         $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
+        $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
+        $resume['school'] = $this->resume_edu[0]['schoolName'];
+
+
         $this->resume_project = M("resume_project")->where("eid=%d", $eid)->select();
         $map['eid'] = $resume['eid'];
         $map['role_id'] = session("role_id");
@@ -947,7 +968,7 @@ class ProductAction extends Action {
         if ($collect) {
             $resume['favorite'] = 1;
         }
-        
+
         $this->resume = $resume;
 
 

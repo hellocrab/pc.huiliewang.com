@@ -38,7 +38,7 @@
                             <span><img src="__PUBLIC__/img/view_icon.png" style="margin-bottom:9px;" alt=""></span>
                             <span style="font-size:24px;color: #000;">{$resume.name}</span>&nbsp;&nbsp;
                             <span class="basic_item">{$resume.sex}</span>
-                            <span class="basic_item">28岁</span>
+                            <span class="basic_item">{$resume.age}岁</span>
                             <span class="basic_item">{$resume.edu}</span>
                             <span class="basic_item">{$resume.exp}</span>
                         </ul>
@@ -87,7 +87,7 @@
                                 <label class="col-lg-2 control-label">创建人</label>
                                 <div class="col-lg-4">
                                     <p class="form-p">
-                                        <a class="role_info" rel="{$resume['creator_role_id']}" href="javascript:void(0)" style="margin-right: 5px;">{$resume['full_name']}</a>
+                                        <a class="role_info" rel="{$resume['creator_role_id']}" href="javascript:void(0)" style="margin-right: 5px;">{$resume['creator_role_name']}</a>
                                     </p>
                                 </div>
                             </div>
@@ -170,7 +170,7 @@
                                         <label class="col-lg-2 control-label">出生年月</label>
                                         <div class="col-lg-4">
                                             <p class="form-p">
-                                                {$resume.birthday|date='Y-m',###}
+                                                {$resume.birthYear}{$resume.birthMouth}
                                             </p>
                                         </div>
                                         <label class="col-lg-2 control-label">目前公司</label>
@@ -226,7 +226,7 @@
                                         <label class="col-lg-2 control-label">毕业学校</label>
                                         <div class="col-lg-4">
                                             <p class="form-p">
-                                                重庆电子科技大学
+                                                {$resume.school}
                                             </p>
                                         </div>
                                         <label class="col-lg-2 control-label">意向城市</label>
@@ -248,10 +248,11 @@
                                         <label class="col-lg-2 control-label">行业</label>
                                         <div class="col-lg-10">
                                             <p class="form-p">
-                                            <volist name="resume.industry" id="vo">
-                                                <span class="label label-warning" style="margin-right: 5px;">{$vo}</span>
-                                            </volist>
-                                            <!--<span class="label label-warning">电子/互联网</span>-->
+                                                <span class="label label-warning">{$resume.now_industry}</span>
+                                                <!--                                            <volist name="resume.industry" id="vo">
+                                                                                                <span class="label label-warning" style="margin-right: 5px;">{$vo}</span>
+                                                                                            </volist>-->
+                                                <!--<span class="label label-warning">电子/互联网</span>-->
                                             </p>
                                         </div>
                                     </div>
@@ -288,9 +289,14 @@
                                             </p>
                                             <div class="co6f13 m_b_10">{$vo.companyDes}</div>
                                             <p>
+                                                <span class="titlebb">薪资</span>
+                                            </p>
+                                            <div class="co6f13 m_b_10">{$vo.salary}</div>
+                                            <p>
                                                 <span class="titlebb">职责描述</span>
                                             </p>
                                             <div class="co6f13 m_b_10">{$vo.duty}</div>
+
                                         </div>
                                     </volist>
                                 </div>

@@ -30,12 +30,11 @@ class CatchAction extends Action {
     }
 
     public function getResumesLimit() {
-
         $cookie = M('catch_cookie')->where(['status' => 0])->find();
 
         $a = M('catch_resumes_limit')->order('id desc')->find();
         if (empty($a['id'])) {
-            $limit_data = ['containsAny' => 0, 'pageNo' => 1, 'pageSize' => 20, 'userId' => 4929];
+            $limit_data = ['containsAny' => 0, 'pageNo' => 1, 'pageSize' => 50, 'userId' => 4929];
             $header = [
                 "Content-type: application/json;charset='utf-8'",
                 'Host:api.zhanjob.com',
@@ -46,6 +45,7 @@ class CatchAction extends Action {
             ];
 
             $result = Curl::send($this->resumes_list, $limit_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $header);
+
             if (empty($result)) {
                 $this->userlogin();
                 $cookie = M('catch_cookie')->where(['status' => 0])->find();
@@ -69,38 +69,41 @@ class CatchAction extends Action {
             exit;
         }
 
-        $res = M('catch_resumes_limit')->where(['status' => 0])->field('id')->order('id desc')->find();
-        if (empty($res)) {
-            $res1 = M('catch_resumes_limit')->where(['status' => 1])->field('now')->order('id desc')->find();
-            $limit_data = ['containsAny' => 0, 'pageNo' => 1, 'pageSize' => 20, 'userId' => 4929];
-            $header = [
-                "Content-type: application/json;charset='utf-8'",
-                'Host:api.zhanjob.com',
-                "X-AUTH: {$cookie['token']}",
-                "X-Requested-With:XMLHttpRequest",
-                "X-USER:{$cookie['userid']}",
-                'Origin:http://www.zhanjob.com'
-            ];
+        $res_limit = M('catch_resumes_limit')->where(['status' => 0])->field('id,now')->order('id desc')->find();
+        if (empty($res_limit)) {
+            $res1 = M('catch_resumes_limit')->where(['status' => 1])->field('now,total')->order('id desc')->find();
+            if ($res1['now'] + 1 < $res1['total']) {
+                M('catch_resumes_limit')->add(['now' => $res1['now'] + 1, 'status' => 0, time => date('Y-m-d H:i:s', time())]);
+                $limit_id = M()->getLastInsID();
 
-            $result = Curl::send($this->resumes_list, $limit_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $header);
-            if (empty($result)) {
-                $this->userlogin();
-                $cookie = M('catch_cookie')->where(['status' => 0])->find();
-            }
-            $content = json_decode($result['result']['content']);
-            $data = $content->data;
-            $page_count = $content->data->page_count;
-            $list = $content->data->list;
+                $header = [
+                    "Content-type: application/json;charset='utf-8'",
+                    'Host:api.zhanjob.com',
+                    "X-AUTH: {$cookie['token']}",
+                    "X-Requested-With:XMLHttpRequest",
+                    "X-USER:{$cookie['userid']}",
+                    'Origin:http://www.zhanjob.com'
+                ];
 
-            if ($res1['now'] < $page_count) {
+                $limit_data = ['containsAny' => 0, 'pageNo' => $res1['now'] + 1, 'pageSize' => 50, 'userId' => 4929];
+                $result = Curl::send($this->resumes_list, $limit_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $header);
+                if (empty($result)) {
+                    $this->userlogin();
+                    $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                }
+                $content = json_decode($result['result']['content']);
+                $data = $content->data;
+                $page_count = $content->data->page_count;
+                $list = $content->data->list;
+
                 foreach ($list as $l) {
                     $_list[] = $l->resumeId;
                 }
                 $resumes_list = implode(',', $_list);
-
-                M('catch_resumes_limit')->add(['total' => $page_count, 'now' => $res1['now'] + 1, 'status' => 0, 'resumes_list' => $resumes_list, time => date('Y-m-d H:i:s', time())]);
-                exit;
+                M('catch_resumes_limit')->where(['id' => $limit_id])->save(['resumes_list' => $resumes_list, 'total' => $page_count]);
             }
+        } else {
+            exit;
         }
     }
 
@@ -139,6 +142,8 @@ class CatchAction extends Action {
                     $insert_data = [
                         'name' => $data->name,
                         'creator_role_id' => 0,
+                        'creator_role_name' => $data->create_user->cn_name,
+                        'creator_role_phone' => $data->create_user->mobile,
                         'addtime' => strlen($data->create_time) > 10 ? substr($data->create_time, 0, 10) : $data->create_time,
                         'lastupdate' => strlen($data->modify_time) > 10 ? substr($data->modify_time, 0, 10) : $data->modify_time,
                         'file_path' => '',
@@ -152,7 +157,8 @@ class CatchAction extends Action {
                         'url' => '',
                         'language' => $data->language_text,
                         'evaluate' => $data->self_evaluation,
-                        'birthday' => $data->birth_year . '-' . $data->birth_month,
+                        'birthYear' => $data->birth_year,
+                        'birthMouth' => $data->birth_month,
                         'sex' => $data->sex == 1 ? 2 : 1,
                         'telephone' => $data->mobile,
                         'email' => $data->email,
@@ -198,6 +204,21 @@ class CatchAction extends Action {
 
                     M('resume')->add($insert_data);
                     $eid = M()->getLastInsID();
+
+                    //languages
+                    $languages = $data->languages;
+                    foreach ($languages as $lang) {
+                        $languages_data = [
+                            'eid' => $eid,
+                            'language' => $lang->language,
+                            'proficiency' => $lang->proficiency,
+                            'grade' => $lang->grade,
+                            'languageOther' => $lang->languageOther,
+                            'listen_speak' => $lang->listen_speak,
+                            'read_write' => $lang->read_write
+                        ];
+                        M('resume_languages')->add($languages_data);
+                    }
 
                     //edu
                     $educationals = $data->educationals;
