@@ -1,0 +1,351 @@
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/css/validator.css"/>
+<script type="text/javascript" src="__PUBLIC__/js/checkuser.js"></script>
+<style>
+    .close{font-size:34px;font-weight:400;color:#fff;}
+    .close:hover{color:#fff;}
+    input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+        -webkit-appearance:textfield;
+    }
+    input[type="number"]{
+        -moz-appearance:textfield;
+    }
+</style>
+<div class="modal-header" style="padding:3px 10px;">
+    <b style="font-size:16px;">回款记录详情</b>
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>
+<div class="modal-body clearfix">
+    <form id="ad_Form" class="form-horizontal m-t" method="post">
+        <div id="planshow" class="col-md-12" style="display: block;">
+            <input type="hidden" name="record_id" value="{$record.Id}"/>
+            <input type="hidden" name="periodplan_id" value="{$record.periodplan_id}">
+            <table class="table form-inline" >
+                <tr>
+                    <th colspan="2"><span class="fa fa-th-list">&nbsp;回款记录详细信息</span></th>
+                </tr>
+                <tr>
+                    <td>对应项目:</td>
+                    <td>{$record.business}</td>
+                    <td class="col-md-2">负责人:</td>
+                    <td class="col-md-4">{$business.user_name}</td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">对应客户:</td>
+                    <td class="col-md-4">{$record.customer}</td>
+                    <td>所属部门:</td>
+                    <td>{$business.department_name}</td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">对应期次:</td>
+                    <td class="col-md-4" id="pnum">{$record.num}</td>
+                    <td>收款人:</td>
+                    <td>{$record.receiver}</td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">回款金额:</td>
+                    <td class="col-md-4">{$record.money}</td>
+                    <td>创建人:</td>
+                    <td>{$full_name}</td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">回款日期:</td>
+                    <td class="col-md-4">{$record.paytime}</td>
+                    <td>创建时间:</td>
+                    <td>{$record.createtime}</td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">回款类型:</td>
+                    <td class="col-md-4">{$record.paytype}</td>
+                    <td>更新时间:</td>
+                    <td>{$record.paytime_modify}</td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">付款方式:</td>
+                    <td class="col-md-4">{$record.paymethod}</td>
+                    <td>备注:</td>
+                    <td>{$record.remark}</td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">逾期状态:</td>
+                    <td class="col-md-4">{$record.delayed}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">逾期天数:</td>
+                    <td class="col-md-4">{$record.delayeddays}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div id="planedit" class="col-md-12" style="display: none;">
+            <input type="hidden" name="plan_id" value="{$plan.Id}"/>
+            <table class="table form-inline" >
+                <tr>
+                    <th colspan="2"><span class="fa fa-th-list">&nbsp;回款记录详细信息</span></th>
+                </tr>
+                <tr>
+                    <td>对应项目:</td>
+                    <td>
+                        <select name="contract" id="contract" class="form-control checkit" onchange="contractChanged();">
+                            <option value="">--对应项目--</option>
+                            <volist name="business_all" id="vo">
+                                <option value="{$vo['business_id']}" <if condition ="$record['business'] eq $vo['business']">selected="selected"</if>>{$vo['business']}</option>
+                            </volist>
+                        </select>
+                        <div id="contractTip" class="error_msg"></div>
+                    </td>
+                    <td class="col-md-2">负责人:</td>
+                    <td class="col-md-4">
+                        <select name="person" class="form-control checkit" id="person"  onchange="personChanged();">
+                            <option value="">--负责人--</option>
+                            <volist name="user" id="vo">
+                                <option value="{$vo.user_id}" <if condition ="$business['user_name'] eq $vo['name']">selected="selected"</if>>{$vo.name}</option>
+                            </volist>
+                        </select>
+                        <div id="personTip" class="error_msg"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">对应客户:</td>
+                    <td class="col-md-4">
+                        <input id="customer" class="form-control" readonly="readonly"  name="customer" value="{$record.customer}">
+                    </td>
+                    <td>所属部门:</td>
+                    <td>
+                        <input id="dename" class="form-control" readonly="readonly" name="department" value="{$business.department_name}">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">对应期次:</td>
+                    <td class="col=md-4">
+                        <!--<select id="num" class="form-control checkit" name="num">-->
+                            <!--&lt;!&ndash;<option value="" selected="selected">0</option>&ndash;&gt;-->
+                            <!--<for start="1" end="$record.nums" comparison="elt">-->
+                                <!--&lt;!&ndash;<option value="{$i}" <if condition ="$record['num'] eq $i">selected="selected"</if>>{$i}</option>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<if condition ="$record['num'] eq $i"><option value="{$i}" >{$i}</option></if>&ndash;&gt;-->
+                            <!--</for>-->
+                        <!--</select>-->
+                        <input name="num" value="{$record.num}" class="form-control" readonly="readonly">
+                        <div id="numTip" class="error_msg"></div>
+                    </td>
+                    <td class="col-md-2">收款人:</td>
+                    <td class="col=md-4">
+                        <input id="receiver" class="form-control checkit" name="receiver" type="text" value="{$record.receiver}"><div id="receiverTip" class="error_msg"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">回款金额:</td>
+                    <td class="col=md-4">
+                        <input id="money" name="money" class="form-control checkit number" type="number" value="{$record.money}"><div id="moneyTip" class="error_msg"></div>
+                    </td>
+                    <td class="col-md-2">创建人:</td>
+                    <td class="col=md-4">
+                        <input id="creater" name="creater" readonly="readonly" class="form-control checkit" type="text" value="{$full_name}"><div id="createrTip" class="error_msg"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">回款日期:</td>
+                    <td class="col=md-4">
+                        <input id="paytime" name="paytime" readonly="readonly" class="form-control checkit" type="date" value="{$record.paytime}"><div id="paytimeTip" class="error_msg"></div>
+                    </td>
+                    <td class="col-md-2">创建时间:</td>
+                    <td class="col=md-4">
+                        <input id="createtime" name="createtime" readonly="readonly" class="form-control checkit" type="date" value="{$record.createtime}"><div id="createtimeTip" class="error_msg"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">回款类型:</td>
+                    <td class="col=md-4">
+                        <!--<input id="paytype" name="paytype" value="{$record.paytype}">-->
+                        <select id="paytype" class="form-control checkit" name="paytype">
+                            <option value="1" <if condition ="$record['paytype'] eq '预付款'">selected="selected"</if>>预付款</option>
+                            <option value="2" <if condition ="$record['paytype'] eq '首付款'">selected="selected"</if>>首付款</option>
+                            <option value="3" <if condition ="$record['paytype'] eq '过保付款'">selected="selected"</if>>过保付款</option>
+                            <option value="4" <if condition ="$record['paytype'] eq '慧猎系列款'">selected="selected"</if>>慧猎系列款</option>
+                        </select>
+                        <div id="paytypeTip" class="error_msg"></div>
+                    </td>
+                    <td class="col-md-2">更新时间:</td>
+                    <td class="col=md-4">
+                        <input id="paytime_modify" readonly="readonly" class="form-control checkit" type="date" name="paytime_modify" value="{$record.paytime_modify}"><div id="paytime_modifyTip" class="error_msg"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">付款方式:</td>
+                    <td class="col=md-4">
+                        <input id="paymethod" name="paymethod" class="form-control checkit" type="text" value="{$record.paymethod}">
+                        <div id="paymethodTip" class="error_msg"></div>
+                    </td>
+                    <td class="col-md-2">备注:</td>
+                    <td class="col=md-4">
+                        <input id="remark" name="remark" type="text" class="form-control checkit" value="{$record.remark}"><div id="remarkTip" class="error_msg"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">逾期状态:</td>
+                    <td class="col=md-4">
+                        <!--<input id="delayed" name="paymethod" value="{$record.delayed}">-->
+                        <select id="delayed" class="form-control checkit" name="delayed">
+                            <option value="1" <if condition ="$record['delayed'] eq '逾期未完成'">selected="selected"</if>>逾期未完成</option>
+                            <option value="2" <if condition ="$record['delayed'] eq '逾期未回款'">selected="selected"</if>>逾期未回款</option>
+                            <option value="3" <if condition ="$record['delayed'] eq '逾期已完成'">selected="selected"</if>>逾期已完成</option>
+                            <option value="4" <if condition ="$record['delayed'] eq '未逾期'">selected="selected"</if>>未逾期</option>
+                        </select>
+                        <div id="delayedTip" class="error_msg"></div>
+                    </td>
+                    <td class="col-md-2"></td>
+                    <td class="col=md-4">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">逾期天数:</td>
+                    <td class="col=md-4">
+                        <input id="delayeddays" class="form-control checkit number" name="delayeddays" type="number" value="{$record.delayeddays}"><div id="delayeddaysTip" class="error_msg"></div>
+                    </td>
+                    <td class="col-md-2" style="display:none;">是否已完成</td>
+                    <td class="col=md-4" style="display: none;">
+                        <input type="radio" name="overed" <if condition ="$record['overed'] eq 0">checked="checked"</if> value="0">否
+                        <input type="radio" name="overed" <if condition ="$record['overed'] eq 1">checked="checked"</if> value="1">是
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<script>
+    function beforecheck() {
+        $(".checkit").each(function () {
+            var id = "#"+$(this).attr('id')+"Tip";
+            if($(this).val()==''){
+                $(id).html("<span style='color: red;'>*此项为必填项</span>");
+                return false;
+            }else {
+                $(id).html("");
+                return true;
+            }
+        });
+        $(".number").each(function () {
+            var te = parseFloat($(this).val()) ;
+            var id = "#"+$(this).attr('id')+"Tip";
+            if(isNaN(te)){
+                $(id).html("<span style='color: red;'>*请填写数字</span>");
+                return false;
+            }
+              else  {
+                $(id).html("");
+                return true;
+            }
+        });
+        if($("#num").val()==0) {
+            $("#numTip").html("<span style='color: red;'>*请选择期次或其他项目</span>");
+            return false;
+        }else {
+            $("#numTip").html("");
+            return true;
+        }
+    }
+    function personChanged() {
+        var person = $("#person").val();
+        $.ajax({
+            type: "post",
+            async:false,
+            url: "{:U('return/personChanged')}",
+            data: {person_id:person},
+            dataType: "json",
+            success : function(result){
+                $("#dename").val(result);
+            }
+        });
+        $("#personTip").html("");
+    }
+    function contractChanged() {
+        var bvalue = $("#contract").val();
+        $.ajax({
+            type: "post",
+            async:false,
+            url: "{:U('return/contractChanged')}",
+            data: {business_id:bvalue},
+            dataType: "json",
+            success : function(result){
+                $("#customer").val(result.customer_name);
+                var num =  result.nums;
+                var html = "";
+                for(var i = 1; i<=num ; i++){
+                    html += "<option value="+i+">"+i+"</option>";
+                }
+                if("" != html)
+                $("#num").html(html);
+                else $("#num").html("<option value='' selected='selected'>0</option>")
+            }
+        });
+        $("#contractTip").html("");
+    }
+    $(document).ready(function(){
+        $("#edit").click(function () {
+            $("#bianji").css('display','none');
+            $("#baocun").css('display','block');
+            $("#planedit").css('display','block');
+            $("#planshow").css('display','none');
+        });
+        $("#back").click(function () {
+            $("#baocun").css('display','none');
+            $("#bianji").css('display','block');
+            $("#planedit").css('display','none');
+            $("#planshow").css('display','block');
+        });
+        $("#adbtn").click(function(){
+            if( beforecheck() && before_submit()){
+                $.ajax({
+                    type: "POST",
+                    url: "{:U('record_edit')}",
+                    data:$("#ad_Form").serialize(),
+                    async: true,
+                    success: function(data) {
+                        if(data.status == 1){
+                            swal({
+                                title: "保存成功！",
+                                text: "自动刷新中...",
+                                type: "success"
+                            });
+                            $('#Modal').modal('hide');
+                            top.location.reload();
+                        }else{
+                            swal({
+                                title: "添加失败!",
+                                text: data.info,
+                                type: "error"
+                            });
+                        }
+                    }
+                });
+            }else{
+                var item_id = [];
+                $('.checkit').each(function(k,v){
+                    checkform(v);
+                    item_id.push($(v).attr('id'));
+                });
+                $.each(item_id,function(k,v){
+                    if($('#'+v+'Tip').html() == ''){
+                        item_id.splice(k,1);
+                    }
+                });
+                $('#'+item_id[0]).focus();
+                return false;
+            }
+        });
+    });
+</script>
+<div id="baocun" class="modal-footer" style="padding:8px 22px;display: none;">
+    <div class='col-sm-12' id='lmsg' style='color: red;display: none;'></div>
+    <button type="button" id="adbtn" class="btn btn-primary">保存</button>
+    <button type="button" id="back" class="btn btn-white" >返回</button>
+</div>
+<div id="bianji" class="modal-footer" style="padding:8px 22px;display: block;">
+    <button type="button" id="edit" class="btn btn-primary">编辑</button>
+    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+</div>

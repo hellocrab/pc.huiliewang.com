@@ -1,0 +1,495 @@
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/css/validator.css"/>
+<script type="text/javascript" src="__PUBLIC__/js/checkuser.js"></script>
+<style>
+    .close{font-size:34px;font-weight:400;color:#fff;}
+    .close:hover{color:#fff;}
+    input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+        -webkit-appearance:textfield;
+    }
+    input[type="number"]{
+        -moz-appearance:textfield;
+    }
+</style>
+<div class="modal-header" style="padding:3px 10px;">
+    <b style="font-size:16px;">回款计划详情</b>
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>
+<div class="modal-body clearfix">
+    <form id="ad_Form" class="form-horizontal m-t" method="post">
+        <div id="planshow" class="col-md-12" style="display: block;">
+            <input type="hidden" id="b_id" name="business_id" value="{$business.business_id}"/>
+            <input type="hidden" id="pnums" name="nums" value="{$plan.nums}">
+            <input id="add_nums" type="hidden" name="add_nums" value="{$plan.nums}">
+            <table class="table form-inline" >
+                <tr>
+                    <th colspan="2"><span class="fa fa-th-list">&nbsp;回款计划详细信息</span></th>
+                </tr>
+                <tr>
+                    <td>对应项目:</td>
+                    <td>{$plan.business}</td>
+                    <td class="col-md-2">负责人:</td>
+                    <td class="col-md-4">{$business.user_name}</td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">对应客户:</td>
+                    <td class="col-md-4">{$plan.customer}</td>
+                    <td>所属部门:</td>
+                    <td>{$business.department_name}</td>
+                </tr>
+                <tr >
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>回款期次:</td>
+                    <td>{$plan.nums}</td>
+                    <td>计划回款总金额:</td>
+                    <td>{$plan.total}</td>
+                </tr>
+                <tr >
+                    <td>实际回收笔数:</td>
+                    <td>{$plan.total_count}</td>
+                    <td>已回款:</td>
+                    <td>{$plan.money_backed}元</td>
+                </tr>
+                <tr>
+                    <td>当前期次:</td>
+                    <td>{$plan.backed_num}</td>
+                    <td>实际回款状态:</td>
+                    <td id="infact">{$plan.status}</td>
+                </tr>
+            </table>
+            <table class="table" id="hasRadio">
+                <tr><td></td></tr>
+                <tr>
+                    <th>回款期次</th>
+                    <th>期次计划回款金额</th>
+                    <th>所占比例</th>
+                    <th>计划时间</th>
+                    <th>已回款</th>
+                    <th>回款状态</th>
+                    <th>付款方式</th>
+                    <th>回款时间</th>
+                    <th>是否完成</th>
+                    <th>备注</th>
+                </tr>
+                <volist name="periods" key="k" id="vo">
+                    <tr>
+                        <th>{$vo.num}</th>
+                        <th>{$vo.money}</th>
+                        <th>{$vo.property}</th>
+                        <th>{$vo.ontime}</th>
+                        <th>{$vo.total}</th>
+                        <th>{$vo.status}</th>
+                        <th>{$vo.method}</th>
+                        <th>{$vo.paytime}</th>
+                        <th>
+                            <input type="radio" rell="{$vo.Id}" name="status{$k}"<if condition="$vo['status'] eq '未完成'"> checked="checked"</if> value="0">否
+                            <input type="radio" rell="{$vo.Id}" name="status{$k}"<if condition="$vo['status'] eq '完成'"> checked="checked"</if> value="1">是
+                        </th>
+                        <th>{$vo.remark}</th>
+                    </tr>
+                </volist>
+            </table>
+        </div>
+        <div id="planedit" class="col-md-12" style="display: none;">
+            <input type="hidden" name="plan_id" value="{$plan.Id}"/>
+            <table class="table form-inline" >
+                <tr>
+                    <th colspan="2"><span class="fa fa-th-list">&nbsp;项目回款详细信息</span></th>
+                </tr>
+                <tr>
+                    <td>对应项目:</td>
+                    <td>
+                        <select name="contract" id="contract" onchange="contractChanged();">
+                            <option value=" ">--对应项目--</option>
+                            <option value="{$plan.business_id}" selected="selected">{$plan.business}</option>
+                            <volist name="business_all" id="vo">
+                                <!--<option value="{$vo['business_id']}" <if condition ="$plan['business'] eq $vo['name']">selected="selected"</if>>{$vo['name']}</option>-->
+                                <option value="{$vo['business_id']}">{$vo['name']}</option>
+                            </volist>
+                        </select>
+                    </td>
+                    <td class="col-md-2">负责人:</td>
+                    <td class="col-md-4">
+                        <select name="person" id="person"  onchange="personChanged();">
+                            <option value="">--负责人--</option>
+                            <volist name="user" id="vo">
+                                <option value="{$vo.user_id}" <if condition ="$business['user_name'] eq $vo['name']">selected="selected"</if>>{$vo.name}</option>
+                            </volist>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">对应客户:</td>
+                    <td class="col-md-4">
+                        <input id="customer" class="form-control" readonly="readonly"  name="customer" value="{$plan.customer}">
+                        <input id="customer_id" type="hidden" name="customer_id" value="{$plan.customer_id}">
+                    </td>
+                    <td>所属部门:</td>
+                    <td>
+                        <input id="dename" class="form-control" readonly="readonly" name="department" value="{$business.department_name}">
+                    </td>
+                </tr>
+                <tr >
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>回款期次:</td>
+                    <td id="nums">{$plan.nums}</td>
+                    <td>计划回款总金额:</td>
+                    <td><input id="total" onblur="checkTmoney();" name="total" value="{$plan.total}"><div id="totalTip"></div></td>
+                </tr>
+                <tr >
+                    <td>实际回收笔数:</td>
+                    <td>{$plan.total_count}</td>
+                    <td>已回款:</td>
+                    <td>{$plan.money_backed}元</td>
+                </tr>
+                <tr>
+                    <td>当前期次:</td>
+                    <td>{$plan.backed_num}</td>
+                    <td>实际回款状态:</td>
+                    <td>{$plan.status}</td>
+                </tr>
+            </table>
+            <table class="table" id="tlast">
+                <tr><td></td></tr>
+                <tr>
+                    <th></th><th></th>
+                    <th>回款期次</th>
+                    <th>期次回款金额</th>
+                    <th>所占比例</th>
+                    <th>计划时间</th>
+                    <th>备注</th>
+                </tr>
+                <volist name="periods" key="k" id="vo">
+                    <tr>
+                        <td><button onclick="minusedit('{$vo.plan_id}','{$vo.Id}',this);" type="button" class="btn btn-white minus">-</button></td>
+                        <td><button onclick="addedit();" type="button" class="btn btn-white">+</button></td>
+                        <th class="eachnum">{$vo.num}</th>
+                        <th class="tmoney">{$vo.money}</th>
+                        <th>{$vo.property}</th><input name='property{$k}' type='hidden' value="{$vo.property}">
+                        <th>{$vo.ontime}</th>
+                        <th>{$vo.remark}</th>
+                    </tr>
+                </volist>
+            </table>
+        </div>
+    </form>
+</div>
+<script>
+    function checkTmoney() {
+        var planMoney = Number($("#total").val());
+        if(planMoney != 0 ){
+            var sum = 0 ;
+            $(".tmoney").each(function () {
+                var test = Number($(this).html());
+                sum += test;
+            });
+            $(".imoney").each(function () {
+                var test = Number($(this).val());
+                sum += test;
+            });
+            if(sum>planMoney) $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额小于各期次金额总和</span>");
+            else {
+                $("#totalTip").html(" ");
+                $(".tmoney").each(function () {
+                    var tmo = Number($(this).html());
+                    $(this).next().html(parseFloat(tmo/planMoney*100).toFixed(2)+"%");
+                    $(this).next().next().val(parseFloat(tmo/planMoney*100).toFixed(2)+"%");
+                });
+                $(".imoney").each(function () {
+                    var property = (Number($(this).val())/planMoney*100).toFixed(2);
+                    var attr = $(this).attr('id');
+                    var num1 = parseInt(attr.substring(5));
+                    var str = "#property"+num1;
+                    $(str).val(property+"%");
+                });
+            }
+        }else $("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额！</span>");
+    }
+    function personChanged() {
+        var person = $("#person").val();
+        $.ajax({
+            type: "post",
+            async:false,
+            url: "{:U('return/personChanged')}",
+            data: {person_id:person},
+            dataType: "json",
+            success : function(result){
+                $("#dename").val(result);
+            }
+        });
+        $("#personTip").html("");
+    }
+    function contractChanged() {
+        var bvalue = $("#contract").val();
+        $.ajax({
+            type: "post",
+            async:false,
+            url: "{:U('return/contractChanged')}",
+            data: {business_id:bvalue},
+            dataType: "json",
+            success : function(result){
+                $("#customer").val(result.customer_name);
+                $("#customer_id").val(result.customer_id);
+            }
+        });
+        $("#contractTip").html("");
+    }
+
+    var num = $("#nums").html();
+    function minusedit(obj,pid,obj1) {
+        var numtotal = 0;
+        $(".minus").each(function () {
+            numtotal++;
+        });
+        if(obj1 == undefined){
+            $("#tlast").children().last().remove();
+            num--;
+            $("#add_nums").val(num);
+        }
+        else {
+            if(num>2 && numtotal >2)
+            swal({
+                    title: "您确定要删除当前期次信息吗？",
+                    text: "删除后将无法恢复，请谨慎操作！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的，我要删除！",
+                    cancelButtonText:'让我再考虑一下…',
+                    closeOnConfirm:false,
+                    closeOnCancel:false
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        $.ajax({
+                            url:"/index.php?m=return&a=delete",
+                            type:"post",
+                            async:true,
+                            data:{ plan_id:obj,
+                                period_id :pid,
+                                nums : Number($("#nums").html())
+                            },
+                            success: function (data) {
+                                if (data.status == 1) {
+                                    swal({
+                                        title:'删除成功',
+                                        text:'您已经永久删除该条计划！',
+                                        type:"success",
+                                        confirmButtonText: "确定"
+                                    },function (isConfirm) {
+                                        if(isConfirm){
+                                            obj1.parentNode.parentNode.remove();
+                                            num--;
+                                            $("#pnums").val(num);
+                                            $("#nums").html(Number($("#nums").html())-1);
+                                            $(".eachnum").each(function (i) {
+                                                $(this).html(i+1);
+                                                $(this).next().next().next().attr('name','property'+(i+1));
+                                                $("#add_nums").val(num);
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    swal({
+                                        title: "操作失败！",
+                                        text:data.info,
+                                        type: "error"
+                                    })
+                                    return false;
+                                }
+                            },
+                            dataType: 'json'
+                        });
+                    } else {
+                        swal("已取消","您取消了删除操作！","error");
+                    }
+                });else swal("系统至少有两条回款期次！","你可尝试添加期次再删除","warning");
+        };
+        return false;
+    }
+    function addedit() {
+        num++;
+        $("#tlast").children().last().after("<tr><td><button onclick='minusedit();' type='button' class='btn btn-white'>-</button></td>" +
+            "<td><button onclick='addedit();' type='button' class='btn btn-white'>+</button></td>" +
+            "<th><input name='num"+num+"' type='hidden' readonly='readonly' style='width:90%;' value='"+num+"'>"+num+"</th>" +
+            "<th><input id='money"+num+"' class='imoney required' onblur='propertyCalculate(this)' name='money"+num+"' type='number'style='width:90%;' ></th>" +
+            "<th><input id='property"+num+"' name='property"+num+"' type='text' readonly='readonly' style='width:90%;'></th>" +
+            "<th><input name='time"+num+"' required='required' class='required checkit' type='date' style='width:90%;'></th>" +
+            "<th><input name='remark"+num+"' type='text' style='width:100%;'></th></tr>");
+        $("#add_nums").val(num);
+    }
+    function propertyCalculate(obj) {
+        var planed_money = $("#total").val();
+        if(planed_money == ''){
+            $("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额！</span>");
+        }else {
+            $("#totalTip").html("");
+            if(obj.value != ''){
+                var  property = ((obj.value / planed_money )*100).toFixed(2);
+                var attr = obj.getAttribute('id');
+                var num1 = parseInt(attr.substring(5));
+                var str = "#property"+num1;
+                $(str).val(property+"%");
+            }
+            var ta  = 0;
+            $(".imoney").each(function () {
+                if(!Number($(this).val()))
+                    ta += 0;
+                else
+                    ta += parseFloat($(this).val());
+            });
+            $(".tmoney").each(function () {
+                ta += Number($(this).html());
+            });
+            if(ta>planed_money)
+                $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额小于各期次金额总和</span>");else $("#msg").html("");
+        }
+    }
+    $(document).ready(function(){
+        $('input[type=radio]').change(function() {
+            var pid = $(this).attr('rell');
+            var pv = $(this).val();
+            var ob= $(this).parent().prev().prev().prev();
+            var cnew = $(this).parent().find("input:not(:checked)");
+            swal({
+                    title: "您确定要修改当前期次回款状态吗？",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的，我要修改！",
+                    cancelButtonText:'让我再考虑一下…',
+                    closeOnConfirm:false,
+                    closeOnCancel:false
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        $.ajax({
+                            url:"/index.php?m=return&a=modifyStatus",
+                            type:"post",
+                            async:true,
+                            data:{ period_id : pid,
+                                status_value : pv,
+                            },
+                            success: function (data) {
+                                if (data.status == 1) {
+                                    swal({
+                                        title:'修改成功',
+                                        type:"success",
+                                        confirmButtonText: "确定"
+                                    },function (isConfirm) {
+                                        if(isConfirm){
+                                            $("#infact").html(data.statuss);
+                                            ob.html(data.current_status);
+                                        }
+                                    });
+                                } else {
+                                    swal({
+                                        title: "操作失败！",
+                                        text:data.info,
+                                        type: "error"
+                                    })
+                                    return false;
+                                }
+                            },
+                            dataType: 'json'
+                        });
+                    } else {
+                        cnew.prop('checked',true);
+                        swal("已取消","您取消了修改操作！","error");
+                    }
+                })
+               });
+        $("#edit").click(function () {
+            $("#bianji").css('display','none');
+            $("#baocun").css('display','block');
+            $("#planedit").css('display','block');
+            $("#planshow").css('display','none');
+        });
+        $("#back").click(function () {
+            $("#baocun").css('display','none');
+            $("#bianji").css('display','block');
+            $("#planedit").css('display','none');
+            $("#planshow").css('display','block');
+        });
+        $("#adbtn").click(function(){
+            var adbtn = true;
+            var planMoney = Number($("#total").val());
+            if(planMoney != 0 ){
+                var sum = 0 ;
+                $(".tmoney").each(function () {
+                    var test = Number($(this).html());
+                    sum += test;
+                });
+                $(".imoney").each(function () {
+                    var test = Number($(this).val());
+                    sum += test;
+                });
+                if(sum>planMoney) {
+                    $("#totalTip").html("<span class='col-sm-12' id='msg' style='color: red;'>!计划总金额小于各期次金额总和</span>");
+                    adbtn = false;
+                }
+                else {
+                    $("#totalTip").html("");
+                }
+            }
+            else
+                {$("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额！</span>"); adbtn = false;}
+            var time_flag = true;
+            $(".required").each(function () {
+                var time_html = $(this).val();
+                if(time_html == '') time_flag = false;
+            });
+            if(!time_flag) $("#lmsg").css('display','block'); else $("#lmsg").css('display','none');
+            if( before_submit() && time_flag && adbtn){
+                $.ajax({
+                    type: "POST",
+                    url: "{:U('plan_edit')}",
+                    data:$("#ad_Form").serialize(),
+                    async: true,
+                    success: function(data) {
+                        if(data.status == 1){
+                            swal({
+                                title: "保存成功！",
+                                text: "自动刷新中...",
+                                type: "success"
+                            });
+                            $('#Modal').modal('hide');
+                            top.location.reload();
+                        }else{
+                            swal({
+                                title: "添加失败!",
+                                text: data.info,
+                                type: "error"
+                            });
+                        }
+                    }
+                });
+            }else{
+                var item_id = [];
+                $('.checkit').each(function(k,v){
+                    checkform(v);
+                    item_id.push($(v).attr('id'));
+                });
+                $.each(item_id,function(k,v){
+                    if($('#'+v+'Tip').html() == ''){
+                        item_id.splice(k,1);
+                    }
+                });
+                $('#'+item_id[0]).focus();
+                return false;
+            }
+        });
+    });
+</script>
+<div id="baocun" class="modal-footer" style="padding:8px 22px;display: none;">
+    <div class='col-sm-12' id='lmsg' style='color: red;display: none;'>请补全期次金额或时间!</div>
+    <button type="button" id="adbtn" class="btn btn-primary">保存</button>
+    <button type="button" id="back" class="btn btn-white" >返回</button>
+</div>
+<div id="bianji" class="modal-footer" style="padding:8px 22px;display: block;">
+    <button type="button" id="edit" class="btn btn-primary">编辑</button>
+    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+</div>
