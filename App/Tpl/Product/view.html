@@ -281,22 +281,45 @@
                                                 <span class="co9f13 fright">{$vo.starttime|date="Y-m",###} 至 {$vo.endtime|date="Y-m",###}</span>
                                             </p>
                                             <p>
-                                                <span class="co9f14">所在部门:</span>
-                                                <span class="co3f14">{$vo.depart}</span>
+                                                <span class="co9f14">公司介绍:</span>
+                                                <span class="co3f14">{$vo.companyDes}</span>
                                             </p>
-                                            <p>
-                                                <span class="titlebb">公司介绍</span>
-                                            </p>
-                                            <div class="co6f13 m_b_10">{$vo.companyDes}</div>
-                                            <p>
-                                                <span class="titlebb">薪资</span>
-                                            </p>
-                                            <div class="co6f13 m_b_10">{$vo.salary}</div>
-                                            <p>
-                                                <span class="titlebb">职责描述</span>
-                                            </p>
-                                            <div class="co6f13 m_b_10">{$vo.duty}</div>
+                                            <if condition = "$vo.salary neq 0">                                            <p>
+                                                    <span class="co9f14">薪资</span>
+                                                    <span class="co3f14">{$vo.salary}</span>
+                                                </p></if>
 
+                                            <p>
+                                                <span class="titlebb">岗位经历</span>
+                                            </p>
+
+                                            <volist name="vo.position" id="vp">
+                                                <p>
+                                                    <span class="co3f14">{$vp.position}</span>
+                                                    <span class="co9f13 fright">{$vp.start_date|date="Y-m",###} 至 {$vp.end_date|date="Y-m",###}</span>
+                                                </p>
+                                                <if condition = "$vp.department neq ''">   
+                                                    <p>
+                                                        <span class="co9f14">职位部门:</span>
+                                                        <span class="co3f14">{$vp.department}</span>
+                                                    </p></if>
+                                                <p>
+                                                    <span class="co9f14">职位描述:</span>
+                                                    <span class="co3f14">{$vp.responsibility}</span>
+                                                </p>
+                                                <if condition = "$vp.underling_num neq ''">  
+                                                    <p>
+                                                        <span class="co9f14">下属人数:</span>
+                                                        <span class="co3f14">{$vp.underling_num}</span>
+                                                    </p>
+                                                </if>
+                                                <if condition = "$vp.report_to neq ''">  
+                                                    <p>
+                                                        <span class="co9f14">汇报对象:</span>
+                                                        <span class="co3f14">{$vp.report_to}</span>
+                                                    </p>
+                                                </if>
+                                            </volist>
                                         </div>
                                     </volist>
                                 </div>
@@ -310,19 +333,30 @@
                                                 <span class="co9f13">{$vo.starttime|date="Y-m",###} 至 {$vo.endtime|date="Y-m",###}</span>
                                                 <span class="co3f16 ml10">{$vo.proName}</span>
                                             </p>
-
-                                            <p>
-                                                <span class="co9f14">项目职位:</span>
-                                                <span class="co3f14">{$vo.proOffice}</span>
-                                            </p>
-                                            <p>
-                                                <span class="co9f14">所在公司:</span>
-                                                <span class="co3f14">{$vo.proCompany}</span>
-                                            </p>
-                                            <p>
-                                                <span class="co9f14">项目描述:</span>
-                                                <span class="co3f14">{$resume.proDes}</span>
-                                            </p>
+                                            <if condition = "$vo.proOffice neq ''">  
+                                                <p>
+                                                    <span class="co9f14">项目职位:</span>
+                                                    <span class="co3f14">{$vo.proOffice}</span>
+                                                </p>
+                                            </if>
+                                            <if condition = "$vo.proCompany neq ''">  
+                                                <p>
+                                                    <span class="co9f14">所在公司:</span>
+                                                    <span class="co3f14">{$vo.proCompany}</span>
+                                                </p>
+                                            </if>
+                                            <if condition = "$vo.proDes neq ''">  
+                                                <p>
+                                                    <span class="co9f14">项目描述:</span>
+                                                    <span class="co3f14">{$vo.proDes}</span>
+                                                </p>
+                                            </if>
+                                            <if condition = "$vo.responsibility neq ''">  
+                                                <p>
+                                                    <span class="co9f14">项目责任:</span>
+                                                    <span class="co3f14">{$vo.responsibility}</span>
+                                                </p>
+                                            </if>
                                         </div>
                                     </volist>
                                 </div>

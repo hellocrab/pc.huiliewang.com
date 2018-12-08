@@ -952,7 +952,13 @@ class ProductAction extends Action {
         $resume['now_industry'] = $resume['now_industry'];
 
         $resume['sex'] = $resume['sex'] = 1 ? "男" : "女";
-        $this->resume_work = M("resume_work")->where("eid=%d", $eid)->select();
+        $resume_work = M("resume_work")->where("eid=%d", $eid)->select();
+        foreach ($resume_work as $kw => $rw){
+            $_position = M('resume_work_position')->where(['work_id'=>$rw['id']])->find();
+            $resume_work[$kw]['position'][] = $_position;
+        }
+        $this->resume_work = $resume_work;
+        
         $this->resume_data = M("resume_data")->where("eid=%d", $eid)->select();
 
         //edu 
