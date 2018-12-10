@@ -135,10 +135,11 @@ class CatchAction extends Action {
                         $cookie = M('catch_cookie')->where(['status' => 0])->find();
                         $result = Curl::send($this->resumes, $resumes_data, 'get', '', 1, Curl::CONTENT_TYPE_JSON, $header);
                     }
+                   
                     $content = json_decode($result['result']['content']);
                     $data = $content->data;
 
-
+                    var_dump($header);                    var_dump($resumes_data);
                     $insert_data = [
                         'name' => $data->name,
                         'creator_role_id' => 0,
