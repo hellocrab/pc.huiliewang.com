@@ -413,7 +413,7 @@
 				</li>-->
 				<?php if (in_array('log',$new_module_list)): ?>
 				<li>
-					<a data-toggle="tooltip" data-placement="right" data-original-title="背景调查" <if condition="$module_name eq 'background' &&  $action_name neq 'background'"> class="active"</if> <if condition="checkPerByAction('background','index')">href="{:U('background/index')}"<elseif condition ="checkPerByAction('examine','index')" />href="{:U('examine/index')}"<elseif condition ="checkPerByAction('knowledge','index')" />href="{:U('knowledge/index')}"<elseif condition ="checkPerByAction('announcement','index')" />href="{:U('announcement/index')}"<elseif condition ="checkPerByAction('sign','index')" />href="{:U('sign/index')}"<elseif condition ="checkPerByAction('background','index')" />href="{:U('background/index')}"<elseif condition ="checkPerByAction('background','index')" />href="{:U('background/index')}"</if>><i class="fa fa-user"></i><span class="menu_code">背调</span></a>
+					<a data-toggle="tooltip" data-placement="right" data-original-title="背景调查" <if condition="($module_name eq 'background' || $module_name eq 'background' )"> class="active"</if> href="{:U('background/index')}"><i class="fa fa-credit-card"></i><span class="menu_code">背调</span></a>
 				</li>
 				<?php endif; ?>
 				<?php if (in_array('log',$new_module_list)): ?>
@@ -526,7 +526,7 @@
 					<?php endif; ?>
 				</ul>
 				<ul class="nav navbar-top-links navbar-right" style="margin-right:0px;">
-					<li class="dropdown" style="">
+					<li class="dropdown" style="display: none">
 						<a class="dropdown-toggle count-info" id="todo_url"  data-toggle="dropdown" href="#" title="待办事项">
 							<img src="__PUBLIC__/img/remain.png" alt="" /><div class="label label-info" style="background-color: #FA7252;" id="todo_num"></div>
 						</a>
@@ -553,7 +553,7 @@
 							<?php endif; ?>
 						</ul>
 					</li>
-					<li class="dropdown" style="">
+					<li class="dropdown" style="display: none">
 						<a class="dropdown-toggle count-info" id="event_url" data-toggle="dropdown" href="#" title="今日日程">
 							<img src="__PUBLIC__/img/event.png" alt="" /><span class="label label-warning" id="event_num"></span>
 						</a>
