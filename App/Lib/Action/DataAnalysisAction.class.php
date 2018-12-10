@@ -84,10 +84,10 @@ class DataAnalysisAction extends Action {
         }
         $where['addtime'] = $create_time;
         //根据项目类型统计
-        $this->msk = M("achievement")->where($where)->where(array("type"=>"面试快"))->count();
-        $this->ctxm = M("achievement")->where($where)->where(array("type"=>"传统项目"))->count();
-        $this->rzk = M("achievement")->where($where)->where(array("type"=>"入职快"))->count();
-        $this->qt = M("achievement")->where($where)->where(array("type"=>"其他"))->count();
+        $this->msk = M("achievement")->where($where)->where(array("type"=>"1"))->count();//面试快
+        $this->ctxm = M("achievement")->where($where)->where(array("type"=>"3"))->count();//专业猎头
+        $this->rzk = M("achievement")->where($where)->where(array("type"=>"2"))->count();//入职快
+        $this->qt = M("achievement")->where($where)->where(array("type"=>"5"))->count();//其他
 //        $business = M("business")->where($where)->select();
         $typeCount = M("achievement")->where($where)->count();
         $this->mskbl = round($this->msk/$typeCount,4)*100;
@@ -211,7 +211,7 @@ class DataAnalysisAction extends Action {
 
             }
         }elseif($field=="pro_type"){
-            $pro_type = array("传统项目","面试快","入职快","其他");
+            $pro_type = array("3","1","2","5");
             foreach ($pro_type as $k=>$v) {
 
                 $field_total_count = 0;

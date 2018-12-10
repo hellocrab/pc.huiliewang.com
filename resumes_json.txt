@@ -1,0 +1,195 @@
+object(stdClass)#11 (85) {
+  ["_id"]=>
+  string(24) "5bc04a8a496d138e8c136160"
+  ["user_id"]=>
+  int(1517)
+  ["company_id"]=>
+  int(246)
+
+  ["projects"]=>
+  array(2) {
+    [0]=>
+    object(stdClass)#12 (5) {
+      ["project_id"]=>
+      int(76504)
+      ["user_id"]=>
+      int(3546)
+      ["resume_snapshot_id"]=>
+      NULL
+      ["stage"]=>
+      int(0)
+      ["modify_time"]=>
+      int(1543370686177)
+    }
+    [1]=>
+    object(stdClass)#13 (5) {
+      ["project_id"]=>
+      int(59397)
+      ["user_id"]=>
+      int(3532)
+      ["resume_snapshot_id"]=>
+      NULL
+      ["stage"]=>
+      int(0)
+      ["modify_time"]=>
+      int(1544008359978)
+    }
+  }
+
+  ["source_id"]=>
+  string(15) "PP_NFXH_1179176"
+  ["source"]=>
+  int(3)
+  ["source_channel"]=>
+  int(102)
+  ["source_url"]=>
+  NULL
+  ["archive_url"]=>
+  NULL
+
+  ["is_del"]=>
+  int(0)
+  ["effective_user_id"]=>
+  int(1517)
+  ["effective_modify_time"]=>
+  int(1539328650796)
+  ["is_collect"]=>
+  string(1) "0"
+  ["resume_iumind"]=>
+  object(stdClass)#14 (9) {
+    ["persent"]=>
+    int(0)
+    ["persent_desc"]=>
+    NULL
+    ["month"]=>
+    NULL
+    ["dongji"]=>
+    NULL
+    ["xuqiu"]=>
+    NULL
+    ["kaolu"]=>
+    NULL
+    ["sync_fail_reason"]=>
+    NULL
+    ["fail_reasons"]=>
+    NULL
+    ["synchronized_date"]=>
+    int(1543370691507)
+  }
+
+  <<other_contacts>>
+  <<avatar>>
+  <<'city_id' => location>>
+  <<hkadr_id>>
+  <<hkadr_id_text>>
+  <<native_place_id>>
+  <<native_place_id_text>>
+  <<constellation>>
+  <<constellation_text>> 
+  <<'expect_job_types' => industry>>
+  <<'expect_citys' =>intentCity>>
+ 
+ 
+  ["certificates"]=>
+  NULL
+  ["owner"]=>
+  int(1517)
+  ["latest_stage"]=>
+  NULL
+  ["is_recommend"]=>
+  NULL
+  ["resume_remark"]=>
+  NULL
+
+  ["working_life"]=>
+  int(7)
+  ["now_resume_salary"]=>
+  object(stdClass)#44 (6) {
+    ["salary_tax"]=>
+    NULL
+    ["salary_type"]=>
+    NULL
+    ["month_num"]=>
+    NULL
+    ["salary_month"]=>
+    NULL
+    ["salary_year"]=>
+    NULL
+    ["salary_remark"]=>
+    NULL
+  }
+  ["expect_resume_salary"]=>
+  object(stdClass)#45 (6) {
+    ["salary_tax"]=>
+    NULL
+    ["salary_type"]=>
+    int(1)
+    ["month_num"]=>
+    NULL
+    ["salary_month"]=>
+    NULL
+    ["salary_year"]=>
+    int(180000)
+    ["salary_remark"]=>
+    NULL
+  }
+  ["invalidReason"]=>
+  NULL
+  ["recommend_tmpl"]=>
+  NULL
+  ["isEffective"]=>
+  int(1)
+  ["sourceChannelName"]=>
+  string(6) "卓聘"
+}
+
+ >>
+  ["files"]=>
+  array(3) {
+    [0]=>
+    object(stdClass)#15 (6) {
+      ["is_del"]=>
+      int(0)
+      ["file_id"]=>
+      string(32) "266e870832ed48a7893d2136490b4beb"
+      ["file_source_id"]=>
+      string(20) "PP_NFXH_FILE_1179176"
+      ["file_name"]=>
+      string(12) "7495484.html"
+      ["file_url"]=>
+      string(45) "PP_NFXH_012cccbe3d2c462198c39d2c60223e98.html"
+      ["modify_time"]=>
+      int(1540035574607)
+    }
+    [1]=>
+    object(stdClass)#16 (6) {
+      ["is_del"]=>
+      int(0)
+      ["file_id"]=>
+      string(32) "bd987daadd7d4244ada64ad0c32768f2"
+      ["file_source_id"]=>
+      NULL
+      ["file_name"]=>
+      string(17) "简历附件.html"
+      ["file_url"]=>
+      string(37) "39dfcb08508549b6b0589318748897b3.html"
+      ["modify_time"]=>
+      int(1543370514755)
+    }
+    [2]=>
+    object(stdClass)#17 (6) {
+      ["is_del"]=>
+      int(0)
+      ["file_id"]=>
+      string(32) "dda60109fcab4e469d39fdc390bf6c4c"
+      ["file_source_id"]=>
+      NULL
+      ["file_name"]=>
+      string(17) "简历附件.html"
+      ["file_url"]=>
+      string(37) "ee3413c4e12442859c6d2d1921520fa9.html"
+      ["modify_time"]=>
+      int(1544008359041)
+    }
+  }
+  >>

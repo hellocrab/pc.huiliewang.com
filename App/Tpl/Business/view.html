@@ -75,15 +75,17 @@
                         <label class="col-sm-2 control-label">项目类型</label>
                         <div class="col-sm-4">
                             <p class="form-p color-a-edit">
-                                <if condition="$business_info['pro_type'] eq '面试快'">
-                                    <span class="label label-success">{$business_info['pro_type']}</span>
-                                    <elseif condition="$business_info['pro_type'] eq '入职快'"/>
-                                    <span class="label label-danger">{$business_info['pro_type']}</span>
-                                    <elseif condition="$business_info['pro_type'] eq '传统项目'"/>
-                                    <span class="label label-black">{$business_info['pro_type']}</span>
-                                    <else/>
-                                    <span class="label label-warning">其他</span>
-                                </if>
+                            <if condition="$business_info['pro_type'] eq '1'">
+                                <span class="label label-success">{$pro_type[$business_info['pro_type']]}</span>
+                                <elseif condition="$business_info['pro_type'] eq '2'"/>
+                                <span class="label label-danger">{$pro_type[$business_info['pro_type']]}</span>
+                                <elseif condition="$business_info['pro_type'] eq '3'"/>
+                                <span class="label label-black">{$pro_type[$business_info['pro_type']]}</span>
+                                <elseif condition="$business_info['pro_type'] eq '4'"/>
+                                <span class="label label-black">{$pro_type[$business_info['pro_type']]}</span>
+                                <else/>
+                                <span class="label label-warning">其他</span>
+                            </if>
                             </p>
                         </div>
                         <label class="col-sm-2 control-label">项目等级</label>
@@ -92,12 +94,12 @@
                                 <!-- 星星 -->
                                 <?php $start = $business_info['grade']+1; $end = 6-$business_info['grade']; ?>
                                 <span style="cursor:pointer;color:#D0D0D0;">
-																<for start="1" end="$start">
-																<i class="fa fa-star star-orange"></i>&nbsp;
-																</for><for start="1" end="$end">
-																<i class="fa fa-star"></i>&nbsp;
-																</for>
-															</span>
+                                    <for start="1" end="$start">
+                                        <i class="fa fa-star star-orange"></i>&nbsp;
+                                    </for><for start="1" end="$end">
+                                        <i class="fa fa-star"></i>&nbsp;
+                                    </for>
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -105,9 +107,9 @@
                         <label class="col-sm-2 control-label">所属客户</label>
                         <div class="col-sm-4">
                             <p class="form-p">
-                            <span>
-                                <a href="{:U('customer/view','id='.$business_info['customer_id'])}">{$business_info['customer_info']['name']}</a>
-                            </span>
+                                <span>
+                                    <a href="{:U('customer/view','id='.$business_info['customer_id'])}">{$business_info['customer_info']['name']}</a>
+                                </span>
                             </p>
                         </div>
                         <label class="col-sm-2 control-label">维护人</label>
@@ -117,7 +119,7 @@
                                     <volist name="business_info['joiner']" id="vo">
                                         <a class="role_info" rel="{$vo['id']}" href="javascript:void(0)" style="margin-right: 5px;">{$vo['name']}</a>
                                     </volist>
-                                     <!--<a href="#">{$business_info['owner_role_id']}</a>-->
+                                    <!--<a href="#">{$business_info['owner_role_id']}</a>-->
                                 </span>
                             </p>
                         </div>
@@ -127,7 +129,7 @@
                         <div class="col-sm-4">
                             <p class="form-p">
                                 <span>
-                                     <a href="{:U('contacts/view','id='.$business_info['contacts_id'])}">{$business_info['contacts_name']}</a>
+                                    <a href="{:U('contacts/view','id='.$business_info['contacts_id'])}">{$business_info['contacts_name']}</a>
                                 </span>
                             </p>
                         </div>
@@ -253,147 +255,137 @@
     /*单个项目*///obj为要打开的标签页
     product_detail();
     function product_detail(){
-        var business_id = $('#business_id').val();
-        $('.product-content').load("{:U('business/view_ajax')}", {id: business_id});
+    var business_id = $('#business_id').val();
+    $('.product-content').load("{:U('business/view_ajax')}", {id: business_id});
     }
 
     $(".editproduct").click(function(){
-        var business_id = $(this).attr('rel');
-        $('#dialog-editproduct').dialog('open');
-        $('#dialog-editproduct').load('{:U("product/mutildialog_product","business_id=")}'+business_id);
+    var business_id = $(this).attr('rel');
+    $('#dialog-editproduct').dialog('open');
+    $('#dialog-editproduct').load('{:U("product/mutildialog_product","business_id=")}' + business_id);
     });
     /*编辑项目*/
     $("#dialog-editproduct").dialog({
-        autoOpen: false,
-        modal: true,
-        minWidth: 850,
-        maxHeight: 400,
-        position: ["center",100],
-        buttons: {
+    autoOpen: false,
+            modal: true,
+            minWidth: 850,
+            maxHeight: 400,
+            position: ["center", 100],
+            buttons: {
             "确定": function () {
-                var is_product = $('.cproduct_id').val();
-                if(is_product == 'undefined' || is_product == '0'){
-                    alert_crm('请至少选择一个产品！');
-                }else{
-                    $('#addbusiness_form').submit();
-                    $(this).dialog("close");
-                }
-            },
-            "取消": function () {
-                $(this).html('');
-                $(this).dialog("close");
+            var is_product = $('.cproduct_id').val();
+            if (is_product == 'undefined' || is_product == '0'){
+            alert_crm('请至少选择一个产品！');
+            } else{
+            $('#addbusiness_form').submit();
+            $(this).dialog("close");
             }
-        },
-        close: function() {
+            },
+                    "取消": function () {
+                    $(this).html('');
+                    $(this).dialog("close");
+                    }
+            },
+            close: function() {
             /*关闭清空数据*/
             $(this).empty();
-        }
+            }
     });
-
     //项目推进
     $('.business_step').click(function(){
-        var business_id = $('#business_id').val();
-        var status_id = $(this).attr('rel');
-        var status_name = $(this).attr('rel1');
-        swal({
-                title: "温馨提示",
-                text: "确认要推进项目状态为"+'‘'+status_name+'’？',
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "是的，我要推进！",
-                cancelButtonText:'让我再考虑一下…',
-                closeOnConfirm:false,
-                closeOnCancel:false
-            },
+    var business_id = $('#business_id').val();
+    var status_id = $(this).attr('rel');
+    var status_name = $(this).attr('rel1');
+    swal({
+    title: "温馨提示",
+            text: "确认要推进项目状态为" + '‘' + status_name + '’？',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "是的，我要推进！",
+            cancelButtonText:'让我再考虑一下…',
+            closeOnConfirm:false,
+            closeOnCancel:false
+    },
             function(isConfirm){
-                if (isConfirm) {
-                    $.ajax({
-                        cache: true,
-                        type: "POST",
-                        url:'{:U("business/advance","business_id=")}'+business_id+'&status_id='+status_id,
-                        async: false,
-                        success: function(data) {
-                            if(data.status == 1){
-                                swal("温馨提示！", "项目状态推进成功！", "success");
-                                location.reload();
-                            }else{
-                                swal("温馨提示！", "项目状态推进失败，请重试！", "error");
-                                return false;
-                            }
-                        }
-                    });
-                }else{
-                    swal("已取消","您取消了推进操作！","error");
-                }
+            if (isConfirm) {
+            $.ajax({
+            cache: true,
+                    type: "POST",
+                    url:'{:U("business/advance","business_id=")}' + business_id + '&status_id=' + status_id,
+                    async: false,
+                    success: function(data) {
+                    if (data.status == 1){
+                    swal("温馨提示！", "项目状态推进成功！", "success");
+                    location.reload();
+                    } else{
+                    swal("温馨提示！", "项目状态推进失败，请重试！", "error");
+                    return false;
+                    }
+                    }
+            });
+            } else{
+            swal("已取消", "您取消了推进操作！", "error");
+            }
             });
     });
-
     $(function () {
-        $(".togglebtn").click(function () {
-            $(".togglediv").toggle();
-        })
+    $(".togglebtn").click(function () {
+    $(".togglediv").toggle();
+    })
     })
 
-    $(document).click(function(e){
-        var con=$(".togglediv,.togglebtn");
-        //目标区域之外的地方
-        if(!con.is(e.target) && con.has(e.target).length===0){
-            $(".togglediv").hide();
-        }
+            $(document).click(function(e){
+    var con = $(".togglediv,.togglebtn");
+    //目标区域之外的地方
+    if (!con.is(e.target) && con.has(e.target).length === 0){
+    $(".togglediv").hide();
+    }
 
     })
 
 
-    //鼠标点击空白处，隐藏右侧滑出
-    //document.onmousedown=function(event){
-    //    if($(".litebox-overlay").length > 0) return;
-    //    if(event.target.className == 'right-sidebar-toggle-log') return;
-    //
-    //    var div = document.getElementById("right-sidebar-log");
-    //    var x=event.clientX;
-    //    var y=event.clientY;
-    //    var divx1 = div.offsetLeft;
-    //    var divy1 = div.offsetTop;
-    //    var divx2 = div.offsetLeft + div.offsetWidth;
-    //    var divy2 = div.offsetTop + div.offsetHeight;
-    //    if( x < divx1 || x > divx2 || y < divy1 || y > divy2){
-    //        if($("#right-sidebar-log").css('right') == '0px'){
-    //            $("#right-sidebar-log").animate({right:'-60%'}, 400);
-    //            //$('#is_show').val('0');
-    //        }
-    //    }
-    //}
+            //鼠标点击空白处，隐藏右侧滑出
+            //document.onmousedown=function(event){
+            //    if($(".litebox-overlay").length > 0) return;
+            //    if(event.target.className == 'right-sidebar-toggle-log') return;
+            //
+            //    var div = document.getElementById("right-sidebar-log");
+            //    var x=event.clientX;
+            //    var y=event.clientY;
+            //    var divx1 = div.offsetLeft;
+            //    var divy1 = div.offsetTop;
+            //    var divx2 = div.offsetLeft + div.offsetWidth;
+            //    var divy2 = div.offsetTop + div.offsetHeight;
+            //    if( x < divx1 || x > divx2 || y < divy1 || y > divy2){
+            //        if($("#right-sidebar-log").css('right') == '0px'){
+            //            $("#right-sidebar-log").animate({right:'-60%'}, 400);
+            //            //$('#is_show').val('0');
+            //        }
+            //    }
+            //}
 
-    //日志详情弹出
-    $(document).on('click','.right-sidebar-toggle-log',function(){
+            //日志详情弹出
+            $(document).on('click', '.right-sidebar-toggle-log', function(){
 
-        var log_id = $(this).attr('rel');
-        // var is_show = document.getElementById("is_show").value;
-        $(".emoji_container").remove();
-
-
-        $(".check_all").attr("checked",false);
-        $('input[name="log_id[]"]').each(function(){
-            if ($(this).val() == log_id && $(this).is(":checked") == false) {
-                $(this).click();
-            } else if ($(this).val() != log_id && $(this).is(":checked")){
-                $(this).click();
-            }
-        });
-
-        if($("#right-sidebar-log").css('right') != '0px'){
-            $("#right-sidebar-log").animate({right:'0px'}, 600);
-        }
-
-        $('#log-content').html(detail_html);
-        $('#sidebar-container').load("{:U('log/viewAjax','log_id=')}"+log_id);
-
+    var log_id = $(this).attr('rel');
+    // var is_show = document.getElementById("is_show").value;
+    $(".emoji_container").remove();
+    $(".check_all").attr("checked", false);
+    $('input[name="log_id[]"]').each(function(){
+    if ($(this).val() == log_id && $(this).is(":checked") == false) {
+    $(this).click();
+    } else if ($(this).val() != log_id && $(this).is(":checked")){
+    $(this).click();
+    }
     });
+    if ($("#right-sidebar-log").css('right') != '0px'){
+    $("#right-sidebar-log").animate({right:'0px'}, 600);
+    }
 
-
-
-</script>
+    $('#log-content').html(detail_html);
+    $('#sidebar-container').load("{:U('log/viewAjax','log_id=')}" + log_id);
+    });</script>
 <include file="Public:footer" />
 
 
