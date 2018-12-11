@@ -1388,7 +1388,7 @@ class UserAction extends Action {
 
 			$user_data = array(
 				'category_id'=>2,
-				'status'=>3,
+				'status'=>2,
 				'name'=>$name,
 				'email'=>$this->_post('email','trim'),
 				'full_name'=>$this->_post('full_name','trim'),
