@@ -481,38 +481,43 @@ class CatchAction extends Action {
 //                        M('customer')->add($customer);
                     }
 
+
                     //获取联系人
-                    $auth_header = [
-                        "Content-type: application/json;charset='utf-8'",
-                        'Host:api.zhanjob.com',
-                        "X-AUTH: {$cookie['token']}",
-                        "X-Requested-With:XMLHttpRequest",
-                        "X-USER:{$cookie['userid']}",
-                        'Origin:http://www.zhanjob.com'
-                    ];
-
-                    $cooperation_auth_data = [
-                        'con_company_id' => $data_upate->con_company_id,
-                        'customer_company_id' => $data->cooperation_id,
-                        'order_direction' => 2,
-                        'order_field' => 'create_time',
-                        'page' => 1,
-                        'size' => 20,
-                        'user_id' => $cookie['userid']
-                    ];
-                    $result_auth = Curl::send($this->cooperation_auth, $cooperation_auth_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $auth_header);
-                    $content_auth = json_decode($result_auth['result']['content']);
-                    $data_auth = $content_auth->data;
-                    $list_auth - $data_auth->list;
-                    foreach ($list_auth as  $la){
-                        
-                    }
-                    var_dump($cooperation_auth_data);
-                    var_dump($data_auth);
-                    exit;
-
                     if ($customer_id) {
-                        
+                        $auth_header = [
+                            "Content-type: application/json;charset='utf-8'",
+                            'Host:api.zhanjob.com',
+                            "X-AUTH: {$cookie['token']}",
+                            "X-Requested-With:XMLHttpRequest",
+                            "X-USER:{$cookie['userid']}",
+                            'Origin:http://www.zhanjob.com'
+                        ];
+
+                        $cooperation_auth_data = [
+                            'con_company_id' => $data_upate->con_company_id,
+                            'customer_company_id' => $data->cooperation_id,
+                            'order_direction' => 2,
+                            'order_field' => 'create_time',
+                            'page' => 1,
+                            'size' => 20,
+                            'user_id' => $cookie['userid']
+                        ];
+                        $result_auth = Curl::send($this->cooperation_auth, $cooperation_auth_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $auth_header);
+                        $content_auth = json_decode($result_auth['result']['content']);
+                        $data_auth = $content_auth->data;
+                        $list_auth - $data_auth->list;
+                        foreach ($list_auth as $la) {
+                            $customer_auth_data = [
+                                'name' => $la->cn_name,
+                                'department' => $la->department_name,
+                                'post' => $la->position,
+                                'telephone' => $la->telephone,
+                                'email' => $la->email
+                            ];
+                        }
+                        var_dump($cooperation_auth_data);
+                        var_dump($data_auth);
+                        exit;
                     }
 
                     var_dump($customer_id);
