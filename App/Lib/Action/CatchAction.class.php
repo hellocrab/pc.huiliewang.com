@@ -10,6 +10,10 @@ class CatchAction extends Action {
     private $resumes_list = self::ZHANJOB_BASE_URL . "zjob-resume/api/resume/library/company/resumes/limits";
     private $resumes = self::ZHANJOB_BASE_URL . "zjob-resume/api/web/resume/getResume";
     private $project_list = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/project/get_con_project_page_list";
+    private $cooperation_list = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/enterprise/get_cooperation_page_list";
+    private $cooperation_view = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/enterprise/get_company_for_view"; //取得客户基本信息
+    private $cooperation_update = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/enterprise/get_company_for_update"; //取得客户详细信息
+    private $cooperation_auth = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/customer/auth_get_list";
 
     public function __construct() {
         parent::__construct();
@@ -27,7 +31,6 @@ class CatchAction extends Action {
         $userid = $content->data->user_id;
         M('catch_cookie')->where(['status' => 0])->save(['status' => 1]);
         $res = M('catch_cookie')->add(['token' => $token, 'auth' => $auth, 'userid' => $userid, 'status' => 0]);
-//        var_dump($content);
     }
 
     public function getResumesLimit() {
@@ -312,6 +315,214 @@ class CatchAction extends Action {
             }
         } catch (Exception $ex) {
             M('catch_resumes_limit')->where(['id' => $res['id']])->save(['status' => 2]);
+        }
+    }
+
+    /**
+     * 获取客户公海列表
+     */
+    public function getCooperationLimit() {
+        $cookie = M('catch_cookie')->where(['status' => 0])->find();
+
+        $a = M('catch_cooperation_limit')->order('id desc')->find();
+        if (empty($a['id'])) {
+            $limit_data = ['user_id' => $cookie['userid'], 'order' => 2, 'page' => 1, 'size' => 50];
+            $header = [
+                "Content-type: application/json;charset='utf-8'",
+                'Host:api.zhanjob.com',
+                "X-AUTH: {$cookie['token']}",
+                "X-Requested-With:XMLHttpRequest",
+                "X-USER:{$cookie['userid']}",
+                'Origin:http://www.zhanjob.com'
+            ];
+
+            $result = Curl::send($this->cooperation_list, $limit_data, 'get', '', 1, Curl::CONTENT_TYPE_JSON, $header);
+
+            if (empty($result)) {
+                $this->userlogin();
+                $cookie = M('catch_cookie')->where(['status' => 0])->find();
+            }
+            $content = json_decode($result['result']['content']);
+            $data = $content->data;
+
+            $page_count = $data->count;
+            $list = $data->list;
+            foreach ($list as $l) {
+                $_list[] = $l->cooperation_id;
+            }
+            $cooperation_list = implode(',', $_list);
+            M('catch_cooperation_limit')->add(['total' => $page_count, 'now' => 1, 'status' => 0, 'cooperation_list' => $cooperation_list, time => date('Y-m-d H:i:s', time())]);
+            exit;
+        }
+
+        $res = M('catch_cooperation_limit')->where(['status' => 2])->field('id')->order('id desc')->find();
+        if ($res) {
+            M('catch_cooperation_limit')->where(['id' => $res['id']])->save(['status' => 0]);
+            exit;
+        }
+
+        $res_limit = M('catch_cooperation_limit')->where(['status' => 0])->field('id,now')->order('id desc')->find();
+        if (empty($res_limit)) {
+            $res1 = M('catch_cooperation_limit')->where(['status' => 1])->field('now,total')->order('id desc')->find();
+            if ($res1['now'] + 1 < $res1['total']) {
+                M('catch_cooperation_limit')->add(['now' => $res1['now'] + 1, 'status' => 0, time => date('Y-m-d H:i:s', time())]);
+                $limit_id = M()->getLastInsID();
+
+                $header = [
+                    "Content-type: application/json;charset='utf-8'",
+                    'Host:api.zhanjob.com',
+                    "X-AUTH: {$cookie['token']}",
+                    "X-Requested-With:XMLHttpRequest",
+                    "X-USER:{$cookie['userid']}",
+                    'Origin:http://www.zhanjob.com'
+                ];
+                $limit_data = ['user_id' => $cookie['userid'], 'order' => 2, 'page' => $res1['now'] + 1, 'size' => 50];
+
+                $result = Curl::send($this->cooperation_list, $limit_data, 'get', '', 1, Curl::CONTENT_TYPE_JSON, $header);
+                if (empty($result)) {
+                    $this->userlogin();
+                    $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                }
+                $content = json_decode($result['result']['content']);
+                $data = $content->data;
+                $page_count = $data->count;
+                $list = $data->list;
+
+                foreach ($list as $l) {
+                    $_list[] = $l->cooperation_id;
+                }
+                $cooperation_list = implode(',', $_list);
+                M('catch_cooperation_limit')->where(['id' => $limit_id])->save(['cooperation_list' => $cooperation_list, 'total' => $page_count]);
+            }
+        } else {
+            exit;
+        }
+    }
+
+    /**
+     * 获取客户公海客户详情
+     */
+    public function getCooperation() {
+        $res = M('catch_cooperation_limit')->where(['status' => 0])->field('id,now,cooperation_list')->order('id desc')->find();
+        $cookie = M('catch_cookie')->where(['status' => 0])->find();
+        $_list = explode(',', $res['cooperation_list']);
+        try {
+            if ($_list) {
+                foreach ($_list as $l) {
+                    $header = [
+                        "Content-type: application/x-www-form-urlencoded;charset=UTF-8",
+                        'Host:api.zhanjob.com',
+                        "X-AUTH: {$cookie['token']}",
+                        "X-Requested-With:XMLHttpRequest",
+                        "X-USER:{$cookie['userid']}",
+                        'Origin:http://www.zhanjob.com'
+                    ];
+
+                    $cooperation_data = [
+                        'cooperation_id' => $l,
+                        'shadeloading' => 0,
+                        'isloading' => 0
+                    ];
+                    $result_view = Curl::send($this->cooperation_view, $cooperation_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
+                    if (empty($result_view)) {
+                        $this->userlogin();
+                        $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                        $result_view = Curl::send($this->cooperation_view, $cooperation_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
+                    }
+
+
+                    $content = json_decode($result_view['result']['content']);
+                    $data = $content->data;
+
+                    foreach ($data->cm_user_list as $cu) {
+                        $_cm_user[] = $cu->cn_name;
+                    }
+                    $cm_user_str = implode(',', $_cm_user);
+
+                    //获取customer_update
+                    $cooperation_update_data = ['cooperation_id' => $l];
+                    $result_update = Curl::send($this->cooperation_update, $cooperation_update_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
+                    if (empty($result_update)) {
+                        $this->userlogin();
+                        $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                        $result_update = Curl::send($this->cooperation_update, $cooperation_update_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
+                    }
+                    $content_update = json_decode($result_update['result']['content']);
+                    $data_upate = $content_update->data;
+
+                    $customer = [
+                        'cooperation_code' => $data->cooperation_code,
+                        'name' => $data->hr_company_name,
+                        'hr_company_logo' => $data->hr_company_logo,
+                        'short_name' => $data->hr_company_short_name,
+                        'customer_owner_name' => $data->bd_user->user_name,
+                        'customer_owner_en_name' => $data->bd_user->user_en_name,
+                        'create_time' => strlen($data->create_time) > 10 ? substr($data->create_time, 0, 10) : $data->create_time,
+                        'update_time' => strlen($data->modify_time) > 10 ? substr($data->modify_time, 0, 10) : $data->modify_time,
+                        'is_deleted' => 0,
+                        'is_locked' => 0,
+                        'delete_role_id' => 0,
+                        'location' => $data->address,
+                        'telephone' => $data->telephone,
+                        'cm_user' => $data->cm_user,
+                        'cm_user_name' => $cm_user_str,
+                        'industry_text' => $data_upate->industry_text,
+                        'years_number' => $data_upate->years_number
+                    ];
+
+//                    M('customer')->add($customer);
+//                    $customer_id = M()->getLastInsID();
+                    //添加data数据
+                    if ($customer_id) {
+                        $customer_data = [
+                            'customer_id' => $customer_id,
+                            'website' => $data->website
+                        ];
+//                        M('customer')->add($customer);
+                    }
+
+                    //获取联系人
+                    $auth_header = [
+                        "Content-type: application/json;charset='utf-8'",
+                        'Host:api.zhanjob.com',
+                        "X-AUTH: {$cookie['token']}",
+                        "X-Requested-With:XMLHttpRequest",
+                        "X-USER:{$cookie['userid']}",
+                        'Origin:http://www.zhanjob.com'
+                    ];
+
+                    $cooperation_auth_data = [
+                        'con_company_id' => $data_upate->con_company_id,
+                        'customer_company_id' => $data->cooperation_id,
+                        'order_direction' => 2,
+                        'order_field' => 'create_time',
+                        'page' => 1,
+                        'size' => 20,
+                        'user_id' => $cookie['userid']
+                    ];
+                    $result_auth = Curl::send($this->cooperation_auth, $cooperation_auth_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $auth_header);
+                    $content_auth = json_decode($result_auth['result']['content']);
+                    $data_auth = $content_auth->data;
+                    $list_auth - $data_auth->list;
+                    foreach ($list_auth as  $la){
+                        
+                    }
+                    var_dump($cooperation_auth_data);
+                    var_dump($data_auth);
+                    exit;
+
+                    if ($customer_id) {
+                        
+                    }
+
+                    var_dump($customer_id);
+                    exit;
+                }
+            } else {
+                exit();
+            }
+        } catch (Exception $ex) {
+            M('catch_cooperation_limit')->where(['id' => $res['id']])->save(['status' => 2]);
         }
     }
 
