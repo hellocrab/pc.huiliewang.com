@@ -1632,7 +1632,7 @@ class ContractAction extends Action {
 			$m_user = M('User');
 			$m_contract_examine = M('ContractExamine');
 			if ($option == 1) {
-				//自动获取下一审批人 
+				//自动获取下一审批人
                 $id = $m_contract_examine->where(array('role_id'=>intval(session('role_id'))))->getField('id');
                 $contract['order_id'] = intval($id);
 				$next_order_id = $contract['order_id']+1;    //  下一审批流程排序ID
