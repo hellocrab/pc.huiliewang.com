@@ -901,6 +901,7 @@ class UserAction extends Action {
 	}
 
 	public function getPositionlistByDepartment(){
+	    ob_clean();
 		if($_GET['id']){
 			$m_position = M('Position');
 			$res_list = array();
@@ -923,6 +924,7 @@ class UserAction extends Action {
 	}
 
 	public function getRoleByPosition(){
+	    ob_clean();
 		if($this->isAjax()){
 			$position_id = $this->_get('position_id','intval');
 			$role_ids = M('Role')->where('position_id = %d',$position_id)->select();
