@@ -182,7 +182,7 @@ class Catch2Action extends Action {
                         'industry_text' => $data_upate->industry_text,
                         'years_number' => $data_upate->years_number
                     ];
-                    
+
                     M('customer')->add($customer);
                     $customer_id = M()->getLastInsID();
                     //添加data数据
@@ -232,7 +232,7 @@ class Catch2Action extends Action {
                             $contacts_id = M()->getLastInsID();
 
                             $contact_customer_r_data = ['contacts_id' => $contacts_id, 'customer_id' => $customer_id];
-                            if($kla == 0){
+                            if ($kla == 0) {
                                 M('customer')->where(['customer_id' => $customer_id])->save(['contacts_id' => $contacts_id]);
                             }
                             M('r_contacts_customer')->add($contact_customer_r_data);
@@ -240,7 +240,6 @@ class Catch2Action extends Action {
                     }
                     M('catch_cooperation_limit')->where(['id' => $res['id']])->save(['status' => 1]);
                 }
-                
             } else {
                 exit();
             }
@@ -248,4 +247,5 @@ class Catch2Action extends Action {
             M('catch_cooperation_limit')->where(['id' => $res['id']])->save(['status' => 2]);
         }
     }
+
 }
