@@ -1791,10 +1791,9 @@ function checkPerByAction($m, $a){
 
 function getPerByAction($m, $a, $sub_role=false){
 	$m_permission = M('permission');
-	$url = getCheckUrlByAction($m, $a);
+	$url = getCheckUrlByAction($m, $a); // $url = contract/view
 //	echo session('position_id')."---".$url;exit();
 	$per_type =  M('Permission') -> where('position_id = %d and url = "%s"', session('position_id'), $url)->getField('type');
-
 	if($sub_role){
 		if($per_type == 3){
 			$below_ids = array();

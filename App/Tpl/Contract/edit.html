@@ -58,19 +58,19 @@ $(function(){
 									<elseif condition = "$vo['field'] eq 'business_id'" />
 										<if condition="$info['renew_contract_id'] gt 0 ">
 											<div class="form-group">
-												<label class="col-md-4 control-label">来源商机：</label>
+												<label class="col-md-4 control-label">关联项目：</label>
 												<div class="col-md-6">
 													<input type="hidden" name="business_id"  value="{$info.business_id}"/>
-													<input class="form-control" type="text" name="business_name" placeholder="续约客户商机不可填" value="{$info.business_name}" readonly="true" style="cursor:pointer;"/>
+													<input class="form-control" type="text" name="business_name" placeholder="续约客户项目不可填" value="{$info.business_code}" readonly="true" style="cursor:pointer;"/>
 												</div>
 												<div class="col-md-2"></div>
 											</div>
 										<else/>
 											<div class="form-group">
-												<label class="col-md-4 control-label">来源商机：</label>
+												<label class="col-md-4 control-label">项目编号：</label>
 												<div class="col-md-6">
 													<input type="hidden" name="business_id" id="business_id" value="{$info.business_id}"/>
-													<input class="form-control" placeholder="请点击选择"  type="text" name="business_name" id="business_name" value="{$info.business_name}" readonly="true" style="cursor:pointer;" title="请点击选择"/>
+													<input class="form-control" placeholder="请点击选择"  type="text" name="business_name" id="business_name" value="{$info.business_code}" readonly="true" style="cursor:pointer;" title="请点击选择"/>
 												</div>
 												<div class="col-md-2"></div>
 											</div>

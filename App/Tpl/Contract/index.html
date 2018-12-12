@@ -85,7 +85,7 @@ $(function(){
 									<input type="hidden" name="field" value="number"/>
 									<input type="hidden" name="by" value="{$by}"/>
 									<input type="hidden" name="contract_checked" value="{$_GET['contract_checked']}"/>
-									<input id="short_search" type="text" style="width:210px;" placeholder="合同编号/名称/客户名/商机名" onkeydown='if(event.keyCode==13) {$("#short_search_btn").trigger("click");return false;}' class="form-control input-sm" name="search" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
+									<input id="short_search" type="text" style="width:210px;" placeholder="合同编号/名称/客户名/项目名" onkeydown='if(event.keyCode==13) {$("#short_search_btn").trigger("click");return false;}' class="form-control input-sm" name="search" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
 
 									<if condition="$_GET['field']">
 										<!-- 导出相关 -->

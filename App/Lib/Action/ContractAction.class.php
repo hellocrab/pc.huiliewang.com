@@ -164,7 +164,7 @@ class ContractAction extends Action {
 							M('RBusinessContract')->add(array('contract_id'=>$contractId,'business_id'=>$business_id));
 							actionLog($contractId);
 
-							//通知合同相关审核人
+							//通知合同相关审核人   $url = /index.php?m=contract&a=view&id=29 admin创建的合同
 							$url = U('contract/view','id='.$contractId);
 							//合同审核人
 							$position_ids = M('Permission')->where(array('url'=>'contract/check'))->getField('position_id',true);
@@ -538,6 +538,7 @@ class ContractAction extends Action {
 			$m_contract_data->add($res_data);
 		}
 		$info = $d_contract->where(array('contract_id'=>$contract_id))->find();
+
 		//权限判断
 		if(empty($info)) {
 			alert('error', L('THE_CONTRACT_DOES_NOT_EXIST_OR_HAS_BEEN_DELETED'), U('contract/index'));
@@ -687,7 +688,7 @@ class ContractAction extends Action {
 		$info['log'] = $log_list;
 
 		//签约历史
-		// $history_list = contract_history($contract_id,'',1);
+//		 $history_list = contract_history($contract_id,'',1);
 		$renew_parent_id = $info['renew_parent_id'] ? $info['renew_parent_id'] : $contract_id;
 		$where_renew = array();
 		$where_renew['renew_parent_id'] = $renew_parent_id;
@@ -695,7 +696,6 @@ class ContractAction extends Action {
 		$where_renew['_logic'] = 'or';
 		$map_renew['_complex'] = $where_renew;
 		$map_renew['contract_id']  = array('neq',$contract_id);
-
 		$history_list = $d_contract->where($map_renew)->select();
 		$this->history_list = $history_list;
 
@@ -703,7 +703,7 @@ class ContractAction extends Action {
 		if ($info['examine_type_id']) {
 			$contract_examine = $info['examine_type_id'];
 		} else {
-			//contract_examine 1为自定义审批流
+			//contract_examine   1为自定义审批流
 			$contract_examine = M('Config')->where(array('name'=>'contract_examine'))->getField('value');
 		}
 		if ($contract_examine == 1) {
@@ -717,16 +717,16 @@ class ContractAction extends Action {
 
 		//是否有审批（撤销）权限
 		if (session('?admin')) {
-			$check_per = 1; //审批
-			$re_check_per = 1; //撤销
+			$check_per = 1;// 审批
+			$re_check_per = 1;// 撤销
 		} else {
 			if ($contract_examine == 1) {
-				//自定义审批流程
+				// 自定义审批流程
 				$check_role_id = M('ContractExamine')->order('order_id asc')->getField('role_id');
 				$examine_role_ids = M('ContractExamine')->getField('role_id',true);
 
 				if ($info['is_checked'] == 3) {
-					//审批中（创建人、审核人都有权限撤销）
+					// 审批中（创建人、审核人都有权限撤销）
 					if ($info['creator_role_id'] == session('role_id')) {
 						$re_check_per = 1;
 					}
@@ -1450,6 +1450,7 @@ class ContractAction extends Action {
 			if ($option == 1) {
 				//自定义流程
 				$check_role_id = M('ContractExamine')->order('order_id asc')->getField('role_id');
+//				dump($check_role_id); dump(session('?admin'));exit;
 				if (!session('?admin') && $check_role_id != session('role_id')) {
 					if ($this->isGet()) {
 						echo '<div class="alert alert-error">您没有此权限！</div>';die();
@@ -1469,6 +1470,7 @@ class ContractAction extends Action {
 			}
 		}
 		if ($this->isPost()) {
+//		    dump($_POST);exit;
 			$is_agree = intval($_POST['is_agree']);
 			$is_receivables = intval($_POST['is_receivables']);
 			$description = trim($_POST['description']);
@@ -1625,15 +1627,19 @@ class ContractAction extends Action {
 			}
 		} else {
 			//判断审批类型
-			$this->is_receivables = M('User')->where('role_id =%d',session('role_id'))->getField('is_receivables');
+			$this->is_receivables = M('User')->where('role_id =%d',session('role_id'))->getField('is_receivables');//2
 			$this->contract_id = $contract_id;
 			$m_user = M('User');
 			$m_contract_examine = M('ContractExamine');
 			if ($option == 1) {
 				//自动获取下一审批人
-				$next_order_id = $contract['order_id']+1; //下下一审批流程排序ID
-				$next_role_id = $m_contract_examine->where(array('order_id'=>$next_order_id))->getField('role_id');
-				$next_role_info = $m_user->where('role_id = %d',$next_role_id)->field('full_name,role_id')->find();
+                $id = $m_contract_examine->where(array('role_id'=>intval(session('role_id'))))->getField('id');
+                $contract['order_id'] = intval($id);
+				$next_order_id = $contract['order_id']+1;    //  下一审批流程排序ID
+				$next_role_id = $m_contract_examine->where(array('id'=>$next_order_id))->getField('role_id');
+				$next_role_info = '';
+				if (!empty($next_role_id))
+				$next_role_info = $m_user->where('role_id = %d',intval($next_role_id))->field('full_name,role_id')->find();
 				$this->next_role_info = $next_role_info;
 				$this->next_order_id = $next_order_id;
 			}
@@ -2375,7 +2381,7 @@ class ContractAction extends Action {
 	 * @param
 	 * @author
 	 * @return
-	 */
+     */
 	public function examine() {
 		$m_contract_examine = M('ContractExamine');
 		$m_user = M('User');
@@ -2503,9 +2509,6 @@ class ContractAction extends Action {
 	 * @return
 	 */
 	public function step(){
-//	    if($_POST){
-//            var_dump($_POST);exit();
-//        }
 		$m_contract_examine = M('ContractExamine');
 		$d_role = D('RoleView');
 		$m_user = M('User');
@@ -2515,7 +2518,7 @@ class ContractAction extends Action {
 
 			if ($m_contract_examine->create()) {
 				if ($id) {
-					//编辑
+					//编辑  判断request请求的值
 					$result = $m_contract_examine->where(array('id'=>$id))->save();
 				} else {
 					//添加

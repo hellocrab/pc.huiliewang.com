@@ -3,13 +3,13 @@
 	    public $viewFields;
 		public function _initialize(){
 			$main_must_field = array('*');
-	        
+
 			$main_list = array_unique(array_merge(M('Fields')->where(array('model'=>'contract','is_main'=>1))->getField('field', true),$main_must_field));
 			$main_list['_type'] = 'LEFT';
 			$data_list = M('Fields')->where(array('model'=>'contract','is_main'=>0))->getField('field', true);
 			$data_list['_on'] = 'contract.contract_id = contract_data.contract_id';
 	        $data_list['_type'] = 'LEFT';
-			
+
 			$this->viewFields = array(
 				'contract'=>array('*','_type'=>'LEFT'),
 				'contract_data'=>$data_list,
