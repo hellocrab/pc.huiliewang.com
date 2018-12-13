@@ -3,7 +3,7 @@
 class ProductAction extends Action {
 
     protected static $degree = [
-        1 > '高中',
+        1 => '高中',
         2 => '中专',
         3 => '大专',
         4 => '本科',

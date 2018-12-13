@@ -123,14 +123,14 @@ $(function(){
 											<div class="col-md-6">
 												<div class="input-daterange input-group">
 													<span class="input-group-addon" style="background-color:#ccc;">{$contract_custom}</span>
-													<input type="text" id="number" name="number" rel="require" class="form-control checkit" value="{$number}"/>
+													<input type="text" id="number" name="number" rel="require" readonly="readonly" class="form-control checkit" value="{$number}"/>
 													<input type="hidden" id="prefixion" name="prefixion" value="{$contract_custom}"/>
 												</div>
 											</div>
 											<div class="col-md-2"><span style="color:red">*</span></div>
 										</div>
 										<div class="form-group">
-											<label class="col-md-4 control-label">合同名称：</label>
+											<label class="col-md-4 control-label" >合同名称：</label>
 											<div class="col-md-6">
 												<input class="form-control required" aria-required="true" type="text" name="contract_name" value="<if condition='$contract_info[contract_name]'>续约《{$contract_info['contract_name']}》</if>" id="contract_name" />
 											</div>

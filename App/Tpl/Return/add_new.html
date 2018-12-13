@@ -144,7 +144,7 @@
 </div>
 <script>
     function clean(obj) {
-        if(obj.value != ''){
+        if(obj.value != '' && obj.value != 0){
             $("#planed_moneyTip").html("");
             $(".money").each(function () {
                 var i = parseFloat($(this).val());
@@ -168,12 +168,13 @@
                 $("#msg").css("display","none");
             }
         }
+        if(obj.value == 0) swal("计划总金额不为零","","warning");
     }
     //
     function propertyCalculate(obj) {
         var planed_money = $("#planed_money").val();
-        if(planed_money == ''){
-            $("#planed_moneyTip").html("<span style='color:#FF0011;'>请先填写计划金额！</span>")
+        if(planed_money == '' || planed_money == 0){
+            $("#planed_moneyTip").html("<span style='color:#FF0011;'>请先填写计划金额(非零)！</span>")
         }else {
             $("#planed_moneyTip").html("");
             if(obj.value != ''){
@@ -289,7 +290,7 @@
             }
             $(".checkit").each(function () {
                 var id = "#"+$(this).attr('id')+"Tip";
-               if($(this).val()==''){
+               if($(this).val()=='' || $(this).val()==0){
                    input_msg = false;
                    var mes = $(this).attr('rell');
                    $(id).html("<span style='color: red;'>*请填写"+mes+"</span>");
