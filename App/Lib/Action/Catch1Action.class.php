@@ -116,9 +116,10 @@ class Catch1Action extends Action {
      * 获取客户详情
      */
     public function getCustomer() {
-        $res = M('catch_customer_limit')->where(['status' => 0])->field('id,now,cooperation_list')->order('id desc')->find();
+        $res = M('catch_customer_limit')->where(['status' => 0])->field('id,now,customer_list')->order('id desc')->find();
         $cookie = M('catch_cookie2')->where(['status' => 0])->find();
-        $_list = explode(',', $res['cooperation_list']);
+        $_list = explode(',', $res['customer_list']);
+        
         try {
             if ($_list) {
                 foreach ($_list as $l) {
@@ -136,17 +137,24 @@ class Catch1Action extends Action {
                         'shadeloading' => 0,
                         'isloading' => 0
                     ];
-                    $result_view = Curl::send($this->cooperation_view, $cooperation_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
+                    $result_view = Curl::send($this->customer_view, $cooperation_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
+                    
                     if (empty($result_view)) {
                         $this->userlogin();
                         $cookie = M('catch_cookie2')->where(['status' => 0])->find();
-                        $result_view = Curl::send($this->cooperation_view, $cooperation_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
+                        $result_view = Curl::send($this->customer_view, $cooperation_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
                     }
-
-
+                    
                     $content = json_decode($result_view['result']['content']);
                     $data = $content->data;
-
+                    
+                    //排除相同ID
+                    $customer_code = M('customer')->where(['cooperation_code' => $data->cooperation_code])->field('customer_id')->find();
+                    
+                    if($customer_code){
+                        continue;
+                    }
+                    
                     foreach ($data->cm_user_list as $cu) {
                         $_cm_user[] = $cu->cn_name;
                     }
@@ -154,15 +162,15 @@ class Catch1Action extends Action {
 
                     //获取customer_update
                     $cooperation_update_data = ['cooperation_id' => $l];
-                    $result_update = Curl::send($this->cooperation_update, $cooperation_update_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
+                    $result_update = Curl::send($this->customer_update, $cooperation_update_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
                     if (empty($result_update)) {
                         $this->userlogin();
                         $cookie = M('catch_cookie2')->where(['status' => 0])->find();
-                        $result_update = Curl::send($this->cooperation_update, $cooperation_update_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
+                        $result_update = Curl::send($this->customer_update, $cooperation_update_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
                     }
                     $content_update = json_decode($result_update['result']['content']);
                     $data_upate = $content_update->data;
-
+                    
                     $customer = [
                         'cooperation_code' => $data->cooperation_code,
                         'name' => $data->hr_company_name,
@@ -216,7 +224,7 @@ class Catch1Action extends Action {
                             'size' => 20,
                             'user_id' => $cookie['userid']
                         ];
-                        $result_auth = Curl::send($this->cooperation_auth, $cooperation_auth_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $auth_header);
+                        $result_auth = Curl::send($this->customer_auth, $cooperation_auth_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $auth_header);
                         $content_auth = json_decode($result_auth['result']['content']);
                         $data_auth = $content_auth->data;
                         $list_auth = $data_auth->list;
