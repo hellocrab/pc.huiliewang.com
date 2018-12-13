@@ -7,10 +7,10 @@ class Catch1Action extends Action {
     const USER_PASSWORD = "qinhaili19950624";
 
     private $login_url = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/user/login_account";
-    private $cooperation_list = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/enterprise/get_cooperation_page_list";
-    private $cooperation_view = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/enterprise/get_company_for_view"; //取得客户基本信息
-    private $cooperation_update = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/enterprise/get_company_for_update"; //取得客户详细信息
-    private $cooperation_auth = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/customer/auth_get_list";
+    private $customer_list = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/enterprise/get_company_page_list";
+    private $customer_view = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/enterprise/get_company_for_view"; //取得客户基本信息
+    private $customer_update = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/enterprise/get_company_for_update"; //取得客户详细信息
+    private $customer_auth = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/customer/auth_get_list";
 
     public function __construct() {
         parent::__construct();
@@ -26,19 +26,19 @@ class Catch1Action extends Action {
         $token = $content->data->token;
         $auth = $content->data->auth;
         $userid = $content->data->user_id;
-        M('catch_cookie1')->where(['status' => 0])->save(['status' => 1]);
-        $res = M('catch_cookie1')->add(['token' => $token, 'auth' => $auth, 'userid' => $userid, 'status' => 0]);
+        M('catch_cookie2')->where(['status' => 0])->save(['status' => 1]);
+        $res = M('catch_cookie2')->add(['token' => $token, 'auth' => $auth, 'userid' => $userid, 'status' => 0]);
     }
 
     /**
      * 获取客户公海列表
      */
     public function getCustomerLimit() {
-        $cookie = M('catch_cookie')->where(['status' => 0])->find();
+        $cookie = M('catch_cookie2')->where(['status' => 0])->find();
 
-        $a = M('catch_cooperation_limit')->order('id desc')->find();
+        $a = M('catch_customer_limit')->order('id desc')->find();
         if (empty($a['id'])) {
-            $limit_data = ['user_id' => $cookie['userid'], 'order' => 2, 'page' => 1, 'size' => 15];
+            $limit_data = ['user_id' => $cookie['userid'], 'relational_to_me' => 0, 'order' => 10, 'page' => 1, 'size' => 20];
             $header = [
                 "Content-type: application/json;charset='utf-8'",
                 'Host:api.zhanjob.com',
@@ -48,11 +48,11 @@ class Catch1Action extends Action {
                 'Origin:http://www.zhanjob.com'
             ];
 
-            $result = Curl::send($this->cooperation_list, $limit_data, 'get', '', 1, Curl::CONTENT_TYPE_JSON, $header);
+            $result = Curl::send($this->customer_list, $limit_data, 'get', '', 1, Curl::CONTENT_TYPE_JSON, $header);
 
             if (empty($result)) {
                 $this->userlogin();
-                $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                $cookie = M('catch_cookie2')->where(['status' => 0])->find();
             }
             $content = json_decode($result['result']['content']);
             $data = $content->data;
@@ -62,22 +62,22 @@ class Catch1Action extends Action {
             foreach ($list as $l) {
                 $_list[] = $l->cooperation_id;
             }
-            $cooperation_list = implode(',', $_list);
-            M('catch_cooperation_limit')->add(['total' => $page_count, 'now' => 1, 'status' => 0, 'cooperation_list' => $cooperation_list, time => date('Y-m-d H:i:s', time())]);
+            $customer_list = implode(',', $_list);
+            M('catch_customer_limit')->add(['total' => $page_count, 'now' => 1, 'status' => 0, 'customer_list' => $customer_list, time => date('Y-m-d H:i:s', time())]);
             exit;
         }
 
-        $res = M('catch_cooperation_limit')->where(['status' => 2])->field('id')->order('id desc')->find();
+        $res = M('catch_customer_limit')->where(['status' => 2])->field('id')->order('id desc')->find();
         if ($res) {
-            M('catch_cooperation_limit')->where(['id' => $res['id']])->save(['status' => 0]);
+            M('catch_customer_limit')->where(['id' => $res['id']])->save(['status' => 0]);
             exit;
         }
 
-        $res_limit = M('catch_cooperation_limit')->where(['status' => 0])->field('id,now')->order('id desc')->find();
+        $res_limit = M('catch_customer_limit')->where(['status' => 0])->field('id,now')->order('id desc')->find();
         if (empty($res_limit)) {
-            $res1 = M('catch_cooperation_limit')->where(['status' => 1])->field('now,total')->order('id desc')->find();
+            $res1 = M('catch_customer_limit')->where(['status' => 1])->field('now,total')->order('id desc')->find();
             if ($res1['now'] + 1 < $res1['total']) {
-                M('catch_cooperation_limit')->add(['now' => $res1['now'] + 1, 'status' => 0, time => date('Y-m-d H:i:s', time())]);
+                M('catch_customer_limit')->add(['now' => $res1['now'] + 1, 'status' => 0, time => date('Y-m-d H:i:s', time())]);
                 $limit_id = M()->getLastInsID();
 
                 $header = [
@@ -88,12 +88,13 @@ class Catch1Action extends Action {
                     "X-USER:{$cookie['userid']}",
                     'Origin:http://www.zhanjob.com'
                 ];
-                $limit_data = ['user_id' => $cookie['userid'], 'order' => 2, 'page' => $res1['now'] + 1, 'size' => 15];
-
-                $result = Curl::send($this->cooperation_list, $limit_data, 'get', '', 1, Curl::CONTENT_TYPE_JSON, $header);
+                    
+                $limit_data = ['user_id' => $cookie['userid'], 'relational_to_me' => 0, 'order' => 10, 'page' => $res1['now'] + 1, 'size' => 20];
+                
+                $result = Curl::send($this->customer_list, $limit_data, 'get', '', 1, Curl::CONTENT_TYPE_JSON, $header);
                 if (empty($result)) {
                     $this->userlogin();
-                    $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                    $cookie = M('catch_cookie2')->where(['status' => 0])->find();
                 }
                 $content = json_decode($result['result']['content']);
                 $data = $content->data;
@@ -103,8 +104,8 @@ class Catch1Action extends Action {
                 foreach ($list as $l) {
                     $_list[] = $l->cooperation_id;
                 }
-                $cooperation_list = implode(',', $_list);
-                M('catch_cooperation_limit')->where(['id' => $limit_id])->save(['cooperation_list' => $cooperation_list, 'total' => $page_count]);
+                $customer_list = implode(',', $_list);
+                M('catch_customer_limit')->where(['id' => $limit_id])->save(['customer_list' => $customer_list, 'total' => $page_count]);
             }
         } else {
             exit;
@@ -115,8 +116,8 @@ class Catch1Action extends Action {
      * 获取客户详情
      */
     public function getCustomer() {
-        $res = M('catch_cooperation_limit')->where(['status' => 0])->field('id,now,cooperation_list')->order('id desc')->find();
-        $cookie = M('catch_cookie')->where(['status' => 0])->find();
+        $res = M('catch_customer_limit')->where(['status' => 0])->field('id,now,cooperation_list')->order('id desc')->find();
+        $cookie = M('catch_cookie2')->where(['status' => 0])->find();
         $_list = explode(',', $res['cooperation_list']);
         try {
             if ($_list) {
@@ -138,7 +139,7 @@ class Catch1Action extends Action {
                     $result_view = Curl::send($this->cooperation_view, $cooperation_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
                     if (empty($result_view)) {
                         $this->userlogin();
-                        $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                        $cookie = M('catch_cookie2')->where(['status' => 0])->find();
                         $result_view = Curl::send($this->cooperation_view, $cooperation_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
                     }
 
@@ -156,7 +157,7 @@ class Catch1Action extends Action {
                     $result_update = Curl::send($this->cooperation_update, $cooperation_update_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
                     if (empty($result_update)) {
                         $this->userlogin();
-                        $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                        $cookie = M('catch_cookie2')->where(['status' => 0])->find();
                         $result_update = Curl::send($this->cooperation_update, $cooperation_update_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE, $header);
                     }
                     $content_update = json_decode($result_update['result']['content']);
@@ -238,13 +239,13 @@ class Catch1Action extends Action {
                             M('r_contacts_customer')->add($contact_customer_r_data);
                         }
                     }
-                    M('catch_cooperation_limit')->where(['id' => $res['id']])->save(['status' => 1]);
+                    M('catch_customer_limit')->where(['id' => $res['id']])->save(['status' => 1]);
                 }
             } else {
                 exit();
             }
         } catch (Exception $ex) {
-            M('catch_cooperation_limit')->where(['id' => $res['id']])->save(['status' => 2]);
+            M('catch_customer_limit')->where(['id' => $res['id']])->save(['status' => 2]);
         }
     }
 
