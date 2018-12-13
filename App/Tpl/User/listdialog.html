@@ -89,8 +89,6 @@
 		return false;
 	});
 	$(function(){
-
-
 		$('#footers a').click(function(){
             var joiner = new Array();
             var joiner_name = new Array();
@@ -113,20 +111,21 @@
 	$("#data2 tr").click(function(){
         var _this=$(this).find('td:first-child .owner');
         if(_this.prop('checked')){
+            $('#dd:checkbox').prop('checked', false);
+            sessionStorage.setItem('idskey', '');
+            sessionStorage.setItem('nameskey', '');
         }else{
-            ids.push(_this.val());
-            names.push(_this.attr('rel'));
+            $('#dd:checkbox').prop('checked', false);
+            ids=_this.val();
+            names=_this.attr('rel');
             sessionStorage.setItem('nameskey', names);
             sessionStorage.setItem('idskey', ids);
+            _this.prop('checked', true);
         }
-
-        _this.prop('checked', true);
 	});
 	function changeCondition1(){
 		$('#dialog-role-list2').load('index.php?'+$("#dd").serialize());
 	}
-
-
     var idskey=sessionStorage.getItem("idskey");
     var idsarr=[];
     idsarr=idskey.split(',');

@@ -274,7 +274,9 @@
 	<div id="search_content"></div>
 </div>
 <script>
-
+	$(document).ready(function () {
+		$('#user_name').val('');
+    });
     function checkinfo(param){
         var field_value = $('#'+param).val();
         if(field_value){

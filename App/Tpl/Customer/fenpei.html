@@ -29,10 +29,8 @@
 		maxHeight: 400,
 		buttons: {
 			"确定": function () {
-				var item = $('input:radio[name="owner"]:checked').val();
-				var name = $('input:radio[name="owner"]:checked').attr('rel');
-				$('#owner_name').val(name);
-				$('#owner_role_id').val(item);
+				$('#owner_name').val(sessionStorage.getItem("nameskey"));
+				$('#owner_role_id').val(sessionStorage.getItem("idskey"));
 				$(this).dialog("close");
 			},
 			"取消": function () {

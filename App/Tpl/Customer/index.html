@@ -198,7 +198,7 @@
 							<a href="{:U('Customer/add')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; {:L('CREATE_NEW_CUSTOMER')}</a>
 						</ul>
 						<div class="pull-right" style="margin-right:20px;">
-							<form class="form-inline pull-left" id="customer_search" action="" method="get">
+							<form class="form-inline pull-left" id="customer_search" action="{:U('Customer/index')}" method="get">
 								<ul class="breadcrum pull-left" style="margin-bottom: 0px;padding-right:0px;">
 									<if condition="$_GET['content'] != 'resource'">
 										<li>
@@ -341,7 +341,7 @@
 								</button>
 								<ul class="dropdown-menu">
 									<if condition = "checkPerByAction('customer','excelimport')">
-										<li><a id="import_excel" class="link" href="javascript:void(0);"><i class="fa fa-upload"></i>&nbsp;导入</a></li>
+										<li style="display: none;"><a id="import_excel" class="link" href="javascript:void(0);"><i class="fa fa-upload"></i>&nbsp;导入</a></li>
 									</if>
 									<if condition = "checkPerByAction('customer','excelexport')">
 										<li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></li>
@@ -678,7 +678,7 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Z0Fo0ib1GUgWlylCWeLvQh2U"></script>
 
 <div style="display:none" id="dialog-field-search" title="高级搜索">
-	<form class="form-inline" id="searchForm" action="" method="get">
+	<form class="form-inline" id="searchForm" action="{:U('customer/index')}" method="get">
 		<div id="search_add" style="width:650px;float:left;">
 			<input type="hidden" name="scene_id" value="{$_GET['scene_id']}"/>
 			<if condition="$_GET['field'] eq ''">
