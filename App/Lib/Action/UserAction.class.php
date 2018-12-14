@@ -371,7 +371,7 @@ class UserAction extends Action {
 		}else{
 			$all_or_below = ($_GET['by'] == 'all' || $_GET['by'] == 'message' || session('?admin')) ? 1 : 0;
 		}
-		$this->by = trim($_GET['by']) ? : '';
+		$this->by = trim($_GET['by']) ? trim($_GET['by']) : '';
 		$d_role = D('RoleView');
 		$m_role_department = M('RoleDepartment');
 		$where = '';
@@ -409,10 +409,13 @@ class UserAction extends Action {
 			unset($where['user.role_id']);
 			$where['role.position_id'] = array('in',$position_ids);
 		}
-		$role_list = $d_role->where($where)->page($p.',10')->order('role_id')->select();
+/************ddddddd******合同板块中授权下一个审批人 **********/
+//		$role_list = $d_role->where($where)->page($p.',10')->order('role_id')->select();
+		$role_list = $d_role->page($p.',10')->order('role_id')->select();
 
-		$count = $d_role->where($where)->count();
-
+//		$count = $d_role->where($where)->count();
+		$count = $d_role->count();
+/************uuuuuuu******合同板块中授权下一个审批人 **********/
 		$departments = $m_role_department->select();
 		$department_id = M('Position')->where('position_id = %d', session('position_id'))->getField('department_id');
 		$departmentList[] = $m_role_department->where('department_id = %d', $department_id)->find();
