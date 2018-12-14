@@ -152,6 +152,7 @@ class Catch1Action extends Action {
                     $customer_code = M('customer')->where(['cooperation_code' => $data->cooperation_code])->field('customer_id')->find();
                     
                     if($customer_code){
+                        M('catch_customer_limit')->where(['id' => $res['id']])->save(['status' => 1]);
                         continue;
                     }
                     
