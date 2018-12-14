@@ -783,8 +783,6 @@ class ContractAction extends Action {
 		$this->sales_product = $sales_product;
 		$this->assign('product',$product);
 		$this->assign('info',$info);
-//		dump($info);
-//		dump($check_list);exit;
 		//自定义字段
 		$this->field_list = M('Fields')->where(array('model'=>'contract','field'=>array('not in',array('contract_name','due_time'))))->order('order_id')->select();
 		$this->alert = parseAlert();
