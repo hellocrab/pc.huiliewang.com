@@ -1343,7 +1343,6 @@ class CustomerAction extends Action {
 
             import("@.ORG.Page");
             $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
-            $arr = $d_v_customer->select();
             $list = $d_v_customer->where($where)->order($order)->page($p . ',' . $listrows)->select();
 
             $count = $d_v_customer->where($where)->count();
