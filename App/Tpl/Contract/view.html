@@ -180,14 +180,23 @@
 														<a href="javascript:void(0)" rel="{$vo['role_id']}" class="role_info" style="color: #B4B1C2;">{$vo['user_info']['full_name']}</a>
 													</div>
 													<div class="control-label check_badge" style="margin-top:2px;font-size:13px;">
-														<if condition="$info['order_id'] gt $vo['order_id'] || $info['order_id'] eq $vo['order_id']">
+
+														<if condition="$info['is_checked'] eq '0' || $info['is_checked'] eq '3'">
+															 <if condition="$info['order_id'] gt $vo['order_id'] || $info['order_id'] eq $vo['order_id']">
+																 <span style="color:#19AA8D">通过</span>
+																 <else/>
+																 <span style="color:#F5CA00">待审</span>
+															 </if>
+														<elseif condition="$info['is_checked'] eq '2'"/>
+																<if condition="$info['order_id'] gt $vo['order_id']">
+																	<span style="color:#19AA8D">通过</span>
+																	<elseif condition="$info['order_id'] eq $vo['order_id']"/>
+																	<span style="color:#F5715F">未通过</span>
+																	<else/>
+																	<span style="color:#F5715F"></span>
+																</if>
+														<else/>
 															<span style="color:#19AA8D">通过</span>
-														<else />
-															<if condition = "$info['is_checked'] eq '1' || $info['is_checked'] eq '2'">
-																<span style="color:#F5715F">结束</span>
-															<else />
-																<span style="color:#F5CA00">待审</span>
-															</if>
 														</if>
 													</div>
 												</div>

@@ -552,8 +552,6 @@ class ContractAction extends Action {
 		$info['receivables_money'] = M('Receivingorder')->where('is_deleted <> 1 and status=1 and contract_id = %d',$info['contract_id'])->sum('money');
 		$info['receivables_money'] = $info['receivables_money']?$info['receivables_money']:0;
 		$info['balance'] = $info['price'] - $info['receivables_money'];
-		//调整order_id信息
-        $info['order_id'] = M('ContractExamine')->where(array('id'=>intval($info['order_id'])))->getField('order_id');
 
 		//应收款
 		$m_receivables = M('Receivables');
@@ -783,6 +781,8 @@ class ContractAction extends Action {
 		$this->sales_product = $sales_product;
 		$this->assign('product',$product);
 		$this->assign('info',$info);
+//		dump($info);
+//		dump($check_list);exit;
 		//自定义字段
 		$this->field_list = M('Fields')->where(array('model'=>'contract','field'=>array('not in',array('contract_name','due_time'))))->order('order_id')->select();
 		$this->alert = parseAlert();
@@ -1409,6 +1409,7 @@ class ContractAction extends Action {
 
 	//审核
 	public function check(){
+//	    dump($_POST);exit;
 		$m_contract = M('Contract');
 		$contract_id = $_REQUEST['contract_id'] ? intval($_REQUEST['contract_id']) : '';
 		if (!$contract_id) {
@@ -1533,6 +1534,7 @@ class ContractAction extends Action {
 						// $data['order_id'] = 0;
 						$data['is_checked'] = 2;
 						$data['examine_type_id'] = 0;
+						$data['order_id'] = intval($_POST['order_id'])-1;
 					} else {
 						alert('error', '请求错误!', $_SERVER['HTTP_REFERER']);
 					}
@@ -1636,10 +1638,10 @@ class ContractAction extends Action {
 			$m_contract_examine = M('ContractExamine');
 			if ($option == 1) {
 				//自动获取下一审批人
-                $id = $m_contract_examine->where(array('role_id'=>intval(session('role_id'))))->getField('id');
+                $id = $m_contract_examine->where(array('role_id'=>intval(session('role_id'))))->getField('order_id');
                 $contract['order_id'] = intval($id);
 				$next_order_id = $contract['order_id']+1;    //  下一审批流程排序ID
-				$next_role_id = $m_contract_examine->where(array('id'=>$next_order_id))->getField('role_id');
+				$next_role_id = $m_contract_examine->where(array('order_id'=>$next_order_id))->getField('role_id');
 				$next_role_info = '';
 				if (!empty($next_role_id))
 				$next_role_info = $m_user->where('role_id = %d',intval($next_role_id))->field('full_name,role_id')->find();

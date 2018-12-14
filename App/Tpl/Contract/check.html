@@ -89,9 +89,8 @@ $("#dialog-role-list2").dialog({
 	position:["center",100],
     buttons: { 
         "保存": function () {
-			// var item = $('input:checkbox[name="owner"]:checked').val();
-			var item = $('input:checkbox[name="owner"]:checked').val();
-			var name = $('input:checkbox[name="owner"]:checked').attr('rel');
+			var item = $('input:radio[name="owner"]:checked').val();
+			var name = $('input:radio[name="owner"]:checked').attr('rel');
 			if(item) {
 				$('#examine_role_id').val(item);
 				$('#examine_role').val(name);
