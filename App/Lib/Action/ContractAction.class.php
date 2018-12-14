@@ -552,6 +552,8 @@ class ContractAction extends Action {
 		$info['receivables_money'] = M('Receivingorder')->where('is_deleted <> 1 and status=1 and contract_id = %d',$info['contract_id'])->sum('money');
 		$info['receivables_money'] = $info['receivables_money']?$info['receivables_money']:0;
 		$info['balance'] = $info['price'] - $info['receivables_money'];
+		//调整order_id信息
+        $info['order_id'] = M('ContractExamine')->where(array('id'=>intval($info['order_id'])))->getField('order_id');
 
 		//应收款
 		$m_receivables = M('Receivables');
@@ -781,6 +783,8 @@ class ContractAction extends Action {
 		$this->sales_product = $sales_product;
 		$this->assign('product',$product);
 		$this->assign('info',$info);
+//		dump($info);
+//		dump($check_list);exit;
 		//自定义字段
 		$this->field_list = M('Fields')->where(array('model'=>'contract','field'=>array('not in',array('contract_name','due_time'))))->order('order_id')->select();
 		$this->alert = parseAlert();
@@ -1497,7 +1501,7 @@ class ContractAction extends Action {
 						}
 						$data['examine_role_id'] = intval($_POST['examine_role_id']);
 						if ($_POST['examine_status'] == 2) {
-							$data['examine_role_id'] = $_POST['examine_role_id'] ? intval($_POST['examine_role_id']) : session('role_id');
+							$data['examine_role_id'] = $_POST['examine_role_id'] ?  intval($_POST['examine_role_id']) : intval(session('role_id')) ;
 							$data['order_id'] = intval($_POST['order_id']);
 							$data['is_checked'] = 1;
 							$is_end = 1;
@@ -1514,7 +1518,7 @@ class ContractAction extends Action {
 								$data['is_checked'] = 2;   //审批结束
 								$is_end = 1;
 							} else {
-								$data['order_id'] = $order_id;
+								$data['order_id'] = $order_id-1;
 								$data['is_checked'] = 3;	//审批中
 							}
 						} else {
@@ -1534,6 +1538,7 @@ class ContractAction extends Action {
 					} else {
 						alert('error', '请求错误!', $_SERVER['HTTP_REFERER']);
 					}
+//					dump($data);exit;
 					$result = $m_contract->where('contract_id = %d', $contract_id)->save($data);
 
 					//为结束时给创建人发送站内信
