@@ -406,16 +406,16 @@ class UserAction extends Action {
 		if($_GET['by'] == 'contract'){
 			$position_ids = M('Permission')->where(array('url'=>'contract/check'))->getField('position_id',true);
 			array_unshift($position_ids,'1');
-			unset($where['user.role_id']);
-			$where['role.position_id'] = array('in',$position_ids);
-		}
 /************ddddddd******合同板块中授权下一个审批人 **********/
-//		$role_list = $d_role->where($where)->page($p.',10')->order('role_id')->select();
-		$role_list = $d_role->page($p.',10')->order('role_id')->select();
-
-//		$count = $d_role->where($where)->count();
-		$count = $d_role->count();
+//			unset($where['user.role_id']);
+//			$where['role.position_id'] = array('in',$position_ids);
 /************uuuuuuu******合同板块中授权下一个审批人 **********/
+		}
+
+		$role_list = $d_role->where($where)->page($p.',10')->order('role_id')->select();
+
+		$count = $d_role->where($where)->count();
+
 		$departments = $m_role_department->select();
 		$department_id = M('Position')->where('position_id = %d', session('position_id'))->getField('department_id');
 		$departmentList[] = $m_role_department->where('department_id = %d', $department_id)->find();

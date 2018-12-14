@@ -8,6 +8,8 @@
 </style>
 <div class="clearfix">
 	<form class="form-inline" id="dd" action="{:U('user/listdialog')}">
+		<input type="hidden" name="m" value="user"/>
+		<input type="hidden" name="a" value="listdialog"/>
 		<if condition = "$_GET['leads'] eq 'leads'">
 			<input type="hidden" name="leads" value="leads"/>
 			<input type="hidden" name="id" id="leads_id" value="{$_GET['id']}"/>
@@ -25,8 +27,6 @@
 				<input class="form-control" id="d_name" type="text" name="d_name" value="{$search_field['d_name']}" placeholder="{:L('USER_NAME')}" onkeydown="if(event.keyCode==13)changeCondition1(0)"/>&nbsp;&nbsp;
 			</li>
 			<li class="pull-left">
-				<input type="hidden" name="m" value="user"/>
-				<input type="hidden" name="a" value="listdialog"/>
 				<input type="hidden" name="by" id="dialog_by" value="{$by}"/>
 				<input type="button" onclick="changeCondition1(0)" class="btn btn-primary" value="{:L('SEARCH')}"/>
 			</li>
