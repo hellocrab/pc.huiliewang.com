@@ -139,12 +139,12 @@
                 <div class="" style="padding-bottom: 15px">
                     <a class="btn btn-default" href="/index.php?m=product&a=add&pro_id={:I('id')}">新增一份简历</a>
                     <a class="btn btn-default" href="/index.php?m=product&a=index&pro_id={$project['business_id']}" target="_blank">从人才库搜索</a>
-                    <a class="btn btn-default" href="/index.php?m=product&a=add_more&pro_id={$project['business_id']}" target="_blank">批量导入简历</a>
+                    <!--<a class="btn btn-default" href="/index.php?m=product&a=add_more&pro_id={$project['business_id']}" target="_blank">批量导入简历</a>-->
                 </div>
 
                 <div class="houxuanren" style="padding-bottom: 15px">
                     <ul class="nav nav-tabs" style="background: #f9fafc;height: 70px;">
-                        <li class="active"><a class="" href="#tj"  data-toggle="tab" type="tj">智能推荐</a></li>
+<!--                        <li class="active"><a class="" href="#tj"  data-toggle="tab" type="tj">智能推荐</a></li>-->
                         <li><a class="" href="#st1"  data-toggle="tab" type="st1">CallList（{$project['calllist']|count}）</a></li>
                         <if condition="$pro_type neq '4'">
                             <li><a class="btn btn-primarya" href="#st2"  data-toggle="tab" type="st2">顾问面试（{$project['adviser']|count}）</a></li>
