@@ -95,6 +95,7 @@ class Page {
                     $parameter = $var;
                 }
             }
+            
             $parameter[$p] = '__PAGE__';
             $url = U('', $parameter);
         }
@@ -124,7 +125,7 @@ class Page {
             $downPage = '<span>' . $this->config['next'] . '</span>';
             $theEnd = '<span>' . $this->config['last'] . '</span>';
         }
-
+        
         /* << < > >>
           if($nowCoolPage != 1){
           $theFirst   =   '<span>'.$this->config['first'].'</span>';
@@ -160,11 +161,16 @@ class Page {
             }
         }
         $thego = '<input type="text" style="width:auto;display:inline-block;" id="go_page" class="form-control input-sm" name="' . $this->varPage . '" onchange="go_page' . $this->varPage . '(this.value)">';
-//        for ($i = 1; $i <= $this->totalPages; $i++) {
-//            $thego .= '<option value ="' . str_replace("__PAGE__", $i, $url) . '" ';
-//            $thego .= $i == $this->nowPage ? 'selected="selected"' : '';
-//            $thego .= '>' . $i . '</option>';
-//        }
+        $baseUrl = U('');
+        unset($parameter[$p]);
+        unset($parameter['listrows']);
+        foreach ($parameter as $kp => $vp){
+            $params[] = "{$kp}={$vp}";
+        }
+        $params = implode("&", $params);
+        if($params){
+            $params = '&'.$params;
+        }
         $thego .= '<script type="text/javascript">
 		function changeURLArg(url,arg,arg_val){ 
 			var pattern=arg+"=([^&]*)"; 
@@ -186,7 +192,7 @@ class Page {
 			var listrows = $("#listrows option:selected").val();
 			if(page.indexOf("listrows") <= 0){
 				if(listrows > 0){
-					window.location = "index.php?m=product&a=index&p="+page+"&listrows="+listrows;
+					window.location = "'.$baseUrl.'&p="+page+"&listrows="+listrows+"'.$params.'";
 				}else{
 					window.location = page;
 				}
