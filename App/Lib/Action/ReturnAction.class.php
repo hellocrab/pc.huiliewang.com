@@ -300,13 +300,16 @@ class ReturnAction extends Action
         $this->listrows = $listrows;
         import('@.ORG.Page');// 导入分页类
 
+////        $count = $user->where($where_source)->count() ? $user->where($where_source)->count() : '0';
+        $count = M("payment_plan")->where($where)->count();
         $p_num = ceil($count/$listrows);
         $p = isset($_GET['p'])?$_GET['p']:1;
         if($p_num<$p){
             $p = $p_num;
         }
         $data = M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->order("mx_payment_plan.Id desc")->Page($p.','.$listrows)->select();
-        $count =M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->count() ? count($data) : '0';
+//        $count =M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->count() ? count($data) : '0';
+        $count = $count ? $count : '0';
 
         foreach ($data as $k => $v){
             $time = M("payment_planperiod")->where(array('plan_id'=>intval($v['plan_id']),'num'=>$v['nums']))->getField('ontime');
