@@ -932,7 +932,6 @@ class CustomerAction extends Action {
         $customerid = $m_share->where('by_sharing_id =%d', $sharing_id)->getField('customer_id', true);
         //查询我分享的
         $share_customer_ids = $m_share->where('share_role_id =%d', session('role_id'))->getField('customer_id', true);
-
         switch ($by) {
             case 'todaycontact' :
                 $where['nextstep_time'] = array(array('lt', strtotime(date('Y-m-d', time())) + 86400), array('gt', strtotime(date('Y-m-d', time()))), 'and');
@@ -1315,7 +1314,17 @@ class CustomerAction extends Action {
                     }
                 }
                 $fields_search[$field[0]]['form_type'] = $fields_data_list[$field[0]];
+            }elseif(I('get.industry')){
+                $where['industry'] = array('in',explode(',',I('get.industry')));
             }
+        }
+        $getCondition = I('get.');
+        if($getCondition['grade']){
+            $where = $this->setWhere($getCondition,'grade',$where);
+        }elseif ($getCondition['customer_status']){
+            $where = $this->setWhere($getCondition,'customer_status',$where);
+        }elseif($getCondition['origin']){
+            $where = $this->setWhere($getCondition,'origin',$where);
         }
         //高级排序（暂只支持时间、数字类型字段，客户等级）
         $order_field_where = array();
@@ -1358,13 +1367,11 @@ class CustomerAction extends Action {
 
             import("@.ORG.Page");
             $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
-            $arr = $d_v_customer->select();
             $customerIdsData = $m_customer_share->where(array('by_sharing_id'=>$sharing_id))->field('customer_id')->select();
             if($customerIdsData){
                 foreach ($customerIdsData as $k =>$v){
                     $customerIds[] = $v['customer_id'];
                 }
-                //unset($where['_string']);
                 $map['customer_id'] = array('in',$customerIds);
                 $map['_complex'] = $where;
                 $map['_logic'] = 'or';
@@ -1534,14 +1541,12 @@ class CustomerAction extends Action {
                     $params[] = "order_field=" . trim($_GET['order_field']);
                 }
 
-
 //				if(empty(I("by"))){
 //                    if ($scene_id) {
 //                        $params[] = "scene_id=" . $scene_id;
 //                        $order_params[] = "scene_id=" . $scene_id;
 //                    }
 //                }
-
                 if ($listrows) {
                     $params[] = "listrows=" . $listrows;
                     $order_params[] = "listrows=" . $listrows;
@@ -1595,9 +1600,10 @@ class CustomerAction extends Action {
             $this->cn_is_show = $cn_is_show = $m_fields->where('model="contacts" and field ="name"')->getField('is_show');
             //联系人电话是否显示
             $this->ct_is_show = $ct_is_show = $m_fields->where('model="contacts" and field ="telephone"')->getField('is_show');
-
             $this->assign('openrecycle', $openrecycle);
             $this->listrows = $listrows;
+
+
             $this->customerlist = $list;
             $this->assign("count", $count);
             $this->this_page = $p;
@@ -1612,15 +1618,69 @@ class CustomerAction extends Action {
             }
             $this->name_field_array = $name_field_array;
 //            var_dump($name_field_array);exit();
-            $this->field_list = getMainFields('customer');
+            $mainFields = getMainFields('customer');
+
+            foreach ($mainFields as $k => $v){
+                switch ($v['name']){
+                    case '兴趣爱好':
+                        unset($mainFields[$k]);
+                        break;
+                    case '所属行业':
+                        unset($mainFields[$k]);
+                        break;
+                    case '所在城市':
+                        unset($mainFields[$k]);
+                        break;
+                    case '客户负责人':
+                        unset($mainFields[$k]);
+                        break;
+                    case '公司电话':
+                        unset($mainFields[$k]);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            $this->field_list = $mainFields;
             //高级搜索
-            $this->fields_search = $fields_search;
+            //$this->fields_search = $fields_search;
             $this->scene_list = $scene_list;
             $this->alert = parseAlert();
             $this->display();
         }
     }
-
+    function setWhere($getCondition,$name,$where){
+        unset($where['name']);
+        switch ($getCondition[$name]['condition']){
+            case 'contains':
+                $where[$name] = array('like','%'.$getCondition['name']['value'].'%');
+                break;
+            case 'not_contain':
+                $where[$name] = array('notlike','%'.$getCondition['name']['value'].'%');
+                break;
+            case 'is':
+                $where[$name] = array('eq',$getCondition['name']['value']);
+                break;
+            case 'isnot':
+                $where[$name] = array('neq',$getCondition['name']['value']);
+                break;
+            case 'start_with':
+                $where[$name] = array('like',$getCondition['name']['value'].'%');
+                break;
+            case 'end_with':
+                $where[$name] = array('like','%'.$getCondition['name']['value']);
+                break;
+            case 'is_empty':
+                $where[$name] = array('eq','');
+                break;
+            case 'is_not_empty':
+                $where[$name] = array('neq','');
+                break;
+            default:
+                break;
+        }
+        return $where;
+    }
     /**
      *  合同页客户弹出框列表
      *

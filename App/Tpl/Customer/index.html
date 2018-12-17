@@ -394,11 +394,11 @@
 										<td>创建时间</td>
 										<?php if($openrecycle == 2){ ?>
 										<if condition="$_GET['asc_order'] == 'update_time' and $Think.get.content neq 'resource' ">
-											<td><a href="{:U('customer/index','desc_order=update_time&'.$parameter)}">{:L('FROM_THE_DUE_DAY')}&nbsp;<span class="fa fa-caret-up"></span></a></td>
+											<td><a href="{:U('customer/index','desc_order=update_time&'.$parameter)}" style="cursor: none;color:#000">{:L('FROM_THE_DUE_DAY')}&nbsp;<span class="fa fa-caret-up"></span></a></td>
 											<elseif condition="$_GET['desc_order'] == 'update_time' and $Think.get.content neq 'resource' "/>
-											<td><a href="{:U('customer/index','asc_order=update_time&'.$parameter)}">{:L('FROM_THE_DUE_DAY')}&nbsp;<span class="fa fa-caret-down"></span></a></td>
+											<td><a href="{:U('customer/index','asc_order=update_time&'.$parameter)}" style="cursor: none;color:#000">{:L('FROM_THE_DUE_DAY')}&nbsp;<span class="fa fa-caret-down"></span></a></td>
 											<elseif condition="$Think.get.content neq 'resource'"/>
-											<td><a href="{:U('customer/index','desc_order=update_time&'.$parameter)}">{:L('FROM_THE_DUE_DAY')}</a></td>
+											<td><a href="{:U('customer/index','desc_order=update_time&'.$parameter)}" style="cursor: none;color:#000">{:L('FROM_THE_DUE_DAY')}</a></td>
 										</if>
 										<?php } ?>
 										<if condition="$Think.get.content neq 'resource'">
@@ -708,7 +708,7 @@
                                         </if>
                                     </if>
 								</volist>
-								<if condition="$Think.get.content neq 'resource'">
+								<if condition="$Think.get.content eq 'resource1'">
 									<option class="role" value="owner_role_id">{:L('PRINCIPAL')}</option>
 								</if>
 								<option class="date" value="create_time">{:L('CREATION_TIME')}</option>

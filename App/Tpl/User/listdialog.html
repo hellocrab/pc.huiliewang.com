@@ -111,11 +111,11 @@
 	$("#data2 tr").click(function(){
         var _this=$(this).find('td:first-child .owner');
         if(_this.prop('checked')){
-            $('#dd:checkbox').prop('checked', false);
+            $('#data2').find('.owner').prop('checked', false);
             sessionStorage.setItem('idskey', '');
             sessionStorage.setItem('nameskey', '');
         }else{
-            $('#dd:checkbox').prop('checked', false);
+            $('#data2').find('.owner').prop('checked', false);
             ids=_this.val();
             names=_this.attr('rel');
             sessionStorage.setItem('nameskey', names);
