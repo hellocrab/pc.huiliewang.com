@@ -539,7 +539,7 @@ class ContractAction extends Action {
 			$m_contract_data->add($res_data);
 		}
 		$info = $d_contract->where(array('contract_id'=>$contract_id))->find();
-//		dump($this->_permissionRes);exit;// ?? $this->_permissionRes 代表什么   //$info['owner_role_id']
+//		dump($this->_permissionRes);exit;// ?? $this->_permissionRes 代表什么   //$info['owner_role_id'] 
 		//权限判断
 		if(empty($info)) {
 			alert('error', L('THE_CONTRACT_DOES_NOT_EXIST_OR_HAS_BEEN_DELETED'), U('contract/index'));
