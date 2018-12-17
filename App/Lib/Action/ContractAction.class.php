@@ -72,6 +72,7 @@ class ContractAction extends Action {
 					}
 					// $m_contract->due_time = time();
 					$m_contract->owner_role_id = $_POST['owner_role_id'] ? intval($_POST['owner_role_id']) : session('role_id');
+					$m_contract->examine_role_id = $_POST['owner_role_id'] ? intval($_POST['owner_role_id']) : session('role_id');
 					$m_contract->creator_role_id = session('role_id');
 					$m_contract->create_time = time();
 					$m_contract->update_time = time();
@@ -538,11 +539,11 @@ class ContractAction extends Action {
 			$m_contract_data->add($res_data);
 		}
 		$info = $d_contract->where(array('contract_id'=>$contract_id))->find();
-
+//		dump($this->_permissionRes);exit;// ?? $this->_permissionRes 代表什么   //$info['owner_role_id']
 		//权限判断
 		if(empty($info)) {
 			alert('error', L('THE_CONTRACT_DOES_NOT_EXIST_OR_HAS_BEEN_DELETED'), U('contract/index'));
-		}elseif(!in_array($info['owner_role_id'], $this->_permissionRes)) {
+		}elseif(!in_array(intval(session('role_id')), $this->_permissionRes)) {
 			alert('error',L('DO NOT HAVE PRIVILEGES'),$_SERVER['HTTP_REFERER']);
 		}
 		$creator_info = $m_user->where('role_id = %d',$info['creator_role_id'])->field('full_name,thumb_path')->find();
@@ -781,7 +782,7 @@ class ContractAction extends Action {
 		$this->sales_product = $sales_product;
 		$this->assign('product',$product);
 		$this->assign('info',$info);
-		
+
 		//自定义字段
 		$this->field_list = M('Fields')->where(array('model'=>'contract','field'=>array('not in',array('contract_name','due_time'))))->order('order_id')->select();
 		$this->alert = parseAlert();
@@ -1408,7 +1409,6 @@ class ContractAction extends Action {
 
 	//审核
 	public function check(){
-//	    dump($_POST);exit;
 		$m_contract = M('Contract');
 		$contract_id = $_REQUEST['contract_id'] ? intval($_REQUEST['contract_id']) : '';
 		if (!$contract_id) {
@@ -1452,7 +1452,6 @@ class ContractAction extends Action {
 			if ($option == 1) {
 				//自定义流程
 				$check_role_id = M('ContractExamine')->order('order_id asc')->getField('role_id');
-//				dump($check_role_id); dump(session('?admin'));exit;
 				if (!session('?admin') && $check_role_id != session('role_id')) {
 					if ($this->isGet()) {
 						echo '<div class="alert alert-error">您没有此权限！</div>';die();
@@ -1472,10 +1471,9 @@ class ContractAction extends Action {
 			}
 		}
 		if ($this->isPost()) {
-//		    dump($_POST);exit;
-			$is_agree = intval($_POST['is_agree']);
-			$is_receivables = intval($_POST['is_receivables']);
-			$description = trim($_POST['description']);
+			$is_agree = intval($_POST['is_agree']); //1
+			$is_receivables = intval($_POST['is_receivables']);//2
+			$description = trim($_POST['description']); //kong
 			$m_r_contract_sales = M('rContractSales');
 			$m_sales = M('Sales');
 			//默认（是否生成应收款）
@@ -1537,19 +1535,21 @@ class ContractAction extends Action {
 					} else {
 						alert('error', '请求错误!', $_SERVER['HTTP_REFERER']);
 					}
-//					dump($data);exit;
+//					dump(empty($is_end));exit;
 					$result = $m_contract->where('contract_id = %d', $contract_id)->save($data);
 
 					//为结束时给创建人发送站内信
 					if (empty($is_end)) {
 						if ($is_agree == 1) {
 							$check_result = session('full_name').'<font style="color:green;">同意了</font>';
-						} elseif ($is_agree == 1) {
+						} elseif ($is_agree !== 1) {
 							$check_result = session('full_name').'<font style="color:red;">驳回了</font>';
 						}
 						//发送站内信
 						$url = U('contract/view','id='.$contract_id);
-						sendMessage($contract['creator_role_id'],$check_result.'您创建的合同《<a href="'.$url.'">'.$contract['number'].'-'.$contract['contract_name'].'</a>》',1);
+						sendMessage(intval($contract['creator_role_id']),$check_result.'您创建的合同《<a href="'.$url.'">'.$contract['number'].'-'.$contract['contract_name'].'</a>》',1);
+						sendMessage(intval($_POST['examine_role_id']),'合同《<a href="'.$url.'">'.$contract['number'].'-'.$contract['contract_name'].'</a>》 需要您进行审核',1);
+
 					}
 
 					//审核意见

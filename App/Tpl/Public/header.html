@@ -527,9 +527,9 @@
 				</ul>
 				<ul class="nav navbar-top-links navbar-right" style="margin-right:0px;">
 					<li class="dropdown" style="">
-<!--						<a class="dropdown-toggle count-info" id="todo_url"  data-toggle="dropdown" href="#" title="待办事项">
-							<img src="__PUBLIC__/img/remain.png" alt="" /><div class="label label-info" style="background-color: #FA7252;" id="todo_num"></div>
-						</a>-->
+					<!--<a class="dropdown-toggle count-info" id="todo_url"  data-toggle="dropdown" href="#" title="待办事项">-->
+							<!--<img src="__PUBLIC__/img/remain.png" alt="" /><div class="label label-info" style="background-color: #FA7252;" id="todo_num"></div>-->
+						<!--</a>-->
 						<ul class="dropdown-menu dropdown-alerts folder-list m-b-md" style="width:250px;">
 							<?php $contract_examine_role_ids = M('ContractExamine')->getField('role_id',true); ?>
 							<?php if (checkPerByAction('contract','check') || in_array(session('role_id'),$contract_examine_role_ids)): ?>
