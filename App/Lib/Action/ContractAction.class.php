@@ -781,8 +781,6 @@ class ContractAction extends Action {
 		$this->sales_product = $sales_product;
 		$this->assign('product',$product);
 		$this->assign('info',$info);
-//		dump($info);
-//		dump($check_list);exit;
 		//自定义字段
 		$this->field_list = M('Fields')->where(array('model'=>'contract','field'=>array('not in',array('contract_name','due_time'))))->order('order_id')->select();
 		$this->alert = parseAlert();
@@ -1420,12 +1418,12 @@ class ContractAction extends Action {
 			}
 		}
 		if (!$contract = $m_contract->where('contract_id = %d', $contract_id)->find()) {
-			if ($this->isGet()) {
-				echo '<div class="alert alert-error">数据不存在或已删除！</div>';die();
-			} else {
-				alert('error', '数据不存在或已删除！',$_SERVER['HTTP_REFERER']);
-			}
-		}
+            if ($this->isGet()) {
+                echo '<div class="alert alert-error">数据不存在或已删除！</div>';die();
+            } else {
+                alert('error', '数据不存在或已删除！',$_SERVER['HTTP_REFERER']);
+            }
+        }
 		if ($contract['examine_type_id']) {
 			$option = $contract['examine_type_id'];
 		} else {
