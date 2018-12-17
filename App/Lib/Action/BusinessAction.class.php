@@ -706,9 +706,9 @@ class BusinessAction extends Action {
             $this->possibility_list = $possibility_list;
             $this->business = $business;
 
-            $where['isdelete'] = '0';
-            $company_list = M('customer')->where($where)->select();
-            $this->company_list = $company_list;
+//            $where['isdelete'] = '0';
+//            $company_list = M('customer')->where($where)->select();
+//            $this->company_list = $company_list;
             //自定义字段
             $this->field_list = field_list_html('add', 'business');
             $this->alert = parseAlert();
