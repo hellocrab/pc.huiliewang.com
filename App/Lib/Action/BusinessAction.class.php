@@ -6,6 +6,14 @@
  * */
 class BusinessAction extends Action {
 
+    protected $pro_type = [
+        1 => '面试快',
+        2 => '入职快',
+        3 => '专业猎头',
+        4 => '慧简历',
+        5 => '其他'
+    ];
+
     /**
      * 用于判断权限
      * @permission 无限制
@@ -526,6 +534,7 @@ class BusinessAction extends Action {
                 $name_field_array[] = $v;
             }
         }
+        $this->assign('pro_type', $this->pro_type);
         $this->field_array = $name_field_array;
         $this->fields_search = $fields_search;
         $this->listrows = $listrows;
@@ -704,10 +713,11 @@ class BusinessAction extends Action {
             $this->business = $business;
 
             $where['isdelete'] = '0';
-            $company_list = M('customer')->where($where)->select();
-            $this->company_list = $company_list;
+//            $company_list = M('customer')->where($where)->select();
+//            $this->company_list = $company_list;
 
             //自定义字段
+            
             $this->field_list = field_list_html('add', 'business');
             $this->alert = parseAlert();
             $this->display();
@@ -858,6 +868,7 @@ class BusinessAction extends Action {
             for ($x = 1; $x <= 10; $x++) {
                 $possibility_list[] = $x * 10;
             }
+            $this->assign('pro_type', $this->pro_type);
             $this->possibility_list = $possibility_list;
             $this->business_info = $business_info;
             //自定义字段
@@ -916,6 +927,7 @@ class BusinessAction extends Action {
         //自定义字段
         $this->field_list = M('Fields')->where(array('model' => 'business', 'field' => array('not in', array('name', 'status_id'))))->order('is_main desc, order_id asc')->select();
         $this->alert = parseAlert();
+        $this->assign('pro_type', $this->pro_type);
         $this->display();
     }
 
@@ -1045,7 +1057,6 @@ class BusinessAction extends Action {
             $business_file_ids = array();
             $business_file_ids = $m_r_business_file->where('business_id = %d', $vo_bus['business_id'])->getField('file_id', true);
             $business[$k_bus]['business_file_ids'] = $business_file_ids;
-
             $business_info = $vo_bus;
             $business_info['mark'] = 1;
         }
@@ -1257,16 +1268,20 @@ class BusinessAction extends Action {
 
 
         $business = M("business")->where("business_id=%d", $project['project_id'])->field("pro_type")->find();
+        //@edit by yanghao 2018-11-26 修改交易模式交易节点
         $this->pro_type = $business['pro_type'];
-        if ($this->pro_type == "面试快") {
+        if ($this->pro_type == "1") {//面试快
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3);
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试");
-        } elseif ($this->pro_type == "入职快") {
+        } elseif ($this->pro_type == "2") {//入职快
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3, "pass" => 4, "offer" => 5, "enter" => 6);
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职");
-        } else {
+        } elseif ($this->pro_type == "3") {//专业猎头
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3, "pass" => 4, "offer" => 5, "enter" => 6, "safe" => 7);
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职", "过保");
+        } else if ($this->pro_type == '4') {//慧简历
+            $this->process = array("calllist" => 0);
+            $this->process_name = array("CallList");
         }
         $this->pro_count = count($this->process);
 
