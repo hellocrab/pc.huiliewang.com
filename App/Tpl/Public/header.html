@@ -779,7 +779,7 @@
                     $('#message_num').html(data.data['message']);
                     $('#message_list').html('');
                     if (data.data['message_num'] != 0 && data.data['message_num'] != ''){
-                    message_html += '<a href="{:U('message / index')}" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
+                    message_html += '<a href="{:U("message/index")}" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
                                     <div style="padding:0 10px;">\
                                         <img src="__PUBLIC__/img/Messenger.png" title="小助手"> 您有<strong>' + data.data['message_num'] + '</strong>条消息待查看\
                                         <span class="pull-right text-muted small" style="line-height:30px;">' + data.data['message_time'] + '前</span>\
