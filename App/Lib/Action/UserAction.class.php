@@ -393,7 +393,7 @@ class UserAction extends Action {
         } else {
             $role_arr = getSubRoleId(true);
         }
-		$where['user.role_id'] = array('in', $role_arr);
+//		$where['user.role_id'] = array('in', $role_arr);     合同授权审批人的修改
 		$where['user.status'] = array('eq',1);
 		//审批审核权限
 		if($_GET['by'] == 'examine'){
@@ -412,8 +412,10 @@ class UserAction extends Action {
 /************uuuuuuu******合同板块中授权下一个审批人 **********/
 		}
 
+//		$role_list = $d_role->where($where)->page($p.',10')->order('role_id')->select();
 		$role_list = $d_role->where($where)->page($p.',10')->order('role_id')->select();
 
+//		$count = $d_role->where($where)->count();
 		$count = $d_role->where($where)->count();
 
 		$departments = $m_role_department->select();
@@ -424,7 +426,7 @@ class UserAction extends Action {
 
 		$Page = new Page($count,10);
 		$this->assign('page', $Page->show());
-		$this->search_field = $_REQUEST;//搜索信息
+		$this->search_field = $_REQUEST; // 搜索信息
 		$this->role_list = $role_list;
 		$this->display();
 	}
