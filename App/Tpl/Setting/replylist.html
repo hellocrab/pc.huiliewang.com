@@ -18,7 +18,7 @@
         				<input type="hidden" name="id" value="{$vo['id']}" />
         				<div class="taskboard-stage-rename-w">
     						<div class="form-group">
-								<select name="status_id" id="status_id_{$vo['id']}" class="form-control select2" style="width:150px;">
+								<select name="status_id" id="status_id_{$vo['id']}" class="form-control select2" style="width:150px">
 									<volist name="status_list" id="vo1">
 										<option value="{$vo1['id']}" <if condition ="$vo['status_id'] eq $vo1['id']">selected</if> >{$vo1['name']}</option>
 									</volist>
@@ -63,7 +63,6 @@
 	</div>
 </div>
 <script>
-$(".select2").select2();
 
 $('#reply_list').on('click','#toggle_reply',function(){
 	$(this).hide();

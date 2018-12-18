@@ -100,7 +100,7 @@ $(function(){
 										<tr>
 											<td style="width:60px;">
 												<div class="checkbox checkbox-primary">
-													<input name="user_id[]" class="check_list" type="checkbox" value="{$vo.user_id}" <if condition = "$vo['status'] eq 2">rel1="1"</if>/>
+													<input name="user_id[]" class="check_list" type="checkbox" value="{$vo.user_id}" <if condition = "$vo['status'] eq 2">rel1="1"<elseif condition="$vo['status'] eq 3"/>rel1="3"<elseif condition="$vo['status'] eq 1"/>rel1="2"</if>/>
 													<label for=""></label>
 												</div>
 											</td>
@@ -120,7 +120,7 @@ $(function(){
 												</if>
 												</a>
 											</td>
-											<td>
+											<td class="count_status">
 												<if condition = "$vo['status'] eq 1">
 													<if condition = "$vo['category_id'] eq 1">
 														<span class="fa fa-user-circle" style="color:#5ACD61;"></span>
@@ -331,7 +331,11 @@ function del_user(status){
 	var status_name = '停用';
 	if(status == 2){
 		status_name = '启用';
+	}else if(status==3){
+        status_name = '激活';
 	}
+	let formdata = $("#user_form").serialize();
+	formdata = formdata+"&status="+status;
 	swal({
 		title: "温馨提示",
 		text: "您确定要"+status_name+"此账号吗？",
@@ -348,7 +352,7 @@ function del_user(status){
 			$.ajax({
 				type: "POST",
 				url: "{:U('user/delete')}",
-				data:$("#user_form").serialize(),
+				data:formdata,
 				async: true,
 				success: function(data) {
 					if(data.status == 1){
