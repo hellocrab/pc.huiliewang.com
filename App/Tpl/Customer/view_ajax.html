@@ -588,7 +588,7 @@
                         <tbody>
                             <volist name="contacts_list" id="vo">
                             <tr>
-                                <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;"><a href="{:U('contacts/view','id='.$vo['contacts_id'])}">{$vo['name']}<span class="text-danger m_l_5">(首要)</span></a></td>
+                                <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;"><a href="{:U('contacts/view','id='.$vo['contacts_id'])}">{$vo['name']}<if condition="$vo['contacts_id'] eq $customer['contacts_id']"><span class="text-danger m_l_5">(首要)</span></if></a></td>
                                 <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['crm_dbxxve']}</td>
                                 <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['telephone']}</td>
                                 <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['email']}</td>
@@ -1086,7 +1086,7 @@
                    contractid,contractid
                },
                success:function (data) {
-                   if(data.status == 1){
+                   if(data == 1){
                        swal("操作提示！", "联系人设置成功！", "success");
                        location.reload();
                    }else{

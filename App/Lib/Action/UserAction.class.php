@@ -546,11 +546,21 @@ class UserAction extends Action {
 					}
 				}
 			}
+			$value = 1;
+			$status = $_POST['status'];
+            switch ($status){
+                case 1:
+                    $value = 2;
+                    break;
+                default:
+                    $value = 1;
+                    break;
+            }
 			if($add_ids){
-				$res_add = $m_user->where(array('user_id'=>array('in',$add_ids)))->setField('status',1);
+				$res_add = $m_user->where(array('user_id'=>array('in',$add_ids)))->setField('status',$value);
 			}
 			if($del_ids){
-				$res_del = $m_user->where(array('user_id'=>array('in',$del_ids)))->setField('status',2);
+				$res_del = $m_user->where(array('user_id'=>array('in',$del_ids)))->setField('status',$value);
 			}
 			if($res_add || $res_del){
 				$this->ajaxReturn('','操作成功！',1);
@@ -1395,7 +1405,7 @@ class UserAction extends Action {
 
 			$user_data = array(
 				'category_id'=>2,
-				'status'=>3,
+				'status'=>2,
 				'name'=>$name,
 				'email'=>$this->_post('email','trim'),
 				'full_name'=>$this->_post('full_name','trim'),

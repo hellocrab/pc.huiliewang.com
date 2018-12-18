@@ -45,7 +45,7 @@ class ContactsAction extends Action {
 			$this -> module = $_GET['module'];
 			$this -> id = $_GET['id'];
 			$this->display('Contacts:add_dialog');
-		}elseif($this->isPost()){
+		} elseif($this->isPost()){
 			$name = trim($_POST['name']);
 			$customer_id = trim($_POST['customer_id']);
 			if ($name == '' || $name == null) {
@@ -111,7 +111,7 @@ class ContactsAction extends Action {
 			} else {
 				$this->error($contacts->getError());
 			}
-		}else{
+		} else{
 			$m_customer = M('Customer');
 			if($_GET['redirect']){
 				$this->redirect_id = intval($_GET['redirect_id']);

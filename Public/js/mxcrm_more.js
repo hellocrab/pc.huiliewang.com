@@ -15,7 +15,7 @@ function changeCondition($i){
 							+'<option value="neq">  '+CrmLang.NEQ+'  </option>'
 							+'</select>&nbsp;&nbsp;');
 		$("#searchContent_"+$i+"").html('<input id="search_'+$i+'" type="text" class="form-control input-sm search-query" name="'+search+'"/>');
-	} else if ((a == 'word') || (a == 'text') || (a == 'textarea') || (a == 'editor') || (a == 'mobile') || (a == 'email')) {
+	} else if ((a == 'word') || (a == 'text') || (a == 'textarea') || (a == 'editor') || (a == 'mobile') || (a == 'email') || (a == 'box')) {
 		$("#conditionContent_"+$i+"").html('<select class="form-control input-sm" id="condition_'+$i+'" style="width:auto" onchange="changeSearch()" name="'+name+'">'
 							+'<option value="contains">'+CrmLang.CONTAINS+'</option>'
 							+'<option value="not_contain">'+CrmLang.NOT_CONTAIN+'</option>'
