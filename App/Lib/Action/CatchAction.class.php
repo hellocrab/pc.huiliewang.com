@@ -9,6 +9,7 @@ class CatchAction extends Action {
     private $login_url = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/user/login_account";
     private $resumes_list = self::ZHANJOB_BASE_URL . "zjob-resume/api/resume/library/company/resumes/limits";
     private $resumes = self::ZHANJOB_BASE_URL . "zjob-resume/api/web/resume/getResume";
+    private $project_list = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/project/get_con_project_page_list";
 
     public function __construct() {
         parent::__construct();
@@ -26,7 +27,6 @@ class CatchAction extends Action {
         $userid = $content->data->user_id;
         M('catch_cookie')->where(['status' => 0])->save(['status' => 1]);
         $res = M('catch_cookie')->add(['token' => $token, 'auth' => $auth, 'userid' => $userid, 'status' => 0]);
-//        var_dump($content);
     }
 
     public function getResumesLimit() {
@@ -135,11 +135,10 @@ class CatchAction extends Action {
                         $cookie = M('catch_cookie')->where(['status' => 0])->find();
                         $result = Curl::send($this->resumes, $resumes_data, 'get', '', 1, Curl::CONTENT_TYPE_JSON, $header);
                     }
-                   
+
                     $content = json_decode($result['result']['content']);
                     $data = $content->data;
 
-                    var_dump($header);                    var_dump($resumes_data);
                     $insert_data = [
                         'name' => $data->name,
                         'creator_role_id' => 0,
@@ -303,9 +302,9 @@ class CatchAction extends Action {
                         'eid' => $eid
                     ];
                     M('resume_data')->add($resumes_data);
-
                     M('catch_resumes_limit')->where(['id' => $res['id']])->save(['status' => 1]);
                 }
+                
             } else {
 
                 exit();
@@ -314,5 +313,4 @@ class CatchAction extends Action {
             M('catch_resumes_limit')->where(['id' => $res['id']])->save(['status' => 2]);
         }
     }
-
 }
