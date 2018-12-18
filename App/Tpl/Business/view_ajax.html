@@ -144,23 +144,30 @@
 
                 <div class="houxuanren" style="padding-bottom: 15px">
                     <ul class="nav nav-tabs" style="background: #f9fafc;height: 70px;">
-<!--                        <li class="active"><a class="" href="#tj"  data-toggle="tab" type="tj">智能推荐</a></li>-->
-                        <li><a class="" href="#st1"  data-toggle="tab" type="st1">CallList（{$project['calllist']|count}）</a></li>
-                        <if condition="$pro_type neq '4'">
+                        <if condition="$business_info['pro_type'] eq '1'">
+                            <li><a class="" href="#st1"  data-toggle="tab" type="st1">CallList（{$project['calllist']|count}）</a></li>
                             <li><a class="btn btn-primarya" href="#st2"  data-toggle="tab" type="st2">顾问面试（{$project['adviser']|count}）</a></li>
                             <li><a class="btn btn-primarya" href="#st3"  data-toggle="tab" type="st3">推荐人才（{$project['tj']|count}）</a></li>
                             <li><a class="btn btn-primarya" href="#st4"  data-toggle="tab" type="st4">面试（{$project['interview']|count}）</a></li>
-
-                            <if condition="$pro_type eq '2'">
-                                <li><a class="btn btn-primarya" href="#st5"  data-toggle="tab" type="st5">面试通过（{$project['pass']|count}）</a></li>
-                                <li><a class="btn btn-primarya" href="#st6"  data-toggle="tab" type="st6">Offer（{$project['offer']|count}）</a></li>
-                                <li><a class="btn btn-primarya" href="#st7"  data-toggle="tab" type="st7">入职（{$project['enter']|count}）</a></li>
-                                <elseif  condition="$pro_type eq '3'" />
-                                <li><a class="btn btn-primarya" href="#st5"  data-toggle="tab" type="st5">面试通过（{$project['pass']|count}）</a></li>
-                                <li><a class="btn btn-primarya" href="#st6"  data-toggle="tab" type="st6">Offer（{$project['offer']|count}）</a></li>
-                                <li><a class="btn btn-primarya" href="#st7"  data-toggle="tab" type="st7">入职（{$project['enter']|count}）</a></li>
-                                <li><a class="btn btn-primarya" href="#st8"  data-toggle="tab" type="st8">过保（{$project['safe']|count}）</a></li>
-                            </if>
+                            <elseif  condition="$business_info['pro_type'] eq '2'" />
+                            <li><a class="" href="#st1"  data-toggle="tab" type="st1">CallList（{$project['calllist']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st2"  data-toggle="tab" type="st2">顾问面试（{$project['adviser']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st3"  data-toggle="tab" type="st3">推荐人才（{$project['tj']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st4"  data-toggle="tab" type="st4">面试（{$project['interview']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st5"  data-toggle="tab" type="st5">面试通过（{$project['pass']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st6"  data-toggle="tab" type="st6">Offer（{$project['offer']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st7"  data-toggle="tab" type="st7">入职（{$project['enter']|count}）</a></li>
+                            <elseif  condition="$business_info['pro_type'] eq '3'" />
+                            <li><a class="" href="#st1"  data-toggle="tab" type="st1">CallList（{$project['calllist']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st2"  data-toggle="tab" type="st2">顾问面试（{$project['adviser']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st3"  data-toggle="tab" type="st3">推荐人才（{$project['tj']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st4"  data-toggle="tab" type="st4">面试（{$project['interview']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st5"  data-toggle="tab" type="st5">面试通过（{$project['pass']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st6"  data-toggle="tab" type="st6">Offer（{$project['offer']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st7"  data-toggle="tab" type="st7">入职（{$project['enter']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st8"  data-toggle="tab" type="st8">过保（{$project['safe']|count}）</a></li>
+                            <elseif  condition="$business_info['pro_type'] eq '4'" />
+                            <li><a class="" href="#st1"  data-toggle="tab" type="st1">推荐简历（{$project['calllist']|count}）</a></li>
                         </if>
                     </ul>
                 </div>

@@ -925,7 +925,7 @@ class BusinessAction extends Action {
         $this->business_info = $business_info;
         $this->business_id = $business_id;
         //自定义字段
-        $this->field_list = M('Fields')->where(array('model' => 'business', 'field' => array('not in', array('name', 'status_id'))))->order('is_main desc, order_id asc')->select();
+//        $this->field_list = M('Fields')->where(array('model'=>'business','field'=>array('not in',array('name','status_id'))))->order('is_main desc, order_id asc')->select();
         $this->alert = parseAlert();
         $this->assign('pro_type', $this->pro_type);
         $this->display();
