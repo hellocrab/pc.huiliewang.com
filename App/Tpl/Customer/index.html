@@ -267,7 +267,7 @@
 												<button class="btn btn-default btn-search" id="short_search_btn" type="submit"><i class="fa fa-search"></i></button>
 											</span>
 										</div>
-										&nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>
+										&nbsp;&nbsp;<!--<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
 									</li>
 								</ul>
 							</form>
@@ -394,11 +394,11 @@
 										<td>创建时间</td>
 										<?php if($openrecycle == 2){ ?>
 										<if condition="$_GET['asc_order'] == 'update_time' and $Think.get.content neq 'resource' ">
-											<td><a href="{:U('customer/index','desc_order=update_time&'.$parameter)}" style="cursor: none;color:#000">{:L('FROM_THE_DUE_DAY')}&nbsp;<span class="fa fa-caret-up"></span></a></td>
+											<td><a href="{:U('customer/index','desc_order=update_time&'.$parameter)}" style="cursor: default;color:#000">{:L('FROM_THE_DUE_DAY')}&nbsp;<span class="fa fa-caret-up"></span></a></td>
 											<elseif condition="$_GET['desc_order'] == 'update_time' and $Think.get.content neq 'resource' "/>
-											<td><a href="{:U('customer/index','asc_order=update_time&'.$parameter)}" style="cursor: none;color:#000">{:L('FROM_THE_DUE_DAY')}&nbsp;<span class="fa fa-caret-down"></span></a></td>
+											<td><a href="{:U('customer/index','asc_order=update_time&'.$parameter)}" style="cursor: default;color:#000">{:L('FROM_THE_DUE_DAY')}&nbsp;<span class="fa fa-caret-down"></span></a></td>
 											<elseif condition="$Think.get.content neq 'resource'"/>
-											<td><a href="{:U('customer/index','desc_order=update_time&'.$parameter)}" style="cursor: none;color:#000">{:L('FROM_THE_DUE_DAY')}</a></td>
+											<td><a href="{:U('customer/index','desc_order=update_time&'.$parameter)}" style="cursor: default;color:#000">{:L('FROM_THE_DUE_DAY')}</a></td>
 										</if>
 										<?php } ?>
 										<if condition="$Think.get.content neq 'resource'">
@@ -887,8 +887,8 @@
 			</empty>
 		</div>
 		<div class="clearfix"></div>
-		<div style="margin-left: 35px;margin-top:10px;"><a href="javascript:void(0);" style="display: -moz-stack;margin: 30px 0px 0px; font-size: 12px; color: rgb(62, 133, 233);" id="add_btn">+添加筛选条件</a>
-		</div>
+		<!--<div style="margin-left: 35px;margin-top:10px;"><a href="javascript:void(0);" style="display: -moz-stack;margin: 30px 0px 0px; font-size: 12px; color: rgb(62, 133, 233);" id="add_btn">+添加筛选条件</a>
+		</div>-->
         <div class="" style="margin-left: 20px;margin-top: 10px;">
             <div  class="form-group">
                 <div class="col-md-3 control-label">所属行业：</div>

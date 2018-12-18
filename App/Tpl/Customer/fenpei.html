@@ -5,11 +5,11 @@
 	<input type="text" name="owner_name" id="owner_name" class="form-control" value="{$Think.session.full_name}"/>
 	
 	<p style="float:right;line-height: 30px;">
-		{:L('INFORM_THE_WAY')}<input type="checkbox" name="message_alert" value="1" checked="checked">{:L('STAND_INSIDE_LETTER')} &nbsp; 
+		{:L('INFORM_THE_WAY')}&nbsp;&nbsp;<input type="checkbox" name="message_alert" value="1" checked="checked">{:L('STAND_INSIDE_LETTER')} &nbsp;
 		<if condition="F('sms')">
 			<input type="checkbox" name="sms_alert" value="1">{:L('NOTE')} &nbsp; 
 		</if>
-		<input type="checkbox" name="email_alert" value="1">{:L('EMAIL')}
+		<input type="checkbox" name="email_alert" value="1" style="display: none">{/*:L('EMAIL')*/}
 	</p>
 </form>
 <div style="display:none;" id="dialog-role-list2" title="{:L('SELECT_ALL_THE_PEOPLE')}">
