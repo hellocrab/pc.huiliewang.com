@@ -11,7 +11,7 @@
  Target Server Version : 50636
  File Encoding         : 65001
 
- Date: 14/12/2018 18:27:01
+ Date: 18/12/2018 15:59:47
 */
 
 SET NAMES utf8mb4;
@@ -76,7 +76,7 @@ CREATE TABLE `mx_resume`  (
   `work_status_remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'work_status_remark',
   `secrecy` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'secrecy',
   PRIMARY KEY (`eid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1659489 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '简历主表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1854576 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '简历主表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for mx_resume_collection
@@ -119,7 +119,7 @@ CREATE TABLE `mx_resume_edu`  (
   `degree` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '学历 1:高中 2:中专 3:大专 4:本科  5:硕士 6:博士 7:MBA/EMBA 8:博士后',
   `recruitment` tinyint(1) NULL DEFAULT NULL COMMENT '是否统招 1:是 2:否',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 443052 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '简历项目表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 622979 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '简历项目表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for mx_resume_languages
@@ -135,7 +135,7 @@ CREATE TABLE `mx_resume_languages`  (
   `listen_speak` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `read_write` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 457689 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '人才简历语言' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 630606 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '人才简历语言' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for mx_resume_project
@@ -155,7 +155,7 @@ CREATE TABLE `mx_resume_project`  (
   `responsibility` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '责任',
   `performance` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 615031 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '简历项目表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 742894 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '简历项目表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for mx_resume_work
@@ -177,7 +177,7 @@ CREATE TABLE `mx_resume_work`  (
   `salary_remark` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '薪资注释',
   `reasons_for_leaving` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '离职原因',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 465247 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '简历项目表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 500058 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '简历项目表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for mx_resume_work_position
@@ -198,6 +198,6 @@ CREATE TABLE `mx_resume_work_position`  (
   `responsibility` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '负责内容',
   `performance` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1280758 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1954796 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 SET FOREIGN_KEY_CHECKS = 1;
