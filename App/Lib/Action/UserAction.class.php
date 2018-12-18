@@ -426,7 +426,7 @@ class UserAction extends Action {
 
 		$Page = new Page($count,10);
 		$this->assign('page', $Page->show());
-		$this->search_field = $_REQUEST; // 搜索信息
+		$this->search_field = $_REQUEST;   //   搜索信息
 		$this->role_list = $role_list;
 		$this->display();
 	}
