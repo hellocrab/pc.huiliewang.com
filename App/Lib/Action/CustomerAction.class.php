@@ -1474,6 +1474,7 @@ class CustomerAction extends Action {
                                     $all_list[$k]['contacts'] = $contacts;
                                 }
                             }
+                            unset($contacts);
                         }
                     } else {
                         if ($dc_ids) {
@@ -1503,11 +1504,10 @@ class CustomerAction extends Action {
                             }
                             $all_list[$k]["address"] = $city_name[$all_list[$k]["address"]];
                             $all_list[$k]["industry"] = $industry_name[$all_list[$k]["industry"]];
+                            unset($contacts);
                         }
                     }
                     session('export_status', 1);
-                    dump($all_list);
-                    dump($model_ids);
                     $this->excelExport($all_list, $model_ids);
                 } else {
                     alert('error', L('HAVE NOT PRIVILEGES'), $_SERVER['HTTP_REFERER']);
