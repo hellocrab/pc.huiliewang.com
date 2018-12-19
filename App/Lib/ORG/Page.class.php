@@ -160,7 +160,7 @@ class Page {
                 }
             }
         }
-        $thego = '<input type="text" style="width:auto;display:inline-block;" id="go_page" class="form-control input-sm" name="' . $this->varPage . '" onchange="go_page' . $this->varPage . '(this.value)">';
+        $thego = '<input type="text" style="width:auto;display:inline-block;" autocomplete="off" id="go_page" class="form-control input-sm" name="' . $this->varPage . '" onchange="go_page' . $this->varPage . '(this.value)">';
         $baseUrl = U('');
         unset($parameter[$p]);
         unset($parameter['listrows']);
@@ -189,17 +189,34 @@ class Page {
 			return url+"\n"+arg+"\n"+arg_val; 
 		} 
        function go_page' . $this->varPage . '(page){
+            var check = go_page_check('.$this->totalPages.',page,$(this));
 			var listrows = $("#listrows option:selected").val();
 			if(page.indexOf("listrows") <= 0){
-				if(listrows > 0){
+				if(listrows > 0&&check){
 					window.location = "'.$baseUrl.'&p="+page+"&listrows="+listrows+"'.$params.'";
 				}else{
-					window.location = page;
+					//window.location = page;
 				}
 			}else{
 				window.location = changeURLArg(page,"listrows",listrows);
 			}
         }
+        function go_page_check(totalpage,page,obj) {
+        const reg= /^[0-9]*$/;
+        if(!reg.test(page)){
+            obj.val(\'\');
+            alert_crm(\'请输入数字！\');
+            return false;
+        }else{
+            if(page>totalpage){
+                alert_crm(\'只有 \'+totalpage+\' 页！\');
+                 obj.val(\'\');
+                return false;
+            }else{
+                return true;
+            }
+        }
+    }
         </script>';
         $pageStr = str_replace(
                 array('%header%', '%nowPage%', '%totalRow%', '%totalPage%', '%upPage%', '%downPage%', '%first%', '%prePage%', '%linkPage%', '%nextPage%', '%end%', '%go%'), array($this->config['header'], $this->nowPage, $this->totalRows, $this->totalPages, $upPage, $downPage, $theFirst, $prePage, $linkPage, $nextPage, $theEnd, $thego), $this->config['theme']);

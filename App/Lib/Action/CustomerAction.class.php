@@ -1367,8 +1367,23 @@ class CustomerAction extends Action {
 
             import("@.ORG.Page");
             $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
-
-            $customerIdsData = $m_customer_share->where(array('by_sharing_id'=>$sharing_id))->field('customer_id')->select();
+            switch ($by){
+                case 'sub':
+                    if($below_ids[0]!=-1){
+                        $shareWhere['by_sharing_id'] = array('in',$below_ids);
+                        $customerIdsData = $m_customer_share->where($shareWhere)->field('customer_id')->select();
+                    }else{
+                        unset($customerIdsData);
+                        $subGoOn = 1;
+                    }
+                    break;
+                case 'share':
+                    unset($customerIdsData);
+                    break;
+                default:
+                    $customerIdsData = $m_customer_share->where(array('by_sharing_id'=>$sharing_id))->field('customer_id')->select();
+                    break;
+            }
             if($customerIdsData){
                 foreach ($customerIdsData as $k =>$v){
                     $customerIds[] = $v['customer_id'];
@@ -1379,9 +1394,10 @@ class CustomerAction extends Action {
             }else{
                 $map = $where;
             }
-            $list = $d_v_customer->where($map)->order($order)->page($p . ',' . $listrows)->select();
-            $count = $d_v_customer->where($map)->count();
-
+            if($subGoOn!=1){
+                $list = $d_v_customer->where($map)->order($order)->page($p . ',' . $listrows)->select();
+                $count = $d_v_customer->where($map)->count();
+            }
             $p_num = ceil($count / $listrows);
             if ($p_num < $p) {
                 $p = $p_num;
