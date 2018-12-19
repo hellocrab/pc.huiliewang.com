@@ -175,7 +175,7 @@ function selectStatus(){
         async: false,
         success: function (data) {
         	$.each(data.data, function(k, v){
-				temp += '<option value="'+v.content+'">'+v.str_content+'</option>';
+				temp += '<option value="'+v.content+'" rel="'+v.status_id+'">'+v.str_content+'</option>';
         	});
         },
         dataType: 'json'
@@ -187,7 +187,7 @@ function selectReply(){
 	var replay_content = $("#replay_list option:selected").val();
 	var status_id = $("#replay_list option:selected").attr('rel');
     //修改跟进类型
-    $("#status_id option[value="+status_id+"]").attr('selected',true);
+    $("#status_id option[value="+status_id+"]").prop('selected',true);
 	//判断是否替换
     var log_content = $('#log_content').val();
     if (log_content !== '') {
