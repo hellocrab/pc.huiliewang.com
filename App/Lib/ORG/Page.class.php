@@ -189,7 +189,7 @@ class Page {
 			return url+"\n"+arg+"\n"+arg_val; 
 		} 
        function go_page' . $this->varPage . '(page){
-            var check = go_page_check();
+            var check = go_page_check('.$this->totalPages.',page,$(this));
 			var listrows = $("#listrows option:selected").val();
 			if(page.indexOf("listrows") <= 0){
 				if(listrows > 0&&check){
@@ -201,17 +201,16 @@ class Page {
 				window.location = changeURLArg(page,"listrows",listrows);
 			}
         }
-        function go_page_check() {
-        let count = "'.$this->totalPages.'";
+        function go_page_check(totalpage,page,obj) {
         const reg= /^[0-9]*$/;
-        let _this = $(\'#go_page\');
-        if(!reg.test(_this.val())){
-            _this.val(\'\');
+        if(!reg.test(page)){
+            obj.val(\'\');
             alert_crm(\'请输入数字！\');
             return false;
         }else{
-            if( _this.val()>count){
-                alert_crm(\'只有 \'+count+\' 页！\');
+            if(page>totalpage){
+                alert_crm(\'只有 \'+totalpage+\' 页！\');
+                 obj.val(\'\');
                 return false;
             }else{
                 return true;
