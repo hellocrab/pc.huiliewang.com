@@ -1096,7 +1096,7 @@ class ContractAction extends Action {
 				}
             }
             //过滤不在权限范围内的role_id
-            //包含自己的合同
+            //包含自己的合同 
 //			if(isset($where['contract.owner_role_id'])){
 //				if(!empty($where['contract.owner_role_id']) && !in_array(intval($where['contract.owner_role_id']),$this->_permissionRes)){
 //					$where['contract.owner_role_id'] = array('in',implode(',', $this->_permissionRes));
