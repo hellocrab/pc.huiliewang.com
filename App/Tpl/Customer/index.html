@@ -195,7 +195,7 @@
                     </div>
                     <div class="row " id="title-show">
                         <ul class="nav pull-left" style="margin:2px 0 0 15px;">
-                            <a href="{:U('Customer/add')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; {:L('CREATE_NEW_CUSTOMER')}</a>
+                            <a href="{:U('Customer/add')}" <if condition="$_GET['content']"> style="display:none"</if> class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; {:L('CREATE_NEW_CUSTOMER')}</a>
                         </ul>
                         <div class="pull-right" style="margin-right:20px;">
                             <form class="form-inline pull-left" id="customer_search" action="{:U('Customer/index')}" method="get">
