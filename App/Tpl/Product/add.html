@@ -161,6 +161,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-md-3 control-label">手机：</label>
+                                    <div class="col-md-6">
+                                        <input class="form-control required mobile" type="text" id="telphone" name="telephone" value="{$resume.telephone}">
+                                        <span id="sketchTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                    </div>
+                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                </div>
+
+                                <div class="form-group">
                                     <label class="col-md-3 control-label">性别：</label>
                                     <div class="col-md-6">
                                         <div class="radio radio-info radio-inline" style="margin-left: 20px;margin-right: 20px;">
@@ -211,15 +220,6 @@
                                         <input class="form-control text-center timerinput" id="birthday" type="text"  onFocus="WdatePicker({dateFmt:'yyyy-MM', maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;height: 32px;text-align: left;" >
                                     </div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;"></span></div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">手机：</label>
-                                    <div class="col-md-6">
-                                        <input class="form-control required mobile" type="text" id="telphone" name="telephone" value="{$resume.telephone}">
-                                        <span id="sketchTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
-                                    </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">邮箱：</label>
@@ -625,8 +625,6 @@
 <script src="__PUBLIC__/js/cityselector_o.js"></script>
 
 <script type="text/javascript">
-
-
 //    lieselect();
     //初始化上传图片
     $("body").on('click','input[type="file"]', function(){
@@ -634,7 +632,28 @@
 //	$("#"+selector).uploadPreview({ Img: selector+"_prev", Width: 120, Height: 120 });
     });
     $(document).ready(function(){
-
+        $('#telphone').on('change',function () {
+           let _this = $(this);
+           let tel = _this.val().trim();
+           $('.telcheck').remove();
+           const reg = /^\d{11}$/;
+           if(reg.test(tel)){
+               $.ajax({
+                   url:'{:U("Product/checkTel")}',
+                   type:'post',
+                   async:true,
+                   data:{tel:tel},
+                   success:function (msg) {
+                       if(msg){
+                           alert_crm('已存在该手机号！');
+                           _this.parent().next().children("span").after('<span class="telcheck" style="color:#cc5965;position: relative; white-space: nowrap;left: 17px">已存在该手机号！</span>');
+                       }else{
+                           _this.parent().next().after('<div class="col-md-2 telcheck"><img style="width: 22px;height:22px;position: relative;top: 6px;padding: 0;left: -22px" src="/Public/img/telcheck.png"></div>');
+                       }
+                   }
+               })
+           }
+        });
         $(document).on("click",".btnclosee",function (event) {
             var width=$("#right-sidebar-log").width();
             if($("#right-sidebar-log").css('right') == '0px'){

@@ -213,7 +213,11 @@ class ProductAction extends Action {
                 if ($field == 'name') {
                     //$where['name'] = array('like',$search);
                     $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
-                    $where['name'] = array('like', '%' . $search . '%');
+                    if(strlen($search)==11&&is_numeric($search)){
+                        $where['telephone'] = array('eq',$search);
+                    }else{
+                        $where['name'] = array('like', '%' . $search . '%');
+                    }
                 }
             }
             //过滤不在权限范围内的role_id
@@ -2551,5 +2555,11 @@ class ProductAction extends Action {
             $this->display();
         }
     }
-
+    function checkTel(){
+        if(IS_POST){
+            $resume = M('resume');
+            $where['telephone'] = I('post.tel');
+            $resume->where($where)->find()?$this->ajaxReturn(true):$this->ajaxReturn(false);
+        }
+    }
 }
