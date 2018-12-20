@@ -2933,6 +2933,7 @@ class BusinessAction extends Action {
             ApiClient::build($huilewangJobService);
             $JobResumesRequestDo = new com\hlw\huiliewang\dataobject\job\JobResumesRequestDTO();
             $JobResumesRequestDo->job_id = $huilie_job_id['huilie_job_id'];
+            $JobResumesRequestDo->boss_resume_id = $callInfo['resume_id'];
             $JobResumesRequestDo->resume = $resume;
             $JobResumesRequestDo->resume_data = $resume_data;
             if (!empty($resume_edu)) {
