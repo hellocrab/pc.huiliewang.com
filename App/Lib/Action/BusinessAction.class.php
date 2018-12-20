@@ -2926,34 +2926,38 @@ class BusinessAction extends Action {
 
         //查询huiliewang
         $huilie_job_id = M('business')->where(['business_id' => $callInfo['project_id']])->field('huilie_job_id')->find();
+        try {
+            import('@.ORG.ApiClient');
+            ApiClient::init($appid, $secret);
+            $huilewangJobService = new com\hlw\huiliewang\interfaces\JobHuilieServiceClient(null);
+            ApiClient::build($huilewangJobService);
+            $JobResumesRequestDo = new com\hlw\huiliewang\dataobject\job\JobResumesRequestDTO();
+            $JobResumesRequestDo->job_id = $huilie_job_id['huilie_job_id'];
+            $JobResumesRequestDo->resume = $resume;
+            $JobResumesRequestDo->resume_data = $resume_data;
+            if (!empty($resume_edu)) {
+                $JobResumesRequestDo->resume_edu = $resume_edu;
+            }
+            if (!empty($resume_languages)) {
+                $JobResumesRequestDo->resume_languages = $resume_languages;
+            }
+            if (!empty($resume_project)) {
+                $JobResumesRequestDo->resume_project = $resume_project;
+            }
+            if (!empty($resume_work)) {
+                $JobResumesRequestDo->resume_work = $resume_work;
+            }
+            $res = $huilewangJobService->saveJobResumes($JobResumesRequestDo);
 
-        import('@.ORG.ApiClient');
-        ApiClient::init($appid, $secret);
-        $huilewangJobService = new com\hlw\huiliewang\interfaces\JobHuilieServiceClient(null);
-        ApiClient::build($huilewangJobService);
-        $JobResumesRequestDo = new com\hlw\huiliewang\dataobject\job\JobResumesRequestDTO();
-        $JobResumesRequestDo->job_id = $huilie_job_id['huilie_job_id'];
-        $JobResumesRequestDo->resume = $resume;
-        $JobResumesRequestDo->resume_data = $resume_data;
-        if (!empty($resume_edu)) {
-            $JobResumesRequestDo->resume_edu = $resume_edu;
+            if ($res->success && $res->code == 200) {
+                M('fine_project')->where(['id' => $callid])->save(['hjl_status' => 1]);
+            }
+            $retuens = ['succ' => true, 'code' => 200];
+        } catch (Exception $ex) {
+            $retuens = ['succ' => true, 'code' => 500, 'info' => $ex->getMessage()];
         }
-        if (!empty($resume_languages)) {
-            $JobResumesRequestDo->resume_languages = $resume_languages;
-        }
-        if (!empty($resume_project)) {
-            $JobResumesRequestDo->resume_project = $resume_project;
-        }
-        if (!empty($resume_work)) {
-            $JobResumesRequestDo->resume_work = $resume_work;
-        }
-        $res = $huilewangJobService->saveJobResumes($JobResumesRequestDo);
+        $this->ajaxReturn($retuens) ;
         
-        if($res->success && $res->code == 200){
-            M('fine_project')->where(['id' => $callid])->save(['hjl_status' => 1]);
-        }
-        return true;
-            
     }
 
 }

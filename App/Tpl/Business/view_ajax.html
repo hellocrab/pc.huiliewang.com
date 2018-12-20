@@ -1697,8 +1697,8 @@
 <script>
 
 
-                            /*任务详情 加载的圈圈效果*/
-                            var detail_html = '<div class="spiner-example">\
+                                /*任务详情 加载的圈圈效果*/
+                                var detail_html = '<div class="spiner-example">\
                                         <div class="sk-spinner sk-spinner-fading-circle">\
                                                 <div class="sk-circle1 sk-circle"></div>\
                                                 <div class="sk-circle2 sk-circle"></div>\
@@ -1714,67 +1714,276 @@
                                                 <div class="sk-circle12 sk-circle"></div>\
                                         </div>\
                                 </div>';
-                            //快捷沟通
-                            $(".select2").select2();
+                                //快捷沟通
+                                $(".select2").select2();
 
-                            $("#dialog-setting_reply").dialog({
-                                autoOpen: false,
-                                // modal: true,
-                                width: 550,
-                                maxHeight: 450,
-                                position: ["center", 100],
-                                close: function () {
-                                    selectStatus();//更新
-                                    $(this).html("");
-                                },
-                                buttons: {
-                                    "确定": function () {
-                                        $('#status_form1').submit();
-                                        $(this).dialog("close");
-                                    },
-                                    "取消": function () {
+                                $("#dialog-setting_reply").dialog({
+                                    autoOpen: false,
+                                    // modal: true,
+                                    width: 550,
+                                    maxHeight: 450,
+                                    position: ["center", 100],
+                                    close: function () {
                                         selectStatus();//更新
-                                        $(this).dialog("close");
+                                        $(this).html("");
+                                    },
+                                    buttons: {
+                                        "确定": function () {
+                                            $('#status_form1').submit();
+                                            $(this).dialog("close");
+                                        },
+                                        "取消": function () {
+                                            selectStatus();//更新
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
+
+                                $(function () {
+                                    $("#setting_reply_dialog").click(function () {
+                                        $('#dialog-setting_reply').dialog('open');
+                                        $('#dialog-setting_reply').load('{:U("setting/replyList")}');
+                                    });
+                                })
+
+                                function selectStatus() {
+                                    var status_id = $("#status_id option:selected").val();
+                                    var temp = '<option value="">--请选择--</option>';
+                                    $.ajax({
+                                        type: 'post',
+                                        url: "{:U('setting/getReplyByStatus')}",
+                                        data: {status_id: status_id},
+                                        async: false,
+                                        success: function (data) {
+                                            $.each(data.data, function (k, v) {
+                                                temp += '<option value="' + v.content + '">' + v.str_content + '</option>';
+                                            });
+                                        },
+                                        dataType: 'json'
+                                    });
+                                    $('#replay_list').html(temp);
+                                }
+
+                                function selectReply() {
+                                    var replay_content = $("#replay_list option:selected").val();
+                                    var status_id = $("#replay_list option:selected").attr('rel');
+                                    //修改跟进类型
+                                    $("#status_id option[value=" + status_id + "]").attr('selected', true);
+                                    //判断是否替换
+                                    var log_content = $('#log-text').val();
+                                    if (log_content !== '') {
+                                        swal({
+                                            title: '',
+                                            text: '已填写沟通日志内容，确定要替换吗？',
+                                            type: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#DD6B55",
+                                            confirmButtonText: "确认",
+                                            cancelButtonText: "取消",
+                                            closeOnConfirm: true,
+                                            closeOnCancel: true}, function (isConfirm) {
+                                            if (isConfirm) {
+                                                $('#log-text').val(replay_content);
+                                            } else {
+                                                return false;
+                                            }
+                                        });
+                                    } else {
+                                        $('#log-text').val(replay_content);
                                     }
                                 }
-                            });
 
-                            $(function () {
-                                $("#setting_reply_dialog").click(function () {
-                                    $('#dialog-setting_reply').dialog('open');
-                                    $('#dialog-setting_reply').load('{:U("setting/replyList")}');
+                                $('#log-list').on('click', '.map', function () {
+                                    $(this).next('.allmap').slideToggle('show');
+                                    var a = $(this).siblings('.longitude').attr('rel');
+                                    var b = $(this).siblings('.latitude').attr('rel');
+                                    var vals = $(this).next('.allmap').attr('rel');
+                                    var url = "{:U('index/gettranslocation')}" + "&longtitude=" + a + "&latitude=" + b;
+                                    $.get(url, function (data) {
+                                        var x = data.data.x;
+                                        var y = data.data.y;
+                                        setTimeout("mapInit(" + y + "," + x + "," + vals + ")", 1000);
+                                    })
                                 });
-                            })
 
-                            function selectStatus() {
-                                var status_id = $("#status_id option:selected").val();
-                                var temp = '<option value="">--请选择--</option>';
-                                $.ajax({
-                                    type: 'post',
-                                    url: "{:U('setting/getReplyByStatus')}",
-                                    data: {status_id: status_id},
-                                    async: false,
-                                    success: function (data) {
-                                        $.each(data.data, function (k, v) {
-                                            temp += '<option value="' + v.content + '">' + v.str_content + '</option>';
-                                        });
+                                function mapInit(x, y, mapID) {
+                                    var map = new BMap.Map(mapID);
+                                    var point = new BMap.Point(y, x);
+                                    map.centerAndZoom(point, 15);
+                                    var marker = new BMap.Marker(point);  // 创建标注
+                                    map.addOverlay(marker);               // 将标注添加到地图中
+                                    map.enableScrollWheelZoom(true);
+                                }
+                                ;
+                                /**
+                                 * 页面加载时执行Tab start
+                                 */
+                                $(function () {
+                                    var thisId = window.location.hash;
+                                    var atype = thisId.substr(1);
+                                    // $('#left_list a[type="'+atype+'"]').trigger('click');
+                                    $('#left_list a[type="' + atype + '"]').tab('show');
+                                    $('.houxuanren a[type="' + atype + '"]').tab('show');
+                                });
+                                /**
+                                 * 页面加载时执行Tab end
+                                 */
+                                $('#left_list a').click(function (e) {
+                                    // $(this).tab('show');
+                                    var maodian = '#' + $(this).attr('type');
+                                    url_jump(maodian);
+                                    var bid = $('#bid').val();
+                                    if (bid == '') {
+                                        $('#customer-relation').removeClass('all_business');
+                                        $('#customer-relation').addClass('all_business_a');
+                                    }
+                                });
+
+                                function url_jump(maodian) {
+                                    $('#maodian').val(maodian);
+                                    var customer_id = "{$customer_id}";
+                                    var module_business_id = $('#module_business_id').val();
+                                    var bid = $('#bid').val();
+                                    if (module_business_id) {
+                                        var url = "{:U('business/view','id=')}" + module_business_id + maodian;
+                                    } else {
+                                        if (bid) {
+                                            var url = "{:U('customer/view','id=')}" + customer_id + '&bid=' + bid + maodian;
+                                        } else {
+                                            var url = "{:U('customer/view','id=')}" + customer_id + maodian;
+                                        }
+                                    }
+
+                                    // $("body").scrollTop(0);
+                                    // window.location.href = 'http://'+window.location.host+url;
+                                    window.history.replaceState({}, 0, 'http://' + window.location.host + url);
+                                }
+                                var business_id = "{$business_id}";
+
+                                /**
+                                 * 附件 如果是图片时 双击可查看大图
+                                 */
+                                $('.litebox_file').liteBox({
+                                      revealSpeed: 400,
+                                      background: 'rgba(0,0,0,.8)',
+                                      overlayClose: true,
+                                      escKey: true,
+                                      navKey: true,
+                                      errorMessage: '图片加载失败.'
+                                });
+                                $("#dialog-file").dialog({
+                                    autoOpen: false,
+                                    modal: true,
+                                    width: 800,
+                                    maxHeight: 400,
+                                    position: ["center", 100],
+                                    buttons: {
+                                        "确定": function () {
+                                            location.reload();
+                                        },
+                                        "取消": function () {
+                                            $(this).html('');//清空缓存
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
+
+                                $(".add_file").click(function () {
+                                    $('#dialog-file').dialog('open');
+                                    $('#dialog-file').load('{:U("file/add","r=RBusinessFile&module=business&id=".$business_id)}');
+                                });
+
+
+                                $(".role_info").click(function () {
+                                    $role_id = $(this).attr('rel');
+                                    $('#dialog-role-info').dialog('open');
+                                    $('#dialog-role-info').load('{:U("user/dialoginfo","id=")}' + $role_id);
+                                });
+
+                                $("#dialog-role-info").dialog({
+                                    autoOpen: false,
+                                    modal: true,
+                                    width: 600,
+                                    maxHeight: 550,
+                                    position: ["center", 100]
+                                });
+
+                                $('.business_code').on('click', function () {
+                                    var is_checked = $(this).attr('rel');
+                                    if (is_checked == 1) {
+                                        $(this).attr('rel', '');
+                                        $(this).prop('checked', false);
+                                    } else {
+                                        $('.business_code').attr('rel', '');
+                                        $(this).attr('rel', 1);
+                                    }
+                                });
+                                /*单选框取消选择*/
+                                $('#product-radio ins').on('click', function () {
+                                    var checked = $(this).parent().hasClass('hahha');
+
+                                    if (!checked) {
+                                        $(this).parent().addClass('checked');
+                                        $(this).parent().addClass('hahha');
+                                        $(this).prev().prop('checked', true);
+                                    } else {
+                                        $(this).parent().removeClass('checked');
+                                        $(this).parent().removeClass('hahha');
+                                        $(this).prev().prop('checked', false);
+                                    }
+                                });
+                                /*关联联系人*/
+                                $("#dialog-contacts").dialog({
+                                    autoOpen: false,
+                                    modal: true,
+                                    minWidth: 850,
+                                    maxHeight: 600,
+                                    position: ["center", 100],
+                                    buttons: {
+                                        "确定": function () {
+                                            var _this = this;
+                                            var contacts_ids = new Array();
+                                            $('.contacts_ch:checked').each(function (k, v) {
+                                                contacts_ids.push($(v).val());
+                                            }).val();
+                                            if (contacts_ids.length == 0) {
+                                                alert_crm('请至少选择一个联系人！');
+                                            } else {
+                                                $.get("{:U('contacts/relToBusiness')}&act_n=1&contacts_id=" + contacts_ids + "&business_id=" + business_id, {}, function (ret) {
+                                                    if (ret[0] == 'success') {
+                                                        var temp_business_id = business_id;
+                                                        $('.product-content').html(detail_html);
+                                                        product_detail($('.product-list[rel=' + temp_business_id + ']').find('.product-a'), "a[href='#tab-3']");
+                                                        $(_this).dialog("close");
+                                                    } else {
+                                                        alert_crm(ret[1]);
+                                                    }
+                                                })
+
+                                            }
+                                        },
+                                        "取消": function () {
+                                            $(this).html('');
+                                            $(this).dialog("close");
+                                        }
                                     },
-                                    dataType: 'json'
+                                    close: function () {
+                                        $(this).empty();
+                                    }
                                 });
-                                $('#replay_list').html(temp);
-                            }
 
-                            function selectReply() {
-                                var replay_content = $("#replay_list option:selected").val();
-                                var status_id = $("#replay_list option:selected").attr('rel');
-                                //修改跟进类型
-                                $("#status_id option[value=" + status_id + "]").attr('selected', true);
-                                //判断是否替换
-                                var log_content = $('#log-text').val();
-                                if (log_content !== '') {
+                                $("#rel_contacts").click(function () {
+                                    $('#dialog-contacts').html('');
+                                    // var customer_id = $(this).attr('rel');
+                                    // var business_id = $(this).attr('rel1');
+                                    $('#dialog-contacts').load('{:U("contacts/checklistdialog",array("id"=>$customer_id,"business_id"=>$business_id))}');
+                                    $('#dialog-contacts').dialog('open');
+                                });
+                                //解绑联系人
+                                $(".not_rel_contacts").click(function () {
+                                    var _this = this;
                                     swal({
-                                        title: '',
-                                        text: '已填写沟通日志内容，确定要替换吗？',
+                                        title: '确定要解除绑定吗？',
                                         type: "warning",
                                         showCancelButton: true,
                                         confirmButtonColor: "#DD6B55",
@@ -1783,443 +1992,130 @@
                                         closeOnConfirm: true,
                                         closeOnCancel: true}, function (isConfirm) {
                                         if (isConfirm) {
-                                            $('#log-text').val(replay_content);
-                                        } else {
-                                            return false;
-                                        }
-                                    });
-                                } else {
-                                    $('#log-text').val(replay_content);
-                                }
-                            }
-
-                            $('#log-list').on('click', '.map', function () {
-                                $(this).next('.allmap').slideToggle('show');
-                                var a = $(this).siblings('.longitude').attr('rel');
-                                var b = $(this).siblings('.latitude').attr('rel');
-                                var vals = $(this).next('.allmap').attr('rel');
-                                var url = "{:U('index/gettranslocation')}" + "&longtitude=" + a + "&latitude=" + b;
-                                $.get(url, function (data) {
-                                    var x = data.data.x;
-                                    var y = data.data.y;
-                                    setTimeout("mapInit(" + y + "," + x + "," + vals + ")", 1000);
-                                })
-                            });
-
-                            function mapInit(x, y, mapID) {
-                                var map = new BMap.Map(mapID);
-                                var point = new BMap.Point(y, x);
-                                map.centerAndZoom(point, 15);
-                                var marker = new BMap.Marker(point);  // 创建标注
-                                map.addOverlay(marker);               // 将标注添加到地图中
-                                map.enableScrollWheelZoom(true);
-                            }
-                            ;
-                            /**
-                             * 页面加载时执行Tab start
-                             */
-                            $(function () {
-                                var thisId = window.location.hash;
-                                var atype = thisId.substr(1);
-                                // $('#left_list a[type="'+atype+'"]').trigger('click');
-                                $('#left_list a[type="' + atype + '"]').tab('show');
-                                $('.houxuanren a[type="' + atype + '"]').tab('show');
-                            });
-                            /**
-                             * 页面加载时执行Tab end
-                             */
-                            $('#left_list a').click(function (e) {
-                                // $(this).tab('show');
-                                var maodian = '#' + $(this).attr('type');
-                                url_jump(maodian);
-                                var bid = $('#bid').val();
-                                if (bid == '') {
-                                    $('#customer-relation').removeClass('all_business');
-                                    $('#customer-relation').addClass('all_business_a');
-                                }
-                            });
-
-                            function url_jump(maodian) {
-                                $('#maodian').val(maodian);
-                                var customer_id = "{$customer_id}";
-                                var module_business_id = $('#module_business_id').val();
-                                var bid = $('#bid').val();
-                                if (module_business_id) {
-                                    var url = "{:U('business/view','id=')}" + module_business_id + maodian;
-                                } else {
-                                    if (bid) {
-                                        var url = "{:U('customer/view','id=')}" + customer_id + '&bid=' + bid + maodian;
-                                    } else {
-                                        var url = "{:U('customer/view','id=')}" + customer_id + maodian;
-                                    }
-                                }
-
-                                // $("body").scrollTop(0);
-                                // window.location.href = 'http://'+window.location.host+url;
-                                window.history.replaceState({}, 0, 'http://' + window.location.host + url);
-                            }
-                            var business_id = "{$business_id}";
-
-                            /**
-                             * 附件 如果是图片时 双击可查看大图
-                             */
-                            $('.litebox_file').liteBox({
-                                  revealSpeed: 400,
-                                  background: 'rgba(0,0,0,.8)',
-                                  overlayClose: true,
-                                  escKey: true,
-                                  navKey: true,
-                                  errorMessage: '图片加载失败.'
-                            });
-                            $("#dialog-file").dialog({
-                                autoOpen: false,
-                                modal: true,
-                                width: 800,
-                                maxHeight: 400,
-                                position: ["center", 100],
-                                buttons: {
-                                    "确定": function () {
-                                        location.reload();
-                                    },
-                                    "取消": function () {
-                                        $(this).html('');//清空缓存
-                                        $(this).dialog("close");
-                                    }
-                                }
-                            });
-
-                            $(".add_file").click(function () {
-                                $('#dialog-file').dialog('open');
-                                $('#dialog-file').load('{:U("file/add","r=RBusinessFile&module=business&id=".$business_id)}');
-                            });
-
-
-                            $(".role_info").click(function () {
-                                $role_id = $(this).attr('rel');
-                                $('#dialog-role-info').dialog('open');
-                                $('#dialog-role-info').load('{:U("user/dialoginfo","id=")}' + $role_id);
-                            });
-
-                            $("#dialog-role-info").dialog({
-                                autoOpen: false,
-                                modal: true,
-                                width: 600,
-                                maxHeight: 550,
-                                position: ["center", 100]
-                            });
-
-                            $('.business_code').on('click', function () {
-                                var is_checked = $(this).attr('rel');
-                                if (is_checked == 1) {
-                                    $(this).attr('rel', '');
-                                    $(this).prop('checked', false);
-                                } else {
-                                    $('.business_code').attr('rel', '');
-                                    $(this).attr('rel', 1);
-                                }
-                            });
-                            /*单选框取消选择*/
-                            $('#product-radio ins').on('click', function () {
-                                var checked = $(this).parent().hasClass('hahha');
-
-                                if (!checked) {
-                                    $(this).parent().addClass('checked');
-                                    $(this).parent().addClass('hahha');
-                                    $(this).prev().prop('checked', true);
-                                } else {
-                                    $(this).parent().removeClass('checked');
-                                    $(this).parent().removeClass('hahha');
-                                    $(this).prev().prop('checked', false);
-                                }
-                            });
-                            /*关联联系人*/
-                            $("#dialog-contacts").dialog({
-                                autoOpen: false,
-                                modal: true,
-                                minWidth: 850,
-                                maxHeight: 600,
-                                position: ["center", 100],
-                                buttons: {
-                                    "确定": function () {
-                                        var _this = this;
-                                        var contacts_ids = new Array();
-                                        $('.contacts_ch:checked').each(function (k, v) {
-                                            contacts_ids.push($(v).val());
-                                        }).val();
-                                        if (contacts_ids.length == 0) {
-                                            alert_crm('请至少选择一个联系人！');
-                                        } else {
-                                            $.get("{:U('contacts/relToBusiness')}&act_n=1&contacts_id=" + contacts_ids + "&business_id=" + business_id, {}, function (ret) {
+                                            $.get($(_this).attr('rel'), {}, function (ret) {
                                                 if (ret[0] == 'success') {
                                                     var temp_business_id = business_id;
                                                     $('.product-content').html(detail_html);
                                                     product_detail($('.product-list[rel=' + temp_business_id + ']').find('.product-a'), "a[href='#tab-3']");
-                                                    $(_this).dialog("close");
                                                 } else {
                                                     alert_crm(ret[1]);
                                                 }
                                             })
-
+                                        } else {
+                                            return false;
                                         }
-                                    },
-                                    "取消": function () {
-                                        $(this).html('');
-                                        $(this).dialog("close");
-                                    }
-                                },
-                                close: function () {
-                                    $(this).empty();
+                                    });
+                                })
+                                /*跟进记录*/
+                                function btnHide() {
+                                    $('#log-text').attr('rows', 1);
+                                    $('#log-btn').hide();
+                                    $('#business_table').hide();
+                                    $('#log-text').val('');
                                 }
-                            });
+                                $('#log-text').focus(function () {
+                                    $(this).attr('rows', 4);
+                                    $('#log-btn').show();
+                                    $('#business_table').show();
+                                    $('#add_log').prop('disabled', false);
+                                });
+                                $('#log-text').focusout(function () {
+                                    var code_id = $("input[name='id']:checked").val();
+                                    if ($(this).val() == '' && code_id == '') {
+                                        btnHide();
+                                    }
+                                });
+                                $('#quxiao').click(function () {
+                                    btnHide();
+                                    return false;
+                                });
+                                /*ajax 提交记录*/
 
-                            $("#rel_contacts").click(function () {
-                                $('#dialog-contacts').html('');
-                                // var customer_id = $(this).attr('rel');
-                                // var business_id = $(this).attr('rel1');
-                                $('#dialog-contacts').load('{:U("contacts/checklistdialog",array("id"=>$customer_id,"business_id"=>$business_id))}');
-                                $('#dialog-contacts').dialog('open');
-                            });
-                            //解绑联系人
-                            $(".not_rel_contacts").click(function () {
-                                var _this = this;
-                                swal({
-                                    title: '确定要解除绑定吗？',
-                                    type: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#DD6B55",
-                                    confirmButtonText: "确认",
-                                    cancelButtonText: "取消",
-                                    closeOnConfirm: true,
-                                    closeOnCancel: true}, function (isConfirm) {
-                                    if (isConfirm) {
-                                        $.get($(_this).attr('rel'), {}, function (ret) {
-                                            if (ret[0] == 'success') {
-                                                var temp_business_id = business_id;
-                                                $('.product-content').html(detail_html);
-                                                product_detail($('.product-list[rel=' + temp_business_id + ']').find('.product-a'), "a[href='#tab-3']");
-                                            } else {
-                                                alert_crm(ret[1]);
-                                            }
-                                        })
-                                    } else {
+                                $('#add_log').click(function () {
+                                    var log_content = $.trim($('#log-text').val());
+                                    if (log_content == '') {
+                                        alert_crm('沟通日志内容不能为空！');
                                         return false;
                                     }
-                                });
-                            })
-                            /*跟进记录*/
-                            function btnHide() {
-                                $('#log-text').attr('rows', 1);
-                                $('#log-btn').hide();
-                                $('#business_table').hide();
-                                $('#log-text').val('');
-                            }
-                            $('#log-text').focus(function () {
-                                $(this).attr('rows', 4);
-                                $('#log-btn').show();
-                                $('#business_table').show();
-                                $('#add_log').prop('disabled', false);
-                            });
-                            $('#log-text').focusout(function () {
-                                var code_id = $("input[name='id']:checked").val();
-                                if ($(this).val() == '' && code_id == '') {
-                                    btnHide();
-                                }
-                            });
-                            $('#quxiao').click(function () {
-                                btnHide();
-                                return false;
-                            });
-                            /*ajax 提交记录*/
+                                    //跟进类型
+                                    // var status_id = $('#status_id option:selected').val();
+                                    // if (status_id == '') {
+                                    //     alert_crm('跟进类型不能为空！');
+                                    //     $('#add_log').prop('disabled',false);
+                                    // }
 
-                            $('#add_log').click(function () {
-                                var log_content = $.trim($('#log-text').val());
-                                if (log_content == '') {
-                                    alert_crm('沟通日志内容不能为空！');
-                                    return false;
-                                }
-                                //跟进类型
-                                // var status_id = $('#status_id option:selected').val();
-                                // if (status_id == '') {
-                                //     alert_crm('跟进类型不能为空！');
-                                //     $('#add_log').prop('disabled',false);
-                                // }
+                                    var radio_id = $('#product-radio input:radio:checked').val();
+                                    var code = $('#product-radio input:radio:checked').attr('code');
+                                    var html_code = "<div class='log-relation'><i class='fa fa-bookmark'></i>&nbsp;<span>相关商机:" + code + "</span></div>";
+                                    //console.log(radio_id);
+                                    var log_type = 'rBusinessLog';
 
-                                var radio_id = $('#product-radio input:radio:checked').val();
-                                var code = $('#product-radio input:radio:checked').attr('code');
-                                var html_code = "<div class='log-relation'><i class='fa fa-bookmark'></i>&nbsp;<span>相关商机:" + code + "</span></div>";
-                                //console.log(radio_id);
-                                var log_type = 'rBusinessLog';
-
-                                var status_name = '';
-                                if ($('#status_id option:selected').text() !== '--请选择--') {
-                                    status_name = $('#status_id option:selected').text();
-                                }
-                                var nextstep_time_log = '';
-                                if ($('#nextstep_time_log').val() !== '') {
-                                    nextstep_time_log = $('#nextstep_time_log').val();
-                                }
-
-                                if (radio_id == null || radio_id == 0) {
-                                    var html_code = '';
-                                    $("#business_id").val(business_id);
-
-                                    if (business_id == null || business_id == 0) {
-                                        $("[name='r']").val('RCustomerLog');
-                                        $("[name='module']").val('customer');
-                                        $("#business_id").val("{$customer_id}");
-                                        log_type = 'rCustomerLog';
+                                    var status_name = '';
+                                    if ($('#status_id option:selected').text() !== '--请选择--') {
+                                        status_name = $('#status_id option:selected').text();
                                     }
-                                }
+                                    var nextstep_time_log = '';
+                                    if ($('#nextstep_time_log').val() !== '') {
+                                        nextstep_time_log = $('#nextstep_time_log').val();
+                                    }
 
-                                $(this).prop('disabled', true);
-                                $.post("{:U('Log/add')}", $("#add-form").serialize(), function (data) {
-                                    if (data.status == 1) {
-                                        var content = $('#log-text').val().replace('&nbsp', '&NBSP');
-                                        var log_html = "<div class='ibox-content gray-bg' log-rel='" + data.data.log_id + "' style='margin-bottom: 18px'><div class='social-feed-separated clearfix'><div class='social-feed-box'><div class='pull-right social-action dropdown'><span data-toggle='dropdown' class='dropdown-toggle'><i style='font-size:20px;cursor:pointer' class='fa fa-angle-down'></i></span><ul class='dropdown-menu m-t-xs' ><li><a  rel='" + data.data.log_id + "' href='javascript:void(0);' type='" + log_type + "' onclick='del_confirm(this);'>{:L('DELETE')}</a></li></ul></div><div class='social-avatar'><img alt='image' style='width:35px;height:35px;' class='img-circle' src='" + data.data.owner.thumb_path + "'><a class='role_info name-colors'  rel='" + data.data.owner.role_id + "' href='javascript:void(0)'>" + data.data.owner.full_name + "</a>&nbsp;&nbsp;<span class='text-muted'>添加了一条快速记录</span>&nbsp;&nbsp;<span class='text-muted' >" + data.data.date + "&nbsp;&nbsp;<a title='沟通类型' href='javascript:void(0);'>" + status_name + "</a></span></div><div class='social-body'><span style='word-wrap:break-word;line-height: 21px;color: #000;'>" + content + "</span>" + html_code + "</div>";
-                                        if (nextstep_time_log !== '1970-01-01 08:00') {
-                                            log_html += "<div class='social-avatar' style='padding-top:10px;''><span class='text-muted pull-right'>下次联系时间：" + nextstep_time_log + "</span></div>";
+                                    if (radio_id == null || radio_id == 0) {
+                                        var html_code = '';
+                                        $("#business_id").val(business_id);
+
+                                        if (business_id == null || business_id == 0) {
+                                            $("[name='r']").val('RCustomerLog');
+                                            $("[name='module']").val('customer');
+                                            $("#business_id").val("{$customer_id}");
+                                            log_type = 'rCustomerLog';
                                         }
-                                        log_html += "</div></div></div>";
-
-                                        $('#log-list').prepend(log_html);
-                                        btnHide();
-                                    } else {
-                                        alert_crm('添加失败, 请重试');
                                     }
-                                    $("[name='r']").val('rBusinessLog');
-                                    $("[name='module']").val('business');
-                                    $("#business_id").val(business_id);
+
+                                    $(this).prop('disabled', true);
+                                    $.post("{:U('Log/add')}", $("#add-form").serialize(), function (data) {
+                                        if (data.status == 1) {
+                                            var content = $('#log-text').val().replace('&nbsp', '&NBSP');
+                                            var log_html = "<div class='ibox-content gray-bg' log-rel='" + data.data.log_id + "' style='margin-bottom: 18px'><div class='social-feed-separated clearfix'><div class='social-feed-box'><div class='pull-right social-action dropdown'><span data-toggle='dropdown' class='dropdown-toggle'><i style='font-size:20px;cursor:pointer' class='fa fa-angle-down'></i></span><ul class='dropdown-menu m-t-xs' ><li><a  rel='" + data.data.log_id + "' href='javascript:void(0);' type='" + log_type + "' onclick='del_confirm(this);'>{:L('DELETE')}</a></li></ul></div><div class='social-avatar'><img alt='image' style='width:35px;height:35px;' class='img-circle' src='" + data.data.owner.thumb_path + "'><a class='role_info name-colors'  rel='" + data.data.owner.role_id + "' href='javascript:void(0)'>" + data.data.owner.full_name + "</a>&nbsp;&nbsp;<span class='text-muted'>添加了一条快速记录</span>&nbsp;&nbsp;<span class='text-muted' >" + data.data.date + "&nbsp;&nbsp;<a title='沟通类型' href='javascript:void(0);'>" + status_name + "</a></span></div><div class='social-body'><span style='word-wrap:break-word;line-height: 21px;color: #000;'>" + content + "</span>" + html_code + "</div>";
+                                            if (nextstep_time_log !== '1970-01-01 08:00') {
+                                                log_html += "<div class='social-avatar' style='padding-top:10px;''><span class='text-muted pull-right'>下次联系时间：" + nextstep_time_log + "</span></div>";
+                                            }
+                                            log_html += "</div></div></div>";
+
+                                            $('#log-list').prepend(log_html);
+                                            btnHide();
+                                        } else {
+                                            alert_crm('添加失败, 请重试');
+                                        }
+                                        $("[name='r']").val('rBusinessLog');
+                                        $("[name='module']").val('business');
+                                        $("#business_id").val(business_id);
+                                    });
                                 });
-                            });
-                            /*删除日志*/
-                            function del_confirm(e) {
-                                swal({
-                                    title: "确定要删除沟通日志吗？",
-                                    text: "删除后将无法恢复，请谨慎操作！",
-                                    type: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#DD6B55",
-                                    confirmButtonText: "是的，我要删除！",
-                                    cancelButtonText: '让我再考虑一下…',
-                                    closeOnConfirm: false,
-                                    closeOnCancel: false
-                                },
-                                        function (isConfirm) {
-                                            if (isConfirm) {
-                                                var log_id = $(e).attr('rel');
-                                                var type = $(e).attr('type');
-                                                $.get("{:U('log/delete')}", {r: type, id: log_id}, function (data) {
-                                                    if (data != 0) {
-                                                        swal({
-                                                            title: "删除成功！",
-                                                            text: "",
-                                                            type: "success"
-                                                        });
-                                                        $("[log-rel='" + log_id + "']").remove();
-                                                    } else {
-                                                        swal({
-                                                            title: "操作失败！",
-                                                            text: data.info,
-                                                            type: "error"
-                                                        })
-                                                        return false;
-                                                    }
-                                                });
-                                            } else {
-                                                swal("已取消", "您取消了删除操作！", "error");
-                                            }
-                                        });
-                            }
-                            ;
-                            //删除联系人
-                            $('.del_contacts').click(function () {
-                                var contacts_id = $(this).attr('rel');
-                                var type = $(this).attr('rel1');
-                                var customer_id = $(this).attr('rel2');
-                                swal({
-                                    title: "您确定要删除联系人吗？",
-                                    text: "删除后将无法恢复，请谨慎操作！",
-                                    type: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#DD6B55",
-                                    confirmButtonText: "是的，我要删除！",
-                                    cancelButtonText: '让我再考虑一下…',
-                                    closeOnConfirm: false,
-                                    closeOnCancel: false
-                                },
-                                        function (isConfirm) {
-                                            if (isConfirm) {
-                                                if (type == 'mdelete') {
-                                                    //删除首要联系人
-                                                    $.ajax({
-                                                        type: 'get',
-                                                        url: "{:U('contacts/mdelete','r=rContactsCustomer&module_id=')}" + customer_id + '&id=' + contacts_id,
-                                                        async: false,
-                                                        success: function (data) {
-                                                            if (data.status == 1) {
-                                                                swal("删除成功！", "您已经永久删除了信息！", "success");
-                                                                location.reload();
-                                                            } else {
-                                                                swal({
-                                                                    title: "操作失败！",
-                                                                    text: data.info,
-                                                                    type: "error"
-                                                                })
-                                                                return false;
-                                                            }
-                                                        },
-                                                        dataType: 'json'
-                                                    });
-                                                } else {
-                                                    $.ajax({
-                                                        type: 'get',
-                                                        url: "{:U('contacts/delete','id=')}" + contacts_id,
-                                                        async: false,
-                                                        success: function (data) {
-                                                            if (data.status == 1) {
-                                                                swal("删除成功！", "您已经永久删除了信息！", "success");
-                                                                location.reload();
-                                                            } else {
-                                                                swal({
-                                                                    title: "操作失败！",
-                                                                    text: data.info,
-                                                                    type: "error"
-                                                                })
-                                                                return false;
-                                                            }
-                                                        },
-                                                        dataType: 'json'
-                                                    });
-                                                }
-                                            } else {
-                                                swal("已取消", "您取消了删除操作！", "error");
-                                            }
-                                        });
-                            });
-                            //删除附件
-                            $('.file_delete').click(function () {
-                                var file_id = $(this).attr('rel');
-                                swal({
-                                    title: "您确定要删除附件信息吗？",
-                                    text: "删除后将无法恢复，请谨慎操作！",
-                                    type: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#DD6B55",
-                                    confirmButtonText: "是的，我要删除！",
-                                    cancelButtonText: '让我再考虑一下…',
-                                    closeOnConfirm: false,
-                                    closeOnCancel: false
-                                },
-                                        function (isConfirm) {
-                                            if (isConfirm) {
-                                                $.ajax({
-                                                    type: 'get',
-                                                    url: "{:U('file/delete','r=RCustomerFile&id=')}" + file_id,
-                                                    async: false,
-                                                    success: function (data) {
-                                                        if (data.status == 1) {
-                                                            swal("删除成功！", "您已经永久删除了信息！", "success");
-                                                            location.reload();
+                                /*删除日志*/
+                                function del_confirm(e) {
+                                    swal({
+                                        title: "确定要删除沟通日志吗？",
+                                        text: "删除后将无法恢复，请谨慎操作！",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#DD6B55",
+                                        confirmButtonText: "是的，我要删除！",
+                                        cancelButtonText: '让我再考虑一下…',
+                                        closeOnConfirm: false,
+                                        closeOnCancel: false
+                                    },
+                                            function (isConfirm) {
+                                                if (isConfirm) {
+                                                    var log_id = $(e).attr('rel');
+                                                    var type = $(e).attr('type');
+                                                    $.get("{:U('log/delete')}", {r: type, id: log_id}, function (data) {
+                                                        if (data != 0) {
+                                                            swal({
+                                                                title: "删除成功！",
+                                                                text: "",
+                                                                type: "success"
+                                                            });
+                                                            $("[log-rel='" + log_id + "']").remove();
                                                         } else {
                                                             swal({
                                                                 title: "操作失败！",
@@ -2228,84 +2124,188 @@
                                                             })
                                                             return false;
                                                         }
-                                                    },
-                                                    dataType: 'json'
-                                                });
-                                            } else {
-                                                swal("已取消", "您取消了删除操作！", "error");
-                                            }
-                                        });
-                            });
+                                                    });
+                                                } else {
+                                                    swal("已取消", "您取消了删除操作！", "error");
+                                                }
+                                            });
+                                }
+                                ;
+                                //删除联系人
+                                $('.del_contacts').click(function () {
+                                    var contacts_id = $(this).attr('rel');
+                                    var type = $(this).attr('rel1');
+                                    var customer_id = $(this).attr('rel2');
+                                    swal({
+                                        title: "您确定要删除联系人吗？",
+                                        text: "删除后将无法恢复，请谨慎操作！",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#DD6B55",
+                                        confirmButtonText: "是的，我要删除！",
+                                        cancelButtonText: '让我再考虑一下…',
+                                        closeOnConfirm: false,
+                                        closeOnCancel: false
+                                    },
+                                            function (isConfirm) {
+                                                if (isConfirm) {
+                                                    if (type == 'mdelete') {
+                                                        //删除首要联系人
+                                                        $.ajax({
+                                                            type: 'get',
+                                                            url: "{:U('contacts/mdelete','r=rContactsCustomer&module_id=')}" + customer_id + '&id=' + contacts_id,
+                                                            async: false,
+                                                            success: function (data) {
+                                                                if (data.status == 1) {
+                                                                    swal("删除成功！", "您已经永久删除了信息！", "success");
+                                                                    location.reload();
+                                                                } else {
+                                                                    swal({
+                                                                        title: "操作失败！",
+                                                                        text: data.info,
+                                                                        type: "error"
+                                                                    })
+                                                                    return false;
+                                                                }
+                                                            },
+                                                            dataType: 'json'
+                                                        });
+                                                    } else {
+                                                        $.ajax({
+                                                            type: 'get',
+                                                            url: "{:U('contacts/delete','id=')}" + contacts_id,
+                                                            async: false,
+                                                            success: function (data) {
+                                                                if (data.status == 1) {
+                                                                    swal("删除成功！", "您已经永久删除了信息！", "success");
+                                                                    location.reload();
+                                                                } else {
+                                                                    swal({
+                                                                        title: "操作失败！",
+                                                                        text: data.info,
+                                                                        type: "error"
+                                                                    })
+                                                                    return false;
+                                                                }
+                                                            },
+                                                            dataType: 'json'
+                                                        });
+                                                    }
+                                                } else {
+                                                    swal("已取消", "您取消了删除操作！", "error");
+                                                }
+                                            });
+                                });
+                                //删除附件
+                                $('.file_delete').click(function () {
+                                    var file_id = $(this).attr('rel');
+                                    swal({
+                                        title: "您确定要删除附件信息吗？",
+                                        text: "删除后将无法恢复，请谨慎操作！",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#DD6B55",
+                                        confirmButtonText: "是的，我要删除！",
+                                        cancelButtonText: '让我再考虑一下…',
+                                        closeOnConfirm: false,
+                                        closeOnCancel: false
+                                    },
+                                            function (isConfirm) {
+                                                if (isConfirm) {
+                                                    $.ajax({
+                                                        type: 'get',
+                                                        url: "{:U('file/delete','r=RCustomerFile&id=')}" + file_id,
+                                                        async: false,
+                                                        success: function (data) {
+                                                            if (data.status == 1) {
+                                                                swal("删除成功！", "您已经永久删除了信息！", "success");
+                                                                location.reload();
+                                                            } else {
+                                                                swal({
+                                                                    title: "操作失败！",
+                                                                    text: data.info,
+                                                                    type: "error"
+                                                                })
+                                                                return false;
+                                                            }
+                                                        },
+                                                        dataType: 'json'
+                                                    });
+                                                } else {
+                                                    swal("已取消", "您取消了删除操作！", "error");
+                                                }
+                                            });
+                                });
 
-                            $(".editproduct_view").click(function () {
-                                var business_id = $(this).attr('rel');
-                                var customer_id = "{$customer['customer_id']}";
-                                $('#dialog-editproduct').dialog('open');
-                                $('#dialog-editproduct').load('{:U("product/mutildialog_product","business_id=")}' + business_id);
-                            });
+                                $(".editproduct_view").click(function () {
+                                    var business_id = $(this).attr('rel');
+                                    var customer_id = "{$customer['customer_id']}";
+                                    $('#dialog-editproduct').dialog('open');
+                                    $('#dialog-editproduct').load('{:U("product/mutildialog_product","business_id=")}' + business_id);
+                                });
 
-                            //发票
-                            $('#add_invoice').click(function () {
-                                var customer_id = "{$customer_id}";
-                                $('#addInvoice').modal('show');
-                                var url = "{:U('invoice/addData','customer_id=')}" + customer_id;
-                                $('#add_invoice_dialog').load(url);
-                            });
-                            $('#view_invoice').click(function () {
-                                var invoice_id = $(this).attr('rel');
-                                $('#viewInvoice').modal('show');
-                                var url = "{:U('invoice/viewData','invoice_id=')}" + invoice_id;
-                                $('#view_invoice_dialog').load(url);
-                            });
+                                //发票
+                                $('#add_invoice').click(function () {
+                                    var customer_id = "{$customer_id}";
+                                    $('#addInvoice').modal('show');
+                                    var url = "{:U('invoice/addData','customer_id=')}" + customer_id;
+                                    $('#add_invoice_dialog').load(url);
+                                });
+                                $('#view_invoice').click(function () {
+                                    var invoice_id = $(this).attr('rel');
+                                    $('#viewInvoice').modal('show');
+                                    var url = "{:U('invoice/viewData','invoice_id=')}" + invoice_id;
+                                    $('#view_invoice_dialog').load(url);
+                                });
 
 
-                            $("input[name='checkall']").click(function () {
+                                $("input[name='checkall']").click(function () {
 
-                                var st = $(this).closest(".tab-content").attr("id");
-                                $("#" + st + " input[name='checklist']").prop('checked', $(this).prop("checked"));
-                                var i = 0;
-                                var id_array = new Array();
-                                $("#" + st + " input[name='checklist']").each(function () {
-                                    if ($(this).prop("checked")) {
-                                        i++;
-                                        id_array.push($(this).val());
+                                    var st = $(this).closest(".tab-content").attr("id");
+                                    $("#" + st + " input[name='checklist']").prop('checked', $(this).prop("checked"));
+                                    var i = 0;
+                                    var id_array = new Array();
+                                    $("#" + st + " input[name='checklist']").each(function () {
+                                        if ($(this).prop("checked")) {
+                                            i++;
+                                            id_array.push($(this).val());
+                                        }
+                                    })
+                                    if (i > 0) {
+                                        $("#" + st + " .title-bar").show();
+                                        $("#" + st + " .icheck_num").html(i);
+                                        $("#" + st + " .select_arr").val(id_array);
+                                    } else {
+                                        $("#" + st + " .title-bar").hide();
                                     }
                                 })
-                                if (i > 0) {
-                                    $("#" + st + " .title-bar").show();
-                                    $("#" + st + " .icheck_num").html(i);
-                                    $("#" + st + " .select_arr").val(id_array);
-                                } else {
-                                    $("#" + st + " .title-bar").hide();
-                                }
-                            })
 
-                            $("input[name='checklist']").click(function () {
-                                var st = $(this).closest(".tab-content").attr("id");
-                                var i = 0;
-                                var id_array = new Array();
-                                $("#" + st + " input[name='checklist']").each(function () {
-                                    if ($(this).prop("checked")) {
-                                        i++;
-                                        id_array.push($(this).val());
+                                $("input[name='checklist']").click(function () {
+                                    var st = $(this).closest(".tab-content").attr("id");
+                                    var i = 0;
+                                    var id_array = new Array();
+                                    $("#" + st + " input[name='checklist']").each(function () {
+                                        if ($(this).prop("checked")) {
+                                            i++;
+                                            id_array.push($(this).val());
+                                        }
+                                    })
+
+                                    if (i > 0) {
+                                        $("#" + st + " .title-bar").show();
+                                        $("#" + st + " .icheck_num").html(i);
+                                        $("#" + st + " .select_arr").val(id_array);
+                                    } else {
+                                        $("#" + st + " .title-bar").hide();
                                     }
+
                                 })
 
-                                if (i > 0) {
-                                    $("#" + st + " .title-bar").show();
-                                    $("#" + st + " .icheck_num").html(i);
-                                    $("#" + st + " .select_arr").val(id_array);
-                                } else {
-                                    $("#" + st + " .title-bar").hide();
-                                }
-
-                            })
-
-                            $(".back-show").click(function () {
-                                $(".title-bar").hide();
-                                $("input[name='checklist']").prop('checked', false);
-                                $("input[name='checkall']").prop('checked', false);
-                            })
+                                $(".back-show").click(function () {
+                                    $(".title-bar").hide();
+                                    $("input[name='checklist']").prop('checked', false);
+                                    $("input[name='checkall']").prop('checked', false);
+                                })
 
 
 </script>
@@ -2376,8 +2376,18 @@
                         data: {
                             calllistid: dataid
                         },
-                        success: function () {
-                            window.href = href;
+                        success: function (data) {
+                            if (data.code == 200) {
+                                swal("推荐成功！", "您推荐此简历！", "success");
+                                location.reload();
+                            } else {
+                                swal({
+                                    title: "操作失败！",
+                                    text: data.info,
+                                    type: "error"
+                                })
+                                return false;
+                            }
                         },
                         error: function () {
 
