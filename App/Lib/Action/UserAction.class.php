@@ -371,7 +371,7 @@ class UserAction extends Action {
 		}else{
 			$all_or_below = ($_GET['by'] == 'all' || $_GET['by'] == 'message' || session('?admin')) ? 1 : 0;
 		}
-		$this->by = trim($_GET['by']) ? : '';
+		$this->by = trim($_GET['by']) ? trim($_GET['by']) : '';
 		$d_role = D('RoleView');
 		$m_role_department = M('RoleDepartment');
 		$where = '';
@@ -393,7 +393,7 @@ class UserAction extends Action {
         } else {
             $role_arr = getSubRoleId(true);
         }
-		$where['user.role_id'] = array('in', $role_arr);
+//		$where['user.role_id'] = array('in', $role_arr);     合同授权审批人的修改
 		$where['user.status'] = array('eq',1);
 		//审批审核权限
 		if($_GET['by'] == 'examine'){
@@ -406,11 +406,16 @@ class UserAction extends Action {
 		if($_GET['by'] == 'contract'){
 			$position_ids = M('Permission')->where(array('url'=>'contract/check'))->getField('position_id',true);
 			array_unshift($position_ids,'1');
-			unset($where['user.role_id']);
-			$where['role.position_id'] = array('in',$position_ids);
+/************ddddddd******合同板块中授权下一个审批人 **********/
+//			unset($where['user.role_id']);
+//			$where['role.position_id'] = array('in',$position_ids);
+/************uuuuuuu******合同板块中授权下一个审批人 **********/
 		}
+
+//		$role_list = $d_role->where($where)->page($p.',10')->order('role_id')->select();
 		$role_list = $d_role->where($where)->page($p.',10')->order('role_id')->select();
 
+//		$count = $d_role->where($where)->count();
 		$count = $d_role->where($where)->count();
 
 		$departments = $m_role_department->select();
@@ -421,7 +426,7 @@ class UserAction extends Action {
 
 		$Page = new Page($count,10);
 		$this->assign('page', $Page->show());
-		$this->search_field = $_REQUEST;//搜索信息
+		$this->search_field = $_REQUEST;   //   搜索信息
 		$this->role_list = $role_list;
 		$this->display();
 	}
@@ -456,7 +461,7 @@ class UserAction extends Action {
         } else {
             $role_arr = getSubRoleId(true);
         }
-        $where['user.role_id'] = array('in', $role_arr);
+//        $where['user.role_id'] = array('in', $role_arr);
         $where['user.status'] = array('eq',1);
         //审批审核权限
         if($_GET['by'] == 'examine'){
@@ -469,8 +474,8 @@ class UserAction extends Action {
         if($_GET['by'] == 'contract'){
             $position_ids = M('Permission')->where(array('url'=>'contract/check'))->getField('position_id',true);
             array_unshift($position_ids,'1');
-            unset($where['user.role_id']);
-            $where['role.position_id'] = array('in',$position_ids);
+//            unset($where['user.role_id']);
+//            $where['role.position_id'] = array('in',$position_ids);
         }
         $role_list = $d_role->where($where)->page($p.',10')->order('role_id')->select();
 
@@ -541,11 +546,21 @@ class UserAction extends Action {
 					}
 				}
 			}
+			$value = 1;
+			$status = $_POST['status'];
+            switch ($status){
+                case 1:
+                    $value = 2;
+                    break;
+                default:
+                    $value = 1;
+                    break;
+            }
 			if($add_ids){
-				$res_add = $m_user->where(array('user_id'=>array('in',$add_ids)))->setField('status',1);
+				$res_add = $m_user->where(array('user_id'=>array('in',$add_ids)))->setField('status',$value);
 			}
 			if($del_ids){
-				$res_del = $m_user->where(array('user_id'=>array('in',$del_ids)))->setField('status',2);
+				$res_del = $m_user->where(array('user_id'=>array('in',$del_ids)))->setField('status',$value);
 			}
 			if($res_add || $res_del){
 				$this->ajaxReturn('','操作成功！',1);
@@ -901,6 +916,7 @@ class UserAction extends Action {
 	}
 
 	public function getPositionlistByDepartment(){
+	    ob_clean();
 		if($_GET['id']){
 			$m_position = M('Position');
 			$res_list = array();
@@ -923,6 +939,7 @@ class UserAction extends Action {
 	}
 
 	public function getRoleByPosition(){
+	    ob_clean();
 		if($this->isAjax()){
 			$position_id = $this->_get('position_id','intval');
 			$role_ids = M('Role')->where('position_id = %d',$position_id)->select();
@@ -1388,7 +1405,7 @@ class UserAction extends Action {
 
 			$user_data = array(
 				'category_id'=>2,
-				'status'=>3,
+				'status'=>2,
 				'name'=>$name,
 				'email'=>$this->_post('email','trim'),
 				'full_name'=>$this->_post('full_name','trim'),

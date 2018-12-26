@@ -65,7 +65,7 @@
 								<volist name="field_list['main']" id="vo" key="key">
 									<if condition="$vo['field'] neq 'customer_owner_id'">
 										<div class="form-group">
-											<label class="col-md-4 control-label">{$vo.name}：</label>
+											<label class="col-md-4 control-label" >{$vo.name}：</label>
 											<if condition="$vo['form_type'] == 'textarea'">
 												<if condition = "$vo['tip_start'] eq 1">
 													<div class="col-md-6">
@@ -106,7 +106,7 @@
 												</if>
 												<elseif condition="$vo['field'] == 'name'"/>
 												<div class="col-md-6">
-													<input class="form-control required" id="name" onkeyup="checkinfo(name)"  name="name" placeholder="" type="text" />
+													<input class="form-control required" id="name"onkeyup="checkinfo(name)"  name="name" placeholder="" type="text" />
 												</div>
 												<if condition = "$vo['tip_start'] eq 1">
 													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -274,7 +274,9 @@
 	<div id="search_content"></div>
 </div>
 <script>
-
+	$(document).ready(function () {
+		$('#user_name').val('');
+    });
     function checkinfo(param){
         var field_value = $('#'+param).val();
         if(field_value){

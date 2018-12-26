@@ -232,8 +232,8 @@
         $(".number").each(function () {
             var te = parseFloat($(this).val()) ;
             var id = "#"+$(this).attr('id')+"Tip";
-            if(isNaN(te)){
-                $(id).html("<span style='color: red;'>*请填写数字</span>");
+            if(isNaN(te) || te == 0){
+                $(id).html("<span style='color: red;'>*请填写(非零)数字</span>");
                 return false;
             }
               else  {

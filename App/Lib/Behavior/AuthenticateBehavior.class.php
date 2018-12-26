@@ -45,6 +45,7 @@ class AuthenticateBehavior extends Behavior {
 				if($a == 'view_ajax'){
 					$a = 'view';
 				}
+//				var_dump(checkPerByAction($m,$a));exit;
 				if(!checkPerByAction($m, $a)){
 					if(isAjaxRequest()){
 						if($a == 'delete' || $a == 'log_delete' || $a == 'delete_'.trim($_REQUEST['t']) || ($m == 'Task' && $a != 'add' && $a != 'view')){

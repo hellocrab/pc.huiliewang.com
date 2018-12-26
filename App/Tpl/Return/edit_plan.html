@@ -206,7 +206,7 @@
                     $(str).val(property+"%");
                 });
             }
-        }else $("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额！</span>");
+        }else $("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额(非零)！</span>");
     }
     function personChanged() {
         var person = $("#person").val();
@@ -315,7 +315,7 @@
         $("#tlast").children().last().after("<tr><td><button onclick='minusedit();' type='button' class='btn btn-white'>-</button></td>" +
             "<td><button onclick='addedit();' type='button' class='btn btn-white'>+</button></td>" +
             "<th><input name='num"+num+"' type='hidden' readonly='readonly' style='width:90%;' value='"+num+"'>"+num+"</th>" +
-            "<th><input id='money"+num+"' class='imoney required' onblur='propertyCalculate(this)' name='money"+num+"' type='number'style='width:90%;' ></th>" +
+            "<th><input id='money"+num+"' class='imoney required require1' onblur='propertyCalculate(this)' name='money"+num+"' type='number'style='width:90%;' ></th>" +
             "<th><input id='property"+num+"' name='property"+num+"' type='text' readonly='readonly' style='width:90%;'></th>" +
             "<th><input name='time"+num+"' required='required' class='required checkit' type='date' style='width:90%;'></th>" +
             "<th><input name='remark"+num+"' type='text' style='width:100%;'></th></tr>");
@@ -324,7 +324,7 @@
     function propertyCalculate(obj) {
         var planed_money = $("#total").val();
         if(planed_money == ''){
-            $("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额！</span>");
+            $("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额(非零)！</span>");
         }else {
             $("#totalTip").html("");
             if(obj.value != ''){
@@ -436,11 +436,11 @@
                 }
             }
             else
-                {$("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额！</span>"); adbtn = false;}
+                {$("#totalTip").html("<span style='color:#FF0011;'>请先填写计划金额(非零)！</span>"); adbtn = false;}
             var time_flag = true;
             $(".required").each(function () {
                 var time_html = $(this).val();
-                if(time_html == '') time_flag = false;
+                if(time_html == '' || time_html == 0) time_flag = false;
             });
             if(!time_flag) $("#lmsg").css('display','block'); else $("#lmsg").css('display','none');
             if( before_submit() && time_flag && adbtn){
@@ -485,7 +485,7 @@
     });
 </script>
 <div id="baocun" class="modal-footer" style="padding:8px 22px;display: none;">
-    <div class='col-sm-12' id='lmsg' style='color: red;display: none;'>请补全期次金额或时间!</div>
+    <div class='col-sm-12' id='lmsg' style='color: red;display: none;'>请补全期次金额(非零)或时间!</div>
     <button type="button" id="adbtn" class="btn btn-primary">保存</button>
     <button type="button" id="back" class="btn btn-white" >返回</button>
 </div>

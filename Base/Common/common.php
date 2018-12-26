@@ -488,7 +488,7 @@ function add_tag_behavior($tag,$behavior,$path='') {
  * @param Mixed $params 传人的参数
  * @return void
  */
-function B($name, &$params=NULL) {
+function B($name, &$params=NULL) { //Authentic
     $class      = $name.'Behavior';
     if(APP_DEBUG) {
         G('behaviorStart');

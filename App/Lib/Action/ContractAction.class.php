@@ -72,6 +72,7 @@ class ContractAction extends Action {
 					}
 					// $m_contract->due_time = time();
 					$m_contract->owner_role_id = $_POST['owner_role_id'] ? intval($_POST['owner_role_id']) : session('role_id');
+					$m_contract->examine_role_id = $_POST['owner_role_id'] ? intval($_POST['owner_role_id']) : session('role_id');
 					$m_contract->creator_role_id = session('role_id');
 					$m_contract->create_time = time();
 					$m_contract->update_time = time();
@@ -164,7 +165,7 @@ class ContractAction extends Action {
 							M('RBusinessContract')->add(array('contract_id'=>$contractId,'business_id'=>$business_id));
 							actionLog($contractId);
 
-							//通知合同相关审核人
+							//通知合同相关审核人   $url = /index.php?m=contract&a=view&id=29 admin创建的合同
 							$url = U('contract/view','id='.$contractId);
 							//合同审核人
 							$position_ids = M('Permission')->where(array('url'=>'contract/check'))->getField('position_id',true);
@@ -538,10 +539,11 @@ class ContractAction extends Action {
 			$m_contract_data->add($res_data);
 		}
 		$info = $d_contract->where(array('contract_id'=>$contract_id))->find();
+//		dump($this->_permissionRes);exit;// ?? $this->_permissionRes 代表什么   //$info['owner_role_id']
 		//权限判断
 		if(empty($info)) {
 			alert('error', L('THE_CONTRACT_DOES_NOT_EXIST_OR_HAS_BEEN_DELETED'), U('contract/index'));
-		}elseif(!in_array($info['owner_role_id'], $this->_permissionRes)) {
+		}elseif(!in_array(intval(session('role_id')), $this->_permissionRes)) {
 			alert('error',L('DO NOT HAVE PRIVILEGES'),$_SERVER['HTTP_REFERER']);
 		}
 		$creator_info = $m_user->where('role_id = %d',$info['creator_role_id'])->field('full_name,thumb_path')->find();
@@ -687,7 +689,7 @@ class ContractAction extends Action {
 		$info['log'] = $log_list;
 
 		//签约历史
-		// $history_list = contract_history($contract_id,'',1);
+//		 $history_list = contract_history($contract_id,'',1);
 		$renew_parent_id = $info['renew_parent_id'] ? $info['renew_parent_id'] : $contract_id;
 		$where_renew = array();
 		$where_renew['renew_parent_id'] = $renew_parent_id;
@@ -695,7 +697,6 @@ class ContractAction extends Action {
 		$where_renew['_logic'] = 'or';
 		$map_renew['_complex'] = $where_renew;
 		$map_renew['contract_id']  = array('neq',$contract_id);
-
 		$history_list = $d_contract->where($map_renew)->select();
 		$this->history_list = $history_list;
 
@@ -703,7 +704,7 @@ class ContractAction extends Action {
 		if ($info['examine_type_id']) {
 			$contract_examine = $info['examine_type_id'];
 		} else {
-			//contract_examine 1为自定义审批流
+			//contract_examine   1为自定义审批流
 			$contract_examine = M('Config')->where(array('name'=>'contract_examine'))->getField('value');
 		}
 		if ($contract_examine == 1) {
@@ -717,16 +718,16 @@ class ContractAction extends Action {
 
 		//是否有审批（撤销）权限
 		if (session('?admin')) {
-			$check_per = 1; //审批
-			$re_check_per = 1; //撤销
+			$check_per = 1;// 审批
+			$re_check_per = 1;// 撤销
 		} else {
 			if ($contract_examine == 1) {
-				//自定义审批流程
+				// 自定义审批流程
 				$check_role_id = M('ContractExamine')->order('order_id asc')->getField('role_id');
 				$examine_role_ids = M('ContractExamine')->getField('role_id',true);
 
 				if ($info['is_checked'] == 3) {
-					//审批中（创建人、审核人都有权限撤销）
+					// 审批中（创建人、审核人都有权限撤销）
 					if ($info['creator_role_id'] == session('role_id')) {
 						$re_check_per = 1;
 					}
@@ -781,6 +782,7 @@ class ContractAction extends Action {
 		$this->sales_product = $sales_product;
 		$this->assign('product',$product);
 		$this->assign('info',$info);
+
 		//自定义字段
 		$this->field_list = M('Fields')->where(array('model'=>'contract','field'=>array('not in',array('contract_name','due_time'))))->order('order_id')->select();
 		$this->alert = parseAlert();
@@ -893,7 +895,8 @@ class ContractAction extends Action {
 				$where['creator_role_id'] = session('role_id');
 				break;
 			case 'sub' :
-				$where['contract.owner_role_id'] = array('in',implode(',', $below_ids));
+			    $where['contract.owner_role_id'] = array('in',implode(',',$below_ids));
+//				$where['contract.owner_role_id'] = array('in',implode(',', $below_ids));
 				break;
 			case 'subcreate' :
 				$where['creator_role_id'] = array('in',implode(',', $below_ids));
@@ -1093,11 +1096,12 @@ class ContractAction extends Action {
 				}
             }
             //过滤不在权限范围内的role_id
-			if(isset($where['contract.owner_role_id'])){
-				if(!empty($where['contract.owner_role_id']) && !in_array(intval($where['contract.owner_role_id']),$this->_permissionRes)){
-					$where['contract.owner_role_id'] = array('in',implode(',', $this->_permissionRes));
-				}
-			}
+            //包含自己的合同 
+//			if(isset($where['contract.owner_role_id'])){
+//				if(!empty($where['contract.owner_role_id']) && !in_array(intval($where['contract.owner_role_id']),$this->_permissionRes)){
+//					$where['contract.owner_role_id'] = array('in',implode(',', $this->_permissionRes));
+//				}
+//			}
 		}
 		//待审核的合同(未审核、审核中)
 		if ($_GET['contract_checked']) {
@@ -1417,12 +1421,12 @@ class ContractAction extends Action {
 			}
 		}
 		if (!$contract = $m_contract->where('contract_id = %d', $contract_id)->find()) {
-			if ($this->isGet()) {
-				echo '<div class="alert alert-error">数据不存在或已删除！</div>';die();
-			} else {
-				alert('error', '数据不存在或已删除！',$_SERVER['HTTP_REFERER']);
-			}
-		}
+            if ($this->isGet()) {
+                echo '<div class="alert alert-error">数据不存在或已删除！</div>';die();
+            } else {
+                alert('error', '数据不存在或已删除！',$_SERVER['HTTP_REFERER']);
+            }
+        }
 		if ($contract['examine_type_id']) {
 			$option = $contract['examine_type_id'];
 		} else {
@@ -1469,9 +1473,9 @@ class ContractAction extends Action {
 			}
 		}
 		if ($this->isPost()) {
-			$is_agree = intval($_POST['is_agree']);
-			$is_receivables = intval($_POST['is_receivables']);
-			$description = trim($_POST['description']);
+			$is_agree = intval($_POST['is_agree']); //1
+			$is_receivables = intval($_POST['is_receivables']);//2
+			$description = trim($_POST['description']); //kong
 			$m_r_contract_sales = M('rContractSales');
 			$m_sales = M('Sales');
 			//默认（是否生成应收款）
@@ -1495,7 +1499,7 @@ class ContractAction extends Action {
 						}
 						$data['examine_role_id'] = intval($_POST['examine_role_id']);
 						if ($_POST['examine_status'] == 2) {
-							$data['examine_role_id'] = $_POST['examine_role_id'] ? intval($_POST['examine_role_id']) : session('role_id');
+							$data['examine_role_id'] = $_POST['examine_role_id'] ?  intval($_POST['examine_role_id']) : intval(session('role_id')) ;
 							$data['order_id'] = intval($_POST['order_id']);
 							$data['is_checked'] = 1;
 							$is_end = 1;
@@ -1512,7 +1516,7 @@ class ContractAction extends Action {
 								$data['is_checked'] = 2;   //审批结束
 								$is_end = 1;
 							} else {
-								$data['order_id'] = $order_id;
+								$data['order_id'] = $order_id-1;
 								$data['is_checked'] = 3;	//审批中
 							}
 						} else {
@@ -1529,21 +1533,25 @@ class ContractAction extends Action {
 						// $data['order_id'] = 0;
 						$data['is_checked'] = 2;
 						$data['examine_type_id'] = 0;
+						$data['order_id'] = intval($_POST['order_id'])-1;
 					} else {
 						alert('error', '请求错误!', $_SERVER['HTTP_REFERER']);
 					}
+//					dump(empty($is_end));exit;
 					$result = $m_contract->where('contract_id = %d', $contract_id)->save($data);
 
 					//为结束时给创建人发送站内信
 					if (empty($is_end)) {
 						if ($is_agree == 1) {
 							$check_result = session('full_name').'<font style="color:green;">同意了</font>';
-						} elseif ($is_agree == 1) {
+						} elseif ($is_agree !== 1) {
 							$check_result = session('full_name').'<font style="color:red;">驳回了</font>';
 						}
 						//发送站内信
 						$url = U('contract/view','id='.$contract_id);
-						sendMessage($contract['creator_role_id'],$check_result.'您创建的合同《<a href="'.$url.'">'.$contract['number'].'-'.$contract['contract_name'].'</a>》',1);
+						sendMessage(intval($contract['creator_role_id']),$check_result.'您创建的合同《<a href="'.$url.'">'.$contract['number'].'-'.$contract['contract_name'].'</a>》',1);
+						sendMessage(intval($_POST['examine_role_id']),'合同《<a href="'.$url.'">'.$contract['number'].'-'.$contract['contract_name'].'</a>》 需要您进行审核',1);
+
 					}
 
 					//审核意见
@@ -1625,15 +1633,19 @@ class ContractAction extends Action {
 			}
 		} else {
 			//判断审批类型
-			$this->is_receivables = M('User')->where('role_id =%d',session('role_id'))->getField('is_receivables');
+			$this->is_receivables = M('User')->where('role_id =%d',session('role_id'))->getField('is_receivables');//2
 			$this->contract_id = $contract_id;
 			$m_user = M('User');
 			$m_contract_examine = M('ContractExamine');
 			if ($option == 1) {
 				//自动获取下一审批人
-				$next_order_id = $contract['order_id']+1; //下下一审批流程排序ID
+                $id = $m_contract_examine->where(array('role_id'=>intval(session('role_id'))))->getField('order_id');
+                $contract['order_id'] = intval($id);
+				$next_order_id = $contract['order_id']+1;    //  下一审批流程排序ID
 				$next_role_id = $m_contract_examine->where(array('order_id'=>$next_order_id))->getField('role_id');
-				$next_role_info = $m_user->where('role_id = %d',$next_role_id)->field('full_name,role_id')->find();
+				$next_role_info = '';
+				if (!empty($next_role_id))
+				$next_role_info = $m_user->where('role_id = %d',intval($next_role_id))->field('full_name,role_id')->find();
 				$this->next_role_info = $next_role_info;
 				$this->next_order_id = $next_order_id;
 			}
@@ -2375,7 +2387,7 @@ class ContractAction extends Action {
 	 * @param
 	 * @author
 	 * @return
-	 */
+     */
 	public function examine() {
 		$m_contract_examine = M('ContractExamine');
 		$m_user = M('User');
@@ -2503,9 +2515,6 @@ class ContractAction extends Action {
 	 * @return
 	 */
 	public function step(){
-//	    if($_POST){
-//            var_dump($_POST);exit();
-//        }
 		$m_contract_examine = M('ContractExamine');
 		$d_role = D('RoleView');
 		$m_user = M('User');
@@ -2515,7 +2524,7 @@ class ContractAction extends Action {
 
 			if ($m_contract_examine->create()) {
 				if ($id) {
-					//编辑
+					//编辑  判断request请求的值
 					$result = $m_contract_examine->where(array('id'=>$id))->save();
 				} else {
 					//添加

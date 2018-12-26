@@ -108,8 +108,8 @@ $(function(){
 												<div class="col-md-2"></div>
 											</div>
 										<else/>
-											<div class="form-group" style="display: none">
-												<label class="col-md-4 control-label">来源项目：</label>
+											<div class="form-group" style="display: block">
+												<label class="col-md-4 control-label">项目编号：</label>
 												<div class="col-md-6">
 													<input type="hidden" name="business_id" id="business_id" value="{$contract_info.business_id}"/>
 													<input class="form-control" placeholder="请点击选择" type="text" name="business_name" id="business_name" value="{$contract_info.business_name}" readonly="true" style="cursor:pointer;" title="请点击选择"/>
@@ -123,14 +123,14 @@ $(function(){
 											<div class="col-md-6">
 												<div class="input-daterange input-group">
 													<span class="input-group-addon" style="background-color:#ccc;">{$contract_custom}</span>
-													<input type="text" id="number" name="number" rel="require" class="form-control checkit" value="{$number}"/>
+													<input type="text" id="number" name="number" rel="require" readonly="readonly" class="form-control checkit" value="{$number}"/>
 													<input type="hidden" id="prefixion" name="prefixion" value="{$contract_custom}"/>
 												</div>
 											</div>
 											<div class="col-md-2"><span style="color:red">*</span></div>
 										</div>
 										<div class="form-group">
-											<label class="col-md-4 control-label">合同名称：</label>
+											<label class="col-md-4 control-label" >合同名称：</label>
 											<div class="col-md-6">
 												<input class="form-control required" aria-required="true" type="text" name="contract_name" value="<if condition='$contract_info[contract_name]'>续约《{$contract_info['contract_name']}》</if>" id="contract_name" />
 											</div>
@@ -179,8 +179,9 @@ $(function(){
 													</div>
 													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
 												<else/>
+													<!--备注--------------------------------------------------------------------------------------------------------------------------->
 													<div class="col-md-8">
-														<textarea class="form-control" rows="5"></textarea>
+														<textarea class="form-control" rows="5" name="description"></textarea>
 													</div>
 												</if>
 											<elseif condition="$vo['form_type'] == 'address'"/>

@@ -98,6 +98,11 @@ $(document).ready(function(){
                         $('#to_top_span').html('&nbsp;取消置顶');
                         $('#to_check').html('<input type="hidden" id="is_checked" value="2">&nbsp;撤销');
                         $('#user_span').html('<a id="delete" href="javascript:void(0)" onclick="del_user(2)"><i class="fa fa-check"></i>&nbsp;启用账号</a>');
+                    }else if($("input.check_list:checked").attr('rel1') == 3){
+                        $('#user_span').html('<a id="delete" href="javascript:void(0)" onclick="del_user(3)"><i class="fa fa-check"></i>&nbsp;激活账号</a>');
+					}
+                    else if($("input.check_list:checked").attr('rel1') == 2){
+                        $('#user_span').html('<a id="delete" href="javascript:void(0)" onclick="del_user(1)"><i class="fa fa-times"></i>&nbsp;停用账号</a>');
                     }else{
                         $('#to_top_span').html('&nbsp;置顶');
                         var rel_name = $("input.check_list:checked").attr('rel3');

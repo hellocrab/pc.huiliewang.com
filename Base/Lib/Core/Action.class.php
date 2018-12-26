@@ -51,6 +51,7 @@ abstract class Action {
      * @access public
      */
     public function __construct() {
+        ob_clean();
         import('@.ORG.ApiClient');
         import('@.ORG.BaseUtils');
         tag('action_begin',$this->config);

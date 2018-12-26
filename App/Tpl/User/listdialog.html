@@ -8,6 +8,8 @@
 </style>
 <div class="clearfix">
 	<form class="form-inline" id="dd" action="{:U('user/listdialog')}">
+		<input type="hidden" name="m" value="user"/>
+		<input type="hidden" name="a" value="listdialog"/>
 		<if condition = "$_GET['leads'] eq 'leads'">
 			<input type="hidden" name="leads" value="leads"/>
 			<input type="hidden" name="id" id="leads_id" value="{$_GET['id']}"/>
@@ -25,8 +27,6 @@
 				<input class="form-control" id="d_name" type="text" name="d_name" value="{$search_field['d_name']}" placeholder="{:L('USER_NAME')}" onkeydown="if(event.keyCode==13)changeCondition1(0)"/>&nbsp;&nbsp;
 			</li>
 			<li class="pull-left">
-				<input type="hidden" name="m" value="user"/>
-				<input type="hidden" name="a" value="listdialog"/>
 				<input type="hidden" name="by" id="dialog_by" value="{$by}"/>
 				<input type="button" onclick="changeCondition1(0)" class="btn btn-primary" value="{:L('SEARCH')}"/>
 			</li>
@@ -59,7 +59,7 @@
 					<tr style="cursor:pointer">
 						<td>
 							<div class="checkbox checkbox-info checkbox-inline" style="margin-left:15px;">
-								<input name="owner" class="owner" type="checkbox" rel="{$vo['user_name']}" rel2="{$vo['img']}" value="{$vo.role_id}"><label for=""></label>
+								<input name="owner" class="owner" type="radio" rel="{$vo['user_name']}" rel2="{$vo['img']}" value="{$vo.role_id}"><label for=""></label>
 							</div>
 						</td>
 						<td>{$vo.user_name}</td>
@@ -89,8 +89,6 @@
 		return false;
 	});
 	$(function(){
-
-
 		$('#footers a').click(function(){
             var joiner = new Array();
             var joiner_name = new Array();
@@ -113,20 +111,21 @@
 	$("#data2 tr").click(function(){
         var _this=$(this).find('td:first-child .owner');
         if(_this.prop('checked')){
+            $('#data2').find('.owner').prop('checked', false);
+            sessionStorage.setItem('idskey', '');
+            sessionStorage.setItem('nameskey', '');
         }else{
-            ids.push(_this.val());
-            names.push(_this.attr('rel'));
+            $('#data2').find('.owner').prop('checked', false);
+            ids=_this.val();
+            names=_this.attr('rel');
             sessionStorage.setItem('nameskey', names);
             sessionStorage.setItem('idskey', ids);
+            _this.prop('checked', true);
         }
-
-        _this.prop('checked', true);
 	});
 	function changeCondition1(){
 		$('#dialog-role-list2').load('index.php?'+$("#dd").serialize());
 	}
-
-
     var idskey=sessionStorage.getItem("idskey");
     var idsarr=[];
     idsarr=idskey.split(',');

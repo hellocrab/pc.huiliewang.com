@@ -13,7 +13,7 @@ function changeCondition(){
 							+'<option value="neq">  '+CrmLang.NEQ+'  </option>'
 							+'</select>&nbsp;&nbsp; ');
 		$("#searchContent").html('<input id="search" type="text" class="form-control input-sm search-query" name="search"/>&nbsp;&nbsp;');
-	} else if ((a == 'word') || (a == 'text') || (a == 'textarea') || (a == 'editor') || (a == 'mobile') || (a == 'email')) {
+	} else if ((a == 'word') || (a == 'text') || (a == 'textarea') || (a == 'editor') || (a == 'mobile') || (a == 'email') || (a == 'box')) {
 		$("#conditionContent").html('<select class="form-control input-sm" id="condition" style="width:auto" name="condition" onchange="changeSearch()">'
 							+'<option value="contains">'+CrmLang.CONTAINS+'</option>'
 							+'<option value="not_contain">'+CrmLang.NOT_CONTAIN+'</option>'
