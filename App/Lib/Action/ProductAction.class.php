@@ -649,7 +649,7 @@ class ProductAction extends Action {
             $_POST['addtime'] = time();
             $_POST['lastupdate'] = time();
             $_POST['isperfect'] = $_POST['isperfect'] ? 1 : 0;
-            $_POST['creator_role_id'] = session("role_id");
+            $_POST['creator_role_id'] = session("user_id");
             $projectExp = $_POST['projectExp'];
             $eduExp = $_POST['eduExp'];
             $workExp = $_POST['workExp'];
@@ -851,6 +851,7 @@ class ProductAction extends Action {
     }
 
     public function view() {
+        header("Content-type: text/html; charset=utf-8");
         $this->status_list = M('LogStatus')->select();
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
@@ -859,21 +860,21 @@ class ProductAction extends Action {
         $resume = D("ResumeView")->where("resume.eid=%d", $eid)->find();
         $resume['label'] = explode(",", $resume['label']);
         if ($resume['startWorkyear']) {
-            $resume['exp'] = date("Y") - $resume['startWorkyear'] . "年工作经验";
+            $resume['exp'] = (date("Y") - date('Y',intval($resume['startWorkyear'] ))). "年工作经验";
         }
         if ($resume['location']) {
             $resume['location'] = $city_name[$resume['location']];
         }
-        if ($resume['birthYear']) {
-            $resume['age'] = date("Y") - $resume['birthYear'];
+        if ($resume['birthday']) {
+            $resume['age'] = date("Y") - date('Y',intval($resume['birthday']));
         }
         if (!$resume['birthMouth']) {
             $resume['birthMouth'] = '';
         } else {
             $resume['birthMouth'] = '-' . $resume['birthMouth'];
         }
-
-
+        $resume['birthYear'] = date('Y',intval($resume['birthday']));
+        $resume['birthMouth'] = date('m',intval($resume['birthday']));
         //文件
         $file_ids = M('rResumeFile')->where('resume_id = %d', $eid)->getField('file_id', true);
         $info['file'] = M('file')->where('file_id in (%s)', implode(',', $file_ids))->select();
@@ -937,12 +938,11 @@ class ProductAction extends Action {
             }
             $resume['intentCity'] = implode(",", $arr);
         }
-
         if ($resume['job_class']) {
             $job_class = explode(";", $resume['job_class']);
             $resume['job_class'] = [];
             foreach ($job_class as $list) {
-                $resume['job_class'][] = $list;
+                $resume['job_class'][] = M('job_class') -> where(array( 'job_id' => intval($list)))->getField('name');
             }
         }
 
@@ -979,6 +979,8 @@ class ProductAction extends Action {
             $resume['favorite'] = 1;
         }
 
+        //创建人
+        $resume['creator_role_name'] = M('user')->where(array('user_id'=>intval($resume['creator_role_id'])))->getField('full_name');
         $this->resume = $resume;
 
 
@@ -1831,6 +1833,7 @@ class ProductAction extends Action {
             $ascii = 65;
             $cv = '';
             foreach ($field_list as $field) {
+                dump($field);
                 if ($field['form_type'] == 'datetime') {
                     if ($v[$field['field']] == 0 || strlen($v[$field['field']]) != 10) {
                         $objActSheet->setCellValue($cv . chr($ascii) . $i, '');
@@ -1873,7 +1876,7 @@ class ProductAction extends Action {
                     $ascii = 65;
                     $cv = chr(strlen($cv) + 65);
                 }
-            }
+            }exit;
         }
         $current_page = intval($_GET['current_page']);
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
