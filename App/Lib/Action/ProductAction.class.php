@@ -955,7 +955,7 @@ class ProductAction extends Action {
         }
         $resume['now_industry'] = $resume['industry'][0];
 
-        $resume['sex'] = $resume['sex'] = 1 ? "女" : "男";
+        $resume['sex'] = intval($resume['sex']) == 2 ? "女" : "男";
         $resume_work = M("resume_work")->where("eid=%d", $eid)->select();
         foreach ($resume_work as $kw => $rw){
             $_position = M('resume_work_position')->where(['work_id'=>$rw['id']])->find();
