@@ -953,7 +953,7 @@ class ProductAction extends Action {
                 $resume['industry'][] = $industry_name[$list];
             }
         }
-        $resume['now_industry'] = $resume['now_industry'];
+        $resume['now_industry'] = $resume['industry'][0];
 
         $resume['sex'] = $resume['sex'] = 1 ? "女" : "男";
         $resume_work = M("resume_work")->where("eid=%d", $eid)->select();
@@ -967,7 +967,7 @@ class ProductAction extends Action {
 
         //edu 
         $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
-        $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
+//        $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
         $resume['school'] = $this->resume_edu[0]['schoolName'];
 
 
