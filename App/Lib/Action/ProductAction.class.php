@@ -377,6 +377,7 @@ class ProductAction extends Action {
 
         //客户导出
         if (trim($_GET['act']) == 'excel') {
+
             $dc_id = $_GET['daochu'];
             if ($dc_id != '') {
                 $where['eid'] = array('in', $dc_id);
@@ -389,7 +390,8 @@ class ProductAction extends Action {
                         $industry = explode(",", $list[$k]['industry']);
                         $data = "";
                         foreach ($industry as $l) {
-                            $data[] = $industry_name[$l];
+//                            $data[] = $industry_name[$l];
+                            $data[] = M('industry')->where(array('industry_id'=>intval($l)))->getField('name');
                         }
                         $list[$k]['industry'] = implode(",", $data);
                     }
@@ -398,7 +400,8 @@ class ProductAction extends Action {
                         $job_class = explode(",", $list[$k]['job_class']);
                         $data = "";
                         foreach ($job_class as $l) {
-                            $data[] = $job_name[$l];
+//                            $data[] = $job_name[$l];
+                            $data[] = M('job_class')->where(array('job_id'=>intval($l)))->getField('name');
                         }
                         $list[$k]['job_class'] = implode(",", $data);
                     }
@@ -406,21 +409,24 @@ class ProductAction extends Action {
                         $intentCity = explode(",", $list[$k]['intentCity']);
                         $data = "";
                         foreach ($intentCity as $l) {
-                            $data[] = $city_name[$l];
+//                            $data[] = $city_name[$l];
+                            $data[] = M('city')->where(array('city_id'=>intval($l)))->getField('name');
                         }
                         $list[$k]['intentCity'] = implode(",", $data);
                     }
                     if ($list[$k]['location']) {
-                        $list[$k]['location'] = $city_name[$list[$k]['location']];
+//                        $list[$k]['location'] = $city_name[$list[$k]['location']];
+                        $list[$k]['location'] = M('city')->where(array('city_id'=>intval($list[$k]['location'])))->getField('name');
                     }
                     if ($list[$k]['sex']) {
-                        $list[$k]['sex'] = $list[$k]['sex'] = 1 ? "男" : "女";
+                        $list[$k]['sex'] = $list[$k]['sex'] == 1 ? "男" : "女";
                     }
                 }
                 $this->excelExport($list);
             } else {
                 alert('error', L('HAVE NOT PRIVILEGES'), $_SERVER['HTTP_REFERER']);
             }
+
         } else {
             $list = $resume->where($where)->order('addtime desc')->Page($p . ',' . $listrows)->select();
         }
@@ -435,9 +441,9 @@ class ProductAction extends Action {
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
-        $this->assign('city_name', $city_name);
-        $this->assign('industry_name', $industry_name);
-        $this->assign('job_name', $job_name);
+//        $this->assign('city_name', $city_name);
+//        $this->assign('industry_name', $industry_name);
+//        $this->assign('job_name', $job_name);
 
         $Page = new Page($count, $listrows); // 实例化分页类 传入总记录数和每页显示的记录数
         $show = $Page->show(); // 分页显示输出
@@ -1775,10 +1781,124 @@ class ProductAction extends Action {
     }
 
     //导出
-    public function excelExport($productList = false) {
-        include APP_PATH . "Common/job.cache.php";
-        include APP_PATH . "Common/city.cache.php";
-        include APP_PATH . "Common/industry.cache.php";
+//    public function excelExport($productList = false) {
+//        include APP_PATH . "Common/job.cache.php";
+//        include APP_PATH . "Common/city.cache.php";
+//        include APP_PATH . "Common/industry.cache.php";
+//        C('OUTPUT_ENCODE', false);
+//        import("ORG.PHPExcel.PHPExcel");
+//        $objPHPExcel = new PHPExcel();
+//        $objProps = $objPHPExcel->getProperties();
+//        $objProps->setCreator("mxcrm");
+//        $objProps->setLastModifiedBy("mxcrm");
+//        $objProps->setTitle("mxcrm Product");
+//        $objProps->setSubject("mxcrm Product Data");
+//        $objProps->setDescription("mxcrm Product Data");
+//        $objProps->setKeywords("mxcrm Product");
+//        $objProps->setCategory("mxcrm");
+//        $objPHPExcel->setActiveSheetIndex(0);
+//        $objActSheet = $objPHPExcel->getActiveSheet();
+//
+//        $objActSheet->setTitle('Sheet1');
+//        $ascii = 65;
+//        $cv = '';
+//        $field_list = M('Fields')->where('model = \'resume\'')->order('order_id')->select();
+//        header("Content-type: text/html; charset=utf-8");
+//        foreach ($field_list as $field) {
+//            if ($field['form_type'] == 'address') {
+//                for ($a = 0; $a <= 4; $a++) {
+//                    $address = array('所在省', '所在市', '所在县/区', '街道信息');
+//                    $objActSheet->setCellValue($cv . chr($ascii) . '1', $address[$a]);
+//                    $ascii++;
+//                    if ($ascii == 91) {
+//                        $ascii = 66;
+//                        $cv .= chr(strlen($cv) + 65);
+//                    }
+//                }
+//                $ascii--;
+//            } else {
+//                $objActSheet->setCellValue($cv . chr($ascii) . '1', $field['name']);
+//                $ascii++;
+//                if ($ascii == 91) {
+//                    $ascii = 65;
+//                    $cv = chr(strlen($cv) + 65);
+//                }
+//            }
+//        }
+//        if (is_array($productList)) {
+//            $list = $productList;
+//        } else {
+//            $list = D('ProductView')->select();
+//        }
+//        foreach ($list as $k => $v) {
+//            $data = m('ProductData')->where("product_id = $v[product_id]")->find();
+//            if (!empty($data)) {
+//                $v = $v + $data;
+//            }
+//            $i++;
+//            $ascii = 65;
+//            $cv = '';
+//            foreach ($field_list as $field) {
+//                if ($field['form_type'] == 'datetime') {
+//                    if ($v[$field['field']] == 0 || strlen($v[$field['field']]) != 10) {
+//                        $objActSheet->setCellValue($cv . chr($ascii) . $i, '');
+//                    } else {
+//                        $objActSheet->setCellValue($cv . chr($ascii) . $i, date('Y-m-d H:i', $v[$field['field']]));
+//                    }
+//                } elseif ($field['form_type'] == 'number' || $field['form_type'] == 'floatnumber' || $field['form_type'] == 'phone' || $field['form_type'] == 'mobile' || ($field['form_type'] == 'text' && is_numeric($v[$field['field']]))) {
+//                    //防止使用科学计数法，在数据前加空格
+//                    $objActSheet->setCellValue($cv . chr($ascii) . $i, ' ' . $v[$field['field']]);
+//                } elseif ($field['field'] == 'category_id') {
+//                    $m_category = M('ProductCategory');
+//                    $category = $m_category->where('category_id = %d', $v['category_id'])->find();
+//                    $objActSheet->setCellValue($cv . chr($ascii) . $i, $category['name']);
+//                } elseif ($field['field'] == 'category_id') {
+//                    $m_category = M('ProductCategory');
+//                    $category = $m_category->where('category_id = %d', $v['category_id'])->find();
+//                    $objActSheet->setCellValue($cv . chr($ascii) . $i, $category['name']);
+//                } elseif ($field['field'] == 'category_id') {
+//                    $m_category = M('ProductCategory');
+//                    $category = $m_category->where('category_id = %d', $v['category_id'])->find();
+//                    $objActSheet->setCellValue($cv . chr($ascii) . $i, $category['name']);
+//                } elseif ($field['form_type'] == 'address') {
+//                    $temp = str_replace('=', '', $v[$field['field']]);
+//                    $address = $temp;
+//                    $arr_address = explode(chr(10), $address);
+//                    for ($j = 0; $j < 4; $j++) {
+//                        $objActSheet->setCellValue($cv . chr($ascii) . $i, $arr_address[$j]);
+//                        $ascii++;
+//                        if ($ascii == 91) {
+//                            $ascii = 65;
+//                            $cv .= chr(strlen($cv) + 65);
+//                        }
+//                    }
+//                    $ascii--;
+//                } else {
+//                    $objActSheet->setCellValue($cv . chr($ascii) . $i, $v[$field['field']]);
+//                }
+//                $ascii++;
+//                if ($ascii == 91) {
+//                    $ascii = 65;
+//                    $cv = chr(strlen($cv) + 65);
+//                }
+//            }
+//        }
+//        $current_page = intval($_GET['current_page']);
+//        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+//        //ob_end_clean();
+//        header("Content-Type: application/vnd.ms-excel;");
+//        header("Content-Disposition:attachment;filename=mxcrm_product_" . date('Y-m-d', mktime()) . "_" . $current_page . ".xls");
+//        header("Pragma:no-cache");
+//        header("Expires:0");
+//        $objWriter->save('php://output');
+//        session('export_status', 0);
+//    }
+
+    //Excel导出
+    public function excelExport($productList=false){
+        include APP_PATH."Common/job.cache.php";
+        include APP_PATH."Common/city.cache.php";
+        include APP_PATH."Common/industry.cache.php";
         C('OUTPUT_ENCODE', false);
         import("ORG.PHPExcel.PHPExcel");
         $objPHPExcel = new PHPExcel();
@@ -1797,98 +1917,97 @@ class ProductAction extends Action {
         $ascii = 65;
         $cv = '';
         $field_list = M('Fields')->where('model = \'resume\'')->order('order_id')->select();
-        foreach ($field_list as $field) {
-            if ($field['form_type'] == 'address') {
-                for ($a = 0; $a <= 4; $a++) {
-                    $address = array('所在省', '所在市', '所在县/区', '街道信息');
-                    $objActSheet->setCellValue($cv . chr($ascii) . '1', $address[$a]);
+        foreach($field_list as $field){
+            if($field['form_type'] == 'address'){
+                for($a=0;$a<=4;$a++){
+                    $address = array('所在省','所在市','所在县/区','街道信息');
+                    $objActSheet->setCellValue($cv.chr($ascii).'1', $address[$a]);
                     $ascii++;
-                    if ($ascii == 91) {
+                    if($ascii == 91){
                         $ascii = 66;
-                        $cv .= chr(strlen($cv) + 65);
+                        $cv .= chr(strlen($cv)+65);
                     }
                 }
                 $ascii--;
-            } else {
-                $objActSheet->setCellValue($cv . chr($ascii) . '1', $field['name']);
+            }else{
+                $objActSheet->setCellValue($cv.chr($ascii).'1', $field['name']);
                 $ascii++;
-                if ($ascii == 91) {
+                if($ascii == 91){
                     $ascii = 65;
-                    $cv = chr(strlen($cv) + 65);
+                    $cv = chr(strlen($cv)+65);
                 }
             }
         }
-        if (is_array($productList)) {
+        if(is_array($productList)){
             $list = $productList;
-        } else {
+        }else{
             $list = D('ProductView')->select();
         }
         $i = 1;
         foreach ($list as $k => $v) {
             $data = m('ProductData')->where("product_id = $v[product_id]")->find();
-            if (!empty($data)) {
-                $v = $v + $data;
+            if(!empty($data)){
+                $v = $v+$data;
             }
             $i++;
             $ascii = 65;
             $cv = '';
-            foreach ($field_list as $field) {
-                dump($field);
-                if ($field['form_type'] == 'datetime') {
-                    if ($v[$field['field']] == 0 || strlen($v[$field['field']]) != 10) {
-                        $objActSheet->setCellValue($cv . chr($ascii) . $i, '');
-                    } else {
-                        $objActSheet->setCellValue($cv . chr($ascii) . $i, date('Y-m-d H:i', $v[$field['field']]));
+            foreach($field_list as $field){
+                if($field['form_type'] == 'datetime'){
+                    if($v[$field['field']] == 0 || strlen($v[$field['field']]) != 10){
+                        $objActSheet->setCellValue($cv.chr($ascii).$i, '');
+                    }else{
+                        $objActSheet->setCellValue($cv.chr($ascii).$i, date('Y-m-d H:i',$v[$field['field']]));
                     }
-                } elseif ($field['form_type'] == 'number' || $field['form_type'] == 'floatnumber' || $field['form_type'] == 'phone' || $field['form_type'] == 'mobile' || ($field['form_type'] == 'text' && is_numeric($v[$field['field']]))) {
-                    //防止使用科学计数法，在数据前加空格
-                    $objActSheet->setCellValue($cv . chr($ascii) . $i, ' ' . $v[$field['field']]);
-                } elseif ($field['field'] == 'category_id') {
+                }elseif($field['form_type'] == 'number' || $field['form_type'] == 'floatnumber' || $field['form_type'] == 'phone' || $field['form_type'] == 'mobile' || ($field['form_type'] == 'text' && is_numeric($v[$field['field']]))){
+                    // 防止使用科学计数法，在数据前加空格
+                    $objActSheet->setCellValue($cv.chr($ascii).$i, ' '.$v[$field['field']]);
+                }elseif($field['field'] == 'category_id'){
                     $m_category = M('ProductCategory');
-                    $category = $m_category->where('category_id = %d', $v['category_id'])->find();
-                    $objActSheet->setCellValue($cv . chr($ascii) . $i, $category['name']);
-                } elseif ($field['field'] == 'category_id') {
+                    $category = $m_category->where('category_id = %d',$v['category_id'])->find();
+                    $objActSheet->setCellValue($cv.chr($ascii).$i, $category['name']);
+                }elseif($field['field'] == 'category_id'){
                     $m_category = M('ProductCategory');
-                    $category = $m_category->where('category_id = %d', $v['category_id'])->find();
-                    $objActSheet->setCellValue($cv . chr($ascii) . $i, $category['name']);
-                } elseif ($field['field'] == 'category_id') {
+                    $category = $m_category->where('category_id = %d',$v['category_id'])->find();
+                    $objActSheet->setCellValue($cv.chr($ascii).$i, $category['name']);
+                }elseif($field['field'] == 'category_id'){
                     $m_category = M('ProductCategory');
-                    $category = $m_category->where('category_id = %d', $v['category_id'])->find();
-                    $objActSheet->setCellValue($cv . chr($ascii) . $i, $category['name']);
-                } elseif ($field['form_type'] == 'address') {
+                    $category = $m_category->where('category_id = %d',$v['category_id'])->find();
+                    $objActSheet->setCellValue($cv.chr($ascii).$i, $category['name']);
+                }elseif($field['form_type'] == 'address'){
                     $temp = str_replace('=', '', $v[$field['field']]);
                     $address = $temp;
-                    $arr_address = explode(chr(10), $address);
-                    for ($j = 0; $j < 4; $j++) {
-                        $objActSheet->setCellValue($cv . chr($ascii) . $i, $arr_address[$j]);
+                    $arr_address = explode(chr(10),$address);
+                    for($j=0;$j<4;$j++){
+                        $objActSheet->setCellValue($cv.chr($ascii).$i, $arr_address[$j]);
                         $ascii++;
-                        if ($ascii == 91) {
+                        if($ascii == 91){
                             $ascii = 65;
-                            $cv .= chr(strlen($cv) + 65);
+                            $cv .= chr(strlen($cv)+65);
                         }
                     }
                     $ascii--;
-                } else {
-                    $objActSheet->setCellValue($cv . chr($ascii) . $i, $v[$field['field']]);
+                }else{
+                    $objActSheet->setCellValue($cv.chr($ascii).$i, $v[$field['field']]);
                 }
                 $ascii++;
-                if ($ascii == 91) {
+                if($ascii == 91){
                     $ascii = 65;
-                    $cv = chr(strlen($cv) + 65);
+                    $cv = chr(strlen($cv)+65);
                 }
-            }exit;
+            }
+
         }
         $current_page = intval($_GET['current_page']);
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         //ob_end_clean();
         header("Content-Type: application/vnd.ms-excel;");
-        header("Content-Disposition:attachment;filename=mxcrm_product_" . date('Y-m-d', mktime()) . "_" . $current_page . ".xls");
+        header("Content-Disposition:attachment;filename=mxcrm_product_".date('Y-m-d',mktime())."_".$current_page.".xls");
         header("Pragma:no-cache");
         header("Expires:0");
         $objWriter->save('php://output');
         session('export_status', 0);
     }
-
     public function getCurrentStatus() {
         $this->ajaxReturn(intval(session('export_status')), 'success', 1);
     }
