@@ -110,7 +110,7 @@ class UserAction extends Action {
 //                            'status' => 1,
 //                            'info' => '添加成功!',
 //                        );
-                        alert('success', L('添加成功，请登录!'), $_SERVER['HTTP_REFERER']);
+                        alert('success', L('注册成功，请等待审核员激活登录!'), $_SERVER['HTTP_REFERER']);
                         $this->display();
                     }
                 }
@@ -159,7 +159,7 @@ class UserAction extends Action {
 				$m_user = M('user');
 				$user = $m_user->where(array('name' => trim($_POST['name'])))->find();
 				if ($user['password'] == md5(trim($_POST['password']) . $user['salt'])) {
-					if (-1 == $user['status']) {
+					if (3 == $user['status']) {
 						alert('error', L('YOU_ACCOUNT_IS_UNAUDITED'));
 					} elseif (0 == $user['status']) {
 						alert('error', L('YOU_ACCOUNT_IS_AUDITEDING'));
