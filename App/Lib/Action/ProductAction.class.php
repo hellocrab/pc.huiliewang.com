@@ -664,8 +664,14 @@ class ProductAction extends Action {
             unset($_POST['projectExp']);
             M("resume")->create();
             $eid = M("resume")->add();
-
-            if ($eid) {
+            //保存简历上传的文件路径
+            $data['eid'] = intval($eid);
+            $data['file_name'] = $_SESSION['file_name'];
+            $data['file_uptime'] = date('Y-m-d');
+            $data['file_size'] = $_SESSION['file_size'];
+            $data['upload_path'] = $_SESSION['upload_path'];
+            $rid = M('resume_ability')->add($data);
+            if ($eid && $rid) {
                 for ($i = 0; $i < count($workExp['starttime']); $i++) {
                     $data = "";
                     $data['starttime'] = strtotime($workExp['starttime'][$i]);
@@ -864,6 +870,7 @@ class ProductAction extends Action {
         include APP_PATH . "Common/industry.cache.php";
         $eid = I("id");
         $resume = D("ResumeView")->where("resume.eid=%d", $eid)->find();
+        $resume['resume_ability'] = M('resume_ability')->where(array('eid'=>intval($eid)))->find();
         $resume['label'] = explode(",", $resume['label']);
         if ($resume['startWorkyear']) {
             $resume['exp'] = (date("Y") - date('Y',intval($resume['startWorkyear'] ))). "年工作经验";
@@ -971,7 +978,7 @@ class ProductAction extends Action {
         
         $this->resume_data = M("resume_data")->where("eid=%d", $eid)->select();
 
-        //edu 
+        //edu
         $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
 //        $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
         $resume['school'] = $this->resume_edu[0]['schoolName'];
@@ -985,10 +992,11 @@ class ProductAction extends Action {
             $resume['favorite'] = 1;
         }
 
+
+
         //创建人
         $resume['creator_role_name'] = M('user')->where(array('user_id'=>intval($resume['creator_role_id'])))->getField('full_name');
         $this->resume = $resume;
-
 
 
         $m_r_customer_log = M('rResumeLog');

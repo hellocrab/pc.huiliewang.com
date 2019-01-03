@@ -78,15 +78,18 @@ class ParseAction extends Action
 //    public $object_duty = array("项目职责");
 
     public $base_content = array("name"=>"","sex"=>"","birthday"=>"","email"=>"","telphone"=>"","edu"=>"","exp"=>"","living"=>"","hy"=>"","job_classid"=>"","provinceid"=>"","wage_current"=>"","wage_hope"=>"","workExp"=>"","object_content"=>"","eduExps"=>"","content"=>"");
+
+    /*
+     * 简历上传
+     */
     function index()
     {
-
         if($_FILES){
             $file = $_FILES['file'];
             $type =  end(explode('.', $file['name']));
             $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/resume_file/".time().".".$type;
-
-            $upload_path_name = $_SERVER['DOCUMENT_ROOT']."/Uploads/resume_file/".time().".".$type;
+            $upload_path_name1 = "/Uploads/resume_file/".time().".".$type;
+            $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$upload_path_name1;
             $complete_path = time().".".$type;
             if(move_uploaded_file($file['tmp_name'],$upload_path_name)){
 //                $cv_file = $path;
@@ -96,7 +99,6 @@ class ParseAction extends Action
 //                $data = json_decode($data,true);
 //
 //                echo $this->youyun_api($secret_key, $cv_file);exit();
-
 
                 if($type=="doc" || $type=="docx"){
                     $url = "http://www.chuntianlaile.com/wordMht.php";
@@ -113,7 +115,6 @@ class ParseAction extends Action
                     $resume_url = $output['url'];
                     $content = str_replace("\r","",str_replace("?"," ",$output['str']));
                     $content = str_replace("\n\n","\n",str_replace("<br />","\n",$content));
-//                    echo $content;exit();
                 }elseif ($type=="html" || $type=="htm" || $type=="txt"){
                     $handle = fopen($_SERVER['DOCUMENT_ROOT']."/resume_file/".$complete_path, "rb");
                     $content = stream_get_contents($handle);
@@ -122,13 +123,18 @@ class ParseAction extends Action
                     $encode = mb_detect_encoding($content, array('ASCII','UTF-8','GB2312','GBK','BIG5'));
                     $content = mb_convert_encoding($content, "UTF-8", $encode);
                 }
+
+                //上传的简历文件保存在session会话中
+                $_SESSION['file_name'] = $file['name'];
+                $_SESSION['file_size'] = $file['size'];
+                $_SESSION['upload_path'] = $upload_path_name1;
+                echo 1;
                 $this->parse_action($content,$resume_url);
             }else{
                 echo 2;
             }
             exit();
         }
-
         if($_POST['content']){
             $this->parse_action($_POST['content']);
         }
@@ -537,7 +543,6 @@ ONE Championship是亚洲的综合格斗赛事组织，目前是全亚洲最有�
 
 
     function parse_action($str="",$url){
-//        echo $str;
         header("Content-type: text/html; charset=utf-8");
         if($_POST['content']){
             $str = $_POST['content'];
@@ -549,13 +554,12 @@ ONE Championship是亚洲的综合格斗赛事组织，目前是全亚洲最有�
         $recity_name = array_flip($city_name);
         $rejob_name = array_flip($job_name);
         $reindustry_name = array_flip($industry_name);
-
         $char1 = substr_count($str,"|");
         $char2 = substr_count($str,"?");
 
         preg_match("/([a-z0-9\-_\.]+@[a-z0-9]+\.[a-z0-9\-_\.]+)+/i",$str,$email);
         if($email){
-            $this->base_content['email'] =   $email[0];//***
+            $this->base_content['email'] =   $email[0];
         }
 
         $arr = explode("\n",$str);
@@ -616,8 +620,6 @@ ONE Championship是亚洲的综合格斗赛事组织，目前是全亚洲最有�
                         $this->base_content['birthday'] = (date("Y")-$birthday)."-01";
                     }
                 }
-
-
 
                 if(strpos($this->myTrim($list),"性别") !== false && empty($this->base_content['sex'])){
 
@@ -798,7 +800,6 @@ ONE Championship是亚洲的综合格斗赛事组织，目前是全亚洲最有�
         }
 
 
-
         $txt_content['object'] = $object_offest;
         $txt_content['edu'] = $edu_offest;
         $txt_content['work'] = $work_offest;
@@ -815,16 +816,14 @@ ONE Championship是亚洲的综合格斗赛事组织，目前是全亚洲最有�
         $this->base_content['url'] = $url;
 //        var_dump($this->base_content);exit();
         $base_content = $this->base_content;
-//        var_dump($base_content);exit();
-//        var_dump($base_content);exit();
-        $this->add_action($base_content);exit();
+        $this->add_action($base_content);
 
         return $base_content;
-//        echo json_encode($base_content,JSON_UNESCAPED_UNICODE);exit();
+        echo json_encode($base_content,JSON_UNESCAPED_UNICODE);exit();
 //        return $base_content;
-
-
-
+//
+//
+//
 //        var_dump($object_content);exit();
 
     }
@@ -901,9 +900,6 @@ ONE Championship是亚洲的综合格斗赛事组织，目前是全亚洲最有�
             }
 
         }
-        echo $result;exit();
-
-        var_dump($data);exit();
     }
 
 

@@ -136,7 +136,6 @@ class FileAction extends Action{
 				$upload->maxSize = 20000000;
 				//设置附件上传目录
 				$dirname = UPLOAD_PATH . date('Ym', time()).'/'.date('d', time()).'/';
-				
 				$defaultinfo = $m_config->where('name = "defaultinfo"')->find();
 				$value = unserialize($defaultinfo['value']);
 				$allow_file_type = str_replace(",php","",$value['allow_file_type']);

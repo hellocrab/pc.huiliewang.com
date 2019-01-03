@@ -407,16 +407,50 @@
                         </div>
                         <div class="tab-pane fade back_box" id="tab3">
                             <div class="panel-body">
-                                <div class="ibox">
-                                    <if condition="$resume['url']">
-                                        <input type="hidden" value="{$resume.url}" id="resumeurl">
-                                        <body onload="load()">
-                                            <iframe id="iframe" style="width: 100%;min-height:1000px;"></iframe>
-                                        </body>
-                                        <else />
-                                        <include file="Public:nodata" />
-                                    </if>
-                                </div>
+                                <!--<div class="ibox">-->
+                                    <!--<if condition="$resume['url']">-->
+                                        <!--<input type="hidden" value="{$resume.url}" id="resumeurl">-->
+                                        <!--<body onload="load()">-->
+                                            <!--<iframe id="iframe" style="width: 100%;min-height:1000px;"></iframe>-->
+                                        <!--</body>-->
+                                        <!--<else />-->
+                                        <!--<include file="Public:nodata" />-->
+                                    <!--</if>-->
+                                <!--</div>-->
+      <!--以附件的形式 展示-->
+                                <if condition="$resume.resume_ability eq null">
+                                    <include file="Public:nodata" />
+                                    <else />
+                                    <table class="table product-table">
+                                        <tr>
+                                            <td>简历名称</td>
+                                            <td>{:L('SIZE')}</td>
+                                            <!--<td>上传人</td>-->
+                                            <td>上传时间</td><td>操作</td>
+                                        </tr>
+                                            <tr>
+                                                <td>
+                                                    <!--<img src="__PUBLIC__/productImg/{$vo['pic']}" alt="">&nbsp;&nbsp;&nbsp;-->
+                                                    <!--<a <if condition="in_array(getExtension($vo['file_name']),imgFormat())">class="litebox_file" href="{$vo['file_path']}" data-litebox-group="group-{$info['contract_id']}" title="点击查看大图"<else/>href="javascript:;" file="{$vo.file_path}" filename="{$vo.name}" onclick="filedown(this);"</if>>{$vo.file_name}</a>-->
+                                                    <a href="{$resume.resume_ability.upload_path}">{$resume.resume_ability.file_name}</a>
+                                                </td>
+                                                <td>
+                                                    {$resume.resume_ability.file_size}KB
+                                                </td>
+                                                <!--<td>-->
+                                                    <!--{$vo.owner.user_name}-->
+                                                <!--</td>-->
+                                                <td>
+                                                    {$resume.resume_ability.file_uptime}
+                                                </td>
+                                                <td class="tdleft">
+                                                    <!--<a href="javascript:void(0);" rel="{$vo['file_id']}" class="del_file">{:L('DELETE')}</a>-->
+                                                    <a href="{$resume.resume_ability.upload_path}" >下载查看</a>
+                                                </td>
+                                            </tr>
+
+                                    </table>
+                                </if>
                             </div>
                         </div>
                         <div id="tab4"  class="tab-pane">
@@ -428,7 +462,7 @@
                                                 <div class="row  clearfix" id="title-hide" style="display: block;">
                                                     <input type="hidden" class="select_arr" value="">
                                                     <ul class="breadcrum pull-left">
-                                                        <li>已选中&nbsp;<span class="icheck_num">1</span>&nbsp;项</li>
+                                                        <li> 已选中&nbsp;<span class="icheck_num">1</span>&nbsp;项</li>
                                                         <li>
                                                             <a class="add_customer" href="javascript:void(0)"  rel="removecc">&nbsp;从CallList移除</a>
                                                             <a class="add_customer" href="javascript:void(0)"  rel="tjgw">&nbsp;推荐给顾问面试</a>
