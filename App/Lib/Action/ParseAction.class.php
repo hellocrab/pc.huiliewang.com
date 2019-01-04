@@ -88,8 +88,13 @@ class ParseAction extends Action
             $file = $_FILES['file'];
             $type =  end(explode('.', $file['name']));
             $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/resume_file/".time().".".$type;
-            $upload_path_name1 = "/Uploads/resume_file/".time().".".$type;
-            $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$upload_path_name1;
+//            $upload_path_name1 = "/Uploads/resume_file/".time().".".$type;
+//            $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$upload_path_name1;
+
+            $upload_path_name1 = "/Uploads/resume_file/".$file['name'];
+            $_upload_path_name1 = iconv('utf-8','GBK',$upload_path_name1);
+            $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$_upload_path_name1;
+
             $complete_path = time().".".$type;
             if(move_uploaded_file($file['tmp_name'],$upload_path_name)){
 //                $cv_file = $path;
@@ -128,7 +133,7 @@ class ParseAction extends Action
                 $_SESSION['file_name'] = $file['name'];
                 $_SESSION['file_size'] = $file['size'];
                 $_SESSION['upload_path'] = $upload_path_name1;
-                echo 1;
+                echo '{"file_name":"'.$file['name'].'","file_size":"'.$file['size'].'"}';
                 $this->parse_action($content,$resume_url);
             }else{
                 echo 2;

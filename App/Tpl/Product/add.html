@@ -112,17 +112,8 @@
                                 <input type="hidden" name="url" />
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">上传简历：</label>
-                                    <div class="col-md-7" style="margin-left: -15px;">
+                                    <div class="col-md-8" style="margin-left: -15px;">
                                         <div class="submitfiles"></div>
-                                        <div class="col-md-4">
-                                            <select class="form-control required" id="standard"  aria-required="true">
-                                                <option value="原始简历">原始简历</option>
-                                                <option value="推荐报告">推荐报告</option>
-                                                <option value="背景调查">背景调查</option>
-                                                <option value="其他资料">其他资料</option>
-                                            </select>
-                                            <span id="standardTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
-                                        </div>
 
                                         <div class="col-md-4">
                                             <div class="btn btn-default fileinput-button" style="width: 100%;">
@@ -136,8 +127,20 @@
                                                 <span>粘贴简历</span>
                                             </div>
                                         </div>
+                                        <div class="col-md-4">
+                                            <!--<select class="form-control required" id="standard"  aria-required="true">-->
+                                            <!--<option value="原始简历">原始简历</option>-->
+                                            <!--<option value="推荐报告">推荐报告</option>-->
+                                            <!--<option value="背景调查">背景调查</option>-->
+                                            <!--<option value="其他资料">其他资料</option>-->
+                                            <!--</select>-->
+                                            <!--<span id="standardTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>-->
+                                            <div style="width: 100%;height: 100%;">
+                                                <span id="ajax_file"></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-1"><span style="color: red;line-height: 32px;">*</span></div>
                                 </div>
 
                                 <div class="form-group">
@@ -755,7 +758,7 @@
                 processData:false,
                 contentType:false,
                 success:function(data){
-                    console.log(data);//显示
+                    data = JSON.parse(data);
                     if(data){
                        // location = "/index.php?m=product&a=edit&id="+data;
                         swal({
@@ -763,6 +766,7 @@
                             type: "success",
                             confirmButtonText: "确定"
                         });
+                        $("#ajax_file").html(data.file_name+"|"+data.file_size+"kB");
                     }
 //                    var content=JSON.parse(data);
 //                    //内容解析显示在页面中

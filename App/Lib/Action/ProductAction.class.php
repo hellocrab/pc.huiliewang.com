@@ -463,7 +463,7 @@ class ProductAction extends Action {
         if ($this->isPost()) {
             header("Content-type: text/html; charset=utf-8");
             $eid = $_POST['eid'];
-
+//customer_id   business_name
             $m_resume = D('Resume');
 //            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
