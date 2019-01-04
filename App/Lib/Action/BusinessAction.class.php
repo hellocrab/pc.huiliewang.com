@@ -997,7 +997,7 @@ class BusinessAction extends Action {
 //        $project['offer'] = M("fine_project")->where("status='%s' and project_id=%d","offer",I("id"))->select();
 //        $project['enter']= M("fine_project")->where("status='%s' and project_id=%d","enter",I("id"))->select();
 //        $project['safe'] = M("fine_project")->where("status='%s' and project_id=%d","safe",I("id"))->select();
-//        $project = $this->getMoreProject($project);
+//        $project = $this->getMoreProject($project);x
 //var_dump($project);exit();
 
         $business = M("business")->where("business_id=%d", I("id"))->select();
@@ -1008,7 +1008,6 @@ class BusinessAction extends Action {
         $this->call_ico3 = array("1" => "mubiao", "0" => "buheshi");
         $this->adviser_ico = array("1" => "jxgenjin", "0" => "ztgenjin");
         $this->assign("project", $project);
-
 
         $d_business = D('BusinessView');
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
@@ -1061,7 +1060,6 @@ class BusinessAction extends Action {
         }
         $this->status_list = M('LogStatus')->select();
         $this->log_list = $business_logs;
-
 
         //文件
         $file_ids = M('rBusinessFile')->where('business_id = %d', $business_id)->getField('file_id', true);

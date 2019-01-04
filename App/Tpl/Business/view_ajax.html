@@ -185,7 +185,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <table class="table select-table">
+                        <table class="table select-table" >
                             <tr class="tabTh" style="background-color:#f9fafc;">
                                 <td width="30px" style="border-left: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">
                                     <div class="checkbox checkbox-primary">
@@ -203,8 +203,7 @@
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
                             <tbody>
-                            <if condition="$project['calllist']">
-                                <volist name="$project['calllist']" id="vo">
+                                <volist name="project.calllist" id="vo">
                                 <tr>
                                     <td  width="30px" style="border-left: 1px solid #e7eaec;text-align:center;padding:14px;color:#999">
                                         <div class="checkbox checkbox-primary">
@@ -214,15 +213,15 @@
                                     </td>
                                     <td style="text-align:center;padding:14px;color:#666;"><a href="{:U('product/view','id='.$vo['resume_id'])}"><span class="" style="{$mail_contacts_id == $vo['contacts_id'] ? '':'display:none'}">{$vo['name']}</span></a></td>
                                     <td style="text-align:right;padding:14px;color:#666;"><input type="button" class="btn btn-primary btn-sm" value="加入CallList >" style="width: 100px;" data-id="{$vo['id']}"></td>
-                                    <td style="text-align:center;padding:14px;color:#666;">公司名称{$vo.companey}</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">职位{$vo['position']}</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">男{$vo['sex']}</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">24万{$vo['receivement']}</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">18785858585{$vo['telephone']}</td>
-                                    <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">2018-03-16 09:49:03{$vo['updateTime']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo.current_company}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;"> <if condition="$vo['sex'] eq '1' ">男<else/>女</if>
+                                    </td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['telephone']}</td>
+                                    <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date="Y-m-d H:i:s",###}</td>
                                 </tr>
                                 </volist>
-                            </if>
                             </tbody>
                         </table>
                     </div>

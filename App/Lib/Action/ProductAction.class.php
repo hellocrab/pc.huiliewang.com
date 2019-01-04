@@ -463,6 +463,7 @@ class ProductAction extends Action {
         if ($this->isPost()) {
             header("Content-type: text/html; charset=utf-8");
             $eid = $_POST['eid'];
+            $business_id = intval($_POST['customer_id']);
 //customer_id   business_name
             $m_resume = D('Resume');
 //            $m_customer_data = D('CustomerData');
@@ -483,9 +484,17 @@ class ProductAction extends Action {
             $_POST['lastupdate'] = time();
             $result = M("resume")->where("eid=%d", $eid)->save($_POST);
 
-            if ($result) {
+            $customer_id = M("business")->where("business_id=%d", $business_id)->field("customer_id")->find();
+            $data = "";
+            $data['resume_id'] = $eid;
+            $data['project_id'] = $business_id;
+            $data['tracker'] = session("role_id");
+            $data['com_id'] = $customer_id['customer_id'];
+            $data['updatetime'] = time();
+            $result_fine = M("fine_project")->where("resume_id=%d", $eid)->save($data);
+            if ($result && $result_fine) {
                 if ($workExp) {
-                    M("resume_work")->where("eid=%d", $eid)->delete();
+                    M("resume_work")->where("resume_id=%d", $eid)->delete();
                     for ($i = 0; $i < count($workExp['starttime']); $i++) {
                         $data = "";
                         $data['starttime'] = strtotime($workExp['starttime'][$i]);
@@ -709,9 +718,8 @@ class ProductAction extends Action {
                     M("resume_project")->add($data);
                 }
 
-
                 if ($_POST['business_id']) {
-                    $customer_id = M("business")->where("business_id=%d", $data['business_id'])->field("customer_id")->find();
+                    $customer_id = M("business")->where("business_id=%d", $_POST['business_id'])->field("customer_id")->find();
                     $data = "";
                     $data['resume_id'] = $eid;
                     $data['project_id'] = $_POST['business_id'];
@@ -719,7 +727,7 @@ class ProductAction extends Action {
                     $data['com_id'] = $customer_id['customer_id'];
                     $data['status'] = 1;
                     $data['addtime'] = time();
-                    M("fine_project")->add($data);
+                    $reult = M("fine_project")->add($data);
                     alert('success', L('PRODUCT_ADDED_SUCCESSFULLY'), U('business/view', 'id=' . $_POST['business_id']));
                 } else {
                     alert('success', L('PRODUCT_ADDED_SUCCESSFULLY'), U('product/index'));
