@@ -53,7 +53,7 @@ function checkform(obj) {
             $('#' + item + 'Tip').html('请填写' + item_name + '！');
             return false;
         } else {
-            var pwd = $('#pass').val();
+            var pwd = $('#password').val();
             if (item_val != pwd) {
                 $('#' + item + 'Tip').removeClass("hide");
                 $('#' + item + 'Tip').addClass('show');
