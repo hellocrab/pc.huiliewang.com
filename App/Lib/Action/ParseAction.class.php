@@ -91,7 +91,7 @@ class ParseAction extends Action
 //            $upload_path_name1 = "/Uploads/resume_file/".time().".".$type;
 //            $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$upload_path_name1;
 
-            $upload_path_name1 = "/Uploads/resume_file/".$file['name'];
+            $upload_path_name1 = "./Uploads/resume_file/".$file['name'];
             $_upload_path_name1 = iconv('utf-8','GBK',$upload_path_name1);
             $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$_upload_path_name1;
 
@@ -131,9 +131,9 @@ class ParseAction extends Action
 
                 //上传的简历文件保存在session会话中
                 $_SESSION['file_name'] = $file['name'];
-                $_SESSION['file_size'] = $file['size'];
+                $_SESSION['file_size'] = intval(intval($file['size'])/1024);
                 $_SESSION['upload_path'] = $upload_path_name1;
-                echo '{"file_name":"'.$file['name'].'","file_size":"'.$file['size'].'"}';
+                echo '{"file_name":"'.$file['name'].'","file_size":"'.intval(intval($file['size'])/1024).'"}';
                 $this->parse_action($content,$resume_url);
             }else{
                 echo 2;
@@ -144,7 +144,32 @@ class ParseAction extends Action
             $this->parse_action($_POST['content']);
         }
     }
+//人才编辑模块的简历上传
+    function index_add(){
+        $eid = intval($_GET['eid']);
+        if($_FILES){
+            $file = $_FILES['file'];
+            $type =  end(explode('.', $file['name']));
+            $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/resume_file/".time().".".$type;
 
+            $upload_path_name1 = "./Uploads/resume_file/".$file['name'];
+            $_upload_path_name1 = iconv('utf-8','GBK',$upload_path_name1);
+            $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$_upload_path_name1;
+            if(move_uploaded_file($file['tmp_name'],$upload_path_name)){
+                //保存简历上传的文件路径
+                $data['eid'] = intval($eid);
+                $data['file_name'] = $file['name'];
+                $data['file_uptime'] = date('Y-m-d');
+                $data['file_size'] = intval(intval($file['size'])/1024);
+                $data['upload_path'] = $upload_path_name1;
+                M('resume_ability')->add($data);
+                echo 1;
+            }else{
+                echo 2;
+            }
+            exit();
+        }
+    }
 
     function closest_word($input, $words) {
         $shortest = -1;

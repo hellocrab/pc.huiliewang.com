@@ -353,6 +353,16 @@ class FileAction extends Action{
 			}
 		}
 	}
+	//人才简历附件的删除
+    public function ability_delete(){
+	    $id = intval($_GET['id']);
+	    $filePath = M('resume_ability')->where(array('Id'=>$id))->getField('upload_path');
+        $result = M('resume_ability')->where(array('Id'=>$id))->delete();
+        if($result){
+            @unlink($filePath);
+            $this->ajaxReturn('',L('DELETED SUCCESSFULLY'),1);
+        }else $this->ajaxReturn('',L('DELETE FAILED CONTACT THE ADMINISTRATOR'),0);
+    }
 	//下载通用
 	public function filedownload(){
 		$path = trim(urldecode($_GET['file_path']));

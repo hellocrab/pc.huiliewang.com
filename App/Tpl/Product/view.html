@@ -406,7 +406,7 @@
                             </div>
                         </div>
                         <div class="tab-pane fade back_box" id="tab3">
-                            <div class="panel-body">
+                            <div class="panel-body form-group">
                                 <!--<div class="ibox">-->
                                     <!--<if condition="$resume['url']">-->
                                         <!--<input type="hidden" value="{$resume.url}" id="resumeurl">-->
@@ -419,6 +419,11 @@
                                 <!--</div>-->
       <!--以附件的形式 展示-->
                                 <if condition="$resume.resume_ability eq null">
+                                    <div class="col-md-4"><span>上传简历</span>
+                                        <div class="btn btn-default fileinput-button" style="width: 100%;text-align: center;">
+                                            <input type="file"  id="uploadresume"/>
+                                        </div>
+                                    </div>
                                     <include file="Public:nodata" />
                                     <else />
                                     <table class="table product-table">
@@ -446,6 +451,8 @@
                                                 <td class="tdleft">
                                                     <!--<a href="javascript:void(0);" rel="{$vo['file_id']}" class="del_file">{:L('DELETE')}</a>-->
                                                     <a href="{$resume.resume_ability.upload_path}" >下载查看</a>
+                                                    &nbsp;&nbsp;
+                                                    <a href="javascript:void(0);" rel="{$resume.resume_ability.Id}" class="del_file">{:L('DELETE')}</a>
                                                 </td>
                                             </tr>
 
@@ -841,6 +848,40 @@
 <script src="__PUBLIC__/js/images-loaded.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 //页面加载时执行Tab start
+                                                                    $("#uploadresume").on("change",function () {
+                                                                        var dataform = new FormData();
+                                                                        dataform.append("file",$('#uploadresume')[0].files[0]);
+
+                                                                        $.ajax({
+                                                                            url:"/index.php?m=parse&a=index_add&eid={$resume['eid']}",
+                                                                            type:"post",
+                                                                            data:dataform,
+                                                                            processData:false,
+                                                                            contentType:false,
+                                                                            success:function(data){
+                                                                                if(data == 1){
+                                                                                    swal({
+                                                                                        title: '上传成功',
+                                                                                        type: "success",
+                                                                                        confirmButtonText: "确定"
+                                                                                    },function (isConfirm) {
+                                                                                        if (isConfirm){
+                                                                                            top.location.reload();
+                                                                                        }
+                                                                                    });
+                                                                                }else {
+                                                                                    swal({
+                                                                                        title: "添加失败!",
+                                                                                        type: "error"
+                                                                                    });
+                                                                                }
+                                                                            },
+                                                                            error:function(e){
+                                                                                alert("错误！！");
+                                                                            }
+                                                                        });
+                                                                    })
+
                                                                     $(function () {
                                                                         var thisId = window.location.hash;
                                                                         var atype = thisId.substr(1);
@@ -1116,7 +1157,6 @@
                                                                                     }
                                                                                 });
                                                                     });
-
 //上架产品
                                                                     $('#revert_product').click(function () {
                                                                         var product_id = "{$product['product_id']}";
@@ -1639,7 +1679,7 @@
                                                                                     if (isConfirm) {
                                                                                         $.ajax({
                                                                                             type: 'get',
-                                                                                            url: "{:U('file/delete','r=RResumeFile&id=')}" + file_id,
+                                                                                            url: "{:U('file/ability_delete','id=')}" + file_id,
                                                                                             async: false,
                                                                                             success: function (data) {
                                                                                                 if (data.status == 1) {
