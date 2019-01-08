@@ -441,15 +441,11 @@ class ProductAction extends Action {
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
-//        $this->assign('city_name', $city_name);
-//        $this->assign('industry_name', $industry_name);
-//        $this->assign('job_name', $job_name);
-
+        foreach ($list as $k => $v){
+            $list[$k]['location'] = $city_name[$v['location']];
+        }
         $Page = new Page($count, $listrows); // 实例化分页类 传入总记录数和每页显示的记录数
         $show = $Page->show(); // 分页显示输出
-
-
-
         $this->assign('list', $list); // 赋值数据集
         $this->assign('page', $show); // 赋值分页输出
         $this->assign('count', $count);
@@ -657,7 +653,7 @@ class ProductAction extends Action {
             header("Content-type: text/html; charset=utf-8");
             $m_resume = D('Resume');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
-            $_POST['birthday'] = strtotime($_POST['birthday']);
+            $_POST['birthday'] = empty($_POST['birthday']) ? $_POST['birthday'] :strtotime($_POST['birthday']);
             $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
             $_POST['addtime'] = time();
             $_POST['lastupdate'] = time();
@@ -727,6 +723,7 @@ class ProductAction extends Action {
                     $data['com_id'] = $customer_id['customer_id'];
                     $data['status'] = 1;
                     $data['addtime'] = time();
+                    $data['updatetime'] = time();
                     $reult = M("fine_project")->add($data);
                     alert('success', L('PRODUCT_ADDED_SUCCESSFULLY'), U('business/view', 'id=' . $_POST['business_id']));
                 } else {
