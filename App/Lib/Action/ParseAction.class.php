@@ -152,7 +152,7 @@ class ParseAction extends Action
             $type =  end(explode('.', $file['name']));
             $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/resume_file/".time().".".$type;
 
-            $upload_path_name1 = "./Uploads/resume_file/".$file['name'];
+            $upload_path_name1 = "/Uploads/resume_file/".$file['name'];
             $_upload_path_name1 = iconv('utf-8','GBK',$upload_path_name1);
             $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$_upload_path_name1;
             if(move_uploaded_file($file['tmp_name'],$upload_path_name)){
