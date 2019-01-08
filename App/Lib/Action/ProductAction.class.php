@@ -655,9 +655,7 @@ class ProductAction extends Action {
     public function add() {
         if ($this->isPost()) {
             header("Content-type: text/html; charset=utf-8");
-//            var_dump($_POST);exit();
             $m_resume = D('Resume');
-//            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
             $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
@@ -674,13 +672,16 @@ class ProductAction extends Action {
             M("resume")->create();
             $eid = M("resume")->add();
             //保存简历上传的文件路径
-            $data['eid'] = intval($eid);
-            $data['file_name'] = $_SESSION['file_name'];
-            $data['file_uptime'] = date('Y-m-d');
-            $data['file_size'] = $_SESSION['file_size'];
-            $data['upload_path'] = $_SESSION['upload_path'];
-            $rid = M('resume_ability')->add($data);
-            if ($eid && $rid) {
+            if(!empty($_SESSION['file_name'])){
+                $data['eid'] = intval($eid);
+                $data['file_name'] = $_SESSION['file_name'];
+                $data['file_uptime'] = date('Y-m-d');
+                $data['file_size'] = $_SESSION['file_size'];
+                $data['upload_path'] = $_SESSION['upload_path'];
+                M('resume_ability')->add($data);
+            }
+
+            if ($eid) {
                 for ($i = 0; $i < count($workExp['starttime']); $i++) {
                     $data = "";
                     $data['starttime'] = strtotime($workExp['starttime'][$i]);
@@ -704,7 +705,6 @@ class ProductAction extends Action {
                     $data['eid'] = $eid;
                     M("resume_edu")->add($data);
                 }
-
 
                 for ($i = 0; $i < count($projectExp['starttime']); $i++) {
                     $data = "";
@@ -982,6 +982,7 @@ class ProductAction extends Action {
             $_position = M('resume_work_position')->where(['work_id'=>$rw['id']])->find();
             $resume_work[$kw]['position'][] = $_position;
         }
+
         $this->resume_work = $resume_work;
         
         $this->resume_data = M("resume_data")->where("eid=%d", $eid)->select();
@@ -999,13 +1000,9 @@ class ProductAction extends Action {
         if ($collect) {
             $resume['favorite'] = 1;
         }
-
-
-
         //创建人
         $resume['creator_role_name'] = M('user')->where(array('user_id'=>intval($resume['creator_role_id'])))->getField('full_name');
         $this->resume = $resume;
-
 
         $m_r_customer_log = M('rResumeLog');
         $m_log = M('Log');
@@ -1954,6 +1951,7 @@ class ProductAction extends Action {
                 }
             }
         }
+
         if(is_array($productList)){
             $list = $productList;
         }else{

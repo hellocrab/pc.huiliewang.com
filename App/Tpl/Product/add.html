@@ -444,11 +444,11 @@
                                             <div class="panel panel-default adddefault addedu" onclick="faddEdu();">
                                                 <span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加教育经历
                                             </div>
-                                            <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;display: none;">
-                                                <div class="panel-footer">
-                                                    <button class="btn btn-success btn-xs" type="button" onclick="expadd('eduExp')">增加新的教育经历</button>
-                                                </div>
-                                            </div>
+                                            <!--<div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;display: none;">-->
+                                                <!--<div class="panel-footer">-->
+                                                    <!--<button class="btn btn-success btn-xs" type="button" onclick="expadd('eduExp')">增加新的教育经历</button>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
                                         <!--</notempty>-->
                                     </div>
                                 </div>
@@ -456,85 +456,84 @@
                                 <div class="form-group projectExp">
                                     <label class="col-md-3 control-label">项目经历：</label>
                                     <div class="col-lg-9">
-                                        <notempty name="resume_project" >
-                                            <!--<div class="panel panel-default adddefault addpro" style="display: none;" onclick="faddPro();">-->
-                                                <!--<span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加项目经历-->
-                                            <!--</di v>-->
-                                                <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;">
-                                                    <volist name="resume_project" id="vo">
-                                                        <input type="hidden" name="projectExp[id][]" value="{$vo.id}" />
-                                                        <div style="background: none" class="panel-body3">
-                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>
-                                                            <div class="col-sm-10">
-                                                                <input class="form-control text-center timerinput required" id="projectyearFrom" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[starttime][]" value="{$vo.starttime|date="Y-m",###}"><span>-&gt;</span>
-                                                                <input class="form-control text-center timerinput required" id="projectyearEnd" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[endtime][]" value="{$vo.endtime|date="Y-m",###}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label">项目名称<span class="text-danger">*</span></label>
-                                                            <div class="col-sm-9">
-                                                                <input class="form-control required" type="text" id="proName" name="projectExp[proName][]" value="{$vo.proName}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label">所在公司<span class="text-danger">*</span></label>
-                                                            <div class="col-sm-4">
-                                                                <input class="form-control required" type="text" id="proCompany" name="projectExp[proCompany][]" value="{$vo.proCompany}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label">项目职位<span class="text-danger"></span></label>
-                                                            <div class="col-sm-9">
-                                                                <input class="form-control" type="text" id="proOffice" name="projectExp[proOffice][]" value="{$vo.proOffice}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label">项目描述<span class="text-danger"></span></label>
-                                                            <div class="col-sm-9">
-                                                                <textarea class="msd-elastic form-control" id="proDes" name="projectExp[proDes][]" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 136px;">{$vo.proDes}</textarea>
-                                                            </div>
-                                                        </div>
-                                                        <button class="btn col-sm-offset-2 btn-danger btn-xs deletebtn" type="button">删除</button></div>
-                                                    </volist>
-                                                    <div class="panel-footer">
-                                                        <button class="btn btn-success btn-xs" type="button" onclick="expadd('projectExp')">增加新的项目经历</button>
-                                                    </div>
-                                                </div>
-                                        <else/>
+                                        <!--<notempty name="resume_project" >-->
+                                            <!--&lt;!&ndash;<div class="panel panel-default adddefault addpro" style="display: none;" onclick="faddPro();">&ndash;&gt;-->
+                                                <!--&lt;!&ndash;<span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加项目经历&ndash;&gt;-->
+                                            <!--&lt;!&ndash;</di v>&ndash;&gt;-->
+                                                <!--<div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;">-->
+                                                    <!--<volist name="resume_project" id="vo">-->
+                                                        <!--<input type="hidden" name="projectExp[id][]" value="{$vo.id}" />-->
+                                                        <!--<div style="background: none" class="panel-body3">-->
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>-->
+                                                            <!--<div class="col-sm-10">-->
+                                                                <!--<input class="form-control text-center timerinput required" id="projectyearFrom" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[starttime][]" value="{$vo.starttime|date="Y-m",###}"><span>-&gt;</span>-->
+                                                                <!--<input class="form-control text-center timerinput required" id="projectyearEnd" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[endtime][]" value="{$vo.endtime|date="Y-m",###}">-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label class="col-sm-2 control-label">项目名称<span class="text-danger">*</span></label>-->
+                                                            <!--<div class="col-sm-9">-->
+                                                                <!--<input class="form-control required" type="text" id="proName" name="projectExp[proName][]" value="{$vo.proName}">-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label class="col-sm-2 control-label">所在公司<span class="text-danger">*</span></label>-->
+                                                            <!--<div class="col-sm-4">-->
+                                                                <!--<input class="form-control required" type="text" id="proCompany" name="projectExp[proCompany][]" value="{$vo.proCompany}">-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label class="col-sm-2 control-label">项目职位<span class="text-danger"></span></label>-->
+                                                            <!--<div class="col-sm-9">-->
+                                                                <!--<input class="form-control" type="text" id="proOffice" name="projectExp[proOffice][]" value="{$vo.proOffice}">-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label class="col-sm-2 control-label">项目描述<span class="text-danger"></span></label>-->
+                                                            <!--<div class="col-sm-9">-->
+                                                                <!--<textarea class="msd-elastic form-control" id="proDes" name="projectExp[proDes][]" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 136px;">{$vo.proDes}</textarea>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<button class="btn col-sm-offset-2 btn-danger btn-xs deletebtn" type="button">删除</button></div>-->
+                                                    <!--</volist>-->
+                                                    <!--<div class="panel-footer">-->
+                                                        <!--<button class="btn btn-success btn-xs" type="button" onclick="expadd('projectExp')">增加新的项目经历</button>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                        <!--<else/>-->
                                             <div class="panel panel-default adddefault addpro" onclick="faddPro();">
                                                 <span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加项目经历
                                             </div>
-                                            <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;display: none;">
-                                                <div class="panel-footer">
-                                                    <button class="btn btn-success btn-xs" type="button" onclick="expadd('projectExp')">增加新的项目经历</button>
-                                                </div>
-                                            </div>
-                                        </notempty>
-
+                                            <!--<div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;display: none;">-->
+                                                <!--<div class="panel-footer">-->
+                                                    <!--<button class="btn btn-success btn-xs" type="button" onclick="expadd('projectExp')">增加新的项目经历</button>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</notempty>-->
                                     </div>
                                 </div>
-                                <!--<div class="form-group">-->
-                                    <!--<label class="col-md-3 control-label">优劣势分析：</label>-->
-                                    <!--<div class="col-md-6" style="position: relative;">-->
-                                        <!--<textarea class="msd-elastic form-control" id="evaluate" name="evaluate" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-md-2"></div>-->
-                                <!--</div>-->
-                                <!--<div class="form-group">-->
-                                    <!--<label class="col-md-3 control-label">技能：</label>-->
-                                    <!--<div class="col-md-6" style="position: relative;">-->
-                                        <!--<textarea class="msd-elastic form-control" id="skill" name="skill" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;"></textarea>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-md-2"></div>-->
-                                <!--</div>-->
-                                <!--<div class="form-group">-->
-                                    <!--<label class="col-md-3 control-label">语言能力：</label>-->
-                                    <!--<div class="col-md-6" style="position: relative;">-->
-                                        <!--<textarea class="msd-elastic form-control" id="language" name="language" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;"></textarea>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-md-2"></div>-->
-                                <!--</div>-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">优劣势分析：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="evaluate" name="evaluate" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">技能：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="skill" name="skill" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;"></textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">语言能力：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="language" name="language" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;"></textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
 
 
                                 <volist name="field_list['data']" id="vo" key="key">
