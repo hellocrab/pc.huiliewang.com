@@ -237,7 +237,8 @@
                                                         <elseif  condition="$v['field'] eq 'location'"/>
                                                         <span>{$vo['location']}</span>
                                                         <elseif  condition="$v['field'] eq 'birthday'"/>
-                                                        <span>{$vo['birthday']|date="Y-m-d",###}</span>
+                                                        <!--<span>{$vo['birthday']|date="Y-m-d",###}</span>-->
+                                                        <span>{$vo['birthYear']}-{$vo['birthMouth']}</span>
                                                         <elseif  condition="$v['field'] eq 'startWorkyear'"/>
                                                         <span>{$vo[$v['field']]|date="Y-m",###}</span>
                                                         <elseif  condition="$v['field'] eq 'curSalary'"/>
