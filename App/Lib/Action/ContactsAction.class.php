@@ -405,6 +405,7 @@ class ContactsAction extends Action {
 		if (!isset($where['customer.owner_role_id'])) {
 			$where['customer.owner_role_id'] = array('in', $below_ids);
 		}
+		unset($where['customer.owner_role_id']);
 		if (!isset($where['is_deleted'])) {
 			$where['is_deleted'] = 0;
 		}
@@ -754,7 +755,7 @@ class ContactsAction extends Action {
 			if($m_contacts->where('contacts_id = %d', $contacts_id)->delete()){
 				$this->ajaxReturn('',L('DELETED SUCCESSFULLY'),1);
 			} else {
-				$this->ajaxReturn('',L('DELETE FAILED'),0);
+				$this->ajaxReturn('您没有此权利',L('DELETE FAILED'),0);
 			}
 		}else{
 			$this->ajaxReturn('',L('PLEASE CHOOSE TO DELETE THE CONTACT'),0);
