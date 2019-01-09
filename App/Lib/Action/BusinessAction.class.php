@@ -84,7 +84,6 @@ class BusinessAction extends Action {
      *
      * */
     public function index() {
-
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
@@ -399,10 +398,12 @@ class BusinessAction extends Action {
         // $where['name'] = array('neq','..');
         $ownerWhere['business.owner_role_id'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
         unset($where['business.owner_role_id']);
-        $list = $d_v_business->where($where)->where($ownerWhere)->order($order)->page($p . ',' . $listrows)->select();
-        /* dump($where);
-          dump($list);
-          exit; */
+//      $list = $d_v_business->where($where)->where($ownerWhere)->order($order)->page($p . ',' . $listrows)->select();
+        // 去掉条件    ->where($ownerWhere)
+        $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
+        /*dump($where);
+        dump($list);
+        exit;*/
         $count = $d_v_business->where($where)->count();
         $p_num = ceil($count / $listrows);
         if ($p_num < $p) {
