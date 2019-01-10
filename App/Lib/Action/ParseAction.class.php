@@ -102,6 +102,7 @@ class ParseAction extends Action
             dump($result);
             dump($result1);
             dump($result2);
+            dump($file['tmp_name']);
             exit;
             if(move_uploaded_file($file['tmp_name'],$upload_path_name)){
 //                $cv_file = $path;
