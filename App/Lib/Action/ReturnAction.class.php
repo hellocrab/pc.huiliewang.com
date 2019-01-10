@@ -33,7 +33,8 @@ class ReturnAction extends Action
     //ajax展示负责人
     public function personChanged(){
         $per_id = $_POST['person_id'];
-        $role_id = M("user")->where(array('user_id'=>intval($per_id)))->getField('role_id');
+//        $role_id = M("user")->where(array('user_id'=>intval($per_id)))->getField('role_id');
+        $role_id = intval($per_id);
         $position_id = M("role")->where(array('role_id'=>intval($role_id)))->getField('position_id');
         $department_id = M("position")->where(array('position_id'=>intval($position_id)))->getField('department_id');
         $department =  M("role_department")->where(array('department_id'=>intval($department_id)))->getField('name');
