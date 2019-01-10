@@ -103,6 +103,16 @@ class ParseAction extends Action
             dump($result1);
             dump($result2);
             dump($file['tmp_name']);
+
+            import('@.ORG.UploadFile');
+            //导入上传类
+            $upload = new UploadFile();
+            //设置上传目录
+            $dirname = UPLOAD_PATH .'resume_file';
+            chmod($dirname, 0777);
+            $upload->savePath = $dirname;
+            $re = $upload->upload();
+            dump('________'.$re);
             exit;
             if(move_uploaded_file($file['tmp_name'],$upload_path_name)){
 //                $cv_file = $path;
