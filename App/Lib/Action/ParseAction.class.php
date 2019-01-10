@@ -96,7 +96,8 @@ class ParseAction extends Action
             $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$_upload_path_name1;
 
             $complete_path = time().".".$type;
-            chmod($upload_path_name, 0755);
+            mkdir('./Uploads/resume_file', 0777);
+            chmod('./Uploads/resume_file', 0777);
             if(move_uploaded_file($file['tmp_name'],$upload_path_name)){
 //                $cv_file = $path;
 //                $secret_key = "LR1snHUsXWzLHehzcZRbk9aENhZ0Nk0000047aff"; #您的secret_key
