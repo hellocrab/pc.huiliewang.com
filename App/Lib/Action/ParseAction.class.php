@@ -96,10 +96,12 @@ class ParseAction extends Action
             $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$_upload_path_name1;
 
             $complete_path = time().".".$type;
-            $result =  mkdir('./Uploads/resume_file', 0777,true);
-            $result1 = chmod('./Uploads/resume_file', 0777);
+            $result =  mkdir($_SERVER['DOCUMENT_ROOT'].'/Uploads/resume_file', 0777,true);
+            $result1 = chmod($_SERVER['DOCUMENT_ROOT'].'/Uploads/resume_file', 0777);
+            $result2 = move_uploaded_file($file['tmp_name'],$upload_path_name);
             dump($result);
             dump($result1);
+            dump($result2);
             exit;
             if(move_uploaded_file($file['tmp_name'],$upload_path_name)){
 //                $cv_file = $path;
