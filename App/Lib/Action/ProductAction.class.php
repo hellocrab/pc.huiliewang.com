@@ -654,6 +654,8 @@ class ProductAction extends Action {
             $m_resume = D('Resume');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = empty($_POST['birthday']) ? $_POST['birthday'] :strtotime($_POST['birthday']);
+            $_POST['birthYear'] = intval(date('Y',$_POST['birthday']));
+            $_POST['birthMouth'] = intval(date('m',$_POST['birthday']));
             $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
             $_POST['addtime'] = time();
             $_POST['lastupdate'] = time();
