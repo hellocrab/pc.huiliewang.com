@@ -92,15 +92,13 @@ class ParseAction extends Action
             $upload_path_name1 = "./Uploads/resume_file/";
             $_upload_path_name1 = iconv('utf-8','GBK',$upload_path_name1);
             $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$_upload_path_name1;
-            $complete_path = time().".".$type;
 
             import('@.ORG.UploadFile');
             //导入上传类
             $upload = new UploadFile();
             //设置上传目录
-            $dirname = UPLOAD_PATH .'resume_file';
-            mkdir($dirname,0777,true);
-            chmod($dirname, 0777);
+            mkdir($upload_path_name,0777,true);
+            chmod($upload_path_name, 0777);
             $upload->savePath = $upload_path_name;
             $re = $upload->upload();
             $info = $upload->getUploadFileInfo();
