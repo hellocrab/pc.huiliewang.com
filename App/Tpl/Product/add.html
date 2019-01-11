@@ -757,8 +757,14 @@
                 contentType:false,
                 success:function(data){
                     data = JSON.parse(data);
-                    if(data){
+                    if(data == 2){
                        // location = "/index.php?m=product&a=edit&id="+data;
+                        swal({
+                            title: '文件已存在',
+                            type: "success",
+                            confirmButtonText: "确定"
+                        });
+                    }else {
                         swal({
                             title: '上传成功',
                             type: "success",

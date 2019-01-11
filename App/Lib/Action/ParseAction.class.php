@@ -88,41 +88,26 @@ class ParseAction extends Action
             $file = $_FILES['file'];
             $type =  end(explode('.', $file['name']));
             $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/resume_file/".time().".".$type;
-//            $upload_path_name1 = "/Uploads/resume_file/".time().".".$type;
-//            $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$upload_path_name1;
 
-            $upload_path_name1 = "./Uploads/resume_file/".$file['name'];
+            $upload_path_name1 = "./Uploads/resume_file/";
             $_upload_path_name1 = iconv('utf-8','GBK',$upload_path_name1);
             $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$_upload_path_name1;
-
             $complete_path = time().".".$type;
-            $result =  mkdir($_SERVER['DOCUMENT_ROOT'].'/Uploads/resume_file', 0777,true);
-            $result1 = chmod($_SERVER['DOCUMENT_ROOT'].'/Uploads/resume_file', 0777);
-            $result2 = move_uploaded_file($file['tmp_name'],$upload_path_name);
-            dump($result);
-            dump($result1);
-            dump($result2);
-            dump($file['tmp_name']);
 
             import('@.ORG.UploadFile');
             //导入上传类
             $upload = new UploadFile();
             //设置上传目录
             $dirname = UPLOAD_PATH .'resume_file';
+            mkdir($dirname,0777,true);
             chmod($dirname, 0777);
-            $upload->savePath = $dirname;
+            $upload->savePath = $upload_path_name;
             $re = $upload->upload();
-            dump('________'.$re);
-            exit;
-            if(move_uploaded_file($file['tmp_name'],$upload_path_name)){
-//                $cv_file = $path;
-//                $secret_key = "LR1snHUsXWzLHehzcZRbk9aENhZ0Nk0000047aff"; #您的secret_key
-//
-//                $data = $this->youyun_api($secret_key, $cv_file);
-//                $data = json_decode($data,true);
-//
-//                echo $this->youyun_api($secret_key, $cv_file);exit();
-
+            $info = $upload->getUploadFileInfo();
+            $tem = explode('.',$info[0]['savename']);
+            $name = explode('.',$info[0]['name'])[0];
+            rename($info[0]['savepath'].$info[0]['savename'],iconv('utf-8','GBK',$info[0]['savepath'].$name.$tem[0].'.'.$tem[1]));
+            if($re && $info){
                 if($type=="doc" || $type=="docx"){
                     $url = "http://www.chuntianlaile.com/wordMht.php";
                     $path = "@".$path;
@@ -148,10 +133,10 @@ class ParseAction extends Action
                 }
 
                 //上传的简历文件保存在session会话中
-                $_SESSION['file_name'] = $file['name'];
-                $_SESSION['file_size'] = intval(intval($file['size'])/1024);
-                $_SESSION['upload_path'] = $upload_path_name1;
-                echo '{"file_name":"'.$file['name'].'","file_size":"'.intval(intval($file['size'])/1024).'"}';
+                $_SESSION['file_name'] = $name.$tem[1];
+                $_SESSION['file_size'] = round($info[0]['size']/1024,2);
+                $_SESSION['upload_path'] = $upload_path_name1.$name.$tem[0].'.'.$tem[1];
+                echo '{"file_name":"'.$info[0]['name'].'","file_size":"'.round($info[0]['size']/1024,2).'"}';
                 $this->parse_action($content,$resume_url);
             }else{
                 echo 2;
