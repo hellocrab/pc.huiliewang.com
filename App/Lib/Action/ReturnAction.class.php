@@ -270,13 +270,16 @@ class ReturnAction extends Action
         $search_peoject = $_GET['search_project'] ? BaseUtils::getStr($_GET['search_project'],'string'): '';
         $start_time = $_GET['start_time'] ? BaseUtils::getStr($_GET['start_time'],'string'): '';
         $end_time = $_GET['end_time'] ? BaseUtils::getStr($_GET['end_time'],'string'): '';
-        
+        $status = intval($_GET['department']);
         
         $where = array();
         $below_ids = getPerByAction(MODULE_NAME,ACTION_NAME,true); //权限问题
 
         if($search_peoject){
             $where['mx_payment_plan.business'] =  array('like','%'.$search_peoject.'%');
+        }
+        if($status){
+            $where['mx_payment_plan.pstatus'] = $status== 1 ? 1 : 0;
         }
         if($start_time && $end_time){
             $where['pp.ontime'] = array('between',array($start_time,$end_time));
@@ -301,16 +304,16 @@ class ReturnAction extends Action
         $this->listrows = $listrows;
         import('@.ORG.Page');// 导入分页类
 
-////        $count = $user->where($where_source)->count() ? $user->where($where_source)->count() : '0';
+//        $count = $user->where($where_source)->count() ? $user->where($where_source)->count() : '0';
         $count = M("payment_plan")->where($where)->count();
         $p_num = ceil($count/$listrows);
         $p = isset($_GET['p'])?$_GET['p']:1;
         if($p_num<$p){
             $p = $p_num;
         }
-        $data = M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->order("mx_payment_plan.Id desc")->Page($p.','.$listrows)->select();
-//        $count =M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->count() ? count($data) : '0';
-        $count = $count ? $count : '0';
+        $data = M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('mx_payment_plan.Id')->order("mx_payment_plan.Id desc")->Page($p.','.$listrows)->select();
+        if($_GET['isCondition'] && $status)
+        $count = count($data) ? count($data) : '0';
 
         foreach ($data as $k => $v){
             $time = M("payment_planperiod")->where(array('plan_id'=>intval($v['plan_id']),'num'=>$v['nums']))->getField('ontime');
@@ -325,7 +328,6 @@ class ReturnAction extends Action
                 if(count($money))  $data[$k]['isdelete'] = 1;
             }
             $data[$k]['e_total'] = $e_total;
-//            $data[$k]['status'] = $e_total<floatval($v['total']) ? '未完成' : '完成';
             $data[$k]['pstatus'] = intval($data[$k]['pstatus']) == 0 ? '未完成' : '完成';
             $data[$k]['ontime'] = $time;
         }

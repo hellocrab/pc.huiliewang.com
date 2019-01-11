@@ -118,6 +118,7 @@
                         <form id="searchForm" class="form-group" method="get" onsubmit="check(this)" style="margin-bottom: 0px;">
                             <input type="hidden" name="m" value="return" />
                             <input type="hidden" name="a" value="index" />
+                            <input type="hidden" name="isCondition" value="daf"/>
                             <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
                                 <div class="input-group">
                                     <input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd'})" name="start_time" id="due_time" value="" type="text">
@@ -137,10 +138,9 @@
                                 <div class="input-group">
                                     <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="department" id="department" onchange="changeRole()">
                                         <option class="all" value="all">回款状态</option>
-                                        <option value="all" >全部</option>
-                                        <option value="all" >完成</option>
-                                        <option value="all" >未完成</option>
-                                        <option value="all" >逾期未完成</option>
+                                        <option value="0" >全部</option>
+                                        <option value="1" >完成</option>
+                                        <option value="2" >未完成</option>
                                     </select>
                                 </div>
                             </div>
