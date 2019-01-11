@@ -105,9 +105,6 @@ class ParseAction extends Action
             $tem = explode('.',$info[0]['savename']);
             $name = explode('.',$info[0]['name'])[0];
             rename($info[0]['savepath'].$info[0]['savename'],iconv('utf-8','GBK',$info[0]['savepath'].$name.$tem[0].'.'.$tem[1]));
-            dump($upload_path_name);
-            dump($re);
-            dump($info);exit;
             if($re && $info){
                 if($type=="doc" || $type=="docx"){
                     $url = "http://www.chuntianlaile.com/wordMht.php";
