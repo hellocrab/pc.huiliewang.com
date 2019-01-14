@@ -41,4 +41,3 @@ if (strpos($_SERVER['SERVER_ADDR'], '192.168.116.20') !== FALSE) {//测试环境
         'DB_PREFIX' => 'mx_',
     );
 }
-

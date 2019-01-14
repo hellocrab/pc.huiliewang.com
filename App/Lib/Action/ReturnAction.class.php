@@ -279,18 +279,21 @@ class ReturnAction extends Action
             $where['mx_payment_plan.business'] =  array('like','%'.$search_peoject.'%');
         }
         if($status){
-            $where['mx_payment_plan.pstatus'] = $status== 1 ? 1 : 0;
+            $where['pstatus'] = $status== 1 ? 1 : 0;
         }
         if($start_time && $end_time){
-            $where['pp.ontime'] = array('between',array($start_time,$end_time));
+//            $where['pp.ontime'] = array('between',array($start_time,$end_time));
+            $where['ontime'] = array('between',array($start_time,$end_time));
         }
         
         if(!$start_time && $end_time){
-            $where['pp.ontime'] = array('between',array(date('Y-m-d',strtotime("-1years",strtotime($end_time))),$end_time));//自动计算1年前的 日期
+//            $where['pp.ontime'] = array('between',array(date('Y-m-d',strtotime("-1years",strtotime($end_time))),$end_time));//自动计算1年前的 日期
+            $where['ontime'] = array('between',array(date('Y-m-d',strtotime("-1years",strtotime($end_time))),$end_time));//自动计算1年前的 日期
         }
         
         if(!$end_time && $start_time){
-            $where['pp.ontime'] = array('between',array($start_time,date('Y-m-d',strtotime("+1years",strtotime($start_time)))));//自动计算1年后的 日期
+//            $where['pp.ontime'] = array('between',array($start_time,date('Y-m-d',strtotime("+1years",strtotime($start_time)))));//自动计算1年后的 日期
+            $where['ontime'] = array('between',array($start_time,date('Y-m-d',strtotime("+1years",strtotime($start_time)))));//自动计算1年后的 日期
         }
         
         //分页
@@ -304,14 +307,14 @@ class ReturnAction extends Action
         $this->listrows = $listrows;
         import('@.ORG.Page');// 导入分页类
 
-//        $count = $user->where($where_source)->count() ? $user->where($where_source)->count() : '0';
         $count = M("payment_plan")->where($where)->count();
         $p_num = ceil($count/$listrows);
         $p = isset($_GET['p'])?$_GET['p']:1;
         if($p_num<$p){
             $p = $p_num;
         }
-        $data = M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('mx_payment_plan.Id')->order("mx_payment_plan.Id desc")->Page($p.','.$listrows)->select();
+        $d_payment = D('PaymentView');
+        $data = $d_payment->where($where)->group('Id')->order('Id desc')->Page($p.','.$listrows)->select();
         $count = count($data);
         if($_GET['isCondition'] && $status)
         $count = count($data) ? count($data) : '0';
