@@ -312,6 +312,7 @@ class ReturnAction extends Action
             $p = $p_num;
         }
         $data = M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('mx_payment_plan.Id')->order("mx_payment_plan.Id desc")->Page($p.','.$listrows)->select();
+        $count = count($data);
         if($_GET['isCondition'] && $status)
         $count = count($data) ? count($data) : '0';
 
