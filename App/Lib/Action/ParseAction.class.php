@@ -153,17 +153,34 @@ class ParseAction extends Action
             $type =  end(explode('.', $file['name']));
             $path = $_SERVER['DOCUMENT_ROOT']."/Uploads/resume_file/".time().".".$type;
 
-            $upload_path_name1 = "/Uploads/resume_file/".$file['name'];
+            $upload_path_name1 = "./Uploads/resume_file/";
             $_upload_path_name1 = iconv('utf-8','GBK',$upload_path_name1);
             $upload_path_name = $_SERVER['DOCUMENT_ROOT'].$_upload_path_name1;
-            if(move_uploaded_file($file['tmp_name'],$upload_path_name)){
+
+            import('@.ORG.UploadFile');
+            //导入上传类
+            $upload = new UploadFile();
+            //设置上传目录
+            mkdir($upload_path_name,0777,true);
+            chmod($upload_path_name, 0777);
+            $upload->savePath = $upload_path_name;
+            $re = $upload->upload();
+            $info = $upload->getUploadFileInfo();
+            $tem = explode('.',$info[0]['savename']);
+            $name = explode('.',$info[0]['name'])[0];
+            if($re && $info){
                 //保存简历上传的文件路径
-                $data['eid'] = intval($eid);
-                $data['file_name'] = $file['name'];
-                $data['file_uptime'] = date('Y-m-d');
-                $data['file_size'] = intval(intval($file['size'])/1024);
-                $data['upload_path'] = $upload_path_name1;
-                M('resume_ability')->add($data);
+//                $data['eid'] = intval($eid);
+//                $data['file_name'] = $file['name'];
+//                $data['file_uptime'] = date('Y-m-d');
+//                $data['file_size'] = intval(intval($file['size'])/1024);
+//                $data['upload_path'] = $upload_path_name1;
+            $data['eid'] = intval($eid);
+            $data['file_name'] = $_SESSION['file_name'];
+            $data['file_uptime'] = date('Y-m-d');
+            $data['file_size'] = $_SESSION['file_size'];
+            $data['upload_path'] = $_SESSION['upload_path'];
+            M('resume_ability')->add($data);
                 echo 1;
             }else{
                 echo 2;

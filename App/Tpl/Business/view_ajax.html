@@ -212,7 +212,7 @@
                                         </div>
                                     </td>
                                     <td style="text-align:center;padding:14px;color:#666;"><a href="{:U('product/view','id='.$vo['resume_id'])}"><span class="" style="{$mail_contacts_id == $vo['contacts_id'] ? '':'display:none'}">{$vo['name']}</span></a></td>
-                                    <td style="text-align:right;padding:14px;color:#666;"><input type="button" class="btn btn-primary btn-sm" value="加入CallList >" style="width: 100px;" data-id="{$vo['id']}"></td>
+<!-- border 点击失效 -->              <td style="text-align:right;padding:14px;color:#666;"><input type="button" class="btn btn-primary btn-sm slidebar-nav" value="加入CallList >" style="width: 100px;" data-id="{$vo['id']}"></td>
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo.current_company}</td>
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;"> <if condition="$vo['sex'] eq '1' ">男<else/>女</if>
@@ -260,7 +260,6 @@
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
                             <tbody>
-
 
                             <volist name="project[calllist]" id="vo">
                                 <tr>
@@ -2350,14 +2349,14 @@
         $('#task-content').html(detail_html);
         $('#sidebar-container').load("/index.php?m=business&a=listajax&id=" + customer_id);
 
-        //        clearTimeout(timer);
-        //        timer=setTimeout(function () {
-        //
-        //            if($("#right-sidebar-log").css('right') != '0px'){
-        //                $("#right-sidebar-log").animate({right:'0px'}, 600);
-        //            }
-        //            $('#sidebar-container').load("/index.php?m=business&a=listajax&id="+customer_id);
-        //        },1000);
+               clearTimeout(timer);
+               timer=setTimeout(function () {
+
+                   if($("#right-sidebar-log").css('right') != '0px'){
+                       $("#right-sidebar-log").animate({right:'0px'}, 600);
+                   }
+                   $('#sidebar-container').load("/index.php?m=business&a=listajax&id="+customer_id);
+               },1000);
     });
 
     $(document).on('click', '.upresumes', function () {

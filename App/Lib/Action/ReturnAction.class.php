@@ -274,9 +274,8 @@ class ReturnAction extends Action
         
         $where = array();
         $below_ids = getPerByAction(MODULE_NAME,ACTION_NAME,true); //权限问题
-
         if($search_peoject){
-            $where['mx_payment_plan.business'] =  array('like','%'.$search_peoject.'%');
+            $where['business'] =  array('like','%'.$search_peoject.'%');
         }
         if($status){
             $where['pstatus'] = $status== 1 ? 1 : 0;
