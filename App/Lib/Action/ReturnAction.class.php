@@ -314,10 +314,11 @@ class ReturnAction extends Action
             $p = $p_num;
         }
         $d_payment = D('PaymentView');
+        $data1 = $d_payment->where($where)->select();
         $data = $d_payment->where($where)->group('Id')->order('Id desc')->Page($p.','.$listrows)->select();
-
         if(!empty($where) || $status)
-            $count = count($data) ? count($data) : '0';
+            $count = count($data1) ? count($data1) : '0';
+
         $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
         foreach ($data as $k => $v){
             $time = M("payment_planperiod")->where(array('plan_id'=>intval($v['plan_id']),'num'=>$v['nums']))->getField('ontime');

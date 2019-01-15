@@ -1002,7 +1002,7 @@ class ProductAction extends Action {
         //创建人
         $resume['creator_role_name'] = M('user')->where(array('user_id'=>intval($resume['creator_role_id'])))->getField('full_name');
         $this->resume = $resume;
-
+        dump($resume);exit;
         $m_r_customer_log = M('rResumeLog');
         $m_log = M('Log');
         $m_user = M('User');
