@@ -316,7 +316,7 @@ class ReturnAction extends Action
         $d_payment = D('PaymentView');
         $data = $d_payment->where($where)->group('Id')->order('Id desc')->Page($p.','.$listrows)->select();
 
-        if($_GET['isCondition'] || $status)
+        if(!empty($where) || $status)
             $count = count($data) ? count($data) : '0';
         $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
         foreach ($data as $k => $v){
