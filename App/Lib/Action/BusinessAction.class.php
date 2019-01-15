@@ -400,16 +400,13 @@ class BusinessAction extends Action {
         unset($where['business.owner_role_id']);
 //      $list = $d_v_business->where($where)->where($ownerWhere)->order($order)->page($p . ',' . $listrows)->select();
         // 去掉条件    ->where($ownerWhere)
-        $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
-        /*dump($where);
-        dump($list);
-        exit;*/
         $count = $d_v_business->where($where)->count();
         $p_num = ceil($count / $listrows);
         if ($p_num < $p) {
             $p = $p_num;
         }
 
+        $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
         $Page = new Page($count, $listrows);
         if (!empty($_GET['by'])) {
             $params[] = "by=" . trim($_GET['by']);

@@ -160,7 +160,7 @@ class Page {
                 }
             }
         }
-        $thego = '<input type="text" style="width:auto;display:inline-block;" autocomplete="off" id="go_page" class="form-control input-sm" name="' . $this->varPage . '" onchange="go_page' . $this->varPage . '(this.value)">';
+        $thego = '<input type="text" style="width:auto;display:inline-block;" autocomplete="off" id="go_page" class="form-control input-sm" name="' . $this->varPage . '" onchange="go_page' . $this->varPage . '(this.value)"/>';
         $baseUrl = U('');
         unset($parameter[$p]);
         unset($parameter['listrows']);
@@ -192,7 +192,7 @@ class Page {
             var check = go_page_check('.$this->totalPages.',page,$(this));
 			var listrows = $("#listrows option:selected").val();
 			if(page.indexOf("listrows") <= 0){
-				if(listrows > 0&&check){
+				if(listrows > 0&& check){
 					window.location = "'.$baseUrl.'&p="+page+"&listrows="+listrows+"'.$params.'";
 				}else{
 					//window.location = page;

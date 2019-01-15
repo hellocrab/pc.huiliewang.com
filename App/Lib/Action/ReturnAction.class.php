@@ -315,10 +315,10 @@ class ReturnAction extends Action
         }
         $d_payment = D('PaymentView');
         $data = $d_payment->where($where)->group('Id')->order('Id desc')->Page($p.','.$listrows)->select();
-        $count = count($data);
-        if($_GET['isCondition'] && $status)
-        $count = count($data) ? count($data) : '0';
 
+        if($_GET['isCondition'] || $status)
+            $count = count($data) ? count($data) : '0';
+        $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
         foreach ($data as $k => $v){
             $time = M("payment_planperiod")->where(array('plan_id'=>intval($v['plan_id']),'num'=>$v['nums']))->getField('ontime');
             $periodplan = M("payment_planperiod")->where(array('plan_id'=>intval($v['plan_id'])))->select();
@@ -335,10 +335,13 @@ class ReturnAction extends Action
             $data[$k]['pstatus'] = intval($data[$k]['pstatus']) == 0 ? '未完成' : '完成';
             $data[$k]['ontime'] = $time;
         }
-        $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
+
         $show = $Page->show();// 显示分页栏
-        $this->assign('page',$show);// 赋值分页输出
+        $this->alert = parseAlert();
         $this->assign('plist',$data);
+        $this->assign('page',$show);// 赋值分页输出
+        $this->assign('count', $count);
+        $this->alert=parseAlert();
         $this->display();
     }
     public function backRecord(){
