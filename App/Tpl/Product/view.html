@@ -248,7 +248,10 @@
                                         <label class="col-lg-2 control-label">行业</label>
                                         <div class="col-lg-10">
                                             <p class="form-p">
-                                                <span class="label label-warning">{$resume.now_industry}</span>
+                                                <volist name="resume.industry" id="vo">
+                                                    <span class="label label-warning">{$vo}</span>&nbsp;&nbsp;
+                                                </volist>
+
                                                 <!--                                            <volist name="resume.industry" id="vo">
                                                                                                 <span class="label label-warning" style="margin-right: 5px;">{$vo}</span>
                                                                                             </volist>-->
