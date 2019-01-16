@@ -668,7 +668,7 @@
         /*form表单验证*/
         $("#form").validate({
             submitHandler:function(form){
-                $('#save_submit').off().on("click",function(){
+            //    $('#save_submit').off().on("click",function(){});
                     var industrys = $("#industrys").val();
                     var jobtitles = $("#jobtitles").val();
                     var dqs = $("#dqs").val();
@@ -718,7 +718,6 @@
                     if(dqs && jobtitles && industrys && wantdqs){
                         form.submit();
                     }
-                });
             }
         });
 
