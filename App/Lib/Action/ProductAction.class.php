@@ -880,13 +880,18 @@ class ProductAction extends Action {
         $resume['resume_ability'] = M('resume_ability')->where(array('eid'=>intval($eid)))->find();
         $resume['label'] = explode(",", $resume['label']);
         if ($resume['startWorkyear']) {
-            $resume['exp'] = (date("Y") - $resume['startWorkyear']). "年工作经验";
+            if($resume['startWorkyear']>20000){
+                $resume['exp'] = (date("Y") - date('Y',$resume['startWorkyear'])). "年工作经验";
+            } else {
+                $resume['exp'] = (date("Y") - $resume['startWorkyear']). "年工作经验";
+            }
+            
         }
         if ($resume['location']) {
             $resume['location'] = $city_name[$resume['location']];
         }
         if ($resume['birthYear']) {
-            $resume['age'] = date("Y") - $resume['birthYear'];
+            $resume['age'] = (date("Y") - $resume['birthYear']).'岁';
         }
         if (!$resume['birthMouth']) {
             $resume['birthMouth'] = '';
