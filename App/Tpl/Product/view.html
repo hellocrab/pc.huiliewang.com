@@ -36,7 +36,7 @@
                     <div class="row " id="title-show" style="border-bottom: 1px solid #e7eaec;padding-bottom: 10px;">
                         <ul class="nav pull-left" style="margin:0px 10px 0px 20px;">
                             <span><img src="__PUBLIC__/img/view_icon.png" style="margin-bottom:9px;" alt=""></span>
-                            <span style="font-size:24px;color: #000;">{$resume.name}</span>&nbsp;&nbsp;
+                            <span style="font-size:24px;color: #000;">{$resume.name}</span>
                             <span class="basic_item">{$resume.sex}</span>
                             <span class="basic_item">{$resume.age}岁</span>
                             <span class="basic_item">{$resume.edu}</span>
@@ -249,7 +249,7 @@
                                         <div class="col-lg-10">
                                             <p class="form-p">
                                                 <volist name="resume.industry" id="vo">
-                                                    <span class="label label-warning">{$vo}</span>&nbsp;&nbsp;
+                                                    <span class="label label-warning">{$vo.now_industry}</span>&nbsp;&nbsp;
                                                 </volist>
 
                                                 <!--                                            <volist name="resume.industry" id="vo">

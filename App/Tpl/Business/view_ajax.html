@@ -203,7 +203,7 @@
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
                             <tbody>
-                                <volist name="project.calllist" id="vo">
+                            <volist name="project.calllist" id="vo">
                                 <tr>
                                     <td  width="30px" style="border-left: 1px solid #e7eaec;text-align:center;padding:14px;color:#999">
                                         <div class="checkbox checkbox-primary">
@@ -212,16 +212,32 @@
                                         </div>
                                     </td>
                                     <td style="text-align:center;padding:14px;color:#666;"><a href="{:U('product/view','id='.$vo['resume_id'])}"><span class="" style="{$mail_contacts_id == $vo['contacts_id'] ? '':'display:none'}">{$vo['name']}</span></a></td>
-<!-- border 点击失效 -->              <td style="text-align:right;padding:14px;color:#666;"><input type="button" class="btn btn-primary btn-sm slidebar-nav" value="加入CallList >" style="width: 100px;" data-id="{$vo['id']}"></td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo.current_company}</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
-                                    <td style="text-align:center;padding:14px;color:#666;"> <if condition="$vo['sex'] eq '1' ">男<else/>女</if>
-                                    </td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['telephone']}</td>
-                                    <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date="Y-m-d H:i:s",###}</td>
+                                    <!-- border 点击失效 -->              
+                                    <td style="text-align:center;padding:14px;color:#666;">
+                                <if condition="$business_info['pro_type'] eq '4'">
+
+                                    <if condition="$vo['hjl_status'] eq 0">
+                                        <input type="button"  class="btn btn-primary btn-sm upresumes"  value="推荐 >" style="width: 80px;" data-id="{$vo['id']}">
+                                        <elseif condition="$vo['hjl_status'] eq 1" />
+                                        已推荐
+                                        <elseif condition="$vo['hjl_status'] eq 2" />
+                                        客户选取
+                                    </if>
+
+
+                                    <else />
+                                    <input type="button" class="btn btn-primary btn-sm slidebar-nav" value="加入CallList >" style="width: 100px;" data-id="{$vo['id']}">
+                                </if>
+                                </td>
+                                <td style="text-align:center;padding:14px;color:#666;">{$vo['current_company']}</td>
+                                <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
+                                <td style="text-align:center;padding:14px;color:#666;"> <if condition="$vo['sex'] eq 1">女<else/>男</if>
+                                </td>
+                                <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}</td>
+                                <td style="text-align:center;padding:14px;color:#666;">{$vo['telephone']}</td>
+                                <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['addtime']|date='Y-m-d H:i:s',###}</td>
                                 </tr>
-                                </volist>
+                            </volist>
                             </tbody>
                         </table>
                     </div>
@@ -2349,14 +2365,14 @@
         $('#task-content').html(detail_html);
         $('#sidebar-container').load("/index.php?m=business&a=listajax&id=" + customer_id);
 
-               clearTimeout(timer);
-               timer=setTimeout(function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
 
-                   if($("#right-sidebar-log").css('right') != '0px'){
-                       $("#right-sidebar-log").animate({right:'0px'}, 600);
-                   }
-                   $('#sidebar-container').load("/index.php?m=business&a=listajax&id="+customer_id);
-               },1000);
+            if ($("#right-sidebar-log").css('right') != '0px') {
+                $("#right-sidebar-log").animate({right: '0px'}, 600);
+            }
+            $('#sidebar-container').load("/index.php?m=business&a=listajax&id=" + customer_id);
+        }, 1000);
     });
 
     $(document).on('click', '.upresumes', function () {
