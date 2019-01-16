@@ -188,7 +188,7 @@
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">所在城市：</label>
                                     <div class="col-md-6">
-                                        <input data-selector="dqs" data-option="1" class="text" type="text" placeholder="选择目前所在地区" id="dqs" name="location" data-ui="LocalDataUIB" style="display: none;width:100%;height:40px;"/>
+                                        <input data-selector="dqs" data-option="1" class="text" type="text" placeholder="选择目前所在地区" id="dqs" name="location" data-ui="LocalDataUIB" style="width:100%;height:40px;"/>
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
@@ -669,7 +669,7 @@
         /*form表单验证*/
         $("#form").validate({
             submitHandler:function(form){
-                $('#save_submit').off().on("click",function(){
+                // 保存点击两次 $('#save_submit').on("click",function(){ });
                     var industrys = $("#industrys").val();
                     var jobtitles = $("#jobtitles").val();
                     var dqs = $("#dqs").val();
@@ -733,16 +733,81 @@
                            }
                         }
                     });
-
                     if(dqs && jobtitles && industrys && wantdqs && flag){
                         form.submit();
                     }
-
-                });
-
             }
         });
-
+        // /*from 表单验证*/
+        // $('#save_submit').on("click",function(){
+        //     var industrys = $("#industrys").val();
+        //     var jobtitles = $("#jobtitles").val();
+        //     var dqs = $("#dqs").val();
+        //     var wantdqs= $("#wantdqs").val();
+        //     var telephone=$("#telphone").val();
+        //     var flag=0;
+        //     $("input[data-selector=industrys]").val(industrys);
+        //     $("input[data-selector=jobtitles]").val(jobtitles);
+        //     $("input[data-selector=dqs]").val(dqs);
+        //     $("input[data-selector=wantdqs]").val(wantdqs);
+        //
+        //     if(industrys){
+        //         $("span[data-name=industry]").find("input").css("border","1px solid #d8e3ef");
+        //     }
+        //     if(jobtitles){
+        //         $("span[data-name=job_class]").find("input").css("border","1px solid #d8e3ef");
+        //     }
+        //     if(dqs){
+        //         $("span[data-name=location]").find("input").css("border","1px solid #d8e3ef");
+        //     }
+        //     if(wantdqs){
+        //         $("span[data-name=intentCity]").find("input").css("border","1px solid #d8e3ef");
+        //     }
+        //     if(industrys=="" || industrys==null){
+        //         alert_crm("请填写行业信息！");
+        //         $("span[data-name=industry]").find("input").css("border","1px dotted #cc5965");
+        //         return;
+        //     }
+        //     if(jobtitles=="" || jobtitles==null){
+        //         alert_crm("请填写职能信息！");
+        //         $("span[data-name=job_class]").find("input").css("border","1px dotted #cc5965");
+        //         return;
+        //     }
+        //     if(dqs=="" || dqs==null){
+        //         alert_crm("请填写所在城市信息！");
+        //         $("span[data-name=location]").find("input").css("border","1px dotted #cc5965");
+        //         return;
+        //     }
+        //     if(wantdqs=="" || wantdqs==null){
+        //         alert_crm("请选择意向城市！");
+        //         $("span[data-name=intentCity]").find("input").css("border","1px dotted #cc5965");
+        //         return;
+        //     }
+        //     $.ajax({
+        //         url:"/index.php?m=product&a=check_tel",
+        //         type:"post",
+        //         async:false,
+        //         data:{
+        //             telephone:telephone
+        //         },
+        //         success:function (data) {
+        //             if(data){
+        //                 alert_crm("该手机号码已经存在！");
+        //                 flag=0;
+        //                 $("input[name=telephone]").css("border","1px dotted #cc5965");
+        //                 return;
+        //             }else{
+        //                 $("input[name=telephone]").css("border","1px solid #d8e3ef");
+        //                 flag=1;
+        //                 return;
+        //             }
+        //         }
+        //     });
+        //     if(dqs && jobtitles && industrys && wantdqs && flag){
+        //         form.submit();
+        //     }
+        //
+        // });
         $("#uploadresume").on("change",function () {
             var dataform = new FormData();
             dataform.append("file",$('#uploadresume')[0].files[0]);

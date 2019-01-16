@@ -1598,8 +1598,6 @@ class BusinessAction extends Action {
         }
 
 
-
-
         if ($this->isPost()) {
 //                $field = $project['status']."_remark";
 //                $project[$field] = unserialize($project[$field]);
