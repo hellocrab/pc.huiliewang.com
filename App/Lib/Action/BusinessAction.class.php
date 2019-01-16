@@ -1261,7 +1261,6 @@ class BusinessAction extends Action {
     public function listajax() {
         $project = D("ProjectView")->where("fine_project.id=%d", I("id"))->find();
 
-
         $business = M("business")->where("business_id=%d", $project['project_id'])->field("pro_type")->find();
         //@edit by yanghao 2018-11-26 修改交易模式交易节点
         $this->pro_type = $business['pro_type'];
@@ -1279,7 +1278,6 @@ class BusinessAction extends Action {
             $this->process_name = array("CallList");
         }
         $this->pro_count = count($this->process);
-
         $project['calllist'] = $this->project_cc(I("id"));
         $project['adviser'] = $this->project_adviser(I("id"));
         $project['tj'] = $this->project_tj(I("id"));
@@ -1292,6 +1290,7 @@ class BusinessAction extends Action {
 //        echo $project['project_id'];exit();
 //        $job = M("business")->field("name")->where("business_id=%d",$project['project_id'])->find();
         $this->assign("project", $project);
+        $this->assign('pro_type',$this->pro_type);
         $this->display();
     }
 
