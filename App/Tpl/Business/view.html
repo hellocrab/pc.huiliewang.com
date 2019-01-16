@@ -324,8 +324,8 @@
                     }
                     }
             });
-            } else{
-            swal("已取消", "您取消了推进操作！", "error");
+            } else {
+                swal("已取消", "您取消了推进操作！", "error");
             }
             });
     });
@@ -335,7 +335,7 @@
     })
     })
 
-            $(document).click(function(e){
+    $(document).click(function(e){
     var con = $(".togglediv,.togglebtn");
     //目标区域之外的地方
     if (!con.is(e.target) && con.has(e.target).length === 0){
@@ -343,7 +343,6 @@
     }
 
     })
-
 
             //鼠标点击空白处，隐藏右侧滑出
             //document.onmousedown=function(event){

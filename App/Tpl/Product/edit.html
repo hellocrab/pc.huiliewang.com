@@ -514,27 +514,27 @@
 
                                     </div>
                                 </div>
-                                <!--<div class="form-group">-->
-                                    <!--<label class="col-md-3 control-label">优劣势分析：</label>-->
-                                    <!--<div class="col-md-6" style="position: relative;">-->
-                                        <!--<textarea class="msd-elastic form-control" id="evaluate" name="evaluate" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;">{$resume.evaluate}</textarea>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-md-2"></div>-->
-                                <!--</div>-->
-                                <!--<div class="form-group">-->
-                                    <!--<label class="col-md-3 control-label">技能：</label>-->
-                                    <!--<div class="col-md-6" style="position: relative;">-->
-                                        <!--<textarea class="msd-elastic form-control" id="skill" name="skill" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;">{$resume.skill}</textarea>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-md-2"></div>-->
-                                <!--</div>-->
-                                <!--<div class="form-group">-->
-                                    <!--<label class="col-md-3 control-label">语言能力：</label>-->
-                                    <!--<div class="col-md-6" style="position: relative;">-->
-                                        <!--<textarea class="msd-elastic form-control" id="language" name="language" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;">{$resume.language}</textarea>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-md-2"></div>-->
-                                <!--</div>-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">优劣势分析：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="evaluate" name="evaluate" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;">{$resume.evaluate}</textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">技能：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="skill" name="skill" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;">{$resume.skill}</textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">语言能力：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="language" name="language" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;">{$resume.language}</textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
 
 
                                 <volist name="field_list['data']" id="vo" key="key">
@@ -668,7 +668,7 @@
         /*form表单验证*/
         $("#form").validate({
             submitHandler:function(form){
-                $('#save_submit').off().on("click",function(){
+            //    $('#save_submit').off().on("click",function(){});
                     var industrys = $("#industrys").val();
                     var jobtitles = $("#jobtitles").val();
                     var dqs = $("#dqs").val();
@@ -718,7 +718,6 @@
                     if(dqs && jobtitles && industrys && wantdqs){
                         form.submit();
                     }
-                });
             }
         });
 

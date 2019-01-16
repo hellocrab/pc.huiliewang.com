@@ -95,12 +95,12 @@
         <input type='hidden' name="module" <present name="r">value="{$module}"</present>/>
         <input type='hidden' name="id" <present name="r">value="{$model_id}"</present>/>
         <input type='hidden' name="eid" value="{:I('id')}"/>
-        <div class="ibox-content add_body" id="add_body">
+        <div class="ibox-content add_body col-md-12" id="add_body">
             <div class="row full-height-scroll">
-                <div class="col-md-12 add_body" >
+                <div class="col-md-7 add_body">
                     <div class="">
                         <div class="row" >
-                            <div class="col-md-8 add_body_title">
+                            <div class="col-md-12 add_body_title">
                                 <div class="all-inline">
                                     <span class="sq-tag"></span>
                                     <div class="text-tag">
@@ -108,22 +108,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <div  id="resume-search-form" class="col-md-8 add_body_form" style="margin-left:15px;">
+                            <div  id="resume-search-form" class="col-md-12 add_body_form" style="margin-left:15px;">
                                 <input type="hidden" name="url" />
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">上传简历：</label>
-                                    <div class="col-md-7" style="margin-left: -15px;">
+                                    <div class="col-md-8" style="margin-left: -15px;">
                                         <div class="submitfiles"></div>
                                         <div class="col-md-4">
-                                            <select class="form-control required" id="standard"  aria-required="true">
-                                                <option value="原始简历">原始简历</option>
-                                                <option value="推荐报告">推荐报告</option>
-                                                <option value="背景调查">背景调查</option>
-                                                <option value="其他资料">其他资料</option>
-                                            </select>
-                                            <span id="standardTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                            <!--<select class="form-control required" id="standard"  aria-required="true">-->
+                                            <!--<option value="原始简历">原始简历</option>-->
+                                            <!--<option value="推荐报告">推荐报告</option>-->
+                                            <!--<option value="背景调查">背景调查</option>-->
+                                            <!--<option value="其他资料">其他资料</option>-->
+                                            <!--</select>-->
+                                            <!--<span id="standardTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>-->
+                                            <div style="width: 100%;height: 100%;">
+                                                <span id="ajax_file"></span>
+                                            </div>
                                         </div>
-
                                         <div class="col-md-4">
                                             <div class="btn btn-default fileinput-button" style="width: 100%;">
                                                 <span>上传简历</span>
@@ -137,7 +139,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-1"><span style="color: red;line-height: 32px;">*</span></div>
                                 </div>
 
                                 <div class="form-group">
@@ -186,7 +188,7 @@
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">所在城市：</label>
                                     <div class="col-md-6">
-                                        <input data-selector="dqs" data-option="1" class="text" type="text" placeholder="选择目前所在地区" id="dqs" name="location" data-ui="LocalDataUIB" style="display: none;width:100%;height:40px;"/>
+                                        <input data-selector="dqs" data-option="1" class="text" type="text" placeholder="选择目前所在地区" id="dqs" name="location" data-ui="LocalDataUIB" style="width:100%;height:40px;"/>
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
@@ -442,11 +444,11 @@
                                             <div class="panel panel-default adddefault addedu" onclick="faddEdu();">
                                                 <span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加教育经历
                                             </div>
-                                            <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;display: none;">
-                                                <div class="panel-footer">
-                                                    <button class="btn btn-success btn-xs" type="button" onclick="expadd('eduExp')">增加新的教育经历</button>
-                                                </div>
-                                            </div>
+                                            <!--<div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;display: none;">-->
+                                                <!--<div class="panel-footer">-->
+                                                    <!--<button class="btn btn-success btn-xs" type="button" onclick="expadd('eduExp')">增加新的教育经历</button>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
                                         <!--</notempty>-->
                                     </div>
                                 </div>
@@ -454,85 +456,84 @@
                                 <div class="form-group projectExp">
                                     <label class="col-md-3 control-label">项目经历：</label>
                                     <div class="col-lg-9">
-                                        <notempty name="resume_project" >
-                                            <div class="panel panel-default adddefault addpro" style="display: none;" onclick="faddPro();">
-                                                <span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加项目经历
-                                            </div>
-                                                <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;">
-                                                    <volist name="resume_project" id="vo">
-                                                        <input type="hidden" name="projectExp[id][]" value="{$vo.id}" />
-                                                        <div style="background: none" class="panel-body3">
-                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>
-                                                            <div class="col-sm-10">
-                                                                <input class="form-control text-center timerinput required" id="projectyearFrom" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[starttime][]" value="{$vo.starttime|date="Y-m",###}"><span>-&gt;</span>
-                                                                <input class="form-control text-center timerinput required" id="projectyearEnd" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[endtime][]" value="{$vo.endtime|date="Y-m",###}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label">项目名称<span class="text-danger">*</span></label>
-                                                            <div class="col-sm-9">
-                                                                <input class="form-control required" type="text" id="proName" name="projectExp[proName][]" value="{$vo.proName}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label">所在公司<span class="text-danger">*</span></label>
-                                                            <div class="col-sm-4">
-                                                                <input class="form-control required" type="text" id="proCompany" name="projectExp[proCompany][]" value="{$vo.proCompany}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label">项目职位<span class="text-danger"></span></label>
-                                                            <div class="col-sm-9">
-                                                                <input class="form-control" type="text" id="proOffice" name="projectExp[proOffice][]" value="{$vo.proOffice}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label">项目描述<span class="text-danger"></span></label>
-                                                            <div class="col-sm-9">
-                                                                <textarea class="msd-elastic form-control" id="proDes" name="projectExp[proDes][]" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 136px;">{$vo.proDes}</textarea>
-                                                            </div>
-                                                        </div>
-                                                        <button class="btn col-sm-offset-2 btn-danger btn-xs deletebtn" type="button">删除</button></div>
-                                                    </volist>
-                                                    <div class="panel-footer">
-                                                        <button class="btn btn-success btn-xs" type="button" onclick="expadd('projectExp')">增加新的项目经历</button>
-                                                    </div>
-                                                </div>
-                                        <else/>
+                                        <!--<notempty name="resume_project" >-->
+                                            <!--&lt;!&ndash;<div class="panel panel-default adddefault addpro" style="display: none;" onclick="faddPro();">&ndash;&gt;-->
+                                                <!--&lt;!&ndash;<span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加项目经历&ndash;&gt;-->
+                                            <!--&lt;!&ndash;</di v>&ndash;&gt;-->
+                                                <!--<div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;">-->
+                                                    <!--<volist name="resume_project" id="vo">-->
+                                                        <!--<input type="hidden" name="projectExp[id][]" value="{$vo.id}" />-->
+                                                        <!--<div style="background: none" class="panel-body3">-->
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label class="col-sm-2 control-label">时间<span class="text-danger">*</span></label>-->
+                                                            <!--<div class="col-sm-10">-->
+                                                                <!--<input class="form-control text-center timerinput required" id="projectyearFrom" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[starttime][]" value="{$vo.starttime|date="Y-m",###}"><span>-&gt;</span>-->
+                                                                <!--<input class="form-control text-center timerinput required" id="projectyearEnd" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[endtime][]" value="{$vo.endtime|date="Y-m",###}">-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label class="col-sm-2 control-label">项目名称<span class="text-danger">*</span></label>-->
+                                                            <!--<div class="col-sm-9">-->
+                                                                <!--<input class="form-control required" type="text" id="proName" name="projectExp[proName][]" value="{$vo.proName}">-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label class="col-sm-2 control-label">所在公司<span class="text-danger">*</span></label>-->
+                                                            <!--<div class="col-sm-4">-->
+                                                                <!--<input class="form-control required" type="text" id="proCompany" name="projectExp[proCompany][]" value="{$vo.proCompany}">-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label class="col-sm-2 control-label">项目职位<span class="text-danger"></span></label>-->
+                                                            <!--<div class="col-sm-9">-->
+                                                                <!--<input class="form-control" type="text" id="proOffice" name="projectExp[proOffice][]" value="{$vo.proOffice}">-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label class="col-sm-2 control-label">项目描述<span class="text-danger"></span></label>-->
+                                                            <!--<div class="col-sm-9">-->
+                                                                <!--<textarea class="msd-elastic form-control" id="proDes" name="projectExp[proDes][]" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 136px;">{$vo.proDes}</textarea>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<button class="btn col-sm-offset-2 btn-danger btn-xs deletebtn" type="button">删除</button></div>-->
+                                                    <!--</volist>-->
+                                                    <!--<div class="panel-footer">-->
+                                                        <!--<button class="btn btn-success btn-xs" type="button" onclick="expadd('projectExp')">增加新的项目经历</button>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                        <!--<else/>-->
                                             <div class="panel panel-default adddefault addpro" onclick="faddPro();">
                                                 <span class="fa fa-plus-circle" style="margin-right: 10px;"></span>添加项目经历
                                             </div>
-                                            <div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;display: none;">
-                                                <div class="panel-footer">
-                                                    <button class="btn btn-success btn-xs" type="button" onclick="expadd('projectExp')">增加新的项目经历</button>
-                                                </div>
-                                            </div>
-                                        </notempty>
-
+                                            <!--<div class="panel panel-default" style="padding-top: 20px;margin-right: 20px;display: none;">-->
+                                                <!--<div class="panel-footer">-->
+                                                    <!--<button class="btn btn-success btn-xs" type="button" onclick="expadd('projectExp')">增加新的项目经历</button>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</notempty>-->
                                     </div>
                                 </div>
-                                <!--<div class="form-group">-->
-                                    <!--<label class="col-md-3 control-label">优劣势分析：</label>-->
-                                    <!--<div class="col-md-6" style="position: relative;">-->
-                                        <!--<textarea class="msd-elastic form-control" id="evaluate" name="evaluate" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-md-2"></div>-->
-                                <!--</div>-->
-                                <!--<div class="form-group">-->
-                                    <!--<label class="col-md-3 control-label">技能：</label>-->
-                                    <!--<div class="col-md-6" style="position: relative;">-->
-                                        <!--<textarea class="msd-elastic form-control" id="skill" name="skill" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;"></textarea>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-md-2"></div>-->
-                                <!--</div>-->
-                                <!--<div class="form-group">-->
-                                    <!--<label class="col-md-3 control-label">语言能力：</label>-->
-                                    <!--<div class="col-md-6" style="position: relative;">-->
-                                        <!--<textarea class="msd-elastic form-control" id="language" name="language" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;"></textarea>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-md-2"></div>-->
-                                <!--</div>-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">优劣势分析：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="evaluate" name="evaluate" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">技能：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="skill" name="skill" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;"></textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">语言能力：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="language" name="language" style="min-height: 36px; overflow: hidden; word-wrap: break-word; resize: none; height: 36px;"></textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
 
 
                                 <volist name="field_list['data']" id="vo" key="key">
@@ -668,7 +669,7 @@
         /*form表单验证*/
         $("#form").validate({
             submitHandler:function(form){
-                $('#save_submit').off().on("click",function(){
+                // 保存点击两次 $('#save_submit').on("click",function(){ });
                     var industrys = $("#industrys").val();
                     var jobtitles = $("#jobtitles").val();
                     var dqs = $("#dqs").val();
@@ -732,16 +733,81 @@
                            }
                         }
                     });
-
                     if(dqs && jobtitles && industrys && wantdqs && flag){
                         form.submit();
                     }
-
-                });
-
             }
         });
-
+        // /*from 表单验证*/
+        // $('#save_submit').on("click",function(){
+        //     var industrys = $("#industrys").val();
+        //     var jobtitles = $("#jobtitles").val();
+        //     var dqs = $("#dqs").val();
+        //     var wantdqs= $("#wantdqs").val();
+        //     var telephone=$("#telphone").val();
+        //     var flag=0;
+        //     $("input[data-selector=industrys]").val(industrys);
+        //     $("input[data-selector=jobtitles]").val(jobtitles);
+        //     $("input[data-selector=dqs]").val(dqs);
+        //     $("input[data-selector=wantdqs]").val(wantdqs);
+        //
+        //     if(industrys){
+        //         $("span[data-name=industry]").find("input").css("border","1px solid #d8e3ef");
+        //     }
+        //     if(jobtitles){
+        //         $("span[data-name=job_class]").find("input").css("border","1px solid #d8e3ef");
+        //     }
+        //     if(dqs){
+        //         $("span[data-name=location]").find("input").css("border","1px solid #d8e3ef");
+        //     }
+        //     if(wantdqs){
+        //         $("span[data-name=intentCity]").find("input").css("border","1px solid #d8e3ef");
+        //     }
+        //     if(industrys=="" || industrys==null){
+        //         alert_crm("请填写行业信息！");
+        //         $("span[data-name=industry]").find("input").css("border","1px dotted #cc5965");
+        //         return;
+        //     }
+        //     if(jobtitles=="" || jobtitles==null){
+        //         alert_crm("请填写职能信息！");
+        //         $("span[data-name=job_class]").find("input").css("border","1px dotted #cc5965");
+        //         return;
+        //     }
+        //     if(dqs=="" || dqs==null){
+        //         alert_crm("请填写所在城市信息！");
+        //         $("span[data-name=location]").find("input").css("border","1px dotted #cc5965");
+        //         return;
+        //     }
+        //     if(wantdqs=="" || wantdqs==null){
+        //         alert_crm("请选择意向城市！");
+        //         $("span[data-name=intentCity]").find("input").css("border","1px dotted #cc5965");
+        //         return;
+        //     }
+        //     $.ajax({
+        //         url:"/index.php?m=product&a=check_tel",
+        //         type:"post",
+        //         async:false,
+        //         data:{
+        //             telephone:telephone
+        //         },
+        //         success:function (data) {
+        //             if(data){
+        //                 alert_crm("该手机号码已经存在！");
+        //                 flag=0;
+        //                 $("input[name=telephone]").css("border","1px dotted #cc5965");
+        //                 return;
+        //             }else{
+        //                 $("input[name=telephone]").css("border","1px solid #d8e3ef");
+        //                 flag=1;
+        //                 return;
+        //             }
+        //         }
+        //     });
+        //     if(dqs && jobtitles && industrys && wantdqs && flag){
+        //         form.submit();
+        //     }
+        //
+        // });
         $("#uploadresume").on("change",function () {
             var dataform = new FormData();
             dataform.append("file",$('#uploadresume')[0].files[0]);
@@ -749,16 +815,27 @@
 //            dataform.append("secret_key","LR1snHUsXWzLHehzcZRbk9aENhZ0Nk0000047aff");
 
             $.ajax({
-//                url:"https://api.youyun.com/v1/resume",
                 url:"/index.php?m=parse&a=index",
                 type:"post",
                 data:dataform,
                 processData:false,
                 contentType:false,
                 success:function(data){
-                    console.log(data);
-                    if(data){
-//                        location = "/index.php?m=product&a=edit&id="+data;
+                    data = JSON.parse(data);
+                    if(data == 2){
+                       // location = "/index.php?m=product&a=edit&id="+data;
+                        swal({
+                            title: '文件已存在',
+                            type: "success",
+                            confirmButtonText: "确定"
+                        });
+                    }else {
+                        swal({
+                            title: '上传成功',
+                            type: "success",
+                            confirmButtonText: "确定"
+                        });
+                        $("#ajax_file").html(data.file_name+" | "+data.file_size+"kB");
                     }
 //                    var content=JSON.parse(data);
 //                    //内容解析显示在页面中

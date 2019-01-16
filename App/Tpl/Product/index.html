@@ -120,7 +120,7 @@
                                 </li>
                             </if>
                             <li>
-                                <span><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></span>
+                                <span ><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></span>
                             </li>
                             <li class="last_li"><big><a class="fa fa-times pull-right" id="back-show"></a></big></li>
                         </ul>
@@ -147,7 +147,7 @@
                                             <button class="btn btn-default btn-search" id="short_search_btn" type="submit"><i class="fa fa-search"></i></button>
                                         </span>
                                     </div>
-                                    &nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>
+                                    <a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>
 
                                 </li>&nbsp;&nbsp;
                                 <div class="btn-group ">
@@ -233,10 +233,11 @@
                                                             <i class="fa fa-star star-orange" style="float: right;margin-right: 20px;"></i>
                                                         </if>
                                                         <elseif  condition="$v['field'] eq 'sex'"/>
-                                                        <span><if  condition="$vo[$v['field']] eq '1'">女<else/>男</if></span>
+                                                        <span><if  condition="$vo[$v['field']] eq '2'">女<else/>男</if></span>
                                                         <elseif  condition="$v['field'] eq 'location'"/>
-                                                        <span>{$city_name[$vo[$v['field']]]}</span>
+                                                        <span>{$vo['location']}</span>
                                                         <elseif  condition="$v['field'] eq 'birthday'"/>
+                                                        <!--<span>{$vo['birthday']|date="Y-m-d",###}</span>-->
                                                         <span>{$vo['birthYear']}-{$vo['birthMouth']}</span>
                                                         <elseif  condition="$v['field'] eq 'startWorkyear'"/>
                                                         <span>{$vo[$v['field']]|date="Y-m",###}</span>

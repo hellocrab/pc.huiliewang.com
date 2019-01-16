@@ -95,14 +95,14 @@
 				</div>
 				<div class="col-sm-3 error_msg" id="passwordTip"></div>
 			</div>
-			<div class="form-group ">
+			<div class="form-group">
 				<div class="col-sm-1">
 				</div>
 				<label class="control-label col-sm-2" for="name" style="width:110px;"><span style="color:#FF0011;">*</span>确认密码：</label>
 				<div class="col-sm-6">
-					<input type="password" id="confirmpd" name="confirmpd" rel="confirmpd" rell="确认密码" class="form-control checkit" onblur="checkform(this);"/>
+					<input type="password" id="pass" name="confirmpd" rel="confirmpd" rell="确认密码" class="form-control checkit" onblur="checkform(this);"/>
 				</div>
-				<div class="col-sm-3 error_msg" id="confirmpdTip"></div>
+				<div class="col-sm-3 error_msg" id="passTip"></div>
 			</div>
 			<if condition="$customer_num eq 1">
 				<div class="form-group ">
@@ -112,7 +112,7 @@
 					<div class="col-sm-6">
 						<input type="text" id="customer_num" name="customer_num" class="form-control" />
 					</div>
-					<div class="col-sm-3 error_msg" id="confirmpdTip"></div>
+					<div class="col-sm-3 error_msg" id="customer_numTip"></div>
 				</div>
 			</if>
 

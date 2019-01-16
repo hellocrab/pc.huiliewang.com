@@ -137,12 +137,12 @@
             <div class="ibox">
 
                 <div class="" style="padding-bottom: 15px">
-                    <a class="btn btn-default" href="/index.php?m=product&a=add&pro_id={:I('id')}">新增一份简历</a>
+                    <!--<a class="btn btn-default" href="/index.php?m=product&a=add&pro_id={:I('id')}">新增一份简历</a>-->
                     <a class="btn btn-default" href="/index.php?m=product&a=index&pro_id={$project['business_id']}" target="_blank">从人才库搜索</a>
                     <!--<a class="btn btn-default" href="/index.php?m=product&a=add_more&pro_id={$project['business_id']}" target="_blank">批量导入简历</a>-->
                 </div>
 
-                <div class="houxuanren" style="padding-bottom: 15px">
+                <div class="houxuanren" style="padding-bottom: 15px;">
                     <ul class="nav nav-tabs" style="background: #f9fafc;height: 70px;">
                         <!--<li class="active"><a class="" href="#tj"  data-toggle="tab" type="tj">智能推荐</a></li>-->
                         <if condition="$business_info['pro_type'] eq '1'">
@@ -193,7 +193,7 @@
                                         <label></label>
                                     </div>
                                 </td>
-                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">姓名</td>
+                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999;">姓名</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">操作</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">公司名称</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">职位</td>
@@ -203,24 +203,25 @@
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
                             <tbody>
-                            <if condition="$project['calllist']">
-                                <!--                                <tr>
-                                                                    <td  width="30px" style="border-left: 1px solid #e7eaec;text-align:center;padding:14px;color:#999">
-                                                                        <div class="checkbox checkbox-primary">
-                                                                            <input name="checklist" value="1" class="check_list" type="checkbox">
-                                                                            <label></label>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td style="text-align:center;padding:14px;color:#666;"><a href="{:U('product/view','id='.$vo['resume_id'])}"><span class="" style="{$mail_contacts_id == $vo['contacts_id'] ? '':'display:none'}">{$vo['name']}</span></a></td>
-                                                                    <td style="text-align:right;padding:14px;color:#666;"><input type="button" class="btn btn-primary btn-sm" value="加入CallList >" style="width: 100px;" data-id="{$vo['id']}"></td>
-                                                                    <td style="text-align:center;padding:14px;color:#666;">公司名称</td>
-                                                                    <td style="text-align:center;padding:14px;color:#666;">职位</td>
-                                                                    <td style="text-align:center;padding:14px;color:#666;">男</td>
-                                                                    <td style="text-align:center;padding:14px;color:#666;">24万</td>
-                                                                    <td style="text-align:center;padding:14px;color:#666;">18785858585</td>
-                                                                    <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">2018-03-16 09:49:03</td>
-                                                                </tr>-->
-                            </if>
+                                <volist name="project.calllist" id="vo">
+                                <tr>
+                                    <td  width="30px" style="border-left: 1px solid #e7eaec;text-align:center;padding:14px;color:#999">
+                                        <div class="checkbox checkbox-primary">
+                                            <input name="checklist" value="1" class="check_list" type="checkbox">
+                                            <label></label>
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center;padding:14px;color:#666;"><a href="{:U('product/view','id='.$vo['resume_id'])}"><span class="" style="{$mail_contacts_id == $vo['contacts_id'] ? '':'display:none'}">{$vo['name']}</span></a></td>
+<!-- border 点击失效 -->              <td style="text-align:right;padding:14px;color:#666;"><input type="button" class="btn btn-primary btn-sm slidebar-nav" value="加入CallList >" style="width: 100px;" data-id="{$vo['id']}"></td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo.current_company}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;"> <if condition="$vo['sex'] eq '1' ">男<else/>女</if>
+                                    </td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['telephone']}</td>
+                                    <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date="Y-m-d H:i:s",###}</td>
+                                </tr>
+                                </volist>
                             </tbody>
                         </table>
                     </div>
@@ -259,7 +260,6 @@
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
                             <tbody>
-
 
                             <volist name="project[calllist]" id="vo">
                                 <tr>
@@ -766,7 +766,7 @@
                                 <!--<label></label>-->
                                 <!--</div>-->
                                 <!--</td>-->
-                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">姓名</td>
+                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999;">姓名</td>
                                 <td style="text-align:right;background-color:#f9fafc;padding:14px;color:#999">项目阶段</td>
                                 <td style="text-align:left;background-color:#f9fafc;padding:14px;color:#999"></td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">公司名称</td>
@@ -2349,14 +2349,14 @@
         $('#task-content').html(detail_html);
         $('#sidebar-container').load("/index.php?m=business&a=listajax&id=" + customer_id);
 
-        //        clearTimeout(timer);
-        //        timer=setTimeout(function () {
-        //
-        //            if($("#right-sidebar-log").css('right') != '0px'){
-        //                $("#right-sidebar-log").animate({right:'0px'}, 600);
-        //            }
-        //            $('#sidebar-container').load("/index.php?m=business&a=listajax&id="+customer_id);
-        //        },1000);
+               clearTimeout(timer);
+               timer=setTimeout(function () {
+
+                   if($("#right-sidebar-log").css('right') != '0px'){
+                       $("#right-sidebar-log").animate({right:'0px'}, 600);
+                   }
+                   $('#sidebar-container').load("/index.php?m=business&a=listajax&id="+customer_id);
+               },1000);
     });
 
     $(document).on('click', '.upresumes', function () {

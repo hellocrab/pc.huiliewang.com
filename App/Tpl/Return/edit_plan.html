@@ -114,7 +114,7 @@
                         <select name="person" id="person"  onchange="personChanged();">
                             <option value="">--负责人--</option>
                             <volist name="user" id="vo">
-                                <option value="{$vo.user_id}" <if condition ="$business['user_name'] eq $vo['name']">selected="selected"</if>>{$vo.name}</option>
+                                <option value="{$vo.role_id}" <if condition ="$business['user_name'] eq $vo['name']">selected="selected"</if>>{$vo.name}</option>
                             </volist>
                         </select>
                     </td>

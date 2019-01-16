@@ -84,7 +84,6 @@ class BusinessAction extends Action {
      *
      * */
     public function index() {
-
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
@@ -399,16 +398,15 @@ class BusinessAction extends Action {
         // $where['name'] = array('neq','..');
         $ownerWhere['business.owner_role_id'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
         unset($where['business.owner_role_id']);
-        $list = $d_v_business->where($where)->where($ownerWhere)->order($order)->page($p . ',' . $listrows)->select();
-        /* dump($where);
-          dump($list);
-          exit; */
+//      $list = $d_v_business->where($where)->where($ownerWhere)->order($order)->page($p . ',' . $listrows)->select();
+        // 去掉条件    ->where($ownerWhere)
         $count = $d_v_business->where($where)->count();
         $p_num = ceil($count / $listrows);
         if ($p_num < $p) {
             $p = $p_num;
         }
 
+        $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
         $Page = new Page($count, $listrows);
         if (!empty($_GET['by'])) {
             $params[] = "by=" . trim($_GET['by']);
@@ -997,7 +995,7 @@ class BusinessAction extends Action {
 //        $project['offer'] = M("fine_project")->where("status='%s' and project_id=%d","offer",I("id"))->select();
 //        $project['enter']= M("fine_project")->where("status='%s' and project_id=%d","enter",I("id"))->select();
 //        $project['safe'] = M("fine_project")->where("status='%s' and project_id=%d","safe",I("id"))->select();
-//        $project = $this->getMoreProject($project);
+//        $project = $this->getMoreProject($project);x
 //var_dump($project);exit();
 
         $business = M("business")->where("business_id=%d", I("id"))->select();
@@ -1008,7 +1006,6 @@ class BusinessAction extends Action {
         $this->call_ico3 = array("1" => "mubiao", "0" => "buheshi");
         $this->adviser_ico = array("1" => "jxgenjin", "0" => "ztgenjin");
         $this->assign("project", $project);
-
 
         $d_business = D('BusinessView');
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
@@ -1061,7 +1058,6 @@ class BusinessAction extends Action {
         }
         $this->status_list = M('LogStatus')->select();
         $this->log_list = $business_logs;
-
 
         //文件
         $file_ids = M('rBusinessFile')->where('business_id = %d', $business_id)->getField('file_id', true);
@@ -1265,7 +1261,6 @@ class BusinessAction extends Action {
     public function listajax() {
         $project = D("ProjectView")->where("fine_project.id=%d", I("id"))->find();
 
-
         $business = M("business")->where("business_id=%d", $project['project_id'])->field("pro_type")->find();
         //@edit by yanghao 2018-11-26 修改交易模式交易节点
         $this->pro_type = $business['pro_type'];
@@ -1283,7 +1278,6 @@ class BusinessAction extends Action {
             $this->process_name = array("CallList");
         }
         $this->pro_count = count($this->process);
-
         $project['calllist'] = $this->project_cc(I("id"));
         $project['adviser'] = $this->project_adviser(I("id"));
         $project['tj'] = $this->project_tj(I("id"));
@@ -1296,6 +1290,7 @@ class BusinessAction extends Action {
 //        echo $project['project_id'];exit();
 //        $job = M("business")->field("name")->where("business_id=%d",$project['project_id'])->find();
         $this->assign("project", $project);
+        $this->assign('pro_type',$this->pro_type);
         $this->display();
     }
 
@@ -1601,8 +1596,6 @@ class BusinessAction extends Action {
             $list = M("fine_project_bz")->where("id=%d", I('key'))->find();
             $this->assign("project", $list);
         }
-
-
 
 
         if ($this->isPost()) {

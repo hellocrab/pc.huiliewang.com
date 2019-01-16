@@ -255,9 +255,8 @@
         <div class="row baccc">
             <input type="button" value="客户面试" class="btn btn-default khms"  data-id="{$project['id']}">
             <input type="button" value="开票" class="btn btn-default fapiao"   data-id="{$project['id']}">
-
                 <switch name="pro_type">
-                    <case value="传统项目|其他|入职快">
+                    <case value="1|2|3">
                         <input type="button" value="面试通过" class="btn btn-default mstg"   data-id="{$project['id']}">
                         <input type="button" value="不合适" class="btn btn-default remove"   data-id="{$project['id']}">
                     </case>
@@ -2137,7 +2136,7 @@
         })
 
         //面试通过
-        $(".mstg").click(function(){
+        $(".mstg").on('click',function(){
             var id = $(this).attr("data-id");
             swal({
                     title: "确定该候选人通过面试了吗？",
