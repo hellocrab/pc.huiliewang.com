@@ -660,7 +660,7 @@ class ProductAction extends Action {
             $_POST['addtime'] = time();
             $_POST['lastupdate'] = time();
             $_POST['isperfect'] = $_POST['isperfect'] ? 1 : 0;
-            $_POST['creator_role_id'] = session("user_id");
+            $_POST['creator_role_id'] = session("role_id");
             $projectExp = $_POST['projectExp'];
             $eduExp = $_POST['eduExp'];
             $workExp = $_POST['workExp'];

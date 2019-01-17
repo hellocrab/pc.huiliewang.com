@@ -337,7 +337,6 @@ class IndexAction extends Action {
         $this->actionLog = $action_log;
         $show = $Page->show();
         $this->page = $show;
-
         //查询今日数据(首页简报)，默认为自己和下属的数据
         $briefing_role_ids = array();
         if (session('?admin')) {
@@ -352,9 +351,9 @@ class IndexAction extends Action {
         $create_time[0] = array('between', array($start_time_day, $end_time_day));
         //本周时间范围
         $now_date = date("Y-m-d"); //当前日期
-        $first = 1; //$first =1 表示每周星期一为开始时间 0表示每周日为开始时间
+        $first = 1;  // $first =1 表示每周星期一为开始时间 0表示每周日为开始时间
         $w = date("w", strtotime($now_date)); //获取当前周的第几天 周日是 0 周一 到周六是 1 -6
-        $d = $w ? $w - $first : 6; //如果是周日 -6天
+        $d = $w ? $w - $first : 6; // 如果是周日 -6天
         $start_time_week = strtotime("" . $now_date . " -" . $d . " days"); //本周开始时间
         $end_time_week = strtotime("" . date("Y-m-d", $start_time_week) . " +7 days"); //本周结束时间
         $create_time[1] = array('between', array($start_time_week, $end_time_week));
@@ -431,6 +430,7 @@ class IndexAction extends Action {
 //            $schedule = !empty($schedule) ? $schedule : '0.00';
 //        }
         $anly_count = array('customer_count' => $customer_count, 'contacts_count' => $contacts_count, 'business_count' => $business_count, 'resume_count' => $resume_count, 'contract_count' => $contract_count, 'log_count' => $log_count, 'mylog_count' => $mylog_count, 'sum_price' => $sum_price, 'sum_price_month' => $sum_price_month, 'sum_price_week' => $sum_price_week, 'sum_price_year' => $sum_price_year, 'schedule' => $schedule);
+
         $this->anly_count = $anly_count;
 
         $this->alert = parseAlert();
