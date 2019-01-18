@@ -907,7 +907,7 @@ class BusinessAction extends Action {
             }
             $business_info['joiner'] = $customer_owner_name;
         }
-        //BD和维护人均可查看项目
+        //BD和维护人均可查看项目 
         if(!in_array($business_info['owner_role_id'], $below_ids)){
             if(!in_array($_SESSION['role_id'],$customer_owner_ids) || $_SESSION['role_id'] != $business_info['creator_role_id'])
                 alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
