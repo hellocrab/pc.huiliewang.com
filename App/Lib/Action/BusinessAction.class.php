@@ -895,11 +895,10 @@ class BusinessAction extends Action {
         $m_contacts = M('Contacts');
         $m_business_status = M('BusinessStatus');
         $below_ids = getPerByAction('business', 'view');
-        //判断权限
+        // 判断权限
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
         if ($business_info['joiner']) {
             $customer_owner_ids = explode(",", $business_info['joiner']);
-            $below_ids = array_merge($below_ids,$customer_owner_ids);
             $customer_owner_name = "";
             foreach ($customer_owner_ids as $key => $list) {
                 $full_name = M("user")->field("full_name")->where('role_id = %d', $list)->find();
@@ -908,9 +907,9 @@ class BusinessAction extends Action {
             }
             $business_info['joiner'] = $customer_owner_name;
         }
-
+        //BD和维护人均可查看项目
         if(!in_array($business_info['owner_role_id'], $below_ids)){
-            if(!in_array($_SESSION['role_id'],$below_ids) || $_SESSION['role_id'] != $business_info['creator_role_id'])
+            if(!in_array($_SESSION['role_id'],$customer_owner_ids) || $_SESSION['role_id'] != $business_info['creator_role_id'])
                 alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
         }
 
