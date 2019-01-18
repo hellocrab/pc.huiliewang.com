@@ -843,7 +843,6 @@ class DataAnalysisAction extends Action {
 
 
 
-
         //时间段搜索
         if($_GET['between_date']){
             $between_date = explode(' - ',trim($_GET['between_date']));
@@ -867,8 +866,11 @@ class DataAnalysisAction extends Action {
             $create_time = array('elt',$end_time);
         }
         $where['business.create_time'] = $create_time;
-        $where['business.creator_role_id'] = array("in",implode(',', $role_id_array));
+//        $where['business.creator_role_id'] = array("in",implode(',', $role_id_array));
+//        $where['business.joiner'] = array('like','%'.$_SESSION['role_id'].'%');
 //        $business = M("business")->where($where)->select();
+        $where['_string'] = '( business.creator_role_id in ('.implode(',', $role_id_array).' ) OR  business.joiner like \'%'.$_SESSION['role_id'].'%\' )';
+
         $business = D("BusinessaView")->where($where)->select();
         $total_report = array();
         foreach ($business as $key=>$list){
