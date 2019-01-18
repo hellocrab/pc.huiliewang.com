@@ -899,6 +899,7 @@ class BusinessAction extends Action {
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
         if ($business_info['joiner']) {
             $customer_owner_ids = explode(",", $business_info['joiner']);
+            $below_ids = array_merge($below_ids,$customer_owner_ids);
             $customer_owner_name = "";
             foreach ($customer_owner_ids as $key => $list) {
                 $full_name = M("user")->field("full_name")->where('role_id = %d', $list)->find();
@@ -908,9 +909,11 @@ class BusinessAction extends Action {
             $business_info['joiner'] = $customer_owner_name;
         }
 
-        if ($business_info && !in_array($business_info['owner_role_id'], $below_ids)) {
-            alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+        if(!in_array($business_info['owner_role_id'], $below_ids)){
+            if(!in_array($_SESSION['role_id'],$below_ids) || $_SESSION['role_id'] != $business_info['creator_role_id'])
+                alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
         }
+
         $customer_info = $m_customer->where(array('customer_id' => $business_info['customer_id']))->field('name')->find();
         //商机联系人
         $contacts_info = $m_contacts->where(array('contacts_id' => $business_info['contacts_id']))->field('name,telephone')->find();
