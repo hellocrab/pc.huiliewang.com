@@ -1335,7 +1335,6 @@ class CustomerAction extends Action {
         $order_map['model'] = 'customer';
         $order_fields = M('Fields')->where($order_map)->field('field,name')->select();
         $this->order_fields = $order_fields;
-
         if (trim($_GET['act']) == 'sms') {
             if (!checkPerByAction('Setting', 'sendsms')) {
                 alert('error', L('DO NOT HAVE PRIVILEGES'), $_SERVER['HTTP_REFERER']);
@@ -1581,19 +1580,19 @@ class CustomerAction extends Action {
 
             foreach ($list as $k => $v) {
                 $list[$k]['owner_role_name'] = $m_user->where('role_id =%d', $v['owner_role_id'])->getField('full_name');
-                //提醒
+                // 提醒
                 $remind_info = array();
                 $remind_info = $m_remind->where(array('module' => 'customer', 'module_id' => $v['customer_id'], 'create_role_id' => session('role_id'), 'is_remind' => array('neq', 1)))->order('remind_id desc')->find();
                 $list[$k]['remind_time'] = !empty($remind_info) ? $remind_info['remind_time'] : '';
-                //到期限制数据
+                // 到期限制数据
                 $days = 0;
                 $days = $v['update_time'];
                 $c_days = $v['get_time'];
                 $list[$k]["days"] = $outdays - floor((time() - $days) / 86400);
-                $list[$k]["c_days"] = $c_outdays - floor((time() - $c_days) / 86400);
+                $list[$k]["days"] = $c_outdays - floor((time() - $c_days) / 86400);
                 $contacts = array();
                 $contacts_list = array();
-                //首要联系人信息
+                // 首要联系人信息
                 if (!empty($v['contacts_id'])) {
                     $contacts_customer = $m_r_contacts_customer->where('customer_id = %d', $v['customer_id'])->order('id desc')->getField('contacts_id', true);
                 } else {

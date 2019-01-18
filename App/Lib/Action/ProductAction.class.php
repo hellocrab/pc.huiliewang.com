@@ -366,7 +366,6 @@ class ProductAction extends Action {
             }
         }
 
-
         $count = $resume->where($where)->count() ? $resume->where($where)->count() : '0';
 
         $p_num = ceil($count / $listrows);
@@ -430,7 +429,6 @@ class ProductAction extends Action {
         } else {
             $list = $resume->where($where)->order('addtime desc')->Page($p . ',' . $listrows)->select();
         }
-
 
         foreach ($list as $key => $li) {
             $where = "";
