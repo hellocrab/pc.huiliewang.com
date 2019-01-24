@@ -442,6 +442,9 @@ class ProductAction extends Action {
         foreach ($list as $k => $v){
             $list[$k]['location'] = $city_name[$v['location']];
         }
+        foreach ($list as $k => $v){
+            $list[$k]['native'] = $city_name[$v['hlocation']];
+        }
         $Page = new Page($count, $listrows); // 实例化分页类 传入总记录数和每页显示的记录数
         $show = $Page->show(); // 分页显示输出
         $this->assign('list', $list); // 赋值数据集
@@ -463,6 +466,8 @@ class ProductAction extends Action {
 //            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
+            $_POST['birthYear'] = intval(date('Y',$_POST['birthday']));
+            $_POST['birthMouth'] = intval(date('m',$_POST['birthday']));
             $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
             $_POST['isunited'] = $_POST['isunited'] ? 1 : 0 ;
 

@@ -59,6 +59,51 @@ class BusinessAction extends Action {
         $m_business = M('Business');
         $useless_words = array(L('COMPANY'), L('LIMITED'), L('DI'), L('LIMITED_COMPANY'));
         if ($this->isAjax()) {
+            /**
+//            $split_result = $sp->SplitRMM($_POST['name']);
+//            if (!is_utf8($split_result))
+//                $split_result = iconv("GB2312//IGNORE", "UTF-8", $split_result);
+//            $result_array = explode(' ', trim($split_result));
+//            if (count($result_array) < 2) {
+//                $this->ajaxReturn(0, '', 0);
+//                die;
+//            }
+//            foreach ($result_array as $k => $v) {
+//                if (in_array($v, $useless_words))
+//                    unset($result_array[$k]);
+//            }
+//            $name_list = $m_business->where($where)->getField('name', true);
+//            $seach_array = array();
+//            //查询出所有名字，迭代
+////            dump($result_array);exit; //测试  项目 简报
+//            foreach ($name_list as $k => $v) {
+//                $search = 0;
+//                //取出 同名项目下的客户名
+//                $customer_id = $m_business->where(array('name'=>'%'.$v.'%'))->getField('customer_id', true);
+//                foreach ($result_array as $k2 => $v2) {
+//                    //保存查重出的客户名字
+//                    if(!empty($customer_id)){
+//                        foreach ($customer_id as $x){
+//                            $c_name = M("customer")->where(array('customer_id'=>intval($x)))->getField('name');
+//                        }
+//                    }
+//                    if (strpos($v, $v2) > -1) {
+//                        $v = str_replace("$v2", "<span style='color:red;'>$v2</span>", $v, $count);
+//                        $search += $count;
+////                        $v  .= '<br/><span>'.$c_name.'</span>';
+//                    }
+//                }
+//                $v  .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>('.$c_name.')</span>';
+//                if ($search > 2)
+//                    $seach_array[$k] = array('value' => $v, 'search' => $search);
+//            }
+//            $seach_sort_result = array_sort($seach_array, 'search', 'desc');
+//            if (empty($seach_sort_result)) {
+//                $this->ajaxReturn(0, L('ABLE_ADD'), 0);
+//            } else {
+//                $this->ajaxReturn($seach_sort_result, L('CUSTOMER_IS_CREATED'), 1);
+//            }
+ */
             $split_result = $sp->SplitRMM($_POST['name']);
             if (!is_utf8($split_result))
                 $split_result = iconv("GB2312//IGNORE", "UTF-8", $split_result);
@@ -73,26 +118,14 @@ class BusinessAction extends Action {
             }
             $name_list = $m_business->where($where)->getField('name', true);
             $seach_array = array();
-            //查询出所有名字，迭代
-//            dump($result_array);exit; //测试  项目 简报
             foreach ($name_list as $k => $v) {
                 $search = 0;
-                //取出 同名项目下的客户名
-                $customer_id = $m_business->where(array('name'=>$v))->getField('customer_id', true);
                 foreach ($result_array as $k2 => $v2) {
-                    //保存查重出的客户名字
-                    if(!empty($customer_id)){
-                        foreach ($customer_id as $x){
-                            $c_name = M("customer")->where(array('customer_id'=>intval($x)))->getField('name');
-                        }
-                    }
                     if (strpos($v, $v2) > -1) {
                         $v = str_replace("$v2", "<span style='color:red;'>$v2</span>", $v, $count);
                         $search += $count;
-//                        $v  .= '<br/><span>'.$c_name.'</span>';
                     }
                 }
-                $v  .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>('.$c_name.')</span>';
                 if ($search > 2)
                     $seach_array[$k] = array('value' => $v, 'search' => $search);
             }
@@ -102,6 +135,7 @@ class BusinessAction extends Action {
             } else {
                 $this->ajaxReturn($seach_sort_result, L('CUSTOMER_IS_CREATED'), 1);
             }
+
         }
     }
 
