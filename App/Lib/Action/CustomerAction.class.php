@@ -520,7 +520,6 @@ class CustomerAction extends Action {
 //                var_dump($this->field_list);exit();
                 $this->contacts_field_list = field_list_html("add", "contacts", "", "contacts");
             }
-
             $user = M('user')->where('status =%d', 1)->field('full_name,user_id')->select();
             $this->assign("user", $user);
             $this->refer_url = $_SERVER['HTTP_REFERER'];

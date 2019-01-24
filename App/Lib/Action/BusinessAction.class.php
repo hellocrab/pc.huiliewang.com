@@ -32,6 +32,20 @@ class BusinessAction extends Action {
         $this->_permissionRes = getPerByAction(MODULE_NAME, ACTION_NAME);
     }
 
+    /***
+     * Ajax 检测同名项目名，展示对应公司
+     */
+    public function checkSame(){
+        if($this->isAjax()){
+            $split_result = preg_replace('# #','',$_POST['name']);
+            $customer_id = M('Business')->where(array('name'=>$split_result))->getField('customer_id');
+            $customer_name = M('Customer')->where(array('customer_id'=>intval($customer_id)))->getField('name');
+            if($customer_name){
+               $this->ajaxReturn($customer_name,'',1);
+            }
+        }
+    }
+
     /**
      * Ajax检测商机名称
      *
@@ -59,14 +73,26 @@ class BusinessAction extends Action {
             }
             $name_list = $m_business->where($where)->getField('name', true);
             $seach_array = array();
+            //查询出所有名字，迭代
+//            dump($result_array);exit; //测试  项目 简报
             foreach ($name_list as $k => $v) {
                 $search = 0;
+                //取出 同名项目下的客户名
+                $customer_id = $m_business->where(array('name'=>$v))->getField('customer_id', true);
                 foreach ($result_array as $k2 => $v2) {
+                    //保存查重出的客户名字
+                    if(!empty($customer_id)){
+                        foreach ($customer_id as $x){
+                            $c_name = M("customer")->where(array('customer_id'=>intval($x)))->getField('name');
+                        }
+                    }
                     if (strpos($v, $v2) > -1) {
                         $v = str_replace("$v2", "<span style='color:red;'>$v2</span>", $v, $count);
                         $search += $count;
+//                        $v  .= '<br/><span>'.$c_name.'</span>';
                     }
                 }
+                $v  .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>('.$c_name.')</span>';
                 if ($search > 2)
                     $seach_array[$k] = array('value' => $v, 'search' => $search);
             }
@@ -550,7 +576,7 @@ class BusinessAction extends Action {
         $m_config = M('Config');
         $m_business = D('Business');
         $m_business_data = D('BusinessData');
-        $user = M('user')->where('status =%d', 1)->field('full_name,user_id')->select();
+        $user = M('user')->where('status = %d', 1)->field('full_name,user_id')->select();
         $this->assign("user", $user);
         if ($this->isPost()) {
             $m_r_business_product = M('RBusinessProduct');
@@ -921,6 +947,16 @@ class BusinessAction extends Action {
         //商机状态
         $business_info['status_order_id'] = $m_business_status->where(array('status_id' => $business_info['status_id'], 'type_id' => $business_info['status_type_id']))->getField('order_id');
         $this->status_list = $m_business_status->where(array('type_id' => $business_info['status_type_id']))->order('order_id asc')->select();
+        switch ($business_info['source']){
+            case '1' : $business_info['source']='猎聘面试快';break;
+            case '2' : $business_info['source']='猎聘入职快';break;
+            case '3' : $business_info['source']='猎上网项目';break;
+            case '4' : $business_info['source']='猎萝卜项目';break;
+            case '5' : $business_info['source']='线下慧简历';break;
+            case '6' : $business_info['source']='线下保面试';break;
+            case '7' : $business_info['source']='线下保入职';break;
+            case '8' : $business_info['source']='线下专业猎头';break;
+        }
         $this->business_info = $business_info;
         $this->business_id = $business_id;
         //自定义字段

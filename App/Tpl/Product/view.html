@@ -132,6 +132,12 @@
                                     <input type="text" class="form-control bqinput bqcontent" maxlength="20px">
                                     <a href="javascript:void(0)" class="addgw" id="addbq" style="vertical-align: -webkit-baseline-middle;margin-left: 10px;">+添加标签</a>
                                 </div>
+                                <label class="col-lg-2 control-label">婚姻状况</label>
+                                <div class="col-lg-4">
+                                    <p class="form-p">
+                                        <if condition="$resume.marital_status eq 1">已婚<elseif condition="$resume.marital_status eq 2" />未婚<else/>保密</if>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -212,7 +218,7 @@
                                         <label class="col-lg-2 control-label">学历</label>
                                         <div class="col-lg-4">
                                             <p class="form-p">
-                                                {$resume.edu}
+                                                {$resume.edu} &nbsp;&nbsp;&nbsp;&nbsp;<if condition="$resume.isunited eq 1">统招 <else/>非统招</if>
                                             </p>
                                         </div>
                                         <label class="col-lg-2 control-label">目前城市</label>
@@ -233,6 +239,12 @@
                                         <div class="col-lg-4">
                                             <p class="form-p">
                                                 {$resume.intentCity}
+                                            </p>
+                                        </div>
+                                        <label class="col-lg-2 control-label">籍贯</label>
+                                        <div class="col-lg-4">
+                                            <p class="form-p">
+                                                {$resume.hlocation}
                                             </p>
                                         </div>
                                     </div>
@@ -398,6 +410,10 @@
                                     </volist>
                                 </div>
                                 <div class="ibox-content gray-log contenttitle">
+                                    证书
+                                </div>
+                                <div class="col-lg-12 contentview">{$resume.certificate}</div>
+                                <div class="ibox-content gray-log contenttitle">
                                     优劣势分析
                                 </div>
                                 <div class="col-lg-12 contentview">{$resume.evaluate}</div>
@@ -411,6 +427,10 @@
                                 <div class="col-lg-12 contentview">
                                     {$resume.language}
                                 </div>
+                                <div class="ibox-content gray-log contenttitle">
+                                    自我介绍
+                                </div>
+                                <div class="col-lg-12 contentview">{$resume.introduce}</div>
 
                             </div>
                             <div class="panel-body ">

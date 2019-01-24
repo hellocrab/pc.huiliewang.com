@@ -178,7 +178,7 @@
                                                         <div class="form-group">
                                                             <label for="account" class="col-sm-3 labell">账号</label>
                                                             <div class="col-sm-6">
-                                                                <input type="text" name="name" rel="require" rell="账号" class="form-control checkit" onblur="checkform(this);" id="account">
+                                                                <input type="text" name="name" placeholder="请填写邮箱作为您的账号" rel="email" rell="账号" class="form-control checkit" onblur="checkform(this);" id="account">
                                                             </div>
                                                             <div class="col-sm-3 error_msg" id="accountTip" style="color:red;"></div>
                                                         </div>
@@ -196,13 +196,13 @@
                                                             </div>
                                                             <div class="col-sm-3 error_msg" id="confirmpdTip" style="color:red;"></div>
                                                         </div>
-                                                        <div class="form-group up">
-                                                            <label for="email" class="col-sm-3 labell">邮箱</label>
-                                                            <div class="col-sm-6">
-                                                                <input type="text" name="email" rel="email" rell="邮箱" class="form-control checkit" onblur="checkform(this);" id="email">
-                                                            </div>
-                                                            <div class="col-sm-3 error_msg" id="emailTip" style="color:red;"></div>
-                                                        </div>
+                                                        <!--<div class="form-group up">-->
+                                                            <!--<label for="email" class="col-sm-3 labell">邮箱</label>-->
+                                                            <!--<div class="col-sm-6">-->
+                                                                <!--<input type="text" name="email" rel="email" rell="邮箱" class="form-control checkit" onblur="checkform(this);" id="email">-->
+                                                            <!--</div>-->
+                                                            <!--<div class="col-sm-3 error_msg" id="emailTip" style="color:red;"></div>-->
+                                                        <!--</div>-->
                                                         <button type="button" id="nextdiv3" style="margin-left: 80px;margin-top:90px;width: 270px;height: 60px;background-color: #00aaef;border-radius: 15px;" class="btn btn-primary">下一步</button>
                                                     </div>
                                                     <div style="display: none;padding-top: 66px;" class="div31">
@@ -411,9 +411,9 @@
                                         var account = $('#account').val();
                                         var pass = $('#pass').val();
                                         var confirmpd = $('#confirmpd').val();
-                                        var email = $('#email').val();
+                                        // var email = $('#email').val();
                                         var myreg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
-                                        if (account != '' && pass != '' && pass == confirmpd && confirmpd != '' && email != '' && myreg.test(email)) {
+                                        if (account != '' && pass != '' && pass == confirmpd && confirmpd != '') {
                                             $('.div31').css('display', 'block');
                                             $('.div21').css('display', 'none');
                                             $('.div2').css('display', 'none');

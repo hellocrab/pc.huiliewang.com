@@ -464,6 +464,7 @@ class ProductAction extends Action {
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
             $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
+            $_POST['isunited'] = $_POST['isunited'] ? 1 : 0 ;
 
             $projectExp = $_POST['projectExp'];
             $eduExp = $_POST['eduExp'];
@@ -538,9 +539,20 @@ class ProductAction extends Action {
                 $this->error("写入数据失败");
             }
         } else {
+            include APP_PATH . "Common/city.cache.php";
             if (I("id")) {
                 $where['eid'] = I("id");
-                $this->resume = M("resume")->where($where)->find();
+                $resume = M("resume")->where($where)->find();
+                if ($resume['hlocation']) {
+                    $arr = "";
+                    $intentCity = explode(",", $resume['hlocation']);
+                    foreach ($intentCity as $list) {
+                        $arr[] = $city_name[$list];
+
+                    }
+                    $resume['hlocation'] = implode(",", $arr);
+                }
+                $this->resume = $resume;
                 $this->resume_work = M("resume_work")->where($where)->select();
                 $this->resume_edu = M("resume_edu")->where($where)->select();
                 $this->resume_project = M("resume_project")->where($where)->select();
@@ -659,6 +671,8 @@ class ProductAction extends Action {
             $_POST['lastupdate'] = time();
             $_POST['isperfect'] = $_POST['isperfect'] ? 1 : 0;
             $_POST['creator_role_id'] = session("role_id");
+            $_POST['isunited'] = $_POST['isunited'] ? 1 : 0;
+            $_POST['marital_status'] = intval($_POST['marital_status']);
             $projectExp = $_POST['projectExp'];
             $eduExp = $_POST['eduExp'];
             $workExp = $_POST['workExp'];
@@ -960,6 +974,14 @@ class ProductAction extends Action {
                 $arr[] = $city_name[$list];
             }
             $resume['intentCity'] = implode(",", $arr);
+        }
+        if ($resume['hlocation']) {
+            $arr = "";
+            $intentCity = explode(",", $resume['hlocation']);
+            foreach ($intentCity as $list) {
+                $arr[] = $city_name[$list];
+            }
+            $resume['hlocation'] = implode(",", $arr);
         }
         if ($resume['job_class']) {
             $job_class = explode(";", $resume['job_class']);

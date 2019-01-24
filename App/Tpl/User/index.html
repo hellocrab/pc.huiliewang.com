@@ -73,8 +73,9 @@ $(function(){
 							</form>
 						</div>
 					</div>
-					<form action="{:U('user/delete')}" id="user_form" method="post" style="position:relative;">
+
 						<div class="col-sm-12 ibox-content" style="margin-top:0px;padding:0px;">
+							<form action="{:U('user/delete')}" id="user_form" method="post" style="position:relative;">
 							<div id="table_div" class="full-height-scroll" style="left:0px;top:0px;">
 								<table class="table table-hover table-striped table_thead_fixed" id="tab_Test3">
 									<if condition="$user_list eq null">
@@ -166,12 +167,12 @@ $(function(){
 								</div>
 							</div>
 							<div id="tfoot_div" class="clearfix">
-								<div class="clearfix" id="tfoot_page">				
+								<div class="clearfix" id="tfoot_page">
 									{$page}<include file="Public:listrows" />
 								</div>
 							</div>
 						</div>
-					</form>						
+					</form>
 				</div>						
 			</div>
         </div>

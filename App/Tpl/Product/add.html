@@ -185,6 +185,31 @@
                                     </div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">婚姻状况：</label>
+                                    <div class="col-md-7">
+                                        <div class="radio radio-info radio-inline" style="margin-left: 20px;margin-right: 20px;">
+                                            <input type="radio" name="marital_status" class="marital_status" value="1">
+                                            <label for="marital_status">已婚</label>
+                                        </div>
+                                        <div class="radio radio-info radio-inline">
+                                            <input type="radio" name="marital_status" class="marital_status" value="2">
+                                            <label for="marital_status">未婚</label>
+                                        </div>
+                                        <div class="radio radio-info radio-inline col-md-1">
+                                            <input type="radio" name="marital_status" checked class="marital_status" value="3">
+                                            <label for="marital_status">保密</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">籍贯：</label>
+                                    <div class="col-md-6">
+                                        <input data-selector="dqs" data-option="1" class="text" type="text" placeholder="选择籍贯" id="hdqs" name="hlocation" data-ui="LocalDataUIB" style="width:100%;height:40px;"/>
+                                    </div>
+                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">所在城市：</label>
                                     <div class="col-md-6">
@@ -223,6 +248,7 @@
                                     </div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;"></span></div>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">邮箱：</label>
                                     <div class="col-md-6">
@@ -235,7 +261,7 @@
                                     <label class="col-md-3 control-label">学历：</label>
                                     <div class="col-md-6">
                                         <select class="form-control required" id="education" name="edu" aria-required="true">
-                                            <option value="专科">专科</option>
+                                            <option value="专科">专科及以下</option>
                                             <option value="本科">本科</option>
                                             <option value="硕士">硕士</option>
                                             <option value="MBA/EMBA">MBA/EMBA</option>
@@ -244,6 +270,7 @@
                                         </select>
                                         <span style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
+                                    <div class="col-md-1">统招:&nbsp;<input type="checkbox" name="isunited" value="1"></div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div class="form-group">
@@ -514,6 +541,20 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-md-3 control-label">证书：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="certificate" name="certificate" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">自我介绍：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="selfIntroduce" name="introduce" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-md-3 control-label">优劣势分析：</label>
                                     <div class="col-md-6" style="position: relative;">
                                         <textarea class="msd-elastic form-control" id="evaluate" name="evaluate" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>
@@ -673,12 +714,14 @@
                     var industrys = $("#industrys").val();
                     var jobtitles = $("#jobtitles").val();
                     var dqs = $("#dqs").val();
+                    var hdqs = $("#hdqs").val();
                     var wantdqs= $("#wantdqs").val();
                     var telephone=$("#telphone").val();
                     var flag=0;
                     $("input[data-selector=industrys]").val(industrys);
                     $("input[data-selector=jobtitles]").val(jobtitles);
                     $("input[data-selector=dqs]").val(dqs);
+                    $("input[data-selector=hdqs]").val(hdqs);
                     $("input[data-selector=wantdqs]").val(wantdqs);
 
                     if(industrys){
@@ -689,6 +732,9 @@
                     }
                     if(dqs){
                         $("span[data-name=location]").find("input").css("border","1px solid #d8e3ef");
+                    }
+                    if(hdqs){
+                        $("span[data-name=hlocation]").find("input").css("border","1px solid #d8e3ef");
                     }
                     if(wantdqs){
                         $("span[data-name=intentCity]").find("input").css("border","1px solid #d8e3ef");
@@ -706,6 +752,11 @@
                     if(dqs=="" || dqs==null){
                         alert_crm("请填写所在城市信息！");
                         $("span[data-name=location]").find("input").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    if( hdqs==null || hdqs ==""){
+                        alert_crm("请填写籍贯！");
+                        $("span[data-name=hlocation]").find("input").css("border","1px dotted #cc5965");
                         return;
                     }
                     if(wantdqs=="" || wantdqs==null){
@@ -733,7 +784,7 @@
                            }
                         }
                     });
-                    if(dqs && jobtitles && industrys && wantdqs && flag){
+                    if(dqs && jobtitles && industrys && wantdqs && flag && hdqs){
                         form.submit();
                     }
             }

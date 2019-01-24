@@ -193,6 +193,24 @@
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-md-3 control-label">婚姻状况：</label>
+                                    <div class="col-md-7">
+                                        <div class="radio radio-info radio-inline" style="margin-left: 20px;margin-right: 20px;">
+                                            <input type="radio" name="marital_status" <if condition="$resume.marital_status eq 1">checked</if> class="marital_status" value="1">
+                                            <label for="marital_status">已婚</label>
+                                        </div>
+                                        <div class="radio radio-info radio-inline">
+                                            <input type="radio" name="marital_status" <if condition="$resume.marital_status eq 2">checked</if> class="marital_status" value="2">
+                                            <label for="marital_status">未婚</label>
+                                        </div>
+                                        <div class="radio radio-info radio-inline col-md-1">
+                                            <input type="radio" name="marital_status" <if condition="$resume.marital_status eq 3">checked</if> class="marital_status" value="3">
+                                            <label for="marital_status">保密</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-md-3 control-label">出生年月：</label>
                                     <div class="col-sm-6">
                                         <input class="form-control text-center timerinput" id="birthday" type="text"  onFocus="WdatePicker({dateFmt:'yyyy-MM', maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;height: 32px;text-align: left;" value="{$resume.birthday|date="Y-m",###}">
@@ -216,6 +234,14 @@
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-md-3 control-label">籍贯：</label>
+                                    <div class="col-md-6">
+                                        <label style="display: inline-block;height: 32px;line-height: 32px;">{$resume.hlocation}</label>
+                                        <!--<input class="form-control required mobile" type="text" id="telphone" name="telephone" value="{$resume.telephone}">-->
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
                                     <label class="col-md-3 control-label">邮箱：</label>
                                     <div class="col-md-6">
                                         <input class="form-control email" type="text" id="email" name="email" value="{$resume.email}">
@@ -237,6 +263,8 @@
                                         </select>
                                         <span style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
+
+                                    <div class="col-md-1">统招:&nbsp;<input type="checkbox" <if condition="$resume.isunited eq 1">checked = "checked"</if> name="isunited" value="1"></div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div  class="form-group">
@@ -515,6 +543,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-md-3 control-label">证书：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="certificate" name="certificate" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;">{$resume.certificate}</textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-md-3 control-label">优劣势分析：</label>
                                     <div class="col-md-6" style="position: relative;">
                                         <textarea class="msd-elastic form-control" id="evaluate" name="evaluate" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;">{$resume.evaluate}</textarea>
@@ -535,7 +570,13 @@
                                     </div>
                                     <div class="col-md-2"></div>
                                 </div>
-
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">自我介绍：</label>
+                                    <div class="col-md-6" style="position: relative;">
+                                        <textarea class="msd-elastic form-control" id="selfIntroduce" name="introduce" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;">{$resume.introduce}</textarea>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
 
                                 <volist name="field_list['data']" id="vo" key="key">
                                     <div class="form-group"  style="display: none;">

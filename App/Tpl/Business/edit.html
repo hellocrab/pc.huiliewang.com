@@ -77,6 +77,21 @@
 										</div>
 										<elseif condition = "$vo['field'] eq 'customer_id'" />
 										<div class="form-group">
+											<label class="col-md-4 control-label">项目来源:</label>
+											<div class="col-md-6">
+												<select class="form-control valid" name="source" aria-invalid="false">
+													<option value="1" <if condition="$business_info.source eq '1'">selected="selected"</if>>猎聘面试快</option>
+													<option value="2" <if condition="$business_info.source eq '2'">selected="selected"</if>>猎聘入职快</option>
+													<option value="3" <if condition="$business_info.source eq '3'">selected="selected"</if>>猎上网项目</option>
+													<option value="4" <if condition="$business_info.source eq '4'">selected="selected"</if>>猎萝卜项目</option>
+													<option value="5" <if condition="$business_info.source eq '5'">selected="selected"</if>>线下慧简历</option>
+													<option value="6" <if condition="$business_info.source eq '6'">selected="selected"</if>>线下保面试</option>
+													<option value="7" <if condition="$business_info.source eq '7'">selected="selected"</if>>线下保入职</option>
+													<option value="8" <if condition="$business_info.source eq '8'">selected="selected"</if>>线下专业猎头</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
 											<label class="col-md-4 control-label">客户名称：</label>
 											<div class="col-md-6">
 												<input type="hidden" name="customer_id" id="customer_id" value="{$business_info.customer_id}" />

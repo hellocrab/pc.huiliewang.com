@@ -182,6 +182,16 @@
 
                     </div>
 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">客户来源</label>
+                        <div class="col-sm-4">
+                            <p class="form-p-owner" style="margin-bottom: 0px;">{$customer['origin']}
+                                <!--<a class="role_info" rel="{$customer['customer_owner_id']}" href="javascript:void(0)">{$customer['customer_owner_name']}</a>-->
+                            </p>
+                        </div>
+
+                    </div>
+
                     <div id="list-show" style="display:none;" rel="false">
                         <volist name="field_list" id="vo" key="k">
                             <?php

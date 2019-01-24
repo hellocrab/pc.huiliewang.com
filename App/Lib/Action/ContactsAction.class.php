@@ -138,6 +138,8 @@ class ContactsAction extends Action {
 			}
 			$this->refer_url = $_SERVER['HTTP_REFERER'];
 			$this->field_list = field_list_html('add','contacts',$d_module);
+			header('content-type:text/html;charset=utf-8');
+//			dump($this->field_list);exit;
 			$this->alert = parseAlert();
 			$this->display();
 		}

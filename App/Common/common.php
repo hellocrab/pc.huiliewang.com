@@ -911,8 +911,6 @@ function field_list_html($type = "add", $module = "", $d_module = array(), $spec
     } else {
         $field_list = M('Fields')->where('model = "' . $module . '"')->order('order_id')->select();
     }
-
-//	var_dump($field_list);exit();
     foreach ($field_list as $k => $v) {
         if (trim($v['input_tips'])) {
             $input_tips = ' &nbsp; <span style="color:#999;float:left;margin-top:5px;">(' . L('NOTE_') . $v['input_tips'] . ')</span>';

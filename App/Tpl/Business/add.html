@@ -86,12 +86,12 @@
                                         <div class="input-daterange input-group">
                                             <span class="input-group-addon" style="background-color:#ccc;">{$business['business_custom']}</span>
                                             <input type="text" name="code" rel="require" class="form-control" value="{$business['code']}"/>
-                                            <input type="hidden" id="prefixion" name="prefixion" value="{$business['
-                                                   business_custom']}"/>
+                                            <input type="hidden" id="prefixion" name="prefixion" value="{$business['business_custom']}"/>
                                         </div>
                                     </div>
                                     <div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
+
                                 <volist name="field_list['main']" id="vo" key="key">
                                     <if condition="$vo['field'] eq 'status_id'">
                                         <div class="form-group">
@@ -106,7 +106,24 @@
                                             <div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
                                         </div>
                                         <elseif condition = "$vo['field'] eq 'customer_id'" />
-
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">项目来源:</label>
+                                            <div class="col-md-6">
+                                                <select class="form-control valid" name="source" aria-invalid="false">
+                                                    <option value="">--请选择--</option>
+                                                    <option value="1" selected="selected">猎聘面试快</option>
+                                                    <option value="2">猎聘入职快</option>
+                                                    <option value="3">猎上网项目</option>
+                                                    <option value="4">猎萝卜项目</option>
+                                                    <option value="5">线下慧简历</option>
+                                                    <option value="6">线下保面试</option>
+                                                    <option value="7">线下保入职</option>
+                                                    <option value="8">线下专业猎头</option>
+                                                    <option value="9">转介绍</option>
+                                                    <option value="8">网络寻访</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">客户名称：</label>
                                             <div class="col-md-6">
@@ -132,6 +149,7 @@
                                                 <input class="form-control required" aria-required="true" placeholder="请点击选择"  type="text" name="joiner_name" id="user_name" value="" readonly="true" style="cursor:pointer;" title="请点击选择"/>
                                             </div>
                                             <div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
+
                                         </div>
                                         <elseif condition = "$vo['field'] eq 'minage'" />
                                         <div class="form-group">
@@ -229,7 +247,7 @@
                                                     <div class="col-md-2"></div>
                                                 </if>
                                                 <else/>
-                                                <div class="col-md-6">
+                                      <!---->       <div class="col-md-6">
                                                     {$vo.html}
                                                 </div>
                                                 <if condition = "$vo['tip_start'] eq 1">
