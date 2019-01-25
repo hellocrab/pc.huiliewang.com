@@ -1107,10 +1107,10 @@ function field_list_html($type = "add", $module = "", $d_module = array(), $spec
                     $field_list[$k]['html'] = '<input class="form-control ' . $required . '" type="mobile" id="' . $v['field'] . '" name="' . $v['field'] . '" ' . $maxlength . ' value="' . $value . '" /><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
                     break;
                 case 'district':
-                    $field_list[$k]['html'] = '<input data-selector="wantdqs" class="text required" type="text" placeholder="点击选择城市" id="wantdqs" name="' . $v['field'] . '" data-option="' . $v['default_value'] . '" data-ui="LocalDataUIB" value="' . $value . '" style="display: none;width:440px;height:40px;" aria-required="true" required />' . $input_tips;
+                    $field_list[$k]['html'] = '<input data-selector="wantdqs" class="text required" type="text" placeholder="点击选择城市" id="wantdqs" name="' . $v['field'] . '" data-option="' . $v['default_value'] . '" data-ui="LocalDataUIB" value="' . $value . '" style="width:440px;height:40px;" aria-required="true" required />' . $input_tips;
                     break;
                 case 'industrys':
-                    $field_list[$k]['html'] = '<input data-selector="industrys" class="text ' . $required . '" type="text" placeholder="请选择行业"  name="' . $v['field'] . '" data-ui="LocalDataUID" data-option="' . $v['default_value'] . '"  style="display: none;width:380px;height:40px;" aria-required="true" rell="行业"  value="' . $value . '"  />' . $input_tips;
+                    $field_list[$k]['html'] = '<input data-selector="industrys" class="text ' . $required . '" type="text" placeholder="请选择行业"  name="' . $v['field'] . '" data-ui="LocalDataUID" data-option="' . $v['default_value'] . '"  style="width:380px;height:40px;" aria-required="true" rell="行业"  value="' . $value . '"  />' . $input_tips;
                     break;
                 case 'job':
                     $field_list[$k]['html'] = '<input data-selector="jobtitles" class="text ' . $required . '" type="text" placeholder="请选择职能"  id="jobtitles" name="' . $v['field'] . '" data-ui="LocalDataUID" style="display: none;width:380px;height:40px;" aria-required="true" value="' . $value . '" required />' . $input_tips;

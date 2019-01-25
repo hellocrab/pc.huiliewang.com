@@ -515,11 +515,9 @@ class CustomerAction extends Action {
                 $this->field_list = field_list_html("edit", "customer", $leads);
             } else {
                 $this->field_list = field_list_html("add", "customer");
-
-//                header("Content-type: text/html; charset=utf-8");
-//                var_dump($this->field_list);exit();
                 $this->contacts_field_list = field_list_html("add", "contacts", "", "contacts");
             }
+
             $user = M('user')->where('status =%d', 1)->field('full_name,user_id')->select();
             $this->assign("user", $user);
             $this->refer_url = $_SERVER['HTTP_REFERER'];
@@ -1660,6 +1658,7 @@ class CustomerAction extends Action {
             $this->field_list = $mainFields;
             //高级搜索
             //$this->fields_search = $fields_search;
+//            header('content-type:text/html;charset=utf-8');dump($customerlist);exit;
             $this->scene_list = $scene_list;
             $this->alert = parseAlert();
             $this->display();

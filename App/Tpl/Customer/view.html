@@ -1,5 +1,8 @@
 <include file="Public:header" />
 <script type="text/javascript" src="__PUBLIC__/js/PCASClass.js" ></script>
+<script src="__PUBLIC__/resume_selector/common.21a64352.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/resume_selector/common.41f94c00.css">
+<link rel="stylesheet" href="__PUBLIC__/resume_selector/resume.search.12eb3a9b.css">
 <style>
     .a{
         display:block;
@@ -95,7 +98,7 @@
                         <div class="col-sm-4">
                             <p class="form-p-owner" style="margin-bottom: 0px;">
                                 <a class="" href="javascript:void(0)">
-                                    <if condition = "$vo['customer_status'] eq '重点客户'">
+                                    <if condition = "$customer['customer_status'] eq '重点客户'">
                                         <span class="label label-success editstatus">重点客户</span>
                                         <elseif  condition =  "$customer['customer_status'] eq '试单客户'"/>
                                         <span class="label label-danger editstatus">试单客户</span>
@@ -112,7 +115,6 @@
                                         <elseif  condition =  "$customer['customer_status'] eq '无状态'"/>
                                         <span class="label label-warning editstatus">无状态</span>
                                         <else />
-                                        <span class="label label-primary editstatus">编辑</span>
                                     </if>
                                 </a>
                             </p>
@@ -230,7 +232,7 @@
                         <label class="col-lg-2 control-label">{$vo['name']}</label>
                         <div class="col-lg-4">
                             <p class="form-p" <if condition = "$vo['form_type'] eq 'textarea'">style="word-break:break-all;height:auto;"</if>>
-                            <span style="cursor:pointer;color:#{$vo['color']}">
+                            <span style="cursor:pointer;color:#{$vo['color']};">
                                <if condition = "$vo['form_type'] eq 'industrys'">
                                     {$industry_name[$customer[$vo['field']]]}
                                <elseif condition = "$vo['form_type'] eq 'district'" />
@@ -1119,5 +1121,5 @@
         })
     })
 
-</script>
+</script><script src="__PUBLIC__/resume_selector/resume.search.910ebde0.js "></script>
 <include file="Public:footer" />

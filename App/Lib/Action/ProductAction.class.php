@@ -492,6 +492,7 @@ class ProductAction extends Action {
             $data['com_id'] = $customer_id['customer_id'];
             $data['updatetime'] = time();
             $result_fine = M("fine_project")->where("resume_id=%d", $eid)->save($data);
+
             if ($result && $result_fine) {
                 if ($workExp) {
                     M("resume_work")->where("resume_id=%d", $eid)->delete();
