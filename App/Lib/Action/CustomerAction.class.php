@@ -88,7 +88,7 @@ class CustomerAction extends Action {
                         $search += $count;
                     }
                 }
-                if ($search > 0)
+                if ($search > 2)
                     $seach_array[$k] = array('value' => $v, 'search' => $search);
             }
             $seach_sort_result = array_sort($seach_array, 'search', 'desc');

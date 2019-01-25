@@ -534,6 +534,9 @@ class ProductAction extends Action {
                         $data['proName'] = $projectExp['proName'][$i];
                         $data['proCompany'] = $projectExp['proCompany'][$i];
                         $data['proOffice'] = $projectExp['proOffice'][$i];
+                        $data['proObject'] = $projectExp['proObject'][$i];
+                        $data['proPersons'] = $projectExp['proPersons'][$i];
+                        $data['proSituation'] = $projectExp['proSituation'][$i];
                         $data['proDes'] = $projectExp['proDes'][$i];
                         $data['eid'] = $eid;
                         M("resume_project")->add($data);
@@ -717,6 +720,9 @@ class ProductAction extends Action {
                     $data['endtime'] = strtotime($eduExp['endtime'][$i]);
                     $data['schoolName'] = $eduExp['schoolName'][$i];
                     $data['majorName'] = $eduExp['majorName'][$i];
+                    $data['proObject'] = $eduExp['proObject'][$i];
+                    $data['proPersons'] = $eduExp['proPersons'][$i];
+                    $data['proSituation'] = $eduExp['proSituation'][$i];
                     $data['degree'] = $eduExp['degree'][$i];
                     $data['eid'] = $eid;
                     M("resume_edu")->add($data);

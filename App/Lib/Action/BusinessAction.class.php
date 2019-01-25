@@ -118,16 +118,21 @@ class BusinessAction extends Action {
             }
             $name_list = $m_business->where($where)->getField('name', true);
             $seach_array = array();
+            //把每一个进行校验，并替换
             foreach ($name_list as $k => $v) {
                 $search = 0;
+                $v2v = $v;
                 foreach ($result_array as $k2 => $v2) {
                     if (strpos($v, $v2) > -1) {
-                        $v = str_replace("$v2", "<span style='color:red;'>$v2</span>", $v, $count);
+                        $v = str_replace("$v2","<span style='color:red;'>$v2</span>", $v, $count);
                         $search += $count;
                     }
                 }
-                if ($search > 2)
-                    $seach_array[$k] = array('value' => $v, 'search' => $search);
+                if ($search > 0){
+                    $customer_id = $m_business->where(array('name'=>$v2v))->getField('customer_id');
+                    $c_name = M("customer")->where(array('customer_id'=>intval($customer_id)))->getField('name');
+                    $seach_array[$k] = array('value' => $v."&nbsp;&nbsp;(".$c_name.")", 'search' => $search);
+                }
             }
             $seach_sort_result = array_sort($seach_array, 'search', 'desc');
             if (empty($seach_sort_result)) {
@@ -840,7 +845,7 @@ class BusinessAction extends Action {
                 if ($m_business_data->create() !== false) {
                     $a = $m_business->save();
                     if ($m_business_data->where(array('business_id' => $business_id))->find()) {
-                        $b = $m_business_data->save();
+                        $b = $m_business_data->save($_POST);
                     } else {
                         $m_business_data->business_id = $business_id;
                         $b = $m_business_data->add();

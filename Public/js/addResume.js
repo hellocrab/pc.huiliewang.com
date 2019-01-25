@@ -115,6 +115,24 @@ function expadd(exp) {
             '</div>\n' +
             '</div>\n' +
             '<div class="form-group">\n' +
+            '<label class="col-sm-2 control-label">汇报对象<span class="text-danger"></span></label>\n' +
+            '<div class="col-sm-9">\n' +
+            '<input class="form-control" type="text" id="proOffice" name="projectExp[proObject][]">\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '<div class="form-group">\n' +
+            '<label class="col-sm-2 control-label">规模人数<span class="text-danger"></span></label>\n' +
+            '<div class="col-sm-9">\n' +
+            '<input class="form-control" type="number" id="proOffice" name="projectExp[proPersons][]">\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '<div class="form-group">\n' +
+            '<label class="col-sm-2 control-label">团队情况<span class="text-danger"></span></label>\n' +
+            '<div class="col-sm-9">\n' +
+            '<textarea class="msd-elastic form-control" id="proDes" name="projectExp[proSituation][]" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '<div class="form-group">\n' +
             '<label class="col-sm-2 control-label">项目描述<span class="text-danger"></span></label>\n' +
             '<div class="col-sm-9">\n' +
             '<textarea class="msd-elastic form-control" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;" name="projectExp[proDes][]"></textarea>\n' +
@@ -326,6 +344,24 @@ function faddPro() {
         '<label class="col-sm-2 control-label">项目职位<span class="text-danger"></span></label>\n' +
         '<div class="col-sm-9">\n' +
         '<input class="form-control" type="text" id="proOffice" name="projectExp[proOffice][]">\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '<div class="form-group">\n' +
+        '<label class="col-sm-2 control-label">汇报对象<span class="text-danger"></span></label>\n' +
+        '<div class="col-sm-9">\n' +
+        '<input class="form-control" type="text" id="proOffice" name="projectExp[proObject][]">\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '<div class="form-group">\n' +
+        '<label class="col-sm-2 control-label">规模人数<span class="text-danger"></span></label>\n' +
+        '<div class="col-sm-9">\n' +
+        '<input class="form-control" type="number" id="proOffice" name="projectExp[proPersons][]">\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '<div class="form-group">\n' +
+        '<label class="col-sm-2 control-label">团队情况<span class="text-danger"></span></label>\n' +
+        '<div class="col-sm-9">\n' +
+        '<textarea class="msd-elastic form-control" id="proDes" name="projectExp[proSituation][]" style="min-height: 136px; overflow: hidden; word-wrap: break-word; resize: none; height: 136px;"></textarea>\n' +
         '</div>\n' +
         '</div>\n' +
         '<div class="form-group">\n' +

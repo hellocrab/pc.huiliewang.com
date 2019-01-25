@@ -363,6 +363,24 @@
                                                     <span class="co3f14">{$vo.proOffice}</span>
                                                 </p>
                                             </if>
+                                            <if condition = "$vo.proObject neq ''">
+                                                <p>
+                                                    <span class="co9f14">汇报对象:</span>
+                                                    <span class="co3f14">{$vo.proObject}</span>
+                                                </p>
+                                            </if>
+                                            <if condition = "$vo.proPersons neq ''">
+                                                <p>
+                                                    <span class="co9f14">团队规模:</span>
+                                                    <span class="co3f14">{$vo.proPersons}</span>
+                                                </p>
+                                            </if>
+                                            <if condition = "$vo.proSituation neq ''">
+                                                <p>
+                                                    <span class="co9f14">团队情况:</span>
+                                                    <span class="co3f14">{$vo.proSituation}</span>
+                                                </p>
+                                            </if>
                                             <if condition = "$vo.proCompany neq ''">  
                                                 <p>
                                                     <span class="co9f14">所在公司:</span>
