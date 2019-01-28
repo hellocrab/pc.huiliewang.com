@@ -207,11 +207,16 @@
 											<div class="col-md-6">
 												{$vo.html}
 											</div>
-											<if condition = "$vo['tip_start'] eq 1">
-												<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
-												<else/>
-												<div class="col-md-2"></div>
-											</if>
+											<!--<if condition = "$vo['tip_start'] eq 1">-->
+												<!--<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>-->
+												<!--<else/>-->
+												<!--<div class="col-md-2"></div>-->
+											<!--</if>-->
+										</if>
+										<if condition = "$vo['tip_start'] eq 1">
+											<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+											<else/>
+											<div class="col-md-2"></div>
 										</if>
 									</div>
 								</if>

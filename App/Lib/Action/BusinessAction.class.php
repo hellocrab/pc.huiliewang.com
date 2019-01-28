@@ -461,17 +461,19 @@ class BusinessAction extends Action {
         //过滤空商机
         // $where['code'] = array('neq','');
         // $where['name'] = array('neq','..');
+
         $ownerWhere['business.owner_role_id'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
+        $ownerWhere['business.owner_role_id'] = $where['business.owner_role_id'];
         unset($where['business.owner_role_id']);
 //      $list = $d_v_business->where($where)->where($ownerWhere)->order($order)->page($p . ',' . $listrows)->select();
         // 去掉条件    ->where($ownerWhere)
-        $count = $d_v_business->where($where)->count();
+        $count = $d_v_business->where($where)->where($ownerWhere)->count();
         $p_num = ceil($count / $listrows);
         if ($p_num < $p) {
             $p = $p_num;
         }
+        $list = $d_v_business->where($where)->where($ownerWhere)->order($order)->page($p . ',' . $listrows)->select();
 
-        $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
         $Page = new Page($count, $listrows);
         if (!empty($_GET['by'])) {
             $params[] = "by=" . trim($_GET['by']);
