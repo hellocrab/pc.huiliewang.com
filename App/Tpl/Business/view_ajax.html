@@ -1201,7 +1201,10 @@
                             <else/>
                             <div class="col-lg-6 form_bottm">
                                 <div class="col-lg-3 text-right">{$vo.name}</div>
-                                <div class="col-lg-7">{$business_info[$vo[field]]}</div>
+                                <div class="col-lg-2">{$business_info[$vo[field]]}</div>
+                                <if condition="$vo.field eq education && $business_info[$vo[field]] neq ''">
+                                    <div class="col-lg-3">{$business_info['isunited']}</div>
+                                </if>
                             </div>
                         </if>
                     </if>

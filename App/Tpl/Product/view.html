@@ -218,7 +218,7 @@
                                         <label class="col-lg-2 control-label">学历</label>
                                         <div class="col-lg-4">
                                             <p class="form-p">
-                                                {$resume.edu} &nbsp;&nbsp;&nbsp;&nbsp;<if condition="$resume.isunited eq 1">统招 <else/>非统招</if>
+                                                {$resume.edu} &nbsp;&nbsp;&nbsp;&nbsp;<if condition="$resume.edu neq ''"><if condition="$resume.isunited eq 1">统招 <else/>非统招</if></if>
                                             </p>
                                         </div>
                                         <label class="col-lg-2 control-label">目前城市</label>

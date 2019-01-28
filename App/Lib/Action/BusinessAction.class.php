@@ -124,14 +124,14 @@ class BusinessAction extends Action {
                 $v2v = $v;
                 foreach ($result_array as $k2 => $v2) {
                     if (strpos($v, $v2) > -1) {
-                        $v = str_replace("$v2","<span style='color:red;'>$v2</span>", $v, $count);
+                        $vvv = str_replace("$v2","<span style='color:red;'>$v2</span>", $v, $count);
                         $search += $count;
                     }
                 }
                 if ($search > 0){
                     $customer_id = $m_business->where(array('name'=>$v2v))->getField('customer_id');
                     $c_name = M("customer")->where(array('customer_id'=>intval($customer_id)))->getField('name');
-                    $seach_array[$k] = array('value' => $v."&nbsp;&nbsp;(".$c_name.")", 'search' => $search);
+                    $seach_array[$k] = array('value' => $vvv."&nbsp;&nbsp;(".$c_name.")", 'search' => $search);
                 }
             }
             $seach_sort_result = array_sort($seach_array, 'search', 'desc');
@@ -620,12 +620,14 @@ class BusinessAction extends Action {
         $user = M('user')->where('status = %d', 1)->field('full_name,user_id')->select();
         $this->assign("user", $user);
         if ($this->isPost()) {
+
             $m_r_business_product = M('RBusinessProduct');
 
             $customer_id = intval($_POST['customer_id']);
             if (empty($customer_id)) {
                 $this->error(L('THE_CUSTOMER_CANNOT_BE_EMPTY'));
             }
+
             // if(count($_POST['business']['product']) == 0){
             // 	$this->error('请至少选择一个产品');
             // }
@@ -664,6 +666,7 @@ class BusinessAction extends Action {
                         $m_business->name = $code;
                     }
                     $m_business->code = $_POST['code'] ? trim($_POST['code']) : $code;
+                    $m_business->isunited = $_POST['isunited'] ?  1 : 0 ;
                     $m_business->prefixion = $business_custom;
                     if ($business_id = $m_business->add()) {
                         $m_business_data->business_id = $business_id;
@@ -710,6 +713,7 @@ class BusinessAction extends Action {
                                     $m_customer->where('customer_id = %d', $customer_id)->setField('is_locked', 1);
                                 }
                                 actionLog($business_id);
+
 
                                 if ($_POST['submit'] == L('SAVE') || $_POST['submit'] == '保存项目') {
                                     alert('success', L('ADD_BUSINESS_SUCCESS'), U('business/index'));
@@ -781,7 +785,6 @@ class BusinessAction extends Action {
 //            $company_list = M('customer')->where($where)->select();
 //            $this->company_list = $company_list;
             //自定义字段
-
             $this->field_list = field_list_html('add', 'business');
             $this->alert = parseAlert();
             $this->display();
@@ -793,6 +796,9 @@ class BusinessAction extends Action {
      *
      * */
     public function edit() {
+        //统招数据值
+        $_POST['isunited'] = !empty($_POST['isunited']) ? 1 : 0 ;
+
         if ($this->isPost()) {
             $business_id = $_POST['business_id'] ? intval($_POST['business_id']) : '';
         } else {
@@ -1088,14 +1094,13 @@ class BusinessAction extends Action {
 
         $d_business = D('BusinessView');
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
+        $business_info['isunited'] = $business_info['isunited'] == 0 ? '非统招' : '统招' ;
         $this->business_info = $business_info;
         //自定义字段
         $this->field_list = M('Fields')->where(array('model' => 'business', 'field' => array('not in', array('name', 'status_id'))))->order('is_main desc, order_id asc')->select();
-
         $d_contacts = D('ContactsView');
         $where['customer_id'] = $business_info['customer_id'];
         $this->contacts_list = $d_contacts->where($where)->select();
-
 
         $this->process = array("calllist" => "CallList", "adviser" => "顾问面试", "tj" => "简历推荐", "interview" => "客户面试", "pass" => "面试通过", "offer" => "Offer", "enter" => "入职", "safe" => "过保");
         $this->type_name = array("apply" => "申请中", "examine" => "已审批", "billing" => "已开出", "money" => "收到款", "distribution" => "已分配", "grant" => "已发放", "return" => "退回", "refund" => "退款", "refuse" => "审批驳回");
