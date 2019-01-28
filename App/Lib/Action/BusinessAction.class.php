@@ -108,7 +108,7 @@ class BusinessAction extends Action {
             if (!is_utf8($split_result))
                 $split_result = iconv("GB2312//IGNORE", "UTF-8", $split_result);
             $result_array = explode(' ', trim($split_result));
-            if (count($result_array) < 2) {
+            if (count($result_array) < 1) {
                 $this->ajaxReturn(0, '', 0);
                 die;
             }
