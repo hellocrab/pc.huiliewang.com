@@ -1980,6 +1980,7 @@ class CustomerAction extends Action {
             //查询客户数据
             $customer = D('CustomerView')->where('customer.customer_id = %d', $customer_id)->find();
             $m_config = M('Config');
+            BaseUtils::getLoadConfig('customer_outdays');exit;
             $outdays = $m_config->where('name="customer_outdays"')->getField('value');
             $outdate = empty($outdays) ? 0 : time() - 86400 * $outdays;
 
