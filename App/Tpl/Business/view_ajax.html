@@ -187,12 +187,12 @@
                         </div>
                         <table class="table select-table">
                             <tr class="tabTh" style="background-color:#f9fafc;">
-                                <td width="30px" style="border-left: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">
-                                    <div class="checkbox checkbox-primary">
-                                        <input name="checkall" class="check_list" type="checkbox">
-                                        <label></label>
-                                    </div>
-                                </td>
+                                <!--<td width="30px" style="border-left: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">-->
+                                    <!--<div class="checkbox checkbox-primary">-->
+                                        <!--&lt;!&ndash;<input name="checkall" class="check_list" type="checkbox">&ndash;&gt;-->
+                                        <!--<label></label>-->
+                                    <!--</div>-->
+                                <!--</td>-->
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999;">姓名</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">操作</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">公司名称</td>
@@ -205,12 +205,12 @@
                             <tbody>
                             <volist name="project.calllist" id="vo">
                                 <tr>
-                                    <td  width="30px" style="border-left: 1px solid #e7eaec;text-align:center;padding:14px;color:#999">
-                                        <div class="checkbox checkbox-primary">
-                                            <input name="checklist" value="1" class="check_list" type="checkbox">
-                                            <label></label>
-                                        </div>
-                                    </td>
+                                    <!--<td  width="30px" style="border-left: 1px solid #e7eaec;text-align:center;padding:14px;color:#999">-->
+                                        <!--<div class="checkbox checkbox-primary">-->
+                                            <!--<input name="checklist" value="1" class="check_list" type="checkbox">-->
+                                            <!--<label></label>-->
+                                        <!--</div>-->
+                                    <!--</td>-->
                                     <td style="text-align:center;padding:14px;color:#666;"><a href="{:U('product/view','id='.$vo['resume_id'])}"><span class="" style="{$mail_contacts_id == $vo['contacts_id'] ? '':'display:none'}">{$vo['name']}</span></a></td>
                                     <!-- border 点击失效 -->              
                                     <td style="text-align:center;padding:14px;color:#666;">
