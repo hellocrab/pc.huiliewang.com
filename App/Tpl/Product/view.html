@@ -176,7 +176,7 @@
                                         <label class="col-lg-2 control-label">出生年月</label>
                                         <div class="col-lg-4">
                                             <p class="form-p">
-                                                {$resume.birthYear}-{$resume.birthMouth}
+                                                {$resume.birthYear}{$resume.birthMouth}
                                             </p>
                                         </div>
                                         <label class="col-lg-2 control-label">目前公司</label>
@@ -261,7 +261,7 @@
                                         <div class="col-lg-10">
                                             <p class="form-p">
                                                 <volist name="resume.industry" id="vo">
-                                                    <span class="label label-warning">{$vo.now_industry}</span>&nbsp;&nbsp;
+                                                    <span class="label label-warning">{$vo}</span>&nbsp;&nbsp;
                                                 </volist>
 
                                                 <!--                                            <volist name="resume.industry" id="vo">

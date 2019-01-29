@@ -468,9 +468,8 @@ class ProductAction extends Action {
             $_POST['birthday'] = strtotime($_POST['birthday']);
             $_POST['birthYear'] = intval(date('Y',$_POST['birthday']));
             $_POST['birthMouth'] = intval(date('m',$_POST['birthday']));
-            $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
+            $_POST['startWorkyear'] = $_POST['startWorkyear'] ? strtotime($_POST['startWorkyear']) : time();
             $_POST['isunited'] = $_POST['isunited'] ? 1 : 0 ;
-
             $projectExp = $_POST['projectExp'];
             $eduExp = $_POST['eduExp'];
             $workExp = $_POST['workExp'];
@@ -495,7 +494,7 @@ class ProductAction extends Action {
 
             if ($result && $result_fine) {
                 if ($workExp) {
-                    M("resume_work")->where("resume_id=%d", $eid)->delete();
+                    M("resume_work")->where("eid=%d", $eid)->delete();
                     for ($i = 0; $i < count($workExp['starttime']); $i++) {
                         $data = "";
                         $data['starttime'] = strtotime($workExp['starttime'][$i]);
@@ -552,6 +551,8 @@ class ProductAction extends Action {
             if (I("id")) {
                 $where['eid'] = I("id");
                 $resume = M("resume")->where($where)->find();
+                //参与的项目
+                $this->project = D("ProjectView")->where("fine_project.resume_id=%d", intval(I("id")))->select();
                 if ($resume['hlocation']) {
                     $arr = "";
                     $intentCity = explode(",", $resume['hlocation']);
@@ -675,7 +676,7 @@ class ProductAction extends Action {
             $_POST['birthday'] = empty($_POST['birthday']) ? $_POST['birthday'] :strtotime($_POST['birthday']);
             $_POST['birthYear'] = intval(date('Y',$_POST['birthday']));
             $_POST['birthMouth'] = intval(date('m',$_POST['birthday']));
-            $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
+            $_POST['startWorkyear'] = $_POST['startWorkyear'] ? strtotime($_POST['startWorkyear']) : time();
             $_POST['addtime'] = time();
             $_POST['lastupdate'] = time();
             $_POST['isperfect'] = $_POST['isperfect'] ? 1 : 0;
@@ -736,6 +737,9 @@ class ProductAction extends Action {
                     $data['proCompany'] = $projectExp['proCompany'][$i];
                     $data['proOffice'] = $projectExp['proOffice'][$i];
                     $data['proDes'] = $projectExp['proDes'][$i];
+                    $data['proObject'] = $projectExp['proObject'][$i];
+                    $data['proPersons'] = $projectExp['proPersons'][$i];
+                    $data['proSituation'] = $projectExp['proSituation'][$i];
                     $data['eid'] = $eid;
                     M("resume_project")->add($data);
                 }
@@ -904,7 +908,7 @@ class ProductAction extends Action {
         $resume['resume_ability'] = M('resume_ability')->where(array('eid'=>intval($eid)))->find();
         $resume['label'] = explode(",", $resume['label']);
         if ($resume['startWorkyear']) {
-            if($resume['startWorkyear']>20000){
+            if(intval($resume['startWorkyear'])>200000){
                 $resume['exp'] = (date("Y") - date('Y',$resume['startWorkyear'])). "年工作经验";
             } else {
                 $resume['exp'] = (date("Y") - $resume['startWorkyear']). "年工作经验";
@@ -917,13 +921,14 @@ class ProductAction extends Action {
         if ($resume['birthYear']) {
             $resume['age'] = (date("Y") - $resume['birthYear']).'岁';
         }
+        if (!$resume['birthYear']) {
+            $resume['birthYear'] = '';
+        }
         if (!$resume['birthMouth']) {
             $resume['birthMouth'] = '';
         } else {
             $resume['birthMouth'] = '-' . $resume['birthMouth'];
         }
-        $resume['birthYear'] = date('Y',intval($resume['birthday']));
-        $resume['birthMouth'] = date('m',intval($resume['birthday']));
         //文件
         $file_ids = M('rResumeFile')->where('resume_id = %d', $eid)->getField('file_id', true);
         $info['file'] = M('file')->where('file_id in (%s)', implode(',', $file_ids))->select();
@@ -1011,7 +1016,6 @@ class ProductAction extends Action {
             }
         }
         $resume['now_industry'] = $resume['industry'][0];
-
         $resume['sex'] = intval($resume['sex']) == 1 ? "女" : "男";
         $resume_work = M("resume_work")->where("eid=%d", $eid)->select();
         foreach ($resume_work as $kw => $rw){
@@ -1068,7 +1072,6 @@ class ProductAction extends Action {
         $this->process = array("calllist" => "CallList", "adviser" => "顾问面试", "tj" => "简历推荐", "interview" => "客户面试", "pass" => "面试通过", "offer" => "Offer", "enter" => "入职", "safe" => "过保");
         //参与项目
         $this->project = D("ProjectView")->where("fine_project.resume_id=%d", $eid)->select();
-
         $this->display();
     }
 
