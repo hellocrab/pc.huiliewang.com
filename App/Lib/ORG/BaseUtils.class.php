@@ -748,11 +748,18 @@ class BaseUtils {
 
     public static function getLoadConfig($config_name) {
         import('@.ORG.MyRedis');
-        $redis  = MyRedis::getInstance(['REDIS_HOST' => C('REDIS_HOST'),'REDIS_PORT' => C('REDIS_PORT'),'REDIS_AUTH' => C('REDIS_AUTH')]);
-        var_dump($redis);exit;
-        if(!$redis->get($config_name)){
-            
+        $m_config = M('Config');
+        $redis = MyRedis::getInstance(['REDIS_HOST' => C('REDIS_HOST'), 'REDIS_PORT' => C('REDIS_PORT'), 'REDIS_AUTH' => C('REDIS_AUTH')]);
+
+        if (!$redis->get($config_name)) {
+            $resu = $m_config->where('name="'.$config_name.'"')->getField('value');
+            $redis->set($config_name,$a);
+            $value = $a;
         }
+        
+        $value = $redis->get($config_name);
+        
+        return $value;
     }
 
 }
