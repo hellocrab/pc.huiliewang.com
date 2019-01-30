@@ -1,236 +1,880 @@
 <?php
+
 /**
  * @author yanghao <yh38615890@sina.cn>
  * @date 2018-11-14
  * @copyright (c) 
  */
-
 class MyRedis {
 
     private $redis;
+    //当前数据库ID号
+    protected $dbId = 0;
+    //当前权限认证码
+    protected $auth;
 
     /**
-     * @param string $host
-     * @param int $post
+     * 实例化的对象,单例模式.
+     * @var \iphp\db\Redis
      */
-    public function __construct($host = 'xxxx', $port = 6379 , $password='') {
-        $this->redis = new \Redis();
-        $this->redis->connect($host, $port);
-        $this->redis->auth($password);
+    static private $_instance = array();
+    private $k;
+    //连接属性数组
+    protected $attr = array(
+        //连接超时时间，redis配置文件中默认为300秒
+        'timeout' => 30,
+        //选择的数据库。
+        'db_id' => 0,
+    );
+    //什么时候重新建立连接
+    protected $expireTime;
+    protected $host;
+    protected $port;
+
+    private function __construct($config, $attr = array()) {
+        $this->attr = array_merge($this->attr, $attr);
+        $this->redis = new Redis();
+        $this->port = $config['REDIS_PORT'] ? $config['REDIS_PORT'] : 6379;
+        $this->host = $config['REDIS_HOST'];
+        $this->redis->connect($this->host, $this->port, $this->attr['timeout']);
+
+        if ($config['REDIS_AUTH']) {
+            $this->auth($config['REDIS_AUTH']);
+            $this->auth = $config['REDIS_AUTH'];
+        }
+
+        $this->expireTime = time() + $this->attr['timeout'];
+    }
+
+    /**
+     * 得到实例化的对象.
+     * 为每个数据库建立一个连接
+     * 如果连接超时，将会重新建立一个连接
+     * @param array $config
+     * @param int $dbId
+     * @return \iphp\db\Redis
+     */
+    public static function getInstance($config, $attr = array()) {
+        //如果是一个字符串，将其认为是数据库的ID号。以简化写法。
+        if (!is_array($attr)) {
+            $dbId = $attr;
+            $attr = array();
+            $attr['db_id'] = $dbId;
+        }
+
+        $attr['db_id'] = $attr['db_id'] ? $attr['db_id'] : 0;
+
+
+        $k = md5(implode('', $config) . $attr['db_id']);
+        if (!(static::$_instance[$k] instanceof self)) {
+
+            static::$_instance[$k] = new self($config, $attr);
+            static::$_instance[$k]->k = $k;
+            static::$_instance[$k]->dbId = $attr['db_id'];
+
+            //如果不是0号库，选择一下数据库。
+            if ($attr['db_id'] != 0) {
+                static::$_instance[$k]->select($attr['db_id']);
+            }
+        } elseif (time() > static::$_instance[$k]->expireTime) {
+            static::$_instance[$k]->close();
+            static::$_instance[$k] = new self($config, $attr);
+            static::$_instance[$k]->k = $k;
+            static::$_instance[$k]->dbId = $attr['db_id'];
+
+            //如果不是0号库，选择一下数据库。
+            if ($attr['db_id'] != 0) {
+                static::$_instance[$k]->select($attr['db_id']);
+            }
+        }
+        return static::$_instance[$k];
+    }
+
+    private function __clone() {
+        
+    }
+
+    /**
+     * 执行原生的redis操作
+     * @return \Redis
+     */
+    public function getRedis() {
         return $this->redis;
     }
 
+    /*     * ***************hash表操作函数****************** */
+
     /**
-     * 设置值  构建一个字符串
-     * @param string $key KEY名称
-     * @param string $value  设置值
-     * @param int $timeOut 时间  0表示无过期时间
+     * 得到hash表中一个字段的值
+     * @param string $key 缓存key
+     * @param string  $field 字段
+     * @return string|false
      */
-    public function set($key, $value, $timeOut = 0) {
-        $retRes = $this->redis->set($key, $value);
-        if ($timeOut > 0)
-             $this->redis->expire('$key', $timeOut);
-        return $retRes;
-    }
-
-    /*
-     * 构建一个集合(无序集合)
-     * @param string $key 集合Y名称
-     * @param string|array $value  值
-     */
-
-    public function sadd($key, $value) {
-        return $this->redis->sadd($key, $value);
-    }
-
-    /*
-     * 构建一个集合(有序集合)
-     * @param string $key 集合名称
-     * @param string|array $value  值
-     */
-
-    public function zadd($key, $value) {
-        return $this->redis->zadd($key, $value);
+    public function hGet($key, $field) {
+        return $this->redis->hGet($key, $field);
     }
 
     /**
-     * 取集合对应元素
-     * @param string $setName 集合名字
+     * 为hash表设定一个字段的值
+     * @param string $key 缓存key
+     * @param string  $field 字段
+     * @param string $value 值。
+     * @return bool 
      */
-    public function smembers($setName) {
-        return $this->redis->smembers($setName);
+    public function hSet($key, $field, $value) {
+        return $this->redis->hSet($key, $field, $value);
     }
 
     /**
-     * 构建一个列表(先进后去，类似栈)
-     * @param sting $key KEY名称
-     * @param string $value 值
+     * 判断hash表中，指定field是不是存在
+     * @param string $key 缓存key
+     * @param string  $field 字段
+     * @return bool
      */
-    public function lpush($key, $value) {
-        echo "$key - $value \n";
-        return $this->redis->LPUSH($key, $value);
+    public function hExists($key, $field) {
+        return $this->redis->hExists($key, $field);
     }
 
     /**
-     * 构建一个列表(先进先去，类似队列)
-     * @param sting $key KEY名称
-     * @param string $value 值
+     * 删除hash表中指定字段 ,支持批量删除
+     * @param string $key 缓存key
+     * @param string  $field 字段
+     * @return int
      */
-    public function rpush($key, $value) {
-        echo "$key - $value \n";
-        return $this->redis->rpush($key, $value);
-    }
+    public function hdel($key, $field) {
+        $fieldArr = explode(',', $field);
+        $delNum = 0;
 
-    /**
-     * 获取所有列表数据（从头到尾取）
-     * @param sting $key KEY名称
-     * @param int $head  开始
-     * @param int $tail     结束
-     */
-    public function lranges($key, $head, $tail) {
-        return $this->redis->lrange($key, $head, $tail);
-    }
-
-    /**
-     * HASH类型
-     * @param string $tableName  表名字key
-     * @param string $key            字段名字
-     * @param sting $value          值
-     */
-    public function hset($tableName, $field, $value) {
-        return $this->redis->hset($tableName, $field, $value);
-    }
-
-    public function hget($tableName, $field) {
-        return $this->redis->hget($tableName, $field);
-    }
-
-    /**
-     * 设置多个值
-     * @param array $keyArray KEY名称
-     * @param string|array $value 获取得到的数据
-     * @param int $timeOut 时间
-     */
-    public function sets($keyArray, $timeout) {
-        if (is_array($keyArray)) {
-            $retRes = $this->redis->mset($keyArray);
-            if ($timeout > 0) {
-                foreach ($keyArray as $key => $value) {
-                    $this->redis->expire($key, $timeout);
-                }
-            }
-            return $retRes;
-        } else {
-            return "Call  " . __FUNCTION__ . " method  parameter  Error !";
+        foreach ($fieldArr as $row) {
+            $row = trim($row);
+            $delNum += $this->redis->hDel($key, $row);
         }
+
+        return $delNum;
     }
 
     /**
-     * 通过key获取数据
-     * @param string $key KEY名称
+     * 返回hash表元素个数
+     * @param string $key 缓存key
+     * @return int|bool
+     */
+    public function hLen($key) {
+        return $this->redis->hLen($key);
+    }
+
+    /**
+     * 为hash表设定一个字段的值,如果字段存在，返回false
+     * @param string $key 缓存key
+     * @param string  $field 字段
+     * @param string $value 值。
+     * @return bool
+     */
+    public function hSetNx($key, $field, $value) {
+        return $this->redis->hSetNx($key, $field, $value);
+    }
+
+    /**
+     * 为hash表多个字段设定值。
+     * @param string $key
+     * @param array $value
+     * @return array|bool
+     */
+    public function hMset($key, $value) {
+        if (!is_array($value))
+            return false;
+        return $this->redis->hMset($key, $value);
+    }
+
+    /**
+     * 为hash表多个字段设定值。
+     * @param string $key
+     * @param array|string $value string以','号分隔字段
+     * @return array|bool
+     */
+    public function hMget($key, $field) {
+        if (!is_array($field))
+            $field = explode(',', $field);
+        return $this->redis->hMget($key, $field);
+    }
+
+    /**
+     * 为hash表设这累加，可以负数
+     * @param string $key
+     * @param int $field
+     * @param string $value
+     * @return bool
+     */
+    public function hIncrBy($key, $field, $value) {
+        $value = intval($value);
+        return $this->redis->hIncrBy($key, $field, $value);
+    }
+
+    /**
+     * 返回所有hash表的所有字段
+     * @param string $key
+     * @return array|bool
+     */
+    public function hKeys($key) {
+        return $this->redis->hKeys($key);
+    }
+
+    /**
+     * 返回所有hash表的字段值，为一个索引数组
+     * @param string $key
+     * @return array|bool
+     */
+    public function hVals($key) {
+        return $this->redis->hVals($key);
+    }
+
+    /**
+     * 返回所有hash表的字段值，为一个关联数组
+     * @param string $key
+     * @return array|bool
+     */
+    public function hGetAll($key) {
+        return $this->redis->hGetAll($key);
+    }
+
+    /*     * *******************有序集合操作******************** */
+
+    /**
+     * 给当前集合添加一个元素
+     * 如果value已经存在，会更新order的值。
+     * @param string $key
+     * @param string $order 序号
+     * @param string $value 值
+     * @return bool
+     */
+    public function zAdd($key, $order, $value) {
+        return $this->redis->zAdd($key, $order, $value);
+    }
+
+    /**
+     * 给$value成员的order值，增加$num,可以为负数
+     * @param string $key
+     * @param string $num 序号
+     * @param string $value 值
+     * @return 返回新的order
+     */
+    public function zinCry($key, $num, $value) {
+        return $this->redis->zinCry($key, $num, $value);
+    }
+
+    /**
+     * 删除值为value的元素
+     * @param string $key
+     * @param stirng $value
+     * @return bool
+     */
+    public function zRem($key, $value) {
+        return $this->redis->zRem($key, $value);
+    }
+
+    /**
+     * 集合以order递增排列后，0表示第一个元素，-1表示最后一个元素
+     * @param string $key
+     * @param int $start
+     * @param int $end
+     * @return array|bool
+     */
+    public function zRange($key, $start, $end) {
+        return $this->redis->zRange($key, $start, $end);
+    }
+
+    /**
+     * 集合以order递减排列后，0表示第一个元素，-1表示最后一个元素
+     * @param string $key
+     * @param int $start
+     * @param int $end
+     * @return array|bool
+     */
+    public function zRevRange($key, $start, $end) {
+        return $this->redis->zRevRange($key, $start, $end);
+    }
+
+    /**
+     * 集合以order递增排列后，返回指定order之间的元素。
+     * min和max可以是-inf和+inf　表示最大值，最小值
+     * @param string $key
+     * @param int $start
+     * @param int $end
+     * @package array $option 参数
+     *     withscores=>true，表示数组下标为Order值，默认返回索引数组
+     *     limit=>array(0,1) 表示从0开始，取一条记录。
+     * @return array|bool
+     */
+    public function zRangeByScore($key, $start = '-inf', $end = "+inf", $option = array()) {
+        return $this->redis->zRangeByScore($key, $start, $end, $option);
+    }
+
+    /**
+     * 集合以order递减排列后，返回指定order之间的元素。
+     * min和max可以是-inf和+inf　表示最大值，最小值
+     * @param string $key
+     * @param int $start
+     * @param int $end
+     * @package array $option 参数
+     *     withscores=>true，表示数组下标为Order值，默认返回索引数组
+     *     limit=>array(0,1) 表示从0开始，取一条记录。
+     * @return array|bool
+     */
+    public function zRevRangeByScore($key, $start = '-inf', $end = "+inf", $option = array()) {
+        return $this->redis->zRevRangeByScore($key, $start, $end, $option);
+    }
+
+    /**
+     * 返回order值在start end之间的数量
+     * @param unknown $key
+     * @param unknown $start
+     * @param unknown $end
+     */
+    public function zCount($key, $start, $end) {
+        return $this->redis->zCount($key, $start, $end);
+    }
+
+    /**
+     * 返回值为value的order值
+     * @param unknown $key
+     * @param unknown $value
+     */
+    public function zScore($key, $value) {
+        return $this->redis->zScore($key, $value);
+    }
+
+    /**
+     * 返回集合以score递增加排序后，指定成员的排序号，从0开始。
+     * @param unknown $key
+     * @param unknown $value
+     */
+    public function zRank($key, $value) {
+        return $this->redis->zRank($key, $value);
+    }
+
+    /**
+     * 返回集合以score递增加排序后，指定成员的排序号，从0开始。
+     * @param unknown $key
+     * @param unknown $value
+     */
+    public function zRevRank($key, $value) {
+        return $this->redis->zRevRank($key, $value);
+    }
+
+    /**
+     * 删除集合中，score值在start end之间的元素　包括start end
+     * min和max可以是-inf和+inf　表示最大值，最小值
+     * @param unknown $key
+     * @param unknown $start
+     * @param unknown $end
+     * @return 删除成员的数量。
+     */
+    public function zRemRangeByScore($key, $start, $end) {
+        return $this->redis->zRemRangeByScore($key, $start, $end);
+    }
+
+    /**
+     * 返回集合元素个数。
+     * @param unknown $key
+     */
+    public function zCard($key) {
+        return $this->redis->zCard($key);
+    }
+
+    /*     * *******************队列操作命令*********************** */
+
+    /**
+     * 在队列尾部插入一个元素
+     * @param unknown $key
+     * @param unknown $value
+     * 返回队列长度
+     */
+    public function rPush($key, $value) {
+        return $this->redis->rPush($key, $value);
+    }
+
+    /**
+     * 在队列尾部插入一个元素 如果key不存在，什么也不做
+     * @param unknown $key
+     * @param unknown $value
+     * 返回队列长度
+     */
+    public function rPushx($key, $value) {
+        return $this->redis->rPushx($key, $value);
+    }
+
+    /**
+     * 在队列头部插入一个元素
+     * @param unknown $key
+     * @param unknown $value
+     * 返回队列长度
+     */
+    public function lPush($key, $value) {
+        return $this->redis->lPush($key, $value);
+    }
+
+    /**
+     * 在队列头插入一个元素 如果key不存在，什么也不做
+     * @param unknown $key
+     * @param unknown $value
+     * 返回队列长度
+     */
+    public function lPushx($key, $value) {
+        return $this->redis->lPushx($key, $value);
+    }
+
+    /**
+     * 返回队列长度
+     * @param unknown $key
+     */
+    public function lLen($key) {
+        return $this->redis->lLen($key);
+    }
+
+    /**
+     * 返回队列指定区间的元素
+     * @param unknown $key
+     * @param unknown $start
+     * @param unknown $end
+     */
+    public function lRange($key, $start, $end) {
+        return $this->redis->lrange($key, $start, $end);
+    }
+
+    /**
+     * 返回队列中指定索引的元素
+     * @param unknown $key
+     * @param unknown $index
+     */
+    public function lIndex($key, $index) {
+        return $this->redis->lIndex($key, $index);
+    }
+
+    /**
+     * 设定队列中指定index的值。
+     * @param unknown $key
+     * @param unknown $index
+     * @param unknown $value
+     */
+    public function lSet($key, $index, $value) {
+        return $this->redis->lSet($key, $index, $value);
+    }
+
+    /**
+     * 删除值为vaule的count个元素
+     * PHP-REDIS扩展的数据顺序与命令的顺序不太一样，不知道是不是bug
+     * count>0 从尾部开始
+     *  >0　从头部开始
+     *  =0　删除全部
+     * @param unknown $key
+     * @param unknown $count
+     * @param unknown $value
+     */
+    public function lRem($key, $count, $value) {
+        return $this->redis->lRem($key, $value, $count);
+    }
+
+    /**
+     * 删除并返回队列中的头元素。
+     * @param unknown $key
+     */
+    public function lPop($key) {
+        return $this->redis->lPop($key);
+    }
+
+    /**
+     * 删除并返回队列中的尾元素
+     * @param unknown $key
+     */
+    public function rPop($key) {
+        return $this->redis->rPop($key);
+    }
+
+    /*     * ***********redis字符串操作命令**************** */
+
+    /**
+     * 设置一个key
+     * @param unknown $key
+     * @param unknown $value
+     */
+    public function set($key, $value) {
+        return $this->redis->set($key, $value);
+    }
+
+    /**
+     * 得到一个key
+     * @param unknown $key
      */
     public function get($key) {
-        $result = $this->redis->get($key);
-        return $result;
+        return $this->redis->get($key);
     }
 
     /**
-     * 同时获取多个值
-     * @param ayyay $keyArray 获key数值
+     * 设置一个有过期时间的key
+     * @param unknown $key
+     * @param unknown $expire
+     * @param unknown $value
      */
-    public function gets($keyArray) {
-        if (is_array($keyArray)) {
-            return $this->redis->mget($keyArray);
-        } else {
-            return "Call  " . __FUNCTION__ . " method  parameter  Error !";
-        }
+    public function setex($key, $expire, $value) {
+        return $this->redis->setex($key, $expire, $value);
     }
 
     /**
-     * 获取所有key名，不是值
+     * 设置一个key,如果key存在,不做任何操作.
+     * @param unknown $key
+     * @param unknown $value
      */
-    public function keyAll() {
-        return $this->redis->keys('*');
+    public function setnx($key, $value) {
+        return $this->redis->setnx($key, $value);
     }
 
     /**
-     * 删除一条数据key
-     * @param string $key 删除KEY的名称
+     * 批量设置key
+     * @param unknown $arr
+     */
+    public function mset($arr) {
+        return $this->redis->mset($arr);
+    }
+
+    /*     * ***********redis　无序集合操作命令**************** */
+
+    /**
+     * 返回集合中所有元素
+     * @param unknown $key
+     */
+    public function sMembers($key) {
+        return $this->redis->sMembers($key);
+    }
+
+    /**
+     * 求2个集合的差集
+     * @param unknown $key1
+     * @param unknown $key2
+     */
+    public function sDiff($key1, $key2) {
+        return $this->redis->sDiff($key1, $key2);
+    }
+
+    /**
+     * 添加集合。由于版本问题，扩展不支持批量添加。这里做了封装
+     * @param unknown $key
+     * @param string|array $value
+     */
+    public function sAdd($key, $value) {
+        if (!is_array($value))
+            $arr = array($value);
+        else
+            $arr = $value;
+        foreach ($arr as $row)
+            $this->redis->sAdd($key, $row);
+    }
+
+    /**
+     * 返回无序集合的元素个数
+     * @param unknown $key
+     */
+    public function scard($key) {
+        return $this->redis->scard($key);
+    }
+
+    /**
+     * 从集合中删除一个元素
+     * @param unknown $key
+     * @param unknown $value
+     */
+    public function srem($key, $value) {
+        return $this->redis->srem($key, $value);
+    }
+
+    /*     * ***********redis管理操作命令**************** */
+
+    /**
+     * 选择数据库
+     * @param int $dbId 数据库ID号
+     * @return bool
+     */
+    public function select($dbId) {
+        $this->dbId = $dbId;
+        return $this->redis->select($dbId);
+    }
+
+    /**
+     * 清空当前数据库
+     * @return bool
+     */
+    public function flushDB() {
+        return $this->redis->flushDB();
+    }
+
+    /**
+     * 返回当前库状态
+     * @return array
+     */
+    public function info() {
+        return $this->redis->info();
+    }
+
+    /**
+     * 同步保存数据到磁盘
+     */
+    public function save() {
+        return $this->redis->save();
+    }
+
+    /**
+     * 异步保存数据到磁盘
+     */
+    public function bgSave() {
+        return $this->redis->bgSave();
+    }
+
+    /**
+     * 返回最后保存到磁盘的时间
+     */
+    public function lastSave() {
+        return $this->redis->lastSave();
+    }
+
+    /**
+     * 返回key,支持*多个字符，?一个字符
+     * 只有*　表示全部
+     * @param string $key
+     * @return array
+     */
+    public function keys($key) {
+        return $this->redis->keys($key);
+    }
+
+    /**
+     * 删除指定key
+     * @param unknown $key
      */
     public function del($key) {
-        return $this->redis->delete($key);
+        return $this->redis->del($key);
     }
 
     /**
-     * 同时删除多个key数据
-     * @param array $keyArray KEY集合
+     * 判断一个key值是不是存在
+     * @param unknown $key
      */
-    public function dels($keyArray) {
-        if (is_array($keyArray)) {
-            return $this->redis->del($keyArray);
-        } else {
-            return "Call  " . __FUNCTION__ . " method  parameter  Error !";
-        }
-    }
-
-    /**
-     * 数据自增
-     * @param string $key KEY名称
-     */
-    public function increment($key) {
-        return $this->redis->incr($key);
-    }
-
-    /**
-     * 数据自减
-     * @param string $key KEY名称
-     */
-    public function decrement($key) {
-        return $this->redis->decr($key);
-    }
-
-    /**
-     * 判断key是否存在
-     * @param string $key KEY名称
-     */
-    public function isExists($key) {
+    public function exists($key) {
         return $this->redis->exists($key);
     }
 
     /**
-     * 重命名- 当且仅当newkey不存在时，将key改为newkey ，当newkey存在时候会报错哦RENAME   
-     *  和 rename不一样，它是直接更新（存在的值也会直接更新）
-     * @param string $Key KEY名称
-     * @param string $newKey 新key名称
+     * 为一个key设定过期时间 单位为秒
+     * @param unknown $key
+     * @param unknown $expire
      */
-    public function updateName($key, $newKey) {
-        return $this->redis->RENAMENX($key, $newKey);
+    public function expire($key, $expire) {
+        return $this->redis->expire($key, $expire);
     }
 
     /**
-     * 获取KEY存储的值类型
-     * none(key不存在) int(0)  string(字符串) int(1)   list(列表) int(3)  set(集合) int(2)   zset(有序集) int(4)    hash(哈希表) int(5)
-     * @param string $key KEY名称
+     * 返回一个key还有多久过期，单位秒
+     * @param unknown $key
      */
-    public function dataType($key) {
-        return $this->redis->type($key);
+    public function ttl($key) {
+        return $this->redis->ttl($key);
     }
 
     /**
-     * 清空数据
+     * 设定一个key什么时候过期，time为一个时间戳
+     * @param unknown $key
+     * @param unknown $time
      */
-    public function flushAll() {
-        return $this->redis->flushAll();
+    public function exprieAt($key, $time) {
+        return $this->redis->expireAt($key, $time);
     }
 
     /**
-     * 返回redis对象
-     * redis有非常多的操作方法，我们只封装了一部分
-     * 拿着这个对象就可以直接调用redis自身方法
-     * eg:$redis->redisOtherMethods()->keys('*a*')   keys方法没封
+     * 关闭服务器链接
      */
-    public function redisOtherMethods() {
-        return $this->redis;
+    public function close() {
+        return $this->redis->close();
+    }
+
+    /**
+     * 关闭所有连接
+     */
+    public static function closeAll() {
+        foreach (static::$_instance as $o) {
+            if ($o instanceof self)
+                $o->close();
+        }
+    }
+
+    /** 这里不关闭连接，因为session写入会在所有对象销毁之后。
+      public function __destruct()
+      {
+      return $this->redis->close();
+      }
+     * */
+
+    /**
+     * 返回当前数据库key数量
+     */
+    public function dbSize() {
+        return $this->redis->dbSize();
+    }
+
+    /**
+     * 返回一个随机key
+     */
+    public function randomKey() {
+        return $this->redis->randomKey();
+    }
+
+    /**
+     * 得到当前数据库ID
+     * @return int
+     */
+    public function getDbId() {
+        return $this->dbId;
+    }
+
+    /**
+     * 返回当前密码
+     */
+    public function getAuth() {
+        return $this->auth;
+    }
+
+    public function getHost() {
+        return $this->host;
+    }
+
+    public function getPort() {
+        return $this->port;
+    }
+
+    public function getConnInfo() {
+        return array(
+            'host' => $this->host,
+            'port' => $this->port,
+            'auth' => $this->auth
+        );
+    }
+
+    /*     * *******************事务的相关方法*********************** */
+
+    /**
+     * 监控key,就是一个或多个key添加一个乐观锁
+     * 在此期间如果key的值如果发生的改变，刚不能为key设定值
+     * 可以重新取得Key的值。
+     * @param unknown $key
+     */
+    public function watch($key) {
+        return $this->redis->watch($key);
+    }
+
+    /**
+     * 取消当前链接对所有key的watch
+     *  EXEC 命令或 DISCARD 命令先被执行了的话，那么就不需要再执行 UNWATCH 了
+     */
+    public function unwatch() {
+        return $this->redis->unwatch();
+    }
+
+    /**
+     * 开启一个事务
+     * 事务的调用有两种模式Redis::MULTI和Redis::PIPELINE，
+     * 默认是Redis::MULTI模式，
+     * Redis::PIPELINE管道模式速度更快，但没有任何保证原子性有可能造成数据的丢失
+     */
+    public function multi($type = \Redis::MULTI) {
+        return $this->redis->multi($type);
+    }
+
+    /**
+     * 执行一个事务
+     * 收到 EXEC 命令后进入事务执行，事务中任意命令执行失败，其余的命令依然被执行
+     */
+    public function exec() {
+        return $this->redis->exec();
+    }
+
+    /**
+     * 回滚一个事务
+     */
+    public function discard() {
+        return $this->redis->discard();
+    }
+
+    /**
+     * 测试当前链接是不是已经失效
+     * 没有失效返回+PONG
+     * 失效返回false
+     */
+    public function ping() {
+        return $this->redis->ping();
+    }
+
+    public function auth($auth) {
+        return $this->redis->auth($auth);
+    }
+
+    /*     * *******************自定义的方法,用于简化操作*********************** */
+
+    /**
+     * 得到一组的ID号
+     * @param unknown $prefix
+     * @param unknown $ids
+     */
+    public function hashAll($prefix, $ids) {
+        if ($ids == false)
+            return false;
+        if (is_string($ids))
+            $ids = explode(',', $ids);
+        $arr = array();
+        foreach ($ids as $id) {
+            $key = $prefix . '.' . $id;
+            $res = $this->hGetAll($key);
+            if ($res != false)
+                $arr[] = $res;
+        }
+
+        return $arr;
+    }
+
+    /**
+     * 生成一条消息，放在redis数据库中。使用0号库。
+     * @param string|array $msg
+     */
+    public function pushMessage($lkey, $msg) {
+        if (is_array($msg)) {
+            $msg = json_encode($msg);
+        }
+        $key = md5($msg);
+
+        //如果消息已经存在，删除旧消息，已当前消息为准
+        //echo $n=$this->lRem($lkey, 0, $key)."\n";
+        //重新设置新消息
+        $this->lPush($lkey, $key);
+        $this->setex($key, 3600, $msg);
+        return $key;
+    }
+
+    /**
+     * 得到条批量删除key的命令
+     * @param unknown $keys
+     * @param unknown $dbId
+     */
+    public function delKeys($keys, $dbId) {
+        $redisInfo = $this->getConnInfo();
+        $cmdArr = array(
+            'redis-cli',
+            '-a',
+            $redisInfo['auth'],
+            '-h',
+            $redisInfo['host'],
+            '-p',
+            $redisInfo['port'],
+            '-n',
+            $dbId,
+        );
+        $redisStr = implode(' ', $cmdArr);
+        $cmd = "{$redisStr} KEYS \"{$keys}\" | xargs {$redisStr} del";
+        return $cmd;
     }
 
 }
