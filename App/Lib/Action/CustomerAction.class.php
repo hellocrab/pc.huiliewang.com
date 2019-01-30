@@ -1573,7 +1573,7 @@ class CustomerAction extends Action {
             $this->by_parameter = str_replace('by=' . $_GET['by'], '', implode('&', $params));
             $Page->parameter = implode('&', $params);
             $this->assign('page', $Page->show());
-
+//            header('content-type:text/html;charset=utf-8');dump($list);exit;
             foreach ($list as $k => $v) {
                 $list[$k]['owner_role_name'] = $m_user->where('role_id =%d', $v['owner_role_id'])->getField('full_name');
                 // 提醒
@@ -1584,7 +1584,8 @@ class CustomerAction extends Action {
                 $days = 0;
                 $days = $v['update_time'];
                 $c_days = $v['get_time'];
-                $list[$k]["days"] = $outdays - floor((time() - $days) / 86400);
+
+                $list[$k]["c_days"] = $outdays - floor((time() - $days) / 86400);
                 $list[$k]["days"] = $c_outdays - floor((time() - $c_days) / 86400);
                 $contacts = array();
                 $contacts_list = array();
