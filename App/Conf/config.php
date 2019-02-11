@@ -7,7 +7,7 @@
 		'TMPL_ACTION_SUCCESS' => 'Public:message',
 		'TMPL_EXCEPTION_FILE'=>'./App/Tpl/Public/exception.html',
 		'DEFAULT_TIMEZONE' => 'PRC',
-		'LOAD_EXT_CONFIG' => 'db,version,authorize.config,call',
+		'LOAD_EXT_CONFIG' => 'db,version,authorize.config,call,redis',
 		'LOG_RECORD' => true,
 		'LOG_LEVEL'  =>'EMERG',
 		'OUTPUT_ENCODE' => false,

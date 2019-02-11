@@ -1961,6 +1961,7 @@ class CustomerAction extends Action {
      *
      * */
     public function view() {
+        $a = time();
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
         $this->industry_name = $industry_name;
@@ -1983,16 +1984,19 @@ class CustomerAction extends Action {
             }
             //查询客户数据
             $customer = D('CustomerView')->where('customer.customer_id = %d', $customer_id)->find();
-            $m_config = M('Config');
-            $outdays = $m_config->where('name="customer_outdays"')->getField('value');
+            
+            $outdays = BaseUtils::getLoadConfig('customer_outdays');
             $outdate = empty($outdays) ? 0 : time() - 86400 * $outdays;
 
-            $c_outdays = $m_config->where('name="contract_outdays"')->getField('value');
+            $c_outdays = BaseUtils::getLoadConfig('contract_outdays');
             $c_outdays = empty($c_outdays) ? 0 : $c_outdays;
             $contract_outdays = empty($c_outdays) ? 0 : time() - 86400 * $c_outdays;
-            $openrecycle = $m_config->where('name="openrecycle"')->getField('value');
+            
+            $openrecycle = BaseUtils::getLoadConfig('openrecycle');
+            
             //查询分享的
-            $m_customer_share = M('customer_share')->select();
+            $role_id = session('role_id');
+            $m_customer_share = M('customer_share')->where(['by_sharing_id' => $role_id])->field('customer_id')->select();
             $sharing_id = session('role_id');
             foreach ($m_customer_share as $k => $v) {
                 $by_sharing_id = explode(',', $v['by_sharing_id']);

@@ -746,4 +746,20 @@ class BaseUtils {
         return sprintf("{$prefix}-%04x%04x-%04x-%04x-%04x-%04x%04x%04x", mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0x0fff) | 0x4000, mt_rand(0, 0x3fff) | 0x8000, mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff));
     }
 
+    public static function getLoadConfig($config_name) {
+        import('@.ORG.MyRedis');
+        $m_config = M('Config');
+        $redis = MyRedis::getInstance(['REDIS_HOST' => C('REDIS_HOST'), 'REDIS_PORT' => C('REDIS_PORT'), 'REDIS_AUTH' => C('REDIS_AUTH')]);
+
+        if (!$redis->get($config_name)) {
+            $resu = $m_config->where('name="'.$config_name.'"')->getField('value');
+            $redis->set($config_name,$a);
+            $value = $a;
+        }
+        
+        $value = $redis->get($config_name);
+        
+        return $value;
+    }
+
 }
