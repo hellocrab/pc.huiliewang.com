@@ -1,6 +1,7 @@
 <?php
 
-class ProductAction extends Action {
+class ProductAction extends Action
+{
 
     protected static $degree = [
         1 => '高中',
@@ -13,7 +14,8 @@ class ProductAction extends Action {
         8 => '博士后'
     ];
 
-    public function _initialize() {
+    public function _initialize()
+    {
         $title = "人才管理";
         $this->assign("title", $title);
 
@@ -29,7 +31,8 @@ class ProductAction extends Action {
      *  Ajax检测产品名称
      *
      * */
-    public function check() {
+    public function check()
+    {
         if ($_REQUEST['product_id']) {
             $where['product_id'] = array('neq', $_REQUEST['product_id']);
         }
@@ -68,13 +71,15 @@ class ProductAction extends Action {
         }
     }
 
-    public function get_hash_table($table, $code, $s = 256) {
+    public function get_hash_table($table, $code, $s = 256)
+    {
         $hash = sprintf("%u", crc32($code));
         $hash1 = intval(fmod($hash, $s));
         return $table . "_" . $hash1;
     }
 
-    public function favorite() {
+    public function favorite()
+    {
         $eid = I("eid");
         if ($eid) {
             $data['eid'] = $eid;
@@ -96,7 +101,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function unfavorite() {
+    public function unfavorite()
+    {
         $eid = I("eid");
         if ($eid) {
             $data['eid'] = $eid;
@@ -121,7 +127,8 @@ class ProductAction extends Action {
      * 产品验证
      *
      * */
-    public function validate() {
+    public function validate()
+    {
         if ($this->isAjax()) {
             if (!$this->_request('clientid', 'trim') || !$this->_request($this->_request('clientid', 'trim'), 'trim'))
                 $this->ajaxReturn("", "", 3);
@@ -143,7 +150,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function index() {
+    public function index()
+    {
 
         $by = $this->_get('by', 'trim');
         if ($by == 'favorite') {
@@ -213,9 +221,9 @@ class ProductAction extends Action {
                 if ($field == 'name') {
                     //$where['name'] = array('like',$search);
                     $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
-                    if(strlen($search)==11&&is_numeric($search)){
-                        $where['telephone'] = array('eq',$search);
-                    }else{
+                    if (strlen($search) == 11 && is_numeric($search)) {
+                        $where['telephone'] = array('eq', $search);
+                    } else {
                         $where['name'] = array('like', '%' . $search . '%');
                     }
                 }
@@ -425,12 +433,12 @@ class ProductAction extends Action {
             $list = $resume->where($where)->order('addtime desc')->Page($p . ',' . $listrows)->select();
         }
 
-
         foreach ($list as $key => $li) {
             $where = "";
             $where['eid'] = $li['eid'];
             $where['role_id'] = session("role_id");
             $list[$key]['favorite'] = M("resume_collection")->where($where)->find();
+            $list[$key]['birthday'] <= 0 && $list[$key]['birthday'] = strtotime("{$list[$key]['birthYear']}-{$list[$key]['birthMouth']}");
         }
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
@@ -443,7 +451,6 @@ class ProductAction extends Action {
         $show = $Page->show(); // 分页显示输出
 
 
-
         $this->assign('list', $list); // 赋值数据集
         $this->assign('page', $show); // 赋值分页输出
         $this->assign('count', $count);
@@ -452,7 +459,8 @@ class ProductAction extends Action {
         $this->display(); // 输出模板
     }
 
-    public function edit() {
+    public function edit()
+    {
         header("Content-type: text/html; charset=utf-8");
         if ($this->isPost()) {
             header("Content-type: text/html; charset=utf-8");
@@ -531,12 +539,14 @@ class ProductAction extends Action {
         } else {
             if (I("id")) {
                 $where['eid'] = I("id");
-                $this->resume = M("resume")->where($where)->find();
+                $info = M("resume")->where($where)->find();
                 $this->resume_work = M("resume_work")->where($where)->select();
                 $this->resume_edu = M("resume_edu")->where($where)->select();
                 $this->resume_project = M("resume_project")->where($where)->select();
                 $alert = parseAlert();
                 $this->alert = $alert;
+                $info['birthday'] = $info['birthday'] > 0 ? $info['birthday'] : strtotime("{$info['birthYear']}-{$info['birthMouth']}");
+                $this->resume = $info;
             }
 //            $m_warehouse = M('warehouse');
             // $this->house_list = $m_warehouse ->select();
@@ -548,7 +558,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function add1() {
+    public function add1()
+    {
         if ($this->isPost()) {
             header("Content-type: text/html; charset=utf-8");
             var_dump($_POST);
@@ -625,7 +636,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function check_tel() {
+    public function check_tel()
+    {
         if ($_POST) {
             $where['telephone'] = intval($_POST['telephone']);
             $id = M("resume")->where($where)->find();
@@ -637,7 +649,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function add() {
+    public function add()
+    {
         if ($this->isPost()) {
             header("Content-type: text/html; charset=utf-8");
 //            var_dump($_POST);exit();
@@ -730,11 +743,13 @@ class ProductAction extends Action {
         }
     }
 
-    public function add_more() {
+    public function add_more()
+    {
         $this->display();
     }
 
-    public function view2222() {
+    public function view2222()
+    {
         $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
         $field_list = M('Fields')->where('model = "product"')->order('order_id')->select();
         foreach ($field_list as $k => $v) {
@@ -845,12 +860,14 @@ class ProductAction extends Action {
         }
     }
 
-    public function addmark() {
+    public function addmark()
+    {
         $this->status_list = M('LogStatus')->select();
         $this->display();
     }
 
-    public function view() {
+    public function view()
+    {
         $this->status_list = M('LogStatus')->select();
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
@@ -957,12 +974,12 @@ class ProductAction extends Action {
 
         $resume['sex'] = $resume['sex'] = 1 ? "女" : "男";
         $resume_work = M("resume_work")->where("eid=%d", $eid)->select();
-        foreach ($resume_work as $kw => $rw){
-            $_position = M('resume_work_position')->where(['work_id'=>$rw['id']])->find();
+        foreach ($resume_work as $kw => $rw) {
+            $_position = M('resume_work_position')->where(['work_id' => $rw['id']])->find();
             $resume_work[$kw]['position'][] = $_position;
         }
         $this->resume_work = $resume_work;
-        
+
         $this->resume_data = M("resume_data")->where("eid=%d", $eid)->select();
 
         //edu 
@@ -980,7 +997,6 @@ class ProductAction extends Action {
         }
 
         $this->resume = $resume;
-
 
 
         $m_r_customer_log = M('rResumeLog');
@@ -1015,7 +1031,8 @@ class ProductAction extends Action {
         $this->display();
     }
 
-    public function dellable() {
+    public function dellable()
+    {
         if ($this->isPost()) {
             $data['label'] = $_POST['resume_label'];
             $result = M("resume")->where("eid=%d", $_POST['eid'])->save($data);
@@ -1024,7 +1041,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function addbq() {
+    public function addbq()
+    {
         if ($this->isPost()) {
             $resume = M("resume")->where("eid=%d", $_POST['eid'])->getField("label");
             $data['label'] = $resume ? $resume . "," . $_POST['addbq'] : $_POST['addbq'];
@@ -1036,7 +1054,8 @@ class ProductAction extends Action {
 //	    var_dump($_POST);exit();
     }
 
-    public function view1() {
+    public function view1()
+    {
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
@@ -1086,7 +1105,8 @@ class ProductAction extends Action {
         $this->display();
     }
 
-    public function delete() {
+    public function delete()
+    {
         $m_product = M('product');
         $m_product_data = M('product_data');
         $m_product_images = M('productImages');
@@ -1181,7 +1201,8 @@ class ProductAction extends Action {
     }
 
     //上架产品（类似回收站还原逻辑）
-    public function revert() {
+    public function revert()
+    {
         if ($this->isPost()) {
             $product_ids = is_array($_POST['product_id']) ? implode(',', $_POST['product_id']) : intval($_POST['product_id']);
             if ('' == $product_ids) {
@@ -1211,7 +1232,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function editDialog() {
+    public function editDialog()
+    {
         if ($this->isPost()) {
             $r = trim($_POST['r']);
             $d_r = D($r);
@@ -1232,7 +1254,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function listDialog() {
+    public function listDialog()
+    {
         if ($this->isPost()) {
             $r = $_POST['r'];
             $model_id = isset($_POST['id']) ? intval($_POST['id']) : 0;
@@ -1263,7 +1286,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function addDialog() {
+    public function addDialog()
+    {
         if ($this->isPost()) {
             $r = $_POST['r'];
             $model_id = isset($_POST['model_id']) ? intval($_POST['model_id']) : 0;
@@ -1293,7 +1317,8 @@ class ProductAction extends Action {
     }
 
     //弹出框
-    public function allProductDialog() {
+    public function allProductDialog()
+    {
         $d_product = D('ProductView');
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
 
@@ -1306,41 +1331,59 @@ class ProductAction extends Action {
                 $search = is_numeric($search) ? $search : strtotime($search);;
             if (!empty($field) && !empty($search)) {
                 switch ($condition) {
-                    case "is" : $where[$field] = array('eq', $search);
+                    case "is" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "isnot" : $where[$field] = array('neq', $search);
+                    case "isnot" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                    case "contains" :
+                        $where[$field] = array('like', '%' . $search . '%');
                         break;
-                    case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                    case "not_contain" :
+                        $where[$field] = array('notlike', '%' . $search . '%');
                         break;
-                    case "start_with" : $where[$field] = array('like', $search . '%');
+                    case "start_with" :
+                        $where[$field] = array('like', $search . '%');
                         break;
-                    case "end_with" : $where[$field] = array('like', '%' . $search);
+                    case "end_with" :
+                        $where[$field] = array('like', '%' . $search);
                         break;
-                    case "is_empty" : $where[$field] = array('eq', '');
+                    case "is_empty" :
+                        $where[$field] = array('eq', '');
                         break;
-                    case "is_not_empty" : $where[$field] = array('neq', '');
+                    case "is_not_empty" :
+                        $where[$field] = array('neq', '');
                         break;
-                    case "gt" : $where[$field] = array('gt', $search);
+                    case "gt" :
+                        $where[$field] = array('gt', $search);
                         break;
-                    case "egt" : $where[$field] = array('egt', $search);
+                    case "egt" :
+                        $where[$field] = array('egt', $search);
                         break;
-                    case "lt" : $where[$field] = array('lt', $search);
+                    case "lt" :
+                        $where[$field] = array('lt', $search);
                         break;
-                    case "elt" : $where[$field] = array('elt', $search);
+                    case "elt" :
+                        $where[$field] = array('elt', $search);
                         break;
-                    case "eq" : $where[$field] = array('eq', $search);
+                    case "eq" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "neq" : $where[$field] = array('neq', $search);
+                    case "neq" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                    case "between" :
+                        $where[$field] = array('between', array($search - 1, $search + 86400));
                         break;
-                    case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                    case "nbetween" :
+                        $where[$field] = array('not between', array($search, $search + 86399));
                         break;
-                    case "tgt" : $where[$field] = array('gt', $search + 86400);
+                    case "tgt" :
+                        $where[$field] = array('gt', $search + 86400);
                         break;
-                    default : $where[$field] = array('eq', $search);
+                    default :
+                        $where[$field] = array('eq', $search);
                 }
             }
             $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'search=' . $_REQUEST["search"]);
@@ -1377,7 +1420,8 @@ class ProductAction extends Action {
         $this->display();
     }
 
-    public function changeContent() {
+    public function changeContent()
+    {
         if ($this->isAjax()) {
             $product = D('ProductView'); // 实例化User对象
             import('@.ORG.Page'); // 导入分页类
@@ -1396,41 +1440,59 @@ class ProductAction extends Action {
                     $search = is_numeric($search) ? $search : strtotime($search);;
                 if (!empty($field) && !empty($search)) {
                     switch ($condition) {
-                        case "is" : $where[$field] = array('eq', $search);
+                        case "is" :
+                            $where[$field] = array('eq', $search);
                             break;
-                        case "isnot" : $where[$field] = array('neq', $search);
+                        case "isnot" :
+                            $where[$field] = array('neq', $search);
                             break;
-                        case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                        case "contains" :
+                            $where[$field] = array('like', '%' . $search . '%');
                             break;
-                        case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                        case "not_contain" :
+                            $where[$field] = array('notlike', '%' . $search . '%');
                             break;
-                        case "start_with" : $where[$field] = array('like', $search . '%');
+                        case "start_with" :
+                            $where[$field] = array('like', $search . '%');
                             break;
-                        case "end_with" : $where[$field] = array('like', '%' . $search);
+                        case "end_with" :
+                            $where[$field] = array('like', '%' . $search);
                             break;
-                        case "is_empty" : $where[$field] = array('eq', '');
+                        case "is_empty" :
+                            $where[$field] = array('eq', '');
                             break;
-                        case "is_not_empty" : $where[$field] = array('neq', '');
+                        case "is_not_empty" :
+                            $where[$field] = array('neq', '');
                             break;
-                        case "gt" : $where[$field] = array('gt', $search);
+                        case "gt" :
+                            $where[$field] = array('gt', $search);
                             break;
-                        case "egt" : $where[$field] = array('egt', $search);
+                        case "egt" :
+                            $where[$field] = array('egt', $search);
                             break;
-                        case "lt" : $where[$field] = array('lt', $search);
+                        case "lt" :
+                            $where[$field] = array('lt', $search);
                             break;
-                        case "elt" : $where[$field] = array('elt', $search);
+                        case "elt" :
+                            $where[$field] = array('elt', $search);
                             break;
-                        case "eq" : $where[$field] = array('eq', $search);
+                        case "eq" :
+                            $where[$field] = array('eq', $search);
                             break;
-                        case "neq" : $where[$field] = array('neq', $search);
+                        case "neq" :
+                            $where[$field] = array('neq', $search);
                             break;
-                        case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                        case "between" :
+                            $where[$field] = array('between', array($search - 1, $search + 86400));
                             break;
-                        case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                        case "nbetween" :
+                            $where[$field] = array('not between', array($search, $search + 86399));
                             break;
-                        case "tgt" : $where[$field] = array('gt', $search + 86400);
+                        case "tgt" :
+                            $where[$field] = array('gt', $search + 86400);
                             break;
-                        default : $where[$field] = array('eq', $search);
+                        default :
+                            $where[$field] = array('eq', $search);
                     }
                 }
                 $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'search=' . $_REQUEST["search"]);
@@ -1476,7 +1538,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function category() {
+    public function category()
+    {
         $product_category = M('product_category');
         $category_list = $product_category->select();
         $category_list = getSubCategory(0, $category_list, '');
@@ -1492,7 +1555,8 @@ class ProductAction extends Action {
         $this->display();
     }
 
-    public function category_add() {
+    public function category_add()
+    {
         if ($this->isPost()) {
             $category = D('ProductCategory');
             if (!trim($_POST['name'])) {
@@ -1515,7 +1579,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function category_delete() {
+    public function category_delete()
+    {
         $product_category = M('Product_category');
         $product = M('product');
         if ($_POST['category_list']) {
@@ -1554,7 +1619,8 @@ class ProductAction extends Action {
     }
 
     //编辑产品分类信息
-    public function category_edit() {
+    public function category_edit()
+    {
         if ($_GET['id']) {
             $product_category = M('product_category');
             $category_list = $product_category->select();
@@ -1588,7 +1654,8 @@ class ProductAction extends Action {
     }
 
     //产品销量统计
-    public function analytics() {
+    public function analytics()
+    {
         $m_product = M('product');
 
         if (intval($_GET['role'])) {
@@ -1725,7 +1792,8 @@ class ProductAction extends Action {
         $this->display();
     }
 
-    public function getProductByBusiness() {
+    public function getProductByBusiness()
+    {
         $business_id = $_GET['id'];
         if ($business_id) {
             $r_business_product = M('rBusinessProduct');
@@ -1740,7 +1808,8 @@ class ProductAction extends Action {
     }
 
     //删除图片
-    public function delImg() {
+    public function delImg()
+    {
         $images_id = $_GET['images_id'];
         if ($images_id) {
             $m_product_images = M('productImages');
@@ -1756,7 +1825,8 @@ class ProductAction extends Action {
     }
 
     //图片排序
-    public function sortImg() {
+    public function sortImg()
+    {
         $images_files = $_POST['images_arr'];
         $imagesArr = explode(',', $images_files);
         if ($imagesArr) {
@@ -1773,7 +1843,8 @@ class ProductAction extends Action {
     }
 
     //导出
-    public function excelExport($productList = false) {
+    public function excelExport($productList = false)
+    {
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
@@ -1886,11 +1957,13 @@ class ProductAction extends Action {
         session('export_status', 0);
     }
 
-    public function getCurrentStatus() {
+    public function getCurrentStatus()
+    {
         $this->ajaxReturn(intval(session('export_status')), 'success', 1);
     }
 
-    public function excelImport() {
+    public function excelImport()
+    {
         if ($this->isPost()) {
             if (isset($_FILES['excel']['size']) && $_FILES['excel']['size'] != null) {
                 import('@.ORG.UploadFile');
@@ -1924,7 +1997,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function excelImportact() {
+    public function excelImportact()
+    {
         $m_product = D('product');
         $m_product_data = D('ProductData');
         $savePath = $_GET['path'];
@@ -1956,7 +2030,7 @@ class ProductAction extends Action {
             $ascii = 65;
             $cv = '';
             foreach ($field_list as $field) {
-                $info = trim((String) $currentSheet->getCell($cv . chr($ascii) . $currentRow)->getValue());
+                $info = trim((String)$currentSheet->getCell($cv . chr($ascii) . $currentRow)->getValue());
                 if ($field['is_main'] == 1) {
                     if ($field['field'] == 'category_id') {
                         $m_product_category = M('ProductCategory');
@@ -2009,7 +2083,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function excelImportDownload() {
+    public function excelImportDownload()
+    {
         C('OUTPUT_ENCODE', false);
         import("ORG.PHPExcel.PHPExcel");
         $objPHPExcel = new PHPExcel();
@@ -2063,15 +2138,15 @@ class ProductAction extends Action {
                     //数据有效性   start
                     $objValidation = $objActSheet->getCell($cv . chr($ascii) . '3')->getDataValidation();
                     $objValidation->setType(PHPExcel_Cell_DataValidation::TYPE_LIST)
-                            ->setErrorStyle(PHPExcel_Cell_DataValidation::STYLE_INFORMATION)
-                            ->setAllowBlank(false)
-                            ->setShowInputMessage(true)
-                            ->setShowErrorMessage(true)
-                            ->setShowDropDown(true)
-                            ->setErrorTitle('输入的值有误')
-                            ->setError('您输入的值不在下拉框列表内.')
-                            ->setPromptTitle('--请选择--')
-                            ->setFormula1('"' . $select_value . '"');
+                        ->setErrorStyle(PHPExcel_Cell_DataValidation::STYLE_INFORMATION)
+                        ->setAllowBlank(false)
+                        ->setShowInputMessage(true)
+                        ->setShowErrorMessage(true)
+                        ->setShowDropDown(true)
+                        ->setErrorTitle('输入的值有误')
+                        ->setError('您输入的值不在下拉框列表内.')
+                        ->setPromptTitle('--请选择--')
+                        ->setFormula1('"' . $select_value . '"');
                     //数据有效性  end
                 }
                 $objActSheet->setCellValue($cv . chr($ascii) . '2', $field['name']);
@@ -2103,7 +2178,8 @@ class ProductAction extends Action {
     }
 
     //产品树 弹出框
-    public function mutildialog() {
+    public function mutildialog()
+    {
         $where = array();
         if ($_REQUEST["field"]) {
             if (trim($_REQUEST['field']) == "all") {
@@ -2142,41 +2218,59 @@ class ProductAction extends Action {
                         $search = is_numeric($search) ? $search : strtotime($search);
                 }
                 switch ($condition) {
-                    case "is" : $where[$field] = array('eq', $search);
+                    case "is" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "isnot" : $where[$field] = array('neq', $search);
+                    case "isnot" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                    case "contains" :
+                        $where[$field] = array('like', '%' . $search . '%');
                         break;
-                    case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                    case "not_contain" :
+                        $where[$field] = array('notlike', '%' . $search . '%');
                         break;
-                    case "start_with" : $where[$field] = array('like', $search . '%');
+                    case "start_with" :
+                        $where[$field] = array('like', $search . '%');
                         break;
-                    case "end_with" : $where[$field] = array('like', '%' . $search);
+                    case "end_with" :
+                        $where[$field] = array('like', '%' . $search);
                         break;
-                    case "is_empty" : $where[$field] = array('eq', '');
+                    case "is_empty" :
+                        $where[$field] = array('eq', '');
                         break;
-                    case "is_not_empty" : $where[$field] = array('neq', '');
+                    case "is_not_empty" :
+                        $where[$field] = array('neq', '');
                         break;
-                    case "gt" : $where[$field] = array('gt', $search);
+                    case "gt" :
+                        $where[$field] = array('gt', $search);
                         break;
-                    case "egt" : $where[$field] = array('egt', $search);
+                    case "egt" :
+                        $where[$field] = array('egt', $search);
                         break;
-                    case "lt" : $where[$field] = array('lt', $search);
+                    case "lt" :
+                        $where[$field] = array('lt', $search);
                         break;
-                    case "elt" : $where[$field] = array('elt', $search);
+                    case "elt" :
+                        $where[$field] = array('elt', $search);
                         break;
-                    case "eq" : $where[$field] = array('eq', $search);
+                    case "eq" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "neq" : $where[$field] = array('neq', $search);
+                    case "neq" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                    case "between" :
+                        $where[$field] = array('between', array($search - 1, $search + 86400));
                         break;
-                    case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                    case "nbetween" :
+                        $where[$field] = array('not between', array($search, $search + 86399));
                         break;
-                    case "tgt" : $where[$field] = array('gt', $search + 86400);
+                    case "tgt" :
+                        $where[$field] = array('gt', $search + 86400);
                         break;
-                    default : $where[$field] = array('eq', $search);
+                    default :
+                        $where[$field] = array('eq', $search);
                 }
                 //$params = array('field='.trim($_REQUEST['field']), 'condition='.$condition, 'search='.$_REQUEST["search"]);
             }
@@ -2197,7 +2291,8 @@ class ProductAction extends Action {
     }
 
     //产品树 弹出框
-    public function mutildialog_business() {
+    public function mutildialog_business()
+    {
         if ($_REQUEST["field"]) {
             if (trim($_REQUEST['field']) == "all") {
                 /* $field = is_numeric(trim($_REQUEST['search'])) ? 'product.name|cost_price|sales_price|link|pre_sale_count|stock_count' : 'product.name|link|development_team'; */
@@ -2235,41 +2330,59 @@ class ProductAction extends Action {
                         $search = is_numeric($search) ? $search : strtotime($search);
                 }
                 switch ($condition) {
-                    case "is" : $where[$field] = array('eq', $search);
+                    case "is" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "isnot" : $where[$field] = array('neq', $search);
+                    case "isnot" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                    case "contains" :
+                        $where[$field] = array('like', '%' . $search . '%');
                         break;
-                    case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                    case "not_contain" :
+                        $where[$field] = array('notlike', '%' . $search . '%');
                         break;
-                    case "start_with" : $where[$field] = array('like', $search . '%');
+                    case "start_with" :
+                        $where[$field] = array('like', $search . '%');
                         break;
-                    case "end_with" : $where[$field] = array('like', '%' . $search);
+                    case "end_with" :
+                        $where[$field] = array('like', '%' . $search);
                         break;
-                    case "is_empty" : $where[$field] = array('eq', '');
+                    case "is_empty" :
+                        $where[$field] = array('eq', '');
                         break;
-                    case "is_not_empty" : $where[$field] = array('neq', '');
+                    case "is_not_empty" :
+                        $where[$field] = array('neq', '');
                         break;
-                    case "gt" : $where[$field] = array('gt', $search);
+                    case "gt" :
+                        $where[$field] = array('gt', $search);
                         break;
-                    case "egt" : $where[$field] = array('egt', $search);
+                    case "egt" :
+                        $where[$field] = array('egt', $search);
                         break;
-                    case "lt" : $where[$field] = array('lt', $search);
+                    case "lt" :
+                        $where[$field] = array('lt', $search);
                         break;
-                    case "elt" : $where[$field] = array('elt', $search);
+                    case "elt" :
+                        $where[$field] = array('elt', $search);
                         break;
-                    case "eq" : $where[$field] = array('eq', $search);
+                    case "eq" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "neq" : $where[$field] = array('neq', $search);
+                    case "neq" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                    case "between" :
+                        $where[$field] = array('between', array($search - 1, $search + 86400));
                         break;
-                    case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                    case "nbetween" :
+                        $where[$field] = array('not between', array($search, $search + 86399));
                         break;
-                    case "tgt" : $where[$field] = array('gt', $search + 86400);
+                    case "tgt" :
+                        $where[$field] = array('gt', $search + 86400);
                         break;
-                    default : $where[$field] = array('eq', $search);
+                    default :
+                        $where[$field] = array('eq', $search);
                 }
                 //$params = array('field='.trim($_REQUEST['field']), 'condition='.$condition, 'search='.$_REQUEST["search"]);
             }
@@ -2299,7 +2412,8 @@ class ProductAction extends Action {
      * 第一层产品
      *
      * */
-    public function mutildialog_product() {
+    public function mutildialog_product()
+    {
         $m_product = M('Product');
         if ($_GET['business_id']) {
             $business_id = intval($_GET['business_id']);
@@ -2362,7 +2476,8 @@ class ProductAction extends Action {
         }
     }
 
-    public function mutildialog_product_contract() {
+    public function mutildialog_product_contract()
+    {
         $m_r_contract_sales = M('r_contract_sales');
         $m_sales = M('sales');
         if ($contract_id = $_GET['contract_id']) {
@@ -2386,7 +2501,8 @@ class ProductAction extends Action {
      * 首页获取产品销量和销售额统计
      * @ level 0:自己的数据  1:自己和下属的数据
      * */
-    public function getmonthlysales() {
+    public function getmonthlysales()
+    {
         $m_product = M('product');
         $m_sales = M('sales');
         $m_sales_product = M('salesProduct');
@@ -2436,7 +2552,7 @@ class ProductAction extends Action {
 
             $total_amount[] = $single_amounts;
             $total_price[] = $single_price;
-            $moon ++;
+            $moon++;
         }
         $total_sales = array('amount' => $total_amount, 'price' => $total_price);
         $this->ajaxReturn($total_sales, 'success', 1);
@@ -2446,7 +2562,8 @@ class ProductAction extends Action {
      * 首页获取最高销量的产品统计
      * @ level 0:自己的数据  1:自己和下属的数据
      * */
-    public function getmonthlyamount() {
+    public function getmonthlyamount()
+    {
         $m_product = M('product');
         $m_sales = M('sales');
         $m_sales_product = M('salesProduct');
@@ -2487,13 +2604,14 @@ class ProductAction extends Action {
             }
 
             $productData[] = array($product_name, intval($product_amount)); //月度最高销售量产品
-            $moon ++;
+            $moon++;
         }
         $this->ajaxReturn($productData, 'success', 1);
     }
 
     //财务统计高级搜索
-    public function advance_search() {
+    public function advance_search()
+    {
         $module_name = trim($_GET['module_name']);
         $action_name = trim($_GET['action_name']);
         $idArray = getPerByAction($module_name, $action_name, false);
@@ -2517,14 +2635,16 @@ class ProductAction extends Action {
     }
 
     //高级搜索获取产品类别
-    public function categoryList() {
+    public function categoryList()
+    {
         $category = M('product_category')->select();
         $category_list = getSubCategory(0, $category, '');
         $this->ajaxReturn($category_list, '', 1);
     }
 
     //修改人才状态
-    public function editstatus() {
+    public function editstatus()
+    {
         if ($this->isPost()) {
             $product_id = $_POST['product_id'] ? $_POST['product_id'] : '';
             if ($product_id) {
@@ -2555,11 +2675,13 @@ class ProductAction extends Action {
             $this->display();
         }
     }
-    function checkTel(){
-        if(IS_POST){
+
+    function checkTel()
+    {
+        if (IS_POST) {
             $resume = M('resume');
             $where['telephone'] = I('post.tel');
-            $resume->where($where)->find()?$this->ajaxReturn(true):$this->ajaxReturn(false);
+            $resume->where($where)->find() ? $this->ajaxReturn(true) : $this->ajaxReturn(false);
         }
     }
 }

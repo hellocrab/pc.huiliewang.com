@@ -233,11 +233,13 @@
                                                             <i class="fa fa-star star-orange" style="float: right;margin-right: 20px;"></i>
                                                         </if>
                                                         <elseif  condition="$v['field'] eq 'sex'"/>
-                                                        <span><if  condition="$vo[$v['field']] eq '1'">女<else/>男</if></span>
+                                                        <span><if  condition="$vo[$v['field']] eq '1'">男<else/>女</if></span>
                                                         <elseif  condition="$v['field'] eq 'location'"/>
                                                         <span>{$city_name[$vo[$v['field']]]}</span>
                                                         <elseif  condition="$v['field'] eq 'birthday'"/>
-                                                        <span>{$vo['birthYear']}-{$vo['birthMouth']}</span>
+                                                        <span>
+                                                            {$vo['birthday']|date="Y-m",###}
+                                                        </span>
                                                         <elseif  condition="$v['field'] eq 'startWorkyear'"/>
                                                         <span>{$vo[$v['field']]|date="Y-m",###}</span>
                                                         <elseif  condition="$v['field'] eq 'curSalary'"/>
