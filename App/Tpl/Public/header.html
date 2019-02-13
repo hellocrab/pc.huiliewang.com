@@ -393,9 +393,9 @@
                         </li>
                         <?php endif; ?>
 
-                        <!--				<li>
-                                                                <a data-toggle="tooltip" data-placement="right" data-original-title="财务发票" <if condition="($module_name eq 'invoice' || $module_name eq 'finance')"> class="active"</if> href="{:U('finance/index')}"><i class="fa fa-credit-card"></i><span class="menu_code">财务</span></a>
-                                                        </li>-->
+                        				<li>
+                                                                <a data-toggle="tooltip" data-placement="right" data-original-title="财务发票" <if condition="($module_name eq 'invoice' || $module_name eq 'finance')"> class="active"</if> href="{:U('invoice/index')}"><i class="fa fa-credit-card"></i><span class="menu_code">财务</span></a>
+                                                        </li>
 
                         <?php if (in_array('analytics',$new_module_list)): ?>
                         <li>
@@ -498,7 +498,9 @@
                             }
                             ?>
 
-                            <li <if condition = "$module_name eq 'finance'">class="active"</if>><a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;发票分配明细汇总</a></li>
+                            <li <if condition = "$module_name eq 'finance'">class="active"</if>>
+                            <!--<a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;发票分配明细汇总</a>-->
+            </li>
                             <?php elseif($module_name == 'log' || $module_name =='examine' || ($module_name == 'knowledge' && $action_name != 'category') || $module_name == 'announcement' || $module_name == 'sign' || $module_name == 'event' || $module_name == 'task' || ($module_name == 'kaoqin' && $action_name == 'index') ): ?>
                             <!--<li <if condition = "$module_name eq 'log'">class="active"</if>><a href="{:U('log/index')}"><span class="fa fa-pencil-square" style="display:inline"></span>&nbsp;&nbsp;工作日志</a></li>-->
                             <!--<li <if condition = "$module_name == 'examine'">class="active"</if>><a href="{:U('examine/index')}"><span class="fa fa-check-square-o" style="display:inline"></span>&nbsp;&nbsp;审批</a></li>-->
