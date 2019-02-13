@@ -1296,6 +1296,7 @@ class BusinessAction extends Action {
 //        echo $project['project_id'];exit();
 //        $job = M("business")->field("name")->where("business_id=%d",$project['project_id'])->find();
         $this->assign("project", $project);
+        $this->assign('pro_type',$this->pro_type);
         $this->display();
     }
 
@@ -2958,7 +2959,7 @@ class BusinessAction extends Action {
             $retuens = ['succ' => true, 'code' => 500, 'info' => $ex->getMessage()];
         }
         $this->ajaxReturn($retuens) ;
-        
+
     }
 
 }
