@@ -78,21 +78,21 @@
                         <li>
                             <a href="{:U('invoice/index',array('type'=>'billing'))}" class="tikect" data-target="billing" ><span <if condition="$type eq 'billing'">class="relitive li_text li_text_active"<else/>class="relitive li_text"</if>>已开出发票<label class="count_num">{$billingNum}</label></span></a>
                         </li>
-                        <!--                    <li>
+                                            <li>
                                                 <a href="{:U('invoice/index',array('type'=>'money'))}" class="tikect" data-target="money" ><span <if condition="$type eq 'money'">class="relitive li_text li_text_active"<else/>class="relitive li_text"</if>>收到款发票<label class="count_num">{$moneyNum}</label></span></a>
-                                            </li>-->
+                                            </li>
                     </ul>
-                    <!--                <div class="subNav currentDd currentDt">完成操作的发票</div>
-                                    <ul class="navContent" style="display:block">
+                                  <!--<div class="subNav currentDd currentDt">完成操作的发票</div>-->
+<!--                                    <ul class="navContent" style="display:block">
                                         <li><a href="{:U('invoice/index',array('type'=>'distribution'))}" class="tikect" data-target="distribution"><span <if condition="$type eq 'distribution'">class="relitive li_text li_text_active"<else/>class="relitive li_text"</if>>已分配发票<label class="count_num">{$distributionNum}</label></span></a></li>
                                         <li><a href="{:U('invoice/index',array('type'=>'grant'))}" class="tikect" data-target="grant" ><span <if condition="$type eq 'grant'">class="relitive li_text li_text_active"<else/>class="relitive li_text"</if>>已发放发票<label class="count_num">{$grantNum}</label></span></a></li>
-                                    </ul>
+                                    </ul>-->
                                     <div class="subNav currentDd currentDt">回撤的发票</div>
                                     <ul class="navContent" style="display:block">
                                         <li><a href="{:U('invoice/index',array('type'=>'return'))}" class="tikect" data-target="return" ><span <if condition="$type eq 'return'">class="relitive li_text li_text_active"<else/>class="relitive li_text"</if>>退回的发票<label class="count_num">{$returnNum}</label></span></a></li>
                                         <li><a href="{:U('invoice/index',array('type'=>'refund'))}" class="tikect" data-target="refund" ><span <if condition="$type eq 'refund'">class="relitive li_text li_text_active"<else/>class="relitive li_text"</if>>退款的发票<label class="count_num">{$refundNum}</label></span></a></li>
                                         <li><a href="{:U('invoice/index',array('type'=>'refuse'))}" class="tikect" data-target="refuse" ><span <if condition="$type eq 'refuse'">class="relitive li_text li_text_active"<else/>class="relitive li_text"</if>>审批驳回发票<label class="count_num">{$refuseNum}</label></span></a></li>
-                                    </ul>-->
+                                    </ul>
                 </div>
             </div>
 
@@ -333,9 +333,9 @@
                                                                                         <li style="display:inline-block">
                                                                                             <button class="btn btn-white btn-xs btn_count" type="button" data-id="{$vo['invoice_id']}"><i class="fa fa-legal"></i>开票</button>
                                                                                         </li>
-                                                                                        <li style="display:inline-block">
+<!--                                                                                        <li style="display:inline-block">
                                                                                             <button class="btn btn-white btn-xs btn_return" type="button" data-id="{$vo['invoice_id']}"><i class="fa fa-reply"></i>回退</button>
-                                                                                        </li>
+                                                                                        </li>-->
                                                                                         <elseif  condition="$type eq 'billing'"/>
                                                                                         <li style="display:inline-block">
                                                                                             <button class="btn btn-white btn-xs btn_bill" type="button" data-id="{$vo['invoice_id']}"><i class="fa fa-rmb"></i>收款</button>
@@ -343,36 +343,36 @@
                                                                                         <li style="display:inline-block">
                                                                                             <button class="btn btn-white btn-xs btn_refund" type="button" data-id="{$vo['invoice_id']}"><i class="fa fa-rotate-right"></i>退票</button>
                                                                                         </li>
-                                                                                        <li style="display:inline-block">
+<!--                                                                                        <li style="display:inline-block">
                                                                                             <button class="btn btn-white btn-xs btn_return" type="button" data-id="{$vo['invoice_id']}"><i class="fa fa-reply"></i>回退</button>
-                                                                                        </li>
+                                                                                        </li>-->
                                                                                         <elseif  condition="$type eq 'money'"/>
                                                                                         <li style="display:inline-block">
-                                                                                            <button class="btn btn-white btn-xs btn_assign" type="button" data-id="{$vo['invoice_id']}" data-type="{$vo.project_type}"><i class="fa fa-pie-chart"></i>分配</button>
+                                                                                            <!--<button class="btn btn-white btn-xs btn_assign" type="button" data-id="{$vo['invoice_id']}" data-type="{$vo.project_type}"><i class="fa fa-pie-chart"></i>分配</button>-->
                                                                                         </li>
                                                                                         <li style="display:inline-block">
                                                                                             <button class="btn btn-white btn-xs btn_refuse" type="button" data-id="{$vo['invoice_id']}"><i class="fa fa-rotate-right"></i>退款</button>
                                                                                         </li>
-                                                                                        <li style="display:inline-block">
+<!--                                                                                        <li style="display:inline-block">
                                                                                             <button class="btn btn-white btn-xs btn_return" type="button" data-id="{$vo['invoice_id']}"><i class="fa fa-reply"></i>回退</button>
-                                                                                        </li>
+                                                                                        </li>-->
                                                                                         <elseif condition="$type eq 'distribution'" />
                                                                                         <li style="display:inline-block">
                                                                                             <button class="btn btn-white btn-xs btn_sendout" type="button" data-id="{$vo['invoice_id']}"><i class="fa fa-pie-chart"></i>发放</button>
                                                                                         </li>
 
-                                                                                        <li style="display:inline-block">
+<!--                                                                                        <li style="display:inline-block">
                                                                                             <button class="btn btn-white btn-xs btn_return" type="button" data-id="{$vo['invoice_id']}"><i class="fa fa-reply"></i>回退</button>
-                                                                                        </li>
+                                                                                        </li>-->
                                                                                         <elseif condition="$type eq 'grant'" />
 
-                                                                                        <li style="display:inline-block">
+<!--                                                                                        <li style="display:inline-block">
                                                                                             <button class="btn btn-white btn-xs btn_return" type="button" data-id="{$vo['invoice_id']}"><i class="fa fa-reply"></i>回退</button>
-                                                                                        </li>
+                                                                                        </li>-->
                                                                                         <elseif condition="$type eq 'return' || $type eq 'refund'|| $type eq 'refuse' " />
-                                                                                        <li style="display:inline-block">
+<!--                                                                                        <li style="display:inline-block">
                                                                                             <button class="btn btn-white btn-xs btn_return" type="button" data-id="{$vo['invoice_id']}"><i class="fa fa-reply"></i>回退</button>
-                                                                                        </li>
+                                                                                        </li>-->
                                                                                     </if>
                                                                                 </ul>
                                                                             </div>
