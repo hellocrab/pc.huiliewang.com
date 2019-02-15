@@ -250,7 +250,6 @@ class UserAction extends Action {
     function startWork($timestamp){
         $sig= $this->getsig($timestamp);
         $auth=$this->getauth($timestamp);
-
         $url = "http://47.96.62.197:8090/bind/agentOnWork/v2?Sig=".$sig;
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
             'Accept:' . 'application/json',
