@@ -16,6 +16,7 @@ class UserAction extends Action {
 		);
 		B('Authenticate', $action);
 	}
+
 	/**
 	 *员工角色
 	 *
@@ -229,6 +230,100 @@ class UserAction extends Action {
 	}
 
     /**
+     * 电话系统外呼
+     */
+     function getsig($timestamp){
+        $authtoken = "0000000067f7f651016812bd9fb200b2"; // 账户授权令牌
+        $account = "nanfangxinhua";  // 企业账户
+        $sig = strtoupper(md5($authtoken .":". $account .":".$timestamp));
+        return $sig;
+    }
+
+    function getauth($timestamp){
+        $authtoken ="0000000067f7f651016812bd9fb200b2";// APPID
+        $datatoken = "19edad3f987b2db5e5037e259b9d8871";// appToken
+        $auth = base64_encode($authtoken .":". $timestamp .":". $datatoken);
+        return $auth;
+    }
+
+    //坐席上班
+    function startWork($timestamp){
+        $sig= $this->getsig($timestamp);
+        $auth=$this->getauth($timestamp);
+
+        $url = "http://47.96.62.197:8090/bind/agentOnWork/v2?Sig=".$sig;
+        $header = array('Content-Type:' . 'application/json;charset=utf-8',
+            'Accept:' . 'application/json',
+            'Authorization:'.$auth);
+        $data = ["voipAccount"=>"80414000000002"];
+        $data = json_encode($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $msg = curl_exec($ch);
+        $result = json_decode($msg, true);
+        $uuid=$result['resp']['Msg'];
+        return $uuid;
+    }
+
+    //坐席下班
+    function offWork($timestamp){
+        $sig = $this->getsig($timestamp);
+        $auth = $this->getauth($timestamp);
+
+        $url = "http://47.96.62.197:8090/bind/agentOffWork/v2?Sig=".$sig;
+        $header = array('Content-Type:' . 'application/json;charset=utf-8',
+            'Accept:' . 'application/json',
+            'Authorization:'.$auth);
+        $data = ["voipAccount"=>"80414000000002"];
+        $data = json_encode($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $msg = curl_exec($ch);
+        $result = json_decode($msg, true);
+        $uuid=$result['resp']['Msg'];
+        return $uuid;
+    }
+
+    public function call_out(){
+        $tel =  $_POST['tel'];
+        $timestamp= date('YmdHis');
+        //坐席上班
+        $this->startWork($timestamp);
+        $sig= $this->getsig($timestamp);
+        $auth=$this->getauth($timestamp);
+
+        //坐席外呼
+        $url = "http://47.96.62.197:8090/bind/callEvent/v2?Sig=".$sig;
+        $header = array('Content-Type:' . 'application/json;charset=utf-8',
+            'Accept:' . 'application/json',
+            'Authorization:'.$auth);
+        $data = ["CompanyName"=>"nanfangxinhua",
+            "Phone"=>$tel ,
+            "voipAccount"=>"80414000000002"];
+        $data = json_encode($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $msg = curl_exec($ch);
+        //坐席下班
+        $this->offWork($timestamp);
+        $result = json_decode($msg, true);
+        $uuid=$result['resp']['Msg'];
+        dump($uuid);
+        return $uuid;
+    }
+    /**
      * 注册框填充
      */
 	private function regist(){
@@ -432,7 +527,6 @@ class UserAction extends Action {
 		$this->display();
 	}
 
-
     public function listDialogs() {
         //1表示所有人  2表示下属
         if($_GET['by'] == 'task'){
@@ -494,7 +588,6 @@ class UserAction extends Action {
         $this->role_list = $role_list;
         $this->display();
     }
-
 
 	public function mutiListDialog(){
 		//1表示所有人  2表示下属

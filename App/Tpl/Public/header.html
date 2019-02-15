@@ -23,6 +23,15 @@
         <link rel='stylesheet' href='__PUBLIC__/css/animate/animate.min.css'>
         <link rel="stylesheet" href="__PUBLIC__/css/animate/notification.css">
         <style type="text/css">
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+            }
+            input[type="number"]{
+                -moz-appearance: textfield;
+            }
+        </style>
+        <style type="text/css">
             a.active{
                 font-weight: bold;
                 color: #777;
@@ -571,6 +580,15 @@
                                     <li class="divider" style="height:0px;"></li>
                                 </ul>
                             </li>
+                            <!--电话系统接口-->
+                            <li><input placeholder="输入电话号码" type="number" id="telphone" rel="phone" class="form-control checkit" onblur="checkform(this);" />
+                                <input type="hidden" id="testPhone">
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <a class="dropdown-toggle count-info" id="phone_url" data-toggle="dropdown" href="#" title="呼叫">
+                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                </a>
+                            </li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle count-info" id="message_url" data-toggle="dropdown" href="#" title="站内信">
                                     <img src="__PUBLIC__/img/bell.png" alt="" /><span class="label label-primary" id="message_num"></span>
@@ -627,7 +645,33 @@
                         </div>
                     </div>
                 </div>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $("#phone_url").on("click",function () {
+                            var flag = true;
+                            var tel = $("#telphone").val();
+                            var myreg = /^(0|86|17951)?1[0-9]{10}$/;
+                            if (tel == '') {
+                                swal("请输入手机号","","warning");
+                                flag = false;
+                            } else {
+                                if (!myreg.test(tel)){
+                                    swal("手机号码有误","","warning");
+                                    flag = false;
+                                }
+                            }
+                            if(flag){
+                            $.post(
+                              "{:U('user/call_out')}",
+                                {tel : tel},
+                                function (data) {
 
+                                }
+                            );}
+
+                        });
+                    });
+                </script>
 
                 <script type="text/javascript">
 
