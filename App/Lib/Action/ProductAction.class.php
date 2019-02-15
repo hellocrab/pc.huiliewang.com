@@ -883,9 +883,11 @@ class ProductAction extends Action
         }
         if ($resume['birthYear']) {
             $resume['age'] = date("Y") - $resume['birthYear'];
+        } else {
+            $resume['age'] = date("Y") - date('Y', $resume['birthday']);
         }
         if (!$resume['birthMouth']) {
-            $resume['birthMouth'] = '';
+            $resume['birthMouth'] = date("Y") - date('m', $resume['birthday']);
         } else {
             $resume['birthMouth'] = '-' . $resume['birthMouth'];
         }
