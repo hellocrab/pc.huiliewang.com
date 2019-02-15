@@ -133,6 +133,14 @@
                                             </div>
                                             <div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">项目成员：</label>
+                                            <div class="col-md-6">
+                                                <input type="hidden" name="parter" id="parter_id" value="" />
+                                                <input class="form-control required" aria-required="true" placeholder="请点击选择"  type="text" name="parter_name" id="parter_name" value="" readonly="true" style="cursor:pointer;" title="请点击选择"/>
+                                            </div>
+                                            <div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                        </div>
                                         <elseif condition = "$vo['field'] eq 'minage'" />
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">年龄要求：</label>
@@ -315,6 +323,15 @@
         </div>
     </div>
 </div>
+<div style="display:none" id="dialog-role-list3" title="选择项目成员">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
 <div style="display:none" id="dialog-contacts-list" title="选择联系人">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
@@ -391,6 +408,10 @@
         $('#user_name').click(function () {
             $('#dialog-role-list2').dialog('open');
             $('#dialog-role-list2').load("{:U('User/listDialog')}");
+        });
+        $('#parter_name').click(function () {
+            $('#dialog-role-list3').dialog('open');
+            $('#dialog-role-list3').load("{:U('User/mutilistdialog','by=all')}");
         });
 
         $('#contacts_name').click(function () {
@@ -482,6 +503,36 @@
         position: ["center", 100]
     });
 
+    $('#dialog-role-list3').dialog({
+        autoOpen: false,
+        modal: false,
+        width: 800,
+        height: 400,
+        close: function () {
+            $(this).html("");
+        },
+        buttons: {
+            "{:L('CONFIRM')}": function () {
+                var parter = new Array();
+                var parter_name = new Array();
+               $(".muti_role_id:checked").each(function () {
+                    parter.push($(this).val());
+                    parter_name.push($(this).attr('rel'));
+                })
+                parter = parter.join(",");
+                parter_name = parter_name.join(",");
+                $('#parter_name').val("");
+                $('#parter_id').val("");
+                $('#parter_name').val(parter_name);
+                $('#parter_id').val(parter);
+                $(this).dialog("close");
+            },
+            "{:L('CANCEL')}": function () {
+                $(this).dialog("close");
+            }
+        },
+        position: ["center", 100]
+    });
 
     $('#dialog-contacts-list').dialog({
         autoOpen: false,

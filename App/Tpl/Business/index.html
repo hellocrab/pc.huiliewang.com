@@ -221,6 +221,7 @@
                                     </volist>
                                     <td>推荐进度</td>
                                     <td>项目负责人</td>
+                                    <td>项目成员</td>
                                     <td>
                                     <if condition="$_GET['desc_order'] == 'create_time'">
                                         <a href="{:U('business/index','asc_order=create_time&'.$parameter)}" title="点击按时间正序排列">
@@ -368,6 +369,7 @@
                                             <notempty name="item.full_name"><a class="role_info" rel="{$item.role_id}" href="javascript:void(0)">{$item.full_name}</a></notempty>&nbsp;
                                         </volist>
                                         </td>
+                                        <td>{$vo.parter_name}</td>
                                         <td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>
                                         </tr>
                                     </volist>

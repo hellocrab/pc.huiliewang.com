@@ -365,11 +365,14 @@ class LogAction extends Action{
             $owner_role_id = getSubRoleId();
         }
         $where['owner_role_id'] = array('in', $owner_role_id);
-        $where['is_deleted'] = 0;
+        $where['parter'] = array('in', $owner_role_id);
+        $where['_logic'] = 'OR';
+        $map['_complex'] = $where; 
+        $map['is_deleted'] = 0;
 
-
-        $project = $d_business->order('business.create_time desc')->where($where)->limit(20)->select();
-
+        
+        $project = $d_business->order('business.create_time desc')->where($map)->limit(20)->select();
+//        var_dump($d_business->getLastSql());exit;
 //        $project = M("business")->order('create_time desc')->limit(20)->select();
         $resume = M("resume");
         $user = $resume->where("eid=%d",$_GET['id'])->select();

@@ -397,13 +397,15 @@ class BusinessAction extends Action {
         //过滤空商机
         // $where['code'] = array('neq','');
         // $where['name'] = array('neq','..');
+                
+        
         $ownerWhere['business.owner_role_id'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
+        $ownerWhere['business.parter'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
+        $ownerWhere['_logic'] = 'OR';
+        $where['_complex'] = $ownerWhere;
         unset($where['business.owner_role_id']);
-        $list = $d_v_business->where($where)->where($ownerWhere)->order($order)->page($p . ',' . $listrows)->select();
-        /* dump($where);
-          dump($list);
-          exit; */
-        $count = $d_v_business->where($where)->count();
+
+        $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
         $p_num = ceil($count / $listrows);
         if ($p_num < $p) {
             $p = $p_num;
@@ -594,7 +596,8 @@ class BusinessAction extends Action {
                     $business_max_id = $m_business->max('business_id');
                     $business_max_code = str_pad($business_max_id + 1, 4, 0, STR_PAD_LEFT); //填充字符串的左侧（将字符串填充为新的长度）
                     $code = $business_custom . date('Ymd') . '-' . $business_max_code;
-
+                    
+//                    var_dump($_POST);exit;
                     if (empty($_POST['name'])) {
                         $m_business->name = $code;
                     }
@@ -909,8 +912,9 @@ class BusinessAction extends Action {
             }
             $business_info['joiner'] = $customer_owner_name;
         }
-
-        if ($business_info && !in_array($business_info['owner_role_id'], $below_ids)) {
+        
+        //加入项目成员
+        if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array($business_info['parter'], $below_ids))) {
             alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
         }
         $customer_info = $m_customer->where(array('customer_id' => $business_info['customer_id']))->field('name')->find();
@@ -920,6 +924,7 @@ class BusinessAction extends Action {
         $business_info['contacts_info'] = $contacts_info;
         //商机状态
         $business_info['status_order_id'] = $m_business_status->where(array('status_id' => $business_info['status_id'], 'type_id' => $business_info['status_type_id']))->getField('order_id');
+//        var_dump($business_info);exit;
         $this->status_list = $m_business_status->where(array('type_id' => $business_info['status_type_id']))->order('order_id asc')->select();
         $this->business_info = $business_info;
         $this->business_id = $business_id;
@@ -1808,6 +1813,7 @@ class BusinessAction extends Action {
         $invoice_max_code = str_pad($invoice_max_id, 4, 0, STR_PAD_LEFT); //填充字符串的左侧（将字符串填充为新的长度）
         $this->name = 'NO' . date('Ymd') . '-' . $invoice_max_code;
         if ($this->isPost()) {
+            
             unset($_POST['id']);
             unset($_POST['content']);
             if ($_POST['ispresent']) {
@@ -1821,10 +1827,11 @@ class BusinessAction extends Action {
             $_POST['resume_id'] = $project['resume_id'];
             $_POST['customer_id'] = $project['com_id'];
             $_POST['project_stage'] = $project['status'];
-            $_POST['create_role_id'] = session("user_id");
+            $_POST['create_role_id'] = session("role_id");
             $_POST['create_time'] = time();
             $_POST['update_time'] = time();
             $_POST['project_type'] = $pro_type['pro_type'];
+//            var_dump($_POST);exit;
             $result = $m_invoice->add($_POST);
 
             if ($result) {
@@ -2138,20 +2145,23 @@ class BusinessAction extends Action {
      * */
     public function advance() {
         if ($this->isPost()) {
+            
             $business_id = $_REQUEST['business_id'] ? intval($_REQUEST['business_id']) : 0;
             $is_updated = false;
             $m_r_bs = M('RBusinessStatus');
             $m_customer = M('Customer');
             $m_business = M('Business');
             $business = $m_business->where('business_id = %d', $business_id)->find();
-            if (!in_array($business['owner_role_id'], getPerByAction('business', 'edit'))) {
+            $parter_info = explode(',', $business['parter']);
+            if (!in_array($business['owner_role_id'], getPerByAction('business', 'edit')) && !in_array(session('role_id'), $parter_info)) {
                 alert('error', L('HAVE NOT PRIVILEGES'), $_SERVER['HTTP_REFERER']);
             }
+            
             //推进历史
             $data['business_id'] = $business_id;
             $data['status_id'] = intval($_REQUEST['status_id']);
             $data['description'] = '';
-            $data['owner_role_id'] = $business['owner_role_id'];
+            $data['owner_role_id'] = session('role_id');//$business['owner_role_id'];
             $data['update_time'] = time();
             $data['update_role_id'] = session('role_id');
             $data['total_price'] = $business['final_price'];
