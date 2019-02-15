@@ -1295,7 +1295,7 @@ class BusinessAction extends Action {
     public function project_offer($fine_id) {
         $where['fine_id'] = $fine_id;
         $project['offer_content'] = M("fine_project_offer")->where($where)->select();
-//        var_dump($project['offer_content']);exit();
+//      var_dump($project['offer_content']);exit();
         $where['status'] = 6;
         $project['offer_remark'] = M("fine_project_bz")->where($where)->select();
         $project['remove_remark'] = M("fine_project_bhs")->where($where)->select();

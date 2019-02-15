@@ -402,7 +402,7 @@
                                     <option class="date" value="update_time" <if condition = "$vo['field'] eq 'update_time'">selected="selected"</if>>{:L('MODIFICATION_TIME')}</option>
                                 </select>&nbsp;&nbsp;
                             </li>
-                            <li class="pull-left" id="conditionContent_{$key1}">
+                            <li class="pull-left" id="conditionContent_{$key1}"> <!-- customer_id 不存在 导致保存信息数据失败 -->
                             <if condition="$vo.form_type eq 'number'">
                                 <select id="condition" style="width:100px;" class="form-control input-sm" name="{$vo['field']}[condition]">
                                     <option value="gt" <if condition="$_GET[$vo['field']][condition] eq 'gt'">selected="selected"</if>>{:L('GT')}</option>
@@ -953,8 +953,6 @@
         $('#dialog-log').load('{:U("log/resume_project","r=RCustomerLog&module=customer&id=")}' + $(this).attr('rel'));
         $.fn.modal.Constructor.prototype.enforceFocus = function () {};
     });
-
-
 
 
     $("#dialog-log").dialog({

@@ -144,6 +144,7 @@ class ProductAction extends Action {
     }
 
     public function index() {
+        // bug 排查客户未完全显示
 
         $by = $this->_get('by', 'trim');
         if ($by == 'favorite') {
@@ -461,9 +462,7 @@ class ProductAction extends Action {
             header("Content-type: text/html; charset=utf-8");
             $eid = $_POST['eid'];
             $business_id = intval($_POST['customer_id']);
-//customer_id   business_name
             $m_resume = D('Resume');
-//            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
             $_POST['birthYear'] = intval(date('Y',$_POST['birthday']));
@@ -481,6 +480,7 @@ class ProductAction extends Action {
             $_POST['isperfect'] = $_POST['isperfect'] ? 1 : 0;
             M("resume")->create();
             $_POST['lastupdate'] = time();
+//            dump($_POST);exit;
             $result = M("resume")->where("eid=%d", $eid)->save($_POST);
 
             $customer_id = M("business")->where("business_id=%d", $business_id)->field("customer_id")->find();
@@ -490,7 +490,8 @@ class ProductAction extends Action {
             $data['tracker'] = session("role_id");
             $data['com_id'] = $customer_id['customer_id'];
             $data['updatetime'] = time();
-            $result_fine = M("fine_project")->where("resume_id=%d", $eid)->save($data);
+
+            $result_fine = M("fine_project")->where("resume_id=%d", $eid)->setField($data);
 
             if ($result && $result_fine) {
                 if ($workExp) {
@@ -570,7 +571,7 @@ class ProductAction extends Action {
                 $this->alert = $alert;
             }
 //            $m_warehouse = M('warehouse');
-            // $this->house_list = $m_warehouse ->select();
+            //$this->house_list = $m_warehouse ->select();
 //            $field_list = field_list_html("add","product");
             //dump($field_list);die;
 //            $this->field_list = $field_list;

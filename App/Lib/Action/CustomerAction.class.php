@@ -900,6 +900,7 @@ class CustomerAction extends Action {
      *
      * */
     public function index() {
+        //customer 客户
         $d_v_customer = D('CustomerView');
         $m_contract = M('Contract');
         if ($_GET['content'] != 'resource' && empty($_GET['scene_id'])) {
@@ -918,10 +919,9 @@ class CustomerAction extends Action {
         $params = array();
         $order = "top.set_top desc,top.top_time desc,customer.update_time desc,customer.customer_id asc";
 
-        if ($_GET['order_field'] && $_GET['order_type']) {
+        if($_GET['order_field'] && $_GET['order_type']) {
             $order = 'top.set_top desc,top.top_time desc,customer.' . trim($_GET['order_field']) . ' ' . trim($_GET['order_type']) . ',customer.customer_id asc';
         }
-
         //查询分享给我的
         $m_share = M('customerShare');
         $sharing_id = session('role_id');
@@ -968,11 +968,12 @@ class CustomerAction extends Action {
                 $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
             }
         }
+
         if ($this->_get('content') != 'resource') {
             if ($openrecycle == 2) {
                 $where['_string'] = '(customer.update_time > ' . $outdate . ' AND get_time > ' . $contract_outdays . ') OR is_locked = 1';
             }
-        }
+        }var_dump($where['_string']);exit;
         //普通查询
         if ($_REQUEST["field"]) {
             $field = trim($_REQUEST['field']);
@@ -1343,7 +1344,6 @@ class CustomerAction extends Action {
             $this->display('Setting:sendsms');
         } else {
             $listrows = $_GET['listrows'] ? intval($_GET['listrows']) : 15;
-
             $m_business = M('Business');
             $d_business = D('BusinessTopView');
             $m_customer = M('Customer');
@@ -1362,6 +1362,7 @@ class CustomerAction extends Action {
 
             import("@.ORG.Page");
             $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
+
             switch ($by){
                 case 'sub':
                     if($below_ids[0]!=-1){
@@ -1393,6 +1394,7 @@ class CustomerAction extends Action {
                 $list = $d_v_customer->where($map)->order($order)->page($p . ',' . $listrows)->select();
                 $count = $d_v_customer->where($map)->count();
             }
+
             $p_num = ceil($count / $listrows);
             if ($p_num < $p) {
                 $p = $p_num;
@@ -1565,7 +1567,6 @@ class CustomerAction extends Action {
                     $order_params[] = "listrows=" . $listrows;
                 }
             }
-//			var_dump($params);exit();
             $this->order_parameter = implode('&', $order_params); //排序专用params
             $this->parameter = implode('&', $params);
             //by_parameter(特殊处理)
@@ -1664,6 +1665,7 @@ class CustomerAction extends Action {
             $this->display();
         }
     }
+
     function setWhere($getCondition,$name,$where){
         unset($where['name']);
         switch ($getCondition[$name]['condition']){
