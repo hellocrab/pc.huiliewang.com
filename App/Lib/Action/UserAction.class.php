@@ -316,7 +316,7 @@ class UserAction extends Action {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $msg = curl_exec($ch);
-        //坐席下班
+        //坐席下班  
         $this->offWork($timestamp);
         $result = json_decode($msg, true);
         $uuid=$result['resp']['Msg'];
