@@ -401,14 +401,15 @@ class BusinessAction extends Action {
         if( $this->_permissionRes){
 //        $ownerWhere['business.owner_role_id'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
             $this->_permissionRes && $ownerWhere['business.owner_role_id'] = ['in',$this->_permissionRes];
-//        $ownerWhere['business.parter'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
-            $this->_permissionRes && $ownerWhere['business.parter'] = ['in',$this->_permissionRes];
+        $ownerWhere['business.parter'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
+//            $this->_permissionRes && $ownerWhere['business.parter'] = ['in',$this->_permissionRes];
             $ownerWhere['_logic'] = 'OR';
             $where['_complex'] = $ownerWhere;
         }
         unset($where['business.owner_role_id']);
 
         $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
+//        var_dump($d_v_business->getLastSql());exit;
         $count = $d_v_business->where($where)->order($order)->count();
         $p_num = ceil($count / $listrows);
         if ($p_num < $p) {

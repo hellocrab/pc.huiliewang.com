@@ -1984,15 +1984,13 @@ class CustomerAction extends Action {
             }
             //查询客户数据
             $customer = D('CustomerView')->where('customer.customer_id = %d', $customer_id)->find();
-            
-            $outdays = BaseUtils::getLoadConfig('customer_outdays');
+            $m_config = M('Config');
+            $outdays = $m_config->where('name="customer_outdays"')->getField('value');
             $outdate = empty($outdays) ? 0 : time() - 86400 * $outdays;
-
-            $c_outdays = BaseUtils::getLoadConfig('contract_outdays');
+            $c_outdays = $m_config->where('name="contract_outdays"')->getField('value');
             $c_outdays = empty($c_outdays) ? 0 : $c_outdays;
             $contract_outdays = empty($c_outdays) ? 0 : time() - 86400 * $c_outdays;
-            
-            $openrecycle = BaseUtils::getLoadConfig('openrecycle');
+            $openrecycle = $m_config->where('name="openrecycle"')->getField('value');
             
             //查询分享的
             $role_id = session('role_id');

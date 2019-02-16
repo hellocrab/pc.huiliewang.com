@@ -16,6 +16,8 @@ class LogAction extends Action{
 			'allow'=>array('add', 'delete', 'anly','notepad','getnotepad','mycommont','commentshow','myreply','replyalldel','replydel','viewajax','commun_list')
 		);
 		B('Authenticate', $action);
+                
+                $this->_permissionRes = getPerByAction(MODULE_NAME, ACTION_NAME);
 
 	}
 	/**
@@ -365,13 +367,14 @@ class LogAction extends Action{
             $owner_role_id = getSubRoleId();
         }
         
-        $where['owner_role_id'] = array('in', $owner_role_id);
-        $where['parter'] = array('like', array(session('role_id'), session('role_id') . ',%', '%,' . session('role_id'), '%,' . session('role_id') . ',%'), 'OR');
-        $where['_logic'] = 'OR';
-        $map['_complex'] = $where; 
-        $map['is_deleted'] = 0;
+        if( $this->_permissionRes) {
+            $where['owner_role_id'] = ['in',$this->_permissionRes];//array('in', $owner_role_id);
+            $where['parter'] = array('like', array(session('role_id'), session('role_id') . ',%', '%,' . session('role_id'), '%,' . session('role_id') . ',%'), 'OR');
+            $where['_logic'] = 'OR';
+            $map['_complex'] = $where;
+            $map['is_deleted'] = 0;
+        }
 
-        
         $project = $d_business->order('business.create_time desc')->where($map)->limit(20)->select();
 //        var_dump($d_business->getLastSql());exit;
 //        $project = M("business")->order('create_time desc')->limit(20)->select();
