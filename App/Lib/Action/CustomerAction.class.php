@@ -973,7 +973,7 @@ class CustomerAction extends Action {
             if ($openrecycle == 2) {
                 $where['_string'] = '(customer.update_time > ' . $outdate . ' AND get_time > ' . $contract_outdays . ') OR is_locked = 1';
             }
-        }var_dump($where['_string']);exit;
+        }
         //普通查询
         if ($_REQUEST["field"]) {
             $field = trim($_REQUEST['field']);
