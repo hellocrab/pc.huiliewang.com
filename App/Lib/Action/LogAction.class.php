@@ -364,8 +364,9 @@ class LogAction extends Action{
         }else{
             $owner_role_id = getSubRoleId();
         }
+        
         $where['owner_role_id'] = array('in', $owner_role_id);
-        $where['parter'] = array('in', $owner_role_id);
+        $where['parter'] = array('like', array(session('role_id'), session('role_id') . ',%', '%,' . session('role_id'), '%,' . session('role_id') . ',%'), 'OR');
         $where['_logic'] = 'OR';
         $map['_complex'] = $where; 
         $map['is_deleted'] = 0;

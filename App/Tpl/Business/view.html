@@ -137,7 +137,9 @@
                         <div class="col-sm-4">
                             <p class="form-p">
                                 <span>
-                                     <a class="role_info" rel="{$business_info['parter']}" href="javascript:void(0)" style="margin-right: 5px;">{$business_info['parter_name']}</a>
+                                    <volist name="business_info['parter']" id="vo">
+                                     <a class="role_info" rel="{$vo['id']}" href="javascript:void(0)" style="margin-right: 5px;">{$vo['name']}</a>
+                                     </volist>
                                 </span>
                             </p>
                         </div>

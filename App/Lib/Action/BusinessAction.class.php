@@ -780,7 +780,24 @@ class BusinessAction extends Action {
                         break;
                 }
             }
+            
+            //项目成员校验处理 editor by yanghao 19-02-16
+            $_phfix = array_search(session('role_id'), explode(',', $_POST['parter']));
+            if ($_phfix !== FALSE && count(explode(',', $_POST['parter'])) == 1) {
+                alert('error', '不能将自己作为项目成员！', $_SERVER['HTTP_REFERER']);
+            } elseif ($_phfix !== FALSE) {
+                $parter = explode(',', $_POST['parter']);
+                $parter_name = explode(',', $_POST['parter_name']);
+                unset($parter[$_phfix]);
+                unset($_POST['parter']);
+                unset($parter_name[$_phfix]);
+                unset($_POST['parter_name']);
+                $_POST['parter'] = implode(',', $parter);
+                $_POST['parter_name'] = implode(',', $parter_name);
+            }
+
             if ($m_business->create()) {
+                
                 $m_business->update_time = time();
                 if ($m_business_data->create() !== false) {
                     $a = $m_business->save();
@@ -902,6 +919,11 @@ class BusinessAction extends Action {
         $below_ids = getPerByAction('business', 'view');
         //判断权限
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
+
+        if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
+            alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+        }
+
         if ($business_info['joiner']) {
             $customer_owner_ids = explode(",", $business_info['joiner']);
             $customer_owner_name = "";
@@ -912,11 +934,19 @@ class BusinessAction extends Action {
             }
             $business_info['joiner'] = $customer_owner_name;
         }
-        
+
         //加入项目成员
-        if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array($business_info['parter'], $below_ids))) {
-            alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+        if ($business_info['parter']) {
+            $bussiness_parter_ids = explode(',', $business_info['parter']);
+            foreach ($bussiness_parter_ids as $keys => $lists) {
+                $full_name = M("user")->field("full_name")->where('role_id = %d', $lists)->find();
+                $bussiness_parter_name[$keys]['name'] = $full_name['full_name'];
+                $bussiness_parter_name[$keys]['id'] = $lists;
+            }
+            $business_info['parter'] = $bussiness_parter_name;
         }
+
+
         $customer_info = $m_customer->where(array('customer_id' => $business_info['customer_id']))->field('name')->find();
         //商机联系人
         $contacts_info = $m_contacts->where(array('contacts_id' => $business_info['contacts_id']))->field('name,telephone')->find();
