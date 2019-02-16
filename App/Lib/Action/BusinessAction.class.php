@@ -91,7 +91,7 @@ class BusinessAction extends Action {
         $d_v_business = D('BusinessTopView');
         $below_ids = getPerByAction(MODULE_NAME, ACTION_NAME, true);
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
-        $by = isset($_GET['by']) ? trim($_GET['by']) : 'me';
+        $by = (isset($_GET['by']) && $_GET['by']) ? trim($_GET['by']) : 'me';
         $where = array();
         $params = array();
 
@@ -397,15 +397,19 @@ class BusinessAction extends Action {
         //过滤空商机
         // $where['code'] = array('neq','');
         // $where['name'] = array('neq','..');
-                
-        
-        $ownerWhere['business.owner_role_id'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
-        $ownerWhere['business.parter'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
-        $ownerWhere['_logic'] = 'OR';
-        $where['_complex'] = $ownerWhere;
+
+        if( $this->_permissionRes){
+//        $ownerWhere['business.owner_role_id'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
+            $this->_permissionRes && $ownerWhere['business.owner_role_id'] = ['in',$this->_permissionRes];
+//        $ownerWhere['business.parter'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
+            $this->_permissionRes && $ownerWhere['business.parter'] = ['in',$this->_permissionRes];
+            $ownerWhere['_logic'] = 'OR';
+            $where['_complex'] = $ownerWhere;
+        }
         unset($where['business.owner_role_id']);
 
         $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
+        $count = $d_v_business->where($where)->order($order)->count();
         $p_num = ceil($count / $listrows);
         if ($p_num < $p) {
             $p = $p_num;

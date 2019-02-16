@@ -920,10 +920,10 @@ class CustomerAction extends Action {
 
         $where = array();
         $params = array();
-        $order = "top.set_top desc,top.top_time desc,customer.update_time desc,customer.customer_id asc";
+        $order = "customer.update_time desc,customer.customer_id asc"; //top.set_top desc,top.top_time desc,
 
         if ($_GET['order_field'] && $_GET['order_type']) {
-            $order = 'top.set_top desc,top.top_time desc,customer.' . trim($_GET['order_field']) . ' ' . trim($_GET['order_type']) . ',customer.customer_id asc';
+            $order = 'customer.' . trim($_GET['order_field']) . ' ' . trim($_GET['order_type']) . ',customer.customer_id asc'; //top.set_top desc,top.top_time desc,
         }
 
         //查询分享给我的
@@ -1424,7 +1424,7 @@ class CustomerAction extends Action {
                             $customer_ids = array();
                             $customer_ids = $d_v_customer->where($where)->getField('customer_id', true);
                         }
-                        $all_list = $d_business->where(array('business.customer_id' => array('in', $customer_ids)))->order('top.set_top desc, top.top_time desc ,business_id desc')->limit($limit)->select();
+                        $all_list = $d_business->where(array('business.customer_id' => array('in', $customer_ids)))->order('business_id desc')->limit($limit)->select(); //top.set_top desc, top.top_time desc ,
 
                         foreach ($all_list as $k => $v) {
                             $customer_info = array();
