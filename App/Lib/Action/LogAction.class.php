@@ -376,12 +376,23 @@ class LogAction extends Action{
         }
 
         $project = $d_business->order('business.create_time desc')->where($map)->limit(20)->select();
-//        var_dump($d_business->getLastSql());exit;
+        foreach ($project as $pro) {
+            $_customer_ids[] = $pro['customer_id'];
+        }
+        $_customer_ids = implode(',', $_customer_ids);
+        $customer_name = M('customer')->where(['customer_id' => ['in', $_customer_ids]])->field('customer_id,name')->select();
+        foreach ($customer_name as $_cn) {
+            $customer_names[$_cn['customer_id']] = $_cn['name'];
+        }
+        foreach ($project as $kpro => $pro) {
+            $project[$kpro]['customer_name'] = $customer_names[$pro['customer_id']];
+        }
+        
 //        $project = M("business")->order('create_time desc')->limit(20)->select();
         $resume = M("resume");
-        $user = $resume->where("eid=%d",$_GET['id'])->select();
-        $this->assign('project',$project);
-        $this->assign('user',$user[0]);
+        $user = $resume->where("eid=%d", $_GET['id'])->select();
+        $this->assign('project', $project);
+        $this->assign('user', $user[0]);
         $this->display();
     }
 

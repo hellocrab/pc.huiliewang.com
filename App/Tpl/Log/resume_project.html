@@ -24,7 +24,7 @@
 				<select id="replay_list" class="form-control select2" name="project" style="width: 460px;">
 					<option value="">--请选择--</option>
 					<volist name="project" id="vo">
-						<option value="{$vo['business_id']}" rel="{$vo['business_id']}">{$vo['name']}</option>
+						<option value="{$vo['business_id']}" rel="{$vo['business_id']}">{$vo['name']}-{$vo['customer_name']}</option>
 					</volist>
 				</select>
                 <!--<input type="hidden" class="form-control" id="project" name="project" style="width: 460px;">-->
