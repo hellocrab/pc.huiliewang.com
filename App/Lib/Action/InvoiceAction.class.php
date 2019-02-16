@@ -1172,11 +1172,14 @@ class InvoiceAction extends Action{
     }
 
     public function distribution_int(){
-        $this->user_name = M("user")->where("user_id=%d",session("user_id"))->getField("full_name");
+
         $id = I("id");
         header("Content-type: text/html; charset=utf-8");
-        $invoice  = M("invoice")->field("money,fine_id")->where("invoice_id=%d",$id)->find();
+        $invoice  = M("invoice")->field("money,fine_id,create_role_id")->where("invoice_id=%d",$id)->find();
+        $createUserId = $invoice['create_role_id'];
+        $this->user_name = M("user")->where("user_id=%d",$createUserId)->getField("full_name");
         $this->assign("money",$invoice['money']);
+        $this->assign("createUserId",$createUserId);
 
         if($this->isPost()){
             $project = M("fine_project")->where("id=%d",$invoice['fine_id'])->field("resume_id,project_id,com_id,tracker")->find();
