@@ -138,10 +138,7 @@
                                             <label class="col-sm-3 control-label">项目类型：</label>
                                             <div class="col-md-1"></div>
                                             <div class="col-sm-4">
-                                                <div class="input-group">
-                                                    <span>{$pro_type[$business_info['pro_type']]}</span>
-                                                </div>
-
+                                                {$vo.html}
                                             </div>
                                         </div>
                                         <elseif condition = "$vo['field'] eq 'minexp'" />
@@ -780,7 +777,7 @@
         $('#dialog-role-list3').dialog('open');
         $('#dialog-role-list3').load("{:U('User/mutilistdialog','by=all')}");
     });
-    
+
     $('#dialog-role-list3').dialog({
         autoOpen: false,
         modal: false,
