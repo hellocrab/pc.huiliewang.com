@@ -42,8 +42,8 @@
 				<th>{:L('DEPARTMENT')}</th>
 				<th>{:L('POSITION')}</th>
 				<th>{:L('SEX')}</th>
-				<th>Email</th>
-				<th>{:L('TELPHONE')}</th>
+				<!--<th>Email</th>-->
+				<!--<th>{:L('TELPHONE')}</th>-->
 			</tr>
 		</thead>
 		<tfoot id="footers">
@@ -66,8 +66,8 @@
 						<td>{$vo.department_name}</td>
 						<td>{$vo.role_name}</td>
 						<td><if condition="$vo['sex'] eq 1">{:L('MALE')}<elseif condition="$vo['sex'] eq 2"/>{:L('FEMALE')}</if></td>
-						<td>{$vo.email}</td>
-						<td>{$vo.telephone}</td>
+						<!--<td>{$vo.email}</td>-->
+						<!--<td>{$vo.telephone}</td>-->
 					</tr>
 				</volist>
 			<else />
