@@ -2084,7 +2084,7 @@ class LeadsAction extends Action
         $pageSize = isset($_GET['listrows']) ? intval($_GET['listrows']) : 15;
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
         $map = ['report_date' => [['egt', $this->start_date], ['elt', $this->end_date]]];
-        $role_id_array && $map['user_role_id'] = ['in', $role_id_array];
+        $map['user_role_id'] =  $role_id_array ? ['in', $role_id_array] : '';
         $count = M('report_intergral')->where($map)->count();
 
         $this->analyticsNum($map, $p, $pageSize);

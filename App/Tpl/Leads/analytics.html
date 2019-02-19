@@ -155,7 +155,7 @@ $(function(){
 								<table class="table table-hover table-striped table_thead_fixed table-bordered" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
                                     <tr class="tabTh">
 										<td  style="min-width:170px;padding-left: 15px;text-align: left;" nowrap="nowrap">员工姓名</td>
-										<td style="min-width: 100px;">英文名</td>
+										<td style="min-width: 100px;">时间</td>
 										<td style="min-width: 100px;">部门</td>
 										<td style="min-width: 80px;">业绩</td>
 										<td style="min-width: 80px;">提成</td>
@@ -200,7 +200,7 @@ $(function(){
 											<td>
 												<a  class="role_info" rel="{$vo.role_id}" href="javascript:void(0)">{$vo.user_name}</a>
 											</td>
-											<td>{$vo.second_name}</td>
+											<td>{$vo.report_date|default=''}</td>
 											<td>
 												{$vo.department}
 											</td>
@@ -208,19 +208,19 @@ $(function(){
 												{$vo.integral}
 											</td>
 											<td>{$vo.get_money}</td>
-											<td> <if condition="$vo['hk_num'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.role_id}">{$vo.hk_num}</a><else/>{$vo.hk_num}</if></td>
-											<td> <if condition="$vo['bd_num'] neq 0"><a href="javascript:void(0);" class="bdnum" data-id="{$vo.role_id}">{$vo.bd_num}</a><else/>{$vo['bd_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['customer_num'] neq 0"><a href="javascript:void(0);" class="customernum" data-id="{$vo.role_id}">{$vo.customer_num}</a><else/>{$vo['customer_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['project_num'] neq 0"><a href="javascript:void(0);" class="projectnum" data-id="{$vo.role_id}">{$vo.project_num}</a><else/>{$vo['project_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['resume_num'] neq 0"><a href="javascript:void(0);" class="resumenum" data-id="{$vo.role_id}">{$vo.resume_num}</a><else/>{$vo['resume_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['fine_project_num'] neq 0"><a href="javascript:void(0);" class="finenum" data-id="{$vo.role_id}">{$vo.fine_project_num}</a><else/>{$vo['fine_project_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interview_num'] neq 0"><a href="javascript:void(0);" class="interviewnum" data-id="{$vo.role_id}">{$vo.interview_num}</a><else/>{$vo['interview_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewt_num'] neq 0"><a href="javascript:void(0);" class="interviewtnum" data-id="{$vo.role_id}">{$vo.interviewt_num}</a><else/>{$vo['interviewt_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['present_num'] neq 0"><a href="javascript:void(0);" class="presentnum" data-id="{$vo.role_id}">{$vo.present_num}</a><else/>{$vo['present_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offer_num'] neq 0"><a href="javascript:void(0);" class="offernum" data-id="{$vo.role_id}">{$vo.offer_num}</a><else/>{$vo['offer_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerd_num'] neq 0"><a href="javascript:void(0);" class="offerdnum" data-id="{$vo.role_id}">{$vo.offerd_num}</a><else/>{$vo['offerd_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['enter_num'] neq 0"><a href="javascript:void(0);" class="enternum" data-id="{$vo.role_id}">{$vo.enter_num}</a><else/>{$vo['enter_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['safe_num'] neq 0"><a href="javascript:void(0);" class="safenum" data-id="{$vo.role_id}">{$vo.safe_num}</a><else/>{$vo['safe_num']}</if></td>
+											<td> <if condition="$vo['hk_num'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.user_role_id}">{$vo.hk_num}</a><else/>{$vo.hk_num}</if></td>
+											<td> <if condition="$vo['bd_num'] neq 0"><a href="javascript:void(0);" class="bdnum" data-id="{$vo.user_role_id}">{$vo.bd_num}</a><else/>{$vo['bd_num']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['customer_num'] neq 0"><a href="javascript:void(0);" class="customernum" data-id="{$vo.user_role_id}">{$vo.customer_num}</a><else/>{$vo['customer_num']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['project_num'] neq 0"><a href="javascript:void(0);" class="projectnum" data-id="{$vo.user_role_id}">{$vo.project_num}</a><else/>{$vo['project_num']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['resume_num'] neq 0"><a href="javascript:void(0);" class="resumenum" data-id="{$vo.user_role_id}">{$vo.resume_num}</a><else/>{$vo['resume_num']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['fine_project_num'] neq 0"><a href="javascript:void(0);" class="finenum" data-id="{$vo.user_role_id}">{$vo.fine_project_num}</a><else/>{$vo['fine_project_num']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interview_num'] neq 0"><a href="javascript:void(0);" class="interviewnum" data-id="{$vo.user_role_id}">{$vo.interview_num}</a><else/>{$vo['interview_num']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewt_num'] neq 0"><a href="javascript:void(0);" class="interviewtnum" data-id="{$vo.user_role_id}">{$vo.interviewt_num}</a><else/>{$vo['interviewt_num']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['present_num'] neq 0"><a href="javascript:void(0);" class="presentnum" data-id="{$vo.user_role_id}">{$vo.present_num}</a><else/>{$vo['present_num']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offer_num'] neq 0"><a href="javascript:void(0);" class="offernum" data-id="{$vo.user_role_id}">{$vo.offer_num}</a><else/>{$vo['offer_num']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerd_num'] neq 0"><a href="javascript:void(0);" class="offerdnum" data-id="{$vo.user_role_id}">{$vo.offerd_num}</a><else/>{$vo['offerd_num']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['enter_num'] neq 0"><a href="javascript:void(0);" class="enternum" data-id="{$vo.user_role_id}">{$vo.enter_num}</a><else/>{$vo['enter_num']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['safe_num'] neq 0"><a href="javascript:void(0);" class="safenum" data-id="{$vo.user_role_id}">{$vo.safe_num}</a><else/>{$vo['safe_num']}</if></td>
 										</tr>
 										</volist>
 									</tbody>
