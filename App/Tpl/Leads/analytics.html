@@ -167,7 +167,7 @@ $(function(){
 										<td style="min-width: 80px;">推荐企业人选数</td>
 										<td style="min-width: 80px;">面试人数</td>
 										<td style="min-width: 80px;">面试次数</td>
-										<td style="min-width: 80px;">到场数</td>
+										<!--<td style="min-width: 80px;">到场数</td>-->
 										<td style="min-width: 80px;">Offer</td>
 										<td style="min-width: 80px;">Offer掉</td>
 										<td style="min-width: 80px;">入职数</td>
@@ -187,7 +187,7 @@ $(function(){
                                         <td style="color:#fff;"><if condition="$countList[fineNum] neq 0"><a href="javascript:void(0);" class="c_f finenum">{$countList[fineNum]}</a><else/>{$countList[fineNum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[interviewNum] neq 0"><a href="javascript:void(0);" class="c_f interviewnum">{$countList[interviewNum]}</a><else/>{$countList[interviewNum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[interviewtNum] neq 0"><a href="javascript:void(0);" class="c_f interviewtnum">{$countList[interviewtNum]}</a><else/>{$countList[interviewtNum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[presentNum] neq 0"><a href="javascript:void(0);" class="c_f presentnum">{$countList[presentNum]}</a><else/>{$countList[presentNum]}</if></td>
+                                        <!--<td style="color:#fff;"><if condition="$countList[presentNum] neq 0"><a href="javascript:void(0);" class="c_f presentnum">{$countList[presentNum]}</a><else/>{$countList[presentNum]}</if></td>-->
                                         <td style="color:#fff;"><if condition="$countList[offerNum] neq 0"><a href="javascript:void(0);" class="c_f offernum">{$countList[offerNum]}</a><else/>{$countList[offerNum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[offerdNum] neq 0"><a href="javascript:void(0);" class="c_f offerdnum">{$countList[offerdNum]}</a><else/>{$countList[offerdNum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[enterNum] neq 0"><a href="javascript:void(0);" class="c_f enternum">{$countList[enterNum]}</a><else/>{$countList[enterNum]}</if></td>
@@ -198,7 +198,7 @@ $(function(){
 										<volist name="list" id="vo">
 										<tr>
 											<td>
-												<a  class="role_info" rel="{$vo.role_id}" href="javascript:void(0)">{$vo.user_name}</a>
+												<a  class="role_info" rel="{$vo.user_role_id}" href="javascript:void(0)">{$vo.user_name}</a>
 											</td>
 											<td>{$vo.report_date|default=''}</td>
 											<td>
@@ -216,7 +216,7 @@ $(function(){
                                             <td width="80" nowrap="nowrap"> <if condition="$vo['fine_project_num'] neq 0"><a href="javascript:void(0);" class="finenum" data-id="{$vo.user_role_id}">{$vo.fine_project_num}</a><else/>{$vo['fine_project_num']}</if></td>
                                             <td width="80" nowrap="nowrap"> <if condition="$vo['interview_num'] neq 0"><a href="javascript:void(0);" class="interviewnum" data-id="{$vo.user_role_id}">{$vo.interview_num}</a><else/>{$vo['interview_num']}</if></td>
                                             <td width="80" nowrap="nowrap"> <if condition="$vo['interviewt_num'] neq 0"><a href="javascript:void(0);" class="interviewtnum" data-id="{$vo.user_role_id}">{$vo.interviewt_num}</a><else/>{$vo['interviewt_num']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['present_num'] neq 0"><a href="javascript:void(0);" class="presentnum" data-id="{$vo.user_role_id}">{$vo.present_num}</a><else/>{$vo['present_num']}</if></td>
+                                            <!--<td width="80" nowrap="nowrap"> <if condition="$vo['present_num'] neq 0"><a href="javascript:void(0);" class="presentnum" data-id="{$vo.user_role_id}">{$vo.present_num}</a><else/>{$vo['present_num']}</if></td>-->
                                             <td width="80" nowrap="nowrap"> <if condition="$vo['offer_num'] neq 0"><a href="javascript:void(0);" class="offernum" data-id="{$vo.user_role_id}">{$vo.offer_num}</a><else/>{$vo['offer_num']}</if></td>
                                             <td width="80" nowrap="nowrap"> <if condition="$vo['offerd_num'] neq 0"><a href="javascript:void(0);" class="offerdnum" data-id="{$vo.user_role_id}">{$vo.offerd_num}</a><else/>{$vo['offerd_num']}</if></td>
                                             <td width="80" nowrap="nowrap"> <if condition="$vo['enter_num'] neq 0"><a href="javascript:void(0);" class="enternum" data-id="{$vo.user_role_id}">{$vo.enter_num}</a><else/>{$vo['enter_num']}</if></td>
