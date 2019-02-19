@@ -16,6 +16,8 @@ class LogAction extends Action{
 			'allow'=>array('add', 'delete', 'anly','notepad','getnotepad','mycommont','commentshow','myreply','replyalldel','replydel','viewajax','commun_list')
 		);
 		B('Authenticate', $action);
+                
+                $this->_permissionRes = getPerByAction(MODULE_NAME, ACTION_NAME);
 
 	}
 	/**
@@ -364,20 +366,33 @@ class LogAction extends Action{
         }else{
             $owner_role_id = getSubRoleId();
         }
-        $where['owner_role_id'] = array('in', $owner_role_id);
-        $where['parter'] = array('in', $owner_role_id);
-        $where['_logic'] = 'OR';
-        $map['_complex'] = $where; 
-        $map['is_deleted'] = 0;
-
         
+        if( $this->_permissionRes) {
+            $where['owner_role_id'] = ['in',$this->_permissionRes];//array('in', $owner_role_id);
+            $where['parter'] = array('like', array(session('role_id'), session('role_id') . ',%', '%,' . session('role_id'), '%,' . session('role_id') . ',%'), 'OR');
+            $where['_logic'] = 'OR';
+            $map['_complex'] = $where;
+            $map['is_deleted'] = 0;
+        }
+
         $project = $d_business->order('business.create_time desc')->where($map)->limit(20)->select();
-//        var_dump($d_business->getLastSql());exit;
+        foreach ($project as $pro) {
+            $_customer_ids[] = $pro['customer_id'];
+        }
+        $_customer_ids = implode(',', $_customer_ids);
+        $customer_name = M('customer')->where(['customer_id' => ['in', $_customer_ids]])->field('customer_id,name')->select();
+        foreach ($customer_name as $_cn) {
+            $customer_names[$_cn['customer_id']] = $_cn['name'];
+        }
+        foreach ($project as $kpro => $pro) {
+            $project[$kpro]['customer_name'] = $customer_names[$pro['customer_id']];
+        }
+        
 //        $project = M("business")->order('create_time desc')->limit(20)->select();
         $resume = M("resume");
-        $user = $resume->where("eid=%d",$_GET['id'])->select();
-        $this->assign('project',$project);
-        $this->assign('user',$user[0]);
+        $user = $resume->where("eid=%d", $_GET['id'])->select();
+        $this->assign('project', $project);
+        $this->assign('user', $user[0]);
         $this->display();
     }
 
