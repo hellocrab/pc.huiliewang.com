@@ -4,7 +4,8 @@
  * 商机模块
  *
  * */
-class BusinessAction extends Action {
+class BusinessAction extends Action
+{
 
     protected $pro_type = [
         1 => '面试快',
@@ -20,12 +21,13 @@ class BusinessAction extends Action {
      * @allow 登录用户可访问
      * @other 其他根据系统设置
      * */
-    public function _initialize() {
+    public function _initialize()
+    {
         $title = "项目管理";
         $this->assign("title", $title);
         $action = array(
             'permission' => array('listDialog'),
-            'allow' => array('validate', 'check', 'revert', 'getsalesfunnel', 'getcurrentstatus', 'choose', 'return_choose', 'product_view', 'advance_search', 'addduibi', 'view_ajax', 'getbusinessstatus', 'view_slide', 'view_ajax', 'project_adviser', 'project_cc', 'project_tj', 'project_interview', 'project_offer', 'project_enter', 'remove', 'msbz', 'khms', 'tjfk', 'fapiao', 'offer', 'ruzhi', 'listajax', 'addcc', 'addgwms', 'addgw', 'addbz', 'remove', 'msbz', 'edit_project')
+            'allow' => array('validate', 'check', 'revert', 'getsalesfunnel', 'getcurrentstatus', 'choose', 'return_choose', 'product_view', 'advance_search', 'addduibi', 'view_ajax', 'getbusinessstatus', 'view_slide', 'view_ajax', 'project_adviser', 'project_cc', 'project_tj', 'project_interview', 'project_offer', 'project_enter', 'remove', 'msbz', 'khms', 'tjfk', 'fapiao', 'offer', 'ruzhi', 'safe', 'listajax', 'addcc', 'addgwms', 'addgw', 'addbz', 'remove', 'msbz', 'edit_project')
         );
         B('Authenticate', $action);
 
@@ -36,7 +38,8 @@ class BusinessAction extends Action {
      * Ajax检测商机名称
      *
      * */
-    public function check() {
+    public function check()
+    {
         if ($_REQUEST['business_id']) {
             $where['business_id'] = array('neq', $_REQUEST['business_id']);
         }
@@ -83,7 +86,8 @@ class BusinessAction extends Action {
      * 商机列表页（默认页面）
      *
      * */
-    public function index() {
+    public function index()
+    {
 
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
@@ -104,9 +108,11 @@ class BusinessAction extends Action {
         }
 
         switch ($by) {
-            case 'create' : $where['business.creator_role_id'] = session('role_id');
+            case 'create' :
+                $where['business.creator_role_id'] = session('role_id');
                 break;
-            case 'sub' : $where['business.owner_role_id'] = array('in', $below_ids);
+            case 'sub' :
+                $where['business.owner_role_id'] = array('in', $below_ids);
                 break;
             case 'subcreate' :
                 $where['creator_role_id'] = array('in', $below_ids);
@@ -130,13 +136,17 @@ class BusinessAction extends Action {
             case 'd30' :
                 $where['update_time'] = array('lt', strtotime(date('Y-m-d', time())) - 86400 * 29);
                 break;
-            case 'deleted' : $where['is_deleted'] = 1;
+            case 'deleted' :
+                $where['is_deleted'] = 1;
                 break;
-            case 'add' : $order = 'business.create_time desc,business.business_id asc';
+            case 'add' :
+                $order = 'business.create_time desc,business.business_id asc';
                 break;
-            case 'update' : $order = 'business.update_time desc,business.business_id asc';
+            case 'update' :
+                $order = 'business.update_time desc,business.business_id asc';
                 break;
-            case 'me' : $where['business.owner_role_id'] = session('role_id');
+            case 'me' :
+                $where['business.owner_role_id'] = session('role_id');
                 break;
             default :
                 $where['business.owner_role_id'] = array('in', implode(',', $this->_permissionRes));
@@ -174,41 +184,59 @@ class BusinessAction extends Action {
                 }
             } else {
                 switch ($condition) {
-                    case "is" : $where[$field] = array('eq', $search);
+                    case "is" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "isnot" : $where[$field] = array('neq', $search);
+                    case "isnot" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                    case "contains" :
+                        $where[$field] = array('like', '%' . $search . '%');
                         break;
-                    case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                    case "not_contain" :
+                        $where[$field] = array('notlike', '%' . $search . '%');
                         break;
-                    case "start_with" : $where[$field] = array('like', $search . '%');
+                    case "start_with" :
+                        $where[$field] = array('like', $search . '%');
                         break;
-                    case "end_with" : $where[$field] = array('like', '%' . $search);
+                    case "end_with" :
+                        $where[$field] = array('like', '%' . $search);
                         break;
-                    case "is_empty" : $where[$field] = array('eq', '');
+                    case "is_empty" :
+                        $where[$field] = array('eq', '');
                         break;
-                    case "is_not_empty" : $where[$field] = array('neq', '');
+                    case "is_not_empty" :
+                        $where[$field] = array('neq', '');
                         break;
-                    case "gt" : $where[$field] = array('gt', $search);
+                    case "gt" :
+                        $where[$field] = array('gt', $search);
                         break;
-                    case "egt" : $where[$field] = array('egt', $search);
+                    case "egt" :
+                        $where[$field] = array('egt', $search);
                         break;
-                    case "lt" : $where[$field] = array('lt', $search);
+                    case "lt" :
+                        $where[$field] = array('lt', $search);
                         break;
-                    case "elt" : $where[$field] = array('elt', $search);
+                    case "elt" :
+                        $where[$field] = array('elt', $search);
                         break;
-                    case "eq" : $where[$field] = array('eq', $search);
+                    case "eq" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "neq" : $where[$field] = array('neq', $search);
+                    case "neq" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                    case "between" :
+                        $where[$field] = array('between', array($search - 1, $search + 86400));
                         break;
-                    case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                    case "nbetween" :
+                        $where[$field] = array('not between', array($search, $search + 86399));
                         break;
-                    case "tgt" : $where[$field] = array('gt', $search + 86400);
+                    case "tgt" :
+                        $where[$field] = array('gt', $search + 86400);
                         break;
-                    default : $where[$field] = array('eq', $search);
+                    default :
+                        $where[$field] = array('eq', $search);
                 }
             }
             $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'search=' . $search);
@@ -398,11 +426,11 @@ class BusinessAction extends Action {
         // $where['code'] = array('neq','');
         // $where['name'] = array('neq','..');
 
-        if( $this->_permissionRes){
+        if ($this->_permissionRes) {
 //        $ownerWhere['business.owner_role_id'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
-            $this->_permissionRes && $ownerWhere['business.owner_role_id'] = ['in',$this->_permissionRes];
+            $this->_permissionRes && $ownerWhere['business.owner_role_id'] = ['in', $this->_permissionRes];
 //        $ownerWhere['business.parter'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
-            $this->_permissionRes && $ownerWhere['business.parter'] = ['in',$this->_permissionRes];
+            $this->_permissionRes && $ownerWhere['business.parter'] = ['in', $this->_permissionRes];
             $ownerWhere['_logic'] = 'OR';
             $where['_complex'] = $ownerWhere;
         }
@@ -554,7 +582,8 @@ class BusinessAction extends Action {
      * 添加商机
      *
      * */
-    public function add() {
+    public function add()
+    {
         $m_config = M('Config');
         $m_business = D('Business');
         $m_business_data = D('BusinessData');
@@ -600,7 +629,7 @@ class BusinessAction extends Action {
                     $business_max_id = $m_business->max('business_id');
                     $business_max_code = str_pad($business_max_id + 1, 4, 0, STR_PAD_LEFT); //填充字符串的左侧（将字符串填充为新的长度）
                     $code = $business_custom . date('Ymd') . '-' . $business_max_code;
-                    
+
 //                    var_dump($_POST);exit;
                     if (empty($_POST['name'])) {
                         $m_business->name = $code;
@@ -734,7 +763,8 @@ class BusinessAction extends Action {
      * 修改商机
      *
      * */
-    public function edit() {
+    public function edit()
+    {
         if ($this->isPost()) {
             $business_id = $_POST['business_id'] ? intval($_POST['business_id']) : '';
         } else {
@@ -885,7 +915,8 @@ class BusinessAction extends Action {
     }
 
     //商机详情
-    public function view() {
+    public function view()
+    {
         $business_id = $_GET['id'] ? intval($_GET['id']) : '';
         if (!$business_id) {
             alert('error', '参数错误！', U('business/index'));
@@ -916,7 +947,7 @@ class BusinessAction extends Action {
             }
             $business_info['joiner'] = $customer_owner_name;
         }
-        
+
         //加入项目成员
         if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array($business_info['parter'], $below_ids))) {
             alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
@@ -940,7 +971,8 @@ class BusinessAction extends Action {
     }
 
     //商机详情
-    public function view_slide() {
+    public function view_slide()
+    {
         $business_id = $_GET['id'] ? intval($_GET['id']) : '';
         if (!$business_id) {
             alert('error', '参数错误！', U('business/index'));
@@ -982,7 +1014,8 @@ class BusinessAction extends Action {
     }
 
     //商机详情加载
-    public function view_ajax() {
+    public function view_ajax()
+    {
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
@@ -1000,6 +1033,7 @@ class BusinessAction extends Action {
         $project['pass'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 5, I("id"))->select();
         $project['offer'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 6, I("id"))->select();
         $project['enter'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 7, I("id"))->select();
+        $project['safe'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 8, I("id"))->select();
 //        $project['tj'] = M("fine_project")->where("status='%s' and project_id=%d","tj",I("id"))->select();
 //        $project['interview'] = M("fine_project")->where("status='%s' and project_id=%d","interview",I("id"))->select();
 //        $project['pass'] = M("fine_project")->where("status='%s' and project_id=%d","pass",I("id"))->select();
@@ -1134,7 +1168,8 @@ class BusinessAction extends Action {
      * 项目cc备注
      */
 
-    public function project_cc($fine_id) {
+    public function project_cc($fine_id)
+    {
         $where['fine_id'] = $fine_id;
         $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
         $where['status'] = 1;
@@ -1154,7 +1189,8 @@ class BusinessAction extends Action {
      * 项目顾问面试
      */
 
-    public function project_adviser($fine_id) {
+    public function project_adviser($fine_id)
+    {
         $where['fine_id'] = $fine_id;
         $project['adviser_content'] = M("fine_project_adviser")->where($where)->select();
         $project['adviser_more'] = M("fine_project_adviserbz")->where($where)->select();
@@ -1175,7 +1211,8 @@ class BusinessAction extends Action {
      * 推荐面试
      */
 
-    public function project_tj($fine_id) {
+    public function project_tj($fine_id)
+    {
         $where['fine_id'] = $fine_id;
         $project['tj_more'] = M("fine_project_tj")->where($where)->select();
         $where['status'] = 3;
@@ -1195,7 +1232,8 @@ class BusinessAction extends Action {
      * 客户面试
      */
 
-    public function project_interview($fine_id) {
+    public function project_interview($fine_id)
+    {
         $where['fine_id'] = $fine_id;
         $project['interview_content'] = M("fine_project_interview")->where($where)->select();
         $where['status'] = 4;
@@ -1221,7 +1259,8 @@ class BusinessAction extends Action {
      * offer
      */
 
-    public function project_offer($fine_id) {
+    public function project_offer($fine_id)
+    {
         $where['fine_id'] = $fine_id;
         $project['offer_content'] = M("fine_project_offer")->where($where)->select();
 //        var_dump($project['offer_content']);exit();
@@ -1248,7 +1287,8 @@ class BusinessAction extends Action {
      * offer
      */
 
-    public function project_enter($fine_id) {
+    public function project_enter($fine_id)
+    {
         $where['fine_id'] = $fine_id;
         $project['enter_content'] = M("fine_project_enter")->where($where)->select();
 //        var_dump($project['offer_content']);exit();
@@ -1271,7 +1311,8 @@ class BusinessAction extends Action {
         return $data;
     }
 
-    public function listajax() {
+    public function listajax()
+    {
         $project = D("ProjectView")->where("fine_project.id=%d", I("id"))->find();
 
 
@@ -1305,11 +1346,12 @@ class BusinessAction extends Action {
 //        echo $project['project_id'];exit();
 //        $job = M("business")->field("name")->where("business_id=%d",$project['project_id'])->find();
         $this->assign("project", $project);
-        $this->assign('pro_type',$this->pro_type);
+        $this->assign('pro_type', $this->pro_type);
         $this->display();
     }
 
-    public function fine_project($li) {
+    public function fine_project($li)
+    {
         $job = M('Business')->field('name')->where('business_id = %d', $li['project_id'])->find();
 
 //        $resume = M($this->get_hash_table("resume",$li['resume_id']),'huilie_','connection')->field("id,name,sex,current_company,current_job,telphone,hope_salary")->find();
@@ -1379,7 +1421,8 @@ class BusinessAction extends Action {
      * 时间数据转换
      */
 
-    public function timeArr($data) {
+    public function timeArr($data)
+    {
 
         $arr = "";
 
@@ -1421,7 +1464,8 @@ class BusinessAction extends Action {
      * 将二维数组转换为一维数组
      */
 
-    public function merge_log($arr) {
+    public function merge_log($arr)
+    {
         $data = array();
         foreach ($arr as $key => $list) {
 
@@ -1433,7 +1477,8 @@ class BusinessAction extends Action {
         return $data;
     }
 
-    public function getMoreProject($project) {
+    public function getMoreProject($project)
+    {
         $arr = array();
         foreach ($project as $key => $list) {
             $arr[$key] = array();
@@ -1447,7 +1492,8 @@ class BusinessAction extends Action {
         return $arr;
     }
 
-    public function edit_project() {
+    public function edit_project()
+    {
         header("Content-type: text/html; charset=utf-8");
         if ($this->isPOST()) {
             $id = $_POST['id'];
@@ -1469,7 +1515,6 @@ class BusinessAction extends Action {
                 } else {
                     $result = M("fine_project_cc")->add($data);
                 }
-
 
 
                 $map['call_result'] = $_POST['call_result'];
@@ -1519,7 +1564,8 @@ class BusinessAction extends Action {
      * 项目位置
      */
 
-    public function project_st($data) {
+    public function project_st($data)
+    {
         if ($data == "1") {
             $str = "st1";
         } elseif ($data == "2") {
@@ -1541,7 +1587,8 @@ class BusinessAction extends Action {
     }
 
     //CC备注弹框页面
-    public function addcc() {
+    public function addcc()
+    {
         if (I("key")) {
             $project = M("fine_project_cc")->where("id=%d", I("key"))->find();
 
@@ -1552,7 +1599,8 @@ class BusinessAction extends Action {
     }
 
     //推荐顾问面试
-    public function addgwms() {
+    public function addgwms()
+    {
         $id = I("id");
         $key = I("key");
 
@@ -1595,14 +1643,16 @@ class BusinessAction extends Action {
         $this->display();
     }
 
-    public function addgw() {
+    public function addgw()
+    {
         $user = M("user")->field("user_id,name,img")->select();
         $this->assign("user", $user);
         $this->display();
     }
 
     //推荐顾问面试
-    public function addbz() {
+    public function addbz()
+    {
         $id = I("id");
 
         $project = M("fine_project")->where("id=%d", $id)->find();
@@ -1611,8 +1661,6 @@ class BusinessAction extends Action {
             $list = M("fine_project_bz")->where("id=%d", I('key'))->find();
             $this->assign("project", $list);
         }
-
-
 
 
         if ($this->isPost()) {
@@ -1646,7 +1694,8 @@ class BusinessAction extends Action {
     }
 
     //不合适设置
-    public function remove() {
+    public function remove()
+    {
         $id = I("id");
         $project = M("fine_project")->where("id=%d", $id)->field("project_id,resume_id,status")->find();
 //            $project = $this->fine_project($project);
@@ -1677,7 +1726,8 @@ class BusinessAction extends Action {
     }
 
     //顾问面试备注
-    public function msbz() {
+    public function msbz()
+    {
         $id = I("id");
         $project = M("fine_project")->where("id=%d", $id)->field("project_id,status")->find();
 
@@ -1715,7 +1765,8 @@ class BusinessAction extends Action {
     }
 
     //客户面试
-    public function khms() {
+    public function khms()
+    {
         $id = I("id");
         $project = D("ProjectView")->where("id=%d", $id)->find();
 
@@ -1772,7 +1823,8 @@ class BusinessAction extends Action {
     }
 
     //推荐反馈
-    public function tjfk() {
+    public function tjfk()
+    {
         $id = I("id");
 
         $project = M("fine_project")->where("id=%d", $id)->field("project_id,status,resume_id")->find();
@@ -1804,7 +1856,8 @@ class BusinessAction extends Action {
     }
 
     //项目发票
-    public function fapiao() {
+    public function fapiao()
+    {
         $id = I("id");
         $project = M("fine_project")->where("id=%d", $id)->field("project_id,resume_id,id,status,com_id")->find();
 
@@ -1817,7 +1870,7 @@ class BusinessAction extends Action {
         $invoice_max_code = str_pad($invoice_max_id, 4, 0, STR_PAD_LEFT); //填充字符串的左侧（将字符串填充为新的长度）
         $this->name = 'NO' . date('Ymd') . '-' . $invoice_max_code;
         if ($this->isPost()) {
-            
+
             unset($_POST['id']);
             unset($_POST['content']);
             if ($_POST['ispresent']) {
@@ -1846,12 +1899,13 @@ class BusinessAction extends Action {
                 $this->error('添加失败，请重试！');
             }
         }
-
+        $this->assign("pro_type", $this->pro_type);
         $this->display();
     }
 
     //推荐反馈
-    public function offer() {
+    public function offer()
+    {
         $id = I("id");
 
         $project = D("ProjectView")->where("id=%d", $id)->find();
@@ -1886,7 +1940,8 @@ class BusinessAction extends Action {
     }
 
     //推荐反馈
-    public function ruzhi() {
+    public function ruzhi()
+    {
         $id = I("id");
         $project = D("ProjectView")->where("id=%d", $id)->field("project_id,status,resume_id,name")->find();
         if (I("key")) {
@@ -1915,14 +1970,43 @@ class BusinessAction extends Action {
         $this->display();
     }
 
+    /**
+     * @desc 过保操作
+     */
+    public function safe()
+    {
+        header("Content-type: text/html; charset=utf-8");
+        $projectId = I('id', 0);
+        !$projectId && $this->ajaxReturn(1, '参数错误', 0);
+
+        $projectInfo = M("fine_project")->where("id=%d", $projectId);
+        !$projectInfo && $this->ajaxReturn(1, '参数错误', 0);
+        //过保操作
+        $where = ['fine_id' => $projectId];
+        $data = ['fine_id' => $projectId, 'create_role_id' => session('role_id'), 'addtime' => time()];
+        $safeObj = M('FineProjectSafe');
+        if (!$safeObj->where($where)->find()) {
+            $res = $safeObj->add($data);
+        } else {
+            $res = $safeObj->where($where)->save($data);
+        }
+        if ($res) {
+            M("fine_project")->where("id=%d", $projectId)->save(['status' => 8, 'updatetime' => time()]);
+            $this->ajaxReturn(1, '操作成功', 1);
+        }
+        $this->ajaxReturn(1, '系统错误', 0);
+    }
+
     //费用变更
-    public function changefy() {
+    public function changefy()
+    {
 
 
         $this->display();
     }
 
-    public function view_ajax_beifen() {
+    public function view_ajax_beifen()
+    {
         $where['project_id'] = $_POST['id'];
         $where['status'] = "calllist";
         $users = M("fine_project")->where($where)->select();
@@ -1931,7 +2015,8 @@ class BusinessAction extends Action {
     }
 
     //客户列表产品详情
-    public function product_view() {
+    public function product_view()
+    {
         $business_id = $this->_get('id', 'intval');
         $m_business = M('Business');
         $m_product = M('Product');
@@ -1954,7 +2039,8 @@ class BusinessAction extends Action {
      * 删除商机
      *
      * */
-    public function delete() {
+    public function delete()
+    {
         $m_business = M('Business');
         $m_contract = M('Contract');
         $m_log = M('Log');
@@ -2039,7 +2125,8 @@ class BusinessAction extends Action {
         }
     }
 
-    public function listDialog() {
+    public function listDialog()
+    {
         $d_business = D('BusinessTopView');
 //		$where['business.is_end'] = array('gt',0);
 
@@ -2058,41 +2145,59 @@ class BusinessAction extends Action {
                 $search = is_numeric($search) ? $search : strtotime($search);
             }
             switch ($condition) {
-                case "is" : $where[$field] = array('eq', $search);
+                case "is" :
+                    $where[$field] = array('eq', $search);
                     break;
-                case "isnot" : $where[$field] = array('neq', $search);
+                case "isnot" :
+                    $where[$field] = array('neq', $search);
                     break;
-                case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                case "contains" :
+                    $where[$field] = array('like', '%' . $search . '%');
                     break;
-                case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                case "not_contain" :
+                    $where[$field] = array('notlike', '%' . $search . '%');
                     break;
-                case "start_with" : $where[$field] = array('like', $search . '%');
+                case "start_with" :
+                    $where[$field] = array('like', $search . '%');
                     break;
-                case "end_with" : $where[$field] = array('like', '%' . $search);
+                case "end_with" :
+                    $where[$field] = array('like', '%' . $search);
                     break;
-                case "is_empty" : $where[$field] = array('eq', '');
+                case "is_empty" :
+                    $where[$field] = array('eq', '');
                     break;
-                case "is_not_empty" : $where[$field] = array('neq', '');
+                case "is_not_empty" :
+                    $where[$field] = array('neq', '');
                     break;
-                case "gt" : $where[$field] = array('gt', $search);
+                case "gt" :
+                    $where[$field] = array('gt', $search);
                     break;
-                case "egt" : $where[$field] = array('egt', $search);
+                case "egt" :
+                    $where[$field] = array('egt', $search);
                     break;
-                case "lt" : $where[$field] = array('lt', $search);
+                case "lt" :
+                    $where[$field] = array('lt', $search);
                     break;
-                case "elt" : $where[$field] = array('elt', $search);
+                case "elt" :
+                    $where[$field] = array('elt', $search);
                     break;
-                case "eq" : $where[$field] = array('eq', $search);
+                case "eq" :
+                    $where[$field] = array('eq', $search);
                     break;
-                case "neq" : $where[$field] = array('neq', $search);
+                case "neq" :
+                    $where[$field] = array('neq', $search);
                     break;
-                case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                case "between" :
+                    $where[$field] = array('between', array($search - 1, $search + 86400));
                     break;
-                case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                case "nbetween" :
+                    $where[$field] = array('not between', array($search, $search + 86399));
                     break;
-                case "tgt" : $where[$field] = array('gt', $search + 86400);
+                case "tgt" :
+                    $where[$field] = array('gt', $search + 86400);
                     break;
-                default : $where[$field] = array('eq', $search);
+                default :
+                    $where[$field] = array('eq', $search);
             }
             $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'search=' . $_REQUEST["search"]);
         }
@@ -2147,9 +2252,10 @@ class BusinessAction extends Action {
      * 商机推进
      *
      * */
-    public function advance() {
+    public function advance()
+    {
         if ($this->isPost()) {
-            
+
             $business_id = $_REQUEST['business_id'] ? intval($_REQUEST['business_id']) : 0;
             $is_updated = false;
             $m_r_bs = M('RBusinessStatus');
@@ -2160,7 +2266,7 @@ class BusinessAction extends Action {
             if (!in_array($business['owner_role_id'], getPerByAction('business', 'edit')) && !in_array(session('role_id'), $parter_info)) {
                 alert('error', L('HAVE NOT PRIVILEGES'), $_SERVER['HTTP_REFERER']);
             }
-            
+
             //推进历史
             $data['business_id'] = $business_id;
             $data['status_id'] = intval($_REQUEST['status_id']);
@@ -2232,7 +2338,8 @@ class BusinessAction extends Action {
      * 商机统计
      *
      * */
-    public function analytics() {
+    public function analytics()
+    {
         $m_business = M('Business');
         $m_contract = M('Contract');
         $content_id = $_GET['content_id'] ? intval($_GET['content_id']) : 1;
@@ -2708,7 +2815,8 @@ class BusinessAction extends Action {
     /**
      * 首页销售漏斗统计
      * */
-    public function getSalesFunnel() {
+    public function getSalesFunnel()
+    {
         $dashboard = M('user')->where('user_id = %d', session('user_id'))->getField('dashboard');
         $widget = unserialize($dashboard);
         $id = intval($_GET['id']);
@@ -2738,7 +2846,8 @@ class BusinessAction extends Action {
     }
 
     //销售漏斗对比
-    public function addduibi() {
+    public function addduibi()
+    {
         if ($_GET['dbname']) {
             $dbname = explode(',', $_GET['dbname']);
         }
@@ -2756,7 +2865,8 @@ class BusinessAction extends Action {
     }
 
     //商机统计高级搜索
-    public function advance_search() {
+    public function advance_search()
+    {
         $module_name = trim($_GET['module_name']);
         $action_name = trim($_GET['action_name']);
         $idArray = getPerByAction($module_name, $action_name, false);
@@ -2785,7 +2895,8 @@ class BusinessAction extends Action {
      * @author
      * @return
      */
-    public function getbusinessStatus() {
+    public function getbusinessStatus()
+    {
         $type_id = $_GET['type_id'] ? intval($_GET['type_id']) : 0;
         if (!$type_id) {
             $this->ajaxReturn('', '参数错误！', 0);
@@ -2797,7 +2908,8 @@ class BusinessAction extends Action {
     /**
      * 分配或共享
      */
-    public function setBusinessOwner() {
+    public function setBusinessOwner()
+    {
         if ($this->isPost()) {
             $msg = I('post.');
             $business = M('Business');
@@ -2827,7 +2939,8 @@ class BusinessAction extends Action {
     /**
      * 分配列表及搜索功能
      */
-    public function BusinessOwner() {
+    public function BusinessOwner()
+    {
         $listrows = isset($_GET['listrows']) ? intval($_GET['listrows']) : 15;
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
         $roleDepartment = M('RoleDepartment');
@@ -2922,7 +3035,8 @@ class BusinessAction extends Action {
         }
     }
 
-    public function upResume() {
+    public function upResume()
+    {
         if (!$_POST['calllistid']) {
             return json_encode(['code' => 403, 'message' => '缺少callid']);
         }
@@ -2972,7 +3086,7 @@ class BusinessAction extends Action {
         } catch (Exception $ex) {
             $retuens = ['succ' => true, 'code' => 500, 'info' => $ex->getMessage()];
         }
-        $this->ajaxReturn($retuens) ;
+        $this->ajaxReturn($retuens);
 
     }
 
