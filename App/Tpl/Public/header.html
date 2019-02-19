@@ -429,6 +429,9 @@
                         </li>
                         <?php endif; ?>
                         <?php if (in_array('log',$new_module_list)): ?>
+                        <li>
+                            <a data-toggle="tooltip" data-placement="right" data-original-title="分析模块" <if condition="($module_name eq 'phone' || $module_name eq 'phone' )"> class="active"</if> href="{:U('Phone/index')}"><i class="fa fa-credit-card"></i><span class="menu_code">分析模块</span></a>
+                        </li>
                         <!--				<li>
                                                                 <a data-toggle="tooltip" data-placement="right" data-original-title="日程" <if condition="$module_name eq 'log' &&  $action_name neq 'analytics' || ($module_name eq 'examine' && $action_name neq 'analytics') || $module_name eq 'announcement' || ($module_name eq 'knowledge' && $action_name neq 'category') || $module_name eq 'sign' || $module_name eq 'event' || $module_name eq 'task' || ($module_name eq 'kaoqin' && $action_name eq 'index')"> class="active"</if> <if condition="checkPerByAction('event','index')">href="{:U('event/index')}"<elseif condition ="checkPerByAction('examine','index')" />href="{:U('examine/index')}"<elseif condition ="checkPerByAction('knowledge','index')" />href="{:U('knowledge/index')}"<elseif condition ="checkPerByAction('announcement','index')" />href="{:U('announcement/index')}"<elseif condition ="checkPerByAction('sign','index')" />href="{:U('sign/index')}"<elseif condition ="checkPerByAction('event','index')" />href="{:U('event/index')}"<elseif condition ="checkPerByAction('task','index')" />href="{:U('task/index')}"</if>><i class="fa fa-desktop"></i><span class="menu_code">日程</span></a>
                                                         </li>-->
@@ -584,9 +587,14 @@
                             <li><input placeholder="输入电话号码" type="number" id="telphone" rel="phone" class="form-control checkit" onblur="checkform(this);" />
                                 <input type="hidden" id="testPhone">
                             </li>
-                            <li style="padding-left: 30px;">
+                            <li>
                                 <a class="dropdown-toggle count-info" id="phone_url" data-toggle="dropdown" href="#" title="呼叫">
                                     <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-toggle count-info" id="phone-off" data-toggle="dropdown" href="#" title="查看通话记录">
+                                    <span class="glyphicon glyphicon-list-alt"></span>
                                 </a>
                             </li>
                             <li class="dropdown">
@@ -639,9 +647,18 @@
                 </div>
                 <!-- 模态框 -->
                 <div class="modal inmodal fade" id="Modal_login" tabindex="-1"  style=" overflow:auto; border:1px solid #000000;" role="dialog" >
-                    <div class="modal-dialog modal-md" style="width:700px;">
+                    <div class="modal-dialog modal-md" style="width:40%;">
                         <div class="modal-content" id="login_modal">
 
+                        </div>
+                    </div>
+                </div>
+                <div class="" style="display:none;" id="dialog-business" title="通话记录详情">
+                    <div class="spiner-example">
+                        <div class="sk-spinner sk-spinner-three-bounce">
+                            <div class="sk-bounce1"></div>
+                            <div class="sk-bounce2"></div>
+                            <div class="sk-bounce3"></div>
                         </div>
                     </div>
                 </div>
@@ -667,6 +684,26 @@
                                 function (data) {   }
                             );}
 
+                        });
+                        $("#phone-off").on("click",function () {
+                            $('#dialog-business').dialog('open');
+                            $('#dialog-business').load("{:U('user/call_record')}");
+
+                        });
+                        $("#dialog-business").dialog({
+                            autoOpen: false,
+                            modal: true,
+                            width: 800,
+                            height: 400,
+                            close: function () {
+                                $(this).html("");
+                            },
+                            buttons: {
+                                "{:L('CLOSE')}": function () {
+                                    $(this).dialog("close");
+                                }
+                            },
+                            position:["center",100]
                         });
                     });
                 </script>

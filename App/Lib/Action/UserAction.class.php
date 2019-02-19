@@ -291,6 +291,10 @@ class UserAction extends Action {
         return $uuid;
     }
 
+    /**
+     * @return mixed
+     * 电话外呼
+     */
     public function call_out(){
         $tel =  $_POST['tel'];
         $timestamp= date('YmdHis');
@@ -320,6 +324,40 @@ class UserAction extends Action {
         $result = json_decode($msg, true);
         $uuid=$result['resp']['Msg'];
         return $uuid;
+    }
+
+    /**
+     * 获取通话记录
+     */
+    public function call_record(){
+        $timestamp= date('YmdHis');
+        $sig = $this->getsig($timestamp);
+        $auth = $this->getauth($timestamp);
+
+        $url = "http://47.96.62.197:8090/query/callReCord/v1?Sig=".$sig;
+        $header = array('Content-Type:' . 'application/json;charset=utf-8',
+            'Accept:' . 'application/json',
+            'Authorization:'.$auth);
+        $data = ["CompanyName"=>"nanfangxinhua",
+                "MaxId"=>100,
+                "BeginTime"=>"",
+                "EndTime"=>"",
+                "CallSid"=>"",
+                "Caller"=>"",
+                "Callee"=>""
+            ];
+        $data = json_encode($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $msg = curl_exec($ch);
+        $result = json_decode($msg, true);
+//        $uuid=$result['resp']['Msg'];
+        $this->assign('msg',$result[data]);
+        $this->display();
     }
     /**
      * 注册框填充
