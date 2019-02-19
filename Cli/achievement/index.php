@@ -67,7 +67,7 @@ foreach ($userList as $userInfo) {
         //5、新增简历
         $data['resume_num'] = resumeNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         //6、推荐人员
-        $data['fine_project_num'] = fineProjectNum($userId, $dateStartInt, $nextDayInt, $conn);
+        $data['fine_project_num'] = fineProjectNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         //7、面试人数
         $interviewNum = interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         $data['interview_num'] = $interviewNum['countPerson'] ? $interviewNum['countPerson'] : 0;
@@ -84,9 +84,9 @@ foreach ($userList as $userInfo) {
         //13、到场数
         $data['present_num'] = presentNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         //14、回款数
-        $data['hk_num'] = hkNum($userId, $dateStartInt, $nextDayInt, $conn);
+        $data['hk_num'] = hkNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         //15、新增bd数
-        $data['bd_num'] = bdNum($userId, $dateStartInt, $nextDayInt, $conn);
+        $data['bd_num'] = bdNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
 
         $dateStartInt = $nextDayInt; //时间+1天
         $dataList[] = $data;
