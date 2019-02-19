@@ -1063,6 +1063,7 @@ class BusinessAction extends Action
         $project['pass'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 5, I("id"))->select();
         $project['offer'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 6, I("id"))->select();
         $project['enter'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 7, I("id"))->select();
+        $project['safe'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 8, I("id"))->select();
 //        $project['tj'] = M("fine_project")->where("status='%s' and project_id=%d","tj",I("id"))->select();
 //        $project['interview'] = M("fine_project")->where("status='%s' and project_id=%d","interview",I("id"))->select();
 //        $project['pass'] = M("fine_project")->where("status='%s' and project_id=%d","pass",I("id"))->select();
