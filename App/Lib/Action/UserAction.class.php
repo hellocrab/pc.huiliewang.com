@@ -82,6 +82,7 @@ class UserAction extends Action {
                 'type'=>$this->_post('type','intval'),
                 'telephone'=>$this->_post('telephone','trim'),
                 'sex'=>$this->_post('sex'),
+                'second_name'=>$this->_post('second_name'),
                 'password'=>$pd,
                 'salt'=>$salt,
                 'reg_time'=>time(),
