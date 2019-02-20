@@ -1177,7 +1177,7 @@ class InvoiceAction extends Action{
         header("Content-type: text/html; charset=utf-8");
         $invoice  = M("invoice")->field("money,fine_id,create_role_id")->where("invoice_id=%d",$id)->find();
         $createUserId = $invoice['create_role_id'];
-        $this->user_name = M("user")->where("user_id=%d",$createUserId)->getField("full_name");
+        $this->user_name = M("user")->where("role_id=%d",$createUserId)->getField("full_name");
         $this->assign("money",$invoice['money']);
         $this->assign("createUserId",$createUserId);
 
