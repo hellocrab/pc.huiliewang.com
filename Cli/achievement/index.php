@@ -274,7 +274,7 @@ function bdNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 function hkNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $table = 'mx_invoice';
-    $sql = "SELECT count(*) as counts from {$table} where create_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time <= {$nextDayInt} and type = 'distribution' ";
+    $sql = "SELECT count(*) as counts from {$table} where create_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time <= {$nextDayInt} and type in( 'distribution','grant') ";
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
     return $info['counts'] > 0 ? $info['counts'] : 0;
