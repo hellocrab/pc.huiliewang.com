@@ -1720,8 +1720,12 @@ class LeadsAction extends Action
         $this->city_name = $city_name;
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['customer.creator_role_id'] = $role_id;
+//        $role_id = I("id");
+//        $where['customer.creator_role_id'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['customer.creator_role_id'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['customer.creator_role_id'] = ['in',$roleIds];
         $where['customer.create_time'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("CustomerInfoView")->where($where)->select();
         $this->display();
@@ -1735,8 +1739,13 @@ class LeadsAction extends Action
     {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['business.creator_role_id'] = $role_id;
+//        $role_id = I("id");
+//        $where['business.creator_role_id'] = $role_id;
+
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['business.creator_role_id'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['business.creator_role_id'] = ['in',$roleIds];
         $where['business.create_time'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("BusinessView")->where($where)->select();
         $this->display();
@@ -1750,8 +1759,11 @@ class LeadsAction extends Action
     {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['resume.creator_role_id'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['resume.creator_role_id'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['resume.creator_role_id'] = ['in',$roleIds];
+//        $where['resume.creator_role_id'] = $role_id;
         $where['resume.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ResumeView")->where($where)->select();
         $this->display();
@@ -1761,8 +1773,10 @@ class LeadsAction extends Action
     {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
@@ -1777,8 +1791,10 @@ class LeadsAction extends Action
     {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.status'] = array('egt', 4);
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
@@ -1794,8 +1810,10 @@ class LeadsAction extends Action
     {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.interview_times'] = array('egt', 1);
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
@@ -1811,8 +1829,10 @@ class LeadsAction extends Action
     {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.ispresent'] = 1;
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
@@ -1827,8 +1847,10 @@ class LeadsAction extends Action
     {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.status'] = array('egt', 6);
         $where['fine_project_offer.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
 //        $this->list = D("ProjectView")->where($where)->select();
@@ -1842,8 +1864,10 @@ class LeadsAction extends Action
     {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.status'] = 6;
         $where['fine_project.stop'] = 1;
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
@@ -1859,8 +1883,11 @@ class LeadsAction extends Action
     {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
+
         $where['fine_project.status'] = array('egt', 7);
         $where['fine_project_enter.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
 //        $this->list = D("ProjectView")->where($where)->select();
@@ -1877,8 +1904,11 @@ class LeadsAction extends Action
     {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
+
         $where['fine_project.status'] = array('egt', 8);
         $where['fine_project_safe.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $projectSafeModel = new ProjectStepViewModel('fine_project_safe');
@@ -2096,7 +2126,7 @@ class LeadsAction extends Action
             if ($between_date[0]) {
                 $start_time = strtotime($between_date[0]);
             }
-            $end_time = $between_date[1] ? strtotime(date('Y-m-d 23:59:59', strtotime($between_date[1]))) : strtotime(date('Y-m-d 23:59:59', time()));
+            $end_time = $between_date[1] ? strtotime(date('Y-m-d 00:00:00', strtotime($between_date[1]))) : strtotime(date('Y-m-d 00:00:00', time()));
         } else {
             $start_time = strtotime(date('Y-m-01 00:00:00'));
             $end_time = strtotime(date('Y-m-d H:i:s'));
@@ -2135,6 +2165,7 @@ class LeadsAction extends Action
             $roleList[$roleId] = getUserByRoleId($roleId);
         }
         $this->roleList = $roleList;
+        $this->roleIds = implode(',',$role_id_array);
         $dateRange = $this->timeplug();
         $this->daterange = $dateRange;
         $this->type_id = intval($_GET['type_id']);
