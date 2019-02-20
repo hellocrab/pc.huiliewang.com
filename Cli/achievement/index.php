@@ -9,22 +9,28 @@ include '../sqlBase/sqlMaker/Mysql.php';
 $todayTime = date("Y-m-d", time());
 $dateStart = isset($argv[1]) ? ($argv[1]) : date("Y-m-d", strtotime("-1 day"));
 $dateEnd = isset($argv[2]) ? $argv[2] : $todayTime;
+$userIds = isset($argv[3]) ? $argv[3] : '';
 
 //时间判断
-if(!$dateStart || !$dateEnd){
+if (!$dateStart || !$dateEnd) {
     echo "请输入时间";
     return false;
 }
 $dateStartInt = strtotime($dateStart);
 $dateEndInt = strtotime($dateEnd);
-if($dateStartInt >= $dateEndInt || $dateEndInt > strtotime($todayTime)){
+if ($dateStartInt >= $dateEndInt) {
     echo '时间输入有误';
+    return false;
+}
+if ($dateEndInt > strtotime($todayTime)) {
+    echo '截至日期不能超过今天';
     return false;
 }
 
 $conn = dbconn(); //数据库连接
 //用户列表
 $userSql = "SELECT * from mx_user";
+$userIds && $userSql = $userSql . " WHERE user_id in ({$userIds}) ";
 $userQuery = $conn->query($userSql);
 $userList = $userQuery->fetchAll(PDO::FETCH_ASSOC);
 
