@@ -1820,6 +1820,9 @@ class LeadsAction extends Action
         $this->display();
     }
 
+    /**
+     * offer信息查询
+     */
     public function dialogoffer()
     {
         $start_time = I("start_date");
@@ -1827,9 +1830,11 @@ class LeadsAction extends Action
         $role_id = I("id");
         $where['fine_project.tracker'] = $role_id;
         $where['fine_project.status'] = array('egt', 6);
-        $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("ProjectView")->where($where)->select();
+        $where['fine_project_offer.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+//        $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
+        $projectSafeModel = new ProjectStepViewModel('fine_project_offer');
+        $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
 
@@ -1847,6 +1852,9 @@ class LeadsAction extends Action
         $this->display();
     }
 
+    /**
+     * 入职信息查询
+     */
     public function dialogenter()
     {
         $start_time = I("start_date");
@@ -1854,9 +1862,27 @@ class LeadsAction extends Action
         $role_id = I("id");
         $where['fine_project.tracker'] = $role_id;
         $where['fine_project.status'] = array('egt', 7);
-        $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("ProjectView")->where($where)->select();
+        $where['fine_project_enter.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+//        $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
+        $projectSafeModel = new ProjectStepViewModel('fine_project_enter');
+        $this->list = $projectSafeModel->where($where)->select();
+        $this->display();
+    }
+
+    /**
+     * 过保查询
+     */
+    public function dialogsafe()
+    {
+        $start_time = I("start_date");
+        $end_time = I("end_date");
+        $role_id = I("id");
+        $where['fine_project.tracker'] = $role_id;
+        $where['fine_project.status'] = array('egt', 8);
+        $where['fine_project_safe.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_safe');
+        $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
 
