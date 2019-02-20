@@ -116,7 +116,7 @@ echo "all USER data SUCCESS" . PHP_EOL;
 function checkExist($userId, $date, $conn)
 {
     $table = 'mx_report_intergral';
-    $sql = "SELECT * from {$table} where user_id = $userId and report_date = '{$date}'";
+    $sql = "SELECT * from {$table} where user_id = {$userId} and report_date = '{$date}'";
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
     return isset($info['id']);
@@ -161,7 +161,7 @@ function safeNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_safe';
-    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as enter where enter.fine_id = pro.id and pro.tracker = {$userRoleId} and  enter.addtime >= $dateStartInt and enter.addtime < $nextDayInt ";
+    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as enter where enter.fine_id = pro.id and pro.tracker = {$userRoleId} and  enter.addtime >= {$dateStartInt} and enter.addtime < {$nextDayInt} ";
 
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
@@ -180,7 +180,7 @@ function enterNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_enter';
-    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as enter where enter.fine_id = pro.id and pro.tracker = {$userRoleId} and  enter.addtime >= $dateStartInt and enter.addtime < $nextDayInt ";
+    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as enter where enter.fine_id = pro.id and pro.tracker = {$userRoleId} and  enter.addtime >= {$dateStartInt} and enter.addtime < {$nextDayInt} ";
 
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
@@ -200,7 +200,7 @@ function offeredNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_bhs';
-    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as bhs where bhs.fine_id = pro.id and pro.tracker = {$userRoleId} and bhs.status=6 and bhs.addtime >= $dateStartInt and bhs.addtime < $nextDayInt";
+    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as bhs where bhs.fine_id = pro.id and pro.tracker = {$userRoleId} and bhs.status=6 and bhs.addtime >= {$dateStartInt} and bhs.addtime < {$nextDayInt}";
 
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
@@ -220,7 +220,7 @@ function offerNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_offer';
-    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as offer where offer.fine_id = pro.id and pro.tracker = {$userRoleId} and offer.addtime >= $dateStartInt and offer.addtime <= $nextDayInt";
+    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as offer where offer.fine_id = pro.id and pro.tracker = {$userRoleId} and offer.addtime >= {$dateStartInt} and offer.addtime < {$nextDayInt}";
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
     return $info['counts'] > 0 ? $info['counts'] : 0;
@@ -239,7 +239,7 @@ function interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_interview';
-    $sql = "SELECT count(distinct(pro.resume_id)) as countPerson,count(*) as conuntTimes FROM {$tableProject} as pro , {$tableInterview} as vie where vie.fine_id = pro.id and pro.tracker = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime <= {$nextDayInt} ";
+    $sql = "SELECT count(distinct(pro.resume_id)) as countPerson,count(*) as conuntTimes FROM {$tableProject} as pro , {$tableInterview} as vie where vie.fine_id = pro.id and pro.tracker = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime < {$nextDayInt} ";
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
     return $info;
@@ -256,7 +256,7 @@ function interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 function bdNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $table = 'mx_contract';
-    $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time <= {$nextDayInt}";
+    $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time < {$nextDayInt}";
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
     return $info['counts'] > 0 ? $info['counts'] : 0;
@@ -274,7 +274,7 @@ function bdNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 function hkNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $table = 'mx_invoice';
-    $sql = "SELECT count(*) as counts from {$table} where create_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time <= {$nextDayInt} and type in( 'distribution','grant') ";
+    $sql = "SELECT count(*) as counts from {$table} where create_role_id = {$userRoleId} and update_time >= {$dateStartInt} and update_time < {$nextDayInt} and type in( 'distribution','grant') ";
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
     return $info['counts'] > 0 ? $info['counts'] : 0;
@@ -308,7 +308,7 @@ function achievementNum($userId, $dateStartInt, $nextDayInt, $conn)
 function fineProjectNum($userId, $dateStartInt, $nextDayInt, $conn)
 {
     $table = 'mx_fine_project';
-    $sql = "SELECT count(*) as counts from {$table} where tracker = {$userId} and addtime >= {$dateStartInt} and addtime <= {$nextDayInt}";
+    $sql = "SELECT count(*) as counts from {$table} where tracker = {$userId} and addtime >= {$dateStartInt} and addtime < {$nextDayInt}";
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
     return $info['counts'] > 0 ? $info['counts'] : 0;
@@ -325,7 +325,7 @@ function fineProjectNum($userId, $dateStartInt, $nextDayInt, $conn)
 function resumeNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $table = 'mx_resume';
-    $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and addtime >= {$dateStartInt} and addtime <= {$nextDayInt}";
+    $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and addtime >= {$dateStartInt} and addtime < {$nextDayInt}";
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
     return $info['counts'] > 0 ? $info['counts'] : 0;
@@ -342,7 +342,7 @@ function resumeNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 function projectNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $table = 'mx_business';
-    $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time <= {$nextDayInt}";
+    $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time < {$nextDayInt}";
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
     return $info['counts'] > 0 ? $info['counts'] : 0;
@@ -358,7 +358,7 @@ function projectNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 function customerCount($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $table = 'mx_customer';
-    $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time <= {$nextDayInt}";
+    $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time < {$nextDayInt}";
     $query = $conn->query($sql);
     $info = $query->fetch(PDO::FETCH_ASSOC);
     return $info['counts'] > 0 ? $info['counts'] : 0;
