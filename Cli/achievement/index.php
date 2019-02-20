@@ -23,8 +23,8 @@ if ($dateStartInt >= $dateEndInt) {
     return false;
 }
 if ($dateEndInt > strtotime($todayTime)) {
-    echo '截至日期不能超过今天';
-    return false;
+//    echo '截至日期不能超过今天';
+//    return false;
 }
 
 $conn = dbconn(); //数据库连接
