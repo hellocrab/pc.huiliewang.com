@@ -196,6 +196,7 @@ class UserAction extends Action {
 							session('department_id', $role['department_id']);
 							session('name', $user['name']);
 							session('user_id', $user['user_id']);
+                                                        session('tel', $user['telephone']);
 
 							if (C('CALL_CENTER') == 1) {
 								session('extid', $user['extid']); //坐席号
@@ -297,20 +298,22 @@ class UserAction extends Action {
      */
     public function call_out(){
         $tel =  $_POST['tel'];
+        $sourceTel = session('tel');
         $timestamp= date('YmdHis');
         //坐席上班
         $this->startWork($timestamp);
         $sig= $this->getsig($timestamp);
         $auth=$this->getauth($timestamp);
-
+        
         //坐席外呼
-        $url = "http://47.96.62.197:8090/bind/callEvent/v2?Sig=".$sig;
+        $url = "http://211.152.35.81:8766/rest/voiceCall/api";
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
             'Accept:' . 'application/json',
             'Authorization:'.$auth);
-        $data = ["CompanyName"=>"nanfangxinhua",
-            "Phone"=>$tel ,
-            "voipAccount"=>"80414000000002"];
+        $data = ["callerNbr"=>"+86".$sourceTel,
+            "calleeNbr"=>"+86".$tel ,
+            "userData"=>"4ef539c5-a6e6-4201-a072-8f42e29c3ae3",
+            "setingNbr" => "PP7568036551"];
         $data = json_encode($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -319,11 +322,12 @@ class UserAction extends Action {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $msg = curl_exec($ch);
-        //坐席下班
-        $this->offWork($timestamp);
-        $result = json_decode($msg, true);
-        $uuid=$result['resp']['Msg'];
-        return $uuid;
+        $msg = json_decode($msg);
+//        坐席下班
+//        $this->offWork($timestamp);
+//        $result = json_decode($msg, true);
+//        $uuid=$result['resp']['Msg'];
+        return json_encode(['code' => $msg->meta->success ? 1:0,'msg' => $msg->meta->message]);
     }
 
     /**
