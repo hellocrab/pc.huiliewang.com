@@ -65,9 +65,9 @@ $(function(){
 								<span style="margin-left:20px;">状态：</span>
 								<select class="form-control" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-bottom:5px;">
 									<option value="{:U('user/index')}">--全部--</option>
-									<option value="{:U('user/index','status=1&'.$parameter)}" <if condition = "$_GET['status'] eq 1">selected</if>>已激活</option>
-									<option value="{:U('user/index','status=3&'.$parameter)}" <if condition = "$_GET['status'] eq 3">selected</if>>未激活</option>
-									<option value="{:U('user/index','status=2&'.$parameter)}" <if condition = "$_GET['status'] eq 2">selected</if>>已停用</option>
+									<option value="{:U('user/index',$parameter.'&status=1')}" <if condition = "$_GET['status'] eq 1">selected</if>>已激活</option>
+									<option value="{:U('user/index',$parameter.'&status=3')}" <if condition = "$_GET['status'] eq 3">selected</if>>未激活</option>
+									<option value="{:U('user/index',$parameter.'&status=2')}" <if condition = "$_GET['status'] eq 2">selected</if>>已停用</option>
 								</select>
 							</ul>
 							</form>

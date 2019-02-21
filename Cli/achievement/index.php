@@ -1,10 +1,11 @@
 <?php
+//phpinfo();exit;
+date_default_timezone_set("PRC");
 header('Content-Type: textml; charset=utf-8');
 set_time_limit(0);
 ini_set("memory_limit", "1024M");
 // include libs
-include '../sqlBase/sqlMaker/Mysql.php';
-
+include realpath(__DIR__ . '/../sqlBase/sqlMaker/Mysql.php');
 
 $todayTime = date("Y-m-d", time());
 $dateStart = isset($argv[1]) ? ($argv[1]) : date("Y-m-d", strtotime("-1 day"));
@@ -164,8 +165,12 @@ function safeNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
     $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as enter where enter.fine_id = pro.id and pro.tracker = {$userRoleId} and  enter.addtime >= {$dateStartInt} and enter.addtime < {$nextDayInt} ";
 
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info['counts'] > 0 ? $info['counts'] : 0;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -183,9 +188,12 @@ function enterNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
     $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as enter where enter.fine_id = pro.id and pro.tracker = {$userRoleId} and  enter.addtime >= {$dateStartInt} and enter.addtime < {$nextDayInt} ";
 
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info['counts'] > 0 ? $info['counts'] : 0;
-
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -203,8 +211,12 @@ function offeredNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
     $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as bhs where bhs.fine_id = pro.id and pro.tracker = {$userRoleId} and bhs.status=6 and bhs.addtime >= {$dateStartInt} and bhs.addtime < {$nextDayInt}";
 
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info['counts'] > 0 ? $info['counts'] : 0;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 
 }
 
@@ -222,8 +234,12 @@ function offerNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
     $tableInterview = 'mx_fine_project_offer';
     $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as offer where offer.fine_id = pro.id and pro.tracker = {$userRoleId} and offer.addtime >= {$dateStartInt} and offer.addtime < {$nextDayInt}";
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info['counts'] > 0 ? $info['counts'] : 0;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 
 }
 
@@ -241,8 +257,13 @@ function interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
     $tableInterview = 'mx_fine_project_interview';
     $sql = "SELECT count(distinct(pro.resume_id)) as countPerson,count(*) as conuntTimes FROM {$tableProject} as pro , {$tableInterview} as vie where vie.fine_id = pro.id and pro.tracker = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime < {$nextDayInt} ";
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info;
+    } else {
+        return 0;
+    }
+    
 }
 
 /**
@@ -258,8 +279,12 @@ function bdNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
     $table = 'mx_contract';
     $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time < {$nextDayInt}";
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info['counts'] > 0 ? $info['counts'] : 0;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 }
 
 
@@ -276,8 +301,12 @@ function hkNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
     $table = 'mx_invoice';
     $sql = "SELECT count(*) as counts from {$table} where create_role_id = {$userRoleId} and update_time >= {$dateStartInt} and update_time < {$nextDayInt} and type in( 'distribution','grant') ";
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info['counts'] > 0 ? $info['counts'] : 0;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -293,8 +322,12 @@ function achievementNum($userId, $dateStartInt, $nextDayInt, $conn)
     $table = 'mx_achievement';
     $sql = "SELECT SUM(integral) as counts from {$table} where user_id = {$userId} and addtime >= {$dateStartInt} and addtime < {$nextDayInt}";
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info['counts'] > 0 ? $info['counts'] : 0;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -310,8 +343,12 @@ function fineProjectNum($userId, $dateStartInt, $nextDayInt, $conn)
     $table = 'mx_fine_project';
     $sql = "SELECT count(*) as counts from {$table} where tracker = {$userId} and addtime >= {$dateStartInt} and addtime < {$nextDayInt}";
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info['counts'] > 0 ? $info['counts'] : 0;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -327,8 +364,12 @@ function resumeNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
     $table = 'mx_resume';
     $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and addtime >= {$dateStartInt} and addtime < {$nextDayInt}";
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info['counts'] > 0 ? $info['counts'] : 0;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -344,8 +385,12 @@ function projectNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
     $table = 'mx_business';
     $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time < {$nextDayInt}";
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info['counts'] > 0 ? $info['counts'] : 0;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -360,8 +405,12 @@ function customerCount($userRoleId, $dateStartInt, $nextDayInt, $conn)
     $table = 'mx_customer';
     $sql = "SELECT count(*) as counts from {$table} where creator_role_id = {$userRoleId} and create_time >= {$dateStartInt} and create_time < {$nextDayInt}";
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info['counts'] > 0 ? $info['counts'] : 0;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -376,9 +425,14 @@ function userDepartment($userId, $conn)
     $positionTable = 'mx_position';
     $departmentTable = 'mx_role_department';
     $sql = "SELECT dep.* from {$roleTable} as role , {$positionTable} as pos , {$departmentTable} as dep where pos.position_id=role.position_id and dep.department_id=pos.department_id and role.user_id = {$userId}";
+
     $query = $conn->query($sql);
-    $info = $query->fetch(PDO::FETCH_ASSOC);
-    return $info;
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -391,11 +445,11 @@ function dbconn()
     $conf = array(
         'product' => 'mysql',
         'api' => 'pdo',
-        'host' => '192.168.1.177',
+        'host' => '172.18.69.141',
         'port' => 3306,
         'dbname' => 'pinping',
         'username' => 'root',
-        'password' => '123456',
+        'password' => 'bffebfb01900fe3af8a8633d3b0b7be2',
         'charset' => 'utf8',
     );
     $dsn = 'mysql:';
