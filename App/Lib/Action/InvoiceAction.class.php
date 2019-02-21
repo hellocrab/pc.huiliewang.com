@@ -1189,9 +1189,10 @@ class InvoiceAction extends Action{
         header("Content-type: text/html; charset=utf-8");
         $invoice  = M("invoice")->field("money,fine_id,create_role_id")->where("invoice_id=%d",$id)->find();
         $createUserId = $invoice['create_role_id'];
-        $this->user_name = M("user")->where("user_id=%d",$createUserId)->getField("full_name");
+        $userInfo= M("user")->where("role_id=%d",$createUserId)->find();
+        $this->user_name = $userInfo['full_name'];
         $this->assign("money",$invoice['money']);
-        $this->assign("createUserId",$createUserId);
+        $this->assign("createUserId",$userInfo['user_id']);
 
         if($this->isPost()){
             $project = M("fine_project")->where("id=%d",$invoice['fine_id'])->field("resume_id,project_id,com_id,tracker")->find();

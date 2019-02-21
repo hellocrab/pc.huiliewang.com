@@ -4,7 +4,8 @@
  * 线索模块
  *
  * */
-class LeadsAction extends Action {
+class LeadsAction extends Action
+{
 
     /**
      * 用于判断权限
@@ -12,7 +13,8 @@ class LeadsAction extends Action {
      * @allow 登录用户可访问
      * @other 其他根据系统设置
      * */
-    public function _initialize() {
+    public function _initialize()
+    {
 
         $title = "报表管理";
         $this->assign("title", $title);
@@ -27,7 +29,8 @@ class LeadsAction extends Action {
     /**
      * 部门业绩达成率
      */
-    public function departmentrate() {
+    public function departmentrate()
+    {
         $integral = D('DepartmentIntegral');
         $m_target = M('Target');
         $department = M('role_department');
@@ -80,7 +83,8 @@ class LeadsAction extends Action {
     /**
      * 设置部门目标
      */
-    public function set_target() {
+    public function set_target()
+    {
         $m_target = M('Target');
 
         if ($this->isPost()) {
@@ -171,9 +175,10 @@ class LeadsAction extends Action {
     }
 
     /**
-      字段查重
+     * 字段查重
      * */
-    public function checkinfo() {
+    public function checkinfo()
+    {
         if ($this->isAjax()) {
             $field_value = $_POST['field_value'];
             $field_name = $_POST['field_name'];
@@ -208,7 +213,8 @@ class LeadsAction extends Action {
      * 线索名验重
      *
      * */
-    public function check() {
+    public function check()
+    {
         if ($_REQUEST['leads_id']) {
             $where['leads_id'] = array('neq', $_REQUEST['leads_id']);
         }
@@ -278,7 +284,8 @@ class LeadsAction extends Action {
      * 线索字段ajax验证
      *
      * */
-    public function validate() {
+    public function validate()
+    {
         if ($this->isAjax()) {
             if (!$this->_request('clientid', 'trim') || !$this->_request($this->_request('clientid', 'trim'), 'trim'))
                 $this->ajaxReturn("", "", 3);
@@ -304,7 +311,8 @@ class LeadsAction extends Action {
      * 线索列表页面
      *
      * */
-    public function index() {
+    public function index()
+    {
         $by = isset($_GET['by']) ? trim($_GET['by']) : 'me';
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
         $below_ids = getPerByAction(MODULE_NAME, ACTION_NAME, true);
@@ -347,24 +355,31 @@ class LeadsAction extends Action {
             case 'd30' :
                 $where['update_time'] = array('lt', strtotime(date('Y-m-d', time())) - 86400 * 29);
                 break;
-            case 'add' : $order = 'create_time desc';
+            case 'add' :
+                $order = 'create_time desc';
                 break;
-            case 'update' : $order = 'update_time desc';
+            case 'update' :
+                $order = 'update_time desc';
                 break;
-            case 'sub' : $where['owner_role_id'] = array('in', implode(',', $below_ids));
+            case 'sub' :
+                $where['owner_role_id'] = array('in', implode(',', $below_ids));
                 break;
-            case 'subcreate' : $where['creator_role_id'] = array('in', implode(',', $below_ids));
+            case 'subcreate' :
+                $where['creator_role_id'] = array('in', implode(',', $below_ids));
                 break;
             case 'public' :
                 unset($where['have_time']);
                 $where['_string'] = "leads.owner_role_id=0 or leads.have_time < $outdate";
                 break;
-            case 'deleted': $where['is_deleted'] = 1;
+            case 'deleted':
+                $where['is_deleted'] = 1;
                 unset($where['have_time']);
                 break;
-            case 'transformed' : $where['is_transformed'] = 1;
+            case 'transformed' :
+                $where['is_transformed'] = 1;
                 break;
-            case 'me' : $where['owner_role_id'] = session('role_id');
+            case 'me' :
+                $where['owner_role_id'] = session('role_id');
                 break;
             default :
                 $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
@@ -425,41 +440,59 @@ class LeadsAction extends Action {
                 }
 
                 switch ($condition) {
-                    case "is" : $where[$field] = array('eq', $search);
+                    case "is" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "isnot" : $where[$field] = array('neq', $search);
+                    case "isnot" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                    case "contains" :
+                        $where[$field] = array('like', '%' . $search . '%');
                         break;
-                    case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                    case "not_contain" :
+                        $where[$field] = array('notlike', '%' . $search . '%');
                         break;
-                    case "start_with" : $where[$field] = array('like', $search . '%');
+                    case "start_with" :
+                        $where[$field] = array('like', $search . '%');
                         break;
-                    case "end_with" : $where[$field] = array('like', '%' . $search);
+                    case "end_with" :
+                        $where[$field] = array('like', '%' . $search);
                         break;
-                    case "is_empty" : $where[$field] = array('eq', '');
+                    case "is_empty" :
+                        $where[$field] = array('eq', '');
                         break;
-                    case "is_not_empty" : $where[$field] = array('neq', '');
+                    case "is_not_empty" :
+                        $where[$field] = array('neq', '');
                         break;
-                    case "gt" : $where[$field] = array('gt', $search);
+                    case "gt" :
+                        $where[$field] = array('gt', $search);
                         break;
-                    case "egt" : $where[$field] = array('egt', $search);
+                    case "egt" :
+                        $where[$field] = array('egt', $search);
                         break;
-                    case "lt" : $where[$field] = array('lt', $search);
+                    case "lt" :
+                        $where[$field] = array('lt', $search);
                         break;
-                    case "elt" : $where[$field] = array('elt', $search);
+                    case "elt" :
+                        $where[$field] = array('elt', $search);
                         break;
-                    case "eq" : $where[$field] = array('eq', $search);
+                    case "eq" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "neq" : $where[$field] = array('neq', $search);
+                    case "neq" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                    case "between" :
+                        $where[$field] = array('between', array($search - 1, $search + 86400));
                         break;
-                    case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                    case "nbetween" :
+                        $where[$field] = array('not between', array($search, $search + 86399));
                         break;
-                    case "tgt" : $where[$field] = array('gt', $search + 86400);
+                    case "tgt" :
+                        $where[$field] = array('gt', $search + 86400);
                         break;
-                    default : $where[$field] = array('eq', $search);
+                    default :
+                        $where[$field] = array('eq', $search);
                 }
                 $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'search=' . $_REQUEST["search"]);
             }
@@ -704,7 +737,8 @@ class LeadsAction extends Action {
      * 线索添加页面
      *
      * */
-    public function add() {
+    public function add()
+    {
         if ($this->isPost()) {
             $m_leads = D('Leads');
             $m_leads_data = D('LeadsData');
@@ -765,7 +799,8 @@ class LeadsAction extends Action {
      * 线索编辑页面
      *
      * */
-    public function edit() {
+    public function edit()
+    {
         $leads_id = $this->_get('id', 'intval', intval($_POST['leads_id']));
         if (!$leads_id) {
             alert('error', L('PARAMETER_ERROR'), $_SERVER['HTTP_REFERER']);
@@ -807,8 +842,7 @@ class LeadsAction extends Action {
                         $this->error(L('LEADS_MODIFIED_FAILED'));
                     }
                 } else {
-                    $this->error($m_leads_data->getError());
-                    ;
+                    $this->error($m_leads_data->getError());;
                 }
             } else {
                 $this->error($m_leads->getError());
@@ -831,7 +865,8 @@ class LeadsAction extends Action {
      * 线索回收站删除
      *
      * */
-    public function completeDelete() {
+    public function completeDelete()
+    {
         $m_leads = M('Leads');
         $m_leads_data = M('LeadsData');
         $r_module = array('Log' => 'RLeadsLog', 'File' => 'RFileLeads', 'Event' => 'REventLeads', 'Task' => 'RLeadsTask');
@@ -891,7 +926,8 @@ class LeadsAction extends Action {
      * 线索删除
      *
      * */
-    public function delete() {
+    public function delete()
+    {
         $m_leads = M('Leads');
         $m_leads_data = M('LeadsData');
         $r_module = array('Log' => 'RLeadsLog', 'File' => 'RFileLeads', 'Event' => 'REventLeads', 'Task' => 'RLeadsTask');
@@ -945,7 +981,8 @@ class LeadsAction extends Action {
      * 线索查看页面
      *
      * */
-    public function view() {
+    public function view()
+    {
         $d_role = D('RoleView');
         $leads_id = $this->_get('id', 'intval');
         $outdays = M('config')->where('name="leads_outdays"')->getField('value');
@@ -991,7 +1028,7 @@ class LeadsAction extends Action {
         $record_count = 0;
         foreach ($leads['record'] as $key => $value) {
             $leads['record'][$key]['owner'] = D('RoleView')->where('role.role_id = %d', $value['owner_role_id'])->find();
-            $record_count ++;
+            $record_count++;
         }
         //日程信息
         $m_event = M('event');
@@ -1015,7 +1052,8 @@ class LeadsAction extends Action {
      * 导出excel
      *
      * */
-    public function excelExport($leadsList = false) {
+    public function excelExport($leadsList = false)
+    {
         C('OUTPUT_ENCODE', false);
         import("ORG.PHPExcel.PHPExcel");
         $objPHPExcel = new PHPExcel();
@@ -1106,7 +1144,8 @@ class LeadsAction extends Action {
         session('export_status', 0);
     }
 
-    public function getCurrentStatus() {
+    public function getCurrentStatus()
+    {
         $this->ajaxReturn(intval(session('export_status')), 'success', 1);
     }
 
@@ -1114,7 +1153,8 @@ class LeadsAction extends Action {
      * 下载excel模板
      *
      * */
-    public function excelImportDownload() {
+    public function excelImportDownload()
+    {
         import("ORG.PHPExcel.PHPExcel");
         $objPHPExcel = new PHPExcel();
         $objProps = $objPHPExcel->getProperties();
@@ -1174,7 +1214,8 @@ class LeadsAction extends Action {
      * 导入excel
      *
      * */
-    public function excelImport() {
+    public function excelImport()
+    {
         if ($this->isPost()) {
             if (isset($_FILES['excel']['size']) && $_FILES['excel']['size'] != null) {
                 import('@.ORG.UploadFile');
@@ -1219,7 +1260,8 @@ class LeadsAction extends Action {
         }
     }
 
-    public function excelImportact() {
+    public function excelImportact()
+    {
         $m_leads = D('Leads');
         $m_leads_data = D('LeadsData');
         $savePath = $_GET['path'];
@@ -1253,7 +1295,7 @@ class LeadsAction extends Action {
                 if ($field['form_type'] == 'address') {
                     $address = array();
                     for ($i = 0; $i < 4; $i++) {
-                        $info = (String) $currentSheet->getCell($cv . chr($ascii) . $currentRow)->getValue();
+                        $info = (String)$currentSheet->getCell($cv . chr($ascii) . $currentRow)->getValue();
                         $address[] = $info;
                         $ascii++;
                         if ($ascii == 91) {
@@ -1280,7 +1322,7 @@ class LeadsAction extends Action {
                             $info = PHPExcel_Style_NumberFormat::toFormattedString($info, $formatcode);
                         }
                     } else {
-                        $info = (String) $cell->getCalculatedValue();
+                        $info = (String)$cell->getCalculatedValue();
                     }
                     if ($field['is_main'] == 1) {
                         $data[$field['field']] = ($field['form_type'] == 'datetime' && $info != null) ? intval(strtotime($info)) : $info;
@@ -1324,7 +1366,8 @@ class LeadsAction extends Action {
      * 弹框选择分页
      *
      * */
-    public function listDialog() {
+    public function listDialog()
+    {
         $m_leads = M('Leads');
         $outdays = M('config')->where('name="leads_outdays"')->getField('value');
         $outdate = empty($outdays) ? 0 : time() - 86400 * $outdays;
@@ -1342,41 +1385,59 @@ class LeadsAction extends Action {
                 $search = is_numeric($search) ? $search : strtotime($search);
             }
             switch ($condition) {
-                case "is" : $where[$field] = array('eq', $search);
+                case "is" :
+                    $where[$field] = array('eq', $search);
                     break;
-                case "isnot" : $where[$field] = array('neq', $search);
+                case "isnot" :
+                    $where[$field] = array('neq', $search);
                     break;
-                case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                case "contains" :
+                    $where[$field] = array('like', '%' . $search . '%');
                     break;
-                case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                case "not_contain" :
+                    $where[$field] = array('notlike', '%' . $search . '%');
                     break;
-                case "start_with" : $where[$field] = array('like', $search . '%');
+                case "start_with" :
+                    $where[$field] = array('like', $search . '%');
                     break;
-                case "end_with" : $where[$field] = array('like', '%' . $search);
+                case "end_with" :
+                    $where[$field] = array('like', '%' . $search);
                     break;
-                case "is_empty" : $where[$field] = array('eq', '');
+                case "is_empty" :
+                    $where[$field] = array('eq', '');
                     break;
-                case "is_not_empty" : $where[$field] = array('neq', '');
+                case "is_not_empty" :
+                    $where[$field] = array('neq', '');
                     break;
-                case "gt" : $where[$field] = array('gt', $search);
+                case "gt" :
+                    $where[$field] = array('gt', $search);
                     break;
-                case "egt" : $where[$field] = array('egt', $search);
+                case "egt" :
+                    $where[$field] = array('egt', $search);
                     break;
-                case "lt" : $where[$field] = array('lt', $search);
+                case "lt" :
+                    $where[$field] = array('lt', $search);
                     break;
-                case "elt" : $where[$field] = array('elt', $search);
+                case "elt" :
+                    $where[$field] = array('elt', $search);
                     break;
-                case "eq" : $where[$field] = array('eq', $search);
+                case "eq" :
+                    $where[$field] = array('eq', $search);
                     break;
-                case "neq" : $where[$field] = array('neq', $search);
+                case "neq" :
+                    $where[$field] = array('neq', $search);
                     break;
-                case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                case "between" :
+                    $where[$field] = array('between', array($search - 1, $search + 86400));
                     break;
-                case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                case "nbetween" :
+                    $where[$field] = array('not between', array($search, $search + 86399));
                     break;
-                case "tgt" : $where[$field] = array('gt', $search + 86400);
+                case "tgt" :
+                    $where[$field] = array('gt', $search + 86400);
                     break;
-                default : $where[$field] = array('eq', $search);
+                default :
+                    $where[$field] = array('eq', $search);
             }
             $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'search=' . $_REQUEST["search"]);
         }
@@ -1400,7 +1461,8 @@ class LeadsAction extends Action {
      * 放入线索池
      *
      * */
-    public function remove() {
+    public function remove()
+    {
         if ($_POST['leads_id']) {
             if ($this->_permissionRes) {
                 $where['owner_role_id'] = array('in', $this->_permissionRes);
@@ -1424,7 +1486,8 @@ class LeadsAction extends Action {
      * 领取、分配线索操作
      *
      * */
-    public function receive() {
+    public function receive()
+    {
         $leads_id = isset($_REQUEST['id']) ? intval(trim($_REQUEST['id'])) : 0;
         if ($_REQUEST['owner_role_id']) {
             $owner_role_id = intval($_REQUEST['owner_role_id']);
@@ -1488,7 +1551,8 @@ class LeadsAction extends Action {
      * 批量领取线索操作
      *
      * */
-    public function batchReceive() {
+    public function batchReceive()
+    {
         $leads_ids = $_REQUEST['leads_id'];
         $owner_role_id = session('role_id');
         if (empty($leads_ids)) {
@@ -1519,7 +1583,8 @@ class LeadsAction extends Action {
      * 批量分配线索操作
      *
      * */
-    public function batchassign() {
+    public function batchassign()
+    {
         if ($this->isPost()) {
             $leads_ids = $_POST['leads_id'];
             $owner_role_id = $_POST['owner_id'];
@@ -1588,7 +1653,8 @@ class LeadsAction extends Action {
      * 批量分配线索操作
      *
      * */
-    public function assignDialog() {
+    public function assignDialog()
+    {
         $role_info = getUserByRoleId(session('role_id'));
         $this->role_info = $role_info;
         $this->display();
@@ -1598,7 +1664,8 @@ class LeadsAction extends Action {
      * 单条分配线索弹窗操作
      *
      * */
-    public function fenpei() {
+    public function fenpei()
+    {
         $leads_id = intval($_GET['id']);
         if ($leads_id > 0) {
             $this->leads_id = $leads_id;
@@ -1612,7 +1679,8 @@ class LeadsAction extends Action {
      * 回款个数弹窗
      */
 
-    public function dialoghk() {
+    public function dialoghk()
+    {
 
         $start_time = I("start_date");
         $end_time = I("end_date");
@@ -1628,7 +1696,8 @@ class LeadsAction extends Action {
      * 合同bd弹窗
      */
 
-    public function dialogbd() {
+    public function dialogbd()
+    {
 
         $start_time = I("start_date");
         $end_time = I("end_date");
@@ -1643,15 +1712,20 @@ class LeadsAction extends Action {
      * 新增客户弹窗
      */
 
-    public function dialogcustomer() {
+    public function dialogcustomer()
+    {
         include APP_PATH . "Common/industry.cache.php";
         include APP_PATH . "Common/city.cache.php";
         $this->industry_name = $industry_name;
         $this->city_name = $city_name;
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['customer.creator_role_id'] = $role_id;
+//        $role_id = I("id");
+//        $where['customer.creator_role_id'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['customer.creator_role_id'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['customer.creator_role_id'] = ['in',$roleIds];
         $where['customer.create_time'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("CustomerInfoView")->where($where)->select();
         $this->display();
@@ -1661,11 +1735,17 @@ class LeadsAction extends Action {
      * 新增项目弹窗
      */
 
-    public function dialogprojectnum() {
+    public function dialogprojectnum()
+    {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['business.creator_role_id'] = $role_id;
+//        $role_id = I("id");
+//        $where['business.creator_role_id'] = $role_id;
+
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['business.creator_role_id'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['business.creator_role_id'] = ['in',$roleIds];
         $where['business.create_time'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("BusinessView")->where($where)->select();
         $this->display();
@@ -1675,21 +1755,28 @@ class LeadsAction extends Action {
      * 新增简历弹窗
      */
 
-    public function dialogresumenum() {
+    public function dialogresumenum()
+    {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['resume.creator_role_id'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['resume.creator_role_id'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['resume.creator_role_id'] = ['in',$roleIds];
+//        $where['resume.creator_role_id'] = $role_id;
         $where['resume.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ResumeView")->where($where)->select();
         $this->display();
     }
 
-    public function dialogfinenum() {
+    public function dialogfinenum()
+    {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
@@ -1700,11 +1787,14 @@ class LeadsAction extends Action {
      * 面试人数
      */
 
-    public function dialoginterview() {
+    public function dialoginterview()
+    {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.status'] = array('egt', 4);
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
@@ -1716,11 +1806,14 @@ class LeadsAction extends Action {
      * 面试次人数
      */
 
-    public function dialoginterviewt() {
+    public function dialoginterviewt()
+    {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.interview_times'] = array('egt', 1);
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
@@ -1732,11 +1825,14 @@ class LeadsAction extends Action {
      * 到场人数
      */
 
-    public function dialogpresent() {
+    public function dialogpresent()
+    {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.ispresent'] = 1;
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
@@ -1744,23 +1840,34 @@ class LeadsAction extends Action {
         $this->display();
     }
 
-    public function dialogoffer() {
+    /**
+     * offer信息查询
+     */
+    public function dialogoffer()
+    {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.status'] = array('egt', 6);
-        $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("ProjectView")->where($where)->select();
+        $where['fine_project_offer.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+//        $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
+        $projectSafeModel = new ProjectStepViewModel('fine_project_offer');
+        $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
 
-    public function dialogofferd() {
+    public function dialogofferd()
+    {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
         $where['fine_project.status'] = 6;
         $where['fine_project.stop'] = 1;
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
@@ -1769,15 +1876,43 @@ class LeadsAction extends Action {
         $this->display();
     }
 
-    public function dialogenter() {
+    /**
+     * 入职信息查询
+     */
+    public function dialogenter()
+    {
         $start_time = I("start_date");
         $end_time = I("end_date");
-        $role_id = I("id");
-        $where['fine_project.tracker'] = $role_id;
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
+
         $where['fine_project.status'] = array('egt', 7);
-        $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("ProjectView")->where($where)->select();
+        $where['fine_project_enter.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+//        $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
+        $projectSafeModel = new ProjectStepViewModel('fine_project_enter');
+        $this->list = $projectSafeModel->where($where)->select();
+        $this->display();
+    }
+
+    /**
+     * 过保查询
+     */
+    public function dialogsafe()
+    {
+        $start_time = I("start_date");
+        $end_time = I("end_date");
+        $roleIds = I("roleIds",'');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['fine_project.tracker'] = ['in',$roleIds];
+
+        $where['fine_project.status'] = array('egt', 8);
+        $where['fine_project_safe.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_safe');
+        $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
 
@@ -1785,7 +1920,8 @@ class LeadsAction extends Action {
      * 员工业绩分析
      */
 
-    public function analyticsCount($start_time, $end_time, $role_ids = "") {
+    public function analyticsCount($start_time, $end_time, $role_ids = "")
+    {
 
 
         $where['user.role_id'] = array('in', $role_ids);
@@ -1940,10 +2076,110 @@ class LeadsAction extends Action {
     }
 
     /**
+     * @desc 数据处理
+     * @param $map
+     * @param $p
+     * @param $pageSize
+     */
+    private function analyticsNum($map, $p, $pageSize)
+    {
+        $list = M('report_intergral')->where($map)->page($p, $pageSize)->select();
+
+        $countFields = 'sum(integral) as integral,sum(customer_num) as customerNum,sum(project_num) as projectNum,'
+            . 'sum(resume_num) as resumeNum,sum(fine_project_num) as fineNum,sum(interview_num) as interviewNum,sum(bd_num) as bdNum,' .
+            'sum(hk_num) as hkNum,sum(present_num) as presentNum,sum(safe_num) as safeNum,sum(enter_num) as enterNum ,' .
+            'sum(offerd_num) as offerdNum,sum(offer_num) as offerNum,sum(interviewt_num) as interviewtNum';
+        $countList = M('report_intergral')->field($countFields)->where($map)->find();
+        $this->assign("list", $list);
+        $this->assign("countList", $countList);
+    }
+
+    /**
+     * @desc 员工业绩分析
+     */
+    public function analytics()
+    {
+        $below_ids = getPerByAction(MODULE_NAME, ACTION_NAME);
+        //是否仅查询销售岗
+        $role_ids = [];
+        $role_id_array = [];
+        if (intval($_GET['role'])) {
+            $role_ids = array(intval($_GET['role']));
+        } else {
+            if (intval($_GET['department'])) {
+                $department_id = intval($_GET['department']);
+                foreach (getRoleByDepartmentId($department_id, true) as $k => $v) {
+                    $role_ids[] = $v['role_id'];
+                }
+            } else {
+                $role_id_array = $below_ids;
+            }
+        }
+
+        if ($role_ids) {
+            //数组交集
+            $role_id_array = array_intersect($role_ids, $below_ids);
+        }
+        //时间段搜索
+        if ($_GET['between_date']) {
+            $between_date = explode(' - ', trim($_GET['between_date']));
+            if ($between_date[0]) {
+                $start_time = strtotime($between_date[0]);
+            }
+            $end_time = $between_date[1] ? strtotime(date('Y-m-d 00:00:00', strtotime($between_date[1]))) : strtotime(date('Y-m-d 00:00:00', time()));
+        } else {
+            $start_time = strtotime(date('Y-m-01 00:00:00'));
+            $end_time = strtotime(date('Y-m-d H:i:s'));
+        }
+
+        $this->start_time = $start_time;
+        $this->end_time = $end_time;
+        $this->start_date = date('Y-m-d', $start_time);
+        $this->end_date = date('Y-m-d', $end_time);
+
+        $pageSize = isset($_GET['listrows']) ? intval($_GET['listrows']) : 15;
+        $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
+        $map = ['report_date' => [['egt', $this->start_date], ['elt', $this->end_date]]];
+        $map['user_role_id'] =  $role_id_array ? ['in', $role_id_array] : '';
+        $count = M('report_intergral')->where($map)->count();
+
+        $this->analyticsNum($map, $p, $pageSize);
+        import('@.ORG.Page'); // 导入分页类
+        $page = new Page($count, $pageSize);
+        $show = $page->show(); // 分页显示输出
+        $this->assign('page', $show); // 赋值分页输出
+        $this->assign("listrows", $pageSize);
+
+        //部门岗位
+        $url = getCheckUrlByAction(MODULE_NAME, ACTION_NAME);
+        $per_type = M('Permission')->where('position_id = %d and url = "%s"', session('position_id'), $url)->getField('type');
+        if ($per_type == 2 || session('?admin')) {
+            $departmentList = M('roleDepartment')->select();
+        } else {
+            $departmentList = M('roleDepartment')->where('department_id =%d', session('department_id'))->select();
+        }
+        $this->assign('departmentList', $departmentList);
+
+        $roleList = array();
+        foreach ($below_ids as $roleId) {
+            $roleList[$roleId] = getUserByRoleId($roleId);
+        }
+        $this->roleList = $roleList;
+        $this->roleIds = implode(',',$role_id_array);
+        $dateRange = $this->timeplug();
+        $this->daterange = $dateRange;
+        $this->type_id = intval($_GET['type_id']);
+        $this->content_id = intval($_GET['content_id']);
+        $this->alert = parseAlert();
+        $this->display();
+    }
+
+    /**
      * 员工分析
      *
      * */
-    public function analytics() {
+    public function analytics_back()
+    {
         $time1 = time();
 
         //权限判断
@@ -2013,8 +2249,6 @@ class LeadsAction extends Action {
         $this->roleList = $roleList;
 
 
-
-
         $daterange = $this->timeplug();
         $this->daterange = $daterange;
 
@@ -2026,7 +2260,8 @@ class LeadsAction extends Action {
     }
 
     //时间插件处理
-    public function timeplug() {
+    public function timeplug()
+    {
         //（计算开始、结束时间距今天的天数）
         $daterange = array();
         //上个月
@@ -2087,7 +2322,8 @@ class LeadsAction extends Action {
      * 部门分析
      *
      * */
-    public function department() {
+    public function department()
+    {
         $time1 = time();
 
         //权限判断
@@ -2155,7 +2391,6 @@ class LeadsAction extends Action {
 
         $list = $this->analyticsCount();
         $this->assign("list", $list);
-
 
 
         if ($start_time) {
@@ -2245,7 +2480,8 @@ class LeadsAction extends Action {
     }
 
     //时间插件处理（计算开始、结束时间距今天的天数）
-    public function timeplugs() {
+    public function timeplugs()
+    {
         $daterange = array();
         //上个月
         $daterange[0]['start_day'] = (strtotime(date('Y-m-d', time())) - strtotime(date('Y-m-d', mktime(0, 0, 0, date('m') - 1, 1, date('Y'))))) / 86400;
@@ -2308,7 +2544,8 @@ class LeadsAction extends Action {
      * @author
      * @return
      */
-    public function change_customer() {
+    public function change_customer()
+    {
         $leads_id = intval($_GET['id']);
         $m_leads = M('leads');
         $m_customer = M('customer');
@@ -2387,7 +2624,8 @@ class LeadsAction extends Action {
     }
 
     //列表字段值修改
-    public function field_save() {
+    public function field_save()
+    {
         $m_leads = M("leads");
         $where['leads_id'] = $this->_GET('id');
         if ($this->_GET('filed') == 'nextstep_time') {
@@ -2416,11 +2654,13 @@ class LeadsAction extends Action {
         }
     }
 
-    public function add_more() {
+    public function add_more()
+    {
         $this->display();
     }
 
-    function excelToArray($name) {
+    function excelToArray($name)
+    {
         require_once 'Base/Lib/Classes/PHPExcel/IOFactory.php';
 
         //加载excel文件
@@ -2444,7 +2684,8 @@ class LeadsAction extends Action {
         return $res_arr;
     }
 
-    public function uploadTarget() {
+    public function uploadTarget()
+    {
         /* $year = I('get.year'); */
         $year = date("Y");
         $time = time();
@@ -2490,8 +2731,8 @@ class LeadsAction extends Action {
                 $dataList['total'] = 0;
                 for ($i = 1; $i < 13; $i++) {
                     $month = ($i * 3) - 2;
-                    $dataList['month' . $i] = (int) $val[$month];
-                    $dataList['topachieve' . $i] = (int) $val[($i * 3) - 1];
+                    $dataList['month' . $i] = (int)$val[$month];
+                    $dataList['topachieve' . $i] = (int)$val[($i * 3) - 1];
                     $dataList['attendanceRate' . $i] = $val[$i * 3];
                     $dataList['total'] += $dataList['month' . $i];
                 }

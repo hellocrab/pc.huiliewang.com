@@ -20,18 +20,20 @@
                 <td>所属客户</td>
             </tr>
             <tbody>
+            <volist name="list" id="vo">
                 <tr>
-                    <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">员工姓名</a></td>
-                    <td style="min-width: 100px;">部门</td>
-                    <td style="min-width: 80px;"><a href="{:U('product/view','id='.$vo['eid'])}" target="_blank">候选人</a></td>
-                    <td style="min-width: 80px;"><a href="{:U('business/view','id='.$vo['business_id'])}" target="_blank">项目名称</a></td>
-                    <td style="min-width: 80px;"><a href="{:U('customer/view', 'id='.$vo['customer_id'])}" target="_blank">所属客户</a></td>
+                    <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.tracker_name}</a></td>
+                    <td style="min-width: 100px;">{$vo.department_name}</td>
+                    <td style="min-width: 80px;"><a href="{:U('product/view','id='.$vo['eid'])}" target="_blank">{$vo.name}</a></td>
+                    <td style="min-width: 80px;"><a href="{:U('business/view','id='.$vo['business_id'])}" target="_blank">{$vo.business_name}</a></td>
+                    <td style="min-width: 80px;"><a href="{:U('customer/view', 'id='.$vo['customer_id'])}" target="_blank">{$vo.customer_name}</a></td>
                 </tr>
+            </volist>
                 
             </tbody>
         </table>
     </div>
-    <div style="padding-left: 15px;background: #f5f5f6;height: 40px;line-height: 40px;">总共：10条结果</div>
+    <!--<div style="padding-left: 15px;background: #f5f5f6;height: 40px;line-height: 40px;">总共：10条结果</div>-->
 </form>
 <div style="display:none;" id="dialog-role-list2" title="{:L('SELECT_CONTACTS_OWMER')}">
 	<div class="spiner-example">

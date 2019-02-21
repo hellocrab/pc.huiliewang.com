@@ -41,6 +41,9 @@ class ContractAction extends Action {
 			if ($m_contract->where(array('number'=>$contract_custom.trim($_POST['number'])))->find()) {
 				$this->error('该合同编号已存在！');
 			}
+			if(!$_POST['file']){
+                $this->error('请上传合同附件！');
+            }
 			//处理自定义字段数据
 			$field_list = M('Fields')->where(array('model'=>'contract','in_add'=>1))->order('order_id')->select();
 			foreach ($field_list as $v){

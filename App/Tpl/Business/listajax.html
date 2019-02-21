@@ -257,7 +257,7 @@
             <input type="button" value="开票" class="btn btn-default fapiao"   data-id="{$project['id']}">
 
                 <switch name="pro_type">
-                    <case value="1|2|3">
+                    <case value="2|3">
                         <input type="button" value="面试通过" class="btn btn-default mstg"   data-id="{$project['id']}">
                         <input type="button" value="不合适" class="btn btn-default remove"   data-id="{$project['id']}">
                     </case>
@@ -289,6 +289,7 @@
         <if condition="$project['status'] eq enter">
         <div class="row baccc">
             <input type="button" value="淘汰" class="btn btn-default remove"  data-id="{$project['id']}">
+            <input type="button" value="过保" class="btn btn-default safe"  data-id="{$project['id']}">
             <input type="button" value="开票" class="btn btn-default fapiao"  data-id="{$project['id']}">
             <input type="button" value="费用变更" class="btn btn-default changefy"  data-id="{$project['id']}">
             <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
@@ -2032,7 +2033,38 @@
             var id=$(this).attr("data-id");
             var key=$(this).attr("data-key")?$(this).attr("data-key"):0;
             $('#dialog-gwms').load("/index.php?m=business&a=addgwms&id="+id+"&key="+key);
-        })
+        });
+        //过保操作
+        $(".safe").on("click",function () {
+            swal({
+                    title: "确定要过保操作吗？",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确定",
+                    closeOnConfirm: false
+                },
+                function(){
+                    $.ajax({
+                        type:"post",
+                        url:"{:U('business/safe')}",
+                        data:{
+                            kind:"safe",
+                            id:"{$project['id']}"
+                        },
+                        success:function (data) {
+                            if(data.status == 1){
+                                swal("温馨提示！", "过保操作成功！", "success");
+                            }else {
+                                swal("温馨提示！", "过保操作失败", "error");
+                            }
+                            location.reload();
+                            // swal("温馨提示！", "项目状态推进成功！", "success");
+                            // location.reload();
+                        },
+                    })
+                });
+        });
 
         //推荐人才给客户
         $(".tjkehu").click(function(){
