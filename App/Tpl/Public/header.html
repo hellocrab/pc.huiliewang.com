@@ -674,9 +674,13 @@
                             $.post(
                               "{:U('user/call_out')}",
                                 {tel : tel},
-                                function (data) {   }
+                                function (data) {
+                                    
+                                    swal("操作成功！", "拨打电话成功,请稍等电话接通！", "success");
+//                                     alert_crm(data.message);
+                                }
                             );}
-
+//"
                         });
                         $("#phone-off").on("click",function () {
                             $('#dialog-business').dialog('open');
