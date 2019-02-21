@@ -562,15 +562,13 @@ class BusinessAction extends Action {
         $user = M('user')->where('status =%d', 1)->field('full_name,user_id')->select();
         $this->assign("user", $user);
         if ($this->isPost()) {
+            $this->error(L('ADD_BUSINESS_FAILURE'));
             $m_r_business_product = M('RBusinessProduct');
 
             $customer_id = intval($_POST['customer_id']);
             if (empty($customer_id)) {
                 $this->error(L('THE_CUSTOMER_CANNOT_BE_EMPTY'));
             }
-            // if(count($_POST['business']['product']) == 0){
-            // 	$this->error('请至少选择一个产品');
-            // }
             $field_list = M('Fields')->where(array('model' => 'business', 'in_add' => 1))->order('order_id')->select();
             foreach ($field_list as $v) {
                 switch ($v['form_type']) {
@@ -601,8 +599,7 @@ class BusinessAction extends Action {
                     $business_max_id = $m_business->max('business_id');
                     $business_max_code = str_pad($business_max_id + 1, 4, 0, STR_PAD_LEFT); //填充字符串的左侧（将字符串填充为新的长度）
                     $code = $business_custom . date('Ymd') . '-' . $business_max_code;
-                    
-//                    var_dump($_POST);exit;
+
                     if (empty($_POST['name'])) {
                         $m_business->name = $code;
                     }
@@ -648,15 +645,12 @@ class BusinessAction extends Action {
                                 }
                                 //判断商机状态
                                 $status_info = M('BusinessStatus')->where(array('type_id' => intval($_POST['status_type_id']), 'status_id' => intval($_POST['status_id'])))->find();
-
                                 if ($status_info['is_end'] == 3) {
                                     $m_customer->where('customer_id = %d', $customer_id)->setField('is_locked', 1);
                                 }
                                 actionLog($business_id);
-
                                 if ($_POST['submit'] == L('SAVE') || $_POST['submit'] == '保存项目') {
                                     alert('success', L('ADD_BUSINESS_SUCCESS'), U('business/index'));
-//									alert('success', L('ADD_BUSINESS_SUCCESS'), U('customer/view','id='.$customer_id));
                                 } else {
                                     alert('success', L('ADD_BUSINESS_SUCCESS'), U('business/index'));
                                 }
@@ -726,6 +720,8 @@ class BusinessAction extends Action {
             //自定义字段
 
             $this->field_list = field_list_html('add', 'business');
+            header('content-type:text/html;charset=utf-8');
+//            dump($this->field_list);exit;
             $this->alert = parseAlert();
             $this->display();
         }
@@ -1485,12 +1481,21 @@ class BusinessAction extends Action {
             $project = M("fine_project")->where("id=%d", $id)->field("project_id,status")->find();
 
             if ($_POST['kind'] == "calllist") {
-
                 $data['call_result'] = $_POST['call_result'];
                 $data['gj'] = $_POST['gj'];
                 $data['gjtime'] = $_POST['gjtime'];
                 $data['target'] = $_POST['target'];
-                $data['remarks'] = $_POST['remarks'];
+                $data['remarks'] = $_POST['remarks'] ? $_POST['remarks']:'';
+                $data['age'] = $_POST['age'];
+                $data['onwork'] = $_POST['onwork'];
+                $data['company_position'] = $_POST['company_position'];
+                $data['current_receive'] = $_POST['current_receive'];
+                $data['exp_receive'] = $_POST['exp_receive'];
+                $data['off_reason'] = $_POST['off_reason'];
+                $data['chance'] = $_POST['chance'];
+                $data['marital'] = $_POST['marital'];
+                $data['native'] = $_POST['native'];
+                $data['plans'] = $_POST['plans'];
                 $data['target'] = $_POST['target'];
                 $data['fine_id'] = $id;
                 $data['role_id'] = session("role_id");
@@ -1500,9 +1505,6 @@ class BusinessAction extends Action {
                 } else {
                     $result = M("fine_project_cc")->add($data);
                 }
-
-
-
                 $map['call_result'] = $_POST['call_result'];
                 $map['ccgj'] = $_POST['gj'];
                 $map['target'] = $_POST['target'];
