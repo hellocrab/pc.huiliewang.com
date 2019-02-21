@@ -2049,7 +2049,7 @@ class LeadsAction extends Action {
                 . 'sum(resume_num) as resumeNum,sum(fine_project_num) as fineNum,sum(interview_num) as interviewNum,sum(bd_num) as bdNum,' .
                 'sum(hk_num) as hkNum,sum(present_num) as presentNum,sum(safe_num) as safeNum,sum(enter_num) as enterNum ,' .
                 'sum(offerd_num) as offerdNum,sum(offer_num) as offerNum,sum(interviewt_num) as interviewtNum';
-        $list = M('report_intergral')->where($map)->field('id,user_role_id,user_id,user_name,department,department_id,'.$countFields)->group('user_id')->page($p, $pageSize)->select();
+        $list = M('report_intergral')->where($map)->field('id,user_role_id,user_id,user_name,department,department_id,'.$countFields)->group('user_id')->order('integral desc,customerNum desc')->page($p, $pageSize)->select();
 //        var_dump($list);exit;
         $countList = M('report_intergral')->field($countFields)->where($map)->find();
         $this->assign("list", $list);
@@ -2102,8 +2102,8 @@ class LeadsAction extends Action {
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
         $map = ['report_date' => [['egt', $this->start_date], ['elt', $this->end_date]]];
         $map['user_role_id'] = $role_id_array ? ['in', $role_id_array] : '';
-        $count = M('report_intergral')->where($map)->group('user_id')->count();
-//        var_dump(M()->getLastSql());exit;
+        $count = M('report_intergral')->where($map)->group('user_id')->select();
+        $count = count($count);
         $this->analyticsNum($map, $p, $pageSize);
         import('@.ORG.Page'); // 导入分页类
         $page = new Page($count, $pageSize);
