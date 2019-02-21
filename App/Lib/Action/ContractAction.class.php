@@ -485,7 +485,7 @@ class ContractAction extends Action {
 								alert('error','修改失败，请重试！',U('contract/view','id='.$contract_id));
 							}
 						} else {
-							alert('error','修改失败，请重试！',U('contract/view','id='.$contract_id));
+//							alert('error','修改失败，请重试！',U('contract/view','id='.$contract_id));
 						}
 					}else{
 						$this->error($m_contract_data->getError());
@@ -493,6 +493,7 @@ class ContractAction extends Action {
 				} else {
 					$this->error($m_contract->getError());
 				}
+                alert('success','修改成功！',U('contract/view','id='.$contract_id));
 			}else{
 				$sales_id = M('rContractSales')->where('contract_id = %d && sales_type = 0',$contract_id)->getField('sales_id');
 				$d_sales = D('SalesmoduleView');
