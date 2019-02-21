@@ -71,7 +71,7 @@
 													<div class="col-md-6">
 														{$vo.html}
 													</div>
-													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+															<div class="col-md-2 showeee"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
 													<else/>
 													<div class="col-md-8">
 														{$vo.html}
@@ -82,7 +82,7 @@
 													<div class="col-md-7">
 														{$vo.html}
 													</div>
-													<div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+													<div class="col-md-1 showeee"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
 													<else/>
 													<div class="col-md-8">
 														{$vo.html}
@@ -181,7 +181,7 @@
 							<div class="all-inline">
 								<span class="sq-tag"></span>
 								<div class="text-tag">
-									<span>首要联系人</span>
+									<span>客户联系人</span>
 								</div>
 							</div>
 						</div>
@@ -274,6 +274,17 @@
 	<div id="search_content"></div>
 </div>
 <script>
+	//线下项目 简介和地址必填 ，其它不必填
+    function outline_change(obj){
+		if(obj.value.search("线下") != -1){
+			$(".showeee").css('display','block');
+			$("#introduce").attr('class','form-control required');
+		}else {
+			$(".showeee").css('display', 'none');
+			$("#introduce").attr('class','form-control');
+		}
+	}
+
 	$(document).ready(function () {
 		$('#user_name').val('');
     });

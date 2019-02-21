@@ -985,7 +985,10 @@ function field_list_html($type = "add", $module = "", $d_module = array(), $spec
             }
             switch ($v['form_type']) {
                 case 'textarea' :
-                    $field_list[$k]['html'] = '<textarea rows="5" class="form-control ' . $required . '" id="' . $v['field'] . '" name="' . $v['field'] . '" >' . $value . '</textarea><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
+                    //线下项目 简介和地址必填
+//                    $field_list[$k]['html'] = '<textarea rows="5" class="form-control ' . $required . '" id="' . $v['field'] . '" name="' . $v['field'] . '" >' . $value . '</textarea><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
+                    $field_list[$k]['html'] = '<textarea rows="5" class="form-control" id="' . $v['field'] . '" name="' . $v['field'] . '" >' . $value . '</textarea><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
+
                     break;
                 case 'box' :
                     $setting_str = '$setting=' . $v['setting'] . ';';
@@ -1008,7 +1011,12 @@ function field_list_html($type = "add", $module = "", $d_module = array(), $spec
                                 $str .= ">$v2</option>";
                             }
                         }
+                        //更改  只有线下的项目 简介和地址必填 ，添加onchange事件
+                        if($v['field']== 'origin')
+                        $field_list[$k]['html'] = '<select class="form-control ' . $required . '" id="' . $v['field'] . '" name="' . $v['field'] . '" onchange="outline_change(this);">' . $str . '</select><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
+                        else
                         $field_list[$k]['html'] = '<select class="form-control ' . $required . '" id="' . $v['field'] . '" name="' . $v['field'] . '">' . $str . '</select><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
+                        //
                         break;
                     } elseif ($setting['type'] == 'radio') {
                         $str = '';

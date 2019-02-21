@@ -508,19 +508,16 @@ class CustomerAction extends Action {
                     alert('error', '你的客户数量已超出限制！请联系管理员', U('customer/index'));
                 }
             }
-
             if (intval($_GET['leads_id'])) {
                 $leads = D('LeadsView')->where('leads.leads_id = %d', intval($_GET['leads_id']))->find();
                 $this->leads = $leads;
                 $this->field_list = field_list_html("edit", "customer", $leads);
             } else {
                 $this->field_list = field_list_html("add", "customer");
-
-//                header("Content-type: text/html; charset=utf-8");
-//                var_dump($this->field_list);exit();
+//                header('content-type:text/html;charset=utf-8');
+//                dump($this->field_list['main']);die;
                 $this->contacts_field_list = field_list_html("add", "contacts", "", "contacts");
             }
-
             $user = M('user')->where('status =%d', 1)->field('full_name,user_id')->select();
             $this->assign("user", $user);
             $this->refer_url = $_SERVER['HTTP_REFERER'];
