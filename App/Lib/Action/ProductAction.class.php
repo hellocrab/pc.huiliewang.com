@@ -974,7 +974,7 @@ class ProductAction extends Action
         }
         $resume['now_industry'] = $resume['now_industry'];
 
-        $resume['sex'] = $resume['sex'] = 1 ? "女" : "男";
+        $resume['sex'] = $resume['sex'] = 1 ? "男" : "女";
         $resume_work = M("resume_work")->where("eid=%d", $eid)->select();
         foreach ($resume_work as $kw => $rw) {
             $_position = M('resume_work_position')->where(['work_id' => $rw['id']])->find();
@@ -988,7 +988,7 @@ class ProductAction extends Action
         $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
         $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
         $resume['school'] = $this->resume_edu[0]['schoolName'];
-
+        $resume['creator_role_name'] = M('user')->where(['role_id'=>$resume['creator_role_id']])->getField('full_name');
 
         $this->resume_project = M("resume_project")->where("eid=%d", $eid)->select();
         $map['eid'] = $resume['eid'];
@@ -997,7 +997,6 @@ class ProductAction extends Action
         if ($collect) {
             $resume['favorite'] = 1;
         }
-
         $this->resume = $resume;
 
 

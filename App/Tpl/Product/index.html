@@ -238,7 +238,9 @@
                                                         <span>{$city_name[$vo[$v['field']]]}</span>
                                                         <elseif  condition="$v['field'] eq 'birthday'"/>
                                                         <span>
+                                                            <notempty name="vo.birthday">
                                                             {$vo['birthday']|date="Y-m",###}
+                                                            </notempty>
                                                         </span>
                                                         <elseif  condition="$v['field'] eq 'startWorkyear'"/>
                                                         <span>{$vo[$v['field']]|date="Y-m",###}</span>
