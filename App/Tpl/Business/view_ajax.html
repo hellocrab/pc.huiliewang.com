@@ -98,7 +98,7 @@
             <a href="#tab2" data-toggle="tab" type="tab2">职位详情</a>
         </li>
         <li class="">
-            <a href="#tab3" data-toggle="tab" type="tab3"><label class="label_n fp_num">1</label>联系人</a>
+            <a href="#tab3" data-toggle="tab" type="tab3"><label class="label_n fp_num">{$contacts_list|count}</label>联系人</a>
         </li>
         <!--<li class="">-->
         <!--<a href="#tab4" data-toggle="tab" type="tab4">跟进记录</a>-->
@@ -326,7 +326,7 @@
                                 <td style="text-align:center;padding:14px;color:#666;">
                                     <div class="nowap" style="max-width: 100px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title=" {$vo['current_job']}"> {$vo['current_job']}</div>
                                 </td>
-                                <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">女<else/>男</if></td>
+                                <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">男<else/>女</if></td>
                                 <td style="text-align:center;padding:14px;color:#666;">{$vo['hope_salary']}万</td>
                                 <td style="text-align:center;padding:14px;color:#666;">{$vo['telephone']}</td>
                                 <td style="text-align:center;padding:14px;color:#666;"><a href="javascript:void(0);" class="role_info" rel="{$vo['tracker']}">{$vo['tracker_name']}</a></td>
