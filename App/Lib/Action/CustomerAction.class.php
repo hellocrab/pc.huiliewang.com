@@ -1012,7 +1012,7 @@ class CustomerAction extends Action {
                     if ($contacts_str) {
                         $field_where = array();
                         $field_where['customer.name'] = array('like', '%' . $search . '%');
-                        $field_where['customer.contacts_id'] = array('in', $contacts_str);
+                        $field_where['r_contacts_customer.contacts_id'] = array('in', $contacts_str);
                         $field_where['_logic'] = 'OR';
                         $where['_complex'] = $field_where;
                         // $where['_string'] = 'customer.name like "%'.$search.'%" or customer.contacts_id in ('.$contacts_str.')';
