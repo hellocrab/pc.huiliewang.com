@@ -188,7 +188,7 @@ class InvoiceAction extends Action{
         header('content-type:text/html;charset=utf-8');
         unset($where['type_business']);
         unset($where['applyed_time']);
-        unset($where['applyed_endtime']);
+        unset($where['applyed_endtime']); 
 
         $where['type'] = $type;
         if(trim($_GET['act']) == 'excel'){
