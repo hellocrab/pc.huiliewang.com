@@ -1888,11 +1888,13 @@ function getCheckUrlByAction($m, $a) {
 function checkPerByAction($m, $a) {
     $m_permission = M('permission');
     $url = getCheckUrlByAction($m, $a);
-
     if (session('?admin')) {
         //2为所有人
         return 2;
+    } elseif ($url == 'user/call_out') {
+        return 2;
     } elseif ($per = $m_permission->where('url = "%s" and position_id = %d', $url, session('position_id'))->find()) {
+
         //有$url操作权限；
         return $per['type'];
     } else {
