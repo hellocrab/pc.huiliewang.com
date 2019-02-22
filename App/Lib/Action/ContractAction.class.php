@@ -1623,6 +1623,7 @@ class ContractAction extends Action {
 							$url = U('contract/view','id='.$contract_id);
 							sendMessage($contract['creator_role_id'],'您创建的合同《<a href="'.$url.'">'.$contract['number'].'-'.$contract['contract_name'].'</a>》<font style="color:green;">已通过审核</font>！',1);
 						} elseif ($is_agree == 2 && $is_end == 1) {
+                            $url = U('contract/view','id='.$contract_id);
 							sendMessage($contract['creator_role_id'],'您创建的合同《<a href="'.$url.'">'.$contract['number'].'-'.$contract['contract_name'].'</a>》<font style="color:red;">经审核已被拒绝！请及时更正！</font>！',1);
 						}
 						alert('success', L('CHECK_SUCCESS'), $_SERVER['HTTP_REFERER']);
