@@ -923,6 +923,7 @@ class CustomerAction extends Action {
             $order = 'customer.' . trim($_GET['order_field']) . ' ' . trim($_GET['order_type']) . ',customer.customer_id asc'; //top.set_top desc,top.top_time desc,
         }
 
+        //我的客户
         //查询分享给我的
         $m_share = M('customerShare');
         $sharing_id = session('role_id');
@@ -1004,7 +1005,7 @@ class CustomerAction extends Action {
                     if ($field == $v['field'] || $field == 'customer.create_time' || $field == 'customer.update_time')
                         $search = is_numeric($search) ? $search : strtotime($search);
                 }
-                if ($field == 'name') {
+                if ($field == 'name' && $search) {
                     //$where['name'] = array('like',$search);
                     $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
                     $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
@@ -1025,7 +1026,7 @@ class CustomerAction extends Action {
                             break;
                         case "isnot" : $where[$field] = array('neq', $search);
                             break;
-                        case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                        case "contains" : $search && $where[$field] = array('like', '%' . $search . '%');
                             break;
                         case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
                             break;
@@ -1177,7 +1178,7 @@ class CustomerAction extends Action {
         $map_scene['is_hide'] = 0;
         header("Content-type: text/html; charset=utf-8");
         $scene_list = $m_scene->where($map_scene)->order('order_id asc,id asc')->select();
-//		var_dump($scene_list);exit();
+//		var_dump(session('role_id'));exit();
         foreach ($scene_list as $k => $v) {
             if ($v['type'] == 0) {
                 eval('$data = ' . $v["data"] . ';');
@@ -1364,6 +1365,7 @@ class CustomerAction extends Action {
 
             import("@.ORG.Page");
             $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
+            $myCustomerIds = M('customer')->where('owner_role_id')->getField('customer_id', true);
             switch ($by){
                 case 'sub':
                     if($below_ids[0]!=-1){
@@ -1376,21 +1378,24 @@ class CustomerAction extends Action {
                     break;
                 case 'share':
                     unset($customerIdsData);
+                    unset($myCustomerIds);
                     break;
                 case 'myshare':
+                    unset($myCustomerIds);
                     unset($customerIdsData);
                     break;
                 default:
                     $customerIdsData = $m_customer_share->where(array('by_sharing_id'=>$sharing_id))->field('customer_id')->select();
                     break;
             }
-            if($customerIdsData){
+            if($customerIdsData || $myCustomerIds){
                 foreach ($customerIdsData as $k =>$v){
                     $customerIds[] = $v['customer_id'];
                 }
-                $map['customer_id'] = array('in',$customerIds);
+                $ids = array_unique(array_merge($myCustomerIds,$customerIds));
+                $map['customer_id'] = array('in',$ids);
                 $map['_complex'] = $where;
-                $map['_logic'] = 'or';
+                $map['_logic'] = 'and';
             }else{
                 $map = $where;
             }
