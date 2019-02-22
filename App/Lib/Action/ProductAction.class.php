@@ -422,7 +422,7 @@ class ProductAction extends Action
                         $list[$k]['location'] = $city_name[$list[$k]['location']];
                     }
                     if ($list[$k]['sex']) {
-                        $list[$k]['sex'] = $list[$k]['sex'] = 1 ? "男" : "女";
+                        $list[$k]['sex'] = $list[$k]['sex'] == 1 ? "男" : "女";
                     }
                 }
                 $this->excelExport($list);
