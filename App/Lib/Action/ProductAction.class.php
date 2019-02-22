@@ -422,7 +422,7 @@ class ProductAction extends Action
                         $list[$k]['location'] = $city_name[$list[$k]['location']];
                     }
                     if ($list[$k]['sex']) {
-                        $list[$k]['sex'] = $list[$k]['sex'] = 1 ? "男" : "女";
+                        $list[$k]['sex'] = $list[$k]['sex'] == 1 ? "男" : "女";
                     }
                 }
                 $this->excelExport($list);
@@ -974,7 +974,7 @@ class ProductAction extends Action
         }
         $resume['now_industry'] = $resume['now_industry'];
 
-        $resume['sex'] = $resume['sex'] = 1 ? "男" : "女";
+        $resume['sex'] = $resume['sex'] == 1 ? "男" : "女";
         $resume_work = M("resume_work")->where("eid=%d", $eid)->select();
         foreach ($resume_work as $kw => $rw) {
             $_position = M('resume_work_position')->where(['work_id' => $rw['id']])->find();
