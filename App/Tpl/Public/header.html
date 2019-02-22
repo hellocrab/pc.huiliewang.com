@@ -864,7 +864,7 @@
                     }
 
                     if (data.data['message_announcement_count'] != 0 && data.data['message_announcement_count'] != ''){
-                    message_html += '<a href="{:U('message / index','by = announcement')}" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
+                    message_html += '<a href="{:U(\'message/index\',\'by=announcement\')}" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
                                     <div style="padding:0 10px;">\
                                         <img src="__PUBLIC__/img/System.png" title="系统公告"> 您有<strong>' + data.data['message_announcement_count'] + '</strong>条公告信息待查看\
                                         <span class="pull-right text-muted small" style="line-height:30px;">' + data.data['announcement_time'] + '前</span>\
@@ -873,7 +873,7 @@
                     }
                     if (data.data['role_message_list']){
                     $(data.data['role_message_list']).each(function(k, v){
-                    message_html += '<a href="{:U('message / message_view','to_role_id = ')}' + v.role_id + '" title="点击回复" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;" >\
+                    message_html += '<a href="{:U(\'message/message_view\')}&to_role_id=' + v.role_id + '" title="点击回复" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;" >\
                                     <div class="dropdown-messages-box" style="padding:0 10px;">\
                                         <div class="pull-left">\
                                             <img alt="image" class="img-circle" src="' + v.thumb_path + '">&nbsp;\

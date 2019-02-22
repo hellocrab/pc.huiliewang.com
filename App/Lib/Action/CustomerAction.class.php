@@ -965,7 +965,7 @@ class CustomerAction extends Action {
                 break;
         }
         if (!isset($where['owner_role_id']) && $this->_get('content') !== 'resource') {
-            if ($by != 'deleted' && $by != 'share') {
+            if ($by != 'deleted' && ($by != 'share' || $by != 'myshare')) {
                 $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
             }
         }
@@ -1375,6 +1375,9 @@ class CustomerAction extends Action {
                     }
                     break;
                 case 'share':
+                    unset($customerIdsData);
+                    break;
+                case 'myshare':
                     unset($customerIdsData);
                     break;
                 default:
