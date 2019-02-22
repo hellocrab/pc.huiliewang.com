@@ -137,6 +137,11 @@
                 top:0;
                 z-index: 888;
             }
+            input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+                -webkit-appearance:textfield;
+            }
+            input[type="number"]{
+                -moz-appearance:textfield;
         </style>
 
 
@@ -660,15 +665,10 @@
                         $("#phone_url").on("click",function () {
                             var flag = true;
                             var tel = $("#telphone").val();
-                            var myreg = /^(0|86|17951)?1[0-9]{10}$/;
                             if (tel == '') {
-                                swal("请输入手机号","","warning");
+                                swal("请输入号码","","warning");
                                 flag = false;
                             } else {
-                                if (!myreg.test(tel)){
-                                    swal("手机号码有误","","warning");
-                                    flag = false;
-                                }
                             }
                             if(flag){
                             $.post(

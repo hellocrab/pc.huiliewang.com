@@ -448,7 +448,9 @@
                                                                                                     <if condition="$cn_is_show eq 1">
                                                                                                         <td><a href="{:U('contacts/view','id='.$vo['contacts_id'])}">{$vo['contacts_name']}</a></td>
                                                                                                     </if>
-                                                                                                    <if condition="$ct_is_show eq 1"><td>{$vo['contacts_telephone']}</td></if>
+                                                                                                    <if condition="$ct_is_show eq 1"><td>{$vo['contacts_telephone']}<if condition="$vo.contacts_telephone neq ''"><a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo['contacts_telephone']}" data-toggle="dropdown" href="#" title="呼叫">
+                                                                                                        <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                                                                    </a></if></td></if>
 
                                                                                                     <volist name="field_array" id="v">
                                                                                                         <if condition="$v['field'] neq 'name'">
@@ -989,6 +991,19 @@
                                                                                                             $('#call_modal').append(html);
                                                                                                         });
 
+                                                                                                        //号码呼出_guo_02/22
+                                                                                                        $(document).ready(function () {
+                                                                                                            $(".call_out").on('click',function () {
+                                                                                                                var tel = $(this).attr('rel');
+                                                                                                                $.post(
+                                                                                                                    "{:U('user/call_out')}",
+                                                                                                                    {tel : tel},
+                                                                                                                    function (data) {
+                                                                                                                        swal("操作成功！", "拨打电话成功,请稍等电话接通！", "success");
+                                                                                                                    }
+                                                                                                                );
+                                                                                                            });
+                                                                                                        });
                                                                                                         //dropdown menu 不关闭
                                                                                                         $('#dropdown_order').on('click', function (event) {
                                                                                                             event.stopPropagation();

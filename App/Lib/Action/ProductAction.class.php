@@ -892,7 +892,6 @@ class ProductAction extends Action
             $resume['birthMouth'] = '-' . $resume['birthMouth'];
         }
 
-
         //文件
         $file_ids = M('rResumeFile')->where('resume_id = %d', $eid)->getField('file_id', true);
         $info['file'] = M('file')->where('file_id in (%s)', implode(',', $file_ids))->select();

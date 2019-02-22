@@ -590,6 +590,7 @@ class BusinessAction extends Action
         $user = M('user')->where('status =%d', 1)->field('full_name,user_id')->select();
         $this->assign("user", $user);
         if ($this->isPost()) {
+
             $m_r_business_product = M('RBusinessProduct');
 
             $customer_id = intval($_POST['customer_id']);
