@@ -247,11 +247,11 @@
                                                         <elseif  condition="$v['field'] eq 'curSalary'"/>
                                                         <span>{$vo[$v['field']]}万</span>
                                                         <else/><span style="color:#{$v['color']}">{$vo[$v['field']]}
-                                                            <if condition="$v.field eq 'telephone' && $vo[$v['field']] neq ''">
-                                                            <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo[$v['field']]}" data-toggle="dropdown" href="#" title="呼叫">
-                                                                                                            <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
-                                                                                                        </a>
-                                                            </if>
+                                                                <if condition="$v.field eq 'telephone' && $vo[$v['field']] neq ''">
+                                                                <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo[$v['field']]}" data-toggle="dropdown" href="#" title="呼叫">
+                                                                                                                <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                                                                            </a>
+                                                                </if>
                                                     </span></if>
                                                     </td>
                                                 </volist>
