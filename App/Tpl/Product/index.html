@@ -239,7 +239,7 @@
                                                         <elseif  condition="$v['field'] eq 'birthday'"/>
                                                         <span>
                                                             <notempty name="vo.birthday">
-                                                            {$vo['birthday']|date="Y-m",###}
+                                                                {$vo['birthday']|date="Y-m",###}
                                                             </notempty>
                                                         </span>
                                                         <elseif  condition="$v['field'] eq 'startWorkyear'"/>
@@ -247,12 +247,12 @@
                                                         <elseif  condition="$v['field'] eq 'curSalary'"/>
                                                         <span>{$vo[$v['field']]}万</span>
                                                         <else/><span style="color:#{$v['color']}">{$vo[$v['field']]}
-                                                                <if condition="$v.field eq 'telephone' && $vo[$v['field']] neq ''">
+                                                            <if condition="$v.field eq 'telephone' && $vo[$v['field']] neq ''">
                                                                 <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo[$v['field']]}" data-toggle="dropdown" href="#" title="呼叫">
-                                                                                                                <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
-                                                                                                            </a>
-                                                                </if>
-                                                    </span></if>
+                                                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                                </a>
+                                                            </if>
+                                                        </span></if>
                                                     </td>
                                                 </volist>
                                                 <td  style="position: relative;">
@@ -611,14 +611,20 @@
 <script type="text/javascript">
                                         //号码呼出_guo_02/22
                                         $(document).ready(function () {
-                                            $(".call_out").on('click',function () {
+                                            $(".call_out").on('click', function () {
                                                 var tel = $(this).attr('rel');
                                                 $.post(
-                                                    "{:U('user/call_out')}",
-                                                    {tel : tel},
-                                                    function (data) {
-                                                        swal("操作成功！", "拨打电话成功,请稍等电话接通！", "success");
-                                                    }
+                                                        "{:U('user/call_out')}",
+                                                        {tel: tel},
+                                                        function (data) {
+                                                            var obj = $.parseJSON(data);
+                                                            if (obj.code) {
+                                                                swal("操作成功！", "拨打电话成功,请稍等电话接通！", "success");
+                                                                //                                     alert_crm(data.message);
+                                                            } else {
+                                                                alert_crm(obj.msg + ",请联系管理员！");
+                                                            }
+                                                        }
                                                 );
                                             });
                                         });

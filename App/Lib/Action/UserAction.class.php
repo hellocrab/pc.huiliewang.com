@@ -327,7 +327,7 @@ class UserAction extends Action {
 //        $this->offWork($timestamp);
 //        $result = json_decode($msg, true);
 //        $uuid=$result['resp']['Msg'];
-        return json_encode(['code' => $msg->meta->success ? 1:0,'msg' => $msg->meta->message]);
+        echo json_encode(['code' => $msg->meta->success ? 1:0,'msg' => $msg->meta->message]);
     }
 
     /**
