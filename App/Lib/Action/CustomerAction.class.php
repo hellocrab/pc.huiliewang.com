@@ -1388,7 +1388,7 @@ class CustomerAction extends Action {
                     $customerIdsData = $m_customer_share->where(array('by_sharing_id'=>$sharing_id))->field('customer_id')->select();
                     break;
             }
-            if($customerIdsData || $myCustomerIds){
+            if($this->_get('content')!='resource' && ($customerIdsData || $myCustomerIds)){
                 foreach ($customerIdsData as $k =>$v){
                     $customerIds[] = $v['customer_id'];
                 }
@@ -1401,6 +1401,7 @@ class CustomerAction extends Action {
             }
             if($subGoOn!=1){
                 $list = $d_v_customer->where($map)->order($order)->page($p . ',' . $listrows)->select();
+//                print_r($d_v_customer->getLastSql());die;
                 $count = $d_v_customer->where($map)->count();
             }
             $p_num = ceil($count / $listrows);
