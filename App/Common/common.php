@@ -902,7 +902,7 @@ function array_sorts($arr, $keys, $type = 'asc') {
 
 //自定义字段html输出     $field为特殊验重字段   $d_module=($ModuelView)  $special为contacts时，用于客户添加时的联系人字段名处理
 function field_list_html($type = "add", $module = "", $d_module = array(), $special) {
-    if ($type == "add") {
+    if ($type == "add" || $type == "edit") {
         if ($module == 'customer') {
             $field_list = M('Fields')->where(array('model' => $module, 'in_add' => 1))->order('order_id')->select();
         } else {
@@ -911,7 +911,6 @@ function field_list_html($type = "add", $module = "", $d_module = array(), $spec
     } else {
         $field_list = M('Fields')->where('model = "' . $module . '"')->order('order_id')->select();
     }
-
 //	var_dump($field_list);exit();
     foreach ($field_list as $k => $v) {
         if (trim($v['input_tips'])) {
