@@ -155,7 +155,7 @@
                                     <select class="form-control select2" style="min-width:165px;max-width: 165px;height: 0px;" name="status" id="status" onchange="changeRole()">
                                         <option class="all" selected value="-1">回款状态</option>
                                         <option value="1" <if condition="$_GET['status'] eq 1">selected</if> >完成</option>
-                                        <option value="0" <if condition="$_GET['status'] eq 0">selected</if> >未完成</option>
+                                        <option value="0" <if condition="isset($_GET['status']) && $_GET['status'] eq 0">selected</if> >未完成</option>
                                         <option value="2" <if condition="$_GET['status'] eq 2">selected</if> >逾期未完成</option>
                                     </select>
                                 </div>

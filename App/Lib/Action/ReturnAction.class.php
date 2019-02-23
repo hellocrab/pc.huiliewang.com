@@ -489,7 +489,7 @@ class ReturnAction extends Action
     public function record_index(){
 
         $data = I('between_date','');
-        $status = I('status','');
+        $status = I('status','-1');
 
         $start_time = strtotime('-1 year');
         $end_time = strtotime(date('Y-m-d H:i:s'));
@@ -501,7 +501,7 @@ class ReturnAction extends Action
             $end_time = $between_date[1] ? strtotime(date('Y-m-d 23:59:59', strtotime($between_date[1]))) : strtotime(date('Y-m-d 23:59:59', time()));
         }
         $start_date = date('Y-m-d', $start_time);
-        $end_date = date('Y-m-d', $end_time);
+        $end_date = date('Y-m-d 23:59:59', $end_time);
 
         $where = [];
         $where['mx_payment_planperiod.ontime'] = [['gt',$start_date],['lt',$end_date]];
@@ -541,7 +541,7 @@ class ReturnAction extends Action
             ->order('mx_payment_record.Id desc')
             ->select();
 //        $data = M("payment_record")->Page($p.','.$listrows)->order('Id desc')->select();
-//        var_dump($data,M()->getLastSql());die;
+//        prin_r(M()->getLastSql());die;
 //        foreach ($data as $k => $v){
 //            $plan_id = M("payment_planperiod")->where(array('Id'=>intval($v['periodplan_id'])))->getField('plan_id');
 //            $data[$k]['nums'] = M("payment_planperiod")->where(array('Id'=>intval($v['periodplan_id'])))->getField('num');
