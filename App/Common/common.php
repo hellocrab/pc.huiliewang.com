@@ -2980,3 +2980,60 @@ function bd_encrypt($gg_lon, $gg_lat) {
     $data['bd_lat'] = round($bd_lat, 6);
     return $data;
 }
+
+function timeplug(){
+    //（计算开始、结束时间距今天的天数）
+    $daterange = array();
+    //上个月
+    $daterange[0]['start_day'] = (strtotime(date('Y-m-d', time())) - strtotime(date('Y-m-d', mktime(0, 0, 0, date('m') - 1, 1, date('Y'))))) / 86400;
+    $daterange[0]['end_day'] = (strtotime(date('Y-m-d', time())) - strtotime(date('Y-m-01 00:00:00'))) / 86400;
+    //本月
+    $daterange[1]['start_day'] = (strtotime(date('Y-m-d', time())) - strtotime(date('Y-m-01 00:00:00'))) / 86400;
+    $daterange[1]['end_day'] = 0;
+    //上季度
+    $month = date('m');
+    if ($month == 1 || $month == 2 || $month == 3) {
+        $year = date('Y') - 1;
+        $daterange_start_time = strtotime(date($year . '-10-01 00:00:00'));
+        $daterange_end_time = strtotime(date($year . '-12-31 23:59:59'));
+    } elseif ($month == 4 || $month == 5 || $month == 6) {
+        $daterange_start_time = strtotime(date('Y-01-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-03-31 23:59:59"));
+    } elseif ($month == 7 || $month == 8 || $month == 9) {
+        $daterange_start_time = strtotime(date('Y-04-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-06-30 23:59:59"));
+    } else {
+        $daterange_start_time = strtotime(date('Y-07-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-09-30 23:59:59"));
+    }
+    $daterange[2]['start_day'] = (strtotime(date('Y-m-d', time())) - $daterange_start_time) / 86400;
+    $daterange[2]['end_day'] = (strtotime(date('Y-m-d', time())) - $daterange_end_time - 1) / 86400;
+    //本季度
+    $month = date('m');
+    if ($month == 1 || $month == 2 || $month == 3) {
+        $daterange_start_time = strtotime(date('Y-01-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-03-31 23:59:59"));
+    } elseif ($month == 4 || $month == 5 || $month == 6) {
+        $daterange_start_time = strtotime(date('Y-04-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-06-30 23:59:59"));
+    } elseif ($month == 7 || $month == 8 || $month == 9) {
+        $daterange_start_time = strtotime(date('Y-07-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-09-30 23:59:59"));
+    } else {
+        $daterange_start_time = strtotime(date('Y-10-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-12-31 23:59:59"));
+    }
+    $daterange[3]['start_day'] = (strtotime(date('Y-m-d', time())) - $daterange_start_time) / 86400;
+    $daterange[3]['end_day'] = 0;
+    //上一年
+    $year = date('Y') - 1;
+    $daterange_start_time = strtotime(date($year . '-01-01 00:00:00'));
+    $daterange_end_time = strtotime(date('Y-01-01 00:00:00'));
+    $daterange[4]['start_day'] = (strtotime(date('Y-m-d', time())) - $daterange_start_time) / 86400;
+    $daterange[4]['end_day'] = (strtotime(date('Y-m-d', time())) - $daterange_end_time) / 86400;
+    //本年度
+    $daterange_start_time = strtotime(date('Y-01-01 00:00:00'));
+    $daterange[5]['start_day'] = (strtotime(date('Y-m-d', time())) - $daterange_start_time) / 86400;
+    $daterange[5]['end_day'] = 0;
+    return $daterange;
+}

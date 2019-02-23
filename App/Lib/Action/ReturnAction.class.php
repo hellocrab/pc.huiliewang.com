@@ -266,11 +266,12 @@ class ReturnAction extends Action
 
     public function index(){
         $this->timeSearch();
-        $search_peoject = $_GET['search_project'] ? BaseUtils::getStr($_GET['search_project'],'string'): '';
+        $search_peoject = $_GET['search_project'] ? trim(BaseUtils::getStr($_GET['search_project'],'string')): '';
         $start_time = $_GET['start_time'] ? BaseUtils::getStr($_GET['start_time'],'string'): '';
         $end_time = $_GET['end_time'] ? BaseUtils::getStr($_GET['end_time'],'string'): '';
-        
-        
+        $status = $_GET['status'] ? BaseUtils::getStr($_GET['status'],'int'): '';
+
+
         $where = array();
         $below_ids = getPerByAction(MODULE_NAME,ACTION_NAME,true); //权限问题
 
@@ -280,15 +281,23 @@ class ReturnAction extends Action
         if($start_time && $end_time){
             $where['pp.ontime'] = array('between',array($start_time,$end_time));
         }
-        
+
         if(!$start_time && $end_time){
             $where['pp.ontime'] = array('between',array(date('Y-m-d',strtotime("-1years",strtotime($end_time))),$end_time));//自动计算1年前的 日期
         }
-        
+
         if(!$end_time && $start_time){
             $where['pp.ontime'] = array('between',array($start_time,date('Y-m-d',strtotime("+1years",strtotime($start_time)))));//自动计算1年后的 日期
         }
-        
+
+        //状态
+        if($status >=0){
+            $status <= 1 && $where['mx_payment_plan.pstatus'] = intval($status);
+            if($status == 2){ //逾期
+                $where['mx_payment_plan.pstatus'] = 0;
+                !$end_time &&  $where['pp.ontime'] = ['lt',date('Y-m-d')];
+            }
+        }
         //分页
         if($_GET['listrows']){
             $listrows = intval($_GET['listrows']);
@@ -307,7 +316,13 @@ class ReturnAction extends Action
         if($p_num<$p){
             $p = $p_num;
         }
-        $data = M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->order("mx_payment_plan.Id desc")->Page($p.','.$listrows)->select();
+        $data = M("payment_plan")
+            ->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')
+            ->where($where)
+            ->group('pp.plan_id')
+            ->order("mx_payment_plan.Id desc")
+            ->Page($p.','.$listrows)
+            ->select();
 //        $count =M("payment_plan")->join('left join mx_payment_planperiod pp ON mx_payment_plan.Id = pp.plan_id')->where($where)->group('pp.plan_id')->count() ? count($data) : '0';
         $count = $count ? $count : '0';
 
@@ -473,6 +488,30 @@ class ReturnAction extends Action
      */
     public function record_index(){
 
+        $data = I('between_date','');
+        $status = I('status','');
+
+        $start_time = strtotime('-1 year');
+        $end_time = strtotime(date('Y-m-d H:i:s'));
+        if (I('between_date')) {
+            $between_date = explode(' - ', trim($data));
+            if ($between_date[0]) {
+                $start_time = strtotime($between_date[0]);
+            }
+            $end_time = $between_date[1] ? strtotime(date('Y-m-d 23:59:59', strtotime($between_date[1]))) : strtotime(date('Y-m-d 23:59:59', time()));
+        }
+        $start_date = date('Y-m-d', $start_time);
+        $end_date = date('Y-m-d', $end_time);
+
+        $where = [];
+        $where['mx_payment_planperiod.ontime'] = [['gt',$start_date],['lt',$end_date]];
+        if($status >=0){
+            $status <= 1 && $where['mx_payment_plan.pstatus'] = intval($status);
+            if($status == 2){ //逾期
+                $where['mx_payment_plan.pstatus'] = 0;
+             }
+        }
+
         //分页
         if($_GET['listrows']){
             $listrows = intval($_GET['listrows']);
@@ -483,24 +522,40 @@ class ReturnAction extends Action
         }
         $this->listrows = $listrows;
         import('@.ORG.Page');// 导入分页类
-        $count =M("payment_record")->count() ? M("payment_record")->count() : '0';
+        $count  = M("payment_record")
+            ->join('mx_payment_planperiod  on mx_payment_planperiod.Id = mx_payment_record.periodplan_id')
+            ->join('mx_payment_plan on mx_payment_plan.Id = mx_payment_planperiod.plan_id')
+            ->where($where)
+            ->count();
         $p_num = ceil($count/$listrows);
         $p = isset($_GET['p'])?$_GET['p']:1;
         if($p_num<$p){
             $p = $p_num;
         }
-        $data = M("payment_record")->Page($p.','.$listrows)->order('Id desc')->select();
-        foreach ($data as $k => $v){
-            $plan_id = M("payment_planperiod")->where(array('Id'=>intval($v['periodplan_id'])))->getField('plan_id');
-            $data[$k]['nums'] = M("payment_planperiod")->where(array('Id'=>intval($v['periodplan_id'])))->getField('num');
-            $data[$k]['customer'] = M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('customer');
-            $data[$k]['business'] = M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('business');
-            $data[$k]['ontime'] = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($data[$k]['nums'])))->getField('ontime');
-        }
+        $data = M("payment_record")
+            ->field('mx_payment_record.*,mx_payment_plan.customer as customer,mx_payment_plan.business as business,mx_payment_planperiod.num as nums,mx_payment_planperiod.ontime')
+            ->join('mx_payment_planperiod  on mx_payment_planperiod.Id = mx_payment_record.periodplan_id')
+            ->join('mx_payment_plan on mx_payment_plan.Id = mx_payment_planperiod.plan_id')
+            ->where($where)
+            ->Page($p.','.$listrows)
+            ->order('mx_payment_record.Id desc')
+            ->select();
+//        $data = M("payment_record")->Page($p.','.$listrows)->order('Id desc')->select();
+//        var_dump($data,M()->getLastSql());die;
+//        foreach ($data as $k => $v){
+//            $plan_id = M("payment_planperiod")->where(array('Id'=>intval($v['periodplan_id'])))->getField('plan_id');
+//            $data[$k]['nums'] = M("payment_planperiod")->where(array('Id'=>intval($v['periodplan_id'])))->getField('num');
+//            $data[$k]['customer'] = M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('customer');
+//            $data[$k]['business'] = M("payment_plan")->where(array('Id'=>intval($plan_id)))->getField('business');
+//            $data[$k]['ontime'] = M("payment_planperiod")->where(array('plan_id'=>intval($plan_id),'num'=>intval($data[$k]['nums'])))->getField('ontime');
+//        }
         $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
-        $show = $Page->show();// 显示分页栏
+        $show = $Page->show();// 显示分页栏;
         $this->assign('page',$show);// 赋值分页输出
         $this->assign('plist',$data);
+        $this->assign('end_date',$end_date);
+        $this->assign('start_date',$start_date);
+        $this->assign('daterange',timeplug());
         $this->display();
     }
 
