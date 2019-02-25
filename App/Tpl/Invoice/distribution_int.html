@@ -93,3 +93,39 @@
     </div>
 </div>
 
+<script>
+    
+    $('.user_name').click(function () {
+        user_name = $(this);
+        user_id = $(this).prev();
+        $('#dialog-role-list2').dialog('open');
+        $('#dialog-role-list2').load("{:U('User/listDialogs')}");
+    });
+
+
+    $('#dialog-role-list2').dialog({
+        autoOpen: false,
+        modal: true,
+        width: 700,
+        maxHeight: 400,
+        buttons: {
+            "{:L('CONFIRM')}": function () {
+                var item = $('input:radio[name="owner"]:checked').val();
+                var name = $('input:radio[name="owner"]:checked').attr('rel');
+                if(item){
+                    user_name.val(name);
+                    user_id.val(item);
+                }
+
+                $(this).dialog("close");
+            },
+            "{:L('CANCEL')}": function () {
+                $(this).dialog("close");
+            }
+        },
+        position:["center",100]
+    });
+
+
+</script>
+

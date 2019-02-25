@@ -876,7 +876,9 @@ class ProductAction extends Action
         $resume = D("ResumeView")->where("resume.eid=%d", $eid)->find();
         $resume['label'] = explode(",", $resume['label']);
         if ($resume['startWorkyear']) {
-            $resume['exp'] = date("Y") - $resume['startWorkyear'] . "年工作经验";
+            $startYear =  date("Y");
+            strlen($resume['startWorkyear']) > 4 && $startYear = date('Y',$resume['startWorkyear']);
+            $resume['exp'] = date("Y") - $startYear . "年工作经验";
         }
         if ($resume['location']) {
             $resume['location'] = $city_name[$resume['location']];
@@ -886,9 +888,11 @@ class ProductAction extends Action
         } else {
             $resume['age'] = date("Y") - date('Y', $resume['birthday']);
         }
+        $resume['birthday'] > 0 ? $resume['birthday'] : strtotime("{$resume['birthYear']}-{$resume['birthMouth']}");
         if (!$resume['birthMouth']) {
             $resume['birthMouth'] = date("Y") - date('m', $resume['birthday']);
         } else {
+
             $resume['birthMouth'] = '-' . $resume['birthMouth'];
         }
 
@@ -1097,7 +1101,7 @@ class ProductAction extends Action
             //            $resume['industry'] = implode(",",$arr);
         }
 
-        $resume['sex'] = $resume['sex'] = 1 ? "男" : "女";
+        $resume['sex'] = $resume['sex'] == 1 ? "男" : "女";
         $this->resume_work = M("resume_work")->where("eid=%d", $eid)->select();
         $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
         $this->resume_project = M("resume_project")->where("eid=%d", $eid)->select();

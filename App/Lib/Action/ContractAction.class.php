@@ -1536,6 +1536,7 @@ class ContractAction extends Action {
 						// $data['examine_role_id'] = $step_role_id ? : 0;
 						// $data['order_id'] = 0;
 						$data['is_checked'] = 2;
+                        $data['examine_role_id'] = $_POST['examine_role_id'] ?  intval($_POST['examine_role_id']) : intval(session('role_id')) ;
 						$data['examine_type_id'] = 0;
 						$data['order_id'] = intval($_POST['order_id'])-1;
 					} else {

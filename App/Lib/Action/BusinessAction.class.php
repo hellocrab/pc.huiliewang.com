@@ -27,7 +27,7 @@ class BusinessAction extends Action
         $this->assign("title", $title);
         $action = array(
             'permission' => array('listDialog'),
-            'allow' => array('validate', 'check', 'revert', 'getsalesfunnel', 'getcurrentstatus', 'choose', 'return_choose', 'product_view', 'advance_search', 'addduibi', 'view_ajax', 'getbusinessstatus', 'view_slide', 'view_ajax', 'project_adviser', 'project_cc', 'project_tj', 'project_interview', 'project_offer', 'project_enter', 'remove', 'msbz', 'khms', 'tjfk', 'fapiao', 'offer', 'ruzhi', 'safe', 'listajax', 'addcc', 'addgwms', 'addgw', 'addbz', 'remove', 'msbz', 'edit_project')
+            'allow' => array('validate', 'check', 'revert', 'getsalesfunnel', 'getcurrentstatus', 'choose', 'return_choose', 'product_view', 'advance_search', 'addduibi', 'view_ajax', 'getbusinessstatus', 'view_slide', 'view_ajax', 'project_adviser', 'project_cc', 'project_tj', 'project_interview', 'project_offer', 'project_enter', 'remove', 'msbz', 'khms', 'tjfk', 'fapiao', 'offer', 'ruzhi', 'safe', 'listajax', 'addcc', 'addgwms', 'addgw', 'addbz', 'remove', 'msbz', 'edit_project','invoiceReCheck')
         );
         B('Authenticate', $action);
 
@@ -1906,7 +1906,7 @@ class BusinessAction extends Action
         if ($this->isPost()) {
 
             unset($_POST['id']);
-            unset($_POST['content']);
+//            unset($_POST['content']);
             if ($_POST['ispresent']) {
                 $data['ispresent'] = $_POST['ispresent'];
                 M("fine_project")->where("id=%d", $id)->save($data);
@@ -1934,6 +1934,51 @@ class BusinessAction extends Action
             }
         }
         $this->assign("pro_type", $this->pro_type);
+        $this->display();
+    }
+    
+    public function invoiceReCheck()
+    {
+        $invoice_id = BaseUtils::getStr($_GET['id']);
+        $m_invoice = M('Invoice');
+        $m_fineProject = M('fine_project');
+        //生成编号
+        if ($this->isPost()) {
+            $invoice_id = BaseUtils::getStr($_POST['id']);
+            $projectInfo = $m_invoice->where(['invoice_id' => $invoice_id])->field('project_id,fine_id')->find();
+            try {
+                $update = [];
+                $update['cost_type'] = $_POST['cost_type'] ? BaseUtils::getStr($_POST['cost_type']) : '';
+                $update['billing_type'] = $_POST['billing_type'] ? BaseUtils::getStr($_POST['billing_type']) : '';
+                $update['invoice_header'] = $_POST['invoice_header'] ? BaseUtils::getStr($_POST['invoice_header']) : '';
+                $update['number'] = $_POST['number'] ? BaseUtils::getStr($_POST['number']) : '';
+                $update['content'] = $_POST['content'] ? BaseUtils::getStr($_POST['content']) : '';
+                $update['price'] = $_POST['price'] ? BaseUtils::getStr($_POST['price']) : '';
+                $update['description'] = $_POST['description'] ? BaseUtils::getStr($_POST['description']) : '';
+                
+                //修改到场属性
+                $ispresent = $_POST['ispresent'] ? BaseUtils::getStr($_POST['ispresent']) : '';
+                $fineProjectInfo = $m_fineProject->where(['id' => $projectInfo['fine_id']])->save(['ispresent' => $ispresent]);
+
+                $update['type'] = 'apply';
+                $m_invoice->startTrans();
+                $result = $m_invoice->where(['invoice_id' => $invoice_id])->save($update);
+                $m_invoice->commit();
+                if ($result) {
+                    alert('success', '重新申请开票成功！', U("business/view", "id=" . $projectInfo['project_id']));
+                } else {
+                    $this->error('重新申请开票成功失败，请重试！');
+                }
+            } catch (Exception $ex) {
+                $m_invoice->rollback();
+            }
+        }
+
+        $invoiceInfo = $m_invoice->where(['invoice_id' => $invoice_id])->find();
+        $fineProjectInfo = $m_fineProject->where(['id' => $invoiceInfo['fine_id']])->field('ispresent')->find();
+        $this->assign("info", $invoiceInfo);
+        $this->assign("pro_type", $invoiceInfo['project_type']);
+        $this->assign("ispresent" , $fineProjectInfo['ispresent']);
         $this->display();
     }
 
