@@ -470,7 +470,7 @@ class ProductAction extends Action
 //            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
-            $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
+            $_POST['startWorkyear'] = date('Y',strtotime($_POST['startWorkyear']));
 
             $projectExp = $_POST['projectExp'];
             $eduExp = $_POST['eduExp'];
@@ -658,6 +658,11 @@ class ProductAction extends Action
 //            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
+            if($_POST['birthday']){
+                $bluck = strtotime($_POST['birthday']);
+                $_POST['birthYear'] = intval(date('Y',$bluck));
+                $_POST['birthMouth'] = intval(date("m",$bluck));
+            }
             $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
             $_POST['addtime'] = time();
             $_POST['lastupdate'] = time();
@@ -877,8 +882,9 @@ class ProductAction extends Action
         $resume['label'] = explode(",", $resume['label']);
         if ($resume['startWorkyear']) {
             $startYear =  date("Y");
-            strlen($resume['startWorkyear']) > 4 && $startYear = date('Y',$resume['startWorkyear']);
-            $resume['exp'] = date("Y") - $startYear . "年工作经验";
+//            strlen($resume['startWorkyear']) > 4 && $startYear = date('Y',$resume['startWorkyear']);
+//            $resume['exp'] = date("Y") - $startYear . "年工作经验";
+            $resume['exp'] = (intval($startYear)  -  intval($resume['startWorkyear'])).'年工作经验';
         }
         if ($resume['location']) {
             $resume['location'] = $city_name[$resume['location']];
@@ -886,7 +892,10 @@ class ProductAction extends Action
         if ($resume['birthYear']) {
             $resume['age'] = date("Y") - $resume['birthYear'];
         } else {
-            $resume['age'] = date("Y") - date('Y', $resume['birthday']);
+            if ($resume['birthday'])
+                $resume['age'] = date("Y") - date('Y', $resume['birthday']);
+            else
+                $resume['age'] = '';
         }
         $resume['birthday'] > 0 ? $resume['birthday'] : strtotime("{$resume['birthYear']}-{$resume['birthMouth']}");
         if (!$resume['birthMouth']) {
@@ -961,19 +970,21 @@ class ProductAction extends Action
         }
 
         if ($resume['job_class']) {
-            $job_class = explode(";", $resume['job_class']);
-            $resume['job_class'] = [];
+            $arr = "";
+            $job_class = explode(",", $resume['job_class']);
             foreach ($job_class as $list) {
-                $resume['job_class'][] = $list;
+                $arr[] = $job_name[$list];
             }
+            $resume['job_class'] = implode(',',$arr);
         }
 
         if ($resume['industry']) {
+            $arr = "";
             $industry = explode(",", $resume['industry']);
-            $resume['industry'] = "";
             foreach ($industry as $list) {
-                $resume['industry'][] = $industry_name[$list];
+                $arr[] = $industry_name[$list];
             }
+            $resume['now_industry'] = implode(',',$arr);
         }
         $resume['now_industry'] = $resume['now_industry'];
 
@@ -988,8 +999,8 @@ class ProductAction extends Action
         $this->resume_data = M("resume_data")->where("eid=%d", $eid)->select();
 
         //edu 
-        $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
-        $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
+//        $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
+//        $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
         $resume['school'] = $this->resume_edu[0]['schoolName'];
         $resume['creator_role_name'] = M('user')->where(['role_id'=>$resume['creator_role_id']])->getField('full_name');
 
@@ -1031,7 +1042,8 @@ class ProductAction extends Action
         $this->process = array("calllist" => "CallList", "adviser" => "顾问面试", "tj" => "简历推荐", "interview" => "客户面试", "pass" => "面试通过", "offer" => "Offer", "enter" => "入职", "safe" => "过保");
         //参与项目
         $this->project = D("ProjectView")->where("fine_project.resume_id=%d", $eid)->select();
-
+//        header('content-type:text/html;charset=utf-8');
+//        dump($resume);die;
         $this->display();
     }
 
@@ -1082,13 +1094,13 @@ class ProductAction extends Action
         }
 
         if ($resume['job_class']) {
-
+            $arr = "";
             $job_class = explode(",", $resume['job_class']);
             $resume['job_class'] = "";
             foreach ($job_class as $list) {
                 $resume['job_class'][] = $job_name[$list];
             }
-            //            $resume['job_class'] = implode(",",$arr);
+                        $resume['job_class'] = implode(",",$arr);
         }
 
         if ($resume['industry']) {

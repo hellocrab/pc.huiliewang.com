@@ -170,7 +170,9 @@
                                         <label class="col-lg-2 control-label">出生年月</label>
                                         <div class="col-lg-4">
                                             <p class="form-p">
-                                                {$resume.birthday|date="Y-m",###}
+                                                <notempty name="resume.birthday">
+                                                    {$resume.birthday|date="Y-m",###}
+                                                </notempty>
                                             </p>
                                         </div>
                                         <label class="col-lg-2 control-label">目前公司</label>
@@ -263,6 +265,7 @@
                                             <volist name="resume.job_class" id="vo">
                                                 <span class="label label-primary" style="margin-right: 5px;">{$vo}</span>
                                             </volist>
+                                            <span class="label lable-primary">{$resume.job_class}</span>
                                             <!--<span class="label label-primary">政府研发</span>-->
                                             </p>
                                         </div>
