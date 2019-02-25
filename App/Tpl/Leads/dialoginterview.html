@@ -12,21 +12,46 @@
 	<input type="hidden" name="id" value="{$leads_id}"/>
     <div class="nicescroll" style="left:0px;top:0px;">
         <table class="table table-hover dilog" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
+            <!--<tr class="tabTh" style="width: 100%;">-->
+                <!--<td  style="padding-left: 15px;text-align: left;">员工姓名</td>-->
+                <!--<td>部门</td>-->
+                <!--<td>候选人</td>-->
+                <!--<td>项目名称</td>-->
+                <!--<td>所属客户</td>-->
+            <!--</tr>-->
             <tr class="tabTh" style="width: 100%;">
-                <td  style="padding-left: 15px;text-align: left;">员工姓名</td>
+                <td style="padding-left: 15px;text-align: left;">候选人</td>
+                <td>所在公司</td>
                 <td>部门</td>
-                <td>候选人</td>
-                <td>项目名称</td>
+                <td>担任职位</td>
+                <td>性别</td>
+                <td>年龄</td>
+                <td>学历</td>
+                <td>推荐职位</td>
+                <td>面试官</td>
+                <td>初试时间</td>
+                <td>面试结果</td>
+                <td>面试结果备注</td>
+                <td>推荐顾问</td>
                 <td>所属客户</td>
             </tr>
             <tbody>
             <volist name="list" id="vo">
                 <tr>
-                    <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.tracker_name}</a></td>
-                    <td style="min-width: 100px;">{$vo.department_name}</td>
-                    <td style="min-width: 80px;"><a href="{:U('product/view','id='.$vo['eid'])}" target="_blank">{$vo.name}</a></td>
-                    <td style="min-width: 80px;"><a href="{:U('business/view','id='.$vo['business_id'])}" target="_blank">{$vo.business_name}</a></td>
-                    <td style="min-width: 80px;"><a href="{:U('customer/view', 'id='.$vo['customer_id'])}" target="_blank">{$vo.customer_name}</a></td>
+                    <td style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.name}</a></td>
+                    <td>所在公司</td>
+                    <td>部门部门</td>
+                    <td>担任职位</td>
+                    <td>性别</td>
+                    <td>年龄</td>
+                    <td>学历</td>
+                    <td>推荐职位</td>
+                    <td>面试官</td>
+                    <td>初试时间</td>
+                    <td>面试结果</td>
+                    <td>面试结果备注</td>
+                    <td>推荐顾问</td>
+                    <td>所属客户</td>
                 </tr>
             </volist>
 

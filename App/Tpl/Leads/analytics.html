@@ -157,6 +157,10 @@ $(function(){
 										<td  style="min-width:170px;padding-left: 15px;text-align: left;" nowrap="nowrap">员工姓名</td>
 										<!--<td style="min-width: 100px;">时间</td>-->
 										<td style="min-width: 100px;">部门</td>
+										<td style="min-width: 100px;">职位名称</td>
+										<td style="min-width: 100px;">callist</td>
+										<td style="min-width: 100px;">cc备注</td>
+										<td style="min-width: 100px;">顾问英文名</td>
 										<td style="min-width: 80px;">业绩</td>
 										<td style="min-width: 80px;">提成</td>
 										<td style="min-width: 80px;">回款个数</td>
@@ -176,6 +180,9 @@ $(function(){
                                     <tr class="totalnum" style="background: #70B4E8;color: #fff !important;font-size: 13px;">
                                         <td style="color:#fff;">{:L('TOTAL')}</td>
                                         <!--<td style="color:#fff;">&nbsp;</td>-->
+                                        <td style="color:#fff;"></td><td style="color:#fff;"></td>
+                                        <td style="color:#fff;"></td>
+                                        <td style="color:#fff;"></td>
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;">{$countList[integral]}</td>
                                         <td style="color:#fff;"></td>
@@ -204,6 +211,10 @@ $(function(){
 											<td>
 												{$vo.department}
 											</td>
+                                            <td>{$vo.position_name}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
 											<td>
 												{$vo.integral}
 											</td>
@@ -308,7 +319,7 @@ $(function(){
         </div>
     </div>
 </div>
-<div class="" style="display:none;" id="dialog-finenum" title="推荐企业人选数">
+<div class="" style="display:none;" id="dialog-finenum" title="推荐简历数">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
             <div class="sk-bounce1"></div>
@@ -484,7 +495,7 @@ $(function(){
     $("#dialog-bdnum").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1500,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -501,7 +512,7 @@ $(function(){
     $("#dialog-customernum").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -519,7 +530,7 @@ $(function(){
     $("#dialog-projectnum").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -537,7 +548,7 @@ $(function(){
     $("#dialog-resumenum").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -554,7 +565,7 @@ $(function(){
     $("#dialog-finenum").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -571,7 +582,7 @@ $(function(){
     $("#dialog-interview").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -588,7 +599,7 @@ $(function(){
     $("#dialog-interviewt").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -605,7 +616,7 @@ $(function(){
     $("#dialog-present").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -622,7 +633,7 @@ $(function(){
     $("#dialog-offer").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -639,7 +650,7 @@ $(function(){
     $("#dialog-offerd").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -656,7 +667,7 @@ $(function(){
     $("#dialog-enter").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -673,7 +684,7 @@ $(function(){
     $("#dialog-safe").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
