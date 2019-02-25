@@ -1906,7 +1906,7 @@ class BusinessAction extends Action
         if ($this->isPost()) {
 
             unset($_POST['id']);
-            unset($_POST['content']);
+//            unset($_POST['content']);
             if ($_POST['ispresent']) {
                 $data['ispresent'] = $_POST['ispresent'];
                 M("fine_project")->where("id=%d", $id)->save($data);
