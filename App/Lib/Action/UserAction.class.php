@@ -312,8 +312,8 @@ class UserAction extends Action {
             'Authorization:'.$auth);
         $data = ["callerNbr"=>"+86".$sourceTel,
             "calleeNbr"=>"+86".$tel ,
-            "userData"=>"4ef539c5-a6e6-4201-a072-8f42e29c3ae3",
-            "setingNbr" => "PP7568036551"];
+            "userData"=>"7be4a9ce-8ea2-4c74-b822-f4472194621d",
+            "setingNbr" => "PP2703844206"];
         $data = json_encode($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
