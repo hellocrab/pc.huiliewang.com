@@ -213,7 +213,7 @@
                                             <volist name="field_array" id="vo">
                                                 <td>{$vo.name}</td>
                                             </volist>
-                                            <td>状态</td>
+                                            <!--<td>状态</td>-->
                                             <td>操作</td>
                                             </tr>
                                             <tbody>
@@ -255,68 +255,68 @@
                                                         </span></if>
                                                     </td>
                                                 </volist>
-                                                <td  style="position: relative;">
-                                                <if condition = "$vo['r_status'] eq '想看机会'">
-                                                    <span class="label label-success editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '现状稳定'"/>
-                                                    <span class="label label-danger editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '需要联系'"/>
-                                                    <span class="label editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '推荐客户'"/>
-                                                    <span class="label label-purple editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '客户面试'"/>
-                                                    <span class="label css-Interview editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '成功Offer'"/>
-                                                    <span class="label label-primary editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '黑名单'"/>
-                                                    <span class="label label-black editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '无状态'"/>
-                                                    <span class="label label-warning editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '项目淘汰'"/>
-                                                    <span class="label label-warning editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '保证期中'"/>
-                                                    <span class="label label-warning editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '过保证期'"/>
-                                                    <span class="label label-warning editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '人选不考虑'"/>
-                                                    <span class="label label-warning editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '加入项目'"/>
-                                                    <span class="label label-warning editstatus">{$vo['r_status']}</span>
-                                                    <elseif  condition =  "$vo['r_status'] eq '空号'"/>
-                                                    <span class="label label-black editstatus">{$vo['r_status']}</span>
-                                                    <else />
-                                                    <span class="label label-primary editstatus">编辑 </span>
-                                                </if>
+                                                <!--<td  style="position: relative;">-->
+                                                <!--<if condition = "$vo['r_status'] eq '想看机会'">-->
+                                                    <!--<span class="label label-success editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '现状稳定'"/>-->
+                                                    <!--<span class="label label-danger editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '需要联系'"/>-->
+                                                    <!--<span class="label editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '推荐客户'"/>-->
+                                                    <!--<span class="label label-purple editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '客户面试'"/>-->
+                                                    <!--<span class="label css-Interview editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '成功Offer'"/>-->
+                                                    <!--<span class="label label-primary editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '黑名单'"/>-->
+                                                    <!--<span class="label label-black editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '无状态'"/>-->
+                                                    <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '项目淘汰'"/>-->
+                                                    <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '保证期中'"/>-->
+                                                    <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '过保证期'"/>-->
+                                                    <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '人选不考虑'"/>-->
+                                                    <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '加入项目'"/>-->
+                                                    <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<elseif  condition =  "$vo['r_status'] eq '空号'"/>-->
+                                                    <!--<span class="label label-black editstatus">{$vo['r_status']}</span>-->
+                                                    <!--<else />-->
+                                                    <!--<span class="label label-primary editstatus">编辑 </span>-->
+                                                <!--</if>-->
 
-                                                <div class="status_ico form-inline editable-wrap editable-select" role="form" blur="cancel">
-                                                    <div class="editable-controls form-group">
-                                                        <select class="form-control" style="vertical-align: baseline;height: 34px;">
-                                                            <option value="想看机会" label="想看机会">想看机会</option>
-                                                            <option value="现状稳定" label="现状稳定">现状稳定</option>
-                                                            <option value="需要联系" label="需要联系">需要联系</option>
-                                                            <option value="加入项目" label="加入项目">加入项目</option>
-                                                            <option value="推荐客户" label="推荐客户">推荐客户</option>
-                                                            <option value="客户面试" label="客户面试">客户面试</option>
-                                                            <option value="成功Offer" label="成功Offer">成功Offer</option>
-                                                            <option value="保证期中" label="保证期中">保证期中</option>
-                                                            <option value="过保证期" label="过保证期">过保证期</option>
-                                                            <option value="项目淘汰" label="项目淘汰">项目淘汰</option>
-                                                            <option value="人选不考虑" label="人选不考虑">人选不考虑</option>
-                                                            <option value="黑名单" label="黑名单">黑名单</option>
-                                                            <option value="空号" label="空号">空号</option>
-                                                            <option value="无状态" label="无状态">无状态</option>
-                                                        </select>
-                                                        <span class="editable-buttons">
-                                                            <button type="button" class="btn btn-primary status_btnedit">
-                                                                <span class="glyphicon glyphicon-ok"></span>
-                                                            </button>
-                                                            <button type="button" class="btn btn-default">
-                                                                <span class="glyphicon glyphicon-remove"></span>
-                                                            </button>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                </td>
+                                                <!--<div class="status_ico form-inline editable-wrap editable-select" role="form" blur="cancel">-->
+                                                    <!--<div class="editable-controls form-group">-->
+                                                        <!--<select class="form-control" style="vertical-align: baseline;height: 34px;">-->
+                                                            <!--<option value="想看机会" label="想看机会">想看机会</option>-->
+                                                            <!--<option value="现状稳定" label="现状稳定">现状稳定</option>-->
+                                                            <!--<option value="需要联系" label="需要联系">需要联系</option>-->
+                                                            <!--<option value="加入项目" label="加入项目">加入项目</option>-->
+                                                            <!--<option value="推荐客户" label="推荐客户">推荐客户</option>-->
+                                                            <!--<option value="客户面试" label="客户面试">客户面试</option>-->
+                                                            <!--<option value="成功Offer" label="成功Offer">成功Offer</option>-->
+                                                            <!--<option value="保证期中" label="保证期中">保证期中</option>-->
+                                                            <!--<option value="过保证期" label="过保证期">过保证期</option>-->
+                                                            <!--<option value="项目淘汰" label="项目淘汰">项目淘汰</option>-->
+                                                            <!--<option value="人选不考虑" label="人选不考虑">人选不考虑</option>-->
+                                                            <!--<option value="黑名单" label="黑名单">黑名单</option>-->
+                                                            <!--<option value="空号" label="空号">空号</option>-->
+                                                            <!--<option value="无状态" label="无状态">无状态</option>-->
+                                                        <!--</select>-->
+                                                        <!--<span class="editable-buttons">-->
+                                                            <!--<button type="button" class="btn btn-primary status_btnedit">-->
+                                                                <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                                            <!--</button>-->
+                                                            <!--<button type="button" class="btn btn-default">-->
+                                                                <!--<span class="glyphicon glyphicon-remove"></span>-->
+                                                            <!--</button>-->
+                                                        <!--</span>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--</td>-->
                                                 <td>
                                                     <div class="btn-group ">
                                                         <button data-toggle="dropdown" class="btn btn-white btn-xs dropdown-toggle" aria-expanded="false"><i class="fa fa-qrcode"></i></span>

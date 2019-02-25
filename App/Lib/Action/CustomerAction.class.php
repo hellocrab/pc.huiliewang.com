@@ -439,6 +439,7 @@ class CustomerAction extends Action {
                         $leads_data['contacts_id'] = $contacts_id;
                         $leads_data['transform_role_id'] = session('role_id');
                         M('Leads')->where('leads_id = %d', $leads_id)->save($leads_data);
+//                        M('Leads')->where('leads_id = %d', $leads_id)->save($leads_data);
                     }
 
                     //记录操作记录

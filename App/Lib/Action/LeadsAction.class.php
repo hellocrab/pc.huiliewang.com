@@ -969,7 +969,7 @@ class LeadsAction extends Action {
     /**
      * 线索查看页面
      *
-     * */
+     **/
     public function view() {
         $d_role = D('RoleView');
         $leads_id = $this->_get('id', 'intval');
@@ -1740,10 +1740,34 @@ class LeadsAction extends Action {
         ($role_id <= 0 && $roleIds) && $where['resume.creator_role_id'] = ['in', $roleIds];
 //        $where['resume.creator_role_id'] = $role_id;
         $where['resume.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("ResumeView")->where($where)->select();
+        $list = D("ResumeView")->where($where)->select();
+        //引入城市数据
+        include APP_PATH . "Common/city.cache.php";
+        //修改  年龄和城市
+        foreach ($list as $k => $v){
+            //修改意向城市信息
+            if ($v['intentCity']) {
+                $arr = "";
+                $intentCity = explode(",", $v['intentCity']);
+                foreach ($intentCity as $vl) {
+                    $arr[] = $city_name[$vl];
+                }
+                $list[$k]['intentCity'] = implode(",", $arr);
+            }else{
+                $list[$k]['intentCity'] = '-';
+            }
+            //按照birthYear修改年龄信息
+            if($v['birthYear'])
+                $list[$k]['age'] = intval(date("Y",time())) -  intval($v['birthYear']);
+
+        }
+        $this->assign('list',$list);
         $this->display();
     }
 
+    /*
+     * 推荐简历弹窗
+     */
     public function dialogfinenum() {
         $start_time = I("start_date");
         $end_time = I("end_date");
@@ -1754,6 +1778,8 @@ class LeadsAction extends Action {
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
+//
+//        dump($this->list);die;
         $this->display();
     }
 
@@ -1772,6 +1798,9 @@ class LeadsAction extends Action {
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
+//        dump($this->list);
+//        die;
+
         $this->display();
     }
 
@@ -2054,10 +2083,20 @@ class LeadsAction extends Action {
                 'sum(hk_num) as hkNum,sum(present_num) as presentNum,sum(safe_num) as safeNum,sum(enter_num) as enterNum ,' .
                 'sum(offerd_num) as offerdNum,sum(offer_num) as offerNum,sum(interviewt_num) as interviewtNum';
         $list = M('report_intergral')->where($map)->field('id,user_role_id,user_id,user_name,department,department_id,'.$countFields)->group('user_id')->order('integral desc,customerNum desc')->page($p, $pageSize)->select();
-//        var_dump($list);exit;
+        //增加员工职位字段
+        foreach ($list as $k => $v){
+            $position_name = D('ReportView')->where(array('role_id'=>$v['user_role_id']))->getField('position');
+            $list[$k]['position_name'] = $position_name;
+        }
+
         $countList = M('report_intergral')->field($countFields)->where($map)->find();
+
         $this->assign("list", $list);
         $this->assign("countList", $countList);
+//        header('content-type:text/html;charset=utf-8;');
+//        dump($list);
+//        dump($countList);
+//        die;
     }
 
     /**

@@ -156,14 +156,10 @@
                                                             <div class="col-sm-2">
                                                                 <select id="type_business" class="form-control">
                                                                     <option value="">全部</option>
-                                                                    <option value="线上入职快">线上入职快</option>
-                                                                    <option value="线上面试快">线上面试快</option>
-                                                                    <option value="猎上网项目">猎上网项目</option>
-                                                                    <option value="猎萝卜项目">猎萝卜项目</option>
-                                                                    <option value="线下慧简历">线下慧简历</option>
-                                                                    <option value="线下慧入职">线下慧入职</option>
-                                                                    <option value="线下慧面试">线下慧面试</option>
-                                                                    <option value="线下专业猎头">线下专业猎头</option>
+                                                                    <option value="1">面试快</option>
+                                                                    <option value="2">入职快 </option>
+                                                                    <option value="3">专业猎头</option>
+                                                                    <option value="4">慧简历</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-sm-3" style="padding-left: 60px;">
@@ -194,14 +190,10 @@
                                                             <div class="col-sm-2">
                                                                    <select id="type_business" class="form-control">
                                                                        <option value="">全部</option>
-                                                                       <option value="线上入职快">线上入职快</option>
-                                                                       <option value="线上面试快">线上面试快</option>
-                                                                       <option value="猎上网项目">猎上网项目</option>
-                                                                       <option value="猎萝卜项目">猎萝卜项目</option>
-                                                                       <option value="线下慧简历">线下慧简历</option>
-                                                                       <option value="线下慧入职">线下慧入职</option>
-                                                                       <option value="线下慧面试">线下慧面试</option>
-                                                                       <option value="线下专业猎头">线下专业猎头</option>
+                                                                       <option value="1">面试快</option>
+                                                                       <option value="2">入职快</option>
+                                                                       <option value="3">专业猎头</option>
+                                                                       <option value="4">慧简历</option>
                                                                    </select>
                                                             </div>
                                                             <div class="col-sm-3" style="padding-left: 60px;">
@@ -241,6 +233,8 @@
                                                                                             入职快
                                                                                             <elseif  condition="$vo.project_type eq 3"/> 
                                                                                             专业猎头
+                                                                                            <elseif  condition="$vo.project_type eq 4"/>
+                                                                                            慧简历
                                                                                             <else />
                                                                                             {$vo.project_type}
                                                                                         </if>
