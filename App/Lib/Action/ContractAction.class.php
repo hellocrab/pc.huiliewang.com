@@ -341,6 +341,7 @@ class ContractAction extends Action {
 					$m_contract->owner_role_id = $_POST['owner_role_id'] ? $_POST['owner_role_id'] : session('role_id');
 					$m_contract->update_time = time();
 					$m_contract->count_nums = $_POST['total_amount_val'];
+                    2 == $contract_info['is_checked'] && $m_contract->is_checked = 0;
 
 					if ($m_contract_data->create() !== false) {
 						$a = $m_contract->where(array('contract_id'=>$contract_id))->save();
