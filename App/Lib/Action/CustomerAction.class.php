@@ -2490,7 +2490,7 @@ class CustomerAction extends Action {
 
         $current_page = intval($_GET['current_page']);
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-        //ob_end_clean();
+        ob_end_clean();
         header("Content-Type: application/vnd.ms-excel;");
         header("Content-Disposition:attachment;filename=mxcrm_customer_" . date('Y-m-d', mktime()) . "_" . $current_page . ".xls");
         header("Pragma:no-cache");
