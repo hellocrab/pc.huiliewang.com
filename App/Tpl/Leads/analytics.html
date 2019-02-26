@@ -159,10 +159,10 @@ $(function(){
 										<td style="min-width: 100px;">部门</td>
 										<td style="min-width: 100px;">职位名称</td>
                                         <td style="min-width: 100px;">顾问英文名</td>
+                                        <td style="min-width: 80px;">业绩</td>
 										<td style="min-width: 100px;">callist</td>
 										<td style="min-width: 100px;">cc备注</td>
-										<td style="min-width: 80px;">业绩</td>
-										<td style="min-width: 80px;">提成</td>
+										<!--<td style="min-width: 80px;">提成</td>-->
 										<td style="min-width: 80px;">回款个数</td>
 										<td style="min-width: 80px;">新增BD数</td>
 										<td style="min-width: 80px;">新增客户数</td>
@@ -180,11 +180,11 @@ $(function(){
                                     <tr class="totalnum" style="background: #70B4E8;color: #fff !important;font-size: 13px;">
                                         <td style="color:#fff;">{:L('TOTAL')}</td>
                                         <!--<td style="color:#fff;">&nbsp;</td>-->
-                                        <td style="color:#fff;"></td><td style="color:#fff;"></td>
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;">{$countList[integral]}</td>
+                                        <td style="color:#fff;"></td>
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;"><if condition="$countList[hkNum] neq 0"><a href="javascript:void(0);" class="c_f hknum">{$countList[hkNum]}</a><else/>{$countList[hkNum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[bdNum] neq 0"><a href="javascript:void(0);" class="c_f bdnum">{$countList[bdNum]}</a><else/>{$countList[bdNum]}</if></td>
@@ -212,13 +212,13 @@ $(function(){
 												{$vo.department}
 											</td>
                                             <td>{$vo.position_name}</td>
+                                            <td>{$vo.second_name}</td>
+                                            <td>
+                                                {$vo.integral}
+                                            </td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
-											<td>
-												{$vo.integral}
-											</td>
-											<td>{$vo.get_money}</td>
+											<!--<td>{$vo.get_money}</td>-->
 											<td> <if condition="$vo['hkNum'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.user_role_id}">{$vo.hkNum}</a><else/>{$vo.hkNum}</if></td>
 											<td> <if condition="$vo['bdNum'] neq 0"><a href="javascript:void(0);" class="bdnum" data-id="{$vo.user_role_id}">{$vo.bdNum}</a><else/>{$vo['bdNum']}</if></td>
                                             <td width="80" nowrap="nowrap"> <if condition="$vo['customerNum'] neq 0"><a href="javascript:void(0);" class="customernum" data-id="{$vo.user_role_id}">{$vo.customerNum}</a><else/>{$vo['customerNum']}</if></td>
@@ -490,7 +490,8 @@ $(function(){
     })
     $(".bdnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-bdnum").dialog('open');
+        var num = $(this).text();
+        $("#dialog-bdnum").dialog('option',{title:'回款个数('+num+')'}).dialog('open');
         $("#dialog-bdnum").load('{:U("leads/dialogbd",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
 

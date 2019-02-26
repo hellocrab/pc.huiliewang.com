@@ -2083,19 +2083,20 @@ class LeadsAction extends Action {
                 'sum(hk_num) as hkNum,sum(present_num) as presentNum,sum(safe_num) as safeNum,sum(enter_num) as enterNum ,' .
                 'sum(offerd_num) as offerdNum,sum(offer_num) as offerNum,sum(interviewt_num) as interviewtNum';
         $list = M('report_intergral')->where($map)->field('id,user_role_id,user_id,user_name,department,department_id,'.$countFields)->group('user_id')->order('integral desc,customerNum desc')->page($p, $pageSize)->select();
-        //增加员工职位字段
+        //增加员工职位字段和顾问英文名字段
         foreach ($list as $k => $v){
             $position_name = D('ReportView')->where(array('role_id'=>$v['user_role_id']))->getField('position');
+            $second_name = M("User")->where(array('user_id'=>intval($v['user_id'])))->getField('second_name');
             $list[$k]['position_name'] = $position_name;
+            $list[$k]['second_name'] = $second_name;
         }
-
         $countList = M('report_intergral')->field($countFields)->where($map)->find();
 
         $this->assign("list", $list);
         $this->assign("countList", $countList);
 //        header('content-type:text/html;charset=utf-8;');
 //        dump($list);
-//        dump($countList);
+////        dump($countList);
 //        die;
     }
 
@@ -2131,6 +2132,11 @@ class LeadsAction extends Action {
                 $start_time = strtotime($between_date[0]);
             }
             $end_time = $between_date[1] ? strtotime(date('Y-m-d 00:00:00', strtotime($between_date[1]))) : strtotime(date('Y-m-d 00:00:00', time()));
+            //当时间是某具体的一天时
+            if($between_date[0] == $between_date[1]){
+                $start_time = strtotime(date('Y-m-d 00:00:00', strtotime($between_date[1])));
+                $end_time = $start_time + 86400;
+            }
         } else {
             $start_time = strtotime(date('Y-m-01 00:00:00'));
             $end_time = strtotime(date('Y-m-d H:i:s'));
