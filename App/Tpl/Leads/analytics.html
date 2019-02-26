@@ -618,7 +618,7 @@ $(function(){
     });
     $(".presentnum").click(function () {
         var id = $(this).attr("data-id");
-        var num = $(this).text();
+        var num =  $(this).text();
         $("#dialog-present").dialog('option',{title:'到场数('+num+')'}).dialog('open');
         $("#dialog-present").load('{:U("leads/dialogpresent",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
     })
