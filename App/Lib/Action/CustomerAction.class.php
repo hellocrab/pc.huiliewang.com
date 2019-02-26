@@ -1007,19 +1007,16 @@ class CustomerAction extends Action {
                         $search = is_numeric($search) ? $search : strtotime($search);
                 }
                 if ($field == 'name' && $search) {
-                    //$where['name'] = array('like',$search);
-                    $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
-                    $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
-                    $contacts_str = implode(',', $contacts_ids);
-                    if ($contacts_str) {
+                    $contactsCustomerIds = CustomerModel::getIdsByContact($search);
+                    if ($contactsCustomerIds) {
                         $field_where = array();
                         $field_where['customer.name'] = array('like', '%' . $search . '%');
-                        $field_where['r_contacts_customer.contacts_id'] = array('in', $contacts_str);
+                        $field_where['customer.customer_id'] = array('in', $contactsCustomerIds);
                         $field_where['_logic'] = 'OR';
                         $where['_complex'] = $field_where;
-                        // $where['_string'] = 'customer.name like "%'.$search.'%" or customer.contacts_id in ('.$contacts_str.')';
                     } else {
                         $where['customer.name'] = array('like', '%' . $search . '%');
+
                     }
                 } else {
                     switch ($condition) {
@@ -1366,7 +1363,7 @@ class CustomerAction extends Action {
 
             import("@.ORG.Page");
             $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
-            $myCustomerIds = M('customer')->where('owner_role_id')->getField('customer_id', true);
+            $myCustomerIds = M('customer')->where(['owner_role_id'=>session('role_id')])->getField('customer_id', true);
             switch ($by){
                 case 'sub':
                     if($below_ids[0]!=-1){
@@ -1401,7 +1398,8 @@ class CustomerAction extends Action {
                 $map = $where;
             }
             if($subGoOn!=1){
-                $list = $d_v_customer->where($map)->order($order)->page($p . ',' . $listrows)->select();
+//                $list = $d_v_customer->where($map)->order($order)->page($p . ',' . $listrows)->select();
+                $list = $d_v_customer->lists($map,$order,$p . ',' . $listrows);
 //                print_r($d_v_customer->getLastSql());die;
                 $count = $d_v_customer->where($map)->count();
             }

@@ -881,10 +881,9 @@ class ProductAction extends Action
         $resume = D("ResumeView")->where("resume.eid=%d", $eid)->find();
         $resume['label'] = explode(",", $resume['label']);
         if ($resume['startWorkyear']) {
-            $startYear =  date("Y");
-//            strlen($resume['startWorkyear']) > 4 && $startYear = date('Y',$resume['startWorkyear']);
-//            $resume['exp'] = date("Y") - $startYear . "年工作经验";
-            $resume['exp'] = (intval($startYear)  -  intval($resume['startWorkyear'])).'年工作经验';
+            $startYear =  $resume['startWorkyear'];
+            strlen($resume['startWorkyear']) > 4 && $startYear = date('Y',$resume['startWorkyear']);
+            $resume['exp'] = date("Y") - $startYear . "年工作经验";
         }
         if ($resume['location']) {
             $resume['location'] = $city_name[$resume['location']];
