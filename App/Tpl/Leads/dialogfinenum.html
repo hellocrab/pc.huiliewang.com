@@ -5,6 +5,12 @@
             font-weight: bold;
             background: #f5f5f6;
         }
+        .tabThFixed{
+            display:table;
+            width:100%;
+            table-layout:fixed;
+
+        }
         .dilog tr{
             height: 15px;
         }
@@ -18,6 +24,16 @@
         .form-horizontal .form-group{margin-left:0px;margin-right:0px;}
         .subnum td{
             color: #ffffff !important;
+        }
+        .mainTbody{
+            display:block;
+            height:350px;
+            overflow-y:scroll
+        }
+        .mainTbody tr{
+            display:table;
+            width:100%;
+            table-layout:fixed
         }
     </style>
     <script>
@@ -73,7 +89,8 @@
                 <!--<td>操作人</td>-->
                 <!--<td>操作时间</td>-->
             <!--</tr>-->
-            <tr class="tabTh" style="width: 100%;">
+            <tbody style="display: block;overflow-y: scroll">
+            <tr class="tabTh tabThFixed" style="width: 100%;">
                 <td>候选人</td>
                 <td>项目名称</td>
                 <td>所属客户</td>
@@ -81,7 +98,8 @@
                 <td>部门</td>
                 <td>操作时间</td>
             </tr>
-            <tbody>
+            </tbody>
+            <tbody class="mainTbody">
             <volist name="list" id="vo">
                 <tr>
                     <td style="min-width: 80px;"><a href="{:U('product/view','id='.$vo['eid'])}" target="_blank">{$vo.name}</a></td>
