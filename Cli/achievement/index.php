@@ -94,6 +94,10 @@ foreach ($userList as $userInfo) {
         $data['hk_num'] = hkNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         //15、新增bd数
         $data['bd_num'] = bdNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
+        //16、加入callist数量
+        $data['callist_num'] = callistnum( $dateStartInt, $nextDayInt, $conn);
+        //17、cc备注
+        $data['cc_num'] = ccnum($userRoleId, $dateStartInt, $nextDayInt, $conn);
 
         $dateStartInt = $nextDayInt; //时间+1天
         $dataList[] = $data;
@@ -148,6 +152,51 @@ function saveData($data, $conn)
 function presentNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     return 0;
+}
+
+/**
+ * callist数量
+ * @param $userRoleId
+ * @param $dateStartInt
+ * @param $nextDayInt
+ * @param $conn
+ * @return int
+ */
+function callistnum($dateStartInt, $nextDayInt, $conn)
+{
+    $tableProject = 'mx_fine_project';
+    $sql = "SELECT count(*) as counts FROM {$tableProject} addtime >= {$dateStartInt} and addtime < {$nextDayInt} ";
+
+    $query = $conn->query($sql);
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * cc备注数量
+ * @param $userRoleId
+ * @param $dateStartInt
+ * @param $nextDayInt
+ * @param $conn
+ * @return int
+ */
+function ccnum($userRoleId, $dateStartInt, $nextDayInt, $conn)
+{
+    $tableProject = 'mx_fine_project';
+    $tableInterview = 'mx_fine_project_cc';
+    $sql = "SELECT count(*) as counts FROM {$tableProject} as pro , {$tableInterview} as enter where enter.fine_id = pro.id and enter.role_id = {$userRoleId} and  enter.addtime >= {$dateStartInt} and enter.addtime < {$nextDayInt} ";
+
+    $query = $conn->query($sql);
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
 }
 
 /**

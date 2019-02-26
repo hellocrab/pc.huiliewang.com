@@ -184,8 +184,8 @@ $(function(){
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;">{$countList[integral]}</td>
-                                        <td style="color:#fff;"></td>
-                                        <td style="color:#fff;"></td>
+                                        <td style="color:#fff;">{$countList[callistnum]}</td>
+                                        <td style="color:#fff;">{$countList[ccnum]}</td>
                                         <td style="color:#fff;"><if condition="$countList[hkNum] neq 0"><a href="javascript:void(0);" class="c_f hknum">{$countList[hkNum]}</a><else/>{$countList[hkNum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[bdNum] neq 0"><a href="javascript:void(0);" class="c_f bdnum">{$countList[bdNum]}</a><else/>{$countList[bdNum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[customerNum] neq 0"><a href="javascript:void(0);" class="c_f customernum">{$countList[customerNum]}</a><else/>{$countList[customerNum]}</if></td>
@@ -216,8 +216,8 @@ $(function(){
                                             <td>
                                                 {$vo.integral}
                                             </td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{$vo.callistnum}</td>
+                                            <td>{$vo.ccnum}</td>
 											<!--<td>{$vo.get_money}</td>-->
 											<td> <if condition="$vo['hkNum'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.user_role_id}">{$vo.hkNum}</a><else/>{$vo.hkNum}</if></td>
 											<td> <if condition="$vo['bdNum'] neq 0"><a href="javascript:void(0);" class="bdnum" data-id="{$vo.user_role_id}">{$vo.bdNum}</a><else/>{$vo['bdNum']}</if></td>

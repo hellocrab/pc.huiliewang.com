@@ -2081,7 +2081,7 @@ class LeadsAction extends Action {
         $countFields = 'sum(integral) as integral,sum(customer_num) as customerNum,sum(project_num) as projectNum,'
                 . 'sum(resume_num) as resumeNum,sum(fine_project_num) as fineNum,sum(interview_num) as interviewNum,sum(bd_num) as bdNum,' .
                 'sum(hk_num) as hkNum,sum(present_num) as presentNum,sum(safe_num) as safeNum,sum(enter_num) as enterNum ,' .
-                'sum(offerd_num) as offerdNum,sum(offer_num) as offerNum,sum(interviewt_num) as interviewtNum';
+                'sum(offerd_num) as offerdNum,sum(offer_num) as offerNum,sum(interviewt_num) as interviewtNum , sum(callist_num) as callistnum , sum(cc_num) as ccnum' ;
         $list = M('report_intergral')->where($map)->field('id,user_role_id,user_id,user_name,department,department_id,'.$countFields)->group('user_id')->order('integral desc,customerNum desc')->page($p, $pageSize)->select();
         //增加员工职位字段和顾问英文名字段
         foreach ($list as $k => $v){
@@ -2096,7 +2096,7 @@ class LeadsAction extends Action {
         $this->assign("countList", $countList);
 //        header('content-type:text/html;charset=utf-8;');
 //        dump($list);
-////        dump($countList);
+//        dump($countList);
 //        die;
     }
 
