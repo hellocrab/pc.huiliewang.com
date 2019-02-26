@@ -902,6 +902,7 @@ class CustomerAction extends Action {
      *
      * */
     public function index() {
+//        var_dump(session('role_id'));exit;
         $d_v_customer = D('CustomerView');
         $m_contract = M('Contract');
         if ($_GET['content'] != 'resource' && empty($_GET['scene_id'])) {
@@ -1390,10 +1391,12 @@ class CustomerAction extends Action {
                 foreach ($customerIdsData as $k =>$v){
                     $customerIds[] = $v['customer_id'];
                 }
-                $ids = array_unique(array_merge($myCustomerIds,$customerIds));
-                $map['customer_id'] = array('in',$ids);
-                $map['_complex'] = $where;
-                $map['_logic'] = 'and';
+                $ids = array_unique(array_merge($myCustomerIds, $customerIds));
+                if (!empty($ids)) {
+                    $map['customer_id'] = array('in', $ids);
+                    $map['_complex'] = $where;
+                    $map['_logic'] = 'and';
+                }
             }else{
                 $map = $where;
             }
