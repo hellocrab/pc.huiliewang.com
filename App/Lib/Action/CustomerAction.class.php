@@ -1364,6 +1364,7 @@ class CustomerAction extends Action {
 
             import("@.ORG.Page");
             $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
+            $customerIds =[];
             $myCustomerIds = M('customer')->where(['owner_role_id'=>session('role_id')])->getField('customer_id', true);
             switch ($by){
                 case 'sub':
@@ -1387,11 +1388,13 @@ class CustomerAction extends Action {
                     $customerIdsData = $m_customer_share->where(array('by_sharing_id'=>$sharing_id))->field('customer_id')->select();
                     break;
             }
+
             if($this->_get('content')!='resource' && ($customerIdsData || $myCustomerIds)){
                 foreach ($customerIdsData as $k =>$v){
                     $customerIds[] = $v['customer_id'];
                 }
                 $ids = array_unique(array_merge($myCustomerIds, $customerIds));
+
                 if (!empty($ids)) {
                     $map['customer_id'] = array('in', $ids);
                     $map['_complex'] = $where;
