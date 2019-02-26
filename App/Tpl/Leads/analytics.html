@@ -484,6 +484,8 @@ $(function(){
 	$(".hknum").click(function () {
 	    var id = $(this).attr("data-id");
         $("#dialog-hknum").dialog('open');
+        var num = $(this).text();
+        $("#dialog-customernum").dialog('option',{title:'回款个数('+num+')'}).dialog('open');
         $("#dialog-hknum").load('{:U("leads/dialoghk",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $(".bdnum").click(function () {
@@ -506,7 +508,8 @@ $(function(){
     });
 	$(".customernum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-customernum").dialog('open');
+        var num = $(this).text();
+        $("#dialog-customernum").dialog('option',{title:'新增客户数('+num+')'}).dialog('open');
         $("#dialog-customernum").load('{:U("leads/dialogcustomer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-customernum").dialog({
@@ -524,7 +527,8 @@ $(function(){
 
     $(".projectnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-projectnum").dialog('open');
+        var num = $(this).text();
+        $("#dialog-projectnum").dialog('option',{title:'新增项目数('+num+')'}).dialog('open');
         $("#dialog-projectnum").load('{:U("leads/dialogprojectnum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-projectnum").dialog({
@@ -542,7 +546,8 @@ $(function(){
 
 	$(".resumenum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-resumenum").dialog('open');
+        var num = $(this).text();
+        $("#dialog-resumenum").dialog('option',{title:'新增简历数('+num+')'}).dialog('open');
         $("#dialog-resumenum").load('{:U("leads/dialogresumenum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-resumenum").dialog({
@@ -559,7 +564,8 @@ $(function(){
     });
 	$(".finenum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-finenum").dialog('open');
+        var num = $(this).text();
+        $("#dialog-finenum").dialog('option',{title:'推荐简历数('+num+')'}).dialog('open');
         $("#dialog-finenum").load('{:U("leads/dialogfinenum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-finenum").dialog({
@@ -576,7 +582,8 @@ $(function(){
     });
 	$(".interviewnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-interview").dialog('open');
+        var num = $(this).text();
+        $("#dialog-interview").dialog('option',{title:'面试人数('+num+')'}).dialog('open');
         $("#dialog-interview").load('{:U("leads/dialoginterview",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-interview").dialog({
@@ -593,7 +600,8 @@ $(function(){
     });
     $(".interviewtnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-interviewt").dialog('open');
+        var num = $(this).text();
+        $("#dialog-interviewt").dialog('option',{title:'面试次数('+num+')'}).dialog('open');
         $("#dialog-interviewt").load('{:U("leads/dialoginterviewt",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-interviewt").dialog({
@@ -610,7 +618,8 @@ $(function(){
     });
     $(".presentnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-present").dialog('open');
+        var num = $(this).text();
+        $("#dialog-present").dialog('option',{title:'到场数('+num+')'}).dialog('open');
         $("#dialog-present").load('{:U("leads/dialogpresent",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
     })
     $("#dialog-present").dialog({
@@ -627,7 +636,8 @@ $(function(){
     });
     $(".offernum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-offer").dialog('open');
+        var num = $(this).text();
+        $("#dialog-offer").dialog('option',{title:'offer('+num+')'}).dialog('open');
         $("#dialog-offer").load('{:U("leads/dialogoffer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
     })
     $("#dialog-offer").dialog({
@@ -644,7 +654,8 @@ $(function(){
     });
     $(".offerdnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-offerd").dialog('open');
+        var num = $(this).text();
+        $("#dialog-offerd").dialog('option',{title:'掉offer数('+num+')'}).dialog('open');
         $("#dialog-offerd").load('{:U("leads/dialogofferd",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
     })
     $("#dialog-offerd").dialog({
@@ -661,7 +672,8 @@ $(function(){
     });
     $(".enternum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-enter").dialog('open');
+        var num = $(this).text();
+        $("#dialog-enter").dialog('option',{title:'入职数('+num+')'}).dialog('open');
         $("#dialog-enter").load('{:U("leads/dialogenter",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-enter").dialog({
@@ -678,7 +690,8 @@ $(function(){
     });
     $(".safenum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-safe").dialog('open');
+        var num = $(this).text();
+        $("#dialog-safe").dialog('option',{title:'过保数('+num+')'}).dialog('open');
         $("#dialog-safe").load('{:U("leads/dialogsafe",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-safe").dialog({
