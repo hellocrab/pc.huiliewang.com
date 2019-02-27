@@ -531,6 +531,26 @@ class ProductAction extends Action
                         M("resume_project")->add($data);
                     }
                 }
+                //候选人加入项目
+                $businessId = $_POST['business_id'];
+                if ($businessId) {
+                    $businessInfo = M("business")->where("business_id=%d", $businessId)->field("customer_id")->find();
+                    $data = [];
+                    $data['resume_id'] = $eid;
+                    $data['project_id'] = $_POST['business_id'];
+                    $data['tracker'] = session("role_id");
+                    $data['com_id'] = $businessInfo['customer_id'];
+                    $data['status'] = 1;
+
+                    $where = ['resume_id'=>$eid,'project_id'=>$businessId,'com_id'=>$businessInfo['customer_id']];
+                    if(!M("fine_project")->where($where)->find()){
+                        $data['addtime'] = time();
+                        M("fine_project")->add($data);
+                    }else{
+                        M("fine_project")->where($where)->save($data);
+                    }
+                    alert('success', L('PRODUCT_ADDED_SUCCESSFULLY'), U('business/view', 'id=' . $_POST['business_id']));
+                }
 
                 alert('success', L('PRODUCT_EDIT_SUCCESS'), U('product/index'));
             } else {
@@ -719,8 +739,8 @@ class ProductAction extends Action
 
 
                 if ($_POST['business_id']) {
-                    $customer_id = M("business")->where("business_id=%d", $data['business_id'])->field("customer_id")->find();
-                    $data = "";
+                    $customer_id = M("business")->where("business_id=%d", $_POST['business_id'])->field("customer_id")->find();
+                    $data = [];
                     $data['resume_id'] = $eid;
                     $data['project_id'] = $_POST['business_id'];
                     $data['tracker'] = session("role_id");
