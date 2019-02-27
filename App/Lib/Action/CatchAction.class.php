@@ -71,7 +71,7 @@ class CatchAction extends Action {
 
         $res_limit = M('catch_resumes_limit')->where(['status' => 0])->field('id,now')->order('id desc')->find();
         if (empty($res_limit)) {
-            $res1 = M('catch_resumes_limit')->where(['status' => 1])->field('now,total')->order('id desc')->find();
+            $res1 = M('catch_resumes_limit')->where(['status' => 1])->field('id,now,total')->order('id desc')->find();
             if ($res1['now'] + 1 < $res1['total']) {
                 M('catch_resumes_limit')->add(['now' => $res1['now'] + 1, 'status' => 0, time => date('Y-m-d H:i:s', time())]);
                 $limit_id = M()->getLastInsID();
@@ -101,6 +101,32 @@ class CatchAction extends Action {
                 }
                 $resumes_list = implode(',', $_list);
                 M('catch_resumes_limit')->where(['id' => $limit_id])->save(['resumes_list' => $resumes_list, 'total' => $page_count]);
+            } elseif (!$res1['total']) {
+                $header = [
+                    "Content-type: application/json;charset='utf-8'",
+                    'Host:api.zhanjob.com',
+                    "X-AUTH: {$cookie['token']}",
+                    "X-Requested-With:XMLHttpRequest",
+                    "X-USER:{$cookie['userid']}",
+                    'Origin:http://www.zhanjob.com'
+                ];
+
+                $limit_data = ['containsAny' => 0, 'pageNo' => $res1['now'], 'pageSize' => 50, 'userId' => 4929];
+                $result = Curl::send($this->resumes_list, $limit_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $header);
+                if (empty($result)) {
+                    $this->userlogin();
+                    $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                }
+                $content = json_decode($result['result']['content']);
+                $data = $content->data;
+                $page_count = $content->data->page_count;
+                $list = $content->data->list;
+
+                foreach ($list as $l) {
+                    $_list[] = $l->resumeId;
+                }
+                $resumes_list = implode(',', $_list);
+                M('catch_resumes_limit')->where(['id' => $res1['id']])->save(['resumes_list' => $resumes_list, 'total' => $page_count, 'status' => 0]);
             }
         } else {
             $header = [
@@ -127,7 +153,7 @@ class CatchAction extends Action {
                 $_list[] = $l->resumeId;
             }
             $resumes_list = implode(',', $_list);
-            M('catch_resumes_limit')->where(['id' => $limit_id])->save(['resumes_list' => $resumes_list, 'total' => $page_count]);
+            M('catch_resumes_limit')->where(['id' => $res_limit['id']])->save(['resumes_list' => $resumes_list, 'total' => $page_count]);
         }
     }
 
