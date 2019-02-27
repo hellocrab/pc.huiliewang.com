@@ -176,6 +176,10 @@ class CustomerAction extends Action {
             $owner_role_id = session('role_id');
         }
         $data['owner_role_id'] = $owner_role_id;
+        $data['customer_owner_id'] = $owner_role_id;
+        $data['customer_owner_id'] = $owner_role_id;
+        $data['customer_owner_name'] =  M("user")->where('role_id = %d', $owner_role_id)->getField('full_name');
+
         $data['update_time'] = time();
         $data['get_time'] = time();
         //是否分配需要提醒
