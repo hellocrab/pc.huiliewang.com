@@ -968,7 +968,7 @@ class CustomerAction extends Action {
                 break;
         }
         if (!isset($where['owner_role_id']) && $this->_get('content') !== 'resource') {
-            if ($by != 'deleted' && ($by != 'share' || $by != 'myshare')) {
+            if ($by != 'deleted' && $by != 'share' && $by != 'myshare') {
                 $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
             }
         }
@@ -2005,8 +2005,9 @@ class CustomerAction extends Action {
             
             //查询分享的
             $role_id = session('role_id');
-            $m_customer_share = M('customer_share')->where(['by_sharing_id' => $role_id])->field('customer_id')->select();
+            $m_customer_share = M('customer_share')->where(['by_sharing_id' => $role_id])->field('customer_id,by_sharing_id')->select();
             $sharing_id = session('role_id');
+            $customerid = [];
             foreach ($m_customer_share as $k => $v) {
                 $by_sharing_id = explode(',', $v['by_sharing_id']);
                 if (in_array($sharing_id, $by_sharing_id)) {
