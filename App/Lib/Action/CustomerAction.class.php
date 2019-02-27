@@ -176,6 +176,10 @@ class CustomerAction extends Action {
             $owner_role_id = session('role_id');
         }
         $data['owner_role_id'] = $owner_role_id;
+        $data['customer_owner_id'] = $owner_role_id;
+        $data['customer_owner_id'] = $owner_role_id;
+        $data['customer_owner_name'] =  M("user")->where('role_id = %d', $owner_role_id)->getField('full_name');
+
         $data['update_time'] = time();
         $data['get_time'] = time();
         //是否分配需要提醒
@@ -955,6 +959,20 @@ class CustomerAction extends Action {
                 break;
             case 'myshare' : $where['customer_id'] = array('in', $share_customer_ids);
                 break;
+            case 'all':
+                $ownerAllIds = implode(',', $this->_permissionRes); //所有的ID
+                !$ownerAllIds && $ownerAllIds = session('role_id');
+                $customerIdStr = implode(',', $customerid); //分享给我的
+                if($customerIdStr){
+                    $whereShare = [];
+                    $whereShare['owner_role_id'] = array('in', $ownerAllIds);
+                    $whereShare['customer.customer_id'] = array('in', $customerIdStr);
+                    $whereShare['_logic'] = 'OR';
+                    $where['_complex'] = $whereShare;
+                }else{
+                    $where['owner_role_id'] = array('in', $ownerAllIds);
+                }
+                break;
             default :
                 if ($this->_get('content') == 'resource') {
                     if ($openrecycle == 2) {
@@ -968,7 +986,7 @@ class CustomerAction extends Action {
                 break;
         }
         if (!isset($where['owner_role_id']) && $this->_get('content') !== 'resource') {
-            if ($by != 'deleted' && ($by != 'share' || $by != 'myshare')) {
+            if ($by != 'deleted' && $by != 'share' && $by != 'myshare' && $by != 'all') {
                 $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
             }
         }
@@ -1381,6 +1399,10 @@ class CustomerAction extends Action {
                     unset($myCustomerIds);
                     break;
                 case 'myshare':
+                    unset($myCustomerIds);
+                    unset($customerIdsData);
+                    break;
+                case 'all':
                     unset($myCustomerIds);
                     unset($customerIdsData);
                     break;
@@ -2005,8 +2027,9 @@ class CustomerAction extends Action {
             
             //查询分享的
             $role_id = session('role_id');
-            $m_customer_share = M('customer_share')->where(['by_sharing_id' => $role_id])->field('customer_id')->select();
+            $m_customer_share = M('customer_share')->where(['by_sharing_id' => $role_id])->field('customer_id,by_sharing_id')->select();
             $sharing_id = session('role_id');
+            $customerid = [];
             foreach ($m_customer_share as $k => $v) {
                 $by_sharing_id = explode(',', $v['by_sharing_id']);
                 if (in_array($sharing_id, $by_sharing_id)) {
