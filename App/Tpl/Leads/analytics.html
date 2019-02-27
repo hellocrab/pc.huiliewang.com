@@ -488,7 +488,7 @@ $(function(){
     $(".bdnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-bdnum").dialog('option',{title:'回款个数('+num+')'}).dialog('open');
+        $("#dialog-bdnum").dialog('option',{title:'新增BD数('+num+')'}).dialog('open');
         $("#dialog-bdnum").load('{:U("leads/dialogbd",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
 
@@ -635,7 +635,7 @@ $(function(){
     $(".offernum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-offer").dialog('option',{title:'offer('+num+')'}).dialog('open');
+        $("#dialog-offer").dialog('option',{title:'offer数('+num+')'}).dialog('open');
         $("#dialog-offer").load('{:U("leads/dialogoffer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
     })
     $("#dialog-offer").dialog({

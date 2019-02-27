@@ -98,7 +98,6 @@ foreach ($userList as $userInfo) {
         $data['callist_num'] = callistnum( $dateStartInt, $nextDayInt, $conn);
         //17、cc备注
         $data['cc_num'] = ccnum($userRoleId, $dateStartInt, $nextDayInt, $conn);
-
         $dateStartInt = $nextDayInt; //时间+1天
         $dataList[] = $data;
     }
@@ -165,8 +164,8 @@ function presentNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 function callistnum($dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
-    $sql = "SELECT count(*) as counts FROM {$tableProject} addtime >= {$dateStartInt} and addtime < {$nextDayInt} ";
-    
+    $sql = "SELECT count(*) as counts FROM {$tableProject} where addtime >= {$dateStartInt} and addtime < {$nextDayInt} ";
+
     $query = $conn->query($sql);
     if ($query) {
         $info = $query->fetch(PDO::FETCH_ASSOC);
