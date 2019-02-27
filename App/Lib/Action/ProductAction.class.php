@@ -546,7 +546,9 @@ class ProductAction extends Action
                 $alert = parseAlert();
                 $this->alert = $alert;
                 $info['birthday'] = $info['birthday'] > 0 ? $info['birthday'] : strtotime("{$info['birthYear']}-{$info['birthMouth']}");
-                $this->resume = $info;
+                $resume = $info;
+                strlen($resume['startWorkyear']) > 4 && $resume['startWorkyear'] = date('Y-m',$resume['startWorkyear']);
+                $this->assign('resume',$resume);
             }
 //            $m_warehouse = M('warehouse');
             // $this->house_list = $m_warehouse ->select();

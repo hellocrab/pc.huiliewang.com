@@ -479,13 +479,10 @@ $(function(){
         }
     });
 
-
-
 	$(".hknum").click(function () {
 	    var id = $(this).attr("data-id");
-        $("#dialog-hknum").dialog('open');
         var num = $(this).text();
-        $("#dialog-customernum").dialog('option',{title:'回款个数('+num+')'}).dialog('open');
+        $("#dialog-hknum").dialog('option',{title:'回款个数('+num+')'}).dialog('open');
         $("#dialog-hknum").load('{:U("leads/dialoghk",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $(".bdnum").click(function () {
