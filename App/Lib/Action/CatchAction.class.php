@@ -103,7 +103,31 @@ class CatchAction extends Action {
                 M('catch_resumes_limit')->where(['id' => $limit_id])->save(['resumes_list' => $resumes_list, 'total' => $page_count]);
             }
         } else {
-            exit;
+            $header = [
+                "Content-type: application/json;charset='utf-8'",
+                'Host:api.zhanjob.com',
+                "X-AUTH: {$cookie['token']}",
+                "X-Requested-With:XMLHttpRequest",
+                "X-USER:{$cookie['userid']}",
+                'Origin:http://www.zhanjob.com'
+            ];
+
+            $limit_data = ['containsAny' => 0, 'pageNo' => $res_limit['now'], 'pageSize' => 50, 'userId' => 4929];
+            $result = Curl::send($this->resumes_list, $limit_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $header);
+            if (empty($result)) {
+                $this->userlogin();
+                $cookie = M('catch_cookie')->where(['status' => 0])->find();
+            }
+            $content = json_decode($result['result']['content']);
+            $data = $content->data;
+            $page_count = $content->data->page_count;
+            $list = $content->data->list;
+
+            foreach ($list as $l) {
+                $_list[] = $l->resumeId;
+            }
+            $resumes_list = implode(',', $_list);
+            M('catch_resumes_limit')->where(['id' => $limit_id])->save(['resumes_list' => $resumes_list, 'total' => $page_count]);
         }
     }
 
