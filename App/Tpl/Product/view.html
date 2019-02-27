@@ -294,12 +294,12 @@
 
 
 
-                                            <if condition = "vo.duty">
+                                            <if condition = "$vo.duty neq ''">
                                                 <p>
                                                     <span class="titlebb">职责描述</span>
                                                 </p>
-                                                <span class="co3f14">{$vo.duty}</span>
-                                                <else />
+                                                <span class="co3f14">{$vo.duty|default=''}</span>
+                                             <else />
                                                 <p>
                                                     <span class="titlebb">岗位经历</span>
                                                 </p>
