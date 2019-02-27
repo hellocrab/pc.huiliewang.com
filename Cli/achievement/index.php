@@ -166,7 +166,7 @@ function callistnum($dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $sql = "SELECT count(*) as counts FROM {$tableProject} addtime >= {$dateStartInt} and addtime < {$nextDayInt} ";
-
+    
     $query = $conn->query($sql);
     if ($query) {
         $info = $query->fetch(PDO::FETCH_ASSOC);
