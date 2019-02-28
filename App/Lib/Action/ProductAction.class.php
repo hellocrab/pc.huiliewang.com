@@ -1027,7 +1027,7 @@ class ProductAction extends Action
         //edu 
         $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
 //        $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
-        $resume['school'] = $this->resume_edu[0]['schoolName'];
+        $resume['school'] = $this->resume_edu[count($this->resume_edu)-1]['schoolName'];
         $resume['creator_role_name'] = M('user')->where(['role_id'=>$resume['creator_role_id']])->getField('full_name');
         $this->resume_project = M("resume_project")->where("eid=%d", $eid)->select();
         $map['eid'] = $resume['eid'];
