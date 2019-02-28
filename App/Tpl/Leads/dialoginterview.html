@@ -55,20 +55,20 @@
             <tbody class="mainTbody">
             <volist name="list" id="vo">
                 <tr>
-                    <td style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.name}</a></td>
-                    <td>所在公司</td>
-                    <td>部门部门</td>
-                    <td>担任职位</td>
-                    <td>性别</td>
-                    <td>年龄</td>
-                    <td>学历</td>
-                    <td>推荐职位</td>
-                    <td>面试官</td>
-                    <td>初试时间</td>
-                    <td>面试结果</td>
-                    <td>面试结果备注</td>
-                    <td>推荐顾问</td>
-                    <td>所属客户</td>
+                    <td style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="{$vo.id}">{$vo.name}</a></td>
+                    <td>{$vo.current_company}</td>
+                    <td></td>
+                    <td>{$vo.current_job}</td>
+                    <td><if condition="$vo.sex eq '1'">男<else/>女</if></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{$vo.tracker_name}</td>
+                    <td>{$vo.customer_name}</td>
                 </tr>
             </volist>
 

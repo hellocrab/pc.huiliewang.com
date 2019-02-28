@@ -370,7 +370,7 @@
                                     <volist name="resume_edu" id="vo">
                                         <p>
                                             <span class="school">{$vo.schoolName}</span>
-                                            <span class="time">({$vo.starttime|date="Y-m",###}-{$vo.endtime|date="Y-m",###})</span>
+                                            <span class="time"><if condition="$vo.starttime neq '' && $vo.starttime neq '0'">({$vo.starttime|date="Y-m",###}-{$vo.endtime|date="Y-m",###})</if></span>
                                             <span class="major">{$vo.majorName}</span>
                                             <span class="major">
                                                 <switch name="vo.degree">
@@ -382,7 +382,6 @@
                                                 <case value="6">博士</case>
                                                 <case value="7">MBA/EMBA</case>
                                                 <case value="8">博士后</case>
-
                                                 </switch> 
                                             </span>
                                         </p>
