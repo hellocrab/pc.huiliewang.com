@@ -182,8 +182,8 @@
                                         </select>
                                         <select class="form-control" name="status_id" id="status_id" style="margin:0px 10px;width:150px;">
                                             <option value="">--请选择--</option>
-                                            <volist name= "status_list" id="vo">
-                                                <option value="{$vo['status_id']}">{$vo['name']}</option>
+                                            <volist name="businessStatusList" id="status">
+                                                <option value="{$key}">{$status}</option>
                                             </volist>
                                         </select>
                                     </div>
@@ -328,30 +328,26 @@
                                         </volist>
                                         <td class="project-completion" style="position: relative;">
                                         <if condition="$vo['status_id'] eq '99'">
-                                            <span class="label label-success jinzhan_status cur">成功的</span>
+                                            <span class="label label-success jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
+                                            <elseif condition="$vo['status_id'] eq '1'"/>
+                                            <span class="label label-warning  jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
                                             <elseif condition="$vo['status_id'] eq '2'"/>
-                                            <span class="label label-danger jinzhan_status cur">暂缓中</span>
+                                            <span class="label label-danger jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
                                             <elseif condition="$vo['status_id'] eq '98'"/>
-                                            <span class="label label-black jinzhan_status cur">项目失败</span>
+                                            <span class="label label-black jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
                                             <elseif condition="$vo['status_id'] eq '3'"/>
-                                            <span class="label label-primary jinzhan_status cur">项目取消</span>
+                                            <span class="label label-primary jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
                                             <elseif condition="$vo['status_id'] eq '100'"/>
-                                            <span class="label label-primary jinzhan_status cur">完成收款</span>
-                                            <elseif condition="$vo['status_id'] eq '4'" />
-                                            <span class="label label-danger jinzhan_status cur">等待分配</span>
+                                            <span class="label label-primary jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
                                             <else/>
-                                            <span class="label label-warning jinzhan_status cur">进展中</span>
+                                            <span class="label label-warning jinzhan_status cur">状态不存在</span>
                                         </if>
                                         <div class="status_ico form-inline editable-wrap editable-select" role="form" blur="cancel">
                                             <div class="editable-controls form-group">
                                                 <select class="form-control" style="vertical-align: baseline;height: 34px;">
-                                                    <option value="1" label="进展中">进展中</option>
-                                                    <option value="99" label="成功的">成功的</option>
-                                                    <option value="2" label="暂缓中">暂缓中</option>
-                                                    <option value="98" label="项目失败">项目失败</option>
-                                                    <option value="3" label="项目取消">项目取消</option>
-                                                    <option value="100" label="完成收款">完成收款</option>
-                                                    <option value="4" label="等待分配">等待分配</option>
+                                                    <volist name="businessStatusList" id="businessStatus" key="key">
+                                                        <option value="{$key}" label="{$businessStatus}">{$businessStatus}</option>
+                                                    </volist>
                                                 </select>
                                                 <span class="editable-buttons">
                                                     <button type="button" class="btn btn-primary jinzhan_btnedit">

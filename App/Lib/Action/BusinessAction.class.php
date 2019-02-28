@@ -558,8 +558,10 @@ class BusinessAction extends Action
         $this->status_type_list = M('BusinessType')->select();
         $status_type_id = $_GET['status_type_id'] ? intval($_GET['status_type_id']) : 1;
         //商机状态
-        $status_list = $m_business_status->where(array('type_id' => $status_type_id))->order('order_id asc')->select();
-        $this->status_list = $status_list;
+//        $status_list = $m_business_status->where(array('type_id' => $status_type_id))->order('order_id asc')->select();
+//        $this->status_list = $status_list;
+        $this->businessStatusList = $m_business_status->where(array('type_id' => $status_type_id))->order('order_id asc')->cache(true)->getField('status_id,name',true);
+//        print_r($this->businessStatusList);die;
         //自定义字段
         $field_array = getIndexFields('business');
         $name_field_array = array();
