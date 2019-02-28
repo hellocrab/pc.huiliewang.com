@@ -470,6 +470,11 @@ class ProductAction extends Action
 //            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
+            if($_POST['birthday']){
+                $bluck = $_POST['birthday'];
+                $_POST['birthYear'] = intval(date('Y',$bluck));
+                $_POST['birthMouth'] = intval(date("m",$bluck));
+            }
             $_POST['startWorkyear'] = date('Y',strtotime($_POST['startWorkyear']));
 
             $projectExp = $_POST['projectExp'];
@@ -681,7 +686,7 @@ class ProductAction extends Action
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
             if($_POST['birthday']){
-                $bluck = strtotime($_POST['birthday']);
+                $bluck = $_POST['birthday'];
                 $_POST['birthYear'] = intval(date('Y',$bluck));
                 $_POST['birthMouth'] = intval(date("m",$bluck));
             }
