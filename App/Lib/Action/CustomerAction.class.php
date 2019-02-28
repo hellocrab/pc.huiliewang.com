@@ -2117,9 +2117,13 @@ class CustomerAction extends Action {
                 $business_id[] = $v['business_id'];
             }
             //联系人信息
-            // $contacts_ids = M('rContactsCustomer')->where('customer_id = %d', $customer_id)->getField('contacts_id', true);
-            // $customer['contacts'] = M('contacts')->where('contacts_id in (%s) and is_deleted=0', implode(',', $contacts_ids))->select();
+            $contacts_ids = M('rContactsCustomer')->where('customer_id = %d', $customer_id)->getField('contacts_id', true);
+
             $customer['contacts_name'] = M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->getField('name');
+            if(!$customer['contacts_name']){
+                $contactName = M('contacts')->where('contacts_id in (%s) and is_deleted=0', implode(',', $contacts_ids))->getField('name');
+                $customer['contacts_name'] = $contactName;
+            }
             $field_list = field_list_html("edit", "customer", $customer);
             $array_field = array();
             foreach ($field_list['main'] as $k => $v) {

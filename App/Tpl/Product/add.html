@@ -144,7 +144,10 @@
                                     <label class="col-md-3 control-label">加入项目：</label>
                                     <div class="col-md-6">
                                         <input type="hidden" name="business_id" id="business_id" value="{:I('pro_id')}">
-                                        <input class="form-control" placeholder="请点击选择需要加入的项目" type="text" name="business_name" id="business_name" value="{$project_name}" readonly="true" style="cursor:pointer;" title="请点击选择">
+                                            <input class="form-control" placeholder="请点击选择需要加入的项目" type="text" name="business_name" id="business_name" value="{$project_name}" readonly="true" style="cursor:pointer;" title="请点击选择">
+                                    </div>
+                                    <div class="col-md-2 clean_business" style="color: #ff8b26">
+                                        <label for="">取消项目</label>
                                     </div>
                                 </div>
 
@@ -982,6 +985,12 @@
                 item.parent().remove();
             }
             $(this).closest(".panel-body3").remove();
+        })
+
+        //清空加入的项目
+        $('body').on("click",'.clean_business',function () {
+            $("input[name=business_id]").val('');
+            $("input[name=business_name]").val('');
         })
     })
 
