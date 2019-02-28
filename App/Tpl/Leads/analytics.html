@@ -184,8 +184,8 @@ $(function(){
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;">{$countList[integral]}</td>
-                                        <td style="color:#fff;">{$countList[callistnum]}</td>
-                                        <td style="color:#fff;">{$countList[ccnum]}</td>
+                                        <td style="color:#fff;"><if condition="$countList[callistnum] neq 0"><a href="javascript:void(0);" class="c_f callistnum">{$countList[callistnum]}</a><else/>{$countList[callistnum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[ccnum] neq 0"><a href="javascript:void(0);" class="c_f ccnum">{$countList[ccnum]}</a><else/>{$countList[ccnum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[hkNum] neq 0"><a href="javascript:void(0);" class="c_f hknum">{$countList[hkNum]}</a><else/>{$countList[hkNum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[bdNum] neq 0"><a href="javascript:void(0);" class="c_f bdnum">{$countList[bdNum]}</a><else/>{$countList[bdNum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[customerNum] neq 0"><a href="javascript:void(0);" class="c_f customernum">{$countList[customerNum]}</a><else/>{$countList[customerNum]}</if></td>
@@ -216,11 +216,11 @@ $(function(){
                                             <td>
                                                 {$vo.integral}
                                             </td>
-                                            <td>{$vo.callistnum}</td>
-                                            <td>{$vo.ccnum}</td>
+                                            <td><if condition="$vo[callistnum] neq 0"><a href="javascript:void(0);" class="callistnum" data-id="{$vo.user_role_id}">{$vo[callistnum]}</a><else/>{$vo[callistnum]}</if></td>
+                                            <td><if condition="$vo[ccnum] neq 0"><a href="javascript:void(0);" class="ccnum" data-id="{$vo.user_role_id}">{$vo[ccnum]}</a><else/>{$vo[ccnum]}</if></td>
 											<!--<td>{$vo.get_money}</td>-->
-											<td> <if condition="$vo['hkNum'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.user_role_id}">{$vo.hkNum}</a><else/>{$vo.hkNum}</if></td>
-											<td> <if condition="$vo['bdNum'] neq 0"><a href="javascript:void(0);" class="bdnum" data-id="{$vo.user_role_id}">{$vo.bdNum}</a><else/>{$vo['bdNum']}</if></td>
+											<td width="80" nowrap="nowrap"> <if condition="$vo['hkNum'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.user_role_id}">{$vo.hkNum}</a><else/>{$vo.hkNum}</if></td>
+											<td width="80" nowrap="nowrap"> <if condition="$vo['bdNum'] neq 0"><a href="javascript:void(0);" class="bdnum" data-id="{$vo.user_role_id}">{$vo.bdNum}</a><else/>{$vo['bdNum']}</if></td>
                                             <td width="80" nowrap="nowrap"> <if condition="$vo['customerNum'] neq 0"><a href="javascript:void(0);" class="customernum" data-id="{$vo.user_role_id}">{$vo.customerNum}</a><else/>{$vo['customerNum']}</if></td>
                                             <td width="80" nowrap="nowrap"> <if condition="$vo['projectNum'] neq 0"><a href="javascript:void(0);" class="projectnum" data-id="{$vo.user_role_id}">{$vo.projectNum}</a><else/>{$vo['projectNum']}</if></td>
                                             <td width="80" nowrap="nowrap"> <if condition="$vo['resumeNum'] neq 0"><a href="javascript:void(0);" class="resumenum" data-id="{$vo.user_role_id}">{$vo.resumeNum}</a><else/>{$vo['resumeNum']}</if></td>
@@ -275,6 +275,24 @@ $(function(){
     </div>
 </div>
 <div class="" style="display:none;" id="dialog-hknum" title="回款个数">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<div class="" style="display:none;" id="dialog-callistnum" title="callist">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<div class="" style="display:none;" id="dialog-ccnum" title="cc备注">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
             <div class="sk-bounce1"></div>
@@ -485,6 +503,48 @@ $(function(){
         $("#dialog-hknum").dialog('option',{title:'回款个数('+num+')'}).dialog('open');
         $("#dialog-hknum").load('{:U("leads/dialoghk",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
+    //callistnum
+    $(".callistnum").click(function () {
+        var id = $(this).attr("data-id");
+        var num = $(this).text();
+        $("#dialog-callistnum").dialog('option',{title:'callist数('+num+')'}).dialog('open');
+        $("#dialog-callistnum").load('{:U("leads/dialogcallist",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+    })
+
+    $("#dialog-callistnum").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 1500,
+        maxHeight: 700,
+        position: ["center",100],
+        buttons: {
+            "确定": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+	//cc备注
+    $(".ccnum").click(function () {
+        var id = $(this).attr("data-id");
+        var num = $(this).text();
+        $("#dialog-ccnum").dialog('option',{title:'callist数('+num+')'}).dialog('open');
+        $("#dialog-ccnum").load('{:U("leads/dialogcc",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+    })
+
+    $("#dialog-ccnum").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 1500,
+        maxHeight: 700,
+        position: ["center",100],
+        buttons: {
+            "确定": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
     $(".bdnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
