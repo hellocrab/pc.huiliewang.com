@@ -2162,6 +2162,7 @@ class CustomerAction extends Action {
         $business = M("business")->where("customer_id=%d", I('id'))->select();
         $where['customer_id'] = $customer['customer_id'];
         $this->contacts_list = $d_contacts->where($where)->select();
+        $businessStatus = M('business_status')->where(array('type_id' => 1))->order('order_id asc')->cache(true)->getField('status_id,name',true);
         foreach ($business as $key => $list) {
             if ($list['joiner']) {
                 $joiner = explode(",", $list['joiner']);
@@ -2173,6 +2174,8 @@ class CustomerAction extends Action {
                 $business[$key]['joiner'] = $arr;
 //                $business[$key]['joiner'] = implode(",",$arr);
             }
+            $business[$key]['pro_type'] = isset(C('BUSINESS_TYPE')[$list['pro_type']]) ? C('BUSINESS_TYPE')[$list['pro_type']] : '';
+            $business[$key]['status_type'] = isset($businessStatus[$list['status_id']]) ? $businessStatus[$list['status_id']] : '无状态';
         }
         $this->customer = $customer;
         $this->business = $business;
