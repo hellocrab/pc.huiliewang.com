@@ -292,37 +292,46 @@
                                                     <span class="co3f14">{$vo.salary}</span>
                                                 </p></if>
 
-                                            <p>
-                                                <span class="titlebb">岗位经历</span>
-                                            </p>
 
-                                            <volist name="vo.position" id="vp">
+
+                                            <if condition = "$vo.duty neq ''">
                                                 <p>
-                                                    <span class="co3f14">{$vp.position}</span>
-                                                    <span class="co9f13 fright">{$vp.start_date|date="Y-m",###} 至 {$vp.end_date|date="Y-m",###}</span>
+                                                    <span class="titlebb">职责描述</span>
                                                 </p>
-                                                <if condition = "$vp.department neq ''">   
-                                                    <p>
-                                                        <span class="co9f14">职位部门:</span>
-                                                        <span class="co3f14">{$vp.department}</span>
-                                                    </p></if>
+                                                <span class="co3f14">{$vo.duty|default=''}</span>
+                                             <else />
                                                 <p>
-                                                    <span class="co9f14">职位描述:</span>
-                                                    <span class="co3f14">{$vp.responsibility}</span>
+                                                    <span class="titlebb">岗位经历</span>
                                                 </p>
-                                                <if condition = "$vp.underling_num neq ''">  
+                                                <volist name="vo.position" id="vp">
                                                     <p>
-                                                        <span class="co9f14">下属人数:</span>
-                                                        <span class="co3f14">{$vp.underling_num}</span>
+                                                        <span class="co3f14">{$vp.position}</span>
+                                                        <span class="co9f13 fright">{$vp.start_date|date="Y-m",###} 至 {$vp.end_date|date="Y-m",###}</span>
                                                     </p>
-                                                </if>
-                                                <if condition = "$vp.report_to neq ''">  
+                                                    <if condition = "$vp.department neq ''">
+                                                        <p>
+                                                            <span class="co9f14">职位部门:</span>
+                                                            <span class="co3f14">{$vp.department}</span>
+                                                        </p></if>
                                                     <p>
-                                                        <span class="co9f14">汇报对象:</span>
-                                                        <span class="co3f14">{$vp.report_to}</span>
+                                                        <span class="co9f14">职位描述:</span>
+                                                        <span class="co3f14">{$vp.responsibility}</span>
                                                     </p>
-                                                </if>
-                                            </volist>
+                                                    <if condition = "$vp.underling_num neq ''">
+                                                        <p>
+                                                            <span class="co9f14">下属人数:</span>
+                                                            <span class="co3f14">{$vp.underling_num}</span>
+                                                        </p>
+                                                    </if>
+                                                    <if condition = "$vp.report_to neq ''">
+                                                        <p>
+                                                            <span class="co9f14">汇报对象:</span>
+                                                            <span class="co3f14">{$vp.report_to}</span>
+                                                        </p>
+                                                    </if>
+                                                </volist>
+                                            </if>
+
                                         </div>
                                     </volist>
                                 </div>

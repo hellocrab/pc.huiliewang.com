@@ -176,6 +176,10 @@ class CustomerAction extends Action {
             $owner_role_id = session('role_id');
         }
         $data['owner_role_id'] = $owner_role_id;
+        $data['customer_owner_id'] = $owner_role_id;
+        $data['customer_owner_id'] = $owner_role_id;
+        $data['customer_owner_name'] =  M("user")->where('role_id = %d', $owner_role_id)->getField('full_name');
+
         $data['update_time'] = time();
         $data['get_time'] = time();
         //是否分配需要提醒
@@ -3796,7 +3800,9 @@ class CustomerAction extends Action {
             } else {
                 $where['customer_id'] = array('in', $customer_ids);
                 $cus_list = $m_customer->where($where)->field('customer_id,owner_role_id')->select();
-                if ($m_customer->where($where)->setField('owner_role_id', $role_id)) {
+//                if ($m_customer->where($where)->setField('owner_role_id', $role_id)) {
+                $saveData = ['owner_role_id'=>$role_id,'customer_owner_id'=>$role_id,'customer_owner_name'=>$role_info['full_name']];
+                if ($m_customer->where($where)->save($saveData)) {
                     foreach ($cus_list as $k => $v) {
                         //查询相关客户的商机和合同
                         $old_user_name = $m_user->where('role_id =%d', $v['owner_role_id'])->getField('full_name');
