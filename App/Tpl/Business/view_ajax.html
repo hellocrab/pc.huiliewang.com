@@ -1182,6 +1182,8 @@
                             </div>
                             <elseif condition="$vo.field eq pro_type || $vo.field eq customer_id || $vo.field eq contacts_id || $vo.field eq  grade" />
 
+                            <elseif condition="$vo.field eq nextstep_time && $business_info[$vo[field]] eq 0" />
+
                             <else/>
                             <div class="col-lg-6 form_bottm">
                                 <div class="col-lg-3 text-right">{$vo.name}</div>
