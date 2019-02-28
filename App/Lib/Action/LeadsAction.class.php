@@ -1800,6 +1800,7 @@ class LeadsAction extends Action {
 //        $this->list =  D("ResumeView")->where($where)->select();
 //        dump($this->list);
 //        die;
+//        dump($this->list);die;
 
         $this->display();
     }

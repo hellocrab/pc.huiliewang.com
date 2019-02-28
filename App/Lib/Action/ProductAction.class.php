@@ -1025,11 +1025,10 @@ class ProductAction extends Action
         $this->resume_data = M("resume_data")->where("eid=%d", $eid)->select();
 
         //edu 
-//        $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
+        $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
 //        $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
         $resume['school'] = $this->resume_edu[0]['schoolName'];
         $resume['creator_role_name'] = M('user')->where(['role_id'=>$resume['creator_role_id']])->getField('full_name');
-
         $this->resume_project = M("resume_project")->where("eid=%d", $eid)->select();
         $map['eid'] = $resume['eid'];
         $map['role_id'] = session("role_id");
@@ -1038,7 +1037,6 @@ class ProductAction extends Action
             $resume['favorite'] = 1;
         }
         $this->resume = $resume;
-
 
         $m_r_customer_log = M('rResumeLog');
         $m_log = M('Log');

@@ -717,8 +717,8 @@
 
                                                                                                                 $("#table_div").scroll(function () {
                                                                                                                     var type = $('#dynamic_type').attr('value');
-                                                                                                                    var p = $('#p').val();
-                                                                                                                    var load = $('#load').val();
+                                                                                                                    var p = $('#p').val();//1
+                                                                                                                    var load = $('#load').val();//1
                                                                                                                     nScrollHight = $(this)[0].scrollHeight;
                                                                                                                     nScrollTop = $(this)[0].scrollTop;
                                                                                                                     if (loading) {
@@ -726,7 +726,7 @@
                                                                                                                     }
                                                                                                                     if (nScrollTop + nDivHight + deviation >= nScrollHight && load == 1) {
                                                                                                                         loading = true;
-                                                                                                                        //alert("滚动条到底部了");
+                                                                                                                        // alert("滚动条到底部了");
                                                                                                                         temp_loading = "";
                                                                                                                         temp_loading = "<div class='loading' id='loading'><div class='spiner-example'><div class='sk-spinner sk-spinner-three-bounce'><div class='sk-bounce1'></div><div class='sk-bounce2'></div><div class='sk-bounce3'></div></div></div></div>";
                                                                                                                         $("#message_div").scrollTop(nScrollTop + deviation + 200);
@@ -808,7 +808,7 @@
                                                                                                                                 $("#message_div").scrollTop(nScrollTop + deviation);
                                                                                                                                 $('#loading').remove();
                                                                                                                                 $("#list").append(no_data);
-                                                                                                                                loading = false;
+                                                                                                                                loading = true;
                                                                                                                             }, 1500);   //模拟延迟
                                                                                                                         }
 
