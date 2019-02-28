@@ -1959,7 +1959,7 @@ class LeadsAction extends Action {
         $role_id > 0 && $where['fine_project.tracker'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
 
-        $where['fine_project.status'] = array('egt', 8);
+//        $where['fine_project.status'] = array('egt', 8);
         $where['fine_project_safe.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $projectSafeModel = new ProjectStepViewModel('fine_project_safe');
         $this->list = $projectSafeModel->where($where)->select();
