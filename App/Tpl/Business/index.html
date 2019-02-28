@@ -183,7 +183,7 @@
                                         <select class="form-control" name="status_id" id="status_id" style="margin:0px 10px;width:150px;">
                                             <option value="">--请选择--</option>
                                             <volist name="businessStatusList" id="status">
-                                                <option value="{$key}">{$status}</option>
+                                                <option value="{$key|default=0}">{$status|default=''}</option>
                                             </volist>
                                         </select>
                                     </div>
@@ -328,17 +328,17 @@
                                         </volist>
                                         <td class="project-completion" style="position: relative;">
                                         <if condition="$vo['status_id'] eq '99'">
-                                            <span class="label label-success jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
+                                            <span class="label label-success jinzhan_status cur">{$businessStatusList[$vo['status_id']]|default=''}</span>
                                             <elseif condition="$vo['status_id'] eq '1'"/>
-                                            <span class="label label-warning  jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
+                                            <span class="label label-warning  jinzhan_status cur">{$businessStatusList[$vo['status_id']]|default=''}</span>
                                             <elseif condition="$vo['status_id'] eq '2'"/>
-                                            <span class="label label-danger jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
+                                            <span class="label label-danger jinzhan_status cur">{$businessStatusList[$vo['status_id']]|default=''}</span>
                                             <elseif condition="$vo['status_id'] eq '98'"/>
-                                            <span class="label label-black jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
+                                            <span class="label label-black jinzhan_status cur">{$businessStatusList[$vo['status_id']]|default=''}</span>
                                             <elseif condition="$vo['status_id'] eq '3'"/>
-                                            <span class="label label-primary jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
+                                            <span class="label label-primary jinzhan_status cur">{$businessStatusList[$vo['status_id']]|default=''}</span>
                                             <elseif condition="$vo['status_id'] eq '100'"/>
-                                            <span class="label label-primary jinzhan_status cur">{$businessStatusList[$vo['status_id']]}</span>
+                                            <span class="label label-primary jinzhan_status cur">{$businessStatusList[$vo['status_id']]|default=''}</span>
                                             <else/>
                                             <span class="label label-warning jinzhan_status cur">状态不存在</span>
                                         </if>
@@ -346,7 +346,7 @@
                                             <div class="editable-controls form-group">
                                                 <select class="form-control" style="vertical-align: baseline;height: 34px;">
                                                     <volist name="businessStatusList" id="businessStatus" key="key">
-                                                        <option value="{$key}" label="{$businessStatus}">{$businessStatus}</option>
+                                                        <option value="{$key|default='0'}" label="{$businessStatus|default=''}">{$businessStatus|default=''}</option>
                                                     </volist>
                                                 </select>
                                                 <span class="editable-buttons">
