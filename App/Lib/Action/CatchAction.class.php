@@ -3,21 +3,44 @@
 class CatchAction extends Action {
 
     const ZHANJOB_BASE_URL = "http://api.zhanjob.com/";
-    const USER_ACCOUNT = "1020074734@qq.com";
-    const USER_PASSWORD = "abc121224";
+    const USER_ACCOUNT1 = "1020074734@qq.com";
+    const USER_PASSWORD1 = "abc121224";
+    const USER_ACCOUNT2 = "1637071754@qq.com";
+    const USER_PASSWORD2 = "qinhaili19950624";
+    const USER_ACCOUNT3 = "yh38615890@sina.cn";
+    const USER_PASSWORD3 = "yh38615890";
+    const USER_ACCOUNT4 = "995917894@qq.com";
+    const USER_PASSWORD4 = "ghf995917894";
 
     private $login_url = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/user/login_account";
     private $resumes_list = self::ZHANJOB_BASE_URL . "zjob-resume/api/resume/library/company/resumes/limits";
     private $resumes = self::ZHANJOB_BASE_URL . "zjob-resume/api/web/resume/getResume";
     private $project_list = self::ZHANJOB_BASE_URL . "zjob-web/api/v1/project/get_con_project_page_list";
+    private $machine_ids = [
+        '172.18.69.143' => 1,
+        '172.18.69.144' => 2,
+        '172.18.69.142' => 3,
+        '172.18.69.145' => 4
+    ];
+    private $mid = 0;
 
     public function __construct() {
         parent::__construct();
+        $this->mid = $this->machine_ids[$_SERVER['SERVER_ADDR']];
         import("@.ORG.Curl");
     }
 
     public function userlogin() {
-        $login_data = ['account' => self::USER_ACCOUNT, 'password' => self::USER_PASSWORD];
+        if($this->mid == 1){
+            $login_data = ['account' => self::USER_ACCOUNT1, 'password' => self::USER_PASSWORD1];
+        }elseif ($this->mid == 2) {
+            $login_data = ['account' => self::USER_ACCOUNT2, 'password' => self::USER_PASSWORD2];
+        }elseif ($this->mid == 3) {
+            $login_data = ['account' => self::USER_ACCOUNT3, 'password' => self::USER_PASSWORD3];
+        } else {
+            $login_data = ['account' => self::USER_ACCOUNT4, 'password' => self::USER_PASSWORD4];
+        }
+        
 
         $result = Curl::send($this->login_url, $login_data, 'post', '', 1, Curl::CONTENT_TYPE_FORM_URLENCODE);
         var_dump($result);
@@ -25,16 +48,17 @@ class CatchAction extends Action {
         $token = $content->data->token;
         $auth = $content->data->auth;
         $userid = $content->data->user_id;
-        M('catch_cookie')->where(['status' => 0])->save(['status' => 1]);
-        $res = M('catch_cookie')->add(['token' => $token, 'auth' => $auth, 'userid' => $userid, 'status' => 0]);
+        M('catch_cookie')->where(['status' => 0, 'mid' => $this->mid])->save(['status' => 1]);
+        $res = M('catch_cookie')->add(['token' => $token, 'auth' => $auth, 'userid' => $userid, 'status' => 0,'mid' => $this->mid]);
     }
 
     public function getResumesLimit() {
-        $cookie = M('catch_cookie')->where(['status' => 0])->find();
+        var_dump($this->mid);
+        $cookie = M('catch_cookie')->where(['status' => 0, 'mid' => $this->mid])->find();
 
-        $a = M('catch_resumes_limit')->order('id desc')->find();
+        $a = M('catch_resumes_limit')->where(['m_id' => $this->mid])->order('id desc')->find();
         if (empty($a['id'])) {
-            $limit_data = ['containsAny' => 0, 'pageNo' => 1, 'pageSize' => 50, 'userId' => 4929];
+            $limit_data = ['containsAny' => 0, 'pageNo' => 1, 'pageSize' => 50, 'userId' => $cookie['userid']];
             $header = [
                 "Content-type: application/json;charset='utf-8'",
                 'Host:api.zhanjob.com',
@@ -48,7 +72,7 @@ class CatchAction extends Action {
 
             if (empty($result)) {
                 $this->userlogin();
-                $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                $cookie = M('catch_cookie')->where(['status' => 0, 'mid' => $this->mid])->find();
             }
             $content = json_decode($result['result']['content']);
             $data = $content->data;
@@ -59,21 +83,21 @@ class CatchAction extends Action {
                 $_list[] = $l->resumeId;
             }
             $resumes_list = implode(',', $_list);
-            M('catch_resumes_limit')->add(['total' => $page_count, 'now' => 1, 'status' => 0, 'resumes_list' => $resumes_list, time => date('Y-m-d H:i:s', time())]);
+            M('catch_resumes_limit')->add(['total' => $page_count, 'now' => 1, 'status' => 0, 'resumes_list' => $resumes_list, time => date('Y-m-d H:i:s', time()), 'm_id' => $this->mid]);
             exit;
         }
 
-        $res = M('catch_resumes_limit')->where(['status' => 2])->field('id')->order('id desc')->find();
+        $res = M('catch_resumes_limit')->where(['status' => 2, 'm_id' => $this->mid])->field('id')->order('id desc')->find();
         if ($res) {
-            M('catch_resumes_limit')->where(['id' => $res['id']])->save(['status' => 0]);
+            M('catch_resumes_limit')->where(['id' => $res['id'], 'm_id' => $this->mid])->save(['status' => 0]);
             exit;
         }
 
-        $res_limit = M('catch_resumes_limit')->where(['status' => 0])->field('id,now')->order('id desc')->find();
+        $res_limit = M('catch_resumes_limit')->where(['status' => 0, 'm_id' => $this->mid])->field('id,now,resumes_list')->order('id desc')->find();
         if (empty($res_limit)) {
-            $res1 = M('catch_resumes_limit')->where(['status' => 1])->field('id,now,total')->order('id desc')->find();
+            $res1 = M('catch_resumes_limit')->where(['status' => 1, 'm_id' => $this->mid])->field('id,now,total')->order('id desc')->find();
             if ($res1['now'] + 1 < $res1['total']) {
-                M('catch_resumes_limit')->add(['now' => $res1['now'] + 1, 'status' => 0, time => date('Y-m-d H:i:s', time())]);
+                M('catch_resumes_limit')->add(['now' => $res1['now'] + 1, 'status' => 0, time => date('Y-m-d H:i:s', time()), 'm_id' => $this->mid]);
                 $limit_id = M()->getLastInsID();
 
                 $header = [
@@ -85,11 +109,11 @@ class CatchAction extends Action {
                     'Origin:http://www.zhanjob.com'
                 ];
 
-                $limit_data = ['containsAny' => 0, 'pageNo' => $res1['now'] + 1, 'pageSize' => 50, 'userId' => 4929];
+                $limit_data = ['containsAny' => 0, 'pageNo' => $res1['now'] + 1, 'pageSize' => 50, 'userId' => $cookie['userid']];
                 $result = Curl::send($this->resumes_list, $limit_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $header);
                 if (empty($result)) {
                     $this->userlogin();
-                    $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                    $cookie = M('catch_cookie')->where(['status' => 0, 'mid' => $this->mid])->find();
                 }
                 $content = json_decode($result['result']['content']);
                 $data = $content->data;
@@ -100,7 +124,7 @@ class CatchAction extends Action {
                     $_list[] = $l->resumeId;
                 }
                 $resumes_list = implode(',', $_list);
-                M('catch_resumes_limit')->where(['id' => $limit_id])->save(['resumes_list' => $resumes_list, 'total' => $page_count]);
+                M('catch_resumes_limit')->where(['id' => $limit_id, 'm_id' => $this->mid])->save(['resumes_list' => $resumes_list, 'total' => $page_count]);
             } elseif (!$res1['total']) {
                 $header = [
                     "Content-type: application/json;charset='utf-8'",
@@ -111,11 +135,11 @@ class CatchAction extends Action {
                     'Origin:http://www.zhanjob.com'
                 ];
 
-                $limit_data = ['containsAny' => 0, 'pageNo' => $res1['now'], 'pageSize' => 50, 'userId' => 4929];
+                $limit_data = ['containsAny' => 0, 'pageNo' => $res1['now'], 'pageSize' => 50, 'userId' => $cookie['userid']];
                 $result = Curl::send($this->resumes_list, $limit_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $header);
                 if (empty($result)) {
                     $this->userlogin();
-                    $cookie = M('catch_cookie')->where(['status' => 0])->find();
+                    $cookie = M('catch_cookie')->where(['status' => 0, 'mid' => $this->mid])->find();
                 }
                 $content = json_decode($result['result']['content']);
                 $data = $content->data;
@@ -126,42 +150,48 @@ class CatchAction extends Action {
                     $_list[] = $l->resumeId;
                 }
                 $resumes_list = implode(',', $_list);
-                M('catch_resumes_limit')->where(['id' => $res1['id']])->save(['resumes_list' => $resumes_list, 'total' => $page_count, 'status' => 0]);
+                M('catch_resumes_limit')->where(['id' => $res1['id'], 'm_id' => $this->mid])->save(['resumes_list' => $resumes_list, 'total' => $page_count, 'status' => 0]);
             }
         } else {
-            $header = [
-                "Content-type: application/json;charset='utf-8'",
-                'Host:api.zhanjob.com',
-                "X-AUTH: {$cookie['token']}",
-                "X-Requested-With:XMLHttpRequest",
-                "X-USER:{$cookie['userid']}",
-                'Origin:http://www.zhanjob.com'
-            ];
+            if (!$res_limit['resumes_list']) {
+                $header = [
+                    "Content-type: application/json;charset='utf-8'",
+                    'Host:api.zhanjob.com',
+                    "X-AUTH: {$cookie['token']}",
+                    "X-Requested-With:XMLHttpRequest",
+                    "X-USER:{$cookie['userid']}",
+                    'Origin:http://www.zhanjob.com'
+                ];
 
-            $limit_data = ['containsAny' => 0, 'pageNo' => $res_limit['now'], 'pageSize' => 50, 'userId' => 4929];
-            $result = Curl::send($this->resumes_list, $limit_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $header);
-            if (empty($result)) {
-                $this->userlogin();
-                $cookie = M('catch_cookie')->where(['status' => 0])->find();
-            }
-            $content = json_decode($result['result']['content']);
-            $data = $content->data;
-            $page_count = $content->data->page_count;
-            $list = $content->data->list;
+                $limit_data = ['containsAny' => 0, 'pageNo' => $res_limit['now'], 'pageSize' => 50, 'userId' => $cookie['userid']];
+                $result = Curl::send($this->resumes_list, $limit_data, 'post', '', 1, Curl::CONTENT_TYPE_JSON, $header);
+                if (empty($result)) {
+                    $this->userlogin();
+                    $cookie = M('catch_cookie')->where(['status' => 0, 'mid' => $this->mid])->find();
+                }
+                $content = json_decode($result['result']['content']);
+                $data = $content->data;
+                $page_count = $content->data->page_count;
+                $list = $content->data->list;
 
-            foreach ($list as $l) {
-                $_list[] = $l->resumeId;
+                foreach ($list as $l) {
+                    $_list[] = $l->resumeId;
+                }
+                $resumes_list = implode(',', $_list);
+                M('catch_resumes_limit')->where(['id' => $res_limit['id'], 'm_id' => $this->mid])->save(['resumes_list' => $resumes_list, 'total' => $page_count]);
             }
-            $resumes_list = implode(',', $_list);
-            M('catch_resumes_limit')->where(['id' => $res_limit['id']])->save(['resumes_list' => $resumes_list, 'total' => $page_count]);
         }
+
+
+
     }
-
-    public function getResumes() {
-        $res = M('catch_resumes_limit')->where(['status' => 0])->field('id,now,resumes_list')->order('id desc')->find();
-        $cookie = M('catch_cookie')->where(['status' => 0])->find();
-
+    
+    public function getResumes() 
+            {
+        $res = M('catch_resumes_limit')->where(['status' => 0, 'm_id' => $this->mid])->field('id,now,resumes_list')->order('id desc')->find();
+        $cookie = M('catch_cookie')->where(['status' => 0, 'mid' => $this->mid])->find();
         $_list = explode(',', $res['resumes_list']);
+        var_dump($_list);
         try {
             if ($_list) {
                 foreach ($_list as $l) {
@@ -185,7 +215,7 @@ class CatchAction extends Action {
                         $cookie = M('catch_cookie')->where(['status' => 0])->find();
                         $result = Curl::send($this->resumes, $resumes_data, 'get', '', 1, Curl::CONTENT_TYPE_JSON, $header);
                     }
-
+                    
                     $content = json_decode($result['result']['content']);
                     $data = $content->data;
 
@@ -253,6 +283,7 @@ class CatchAction extends Action {
                     }
 
                     M('resume')->add($insert_data);
+//                    var_dump(M()->getLastSql());exit;
                     $eid = M()->getLastInsID();
 
                     //languages
@@ -352,15 +383,15 @@ class CatchAction extends Action {
                         'eid' => $eid
                     ];
                     M('resume_data')->add($resumes_data);
-                    M('catch_resumes_limit')->where(['id' => $res['id']])->save(['status' => 1]);
+                    M('catch_resumes_limit')->where(['id' => $res['id'], 'm_id' => $this->mid])->save(['status' => 1]);
                 }
-                
             } else {
 
                 exit();
             }
         } catch (Exception $ex) {
-            M('catch_resumes_limit')->where(['id' => $res['id']])->save(['status' => 2]);
+            M('catch_resumes_limit')->where(['id' => $res['id'], 'm_id' => $this->mid])->save(['status' => 2]);
         }
     }
+
 }

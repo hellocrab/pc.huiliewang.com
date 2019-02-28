@@ -126,6 +126,7 @@
 	function changeCondition1(){
 		var department = $('#d_department option:selected').val();
 		var name = $('#d_name').val();
+		name = name.trim();
 		var by = $('#dialog_by').val();
 		// $('#dialog-role-list2').load('index.php?'+$("#dd").serialize());
 		var url = "{:U('user/listdialog','d_department=')}"+department+'&d_name='+name+'&by='+by;

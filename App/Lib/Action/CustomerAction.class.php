@@ -2117,9 +2117,13 @@ class CustomerAction extends Action {
                 $business_id[] = $v['business_id'];
             }
             //联系人信息
-            // $contacts_ids = M('rContactsCustomer')->where('customer_id = %d', $customer_id)->getField('contacts_id', true);
-            // $customer['contacts'] = M('contacts')->where('contacts_id in (%s) and is_deleted=0', implode(',', $contacts_ids))->select();
+            $contacts_ids = M('rContactsCustomer')->where('customer_id = %d', $customer_id)->getField('contacts_id', true);
+
             $customer['contacts_name'] = M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->getField('name');
+            if(!$customer['contacts_name']){
+                $contactName = M('contacts')->where('contacts_id in (%s) and is_deleted=0', implode(',', $contacts_ids))->getField('name');
+                $customer['contacts_name'] = $contactName;
+            }
             $field_list = field_list_html("edit", "customer", $customer);
             $array_field = array();
             foreach ($field_list['main'] as $k => $v) {
@@ -3800,7 +3804,9 @@ class CustomerAction extends Action {
             } else {
                 $where['customer_id'] = array('in', $customer_ids);
                 $cus_list = $m_customer->where($where)->field('customer_id,owner_role_id')->select();
-                if ($m_customer->where($where)->setField('owner_role_id', $role_id)) {
+//                if ($m_customer->where($where)->setField('owner_role_id', $role_id)) {
+                $saveData = ['owner_role_id'=>$role_id,'customer_owner_id'=>$role_id,'customer_owner_name'=>$role_info['full_name']];
+                if ($m_customer->where($where)->save($saveData)) {
                     foreach ($cus_list as $k => $v) {
                         //查询相关客户的商机和合同
                         $old_user_name = $m_user->where('role_id =%d', $v['owner_role_id'])->getField('full_name');

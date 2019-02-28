@@ -470,6 +470,11 @@ class ProductAction extends Action
 //            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
+            if($_POST['birthday']){
+                $bluck = $_POST['birthday'];
+                $_POST['birthYear'] = intval(date('Y',$bluck));
+                $_POST['birthMouth'] = intval(date("m",$bluck));
+            }
             $_POST['startWorkyear'] = date('Y',strtotime($_POST['startWorkyear']));
 
             $projectExp = $_POST['projectExp'];
@@ -530,6 +535,26 @@ class ProductAction extends Action
                         $data['eid'] = $eid;
                         M("resume_project")->add($data);
                     }
+                }
+                //候选人加入项目
+                $businessId = $_POST['business_id'];
+                if ($businessId) {
+                    $businessInfo = M("business")->where("business_id=%d", $businessId)->field("customer_id")->find();
+                    $data = [];
+                    $data['resume_id'] = $eid;
+                    $data['project_id'] = $_POST['business_id'];
+                    $data['tracker'] = session("role_id");
+                    $data['com_id'] = $businessInfo['customer_id'];
+                    $data['status'] = 1;
+
+                    $where = ['resume_id'=>$eid,'project_id'=>$businessId,'com_id'=>$businessInfo['customer_id']];
+                    if(!M("fine_project")->where($where)->find()){
+                        $data['addtime'] = time();
+                        M("fine_project")->add($data);
+                    }else{
+                        M("fine_project")->where($where)->save($data);
+                    }
+                    alert('success', L('PRODUCT_ADDED_SUCCESSFULLY'), U('business/view', 'id=' . $_POST['business_id']));
                 }
 
                 alert('success', L('PRODUCT_EDIT_SUCCESS'), U('product/index'));
@@ -661,7 +686,7 @@ class ProductAction extends Action
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
             if($_POST['birthday']){
-                $bluck = strtotime($_POST['birthday']);
+                $bluck = $_POST['birthday'];
                 $_POST['birthYear'] = intval(date('Y',$bluck));
                 $_POST['birthMouth'] = intval(date("m",$bluck));
             }
@@ -719,8 +744,8 @@ class ProductAction extends Action
 
 
                 if ($_POST['business_id']) {
-                    $customer_id = M("business")->where("business_id=%d", $data['business_id'])->field("customer_id")->find();
-                    $data = "";
+                    $customer_id = M("business")->where("business_id=%d", $_POST['business_id'])->field("customer_id")->find();
+                    $data = [];
                     $data['resume_id'] = $eid;
                     $data['project_id'] = $_POST['business_id'];
                     $data['tracker'] = session("role_id");
