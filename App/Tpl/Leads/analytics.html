@@ -111,7 +111,7 @@ $(function(){
 									</div>
 								</div>
 							</div>
-							<div class="row" >
+							<div class="row">
 								<div class="col-lg-12">
 									<ul class="nav pull-left" style="margin:2px 0 0 0;">
 										<li>
@@ -637,7 +637,7 @@ $(function(){
         var num = $(this).text();
         $("#dialog-offer").dialog('option',{title:'offer数('+num+')'}).dialog('open');
         $("#dialog-offer").load('{:U("leads/dialogoffer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
-    })
+    });
     $("#dialog-offer").dialog({
         autoOpen: false,
         modal: true,
