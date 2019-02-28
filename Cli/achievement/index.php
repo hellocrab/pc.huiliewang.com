@@ -95,7 +95,7 @@ foreach ($userList as $userInfo) {
         //15、新增bd数
         $data['bd_num'] = bdNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         //16、加入callist数量
-        $data['callist_num'] = callistnum( $dateStartInt, $nextDayInt, $conn);
+        $data['callist_num'] = callistnum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         //17、cc备注
         $data['cc_num'] = ccnum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         $dateStartInt = $nextDayInt; //时间+1天
@@ -161,10 +161,10 @@ function presentNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
  * @param $conn
  * @return int
  */
-function callistnum($dateStartInt, $nextDayInt, $conn)
+function callistnum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
-    $sql = "SELECT count(*) as counts FROM {$tableProject} where addtime >= {$dateStartInt} and addtime < {$nextDayInt} ";
+    $sql = "SELECT count(*) as counts FROM {$tableProject} where addtime >= {$dateStartInt} and addtime <= {$nextDayInt} and tracker = {$userRoleId}";
 
     $query = $conn->query($sql);
     if ($query) {

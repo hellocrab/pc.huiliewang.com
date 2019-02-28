@@ -1,0 +1,94 @@
+<form name="fenpei_form" id="hknum_form" action=""  method="post">
+    <style>
+        .tabTh{
+            color: #000;
+            font-weight: bold;
+            background: #f5f5f6;
+        }
+        .tabThFixed{
+            display:table;
+            width:100%;
+            table-layout:fixed;
+        }
+        .mainTbody{
+            display:block;
+            height:350px;
+            overflow-y:scroll
+        }
+        .mainTbody tr{
+            display:table;
+            width:100%;
+            table-layout:fixed
+        }
+        .dilog tr{
+            height: 15px;
+        }
+    </style>
+    <input type="hidden" name="id" value="{$leads_id}"/>
+    <div class="nicescroll" style="left:0px;top:0px;">
+        <table class="table table-hover dilog" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
+            <!--<tr class="tabTh" style="width: 100%;">-->
+            <!--<td  style="padding-left: 15px;text-align: left;">员工姓名</td>-->
+            <!--<td>部门</td>-->
+            <!--<td>合同金额</td>-->
+            <!--<td>合同名称</td>-->
+            <!--<td>所属客户</td>-->
+            <!--<td>创建时间</td>-->
+            <!--</tr>-->
+            <tbody style="display: block;overflow-y: scroll">
+            <tr class="tabTh tabThFixed" style="width: 100%;">
+                <td  style="padding-left: 15px;text-align: left;">候选人</td>
+                <td>所在公司</td>
+                <td>部门</td>
+                <td>担任职位</td>
+                <td>性别</td>
+                <td>学历</td>
+                <td>推荐职位</td>
+                <td>电话结果</td>
+                <td>是否继续跟进</td>
+                <td>是否目标候选人</td>
+                <td>结果备注</td>
+                <td>操作时间</td>
+                <td>操作顾问</td>
+            </tr>
+            </tbody>
+            <tbody class="mainTbody">
+            <volist name="list" id="vo">
+                <tr>
+                    <td><a href="{:U('product/view', 'id='.$vo['eid'])}" target="_blank">{$vo.name}</a></td>
+                    <td>{$vo.current_company}</td>
+                    <td>{$vo.current_department}</td>
+                    <td>{$vo.current_job}</td>
+                    <td><if condition="$vo.sex eq 1">男<else/>女</if></td>
+                    <td>{$vo.edu}</td>
+                    <td>{$vo.job_class}</td>
+                    <td>{$vo.call_result}</td>
+                    <td><if condition="$vo.gj eq 0">否<else/>是</if></td>
+                    <td><if condition="$vo.target eq 0">否<else/>是</if></td>
+                    <td>
+                        {$vo.age}&nbsp;{$vo.native}&nbsp;{$vo.marital}&nbsp;<if condition="$vo.onwork eq '0'">离职<else/>在职</if>&nbsp;
+                        {$vo.company_position}&nbsp;{$vo.current_receive}&nbsp;{$vo.exp_receive}&nbsp;{$vo.off_reason}&nbsp;
+                        {$vo.chance}&nbsp;{$vo.plans}
+                    </td>
+                    <td style="padding-left: 15px;text-align: left;"><a href="javascript:void(0);" class="role_info" rel="user_id">{$vo.tracker_name}</a></td>
+                    <td>{$vo.addtime|date='Y-m-d H:i',###}</td>
+                </tr>
+            </volist>
+
+            </tbody>
+        </table>
+    </div>
+    <!--<div style="padding-left: 15px;background: #f5f5f6;height: 40px;line-height: 40px;">总共：10条结果</div>-->
+</form>
+<div style="display:none;" id="dialog-role-list2" title="{:L('SELECT_CONTACTS_OWMER')}">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+</script>
