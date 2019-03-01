@@ -1652,6 +1652,60 @@ class LeadsAction extends Action {
     }
 
     /*
+     * callist个数弹窗
+     */
+    public function dialogcallist(){
+        $start_time = I("start_date");
+        $end_time = I("end_date");
+        $role_id = I("id");
+        $where['addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $roleIds = I("roleIds",'');
+        $role_id > 0 && $where['tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['tracker'] = ['in',$roleIds];
+        $list = D("ProjectView")->where($where)->select();
+        include APP_PATH . "Common/job.cache.php";
+        foreach ($list as $k => $v){
+            if($v['job_class']){
+                $arr = [];
+                $job_class = explode(",",$v['job_class']);
+                foreach ($job_class as $fv){
+                    $arr[] = $job_name[$fv];
+                }
+                $list[$k]['job_class'] = implode(",",$arr);
+            }
+        }
+        $this->assign('list',$list);
+        $this->display();
+    }
+
+    /*
+     * cc备注弹窗
+     */
+    public function dialogcc(){
+        $start_time = I("start_date");
+        $end_time = I("end_date");
+        $role_id = I("id");
+        $where['addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $roleIds = I("roleIds",'');
+        $role_id > 0 && $where['tracker'] = $role_id;
+        ($role_id <=0 && $roleIds) && $where['tracker'] = ['in',$roleIds];
+        $list = D("ProjectView")->where($where)->select();
+        include APP_PATH . "Common/job.cache.php";
+        foreach ($list as $k => $v){
+            if($v['job_class']){
+                $arr = [];
+                $job_class = explode(",",$v['job_class']);
+                foreach ($job_class as $fv){
+                    $arr[] = $job_name[$fv];
+                }
+                $list[$k]['job_class'] = implode(",",$arr);
+            }
+        }
+        $this->assign('list',$list);
+        $this->display();
+    }
+
+    /*
      * 回款个数弹窗
      */
 
@@ -1674,7 +1728,6 @@ class LeadsAction extends Action {
      */
 
     public function dialogbd() {
-
         $start_time = I("start_date");
         $end_time = I("end_date");
         $role_id = I("id");
