@@ -66,12 +66,19 @@
                     <td><if condition="$vo.gj eq 0">否<else/>是</if></td>
                     <td><if condition="$vo.target eq 0">否<else/>是</if></td>
                     <td>
-                        {$vo.age}&nbsp;{$vo.native}&nbsp;{$vo.marital}&nbsp;<if condition="$vo.onwork eq '0'">离职<else/>在职</if>&nbsp;
-                        {$vo.company_position}&nbsp;{$vo.current_receive}&nbsp;{$vo.exp_receive}&nbsp;{$vo.off_reason}&nbsp;
-                        {$vo.chance}&nbsp;{$vo.plans}
+                        <if condition="$vo.age neq ''">{$vo.age}岁&nbsp;<br/></if>
+                        <if condition="$vo.native neq ''">籍贯:{$vo.native}&nbsp;<br/></if>
+                        <if condition="$vo.marital neq ''">婚育状况:{$vo.marital}&nbsp;<br/></if>
+                        <if condition="$vo.onwork eq '0' && $vo.onwork neq ''">离职<br/><elseif condition="$vo.onwork eq '1' && $vo.onwork neq ''"/>在职<br/></if>&nbsp;
+                        <if condition="$vo.company_position neq ''">目前公司/职位:{$vo.company_position}&nbsp;<br/></if>
+                        <if condition="$vo.current_receive neq ''">目前薪酬:{$vo.current_receive}&nbsp;<br/></if>
+                        <if condition="$vo.exp_receive neq ''">期望薪酬:{$vo.exp_receive}&nbsp;<br/></if>
+                        <if condition="$vo.off_reason neq ''">离职原因:{$vo.off_reason}&nbsp;<br/></if>
+                        <if condition="$vo.chance neq ''">期望机会类型:{$vo.chance}&nbsp;<br/></if>
+                        <if condition="$vo.plans neq ''">未来规划:{$vo.plans}<br/></if>
                     </td>
-                    <td style="padding-left: 15px;text-align: left;"><a href="javascript:void(0);" class="role_info" rel="user_id">{$vo.tracker_name}</a></td>
                     <td>{$vo.addtime|date='Y-m-d H:i',###}</td>
+                    <td style="padding-left: 15px;text-align: left;"><a href="javascript:void(0);" class="role_info" rel="user_id">{$vo.tracker_name}</a></td>
                 </tr>
             </volist>
 

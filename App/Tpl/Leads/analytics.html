@@ -528,7 +528,7 @@ $(function(){
     $(".ccnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-ccnum").dialog('option',{title:'callist数('+num+')'}).dialog('open');
+        $("#dialog-ccnum").dialog('option',{title:'cc备注('+num+')'}).dialog('open');
         $("#dialog-ccnum").load('{:U("leads/dialogcc",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
 

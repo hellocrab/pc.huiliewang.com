@@ -1689,7 +1689,7 @@ class LeadsAction extends Action {
         $roleIds = I("roleIds",'');
         $role_id > 0 && $where['tracker'] = $role_id;
         ($role_id <=0 && $roleIds) && $where['tracker'] = ['in',$roleIds];
-        $list = D("ProjectView")->where($where)->select();
+        $list = D("FineProjectCcView")->where($where)->select();
         include APP_PATH . "Common/job.cache.php";
         foreach ($list as $k => $v){
             if($v['job_class']){
@@ -1701,6 +1701,7 @@ class LeadsAction extends Action {
                 $list[$k]['job_class'] = implode(",",$arr);
             }
         }
+//        dump($list);die;
         $this->assign('list',$list);
         $this->display();
     }
