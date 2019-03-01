@@ -985,6 +985,10 @@ class BusinessAction extends Action
         $contacts_info = $m_contacts->where(array('contacts_id' => $business_info['contacts_id']))->field('name,telephone')->find();
         $business_info['customer_info'] = $customer_info;
         $business_info['contacts_info'] = $contacts_info;
+        if(($business_info['contacts_id'] <=0 || !$business_info['contacts_name']) && $business_info['customer_id'] >=0) {
+            $business_info['contacts_id'] = M('r_contacts_customer')->where(['customer_id'=>$business_info['customer_id']])->order('contacts_id desc')->getField('contacts_id');
+            $business_info['contacts_name'] = M('contacts')->where(['contacts_id'=>$business_info['contacts_id']])->getField('name');
+        }
         //商机状态
         $business_info['status_order_id'] = $m_business_status->where(array('status_id' => $business_info['status_id'], 'type_id' => $business_info['status_type_id']))->getField('order_id');
 //        var_dump($business_info);exit;
