@@ -496,53 +496,55 @@
                             <div id="table_div" class="nicescroll" style="left:0px;top:0px;">
                                 <table class="table table-hover table-striped table-bordered" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
                                     <tr class="tabTh">
+                                        <td style="min-width:100px;">id</td>
                                         <td style="min-width:100px;">方向</td>
                                         <td style="min-width: 100px;">主叫联系人</td>
                                         <td style="min-width: 100px;">主叫号码</td>
                                         <td style="min-width: 80px;">被叫号码</td>
-                                        <td style="min-width: 80px;">外显</td>
-                                        <td style="min-width: 80px;">被叫联系人</td>
+                                        <!--<td style="min-width: 80px;">外显</td>-->
+                                        <!--<td style="min-width: 80px;">被叫联系人</td>-->
                                         <td style="min-width: 80px;">呼叫时间</td>
-                                        <td style="min-width: 80px;">通话时长</td>
+                                        <td style="min-width: 80px;">通话结束时间</td>
                                         <td style="min-width: 80px;">消费分钟</td>
                                         <td style="min-width: 80px;">跟踪记录</td>
                                         <td style="min-width: 250px;">录音</td>
-                                        <td style="min-width: 80px;">挂断原因</td>
+<!--                                        <td style="min-width: 80px;">挂断原因</td>
                                         <td style="min-width: 80px;">按键</td>
                                         <td style="min-width: 80px;">区域</td>
                                         <td style="min-width: 80px;">评价</td>
                                         <td style="min-width: 80px;">质检</td>
-                                        <td style="min-width: 80px;">经过路由</td>
+                                        <td style="min-width: 80px;">经过路由</td>-->
                                     </tr>
                                     <tbody>
                                     <volist name="msg" id="vo">
                                         <tr class="tabTh">
-                                            <td  style="min-width:100px;"><if condition="$vo.Context eq '0'">呼出<else />呼入</if></td>
+                                            <td style="min-width:100px;">{$vo.id}</td>
+                                            <td  style="min-width:100px;"><if condition="$vo.direction eq '0'">呼出<else />呼入</if></td>
                                             <td style="min-width: 100px;">主叫联系人</td>
-                                            <td style="min-width: 100px;">{$vo.Caller_Id_Number}</td>
-                                            <td style="min-width: 80px;">{$vo.Destination_Number}</td>
-                                            <td style="min-width: 80px;">外显</td>
-                                            <td style="min-width: 80px;">被叫联系人</td>
-                                            <td style="min-width: 80px;">{$vo.Start_Stamp}</td>
-                                            <td style="min-width: 80px;">{$vo.Billsec}</td>
-                                            <td style="min-width: 80px;">消费分钟</td>
+                                            <td style="min-width: 100px;">{$vo.callerNum}</td>
+                                            <td style="min-width: 80px;">{$vo.calleeNum}</td>
+                                            <!--<td style="min-width: 80px;">外显</td>-->
+                                            <!--<td style="min-width: 80px;">被叫联系人</td>-->
+                                            <td style="min-width: 80px;">{$vo.callOutAnswerTime}</td>
+                                            <td style="min-width: 80px;">{$vo.callEndTime}</td>
+                                            <td style="min-width: 80px;">{$vo.callmin}</td>
                                             <td style="min-width: 80px;">跟踪记录</td>
                                             <td style="min-width: 250px;">
-                                                <if condition="$vo.RecordUrl neq ''">
-                                                    <a href="{$vo.RecordUrl}">下载</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <if condition="$vo.recordFlag eq 1">
+                                                    <a href="{$vo.recordFileDownloadUrl}">下载</a>&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <audio preload="auto" controls>
-                                                        <source src="{$vo.RecordUrl}" />
+                                                        <source src="{$vo.recordFileDownloadUrl}" />
                                                     </audio>
                                                     <else/>
                                                     <font color="red">无录音记录</font>
                                                 </if>
                                             </td>
-                                            <td style="min-width: 80px;">挂断原因</td>
+<!--                                            <td style="min-width: 80px;">挂断原因</td>
                                             <td style="min-width: 80px;">按键</td>
                                             <td style="min-width: 80px;">区域</td>
                                             <td style="min-width: 80px;">评价</td>
                                             <td style="min-width: 80px;">质检</td>
-                                            <td style="min-width: 80px;">经过路由</td>
+                                            <td style="min-width: 80px;">经过路由</td>-->
                                         </tr>
                                     </volist>
                                     </tbody>
