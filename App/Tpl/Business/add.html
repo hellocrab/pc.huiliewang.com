@@ -1,5 +1,8 @@
 <include file="Public:header" />
 <style type="text/css">
+    .simulation-text{
+        width: 100% !important;
+    }
     .add_body >div >.full-height-scroll{
         border-right:1px dotted #ccc
     }
@@ -187,18 +190,18 @@
                                                     </div>
                                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                                     <else/>
-                                                    <div class="col-md-8" >
+                                                    <div class="col-md-6" >
                                                         {$vo.html}
                                                     </div>
                                                 </if>
                                                 <elseif condition="$vo['form_type'] == 'address'"/>
                                                 <if condition = "$vo['tip_start'] eq 1">
-                                                    <div class="col-md-7">
+                                                    <div class="col-md-6">
                                                         {$vo.html}
                                                     </div>
                                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                                     <else/>
-                                                    <div class="col-md-8">
+                                                    <div class="col-md-6">
                                                         {$vo.html}
                                                     </div>
                                                 </if>
@@ -229,7 +232,7 @@
                                                 <div class="col-md-2"></div>
                                                 <elseif condition="$vo['field'] == 'name'"/>
                                                 <div class="col-md-6">
-                                                    <input class="form-control required" id="name" name="name" placeholder="" type="text" value="{$business['name']}" />
+                                                    <input class="form-control required" id="name" name="name" placeholder="" type="text" value="{$business['name']}" maxlength="15"/>
                                                 </div>
                                                 <if condition = "$vo['tip_start'] eq 1">
                                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -263,7 +266,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">{$vo.name}：</label>
                                         <if condition="$vo['form_type'] == 'address' || $vo['form_type'] == 'box' || $vo['form_type'] == 'textarea'">
-                                            <div class="col-md-7">
+                                            <div class="col-md-6">
                                                 {$vo.html}
                                             </div>
                                             <if condition = "$vo['tip_start'] eq 1">
