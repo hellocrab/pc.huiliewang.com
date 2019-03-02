@@ -1663,7 +1663,6 @@ class LeadsAction extends Action {
         $role_id > 0 && $where['tracker'] = $role_id;
         ($role_id <=0 && $roleIds) && $where['tracker'] = ['in',$roleIds];
         $list = D("ProjectView")->where($where)->select();
-//        dump(M()->getLastSql());die;
         include APP_PATH . "Common/job.cache.php";
         foreach ($list as $k => $v){
             if($v['job_class']){
@@ -2158,6 +2157,7 @@ class LeadsAction extends Action {
      * @desc 员工业绩分析
      */
     public function analytics() {
+//        include "./Cli/achievement/index.php";
         $below_ids = getPerByAction(MODULE_NAME, ACTION_NAME);
         //是否仅查询销售岗
         $role_ids = [];
@@ -2204,7 +2204,7 @@ class LeadsAction extends Action {
 
         $pageSize = isset($_GET['listrows']) ? intval($_GET['listrows']) : 15;
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
-        $map = ['report_date' => [['egt', $this->start_date], ['elt', $this->end_date]]];
+        $map = ['report_date' => [['egt', $this->start_date], ['lt', $this->end_date]]];
         //所筛选的时间段是同一天，页面显示同一天
         if($flag)
             $this->end_date = date('Y-m-d', $end_time - 86400);
