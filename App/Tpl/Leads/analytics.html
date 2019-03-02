@@ -216,22 +216,22 @@ $(function(){
                                             <td>
                                                 {$vo.integral}
                                             </td>
-                                            <td><if condition="$vo[callistnum] neq 0"><a href="javascript:void(0);" class="callistnum" data-id="{$vo.user_role_id}">{$vo[callistnum]}</a><else/>{$vo[callistnum]}</if></td>
-                                            <td><if condition="$vo[ccnum] neq 0"><a href="javascript:void(0);" class="ccnum" data-id="{$vo.user_role_id}">{$vo[ccnum]}</a><else/>{$vo[ccnum]}</if></td>
+                                            <td><if condition="$vo[callistnum] neq 0"><a href="javascript:void(0);" class="callistnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo[callistnum]}</a><else/>{$vo[callistnum]}</if></td>
+                                            <td><if condition="$vo[ccnum] neq 0"><a href="javascript:void(0);" class="ccnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo[ccnum]}</a><else/>{$vo[ccnum]}</if></td>
 											<!--<td>{$vo.get_money}</td>-->
-											<td width="80" nowrap="nowrap"> <if condition="$vo['hkNum'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.user_role_id}">{$vo.hkNum}</a><else/>{$vo.hkNum}</if></td>
-											<td width="80" nowrap="nowrap"> <if condition="$vo['bdNum'] neq 0"><a href="javascript:void(0);" class="bdnum" data-id="{$vo.user_role_id}">{$vo.bdNum}</a><else/>{$vo['bdNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['customerNum'] neq 0"><a href="javascript:void(0);" class="customernum" data-id="{$vo.user_role_id}">{$vo.customerNum}</a><else/>{$vo['customerNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['projectNum'] neq 0"><a href="javascript:void(0);" class="projectnum" data-id="{$vo.user_role_id}">{$vo.projectNum}</a><else/>{$vo['projectNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['resumeNum'] neq 0"><a href="javascript:void(0);" class="resumenum" data-id="{$vo.user_role_id}">{$vo.resumeNum}</a><else/>{$vo['resumeNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['fineNum'] neq 0"><a href="javascript:void(0);" class="finenum" data-id="{$vo.user_role_id}">{$vo.fineNum}</a><else/>{$vo['fineNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewNum'] neq 0"><a href="javascript:void(0);" class="interviewnum" data-id="{$vo.user_role_id}">{$vo.interviewNum}</a><else/>{$vo['interviewNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewtNum'] neq 0"><a href="javascript:void(0);" class="interviewtnum" data-id="{$vo.user_role_id}">{$vo.interviewtNum}</a><else/>{$vo['interviewtNum']}</if></td>
+											<td width="80" nowrap="nowrap"> <if condition="$vo['hkNum'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.hkNum}</a><else/>{$vo.hkNum}</if></td>
+											<td width="80" nowrap="nowrap"> <if condition="$vo['bdNum'] neq 0"><a href="javascript:void(0);" class="bdnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.bdNum}</a><else/>{$vo['bdNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['customerNum'] neq 0"><a href="javascript:void(0);" class="customernum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.customerNum}</a><else/>{$vo['customerNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['projectNum'] neq 0"><a href="javascript:void(0);" class="projectnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.projectNum}</a><else/>{$vo['projectNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['resumeNum'] neq 0"><a href="javascript:void(0);" class="resumenum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.resumeNum}</a><else/>{$vo['resumeNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['fineNum'] neq 0"><a href="javascript:void(0);" class="finenum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.fineNum}</a><else/>{$vo['fineNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewNum'] neq 0"><a href="javascript:void(0);" class="interviewnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.interviewNum}</a><else/>{$vo['interviewNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewtNum'] neq 0"><a href="javascript:void(0);" class="interviewtnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.interviewtNum}</a><else/>{$vo['interviewtNum']}</if></td>
                                             <!--<td width="80" nowrap="nowrap"> <if condition="$vo['presentNum'] neq 0"><a href="javascript:void(0);" class="presentnum" data-id="{$vo.user_role_id}">{$vo.presentNum}</a><else/>{$vo['presentNum']}</if></td>-->
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerNum'] neq 0"><a href="javascript:void(0);" class="offernum" data-id="{$vo.user_role_id}">{$vo.offerNum}</a><else/>{$vo['offerNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerdNum'] neq 0"><a href="javascript:void(0);" class="offerdnum" data-id="{$vo.user_role_id}">{$vo.offerdNum}</a><else/>{$vo['offerdNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['enterNum'] neq 0"><a href="javascript:void(0);" class="enternum" data-id="{$vo.user_role_id}">{$vo.enterNum}</a><else/>{$vo['enterNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['safeNum'] neq 0"><a href="javascript:void(0);" class="safenum" data-id="{$vo.user_role_id}">{$vo.safeNum}</a><else/>{$vo['safeNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerNum'] neq 0"><a href="javascript:void(0);" class="offernum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.offerNum}</a><else/>{$vo['offerNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerdNum'] neq 0"><a href="javascript:void(0);" class="offerdnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.offerdNum}</a><else/>{$vo['offerdNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['enterNum'] neq 0"><a href="javascript:void(0);" class="enternum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.enterNum}</a><else/>{$vo['enterNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['safeNum'] neq 0"><a href="javascript:void(0);" class="safenum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.safeNum}</a><else/>{$vo['safeNum']}</if></td>
 										</tr>
 										</volist>
 									</tbody>
@@ -507,7 +507,10 @@ $(function(){
     $(".callistnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-callistnum").dialog('option',{title:'callist数('+num+')'}).dialog('open');
+        if($(this).attr("rel") == '')
+            $("#dialog-callistnum").dialog('option',{title:'callist数('+num+')'}).dialog('open');
+        else
+            $("#dialog-callistnum").dialog('option',{title:'callist数('+$(this).attr("rel")+')'}).dialog('open');
         $("#dialog-callistnum").load('{:U("leads/dialogcallist",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
 
@@ -528,7 +531,10 @@ $(function(){
     $(".ccnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-ccnum").dialog('option',{title:'cc备注('+num+')'}).dialog('open');
+        if($(this).attr("rel") == '')
+            $("#dialog-ccnum").dialog('option',{title:'cc备注('+num+')'}).dialog('open');
+        else
+            $("#dialog-ccnum").dialog('option',{title:'cc备注('+$(this).attr("rel")+')'}).dialog('open');
         $("#dialog-ccnum").load('{:U("leads/dialogcc",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
 

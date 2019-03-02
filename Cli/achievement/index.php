@@ -187,7 +187,7 @@ function ccnum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_cc';
-    $sql = "SELECT count(*) as counts FROM {$tableProject} as pro , {$tableInterview} as enter where enter.fine_id = pro.id and enter.role_id = {$userRoleId} and  enter.addtime >= {$dateStartInt} and enter.addtime < {$nextDayInt} ";
+    $sql = "SELECT count(*) as counts FROM {$tableProject} as pro , {$tableInterview} as enter where enter.fine_id = pro.id and enter.role_id = {$userRoleId} and  enter.addtime >= {$dateStartInt} and enter.addtime <= {$nextDayInt} ";
 
     $query = $conn->query($sql);
     if ($query) {

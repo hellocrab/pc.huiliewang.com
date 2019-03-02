@@ -1663,6 +1663,7 @@ class LeadsAction extends Action {
         $role_id > 0 && $where['tracker'] = $role_id;
         ($role_id <=0 && $roleIds) && $where['tracker'] = ['in',$roleIds];
         $list = D("ProjectView")->where($where)->select();
+//        dump(M()->getLastSql());die;
         include APP_PATH . "Common/job.cache.php";
         foreach ($list as $k => $v){
             if($v['job_class']){
@@ -1701,7 +1702,6 @@ class LeadsAction extends Action {
                 $list[$k]['job_class'] = implode(",",$arr);
             }
         }
-//        dump($list);die;
         $this->assign('list',$list);
         $this->display();
     }
@@ -2146,7 +2146,6 @@ class LeadsAction extends Action {
             $list[$k]['second_name'] = $second_name;
         }
         $countList = M('report_intergral')->field($countFields)->where($map)->find();
-
         $this->assign("list", $list);
         $this->assign("countList", $countList);
 //        header('content-type:text/html;charset=utf-8;');
@@ -2194,10 +2193,10 @@ class LeadsAction extends Action {
                 $end_time = $start_time + 86400;
             }
         } else {
+            $ishow = "含今日";
             $start_time = strtotime(date('Y-m-01 00:00:00'));
             $end_time = strtotime(date('Y-m-d H:i:s'));
         }
-
         $this->start_time = $start_time;
         $this->end_time = $end_time;
         $this->start_date = date('Y-m-d', $start_time);
@@ -2242,6 +2241,7 @@ class LeadsAction extends Action {
         $this->daterange = $dateRange;
         $this->type_id = intval($_GET['type_id']);
         $this->content_id = intval($_GET['content_id']);
+        $this->assign('ishow',$ishow);
         $this->alert = parseAlert();
         $this->display();
     }
