@@ -201,8 +201,7 @@ $(function(){
                                         <td style="color:#fff;"><if condition="$countList[safeNum] neq 0"><a href="javascript:void(0);" class="c_f safenum">{$countList[safeNum]}</a><else/>{$countList[safeNum]}</if></td>
                                     </tr>
                                     <tbody>
-
-										<volist name="list" id="vo">
+                                        <volist name="list" id="vo">
 										<tr>
 											<td>
 												<a  class="role_info" rel="{$vo.user_role_id}" href="javascript:void(0)">{$vo.user_name}</a>
@@ -236,6 +235,9 @@ $(function(){
 										</volist>
 									</tbody>
 								</table>
+                                <empty name="list">
+                                <include file="Public:nodata" />
+                                </empty>
 							</div>
 							<div id="tfoot_div" class="clearfix">
                                 <div class="clearfix" id="tfoot_page">
