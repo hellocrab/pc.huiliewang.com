@@ -98,7 +98,6 @@ class BusinessAction extends Action
         $by = (isset($_GET['by']) && $_GET['by']) ? trim($_GET['by']) : 'me';
         $where = array();
         $params = array();
-
         $order = "top.set_top desc, top.top_time desc ,business_id desc";
 
         if ($_GET['desc_order']) {
@@ -106,13 +105,14 @@ class BusinessAction extends Action
         } elseif ($_GET['asc_order']) {
             $order = 'top.set_top desc, top.top_time desc ,' . trim($_GET['asc_order']) . ' asc,business_id asc';
         }
-
+        $ownerAllIds = implode(',', $this->_permissionRes); //所有的ID
         switch ($by) {
             case 'create' :
                 $where['business.creator_role_id'] = session('role_id');
                 break;
             case 'sub' :
-                $where['business.owner_role_id'] = array('in', $below_ids);
+//                $where['business.owner_role_id'] = array('in', $below_ids);
+                $where['business.creator_role_id'] = array('in', $below_ids);
                 break;
             case 'subcreate' :
                 $where['creator_role_id'] = array('in', $below_ids);
@@ -146,10 +146,15 @@ class BusinessAction extends Action
                 $order = 'business.update_time desc,business.business_id asc';
                 break;
             case 'me' :
-                $where['business.owner_role_id'] = session('role_id');
+//                $where['business.owner_role_id'] = session('role_id');
+                $where['business.creator_role_id'] = session('role_id');
+                break;
+            case 'all' :
+//                $where['business.owner_role_id'] = session('role_id');
+                $where['business.creator_role_id'] = session('role_id');
                 break;
             default :
-                $where['business.owner_role_id'] = array('in', implode(',', $this->_permissionRes));
+                $where['business.owner_role_id'] = array('in',$ownerAllIds);
                 break;
         }
         if ($_REQUEST["field"]) {
@@ -373,9 +378,9 @@ class BusinessAction extends Action
             }
         }
 
-        if (!isset($where['is_deleted'])) {
-            $where['is_deleted'] = 0;
-        }
+//        if (!isset($where['is_deleted'])) {
+//            $where['business.is_deleted'] = 0;
+//        }
         if (!isset($where['business.owner_role_id'])) {
             //权限
             $where['business.owner_role_id'] = array('in', $this->_permissionRes);
@@ -426,13 +431,12 @@ class BusinessAction extends Action
         // $where['code'] = array('neq','');
         // $where['name'] = array('neq','..');
 
-        if( $this->_permissionRes){
-//        $ownerWhere['business.owner_role_id'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
-            $this->_permissionRes && $ownerWhere['business.owner_role_id'] = ['in',$this->_permissionRes];
-//        $ownerWhere['business.parter'] = array('like', array($where['business.owner_role_id'], $where['business.owner_role_id'] . ',%', '%,' . $where['business.owner_role_id'], '%,' . $where['business.owner_role_id'] . ',%'), 'OR');
-            $this->_permissionRes && $ownerWhere['business.parter'] = ['in',$this->_permissionRes];
+        if($ownerAllIds && $by == 'all'){
+            $ownerWhere['business.joiner'] = ['in',$this->_permissionRes];
             $ownerWhere['_logic'] = 'OR';
+            $ownerWhere['_string'] = "FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
             $where['_complex'] = $ownerWhere;
+            $where['_logic'] = 'OR';
         }
         unset($where['business.owner_role_id']);
 
