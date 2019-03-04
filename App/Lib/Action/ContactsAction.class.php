@@ -1033,10 +1033,12 @@ class ContactsAction extends Action {
         $return = ['success' => false, 'code' => 500, 'info' => ''];
         try {
             import('@.ORG.ApiClient');
-            ApiClient::init();
-            $contactService = new com\hlw\huiliewang\interfaces\ContactsScanServiceClient(null);
+            ApiClient::init($appid, $secret);
+            $contactService = new com\hlw\huiliewang\interfaces\ContactInfoServiceClient(null);
+
             ApiClient::build($contactService);
             $contactRequestDo = new com\hlw\huiliewang\dataobject\contactInfo\contactScanRequestDTO();
+
             $contactRequestDo->itemId = $itemId;
             $contactRequestDo->userRoleId = $userRoleId;
             $contactRequestDo->type = $type;
@@ -1060,12 +1062,14 @@ class ContactsAction extends Action {
         $type = I('type', 1);
         $itemId = I('item_id', 0);
         $return = ['success' => false, 'code' => 500, 'info' => ''];
-        try {
+//        try {
             import('@.ORG.ApiClient');
-            ApiClient::init(); //$appid, $secret
+            ApiClient::init($appid, $secret);
             $contactService = new com\hlw\huiliewang\interfaces\ContactInfoServiceClient(null);
+
             ApiClient::build($contactService);
             $contactRequestDo = new com\hlw\huiliewang\dataobject\contactInfo\contactScanRequestDTO();
+
             $contactRequestDo->itemId = $itemId;
             $contactRequestDo->userRoleId = $userRoleId;
             $contactRequestDo->type = $type;
@@ -1075,9 +1079,9 @@ class ContactsAction extends Action {
                 $data = json_decode($data, true);
                 $return = ['success' => true, 'code' => 200, 'info' => $data];
             }
-        } catch (Exception $e) {
-            $return = ['success' => false, 'code' => 500, 'info' => $e->getMessage()];
-        }
+//        } catch (Exception $e) {
+//            $return = ['success' => false, 'code' => 500, 'info' => $e->getMessage()];
+//        }
         $this->ajaxReturn($return);
     }
 }
