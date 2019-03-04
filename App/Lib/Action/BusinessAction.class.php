@@ -956,8 +956,9 @@ class BusinessAction extends Action
         $below_ids = getPerByAction('business', 'view');
         //判断权限
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
-
-        if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
+        $owner_role_ids = explode(',',($business_info['owner_role_id']));
+//        if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
+        if ($business_info && (!in_array(session('role_id'),$owner_role_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
             alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
         }
 
