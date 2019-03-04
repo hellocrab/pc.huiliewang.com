@@ -7,10 +7,12 @@ ini_set("memory_limit", "1024M");
 // include libs
 include realpath(__DIR__ . '/../sqlBase/sqlMaker/Mysql.php');
 
+//php index.php test 20190301 20190304
 $todayTime = date("Y-m-d", time());
-$dateStart = isset($argv[1]) ? ($argv[1]) : date("Y-m-d", strtotime("-1 day"));
-$dateEnd = isset($argv[2]) ? $argv[2] : $todayTime;
-$userIds = isset($argv[3]) ? $argv[3] : '';
+$dateStart = isset($argv[2]) ? ($argv[2]) : date("Y-m-d", strtotime("-1 day"));
+$dateEnd = isset($argv[3]) ? $argv[3] : $todayTime;
+$userIds = isset($argv[4]) ? $argv[4] : '';
+$env = isset($argv[1]) ? $argv[1] : '';
 
 //时间判断
 if (!$dateStart || !$dateEnd) {
@@ -28,7 +30,7 @@ if ($dateEndInt > strtotime($todayTime)) {
 //    return false;
 }
 
-$conn = dbconn(); //数据库连接
+$conn = dbconn($env); //数据库连接
 //用户列表
 $userSql = "SELECT * from mx_user";
 $userIds && $userSql = $userSql . " WHERE user_id in ({$userIds}) ";
@@ -311,7 +313,7 @@ function interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
     } else {
         return 0;
     }
-    
+
 }
 
 /**
@@ -485,12 +487,13 @@ function userDepartment($userId, $conn)
 
 /**
  * 数据库连接
- * @return [type] [description]
+ * @param string $env
+ * @return PDO
  */
-function dbconn()
+function dbconn($env='')
 {
     // 数据库链接 配置
-    $conf = array(
+    $productConf = array(
         'product' => 'mysql',
         'api' => 'pdo',
         'host' => '172.18.69.141',
@@ -500,6 +503,17 @@ function dbconn()
         'password' => 'bffebfb01900fe3af8a8633d3b0b7be2',
         'charset' => 'utf8',
     );
+    $testConf = [
+        'product' => 'mysql',
+        'api' => 'pdo',
+        'host' => '192.168.1.177',
+        'port' => 3306,
+        'dbname' => 'pinping',
+        'username' => 'root',
+        'password' => '123456',
+        'charset' => 'utf8',
+    ];
+    $conf = $env == 'test' ? $testConf : $productConf;
     $dsn = 'mysql:';
     $dsn .= 'host=' . $conf['host'] . ';port=' . $conf['port'] . ';';
     $dsn .= 'dbname=' . $conf['dbname'];
