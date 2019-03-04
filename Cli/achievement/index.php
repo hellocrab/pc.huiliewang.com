@@ -313,7 +313,7 @@ function interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
     } else {
         return 0;
     }
-    
+
 }
 
 /**
@@ -487,9 +487,10 @@ function userDepartment($userId, $conn)
 
 /**
  * 数据库连接
- * @return [type] [description]
+ * @param string $env
+ * @return PDO
  */
-function dbconn($env)
+function dbconn($env='')
 {
     // 数据库链接 配置
     $productConf = array(
