@@ -256,7 +256,7 @@
         <!--客户面试-->
         <if condition="$project['status'] eq interview">
         <div class="row baccc">
-            <eq name="$isEndInterview" value="0">
+            <eq name="isEndInterview" value="0">
             <input type="button" value="客户面试" class="btn btn-default khms"  data-id="{$project['id']}">
                 <else />
                 <!--<input type="button" value="客户面试" class="btn btn-default khms"  data-id="{$project['id']}">-->
