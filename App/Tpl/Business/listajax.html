@@ -256,7 +256,11 @@
         <!--客户面试-->
         <if condition="$project['status'] eq interview">
         <div class="row baccc">
+            <eq name="$isEndInterview" value="0">
             <input type="button" value="客户面试" class="btn btn-default khms"  data-id="{$project['id']}">
+                <else />
+                <!--<input type="button" value="客户面试" class="btn btn-default khms"  data-id="{$project['id']}">-->
+            </eq>
             <input type="button" value="开票" class="btn btn-default fapiao"   data-id="{$project['id']}">
 
                 <switch name="pro_type">
@@ -2094,7 +2098,7 @@
             }else{
                 $('#dialog-addCCbz').load("/index.php?m=business&a=addcc&id="+id);
             }
-        })
+        });
 
         //推荐顾问面试
         $(".tjgwms").on("click",function () {

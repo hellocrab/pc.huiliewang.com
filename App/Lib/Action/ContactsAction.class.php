@@ -1030,12 +1030,10 @@ class ContactsAction extends Action {
         $userRoleId = I('role_id', session('role_id'));
         $type = I('type', 1);
         $itemId = I('item_id', 0);
-        $return = ['success' => false, 'code' => 500, 'info' => ''];
         try {
             import('@.ORG.ApiClient');
-            ApiClient::init($appid, $secret);
+            ApiClient::init();
             $contactService = new com\hlw\huiliewang\interfaces\ContactInfoServiceClient(null);
-
             ApiClient::build($contactService);
             $contactRequestDo = new com\hlw\huiliewang\dataobject\contactInfo\contactScanRequestDTO();
 
@@ -1043,10 +1041,12 @@ class ContactsAction extends Action {
             $contactRequestDo->userRoleId = $userRoleId;
             $contactRequestDo->type = $type;
             $res = $contactService->scan($contactRequestDo);
+            $data = $res->message;
             if ($res->success && $res->code == 200) {
-                $data = $res->message;
                 $data = json_decode($data, true);
                 $return = ['success' => true, 'code' => 200, 'info' => $data];
+            }else{
+                $return = ['success' => false, 'code' => 500, 'info' => $data];
             }
         } catch (Exception $e) {
             $return = ['success' => false, 'code' => 500, 'info' => $e->getMessage()];
@@ -1061,10 +1061,9 @@ class ContactsAction extends Action {
         $userRoleId = I('role_id', session('role_id'));
         $type = I('type', 1);
         $itemId = I('item_id', 0);
-        $return = ['success' => false, 'code' => 500, 'info' => ''];
-//        try {
+        try {
             import('@.ORG.ApiClient');
-            ApiClient::init($appid, $secret);
+            ApiClient::init();
             $contactService = new com\hlw\huiliewang\interfaces\ContactInfoServiceClient(null);
 
             ApiClient::build($contactService);
@@ -1074,14 +1073,16 @@ class ContactsAction extends Action {
             $contactRequestDo->userRoleId = $userRoleId;
             $contactRequestDo->type = $type;
             $res = $contactService->isScan($contactRequestDo);
+            $data = $res->message;
             if ($res->success && $res->code == 200) {
-                $data = $res->message;
                 $data = json_decode($data, true);
                 $return = ['success' => true, 'code' => 200, 'info' => $data];
+            }else{
+                $return = ['success' => false, 'code' => 500, 'info' => $data];
             }
-//        } catch (Exception $e) {
-//            $return = ['success' => false, 'code' => 500, 'info' => $e->getMessage()];
-//        }
+        } catch (Exception $e) {
+            $return = ['success' => false, 'code' => 500, 'info' => $e->getMessage()];
+        }
         $this->ajaxReturn($return);
     }
 }

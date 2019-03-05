@@ -1382,6 +1382,8 @@ class BusinessAction extends Action
 //        var_dump($project['tj']);exit();
 //        echo $project['project_id'];exit();
 //        $job = M("business")->field("name")->where("business_id=%d",$project['project_id'])->find();
+        $end = M('fine_project_interview')->where(['fine_id'=>I("id")])->order('id desc')->getField('end');
+        $this->assign("isEndInterview", $end);
         $this->assign("project", $project);
         $this->assign('pro_type', $this->pro_type);
         $this->display();
