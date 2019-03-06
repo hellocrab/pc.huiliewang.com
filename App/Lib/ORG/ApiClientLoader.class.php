@@ -41,7 +41,7 @@ class ApiClientLoader
         if (self::$is_register_loader == FALSE) {
             self::$is_register_loader = TRUE;
             if(ENV == 'local'){
-               define('THRIFT_SDK_ROOT', realpath(__DIR__ . '/../../../../../')); 
+               define('THRIFT_SDK_ROOT', realpath(__DIR__ . '/../../../../../'));
             } else {
                 define('THRIFT_SDK_ROOT', '/home/wwwroot/');
             }

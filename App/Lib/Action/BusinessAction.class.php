@@ -151,7 +151,9 @@ class BusinessAction extends Action
                 break;
             case 'all' :
 //                $where['business.owner_role_id'] = session('role_id');
-                $where['business.creator_role_id'] = session('role_id');
+                // 3/6号修改全部项目筛选
+//                $where['business.creator_role_id'] = session('role_id');
+                $where['business.owner_role_id'] = array('in',$ownerAllIds);
                 break;
             default :
                 $where['business.owner_role_id'] = array('in',$ownerAllIds);
@@ -390,7 +392,6 @@ class BusinessAction extends Action
             $where['status_id'] = intval($_GET['status_id']);
             $params[] = 'status_id=' . intval($_GET['status_id']);
         }
-
         if ($_GET['pro_type']) {
             $where['pro_type'] = $_GET['pro_type'];
             $params[] = 'pro_type=' . $_GET['pro_type'];
@@ -436,10 +437,11 @@ class BusinessAction extends Action
             $ownerWhere['_logic'] = 'OR';
             $ownerWhere['_string'] = "FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
             $where['_complex'] = $ownerWhere;
-            $where['_logic'] = 'OR';
+            //3/6修改——guo
+//            $where['_logic'] = 'OR';
+            $where['_logic'] = 'AND';
         }
         unset($where['business.owner_role_id']);
-
         $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
         $count = $d_v_business->where($where)->order($order)->count();
         $p_num = ceil($count / $listrows);
