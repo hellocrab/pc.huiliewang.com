@@ -298,8 +298,8 @@ class UserAction extends Action {
      */
     public function call_out(){
         $tel =  $_POST['tel'];
-        $type = isset($_POST['type']) ? intval($_POST['type']) : 0; //1、简历 2、客户
-        $itemId = isset($_POST['itemId']) ? $_POST['itemId'] : 0; //客户/简历ID
+        $type = isset($_POST['type']) ? intval($_POST['type']) : 0; //1、简历 2、客户联系人
+        $itemId = isset($_POST['itemId']) ? $_POST['itemId'] : 0; //客户联系人/简历ID
         if($itemId > 0){
             //简历联系人电话
             if($type == 1){
@@ -307,8 +307,7 @@ class UserAction extends Action {
             }
             //客户联系人电话
             if($type == 2){
-                $contactsId = M('r_contacts_customer')->where(['customer_id'=>$itemId])->getField('contacts_id');
-                $tel = M('contacts')->where(['contacts_id'=>$contactsId])->getField('telephone');
+                $tel = M('contacts')->where(['contacts_id'=>$itemId])->getField('telephone');
             }
         }
         $sourceTel = session('tel');
