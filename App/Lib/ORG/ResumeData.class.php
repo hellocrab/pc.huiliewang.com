@@ -126,7 +126,7 @@ class ResumeData {
                     $str = substr($str, 0, -$len);
                 }
             }
-            
+
             return array(
                 'mode' => $mode,
                 'text' => $str
@@ -201,45 +201,58 @@ class ResumeData {
             $replace = array("", "", "", "", "", "", "", "", "");
             $text = trim(str_replace($search, $replace, $v));
             $text = strip_tags($text);
-             var_dump($text);
+            var_dump($text);
 
             if ($data['mode'] == 1) {//智联招聘
                 $baseinfo_tag = 1;
-                if(strpos($text, $this->encode('更新时间：')) !== FALSE && strpos($text, $this->encode('手机：')) !== FALSE ){
-                    //姓名 手机
-                    preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\/|\.)\d{1,2}/', $text,$match);
-                    $_text = explode($match[0], $text);
-                    $_info = explode($this->encode('手机：'), $_text[1]);
-                    $dbData['name'] = $_info[0];
-                    $dbData['telephone'] = $_info[1];
+
+                if ($baseinfo_tag == 1) {
+                    if (strpos($text, $this->encode('更新时间：')) !== FALSE && strpos($text, $this->encode('手机：')) !== FALSE) {
+                        //姓名 手机
+                        preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\/|\.)\d{1,2}/', $text, $match);
+                        $_text = explode($match[0], $text);
+                        $_info = explode($this->encode('手机：'), $_text[1]);
+                        $dbData['name'] = $_info[0];
+                        $dbData['telephone'] = $_info[1];
+                    }
+
+                    if (strpos($text, $this->encode('年工作经验')) !== FALSE && strpos($text, $this->encode('岁')) !== FALSE) {
+                        //性别 岁数 学历
+                        $_text = explode($this->encode('年工作经验'), $text);
+                        $dbData['edu'] = $_text[1];
+                        $_info = explode(')', $_text[0]);
+                        $dbData['startWorkyear'] = date('Y', time()) - $_info[1];
+                        $_inf = explode($this->encode('岁'), $_info[0]);
+                        $_birth = $_inf[1];
+                        $_birth = str_replace($this->encode('月'), '', $_birth);
+                        $_birth = str_replace('(', '', $_birth);
+                        $_birth = explode($this->encode('年'), $_birth);
+
+                        $dbData['birthYear'] = $_birth[0];
+                        $dbData['birthMouth'] = $_birth[1];
+                        $dbData['birthday'] = strtotime($_birth[0] . '-' . $_birth[1]);
+
+                        if (strpos($_inf[0], $this->encode('男')) !== false) {
+                            $dbData['sex'] = 1;
+                        }
+
+                        if (strpos($_inf[0], $this->encode('女')) !== false) {
+                            $dbData['sex'] = 2;
+                        }
+                    }
+
+                    if (strpos($text, $this->encode('现居住地：')) !== FALSE) {
+                        $_city = explode('|', $text);
+                        $dbData['location'] = str_replace($this->encode('现居住地：'), '', $_city[0]);
+                    }
+                    
+                    if(strpos($text, 'E-mail') !== FALSE){
+                        $_email = explode($this->encode('E-mail'), $text);
+                        $dbData['email'] = str_replace($this->encode('：'), '', $_email[1]);
+                        var_dump($dbData);exit;
+                    }
+                    
                 }
-
-                if (strpos($text, $this->encode('年工作经验')) !== FALSE && strpos($text, $this->encode('岁')) !== FALSE) {
-                    //性别 岁数 学历
-                    $_text = explode($this->encode('年工作经验'), $text);
-                    $dbData['edu'] = $_text[1];
-                    $_info = explode(')', $_text[0]);
-                    $dbData['startWorkyear'] = date('Y', time()) - $_info[1];
-                    $_inf = explode('岁(', $_info[0]);
-                    var_dump($_inf);exit;
-                    $_birth = $_inf[1];
-                    $_birth = str_replace($this->encode('月'), '', $_birth);
-                    $_birth = explode($this->encode('年'), $_birth);
-                    
-                    $dbData['birthYear'] = $_birth[0];
-                    $dbData['birthMouth'] = $_birth[1];
-                    $dbData['birthday'] = strtotime($_birth[0] . '-' . $_birth[1]);
-                    
-                    
-                }
-
-
-
-//                if (strpos($text, '<p cla="monormal" align="right" tyle="text-indent: 0.31in">') !== false) {
-//                    $_infos = explode('<p cla="monormal" align="right" tyle="text-indent: 0.31in">', $text);
-//                    $info = explode('</b><b>', $_infos);
-//                    var_dump($info);exit;
-//                }
             } elseif ($data['mode'] == 3) { //猎聘
                 if ($pos = strpos($text, $this->encode('目前求职状态'))) {
                     $text = substr($text, $pos);
@@ -252,7 +265,7 @@ class ResumeData {
                     $dbData[$liepin_conifg[$this->decode($text)]] = $_sex == '女' ? 2 : 1;
                 } elseif (strpos($text, $this->encode('年龄：')) !== FALSE) {
                     $_age = $this->decode(strip_tags($data['text'][$k + 1]));
-                    $dbData['birthYear'] = date('Y', time())-$_age;
+                    $dbData['birthYear'] = date('Y', time()) - $_age;
                     $dbData['birthday'] = strtotime($dbData['birthYear']);
                 } elseif (strpos($text, $this->encode('手机号码：')) !== FALSE || strpos($text, $this->encode('电子邮件：')) !== FALSE) {
                     $dbData[$liepin_conifg[$this->decode($text)]] = strip_tags(trim($data['text'][$k + 1]));
@@ -414,7 +427,7 @@ class ResumeData {
                 }
             }
         }
-        var_dump(['data' => $dbData, 'job' => $dbJobData ,'edu' => $dbEduData , 'language' => $dbLanguageData]);
+//        var_dump(['data' => $dbData, 'job' => $dbJobData, 'edu' => $dbEduData, 'language' => $dbLanguageData]);
         exit;
 //        var_dump(['data' => $dbData, 'job' => $dbJobData ,'edu' => $dbEduData , 'language' => $dbLanguageData]);
         return ['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'edu' => $dbEduData, 'language' => $dbLanguageData];
