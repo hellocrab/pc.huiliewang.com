@@ -1286,7 +1286,7 @@
                                                                                                 {role_id:roleID,item_id:item,type:1},
                                                                                                 val=>{
                                                                                                     if(val.code==200){
-                                                                                                        $('.telshow').remove().append(res.info.telephone)
+                                                                                                        document.querySelector('.telshow').innerHTML=val.info.telephone
                                                                                                     }
                                                                                                 }
                                                                                             )
