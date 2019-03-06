@@ -74,7 +74,7 @@
                                     <p class="form-p telshow" >
                                         <!-- {$resume.telephone} -->
                                         ************
-                                        <i class="iconfont iconshow" id='eye'></i>
+                                        <i class="iconfont iconshow eye"></i>
                                     </p>
                                 </div>
                                 <label class="col-lg-2 control-label">简历编号</label>
@@ -87,8 +87,9 @@
                             <div class="form-group">
                                 <label class="col-lg-2 control-label">邮箱</label>
                                 <div class="col-lg-4">
-                                    <p class="form-p">
-                                        {$resume.email}
+                                    <p class="form-p mailshow">
+                                            ************
+                                            <i class="iconfont iconshow eye" ></i>
                                     </p>
                                 </div>
                                 <label class="col-lg-2 control-label">创建人</label>
@@ -1280,19 +1281,26 @@
                                                                                 {role_id:roleID,item_id:item,type:1},
                                                                                 res=>{
                                                                                     if(res.code==200){
-                                                                                        if(res.success){
-                                                                                            $.post(
-                                                                                                "{:U('contacts/infoScan@pc.huiliewang.com')}",
-                                                                                                {role_id:roleID,item_id:item,type:1},
-                                                                                                val=>{
-                                                                                                    if(val.code==200){
-                                                                                                        document.querySelector('.telshow').innerHTML=val.info.telephone
-                                                                                                    }
-                                                                                                }
-                                                                                            )
-                                                                                        }else{
-
+                                                                                        if(res.info){
+                                                                                            var r=confirm("查看联系方式将会消耗今日查看次数");
+	                                                                                        if (r==false){
+                                                                                                return
+	                                                                                        }
                                                                                         }
+                                                                                            $.post(
+                                                                                                    "{:U('contacts/infoScan@pc.huiliewang.com')}",
+                                                                                                    {role_id:roleID,item_id:item,type:1},
+                                                                                                    val=>{
+                                                                                                        if(val.code==200){
+                                                                                                            document.querySelector('.telshow').innerHTML=val.info.telephone;
+                                                                                                            document.querySelector('.mailshow').innerHTML=val.info.email;
+                                                                                                        }
+                                                                                                    }
+                                                                                                )
+                                                                                            
+                                                                                        
+                                                                                    }else{
+                                                                                        alert(res.info)
                                                                                     }
                                                                                 })
                                                                     })
