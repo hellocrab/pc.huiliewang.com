@@ -1281,7 +1281,19 @@
                                                                                 "{:U('contacts/isScan@pc.huiliewang.com')}",
                                                                                 {role_id:roleID,item_id:item,type:1},
                                                                                 res=>{
+                                                                                    if(res.code==200){
+                                                                                        if(res.success){
+                                                                                            $.post(
+                                                                                                "{:U('contacts/infoScan@pc.huiliewang.com')}",
+                                                                                                {role_id:roleID,item_id:item,type:1},
+                                                                                                val=>{
+                                                                                                    
+                                                                                                }
+                                                                                            )
+                                                                                        }else{
 
+                                                                                        }
+                                                                                    }
                                                                                 })
                                                                         } 
                                                                         else $('#eye').removeClass('iconshow').addClass('iconhide');
