@@ -234,7 +234,7 @@
                                                                         <span>
                                                                         <a class="" href="/index.php?m=product&a=view&id={$vo['eid']}" rel="{$vo['eid']}">{$vo[$v['field']]}</a>
                                                                                 <if condition="$v.field eq 'name' && $vo[$v['field']] neq ''">
-                                                                                        <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo[$v['field']]}" data-toggle="dropdown" href="#" title="呼叫">
+                                                                                        <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo['eid']}" data-toggle="dropdown" href="#" title="呼叫">
                                                                                             <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                                                                         </a>
                                                                                     </if>
@@ -564,10 +564,10 @@
                                         //号码呼出_guo_02/22
                                         $(document).ready(function () {
                                             $(".call_out").on('click', function () {
-                                                var tel = $(this).attr('rel');
+                                                var itemId = $(this).attr('rel');
                                                 $.post(
                                                         "{:U('user/call_out')}",
-                                                        {tel: tel},
+                                                        {itemId: itemId,type:1,tel:''},
                                                         function (data) {
                                                             var obj = $.parseJSON(data);
                                                             if (obj.code) {
