@@ -26,6 +26,52 @@ class ProductAction extends Action
 //		B('Authenticate', $action);
 //		$this->_permissionRes = getPerByAction(MODULE_NAME,ACTION_NAME);
     }
+    
+    public function resolve()
+    {
+        import('@.ORG.UploadFile');
+        $upload = new UploadFile(); // 实例化上传类
+        $upload->maxSize = 1024 * 1024 * 1024; // 设置附件上传大小
+        $upload->exts = array('doc', 'docx', 'zip', 'rar', 'mht', 'htm', 'html'); // 设置附件上传类型
+        $upload->savePath = './Uploads/temp/';
+
+        if (empty($_FILES['file'])) {
+            $this->appReturn(0, '上传失败');
+        }
+
+        $info = $upload->uploadOne($_FILES['file']);
+        if (!$info) {
+            $this->appReturn(0, '上传失败');
+        }
+
+        $file = array(
+            'file_name' => $info[0]['name'],
+            'user_id' => $this->userId,
+            'size' => $info[0]['size'],
+            'status' => 2,
+            'file_total' => 1,
+            'repeat' => 0,
+            'success' => 0,
+            'fail' => 0,
+            'integral' => 0,
+            'ext' => $info[0]['extension'],
+            'basePath' => $info[0]['savepath'],
+            'path' => $info[0]['savepath'] . $info[0]['savename'],
+            'addtime' => time()
+        );
+
+        $imporFile[] = array('path' => $file['path'],
+            'basePath' => $file['basePath'],
+            'ext' => $file['ext'],
+            'filename' => $info[0]['savename']
+        );
+        //保存简历
+        foreach ($imporFile as $v) {
+            import('@.ORG.ResumeData');
+            $reData = new ResumeData();
+            $data = $reData->getData($v);
+        }
+    }
 
     /**
      *  Ajax检测产品名称
