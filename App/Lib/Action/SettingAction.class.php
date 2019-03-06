@@ -65,6 +65,19 @@ class SettingAction extends Action{
     }
 
     /**
+     * @throws Exception
+     * 话费查询
+     */
+    public function searchBalance(){
+        import("@.ORG.ApiClient");
+        ApiClient::init();
+        $balance =  new com\hlw\huiliewang\interfaces\BalanceServiceClient();
+        ApiClient::build($balance);
+        $result = $balance->getBalance();
+        echo $result;
+    }
+
+    /**
      *  smtp设置
      *
      **/
