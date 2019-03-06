@@ -404,11 +404,11 @@ $(function(){
 });
 //切换电话显示
 $('.eye').click(ar=>{
-                                                                        var item = "{$resume['eid']}";
+                                                                        var item = "{$contacts['contacts_id']}";
                                                                         var roleID = "{$Think.session.role_id}";
                                                                             $.post(
                                                                                 "{:U('contacts/isScan@pc.huiliewang.com')}",
-                                                                                {role_id:roleID,item_id:item,type:1},
+                                                                                {role_id:roleID,item_id:item,type:2},
                                                                                 res=>{
                                                                                     if(res.code==200){
                                                                                         if(res.info){
@@ -419,13 +419,13 @@ $('.eye').click(ar=>{
                                                                                         }
                                                                                             $.post(
                                                                                                     "{:U('contacts/infoScan@pc.huiliewang.com')}",
-                                                                                                    {role_id:roleID,item_id:item,type:1},
+                                                                                                    {role_id:roleID,item_id:item,type:2},
                                                                                                     val=>{
                                                                                                         if(val.code==200){
                                                                                                             document.querySelector('.telshow').innerHTML=val.info.telephone;
 																											document.querySelector('.mailshow').innerHTML=val.info.email;
-                                                                                                            document.querySelector('.qqshow').innerHTML=val.info.qq_number;
-                                                                                                            document.querySelector('.wxshow').innerHTML=val.info.wechart_number;																											
+                                                                                                            document.querySelector('.qqshow').innerHTML=val.info.qq;
+                                                                                                            document.querySelector('.wxshow').innerHTML=val.info.wetchat;
                                                                                                         }
                                                                                                     }
                                                                                                 )
