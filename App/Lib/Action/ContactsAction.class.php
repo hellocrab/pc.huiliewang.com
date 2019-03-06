@@ -1027,6 +1027,7 @@ class ContactsAction extends Action {
      * 查看联系人信息
      */
     public function infoScan() {
+        header("Access-Control-Allow-Origin: *");
         $userRoleId = I('role_id', session('role_id'));
         $type = I('type', 1);
         $itemId = I('item_id', 0);
@@ -1058,6 +1059,7 @@ class ContactsAction extends Action {
      * 是否可以查询权限
      */
     public function isScan() {
+        header("Access-Control-Allow-Origin: *");
         $userRoleId = I('role_id', session('role_id'));
         $type = I('type', 1);
         $itemId = I('item_id', 0);
