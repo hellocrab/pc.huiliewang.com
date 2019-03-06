@@ -429,7 +429,23 @@
                                     });
                                     $('#submit').click(function () {
                                         var entry = $('#entry').val();
+                                        var department = $('#department').val();
+                                        var role = $('#role').val();
+                                        var type = $('#type').val();
+                                        var jobrank = $('#jobrank').val();
                                         if (entry == '') {
+                                            return false;
+                                        }
+                                        if (department == '') {
+                                            return false;
+                                        }
+                                        if (role == '') {
+                                            return false;
+                                        }
+                                        if (type == '') {
+                                            return false;
+                                        }
+                                        if (jobrank == '') {
                                             return false;
                                         }
                                     });

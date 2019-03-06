@@ -956,8 +956,9 @@ class BusinessAction extends Action
         $below_ids = getPerByAction('business', 'view');
         //判断权限
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
-
-        if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
+        $owner_role_ids = explode(',',($business_info['owner_role_id']));
+//        if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
+        if ($business_info && (!in_array(session('role_id'),$owner_role_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
             alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
         }
 
@@ -1381,6 +1382,8 @@ class BusinessAction extends Action
 //        var_dump($project['tj']);exit();
 //        echo $project['project_id'];exit();
 //        $job = M("business")->field("name")->where("business_id=%d",$project['project_id'])->find();
+        $end = M('fine_project_interview')->where(['fine_id'=>I("id")])->order('id desc')->getField('end');
+        $this->assign("isEndInterview", $end);
         $this->assign("project", $project);
         $this->assign('pro_type', $this->pro_type);
         $this->display();

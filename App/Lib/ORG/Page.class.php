@@ -160,7 +160,7 @@ class Page {
                 }
             }
         }
-        $thego = '<input type="text" style="width:auto;display:inline-block;" autocomplete="off" id="go_page" class="form-control input-sm" name="' . $this->varPage . '" onchange="go_page' . $this->varPage . '(this.value)">';
+        $thego = '<input type="text" style="width:auto;display:inline-block;" autocomplete="off" id="go_page" value="'.$this->nowPage.'" class="form-control input-sm" name="' . $this->varPage . '" onchange="go_page' . $this->varPage . '(this.value)">';
         $baseUrl = U('');
         unset($parameter[$p]);
         unset($parameter['listrows']);

@@ -424,7 +424,7 @@ class ProductAction extends Action
         $count = $resume->where($where)->count() ? $resume->where($where)->count() : '0';
 
         $p_num = ceil($count / $listrows);
-        $p = isset($_GET['p']) ? $_GET['p'] : 1;
+        $p = isset($_GET['p']) && $_GET['p']>0 ? $_GET['p'] : 1;
         if ($p_num < $p) {
             $p = $p_num;
         }
