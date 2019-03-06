@@ -228,8 +228,8 @@ class UserAction extends Action {
 			$this->display();
 		}
 	}
-        
-        
+
+
     /**
      * 电话系统外呼
      */
@@ -298,13 +298,26 @@ class UserAction extends Action {
      */
     public function call_out(){
         $tel =  $_POST['tel'];
+        $type = isset($_POST['type']) ? intval($_POST['type']) : 0; //1、简历 2、客户
+        $itemId = isset($_POST['itemId']) ? $_POST['itemId'] : 0; //客户/简历ID
+        if($itemId > 0){
+            //简历联系人电话
+            if($type == 1){
+                $tel = M('resume')->where(['eid'=>$itemId])->getField('telephone');
+            }
+            //客户联系人电话
+            if($type == 2){
+                $contactsId = M('r_contacts_customer')->where(['customer_id'=>$itemId])->getField('contacts_id');
+                $tel = M('contacts')->where(['contacts_id'=>$contactsId])->getField('telephone');
+            }
+        }
         $sourceTel = session('tel');
         $timestamp= date('YmdHis');
         //坐席上班
         $this->startWork($timestamp);
         $sig= $this->getsig($timestamp);
         $auth=$this->getauth($timestamp);
-        
+
         //坐席外呼
         $url = "http://211.152.35.81:8766/rest/voiceCall/api";
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
@@ -907,7 +920,7 @@ class UserAction extends Action {
 				$m_user->birthday = $this->_post('birthday','trim');
 				$m_user->entry = $this->_post('entry','trim');
 				$m_user->job_rank = $this->_post('jobrank','trim');
-				
+
 				if($m_user->save() || $is_update){
 					actionLog($_POST['user_id']);
 					if($_POST['user_id'] ==session('user_id')){
