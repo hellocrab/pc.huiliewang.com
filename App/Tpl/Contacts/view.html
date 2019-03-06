@@ -1,4 +1,6 @@
 <include file="Public:header" />
+<link href="__PUBLIC__/css/iconfont.css"  rel="stylesheet">
+
 <style>
 .title-strip{
 	padding:10px 25px 0px 20px;
@@ -9,6 +11,10 @@
 }
 .title-icon>img{
 	margin-bottom:15px;
+}
+.eye{
+	font-size: 20px;
+	cursor: pointer;
 }
 </style>
 <script type="text/javascript" src="__PUBLIC__/js/jquery.tagsinput.js"></script>
@@ -70,6 +76,26 @@
 																</a>
 															<elseif condition="$vo['field'] eq 'customer_id'" />
 																<a href="{:U('customer/view','&id='.$contacts['customer_id'])}">{$contacts['customer_name']}</a>
+															<elseif condition="$vo['field'] eq 'telephone'" />
+																<p class=" telshow" >
+																	************
+																	<i class="iconfont iconshow eye"></i>
+																</p>
+																<elseif condition="$vo['field'] eq 'qq_no'" />
+																<p class=" qqshow" >
+																	************
+																	<i class="iconfont iconshow eye"></i>
+																</p>
+																<elseif condition="$vo['field'] eq 'email'" />
+																<p class=" mailshow" >
+																	************
+																	<i class="iconfont iconshow eye"></i>
+																</p>
+																<elseif condition="$vo['field'] eq 'wetchat'" />
+																<p class=" wxshow" >
+																	************
+																	<i class="iconfont iconshow eye"></i>
+																</p>
 															<else />
 																{$contacts[$vo['field']]}
 															</if>
@@ -376,5 +402,39 @@ $(function(){
 		$('#dialog-map').load('{:U("setting/mapdialog","map=")}'+map);
 	});
 });
+//切换电话显示
+$('.eye').click(ar=>{
+                                                                        var item = "{$contacts['contacts_id']}";
+                                                                        var roleID = "{$Think.session.role_id}";
+                                                                            $.post(
+                                                                                "{:U('contacts/isScan')}",
+                                                                                {role_id:roleID,item_id:item,type:2},
+                                                                                res=>{
+                                                                                    if(res.code==200){
+                                                                                        if(res.info){
+                                                                                            var r=confirm("查看联系方式将会消耗今日查看次数");
+	                                                                                        if (r==false){
+                                                                                                return
+	                                                                                        }
+                                                                                        }
+                                                                                            $.post(
+                                                                                                    "{:U('contacts/infoScan')}",
+                                                                                                    {role_id:roleID,item_id:item,type:2},
+                                                                                                    val=>{
+                                                                                                        if(val.code==200){
+                                                                                                            document.querySelector('.telshow').innerHTML=val.info.telephone;
+																											document.querySelector('.mailshow').innerHTML=val.info.email;
+                                                                                                            document.querySelector('.qqshow').innerHTML=val.info.qq;
+                                                                                                            document.querySelector('.wxshow').innerHTML=val.info.wetchat;
+                                                                                                        }
+                                                                                                    }
+                                                                                                )
+                                                                                            
+                                                                                        
+                                                                                    }else{
+                                                                                        alert(res.info)
+                                                                                    }
+                                                                                })
+                                                                    })
 </script>
 <include file="Public:footer" />

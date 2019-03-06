@@ -292,7 +292,9 @@
                                                     </div>
                                                 </td>
                                             <volist name="field_array" id="vo">
-                                                <td>{$vo.name}</td>
+                                                <if condition='$vo.field neq "telephone"'>
+                                                        <td>{$vo.name}</td>
+                                                </if>
                                             </volist>
                                             <!--<td>状态</td>-->
                                             <td>操作</td>
@@ -307,34 +309,46 @@
                                                         </div>
                                                     </td>
                                                 <volist name="field_array" id="v">
-                                                    <td>
-                                                    <if condition="$v['field'] eq 'name'">
-                                                        <a class="" href="/index.php?m=product&a=view&id={$vo['eid']}" rel="{$vo['eid']}">{$vo[$v['field']]}</a>
-                                                        <if condition="$vo['favorite']">
-                                                            <i class="fa fa-star star-orange" style="float: right;margin-right: 20px;"></i>
-                                                        </if>
-                                                        <elseif  condition="$v['field'] eq 'sex'"/>
-                                                        <span><if condition="$vo[$v['field']] eq '1'">男<else/>女</if></span>
-                                                        <elseif  condition="$v['field'] eq 'location'"/>
-                                                        <span>{$city_name[$vo[$v['field']]]}</span>
-                                                        <elseif  condition="$v['field'] eq 'birthday'"/>
-                                                        <span>
-                                                            <notempty name="vo.birthday">
-                                                                {$vo['birthday']|date="Y-m",###}
-                                                            </notempty>
-                                                        </span>
-                                                        <elseif  condition="$v['field'] eq 'startWorkyear'"/>
-                                                        <span>{$vo[$v['field']]|date="Y-m",###}</span>
-                                                        <elseif  condition="$v['field'] eq 'curSalary'"/>
-                                                        <span>{$vo[$v['field']]}万</span>
-                                                        <else/><span style="color:#{$v['color']}">{$vo[$v['field']]}
-                                                            <if condition="$v.field eq 'telephone' && $vo[$v['field']] neq ''">
-                                                                <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo[$v['field']]}" data-toggle="dropdown" href="#" title="呼叫">
-                                                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
-                                                                </a>
-                                                            </if>
-                                                        </span></if>
-                                                    </td>
+                                                    <if condition='$v.field neq "telephone"'>
+                                                            <td>
+                                                                    <if condition="$v['field'] eq 'name'">
+                                                                        <span>
+                                                                        <a class="" href="/index.php?m=product&a=view&id={$vo['eid']}" rel="{$vo['eid']}">{$vo[$v['field']]}</a>
+                                                                                <if condition="$v.field eq 'name' && $vo[$v['field']] neq ''">
+                                                                                        <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo['eid']}" data-toggle="dropdown" href="#" title="呼叫">
+                                                                                            <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                                                        </a>
+                                                                                    </if>
+                                                                        </span>
+                                                                        <if condition="$vo['favorite']">
+                                                                            <i class="fa fa-star star-orange" style="float: right;margin-right: 20px;"></i>
+                                                                        </if>
+                                                                        <elseif  condition="$v['field'] eq 'sex'"/>
+                                                                        <span><if condition="$vo[$v['field']] eq '1'">男<else/>女</if></span>
+                                                                        <elseif  condition="$v['field'] eq 'location'"/>
+                                                                        <span>{$city_name[$vo[$v['field']]]}</span>
+                                                                        <elseif  condition="$v['field'] eq 'birthday'"/>
+                                                                        <span>
+                                                                            <notempty name="vo.birthday">
+                                                                                {$vo['birthday']|date="Y-m",###}
+                                                                            </notempty>
+                                                                        </span>
+                                                                        <elseif  condition="$v['field'] eq 'startWorkyear'"/>
+                                                                        <span>{$vo[$v['field']]|date="Y-m",###}</span>
+                                                                        <elseif  condition="$v['field'] eq 'curSalary'"/>
+                                                                        <span>{$vo[$v['field']]}万</span>
+                                                                        <else/>
+                                                                        <span style="color:#{$v['color']}">{$vo[$v['field']]}
+                                                                            <!-- <if condition="$v.field eq 'telephone' && $vo[$v['field']] neq ''">
+                                                                                <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo[$v['field']]}" data-toggle="dropdown" href="#" title="呼叫">
+                                                                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                                                </a>
+                                                                            </if> -->
+                                                                        </span>
+                                                                    </if>
+                                                                    </td>
+                                                    </if>
+                                                    
                                                 </volist>
                                                 <!--<td  style="position: relative;">-->
                                                 <!--<if condition = "$vo['r_status'] eq '想看机会'">-->
@@ -693,10 +707,10 @@
                                         //号码呼出_guo_02/22
                                         $(document).ready(function () {
                                             $(".call_out").on('click', function () {
-                                                var tel = $(this).attr('rel');
+                                                var itemId = $(this).attr('rel');
                                                 $.post(
                                                         "{:U('user/call_out')}",
-                                                        {tel: tel},
+                                                        {itemId: itemId,type:1,tel:''},
                                                         function (data) {
                                                             var obj = $.parseJSON(data);
                                                             if (obj.code) {
