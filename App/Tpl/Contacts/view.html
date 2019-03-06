@@ -407,7 +407,7 @@ $('.eye').click(ar=>{
                                                                         var item = "{$contacts['contacts_id']}";
                                                                         var roleID = "{$Think.session.role_id}";
                                                                             $.post(
-                                                                                "{:U('contacts/isScan@pc.huiliewang.com')}",
+                                                                                "{:U('contacts/isScan')}",
                                                                                 {role_id:roleID,item_id:item,type:2},
                                                                                 res=>{
                                                                                     if(res.code==200){
@@ -418,7 +418,7 @@ $('.eye').click(ar=>{
 	                                                                                        }
                                                                                         }
                                                                                             $.post(
-                                                                                                    "{:U('contacts/infoScan@pc.huiliewang.com')}",
+                                                                                                    "{:U('contacts/infoScan')}",
                                                                                                     {role_id:roleID,item_id:item,type:2},
                                                                                                     val=>{
                                                                                                         if(val.code==200){
