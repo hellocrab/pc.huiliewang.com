@@ -1273,11 +1273,13 @@
 
 //切换电话显示
                                                                     $('#eye').click(ar=>{
+                                                                        var item = "{$resume['eid']}";
+                                                                        var roleID = "{$Think.session.role_id}";
                                                                         if($('#eye').hasClass('iconhide')){
                                                                             $('#eye').removeClass('iconhide').addClass('iconshow');
                                                                             $.post(
                                                                                 "{:U('contacts/isScan@pc.huiliewang.com')}",
-                                                                                {role_id:"{$Think.session.role_id}",item_id:"{$resume['eid']}",type:1},
+                                                                                {role_id:roleID,item_id:item,type:1},
                                                                                 res=>{
 
                                                                                 })
