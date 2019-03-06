@@ -71,7 +71,7 @@
                             <div class="form-group">
                                 <label class="col-lg-2 control-label">联系电话</label>
                                 <div class="col-lg-4">
-                                    <p class="form-p">
+                                    <p class="form-p telshow" >
                                         <!-- {$resume.telephone} -->
                                         ************
                                         <i class="iconfont iconshow" id='eye'></i>
@@ -1275,8 +1275,6 @@
                                                                     $('#eye').click(ar=>{
                                                                         var item = "{$resume['eid']}";
                                                                         var roleID = "{$Think.session.role_id}";
-                                                                        if($('#eye').hasClass('iconhide')){
-                                                                            $('#eye').removeClass('iconhide').addClass('iconshow');
                                                                             $.post(
                                                                                 "{:U('contacts/isScan@pc.huiliewang.com')}",
                                                                                 {role_id:roleID,item_id:item,type:1},
@@ -1287,7 +1285,9 @@
                                                                                                 "{:U('contacts/infoScan@pc.huiliewang.com')}",
                                                                                                 {role_id:roleID,item_id:item,type:1},
                                                                                                 val=>{
-                                                                                                    
+                                                                                                    if(val.code==200){
+                                                                                                        $('.telshow').remove().append(res.info.telephone)
+                                                                                                    }
                                                                                                 }
                                                                                             )
                                                                                         }else{
@@ -1295,8 +1295,6 @@
                                                                                         }
                                                                                     }
                                                                                 })
-                                                                        } 
-                                                                        else $('#eye').removeClass('iconshow').addClass('iconhide');
                                                                     })
 </script>
 <include file="Public:footer" />
