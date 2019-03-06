@@ -1,4 +1,5 @@
 <?php
+
 class ResumeData {
 
     protected $extension = 'doc,mht,mht,htm,html,docx'; //允许的扩展名
@@ -18,48 +19,20 @@ class ResumeData {
             return false;
         $data = array();
         if ($file['ext'] == 'doc' || $file['ext'] == 'htm' || $file['ext'] == 'html' || $file['ext'] == 'docx') {
-            if (!($data = $this->docToMht($file['path'],$file['basePath'],$file['filename']))) {
+            if (!($data = $this->docToMht($file['path'], $file['basePath'], $file['filename']))) {
                 return false;
             }
             $data = $this->_getDocData($data);
         }
-        $query = $this->_checkedClumn($data);
-        if (!$query)
-            return false;
         return $data;
     }
 
-    /**
-     * 检查简历是否完整
-     */
-    private function _checkedClumn($data) {
-
-        $query = false;
-//         $requiredColun = array('name', 'tel', 'gender', 'birthday', 'education',
-//         				'residence', 'work_year', 'email', 'household_register',
-//                         'work_industry', 'work_address', 
-//                         'work_postion'); //必须包含的字符串
-        $requiredColun = array('name', 'tel', 'gender', 'birthday', 'education', 'residence', 'work_year', 'work_address', 'work_postion'); //必须包含的字符串
-
-        if ($data) {
-            foreach ($requiredColun as $v) {
-                if (empty($data[$v])) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-    
-    
-    
     /**
      * word转成mht
      * 
      * @return	boolean
      */
-    public function docToMht($file,$path,$filename) {
+    public function docToMht($file, $path, $filename) {
         if (!file_exists($file))
             return false;
         try {
@@ -83,7 +56,7 @@ class ResumeData {
 
 
             $text = file_get_contents($basePath . $htmlName);
-            if (strpos($text, $this->encode('智联招聘') &&!strpos($text, $this->encode('智联卓聘')))) {
+            if (strpos($text, $this->encode('智联招聘')) && !strpos($text, $this->encode('智联卓聘'))) {
                 $mode = 1; //智联招聘
                 $str = strip_tags($text, "<b><p>");
                 $str = preg_replace('/s/', '', $str);
@@ -117,7 +90,7 @@ class ResumeData {
                 }
             } elseif (strpos($text, 'lietou-static.com')) {
                 $mode = 3; //猎聘
-                $str = strip_tags($text,"<b><p>");
+                $str = strip_tags($text, "<b><p>");
                 $str = preg_replace('/\n/is', '', $str);
                 $str = preg_replace('/ |　/is', '', $str);
                 $str = preg_replace('/&nbsp;/is', '', $str);
@@ -129,7 +102,7 @@ class ResumeData {
                 $str = preg_replace("/height=.+?['|\"]/i", '', $str); //去除样式   
                 $str = preg_replace("/border=.+?['|\"]/i", '', $str); //去除样式   
                 $str = preg_replace("/face=.+?['|\"]/i", '', $str); //去除样式   
-                $str = preg_replace("/align=.+?['|\"]/", '', $str); 
+                $str = preg_replace("/align=.+?['|\"]/", '', $str);
                 $str = explode('</p>', $str);
             } else {
 //                $mode = ; //智联卓聘
@@ -153,6 +126,7 @@ class ResumeData {
                     $str = substr($str, 0, -$len);
                 }
             }
+            
             return array(
                 'mode' => $mode,
                 'text' => $str
@@ -187,11 +161,11 @@ class ResumeData {
             '所在地区：' => 'city_text',
             '所在部门：' => 'department',
             '工作职责和业绩：' => 'responsibility',
-            '专业：' =>'majorName'
+            '专业：' => 'majorName'
         ];
 
         $plix = $this->encode('：');
-        
+
         $otherConfig = array(
             '工作经历',
             '项目经历',
@@ -215,36 +189,71 @@ class ResumeData {
             '语言/技能/证书',
             '其它信息',
         );
-        
+
         $dbData = [];
+        $dbDataInfo = [];
         $dbJobData = [];
         $dbEduData = [];
         $dbLanguageData = [];
-        
-        //工作经历
-//        var_dump($data['text']);
-        
+
         foreach ($data['text'] as $k => $v) {
             $search = array(" ", " ", "    ", "\n", "\r", "\t", "\s", "&gt; ", "　　");
             $replace = array("", "", "", "", "", "", "", "", "");
             $text = trim(str_replace($search, $replace, $v));
             $text = strip_tags($text);
-//            var_dump($text);
-            if ($data['mode'] == 3) { //猎聘
+             var_dump($text);
+
+            if ($data['mode'] == 1) {//智联招聘
+                $baseinfo_tag = 1;
+                if(strpos($text, $this->encode('更新时间：')) !== FALSE && strpos($text, $this->encode('手机：')) !== FALSE ){
+                    //姓名 手机
+                    preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\/|\.)\d{1,2}/', $text,$match);
+                    $_text = explode($match[0], $text);
+                    $_info = explode($this->encode('手机：'), $_text[1]);
+                    $dbData['name'] = $_info[0];
+                    $dbData['telephone'] = $_info[1];
+                }
+
+                if (strpos($text, $this->encode('年工作经验')) !== FALSE && strpos($text, $this->encode('岁')) !== FALSE) {
+                    //性别 岁数 学历
+                    $_text = explode($this->encode('年工作经验'), $text);
+                    $dbData['edu'] = $_text[1];
+                    $_info = explode(')', $_text[0]);
+                    $dbData['startWorkyear'] = date('Y', time()) - $_info[1];
+                    $_inf = explode('岁(', $_info[0]);
+                    var_dump($_inf);exit;
+                    $_birth = $_inf[1];
+                    $_birth = str_replace($this->encode('月'), '', $_birth);
+                    $_birth = explode($this->encode('年'), $_birth);
+                    
+                    $dbData['birthYear'] = $_birth[0];
+                    $dbData['birthMouth'] = $_birth[1];
+                    $dbData['birthday'] = strtotime($_birth[0] . '-' . $_birth[1]);
+                    
+                    
+                }
+
+
+
+//                if (strpos($text, '<p cla="monormal" align="right" tyle="text-indent: 0.31in">') !== false) {
+//                    $_infos = explode('<p cla="monormal" align="right" tyle="text-indent: 0.31in">', $text);
+//                    $info = explode('</b><b>', $_infos);
+//                    var_dump($info);exit;
+//                }
+            } elseif ($data['mode'] == 3) { //猎聘
                 if ($pos = strpos($text, $this->encode('目前求职状态'))) {
                     $text = substr($text, $pos);
                     $text = explode($plix, $text);
                     $dbData[$liepin_conifg[$this->decode($text[0])]] = $this->decode($text[1]);
-                } elseif (strpos($text, $this->encode('姓名：')) !== FALSE 
-                        || strpos($text, $this->encode('教育程度：')) !== FALSE 
-                        || strpos($text, $this->encode('所在行业：')) !== FALSE 
-                        || strpos($text, $this->encode('公司名称：')) !== FALSE 
-                        || strpos($text, $this->encode('期望行业：')) !== FALSE 
-                        || strpos($text, $this->encode('期望职位：')) !== FALSE) {
+                } elseif (strpos($text, $this->encode('姓名：')) !== FALSE || strpos($text, $this->encode('教育程度：')) !== FALSE || strpos($text, $this->encode('所在行业：')) !== FALSE || strpos($text, $this->encode('公司名称：')) !== FALSE || strpos($text, $this->encode('期望行业：')) !== FALSE || strpos($text, $this->encode('期望职位：')) !== FALSE) {
                     $dbData[$liepin_conifg[$this->decode($text)]] = $this->decode(strip_tags($data['text'][$k + 1]));
                 } elseif (strpos($text, $this->encode('性别：')) !== FALSE) {
                     $_sex = $this->decode(strip_tags($data['text'][$k + 1]));
                     $dbData[$liepin_conifg[$this->decode($text)]] = $_sex == '女' ? 2 : 1;
+                } elseif (strpos($text, $this->encode('年龄：')) !== FALSE) {
+                    $_age = $this->decode(strip_tags($data['text'][$k + 1]));
+                    $dbData['birthYear'] = date('Y', time())-$_age;
+                    $dbData['birthday'] = strtotime($dbData['birthYear']);
                 } elseif (strpos($text, $this->encode('手机号码：')) !== FALSE || strpos($text, $this->encode('电子邮件：')) !== FALSE) {
                     $dbData[$liepin_conifg[$this->decode($text)]] = strip_tags(trim($data['text'][$k + 1]));
                 } elseif (strpos($text, $this->encode('所在地：')) !== FALSE || strpos($text, $this->encode('期望地点：')) !== FALSE) {
@@ -258,7 +267,7 @@ class ResumeData {
                 }
 
                 //工作经历
-                if (strpos($text, $this->encode('工作经历')) !== FALSE) {
+                if (strpos($text, $this->encode('工作经历')) !== FALSE && strpos($text, $this->encode('工作经历')) === 0) {
                     $job_tag = 1;
                     continue;
                 }
@@ -291,10 +300,7 @@ class ResumeData {
                         $dbJobData[$job_id]['position']['position'] = $this->decode(strip_tags($p_name[0]));
                     }
 
-                    if (!is_array($text) && (strpos($text, $this->encode('汇报对象：')) !== FALSE 
-                            || strpos($text, $this->encode('所在地区：')) !== FALSE 
-                            || strpos($text, $this->encode('汇报对象：')) !== FALSE
-                            || strpos($text, $this->encode('下属人数：')) !== FALSE)) {
+                    if (!is_array($text) && (strpos($text, $this->encode('汇报对象：')) !== FALSE || strpos($text, $this->encode('所在地区：')) !== FALSE || strpos($text, $this->encode('汇报对象：')) !== FALSE || strpos($text, $this->encode('下属人数：')) !== FALSE)) {
                         $_job_position = explode('|', $text);
                         foreach ($_job_position as $_jp) {
                             if (strpos($_jp, $this->encode('汇报对象：')) !== FALSE) {
@@ -308,20 +314,13 @@ class ResumeData {
                             }
                         }
                     }
-                    
+
                     if (!is_array($text) && strpos($text, $this->encode('工作职责和业绩：')) !== FALSE) {
-//                        $dbJobData[$job_id]['position']['responsibility'] = 
-                        
-                        if($k == 73){
-                            var_dump(strip_tags(trim($data['text'][$k + 1])));
-                            exit;
-                        }
-                        var_dump($k);var_dump($this->decode(strip_tags(trim($data['text'][$k + 1])))) ;
-                        
+                        $dbJobData[$job_id]['position']['responsibility'] = $this->decode(strip_tags(trim($data['text'][$k + 1])));
                     }
                 }
 
-                if (strpos($text, $this->encode('项目经历')) !== FALSE) {
+                if (strpos($text, $this->encode('项目经历')) !== FALSE && strpos($text, $this->encode('项目经历')) === 0) {
                     $job_tag = 0;
                     $project_tag = 1;
                     continue;
@@ -331,7 +330,7 @@ class ResumeData {
                     
                 }
 
-                if (!is_array($text) && strpos($text, $this->encode('教育经历')) !== FALSE) {
+                if (!is_array($text) && strpos($text, $this->encode('教育经历')) !== FALSE && strpos($text, $this->encode('教育经历')) === 0) {
                     $project_tag = 0;
                     $edu_tag = 1;
                     continue;
@@ -341,7 +340,7 @@ class ResumeData {
                     //学校经历
                     $edu_id = 0;
                     if (!is_array($text) && !empty(strip_tags(trim($text)))) {
-                        $a = preg_match('/\d{4}(\-|\/|.)\d{1,2}(\-|.)\d{4}(\-|\/|.)\d{1,2}/', $text, $match);
+                        $a = preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\.)\d{4}(\-|\/|\.)\d{1,2}/', $text, $match);
                         if ($a) {
                             $datae_match = explode($match[2], $match[0]);
                             $dbEduData[$edu_id]['starttime'] = strtotime(str_replace('.', '-', $datae_match[0]));
@@ -350,10 +349,9 @@ class ResumeData {
                             $_school_name = str_replace($this->encode('）'), "", $_school_name);
                             $_school_name = str_replace($match[0], "", $_school_name);
                             $dbEduData[$edu_id]['schoolName'] = $this->decode($_school_name);
-                            
                         }
                     }
-                    
+
                     if (!is_array($text) && strpos($text, $this->encode('专业：')) !== FALSE) {
                         $dbEduData[$edu_id]['majorName'] = $this->decode(str_replace($this->encode('专业：'), '', $text));
                     }
@@ -384,8 +382,8 @@ class ResumeData {
                     }
                     $edu_id++;
                 }
-                
-                if (!is_array($text) && strpos($text, $this->encode('语言能力')) !== FALSE) {
+
+                if (!is_array($text) && strpos($text, $this->encode('语言能力')) !== FALSE && strpos($text, $this->encode('语言能力')) === 0) {
                     $edu_tag = 0;
                     $language_tag = 1;
                     continue;
@@ -401,105 +399,77 @@ class ResumeData {
                         }
                     }
                 }
-
                 if (!is_array($text) && strpos($text, $this->encode('自我评价')) !== FALSE) {
+
                     $language_tag = 0;
                     $introduce_tag = 1;
                     continue;
                 }
-                
+
                 if ($introduce_tag == 1) {
                     if (!is_array($text) && !empty(strip_tags(trim($text)))) {
-                        $dbData['introduce'] = $this->decode(strip_tags(trim($text)));
+                        $dbData['introduce'] = $dbDataInfo['evaluate'] = $this->decode(strip_tags(trim($text)));
                         $introduce_tag = 0;
                     }
                 }
             }
         }
-
-
-        var_dump($dbData);
-        var_dump($dbJobData);
-        var_dump($dbEduData);
-        var_dump($dbLanguageData);
+        var_dump(['data' => $dbData, 'job' => $dbJobData ,'edu' => $dbEduData , 'language' => $dbLanguageData]);
         exit;
+//        var_dump(['data' => $dbData, 'job' => $dbJobData ,'edu' => $dbEduData , 'language' => $dbLanguageData]);
+        return ['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'edu' => $dbEduData, 'language' => $dbLanguageData];
     }
 
     function decode($str, $prefix = "&#") {
-        $str = str_replace($prefix, "", $str);
-        $a = explode(";", $str);
+        $a = explode($prefix, $str);
         foreach ($a as $dec) {
-            if($dec == 0 || !$dec){
+            if (strpos($dec, ';') === FALSE) {
+                $utf .= $dec;
                 continue;
             }
-            
-            if(!is_numeric($dec)){
-                continue;
-            }
-            
-            if($dec < 10){
-                continue;
-            }
-//            var_dump($dec);exit;
-            if ($dec < 128) {
-                $utf .= chr($dec);
-            } else if ($dec < 2048) {
-                $utf .= chr(192 + (($dec - ($dec % 64)) / 64));
-                $utf .= chr(128 + ($dec % 64));
-            } else {
-                $utf .= chr(224 + (($dec - ($dec % 4096)) / 4096));
-                $utf .= chr(128 + ((($dec % 4096) - ($dec % 64)) / 64));
-                $utf .= chr(128 + ($dec % 64));
-            }
-                        var_dump($dec);
-            var_dump($utf.'|');
-        }
-//        return $utf;
-    }
 
-    
-    
-//      function decode($str, $prefix = "&#") {
-//    $a = explode($prefix, $str);
-//        foreach ($a as $dec) {
-//            if(strpos($dec, ';') === FALSE){
-//                $utf .= $dec;
-//                continue;
-//            }
-//
-//            $_dec = str_replace(';', '', $dec);
-//            if ($_dec == 0 || !$_dec) {
-//                $utf .= $dec;
-//                continue;
-//            }
-//
-//            if (!is_numeric($_dec)){
-//                $utf .= $dec;
-//                continue;
-//            }
-//            
-//            if($_dec < 10){
-//                $utf .= $dec;
-//                continue;
-//            }
-//            
-//            if ($_dec < 128) {
-//                $utf .= chr($_dec);
-//            } else if ($_dec < 2048) {
-//                $utf .= chr(192 + (($_dec - ($_dec % 64)) / 64));
-//                $utf .= chr(128 + ($_dec % 64));
-//            } else {
-//                $utf .= chr(224 + (($_dec - ($_dec % 4096)) / 4096));
-//                $utf .= chr(128 + ((($_dec % 4096) - ($_dec % 64)) / 64));
-//                $utf .= chr(128 + ($_dec % 64));
-//            }
+            $_decs = explode(';', $dec);
+            if (!empty($_decs[1])) {
+                $_dec = (int) trim($_decs[0]);
+                $insert_tag = 1;
+            } else {
+                $_dec = (int) trim($_decs[0]);
+            }
+
+            if ($_dec == 0 || !$_dec) {
+                $utf .= $dec;
+                continue;
+            }
+
+            if (!is_numeric($_dec)) {
+                $utf .= $dec;
+                continue;
+            }
+
+            if ($_dec < 10) {
+                $utf .= $dec;
+                continue;
+            }
+
+            if ($_dec < 128) {
+                $utf .= chr($_dec);
+            } else if ($_dec < 2048) {
+                $utf .= chr(192 + (($_dec - ($_dec % 64)) / 64));
+                $utf .= chr(128 + ($_dec % 64));
+            } else {
+                $utf .= chr(224 + (($_dec - ($_dec % 4096)) / 4096));
+                $utf .= chr(128 + ((($_dec % 4096) - ($_dec % 64)) / 64));
+                $utf .= chr(128 + ($_dec % 64));
+            }
+            if ($insert_tag) {
+                $utf .= $_decs[1];
+            }
 //            var_dump($_dec);
 //            var_dump($utf.'|');
-//        }
-////        return $utf;
-//    }
-    
-    
+        }
+        return trim($utf);
+    }
+
     /**
      * 将字符串转换为ascii码
      * @param type $c 要编码的字符串

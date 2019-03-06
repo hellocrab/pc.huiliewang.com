@@ -70,6 +70,44 @@ class ProductAction extends Action
             import('@.ORG.ResumeData');
             $reData = new ResumeData();
             $data = $reData->getData($v);
+            
+            if(!$data['data'])
+            {
+                exit;
+            }
+                
+            //主数据保存
+            $data['data']['creator_role_id'] = session('role_id');
+            $data['data']['creator_role_name'] = session('tel');
+            $data['data']['creator_role_name'] = session('name');
+            $data['data']['addtime'] = time();
+            $data['data']['lastupdate'] = time();
+            M('resume')->add($data['data']);
+            $resume_id = M()->getLastInsID();
+
+            //info数据
+            $data['info']['eid'] = $resume_id;
+            M('resume_data')->add($data['info']);
+
+            //工作经历保存
+            foreach ($data['job'] as $j) {
+                $j['eid'] = $resume_id;
+                $_position = $j['position'];
+                unset($j['position']);
+                M('resume_work')->add($j);
+                $work_id = M('resume_work')->getLastInsID();
+
+                $_position['work_id'] = $work_id;
+                M('resume_work_position')->add($_position);
+            }
+
+            //教育经历
+            foreach ($data['edu'] as $edu) {
+                $edu['eid'] = $resume_id;
+                M('resume_edu')->add($edu);
+            }
+//            var_dump($data);
+//            exit;
         }
     }
 
