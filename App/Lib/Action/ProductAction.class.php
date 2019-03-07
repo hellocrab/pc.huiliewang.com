@@ -26,6 +26,90 @@ class ProductAction extends Action
 //		B('Authenticate', $action);
 //		$this->_permissionRes = getPerByAction(MODULE_NAME,ACTION_NAME);
     }
+    
+    public function resolve()
+    {
+        import('@.ORG.UploadFile');
+        $upload = new UploadFile(); // 实例化上传类
+        $upload->maxSize = 1024 * 1024 * 1024; // 设置附件上传大小
+        $upload->exts = array('doc', 'docx', 'zip', 'rar', 'mht', 'htm', 'html'); // 设置附件上传类型
+        $upload->savePath = './Uploads/temp/';
+
+        if (empty($_FILES['file'])) {
+            $this->appReturn(0, '上传失败');
+        }
+
+        $info = $upload->uploadOne($_FILES['file']);
+        if (!$info) {
+            $this->appReturn(0, '上传失败');
+        }
+
+        $file = array(
+            'file_name' => $info[0]['name'],
+            'user_id' => $this->userId,
+            'size' => $info[0]['size'],
+            'status' => 2,
+            'file_total' => 1,
+            'repeat' => 0,
+            'success' => 0,
+            'fail' => 0,
+            'integral' => 0,
+            'ext' => $info[0]['extension'],
+            'basePath' => $info[0]['savepath'],
+            'path' => $info[0]['savepath'] . $info[0]['savename'],
+            'addtime' => time()
+        );
+
+        $imporFile[] = array('path' => $file['path'],
+            'basePath' => $file['basePath'],
+            'ext' => $file['ext'],
+            'filename' => $info[0]['savename']
+        );
+        //保存简历
+        foreach ($imporFile as $v) {
+            import('@.ORG.ResumeData');
+            $reData = new ResumeData();
+            $data = $reData->getData($v);
+            
+            if(!$data['data'])
+            {
+                exit;
+            }
+                
+            //主数据保存
+            $data['data']['creator_role_id'] = session('role_id');
+            $data['data']['creator_role_name'] = session('tel');
+            $data['data']['creator_role_name'] = session('name');
+            $data['data']['addtime'] = time();
+            $data['data']['lastupdate'] = time();
+            M('resume')->add($data['data']);
+            $resume_id = M()->getLastInsID();
+
+            //info数据
+            $data['info']['eid'] = $resume_id;
+            M('resume_data')->add($data['info']);
+
+            //工作经历保存
+            foreach ($data['job'] as $j) {
+                $j['eid'] = $resume_id;
+                $_position = $j['position'];
+                unset($j['position']);
+                M('resume_work')->add($j);
+                $work_id = M('resume_work')->getLastInsID();
+
+                $_position['work_id'] = $work_id;
+                M('resume_work_position')->add($_position);
+            }
+
+            //教育经历
+            foreach ($data['edu'] as $edu) {
+                $edu['eid'] = $resume_id;
+                M('resume_edu')->add($edu);
+            }
+//            var_dump($data);
+//            exit;
+        }
+    }
 
     /**
      *  Ajax检测产品名称
