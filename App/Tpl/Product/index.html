@@ -175,8 +175,8 @@
 									uploader.on( 'uploadProgress', function( file, percentage ) {
 									});
                                     uploader.on('uploadSuccess',(file,res)=>{
-                                        console.log(res)
-                                        swal(res.message,"","notice");
+                                        console.log(res.message)
+                                        swal(res.message,"","warnning");
                                     })
 									uploader.on( 'error', type=> {
 										if(type == 'Q_TYPE_DENIED'){
