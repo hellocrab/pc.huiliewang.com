@@ -176,7 +176,7 @@
 									});
                                     uploader.on('uploadSuccess',(file,res)=>{
                                         console.log(res.message)
-                                        swal(res.message,"","warnning");
+                                        swal(res.message,"","warning");
                                     })
 									uploader.on( 'error', type=> {
 										if(type == 'Q_TYPE_DENIED'){
