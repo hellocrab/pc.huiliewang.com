@@ -1188,7 +1188,7 @@ class ContractAction extends Action {
 		}
 		$this->parameter = implode('&', $params);
 		//by_parameter(特殊处理)
-		$this->by_parameter = str_replace('by='.$_GET['by'], '', implode('&', $params));
+//		$this->by_parameter = str_replace('by='.$_GET['by'], '', implode('&', $params));
 
 		$m_business = M('Business');
 		$m_user = M('User');
