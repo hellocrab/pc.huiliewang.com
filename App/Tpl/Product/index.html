@@ -167,41 +167,21 @@
 										    auto: true,
 										    resize: false,
 										    accept: {
-										        extensions: 'doc,docx,mht,htm,html,zip,rar',
+										        extensions: 'doc,docx,html,pdf',
 										    },
 										    duplicate:true,
 										    'fileSingleSizeLimit': 1024 * 1024
 										});
 									uploader.on( 'uploadProgress', function( file, percentage ) {
-									    $('.progress').css( 'width', percentage * 100 + '%' );
-									    if(percentage == 1){
-									    	App.blockUI({message: '数据保存中...'});	
-										}
 									});
-
-									uploader.on( 'uploadError', function( file ) {
-										show_message({status:0,info:'上传失败'});
-										App.unblockUI();
-									});
-
-									uploader.on('beforeFileQueued', function( file ) {
-										$('.progress').css( 'width','0%' );	
-									});
-									
-									uploader.on( 'uploadAccept', function( obj, ret) {
-										$('.progress').css( 'width','0%' );	
-										show_message({status:ret.status,info:ret.message});	
-										if(ret.status){
-											$('#datatable').dataTable().fnDraw();	
-										}
-
-										App.unblockUI();
-									});
-									uploader.on( 'error', function(type) {
+                                    uploader.on('uploadSuccess',(file,res)=>{
+                                        swal(res.message,"",res.code==200?'success':"warning");
+                                    })
+									uploader.on( 'error', type=> {
 										if(type == 'Q_TYPE_DENIED'){
-											show_message({status:0,info:'上传类型错误'});	
+                                            console.log('上传类型错误')	
 										}else if(type == 'Q_EXCEED_SIZE_LIMIT'){
-											show_message({status:0,info:'文件过大'});	
+                                            console.log('文件过大')
 										}
 									});
 								});
