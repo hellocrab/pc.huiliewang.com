@@ -1284,7 +1284,7 @@
                                                                                 res=>{
                                                                                     if(res.code==200){
                                                                                         if(res.info){
-                                                                                            var r=confirm("查看联系方式将会消耗今日查看次数");
+                                                                                            var r=confirm(res.info);
 	                                                                                        if (r==false){
                                                                                                 return
 	                                                                                        }
