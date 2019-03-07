@@ -175,6 +175,7 @@
 									uploader.on( 'uploadProgress', function( file, percentage ) {
 									});
                                     uploader.on('uploadSuccess',(file,res)=>{
+                                        console.log(res)
                                         swal(res.message,"","notice");
                                     })
 									uploader.on( 'error', type=> {
