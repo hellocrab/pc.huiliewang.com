@@ -301,14 +301,15 @@ $(".modal").on("show.bs.modal", function() {
 });
 $(document).ready(function () {
 	$("#balance").on('click',function () {
+        $(this).prop('disabled',true);
         $.post(
             "{:U('setting/searchBalance')}",
             function (data) {
 				var balance = JSON.parse(data);
 				$("#time_long").html("剩余时长:"+balance.data);
+                $("#balance").prop('disabled',false);
             }
         );
-        $(this).prop('disabled',true);
     });
 });
 

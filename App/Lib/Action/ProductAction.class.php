@@ -90,15 +90,24 @@ class ProductAction extends Action
             M('resume_data')->add($data['info']);
 
             //工作经历保存
-            foreach ($data['job'] as $j) {
-                $j['eid'] = $resume_id;
-                $_position = $j['position'];
-                unset($j['position']);
-                M('resume_work')->add($j);
-                $work_id = M('resume_work')->getLastInsID();
+            if (!empty($data['job'])) {
+                foreach ($data['job'] as $j) {
+                    $j['eid'] = $resume_id;
+                    $_position = $j['position'];
+                    unset($j['position']);
+                    M('resume_work')->add($j);
+                    $work_id = M('resume_work')->getLastInsID();
 
-                $_position['work_id'] = $work_id;
-                M('resume_work_position')->add($_position);
+                    $_position['work_id'] = $work_id;
+                    M('resume_work_position')->add($_position);
+                }
+            }
+            //项目经历
+            if (!empty($data['project'])) {
+                foreach ($data['project'] as $p) {
+                    $p['eid'] = $resume_id;
+                    M('resume_project')->add($p);
+                }
             }
 
             //教育经历
