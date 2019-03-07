@@ -1603,7 +1603,7 @@ class CustomerAction extends Action {
                     $order_params[] = "listrows=" . $listrows;
                 }
             }
-//			var_dump($params);exit();
+            isset($by) && $params[]= "by={$by}";
             $this->order_parameter = implode('&', $order_params); //排序专用params
             $this->parameter = implode('&', $params);
             //by_parameter(特殊处理)
