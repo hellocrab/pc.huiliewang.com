@@ -33,4 +33,4 @@ if (strpos($_SERVER['SERVER_ADDR'], '192.168.1.177') !== FALSE) {//测试环境
         'DB_PREFIX' => 'mx_', // 数据表前缀
         'DB_MASTER_NUM' => 1
     );
-    }
+}

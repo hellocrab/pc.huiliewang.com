@@ -1603,7 +1603,7 @@ class CustomerAction extends Action {
                     $order_params[] = "listrows=" . $listrows;
                 }
             }
-//			var_dump($params);exit();
+            isset($by) && $params[]= "by={$by}";
             $this->order_parameter = implode('&', $order_params); //排序专用params
             $this->parameter = implode('&', $params);
             //by_parameter(特殊处理)
@@ -2122,7 +2122,9 @@ class CustomerAction extends Action {
             $customer['contacts_name'] = M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->getField('name');
             if(!$customer['contacts_name']){
                 $contactName = M('contacts')->where('contacts_id in (%s) and is_deleted=0', implode(',', $contacts_ids))->getField('name');
+                $contactid = M('contacts')->where('contacts_id in (%s) and is_deleted=0', implode(',', $contacts_ids))->getField('contacts_id');
                 $customer['contacts_name'] = $contactName;
+                $customer['contacts_id']  = $contactid;
             }
             $field_list = field_list_html("edit", "customer", $customer);
             $array_field = array();
