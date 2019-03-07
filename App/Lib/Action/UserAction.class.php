@@ -926,6 +926,7 @@ class UserAction extends Action {
 						unset ($_SESSION['name']) ;
 						session('name', trim($_POST['name']));
 					}
+                    session('tel', $_POST['telephone']);
 					if(session('?admin')){
 						alert('success',L('EDIT_USER_INFO_SUCCESS'),U('user/index'));
 					}else{
