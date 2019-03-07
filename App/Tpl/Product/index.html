@@ -174,8 +174,8 @@
 										});
 									uploader.on( 'uploadProgress', function( file, percentage ) {
 									});
-                                    uploader.on('uploadSuccess',(res,data)=>{
-                                        console.log('uploadComplete',data)
+                                    uploader.on('uploadSuccess',(file,res)=>{
+                                        swal(res.message,"","notice");
                                     })
 									uploader.on( 'error', type=> {
 										if(type == 'Q_TYPE_DENIED'){
