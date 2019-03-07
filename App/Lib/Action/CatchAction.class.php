@@ -98,7 +98,7 @@ class CatchAction extends Action {
             $res1 = M('catch_resumes_limit')->where(['status' => 1, 'm_id' => $this->mid])->field('id,now,total')->order('id desc')->find();
             if ($res1['now'] + 1 < $res1['total']) {
                 M('catch_resumes_limit')->add(['now' => $res1['now'] + 1, 'status' => 0, time => date('Y-m-d H:i:s', time()), 'm_id' => $this->mid]);
-                $limit_id = M()->getLastInsID();
+                $limit_id = M('catch_resumes_limit')->getLastInsID();
 
                 $header = [
                     "Content-type: application/json;charset='utf-8'",
@@ -332,7 +332,8 @@ class CatchAction extends Action {
                             'reasons_for_leaving' => $we->reasons_for_leaving
                         ];
                         M('resume_work')->add($work_data);
-                        $work_id = M()->getLastInsID();
+                        $work_inser_sql = M('resume_work')->getLastSql();
+                        $work_id = M('resume_work')->getLastInsID();
 
                         //position
                         $position_expers = $we->position_expers;
