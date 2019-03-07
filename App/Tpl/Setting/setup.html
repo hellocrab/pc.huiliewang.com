@@ -307,7 +307,7 @@ $(document).ready(function () {
             function (data) {
 				var balance = JSON.parse(data);
 				$("#time_long").html("剩余时长:"+balance.data);
-                $(this).prop('disabled',false);
+                $("#balance").prop('disabled',false);
             }
         );
     });
