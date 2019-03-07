@@ -193,8 +193,9 @@
                                     <div class="form-group">
                                         <label class="col-lg-2 control-label">电话</label>
                                         <div class="col-lg-4">
-                                            <p class="form-p">
-                                                {$resume.telephone}
+                                            <p class="form-p telshow2">
+                                                ************
+                                                <i class="iconfont iconshow eye"></i>
                                             </p>
                                         </div>
                                         <label class="col-lg-2 control-label">目前职位</label>
@@ -207,8 +208,9 @@
                                     <div class="form-group">
                                         <label class="col-lg-2 control-label">邮箱</label>
                                         <div class="col-lg-4">
-                                            <p class="form-p">
-                                                {$resume.email}
+                                            <p class="form-p mailshow2">
+                                                ************
+                                                <i class="iconfont iconshow eye"></i>
                                             </p>
                                         </div>
                                         <label class="col-lg-2 control-label">目前状态</label>
@@ -1294,6 +1296,8 @@
                                                                                                         if(val.code==200){
                                                                                                             document.querySelector('.telshow').innerHTML=val.info.telephone;
                                                                                                             document.querySelector('.mailshow').innerHTML=val.info.email;
+                                                                                                            document.querySelector('.telshow2').innerHTML=val.info.telephone;
+                                                                                                            document.querySelector('.mailshow2').innerHTML=val.info.email;
                                                                                                         }
                                                                                                     }
                                                                                                 )
