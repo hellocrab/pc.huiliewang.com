@@ -211,7 +211,7 @@ class ResumeData {
             $replace = array("", "", "", "", "", "", "", "", "");
             $text = trim(str_replace($search, $replace, $v));
             $text = strip_tags($text);
-            var_dump($text);
+//            var_dump($text);
             if ($data['mode'] == 1) {//智联招聘
                 $baseinfo_tag = 1;
 
@@ -433,7 +433,7 @@ class ResumeData {
 
                 if ($job_tag == 1) {
                     $a = explode('-', $text);
-                    if (!is_array($text) && preg_match('/^\d{4}(\-|.)((0([1-9]))|(1(0|1|2)))$/', $a[0])) {
+                    if (!is_array($text) && preg_match('/^\d{4}(\-|\.)((0([1-9]))|(1(0|1|2)))$/', $a[0])) {
                         $job_id++;
                         $dbJobData[$job_id]['starttime'] = strpos($a[0], '.') !== FALSE ? strtotime(str_replace('.', '-', $a[0])) : strtotime($a[0]);
                         if (strpos($a[1], $this->encode('至今')) !== false) {
@@ -486,7 +486,30 @@ class ResumeData {
                 }
 
                 if ($project_tag == 1) {
-                    
+                    if (!is_array($text) && preg_match_all('/\d{4}(\-|\/|\.)\d{1,2}/', $text, $match)) {
+                        $project_id++;
+                        $dbProjectData[$project_id]['starttime'] = strpos($match[0][0], '.') !== FALSE ? strtotime(str_replace('.', '-', $match[0][0])) : strtotime($match[0][0]);
+                        if (strpos($text, $this->encode('至今')) !== false) {
+                            $dbProjectData[$project_id]['endtime'] = -9999;
+                        } else {
+                            $dbProjectData[$project_id]['endtime'] = strpos($match[0][1], '.') !== FALSE ? strtotime(str_replace('.', '-', $match[0][1])) : strtotime($match[0][1]);
+                        }
+                        $dbProjectData[$project_id]['proName'] = $this->decode(strip_tags(trim($data['text'][$k + 1])));
+                    }
+
+                    if (!is_array($text) && strpos($text, $this->encode('项目职务：')) !== FALSE) {
+                        $dbProjectData[$project_id]['proOffice'] = $this->decode(strip_tags(trim($data['text'][$k + 1])));
+                    }
+
+                    if (!is_array($text) && strpos($text, $this->encode('所在公司：')) !== FALSE) {
+                        $dbProjectData[$project_id]['proCompany'] = $this->decode(strip_tags(trim($data['text'][$k + 1])));
+                    }
+                    if (!is_array($text) && strpos($text, $this->encode('项目简介：')) !== FALSE) {
+                        $dbProjectData[$project_id]['proDes'] = $this->decode(strip_tags(trim($data['text'][$k + 1])));
+                    }
+                    if (!is_array($text) && strpos($text, $this->encode('项目职责：')) !== FALSE) {
+                        $dbProjectData[$project_id]['responsibility'] = $this->decode(strip_tags(trim($data['text'][$k + 1])));
+                    }
                 }
 
                 if (!is_array($text) && strpos($text, $this->encode('教育经历')) !== FALSE && strpos($text, $this->encode('教育经历')) === 0) {
