@@ -674,6 +674,7 @@ class CustomerAction extends Action {
                     //修改字段记录
                     $old_customer = M('Customer')->where('customer_id= %d', $customer['customer_id'])->find();  //修改前数据
                     $a = $m_customer->where('customer_id= %s', $customer['customer_id'])->save();
+                    M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->save($_POST['con_contacts']);
 
                     $new_customer = $m_customer->where('customer_id= %d', $customer['customer_id'])->find(); //修改后数据
                     $update_ago = array_diff_assoc($new_customer, $old_customer); //获取已修改的字段
@@ -748,11 +749,17 @@ class CustomerAction extends Action {
             $customer['grade'] = ($customer['grade'] > 5 || $customer['grade'] < 0) ? 0 : $customer['grade'];
             $this->customer = $customer;
             $this->assign('info', $customer);
-
-//            var_dump($customer);exit();
-//            var_dump($customer);exit();
             $res = $this->field_list = field_list_html("edit", "customer", $customer);
+//            header('content-type:text/html;charset= utf-8;');
+//            dump($customer);die;
             $user = M('user')->where('status =%d', 1)->field('full_name,user_id')->select();
+//            编辑客户联系人显示页3-8_guo
+            $contacts = M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->find();
+            foreach ($contacts as $k => $v){
+                $contacts['con_contacts['.$k.']'] = $v;
+            }
+//            dump($contacts);die;
+            $this->contacts_field_list = field_list_html("edit", "contacts",$contacts,"contacts");
             $this->assign("user", $user);
             $this->display();
         }

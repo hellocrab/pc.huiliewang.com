@@ -40,14 +40,15 @@
         })
     })
 </script>
-<div class="wrapper wrapper-content animated fadeIn col-md-6">
+<div class="wrapper wrapper-content animated fadeIn">
 	<form class="form-horizontal" id="form" role="form" action="{:U('customer/edit', 'id='.$customer['customer_id'])}" method="post">
 		<input type="hidden" name="p" value="{$p}">
 		<input type="hidden" name="customer_id" id="customer_id" value="{$customer['customer_id']}">
 		<div class="ibox-content add_body" id="add_body" >
 			<div class="row">
-				<div class="col-md-12 full-height-scroll add_body" >
-					<div class="row" >
+				<div class="col-md-6 add_body" style="padding-right: 0px;">
+					<div class="full-height-scroll">
+						<div class="row" >
 						<div class="col-md-12 add_body_title">
 							<div class="all-inline">
 								<span class="sq-tag"></span>
@@ -163,10 +164,80 @@
 							<!-- <div style="height: 100%; border-right: 1px dashed gray;">&nbsp;sadf</div> -->
 						</div>
 					</div>
+					</div>
+				</div>
+				<div class="col-md-6 add_body" style="padding-left: 0px;">
+					<div class="full-height-scroll">
+						<div class="col-md-12 add_body_title">
+							<div class="all-inline">
+								<span class="sq-tag"></span>
+								<div class="text-tag">
+									<span>客户联系人</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-10 add_body_form">
+							<volist name="contacts_field_list['main']" id="vo" key="key">
+								<if condition = "$vo['form_type'] neq 'customer'">
+									<div class="form-group">
+										<label class="col-md-4 control-label">{$vo.name}：</label>
+										<if condition="$vo['form_type'] == 'textarea'">
+											<div class="col-md-8">
+												<textarea class="form-control" rows="5"></textarea>
+											</div>
+											<elseif condition="$vo['form_type'] == 'address'"/>
+											<div class="col-md-8">
+												{$vo.html}
+											</div>
+											<elseif condition="$vo['form_type'] == 'box'"/>
+											<div class="col-md-6">
+												{$vo.html}
+											</div>
+											<div class="col-md-2"></div>
+											<else/>
+											<div class="col-md-6">
+												{$vo.html}
+											</div>
+											<div class="col-md-2"></div>
+										</if>
+									</div>
+								</if>
+							</volist>
+						</div>
+						<if condition = "$contacts_field_list['data']">
+							<div class="col-md-12 add_body_title">
+								<div classs="all-inline">
+									<span class="sq-tag"></span>
+									<div class="text-tag">
+										<span>附加信息</span>
+									</div>
+								</div>
+							</div>
+						</if>
+						<div class="col-md-10 add_body_form">
+							<volist name="contacts_field_list['data']" id="vo" key="key">
+								<div class="form-group">
+									<label class="col-md-4 control-label">{$vo.name}：</label>
+									<if condition="$vo['form_type'] == 'address' || $vo['form_type'] == 'box' || $vo['form_type'] == 'textarea'">
+										<div class="col-md-8">
+											{$vo.html}
+										</div>
+										<else/>
+										<div class="col-md-6">
+											{$vo.html}
+										</div>
+										<div class="col-md-2"></div>
+									</if>
+								</div>
+							</volist>
+						</div>
+						<div class="col-md-2 pull-right">
+							<!-- <div style="height: 100%; border-right: 1px dashed gray;">&nbsp;sadf</div> -->
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-
 		<div id="tfoot_div" class="clearfix" style="text-align:center">
 			<div class="clearfix" id="tfoot_page">
 				<div class="ibox-content" style="border-top: none;">
