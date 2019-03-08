@@ -614,6 +614,7 @@ function alert($type = 'info', $msg = '', $url = '', $time = 1000) {
     if (!empty($msg)) {
         $alert[$type][] = $msg;
         cookie('alert', serialize($alert));
+        cookie('add_time', time());
     }
     cookie('alerttime', $time);
 
@@ -633,8 +634,8 @@ function alert($type = 'info', $msg = '', $url = '', $time = 1000) {
 function parseAlert() {
     $alert['content'] = unserialize(stripslashes(cookie('alert')));
     $alert['time'] = cookie('alerttime');
+    $alert['alerttime'] = cookie('add_time');
     cookie('alert', null);
-
     return $alert;
 }
 

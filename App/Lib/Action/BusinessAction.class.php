@@ -35,10 +35,33 @@ class BusinessAction extends Action
     }
 
     /**
+     *  Ajax检测客户名称
+     *
+     * */
+    public function check(){
+        $where = [];
+        if ($_REQUEST['business_id']) {
+            $where['business_id'] = array('neq', $_REQUEST['business_id']);
+        }
+        $name = $_POST['name'];
+        $name && $where['name'] = ['like',"%{$name}%"];
+        $m_business = M('Business');
+        $search_array =  $m_business->where($where)->getField('name', true);
+
+        foreach ($search_array as &$info){
+            $info = str_replace("$name", "<span style='color:red;'>$name</span>", $info);
+        }
+        if (empty($search_array)) {
+            $this->ajaxReturn(0, L('ABLE_ADD'), 0);
+        } else {
+            $this->ajaxReturn($search_array, L('CUSTOMER_IS_CREATED'), 1);
+        }
+    }
+    /**
      * Ajax检测商机名称
      *
      * */
-    public function check()
+    public function checkback()
     {
         if ($_REQUEST['business_id']) {
             $where['business_id'] = array('neq', $_REQUEST['business_id']);

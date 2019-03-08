@@ -57,7 +57,30 @@ class CustomerAction extends Action {
      *  Ajax检测客户名称
      *
      * */
-    public function check() {
+    public function check(){
+        $where = [];
+        if ($_REQUEST['customer_id']) {
+            $where['customer_id'] = array('neq', $_REQUEST['customer_id']);
+        }
+        $name = $_POST['name'];
+        $name && $where['name'] = ['like',"%{$name}%"];
+        $m_customer = M('customer');
+        $search_array =  $m_customer->where($where)->getField('name', true);
+
+        foreach ($search_array as &$info){
+            $info = str_replace("$name", "<span style='color:red;'>$name</span>", $info);
+        }
+        if (empty($search_array)) {
+            $this->ajaxReturn(0, L('ABLE_ADD'), 0);
+        } else {
+            $this->ajaxReturn($search_array, L('CUSTOMER_IS_CREATED'), 1);
+        }
+    }
+    /**
+     *  Ajax检测客户名称
+     *
+     * */
+    public function check_back() {
         if ($_REQUEST['customer_id']) {
             $where['customer_id'] = array('neq', $_REQUEST['customer_id']);
         }
@@ -674,6 +697,7 @@ class CustomerAction extends Action {
                     //修改字段记录
                     $old_customer = M('Customer')->where('customer_id= %d', $customer['customer_id'])->find();  //修改前数据
                     $a = $m_customer->where('customer_id= %s', $customer['customer_id'])->save();
+                    M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->save($_POST['con_contacts']);
 
                     $new_customer = $m_customer->where('customer_id= %d', $customer['customer_id'])->find(); //修改后数据
                     $update_ago = array_diff_assoc($new_customer, $old_customer); //获取已修改的字段
@@ -748,11 +772,17 @@ class CustomerAction extends Action {
             $customer['grade'] = ($customer['grade'] > 5 || $customer['grade'] < 0) ? 0 : $customer['grade'];
             $this->customer = $customer;
             $this->assign('info', $customer);
-
-//            var_dump($customer);exit();
-//            var_dump($customer);exit();
             $res = $this->field_list = field_list_html("edit", "customer", $customer);
+//            header('content-type:text/html;charset= utf-8;');
+//            dump($customer);die;
             $user = M('user')->where('status =%d', 1)->field('full_name,user_id')->select();
+//            编辑客户联系人显示页3-8_guo
+            $contacts = M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->find();
+            foreach ($contacts as $k => $v){
+                $contacts['con_contacts['.$k.']'] = $v;
+            }
+//            dump($contacts);die;
+            $this->contacts_field_list = field_list_html("edit", "contacts",$contacts,"contacts");
             $this->assign("user", $user);
             $this->display();
         }
