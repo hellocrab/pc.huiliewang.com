@@ -159,23 +159,46 @@
                     </div>
                     
                     <script>
+                        
 								$(function(){
+                                    
 									var uploader = WebUploader.create({
 										    swf: '__PUBLIC__/webuploader/Uploader.swf',
 										    server: '/index.php?m=product&a=resolve',
-										    pick: '#picker',
+										    pick:{ 
+                                                id:'#picker',
+                                                multiple:false, 
+                                                },
 										    auto: true,
 										    resize: false,
 										    accept: {
 										        extensions: 'doc,docx,html,pdf',
 										    },
 										    duplicate:true,
-										    'fileSingleSizeLimit': 1024 * 1024
+										    'fileSingleSizeLimit': 1024 * 1024,
+                                            fileNumLimit:1
 										});
 									uploader.on( 'uploadProgress', function( file, percentage ) {
 									});
                                     uploader.on('uploadSuccess',(file,res)=>{
+                                        console.log(res);
                                         swal(res.message,"",res.code==200?'success':"warning");
+                                        if(res.code == 200){
+                                            setTimeout(()=>{
+                                            location.reload();
+                                            },1000)
+                                        }
+
+                                    })
+                                    uploader.on('uploadError',(file,res)=>{
+                                        console.log(2,res);
+                                        swal(res.message,"",res.code==200?'success':"warning");
+                                        if(res.code == 200){
+                                            setTimeout(()=>{
+                                            location.reload();
+                                            },1000)
+                                        }
+
                                     })
 									uploader.on( 'error', type=> {
 										if(type == 'Q_TYPE_DENIED'){
@@ -184,6 +207,9 @@
                                             console.log('文件过大')
 										}
 									});
+                                    uploader.on('beforeFileQueued',file=> {
+                                        
+                                    });
 								});
 							</script>
                     <div class="row " id="title-show">

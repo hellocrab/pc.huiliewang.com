@@ -186,6 +186,7 @@
     <script>
 
         $(function(){
+            $('input:not([autocomplete]),textarea:not([autocomplete]),select:not([autocomplete])').attr('autocomplete', 'off')
         sessionStorage.removeItem("idskey");
         sessionStorage.removeItem("nameskey");
         var innerHeight = window.innerHeight;
