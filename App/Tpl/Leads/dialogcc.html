@@ -68,8 +68,8 @@
                     <td>
                         <if condition="$vo.age neq ''">{$vo.age}岁&nbsp;<br/></if>
                         <if condition="$vo.native neq ''">籍贯:{$vo.native}&nbsp;<br/></if>
-                        <if condition="$vo.marital neq ''">婚育状况:<if condition="$vo.marital eq '1'">已婚<else/>未婚</if>&nbsp;<br/></if>
-                        <if condition="$vo.onwork eq '0' && $vo.onwork neq ''">离职<br/><elseif condition="$vo.onwork eq '1' && $vo.onwork neq ''"/>在职<br/></if>&nbsp;
+                        <if condition="$vo.marital neq ''">婚育状况:<if condition="$vo.marital eq '2'">已婚<else/>未婚</if>&nbsp;<br/></if>
+                        <if condition="$vo.onwork eq '1' && $vo.onwork neq ''">离职<br/><elseif condition="$vo.onwork eq '2' && $vo.onwork neq ''"/>在职<br/></if>&nbsp;
                         <if condition="$vo.company_position neq ''">目前公司/职位:{$vo.company_position}&nbsp;<br/></if>
                         <if condition="$vo.current_receive neq ''">目前薪酬:{$vo.current_receive}&nbsp;<br/></if>
                         <if condition="$vo.exp_receive neq ''">期望薪酬:{$vo.exp_receive}&nbsp;<br/></if>
