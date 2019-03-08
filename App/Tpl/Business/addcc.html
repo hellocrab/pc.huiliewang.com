@@ -59,8 +59,8 @@
                <td style="padding-left: 20px;">
                     <select name="onwork" class="form-control">
                         <option value="" <if condition="$cc_list['onwork'] eq  ''">selected="selected"</if>>----</option>
-                        <option value="0" <if condition="$cc_list['onwork'] eq  '0'">selected="selected"</if>>离职</option>
-                        <option value="1" <if condition="$cc_list['onwork'] eq  1">selected="selected"</if>>在职</option>
+                        <option value="1" <if condition="$cc_list['onwork'] eq '1'">selected="selected"</if>>离职</option>
+                        <option value="2" <if condition="$cc_list['onwork'] eq '2'">selected="selected"</if>>在职</option>
                     </select>
                </td>
            </tr>
@@ -99,8 +99,8 @@
                <td style="padding-left: 20px;">
                    <select name="marital" class="form-control">
                        <option value="" <if condition="$cc_list['marital'] eq ''">selected="selected"</if>>----</option>
-                       <option value="0" <if condition="$cc_list['marital'] eq '0'">selected="selected"</if>>未婚</option>
-                       <option value="1" <if condition="$cc_list['marital'] eq '1'">selected="selected"</if>>已婚</option>
+                       <option value="1" <if condition="$cc_list['marital'] eq '1'">selected="selected"</if>>未婚</option>
+                       <option value="2" <if condition="$cc_list['marital'] eq '2'">selected="selected"</if>>已婚</option>
                    </select>
                </td>
            </tr>

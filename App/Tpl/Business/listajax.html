@@ -402,9 +402,9 @@
                                             <tr height="24px">
                                                 <td align="right" style="font-size: 12px;color: #999999;">在职/离职:</td>
                                                 <td style="font-size: 12px;color: #666666;">
-                                                    <if condition="$vo.onwork eq '0'">
+                                                    <if condition="$vo.onwork eq '1'">
                                                         离职
-                                                        <elseif condition="$vo.onwork eq '1'"/>
+                                                        <elseif condition="$vo.onwork eq '2'"/>
                                                         在职
                                                         <else/>
                                                         -
@@ -444,9 +444,9 @@
                                             <tr height="24px">
                                                 <td align="right" style="font-size: 12px;color: #999999;">婚育状况:</td>
                                                 <td style="font-size: 12px;color: #666666;">
-                                                    <if condition="$vo.marital eq '0'">
+                                                    <if condition="$vo.marital eq '1'">
                                                         未婚
-                                                        <elseif condition="$vo.marital eq '1'"/>
+                                                        <elseif condition="$vo.marital eq '2'"/>
                                                         已婚
                                                         <else/>
                                                         -
