@@ -5,8 +5,14 @@
     </foreach>  
 </foreach>
 <input type="hidden" id="alert_defaultinfo_name" value="{:C('defaultinfo.name')}" />
+<input type="hidden" id="alerttime" value="{$alert.alerttime|default=0}" />
 <script>
     $(document).ready(function() {
+        var nowTime = Date.parse(new Date())/1000;
+        var alertTime = $('#alerttime').val();
+        if((nowTime - alertTime)  > 4){
+            return false;
+        }
         var tishi = $('.alert_tishi').val();
         var is_success = $('.alert_tishi').attr('rel');
         var alert_defaultinfo_name = $('#alert_defaultinfo_name').val();
