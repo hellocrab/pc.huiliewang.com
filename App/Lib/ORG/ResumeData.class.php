@@ -150,6 +150,7 @@ class ResumeData {
             '教育程度：' => 'edu',
             '所在地：' => 'location',
             '所在行业：' => 'now_industry',
+            '所任职位：' => 'curPosition',
             '公司名称：' => 'curCompany',
             '目前年薪：' => 'curSalary',
             '期望行业：' => 'industry',
@@ -257,7 +258,7 @@ class ResumeData {
 
                     if (strpos($text, $this->encode('现居住地：')) !== FALSE) {
                         $_city = explode('|', $text);
-                        $dbData['location'] = $this->decode(str_replace($this->encode('现居住地：'), '', $_city[0]));
+                        $dbData['location'] = $this->getCityCode($this->decode(str_replace($this->encode('现居住地：'), '', $_city[0])));
                     }
 
                     if (strpos($text, 'E-mail') !== FALSE) {
@@ -404,7 +405,13 @@ class ResumeData {
                     $text = substr($text, $pos);
                     $text = explode($plix, $text);
                     $dbData[$liepin_conifg[$this->decode($text[0])]] = $this->decode($text[1]);
-                } elseif (strpos($text, $this->encode('姓名：')) !== FALSE || strpos($text, $this->encode('教育程度：')) !== FALSE || strpos($text, $this->encode('所在行业：')) !== FALSE || strpos($text, $this->encode('公司名称：')) !== FALSE || strpos($text, $this->encode('期望行业：')) !== FALSE || strpos($text, $this->encode('期望职位：')) !== FALSE) {
+                } elseif (strpos($text, $this->encode('姓名：')) !== FALSE 
+                        || strpos($text, $this->encode('教育程度：')) !== FALSE 
+                        || strpos($text, $this->encode('所在行业：')) !== FALSE 
+                        || strpos($text, $this->encode('公司名称：')) !== FALSE 
+                        || strpos($text, $this->encode('期望行业：')) !== FALSE 
+                        || strpos($text, $this->encode('期望职位：')) !== FALSE
+                        || strpos($text, $this->encode('所任职位：')) !== FALSE) {
                     $dbData[$liepin_conifg[$this->decode($text)]] = $this->decode(strip_tags($data['text'][$k + 1]));
                 } elseif (strpos($text, $this->encode('性别：')) !== FALSE) {
                     $_sex = $this->decode(strip_tags($data['text'][$k + 1]));
@@ -416,7 +423,7 @@ class ResumeData {
                 } elseif (strpos($text, $this->encode('手机号码：')) !== FALSE || strpos($text, $this->encode('电子邮件：')) !== FALSE) {
                     $dbData[$liepin_conifg[$this->decode($text)]] = strip_tags(trim($data['text'][$k + 1]));
                 } elseif (strpos($text, $this->encode('所在地：')) !== FALSE || strpos($text, $this->encode('期望地点：')) !== FALSE) {
-                    $dbData[$liepin_conifg[$this->decode($text)]] = $this->decode(strip_tags(trim($data['text'][$k + 1])));
+                    $dbData[$liepin_conifg[$this->decode($text)]] = $this->getCityCode($this->decode(strip_tags(trim($data['text'][$k + 1]))));
                 } elseif (strpos($text, $this->encode('目前年薪：')) !== FALSE) {
                     if (is_numeric(strip_tags(trim($data['text'][$k + 1])))) {
                         $dbData[$liepin_conifg[$this->decode($text)]] = strip_tags(trim($data['text'][$k + 1]));
@@ -465,7 +472,7 @@ class ResumeData {
                             if (strpos($_jp, $this->encode('汇报对象：')) !== FALSE) {
                                 $dbJobData[$job_id]['position'][$liepin_conifg['汇报对象：']] = $this->decode(str_replace($this->encode('汇报对象：'), '', $_jp));
                             } elseif (strpos($_jp, $this->encode('所在地区：')) !== FALSE) {
-                                $dbJobData[$job_id]['position'][$liepin_conifg['所在地区：']] = $this->decode(str_replace($this->encode('所在地区：'), '', $_jp));
+                                $dbJobData[$job_id]['position'][$liepin_conifg['所在地区：']] = $this->getCityCode($this->decode(str_replace($this->encode('所在地区：'), '', $_jp)));
                             } elseif (strpos($_jp, $this->encode('所在部门：')) !== FALSE) {
                                 $dbJobData[$job_id]['position'][$liepin_conifg['所在部门：']] = $this->decode(str_replace($this->encode('所在部门：'), '', $_jp));
                             } elseif (strpos($_jp, $this->encode('下属人数：')) !== FALSE) {
@@ -600,6 +607,12 @@ class ResumeData {
         return ['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData];
     }
 
+    private function getCityCode($name = ''){
+        if($name) $name = BaseUtils::getStr($name);
+        $city_id = M('city')->where(['name' => $name])->field('city_id')->find();
+        return $city_id['city_id'];
+    }
+            
     function decode($str, $prefix = "&#") {
         $a = explode($prefix, $str);
         foreach ($a as $dec) {
