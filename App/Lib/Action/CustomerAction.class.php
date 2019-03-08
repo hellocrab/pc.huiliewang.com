@@ -929,7 +929,7 @@ class CustomerAction extends Action {
      *
      * */
     public function index() {
-//        var_dump(session('role_id'));exit;
+//        dump($_GET);die;
         $d_v_customer = D('CustomerView');
         $m_contract = M('Contract');
         if ($_GET['content'] != 'resource' && empty($_GET['scene_id'])) {
@@ -1629,9 +1629,10 @@ class CustomerAction extends Action {
             isset($by) && $params[]= "by={$by}";
             $this->order_parameter = implode('&', $order_params); //排序专用params
             $this->parameter = implode('&', $params);
+// 3/7 Guo_消除缓存
             //by_parameter(特殊处理)
+//            $this->by_parameter = str_replace('by=' . $_GET['by'], '', implode('&', $params));
 
-            $this->by_parameter = str_replace('by=' . $_GET['by'], '', implode('&', $params));
             $Page->parameter = implode('&', $params);
             $this->assign('page', $Page->show());
 
@@ -1717,7 +1718,7 @@ class CustomerAction extends Action {
             }
             $this->field_list = $mainFields;
             //高级搜索
-            //$this->fields_search = $fields_search;
+//            $this->fields_search = $fields_search;
             $this->scene_list = $scene_list;
             $this->alert = parseAlert();
             $this->display();

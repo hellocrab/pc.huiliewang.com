@@ -1547,13 +1547,13 @@ class BusinessAction extends Action
                 $data['target'] = $_POST['target'];
                 $data['remarks'] = $_POST['remarks'] ? $_POST['remarks']:'';
                 $data['age'] = $_POST['age'];
-                $data['onwork'] = $_POST['onwork'];
+                $data['onwork'] = $_POST['onwork'] ?  intval($_POST['onwork']) : null;
                 $data['company_position'] = $_POST['company_position'];
                 $data['current_receive'] = $_POST['current_receive'];
                 $data['exp_receive'] = $_POST['exp_receive'];
                 $data['off_reason'] = $_POST['off_reason'];
                 $data['chance'] = $_POST['chance'];
-                $data['marital'] = $_POST['marital'];
+                $data['marital'] = ($_POST['marital']) ?  intval($_POST['marital']) : null;
                 $data['native'] = $_POST['native'];
                 $data['plans'] = $_POST['plans'];
                 $data['target'] = $_POST['target'];
