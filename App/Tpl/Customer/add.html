@@ -131,8 +131,8 @@
 								<div class="form-group">
 									<label class="col-md-4 control-label">维护人：</label>
 									<div class="col-md-6">
-										<input type="hidden" name="customer_owner_id" id="user_id" value="{$business.customer_id}" />
-										<input class="form-control required" aria-required="true" placeholder="请点击选择"  type="text" name="customer_owner_name" id="user_name" value="{$business.customer_name}" readonly="true" style="cursor:pointer;" title="请点击选择"/>
+										<input type="hidden" name="customer_owner_id" id="user_id" value="{$Think.session.role_id}" />
+										<input class="form-control required" aria-required="true" placeholder="请点击选择"  type="text" name="customer_owner_name" id="user_name" value="{$Think.session.full_name}" readonly="true" style="cursor:pointer;" title="请点击选择"/>
 									</div>
 									<div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
 								</div>
@@ -325,7 +325,7 @@
 
     $('#user_name').click(function () {
         $('#dialog-role-list2').dialog('open');
-        $('#dialog-role-list2').load("{:U('User/listDialog')}");
+        $('#dialog-role-list2').load("{:U('User/listDialog')}&d_name={$Think.session.full_name|default=''}");
     });
 
     $('#dialog-role-list2').dialog({
