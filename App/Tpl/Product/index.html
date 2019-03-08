@@ -177,7 +177,17 @@
 									uploader.on( 'uploadProgress', function( file, percentage ) {
 									});
                                     uploader.on('uploadSuccess',(file,res)=>{
-                                        
+                                        console.log(res);
+                                        swal(res.message,"",res.code==200?'success':"warning");
+                                        if(res.code == 200){
+                                            setTimeout(()=>{
+                                            location.reload();
+                                            },1000)
+                                        }
+
+                                    })
+                                    uploader.on('uploadError',(file,res)=>{
+                                        console.log(2,res);
                                         swal(res.message,"",res.code==200?'success':"warning");
                                         if(res.code == 200){
                                             setTimeout(()=>{
