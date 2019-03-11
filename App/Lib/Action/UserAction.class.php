@@ -311,17 +311,18 @@ class UserAction extends Action {
             }
         }
         $sourceTel = session('tel');
-        $timestamp= date('YmdHis');
+//        $timestamp= date('YmdHis');
         //坐席上班
-        $this->startWork($timestamp);
-        $sig= $this->getsig($timestamp);
-        $auth=$this->getauth($timestamp);
+//        $this->startWork($timestamp);
+//        $sig= $this->getsig($timestamp);
+//        $auth=$this->getauth($timestamp);
 
         //坐席外呼
         $url = "http://211.152.35.81:8766/rest/voiceCall/api";
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
-            'Accept:' . 'application/json',
-            'Authorization:'.$auth);
+            'Accept:' . 'application/json'
+            );
+//            'Authorization:'.$auth
         $data = ["callerNbr"=>"+86".$sourceTel,
             "calleeNbr"=>"+86".$tel ,
             "userData"=>"7be4a9ce-8ea2-4c74-b822-f4472194621d",
