@@ -234,7 +234,22 @@ class ResumeData {
                     if (strpos($text, $this->encode('年工作经验')) !== FALSE && strpos($text, $this->encode('岁')) !== FALSE) {
                         //性别 岁数 学历
                         $_text = explode($this->encode('年工作经验'), $text);
-                        $dbData['edu'] = $this->decode($_text[1]);
+                        $_edu = $this->decode($_text[1]);
+                        if (strpos($_edu, '未婚') !== FALSE) {
+                            $_edu = str_replace('未婚', '', $_edu);
+                            $dbData['marital_status'] = 1;
+                        }
+                        if (strpos($_edu, '已婚') !== FALSE) {
+                            $_edu = str_replace('已婚', '', $_edu);
+                            $dbData['marital_status'] = 2;
+                        }
+                        if (strpos($_edu, '保密') !== FALSE) {
+                            $dbData['marital_status'] = 3;
+                            $_edu = str_replace('保密', '', $_edu);
+                        }
+
+                        $dbData['edu'] = $_edu;
+
                         $_info = explode(')', $_text[0]);
                         $dbData['startWorkyear'] = date('Y', time()) - $_info[1];
                         $_inf = explode($this->encode('岁'), $_info[0]);
@@ -262,7 +277,7 @@ class ResumeData {
                     }
 
                     if (strpos($text, 'E-mail') !== FALSE) {
-                        $_email = explode($this->encode('E-mail'), $text);
+                        $_email = explode('E-mail', $text);
                         $dbData['email'] = str_replace($this->encode('：'), '', $_email[1]);
                     }
                 }
@@ -319,6 +334,11 @@ class ResumeData {
                         //职位
                         $job_po = explode('|', strip_tags(trim($data['text'][$k + 1])));
                         $dbJobData[$job_id]['jobPosition'] = $this->decode($job_po[0]);
+
+                        if ($job_id == 1) {
+                            $dbData['curCompany'] = $this->decode($_company_name[0]);
+                            $dbData['curPosition'] = $this->decode($job_po[0]);
+                        }
                     }
 
                     //工作描述
@@ -400,18 +420,22 @@ class ResumeData {
                         }
                     }
                 }
+
+
+                //教在校实践经历
+                if ($text == $this->encode('在校实践经历')) {
+                    $edu_tag = 0;
+                    $school_tag = 1;
+                    continue;
+                }
+                
+                
             } elseif ($data['mode'] == 3) { //猎聘
                 if ($pos = strpos($text, $this->encode('目前求职状态'))) {
                     $text = substr($text, $pos);
                     $text = explode($plix, $text);
                     $dbData[$liepin_conifg[$this->decode($text[0])]] = $this->decode($text[1]);
-                } elseif (strpos($text, $this->encode('姓名：')) !== FALSE 
-                        || strpos($text, $this->encode('教育程度：')) !== FALSE 
-                        || strpos($text, $this->encode('所在行业：')) !== FALSE 
-                        || strpos($text, $this->encode('公司名称：')) !== FALSE 
-                        || strpos($text, $this->encode('期望行业：')) !== FALSE 
-                        || strpos($text, $this->encode('期望职位：')) !== FALSE
-                        || strpos($text, $this->encode('所任职位：')) !== FALSE) {
+                } elseif (strpos($text, $this->encode('姓名：')) !== FALSE || strpos($text, $this->encode('教育程度：')) !== FALSE || strpos($text, $this->encode('所在行业：')) !== FALSE || strpos($text, $this->encode('公司名称：')) !== FALSE || strpos($text, $this->encode('期望行业：')) !== FALSE || strpos($text, $this->encode('期望职位：')) !== FALSE || strpos($text, $this->encode('所任职位：')) !== FALSE) {
                     $dbData[$liepin_conifg[$this->decode($text)]] = $this->decode(strip_tags($data['text'][$k + 1]));
                 } elseif (strpos($text, $this->encode('性别：')) !== FALSE) {
                     $_sex = $this->decode(strip_tags($data['text'][$k + 1]));
@@ -607,12 +631,13 @@ class ResumeData {
         return ['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData];
     }
 
-    private function getCityCode($name = ''){
-        if($name) $name = BaseUtils::getStr($name);
+    private function getCityCode($name = '') {
+        if ($name)
+            $name = BaseUtils::getStr($name);
         $city_id = M('city')->where(['name' => $name])->field('city_id')->find();
         return $city_id['city_id'];
     }
-            
+
     function decode($str, $prefix = "&#") {
         $a = explode($prefix, $str);
         foreach ($a as $dec) {
