@@ -717,7 +717,7 @@ class ResumeData {
                         $_edu_info = str_replace($this->encode('～'), '', $_edu_info);
                         $_edu_info = str_replace('-', '', $_edu_info);
                         $dbEduData[$edu_id]['addtime'] = time();
-                        
+
                         //教育细节
                         if (strpos($_edu_info, '|') !== FALSE) {
                             $_edu_info = explode('|', $_edu_info);
@@ -811,8 +811,15 @@ class ResumeData {
 
                     if (!is_array($text) && strpos($text, $this->encode('公司描述：')) !== FALSE) {
                         $dbJobData[$job_id][$liepin_conifg['公司描述：']] = $this->decode(str_replace($this->encode('公司描述：'), '', $text));
-                        $p_name = explode('</b>', trim($data['text'][$k + 1]));
-                        $dbJobData[$job_id]['position']['position'] = $this->decode(strip_tags($p_name[0]));
+
+                        $_postion = str_replace($this->encode('元'), '', strip_tags(trim($data['text'][$k + 1])));
+                        $_postion = str_replace($this->encode('月'), '', $_postion);
+                        $_postion = str_replace('/', '', $_postion);
+                        if(preg_match_all('/\d{1,9}/', $this->decode($_postion),$matchs)){
+                            $dbJobData[$job_id]['salary'] = ((int)$matchs[0][0] / 10000)*12;
+                            $_postion = str_replace($matchs[0][0], '', $_postion);
+                        }
+                        $dbJobData[$job_id]['position']['position'] = $this->decode(strip_tags($_postion));
                     }
 
                     if (!is_array($text) && (strpos($text, $this->encode('汇报对象：')) !== FALSE || strpos($text, $this->encode('所在地区：')) !== FALSE || strpos($text, $this->encode('汇报对象：')) !== FALSE || strpos($text, $this->encode('下属人数：')) !== FALSE)) {
