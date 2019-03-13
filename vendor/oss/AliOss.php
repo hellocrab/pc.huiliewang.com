@@ -46,7 +46,7 @@ class AliOss
             return false;
         }
 //        http://pc-huiliewang.oss-cn-hangzhou.aliyuncs.com/5c88aa8e050551140.doc
-        return self::$bucket . '.' . self::$endpointName . '/' . $object;
+        return 'http://' . self::$bucket . '.' . self::$endpointName . '/' . $object;
     }
 
     /**
