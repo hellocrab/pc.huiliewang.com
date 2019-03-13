@@ -1739,19 +1739,20 @@ function check_permission($module_id, $module, $permission_field = 'owner_role_i
  * @ atuhor		: zf
  * @ function 	: 下载方法
  * */
-function download($file, $name = '') {
+function download($file, $name = '',$isOpen = true) {
     $fileName = $name ? $name : pathinfo($file, PATHINFO_FILENAME);
-    $filePath = realpath($file);
+    if($isOpen){
+        $filePath = realpath($file);
+        $fp = fopen($filePath, 'rb');
 
-    $fp = fopen($filePath, 'rb');
-
-    if (!$filePath || !$fp) {
-        header('HTTP/1.1 404 Not Found');
-        echo "Error: 404 Not Found.(server file path error)<!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding -->";
-        exit;
+        if (!$filePath || !$fp) {
+            header('HTTP/1.1 404 Not Found');
+            echo "Error: 404 Not Found.(server file path error)<!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding -->";
+            exit;
+        }
+        $fileName = $fileName . '.' . pathinfo($filePath, PATHINFO_EXTENSION);
     }
 
-    $fileName = $fileName . '.' . pathinfo($filePath, PATHINFO_EXTENSION);
     $encoded_filename = urlencode($fileName);
     $encoded_filename = str_replace("+", "%20", $encoded_filename);
 

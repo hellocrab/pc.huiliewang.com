@@ -61,7 +61,8 @@ class ProductAction extends Action
         $imporFile[] = array('path' => $file['path'],
             'basePath' => $file['basePath'],
             'ext' => $file['ext'],
-            'filename' => $info[0]['savename']
+            'filename' => $info[0]['savename'],
+            'fileSize' => $file['size']
         );
         //保存简历
         foreach ($imporFile as $v) {
@@ -89,6 +90,11 @@ class ProductAction extends Action
                 $data['data']['lastupdate'] = time();
                 M('resume')->add($data['data']);
                 $resume_id = M()->getLastInsID();
+
+                //上传附件到OSS
+                $filePath = realpath($v['path']);
+                $saveName = $name . '_' . $v['filename'];
+                $this->upOssFile($filePath, $saveName,$resume_id,$v['fileSize']);
 
                 //info数据
                 $data['info']['eid'] = $resume_id;
@@ -133,6 +139,26 @@ class ProductAction extends Action
     }
 
     /**
+     * @desc 简历附件上传
+     * @param $filePath
+     * @param $saveName
+     * @param $resumeId
+     * @param int $size
+     */
+    private function upOssFile($filePath, $saveName, $resumeId, $size = 0) {
+        $ossObj = new AliOssAction();
+        $ossFileName = $ossObj::upFile($filePath, $saveName);
+        if (!$ossFileName) {
+            return;
+        }
+        $fileData = ['name' => $saveName, 'role_id' => session('role_id'), 'size' => $size, 'create_date' => time(), 'file_path' => $ossFileName];
+        M('file')->add($fileData);
+        $fileId = M('file')->getLastInsID();
+        $fileId > 0 && M('r_resume_file')->add(['resume_id'=>$resumeId,'file_id'=>$fileId,'is_resolve'=>1]);
+        return;
+    }
+
+    /**
      * @desc 检查简历是否存在
      * @param $name
      * @param $phone
@@ -147,17 +173,17 @@ class ProductAction extends Action
         //根据手机号检查
 
         if ($phone) {
-            $where = ['name' => $name,'telephone'=>$phone];
+            $where = ['name' => $name, 'telephone' => $phone];
             $info = M('resume')->where($where)->find();
             if ($info) {
                 return true;
             }
         }
-        if(!$email){
+        if (!$email) {
             return false;
         }
         //根据邮箱查重
-        $where = ['name' => $name,'email'=>$email];
+        $where = ['name' => $name, 'email' => $email];
         $info = M('resume')->where($where)->find();
         return isset($info['eid']);
     }
@@ -1052,8 +1078,18 @@ class ProductAction extends Action
             $resume['birthMouth'] = '-' . $resume['birthMouth'];
         }
 
+        //简历附件
+        $file_ids = M('rResumeFile')->where(['resume_id' =>$eid,'is_resolve'=>1])->getField('file_id', true);
+        if($file_ids){
+            $resume['file_resolve'] = M('file')->where('file_id in (%s)', implode(',', $file_ids))->select();
+            foreach ($resume['file_resolve'] as &$fileInfo) {
+                $fileInfo['owner'] = D('RoleView')->where('role.role_id = %d', $fileInfo['role_id'])->find();
+                $fileInfo['size'] = ceil($fileInfo['size'] / 1024);
+            }
+        }
+
         //文件
-        $file_ids = M('rResumeFile')->where('resume_id = %d', $eid)->getField('file_id', true);
+        $file_ids = M('rResumeFile')->where(['resume_id' =>$eid,'is_resolve'=>0])->getField('file_id', true);
         $info['file'] = M('file')->where('file_id in (%s)', implode(',', $file_ids))->select();
         $file_count = 0;
         foreach ($info['file'] as $key => $value) {
