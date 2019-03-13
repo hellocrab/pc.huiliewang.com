@@ -77,7 +77,11 @@ class ProductAction extends Action
             $name = isset($data['data']['name']) ? trim($data['data']['name']) : '';
             $telephone = isset($data['data']['telephone']) ? trim($data['data']['telephone']) : '';
             $email = isset($data['data']['email']) ? trim($data['data']['email']) : '';
-            if ($this->isResumeExist($name, $telephone, $email)) {
+            $filePath = realpath($v['path']);
+            $saveName = $name . '_' . $v['filename'];
+            if ($idExt = $this->isResumeExist($name, $telephone, $email)) {
+                //上传附件到OSS
+                $this->upOssFile($filePath, $saveName,$idExt,$v['fileSize']);
                 $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => "{$name}简历已经存在"]);
             }
 
@@ -92,8 +96,6 @@ class ProductAction extends Action
                 $resume_id = M()->getLastInsID();
 
                 //上传附件到OSS
-                $filePath = realpath($v['path']);
-                $saveName = $name . '_' . $v['filename'];
                 $this->upOssFile($filePath, $saveName,$resume_id,$v['fileSize']);
 
                 //info数据
@@ -176,7 +178,7 @@ class ProductAction extends Action
             $where = ['name' => $name, 'telephone' => $phone];
             $info = M('resume')->where($where)->find();
             if ($info) {
-                return true;
+                return $info['eid'];
             }
         }
         if (!$email) {
@@ -185,7 +187,7 @@ class ProductAction extends Action
         //根据邮箱查重
         $where = ['name' => $name, 'email' => $email];
         $info = M('resume')->where($where)->find();
-        return isset($info['eid']);
+        return isset($info['eid']) ? $info['eid'] : false;
     }
 
     /**
