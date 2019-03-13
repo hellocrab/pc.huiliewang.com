@@ -378,7 +378,7 @@ class IndexAction extends Action {
             $customer_count[] = $m_customer->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
             $contacts_count[] = $m_contacts->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
             $business_count[] = $m_business->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
-            $resume_count[] = $m_resume->where(array('creator_role_id' => array('in', $briefing_role_ids), 'addtime' => $v))->count();
+//            $resume_count[] = $m_resume->where(array('creator_role_id' => array('in', $briefing_role_ids), 'addtime' => $v))->count();
             $contract_count[] = $m_contract->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
 //            $log_count[] = $m_log->where(array('role_id' => array('in', $briefing_role_ids), 'category_id' => 1, 'create_date' => $v))->count(); //沟通日志
 //            $mylog_count[] = $m_log->where(array('role_id' => array('in', $briefing_role_ids), 'category_id' => array('neq', 1), 'create_date' => $v))->count(); //工作日志
@@ -430,7 +430,7 @@ class IndexAction extends Action {
 //            $sum_price_year = !empty($sum_price_year) ? $sum_price_year : '0.00';
 //            $schedule = !empty($schedule) ? $schedule : '0.00';
 //        }
-        $anly_count = array('customer_count' => $customer_count, 'contacts_count' => $contacts_count, 'business_count' => $business_count, 'resume_count' => $resume_count, 'contract_count' => $contract_count, 'log_count' => $log_count, 'mylog_count' => $mylog_count, 'sum_price' => $sum_price, 'sum_price_month' => $sum_price_month, 'sum_price_week' => $sum_price_week, 'sum_price_year' => $sum_price_year, 'schedule' => $schedule);
+        $anly_count = array('customer_count' => $customer_count, 'contacts_count' => $contacts_count, 'business_count' => $business_count, 'contract_count' => $contract_count, 'log_count' => $log_count, 'mylog_count' => $mylog_count, 'sum_price' => $sum_price, 'sum_price_month' => $sum_price_month, 'sum_price_week' => $sum_price_week, 'sum_price_year' => $sum_price_year, 'schedule' => $schedule);
         $this->anly_count = $anly_count;
 
         $this->alert = parseAlert();

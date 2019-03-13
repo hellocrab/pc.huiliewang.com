@@ -1,6 +1,6 @@
 <?php
 
-if (strpos($_SERVER['SERVER_ADDR'], '192.168.1.177') !== FALSE) {//测试环境
+if (strpos($_SERVER['SERVER_ADDR'], '192.168.0.195') !== FALSE) {//测试环境
     return array(
         'DB_TYPE' => 'mysqli',
         'DB_HOST' => 'localhost',
@@ -13,7 +13,7 @@ if (strpos($_SERVER['SERVER_ADDR'], '192.168.1.177') !== FALSE) {//测试环境
 } else if (strpos($_SERVER['SERVER_ADDR'], '192.168') !== FALSE) { //本地环境
     return array(
         'DB_TYPE' => 'mysqli',
-        'DB_HOST' => '192.168.1.177',
+        'DB_HOST' => '192.168.0.195',
         'DB_PORT' => '3306',
         'DB_NAME' => 'pinping',
         'DB_USER' => 'root',
