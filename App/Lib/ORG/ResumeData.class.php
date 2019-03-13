@@ -104,7 +104,7 @@ class ResumeData {
                 $str = preg_replace("/align=.+?['|\"]/", '', $str);
                 $str = explode('</p>', $str);
             } else {
-//                $mode = ; //智联卓聘
+                $mode = 2; //智联卓聘
                 $str = strip_tags($text, "<b><p>");
                 $str = preg_replace('/\n/is', '', $str);
                 $str = preg_replace('/ |　/is', '', $str);
@@ -124,6 +124,7 @@ class ResumeData {
                     $len = strlen(substr($str, $pos));
                     $str = substr($str, 0, -$len);
                 }
+                $str = explode('<palign="left">', $str);
             }
 
             return array(
@@ -492,16 +493,41 @@ class ResumeData {
                         $dbData[$zp_config[$this->decode($text)]] == $this->getCityCode($this->decode(str_replace($this->encode('现居住地：'), '', $_location[0])));
                     }
 
-                    if (strpos($text, $this->encode('手机：')) !== FALSE || strpos($text, $this->encode('邮箱：')) !== FALSE) {
+                    if ((strpos($text, $this->encode('手机：')) !== FALSE && preg_match('/\d{11}/', $text)) || (strpos($text, $this->encode('邮箱：')) !== FALSE && preg_match('/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/', $text))) {
+                        var_dump(1);
+                        exit;
                         $_phone = explode('|', $text);
+
                         if (!empty($_phone) && is_array($_phone)) {
                             foreach ($_phone as $_p) {
-                                if (strpos($_p, $this->encode('手机：')) !== FALSE) {
-                                    $dbData[$zp_config[$this->decode('手机：')]] = str_replace($this->encode('手机：'), '', $_p);
+                                $_p = str_replace($this->encode('：'), '', $_p);
+                                $_p = str_replace(':', '', $_p);
+
+                                if (strpos($_p, $this->encode('手机')) !== FALSE) {
+                                    $dbData['telephone'] = str_replace($this->encode('手机'), '', $_p);
                                 }
 
-                                if (strpos($_p, $this->encode('邮箱：')) !== FALSE) {
-                                    $dbData[$zp_config[$this->decode('邮箱：')]] = str_replace($this->encode('邮箱：'), '', $_p);
+                                if (strpos($_p, $this->encode('邮箱')) !== FALSE) {
+                                    $dbData['email'] = str_replace($this->encode('邮箱'), '', $_p);
+                                }
+                            }
+                        }
+                    }
+//
+                    if ((strpos($text, $this->encode('手机')) !== FALSE && preg_match('/\d{11}/', $text)) || (strpos($text, $this->encode('邮箱')) !== FALSE && preg_match('/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/', $text))) {
+                        $_phone = explode('|', $text);
+
+                        if (!empty($_phone) && is_array($_phone)) {
+                            foreach ($_phone as $_p) {
+                                $_p = str_replace($this->encode('：'), '', $_p);
+                                $_p = str_replace(':', '', $_p);
+
+                                if (strpos($_p, $this->encode('手机')) !== FALSE) {
+                                    $dbData['telephone'] = str_replace($this->encode('手机'), '', $_p);
+                                }
+
+                                if (strpos($_p, $this->encode('邮箱')) !== FALSE) {
+                                    $dbData['email'] = str_replace($this->encode('邮箱'), '', $_p);
                                 }
                             }
                         }
@@ -815,8 +841,8 @@ class ResumeData {
                         $_postion = str_replace($this->encode('元'), '', strip_tags(trim($data['text'][$k + 1])));
                         $_postion = str_replace($this->encode('月'), '', $_postion);
                         $_postion = str_replace('/', '', $_postion);
-                        if(preg_match_all('/\d{1,9}/', $this->decode($_postion),$matchs)){
-                            $dbJobData[$job_id]['salary'] = ((int)$matchs[0][0] / 10000)*12;
+                        if (preg_match_all('/\d{1,9}/', $this->decode($_postion), $matchs)) {
+                            $dbJobData[$job_id]['salary'] = ((int) $matchs[0][0] / 10000) * 12;
                             $_postion = str_replace($matchs[0][0], '', $_postion);
                         }
                         $dbJobData[$job_id]['position']['position'] = $this->decode(strip_tags($_postion));
@@ -966,8 +992,8 @@ class ResumeData {
                 }
             }
         }
-//        var_dump(['data' => $dbData, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData]);
-//        exit;
+        //var_dump(['data' => $dbData, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData]);
+        //exit;
         return ['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData];
     }
 
