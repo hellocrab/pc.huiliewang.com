@@ -14,8 +14,7 @@ class ProductAction extends Action
         8 => '博士后'
     ];
 
-    public function _initialize()
-    {
+    public function _initialize() {
         $title = "人才管理";
         $this->assign("title", $title);
 
@@ -26,9 +25,8 @@ class ProductAction extends Action
 //		B('Authenticate', $action);
 //		$this->_permissionRes = getPerByAction(MODULE_NAME,ACTION_NAME);
     }
-    
-    public function resolve()
-    {
+
+    public function resolve() {
         import('@.ORG.UploadFile');
         $upload = new UploadFile(); // 实例化上传类
         $upload->maxSize = 1024 * 1024 * 1024; // 设置附件上传大小
@@ -41,7 +39,7 @@ class ProductAction extends Action
 
         $info = $upload->uploadOne($_FILES['file']);
         if (!$info) {
-            $this->ajaxReturn(['succ' => 0 , 'code' => 500 , 'message'=> '上传失败']);
+            $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => '上传失败']);
         }
 
         $file = array(
@@ -72,14 +70,14 @@ class ProductAction extends Action
             $data = $reData->getData($v);
 
             if (!$data['data']) {
-                $this->ajaxReturn(['succ' => 0 , 'code' => 500 , 'message'=> '没有匹配数据']);
+                $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => '没有匹配数据']);
             }
             //检查简历是否存存在
             $name = isset($data['data']['name']) ? trim($data['data']['name']) : '';
             $telephone = isset($data['data']['telephone']) ? trim($data['data']['telephone']) : '';
             $email = isset($data['data']['email']) ? trim($data['data']['email']) : '';
-            if($this->isResumeExist($name,$telephone,$email)){
-                $this->ajaxReturn(['succ' => 0 , 'code' => 500 , 'message'=> "{$name}简历已经存在"]);
+            if ($this->isResumeExist($name, $telephone, $email)) {
+                $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => "{$name}简历已经存在"]);
             }
 
             try {
@@ -122,12 +120,11 @@ class ProductAction extends Action
                     $edu['eid'] = $resume_id;
                     M('resume_edu')->add($edu);
                 }
-                
-                $this->ajaxReturn(['succ' => 1 , 'code' => 200 , 'message'=> '解析成功']);
-            } catch (Exception $ex) {
-                $this->ajaxReturn(['succ' => 0 , 'code' => 500 , 'message'=> $ex->getMessage()]);
-            }
 
+                $this->ajaxReturn(['succ' => 1, 'code' => 200, 'message' => '解析成功']);
+            } catch (Exception $ex) {
+                $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => $ex->getMessage()]);
+            }
 
 
 //            var_dump($data);
@@ -148,15 +145,20 @@ class ProductAction extends Action
             return false;
         }
         //根据手机号检查
-        $where = ['name' => $name];
+
         if ($phone) {
-            $where['telephone'] = $phone;
-            $info =  M('resume')->where($where)->find();
-            return isset($info['eid']);
+            $where = ['name' => $name,'telephone'=>$phone];
+            $info = M('resume')->where($where)->find();
+            if ($info) {
+                return true;
+            }
+        }
+        if(!$email){
+            return false;
         }
         //根据邮箱查重
-        $where['email'] = $email;
-        $info =  M('resume')->where($where)->find();
+        $where = ['name' => $name,'email'=>$email];
+        $info = M('resume')->where($where)->find();
         return isset($info['eid']);
     }
 
@@ -164,8 +166,7 @@ class ProductAction extends Action
      *  Ajax检测产品名称
      *
      * */
-    public function check()
-    {
+    public function check() {
         if ($_REQUEST['product_id']) {
             $where['product_id'] = array('neq', $_REQUEST['product_id']);
         }
@@ -204,15 +205,13 @@ class ProductAction extends Action
         }
     }
 
-    public function get_hash_table($table, $code, $s = 256)
-    {
+    public function get_hash_table($table, $code, $s = 256) {
         $hash = sprintf("%u", crc32($code));
         $hash1 = intval(fmod($hash, $s));
         return $table . "_" . $hash1;
     }
 
-    public function favorite()
-    {
+    public function favorite() {
         $eid = I("eid");
         if ($eid) {
             $data['eid'] = $eid;
@@ -234,8 +233,7 @@ class ProductAction extends Action
         }
     }
 
-    public function unfavorite()
-    {
+    public function unfavorite() {
         $eid = I("eid");
         if ($eid) {
             $data['eid'] = $eid;
@@ -260,8 +258,7 @@ class ProductAction extends Action
      * 产品验证
      *
      * */
-    public function validate()
-    {
+    public function validate() {
         if ($this->isAjax()) {
             if (!$this->_request('clientid', 'trim') || !$this->_request($this->_request('clientid', 'trim'), 'trim'))
                 $this->ajaxReturn("", "", 3);
@@ -283,8 +280,7 @@ class ProductAction extends Action
         }
     }
 
-    public function index()
-    {
+    public function index() {
 
         $by = $this->_get('by', 'trim');
         if ($by == 'favorite') {
@@ -511,7 +507,7 @@ class ProductAction extends Action
         $count = $resume->where($where)->count() ? $resume->where($where)->count() : '0';
 
         $p_num = ceil($count / $listrows);
-        $p = isset($_GET['p']) && $_GET['p']>0 ? $_GET['p'] : 1;
+        $p = isset($_GET['p']) && $_GET['p'] > 0 ? $_GET['p'] : 1;
         if ($p_num < $p) {
             $p = $p_num;
         }
@@ -592,8 +588,7 @@ class ProductAction extends Action
         $this->display(); // 输出模板
     }
 
-    public function edit()
-    {
+    public function edit() {
         header("Content-type: text/html; charset=utf-8");
         if ($this->isPost()) {
             header("Content-type: text/html; charset=utf-8");
@@ -603,12 +598,12 @@ class ProductAction extends Action
 //            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
-            if($_POST['birthday']){
+            if ($_POST['birthday']) {
                 $bluck = $_POST['birthday'];
-                $_POST['birthYear'] = intval(date('Y',$bluck));
-                $_POST['birthMouth'] = intval(date("m",$bluck));
+                $_POST['birthYear'] = intval(date('Y', $bluck));
+                $_POST['birthMouth'] = intval(date("m", $bluck));
             }
-            $_POST['startWorkyear'] = date('Y',strtotime($_POST['startWorkyear']));
+            $_POST['startWorkyear'] = date('Y', strtotime($_POST['startWorkyear']));
 
             $projectExp = $_POST['projectExp'];
             $eduExp = $_POST['eduExp'];
@@ -680,11 +675,11 @@ class ProductAction extends Action
                     $data['com_id'] = $businessInfo['customer_id'];
                     $data['status'] = 1;
 
-                    $where = ['resume_id'=>$eid,'project_id'=>$businessId,'com_id'=>$businessInfo['customer_id']];
-                    if(!M("fine_project")->where($where)->find()){
+                    $where = ['resume_id' => $eid, 'project_id' => $businessId, 'com_id' => $businessInfo['customer_id']];
+                    if (!M("fine_project")->where($where)->find()) {
                         $data['addtime'] = time();
                         M("fine_project")->add($data);
-                    }else{
+                    } else {
                         M("fine_project")->where($where)->save($data);
                     }
                     alert('success', L('PRODUCT_ADDED_SUCCESSFULLY'), U('business/view', 'id=' . $_POST['business_id']));
@@ -705,8 +700,8 @@ class ProductAction extends Action
                 $this->alert = $alert;
                 $info['birthday'] = $info['birthday'] > 0 ? $info['birthday'] : strtotime("{$info['birthYear']}-{$info['birthMouth']}");
                 $resume = $info;
-                strlen($resume['startWorkyear']) > 4 && $resume['startWorkyear'] = date('Y-m',$resume['startWorkyear']);
-                $this->assign('resume',$resume);
+                strlen($resume['startWorkyear']) > 4 && $resume['startWorkyear'] = date('Y-m', $resume['startWorkyear']);
+                $this->assign('resume', $resume);
             }
 //            $m_warehouse = M('warehouse');
             // $this->house_list = $m_warehouse ->select();
@@ -718,8 +713,7 @@ class ProductAction extends Action
         }
     }
 
-    public function add1()
-    {
+    public function add1() {
         if ($this->isPost()) {
             header("Content-type: text/html; charset=utf-8");
             var_dump($_POST);
@@ -796,8 +790,7 @@ class ProductAction extends Action
         }
     }
 
-    public function check_tel()
-    {
+    public function check_tel() {
         if ($_POST) {
             $where['telephone'] = intval($_POST['telephone']);
             $id = M("resume")->where($where)->find();
@@ -809,8 +802,7 @@ class ProductAction extends Action
         }
     }
 
-    public function add()
-    {
+    public function add() {
         if ($this->isPost()) {
             header("Content-type: text/html; charset=utf-8");
 //            var_dump($_POST);exit();
@@ -818,10 +810,10 @@ class ProductAction extends Action
 //            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
-            if($_POST['birthday']){
+            if ($_POST['birthday']) {
                 $bluck = $_POST['birthday'];
-                $_POST['birthYear'] = intval(date('Y',$bluck));
-                $_POST['birthMouth'] = intval(date("m",$bluck));
+                $_POST['birthYear'] = intval(date('Y', $bluck));
+                $_POST['birthMouth'] = intval(date("m", $bluck));
             }
             $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
             $_POST['addtime'] = time();
@@ -908,13 +900,11 @@ class ProductAction extends Action
         }
     }
 
-    public function add_more()
-    {
+    public function add_more() {
         $this->display();
     }
 
-    public function view2222()
-    {
+    public function view2222() {
         $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
         $field_list = M('Fields')->where('model = "product"')->order('order_id')->select();
         foreach ($field_list as $k => $v) {
@@ -1025,14 +1015,12 @@ class ProductAction extends Action
         }
     }
 
-    public function addmark()
-    {
+    public function addmark() {
         $this->status_list = M('LogStatus')->select();
         $this->display();
     }
 
-    public function view()
-    {
+    public function view() {
         $this->status_list = M('LogStatus')->select();
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
@@ -1041,8 +1029,8 @@ class ProductAction extends Action
         $resume = D("ResumeView")->where("resume.eid=%d", $eid)->find();
         $resume['label'] = explode(",", $resume['label']);
         if ($resume['startWorkyear']) {
-            $startYear =  $resume['startWorkyear'];
-            strlen($resume['startWorkyear']) > 4 && $startYear = date('Y',$resume['startWorkyear']);
+            $startYear = $resume['startWorkyear'];
+            strlen($resume['startWorkyear']) > 4 && $startYear = date('Y', $resume['startWorkyear']);
             $resume['exp'] = date("Y") - $startYear . "年工作经验";
         }
         if ($resume['location']) {
@@ -1134,7 +1122,7 @@ class ProductAction extends Action
             foreach ($job_class as $list) {
                 $arr[] = $job_name[$list];
             }
-            $resume['job_class'] = implode(',',$arr);
+            $resume['job_class'] = implode(',', $arr);
         }
 
         if ($resume['industry']) {
@@ -1143,7 +1131,7 @@ class ProductAction extends Action
             foreach ($industry as $list) {
                 $arr[] = $industry_name[$list];
             }
-            $resume['now_industry'] = implode(',',$arr);
+            $resume['now_industry'] = implode(',', $arr);
         }
         $resume['now_industry'] = $resume['now_industry'];
 
@@ -1160,8 +1148,8 @@ class ProductAction extends Action
         //edu 
         $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
 //        $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
-        $resume['school'] = $this->resume_edu[count($this->resume_edu)-1]['schoolName'];
-        $resume['creator_role_name'] = M('user')->where(['role_id'=>$resume['creator_role_id']])->getField('full_name');
+        $resume['school'] = $this->resume_edu[count($this->resume_edu) - 1]['schoolName'];
+        $resume['creator_role_name'] = M('user')->where(['role_id' => $resume['creator_role_id']])->getField('full_name');
         $this->resume_project = M("resume_project")->where("eid=%d", $eid)->select();
         $map['eid'] = $resume['eid'];
         $map['role_id'] = session("role_id");
@@ -1204,8 +1192,7 @@ class ProductAction extends Action
         $this->display();
     }
 
-    public function dellable()
-    {
+    public function dellable() {
         if ($this->isPost()) {
             $data['label'] = $_POST['resume_label'];
             $result = M("resume")->where("eid=%d", $_POST['eid'])->save($data);
@@ -1214,8 +1201,7 @@ class ProductAction extends Action
         }
     }
 
-    public function addbq()
-    {
+    public function addbq() {
         if ($this->isPost()) {
             $resume = M("resume")->where("eid=%d", $_POST['eid'])->getField("label");
             $data['label'] = $resume ? $resume . "," . $_POST['addbq'] : $_POST['addbq'];
@@ -1227,8 +1213,7 @@ class ProductAction extends Action
 //	    var_dump($_POST);exit();
     }
 
-    public function view1()
-    {
+    public function view1() {
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
@@ -1257,7 +1242,7 @@ class ProductAction extends Action
             foreach ($job_class as $list) {
                 $resume['job_class'][] = $job_name[$list];
             }
-                        $resume['job_class'] = implode(",",$arr);
+            $resume['job_class'] = implode(",", $arr);
         }
 
         if ($resume['industry']) {
@@ -1278,8 +1263,7 @@ class ProductAction extends Action
         $this->display();
     }
 
-    public function delete()
-    {
+    public function delete() {
         $m_product = M('product');
         $m_product_data = M('product_data');
         $m_product_images = M('productImages');
@@ -1374,8 +1358,7 @@ class ProductAction extends Action
     }
 
     //上架产品（类似回收站还原逻辑）
-    public function revert()
-    {
+    public function revert() {
         if ($this->isPost()) {
             $product_ids = is_array($_POST['product_id']) ? implode(',', $_POST['product_id']) : intval($_POST['product_id']);
             if ('' == $product_ids) {
@@ -1405,8 +1388,7 @@ class ProductAction extends Action
         }
     }
 
-    public function editDialog()
-    {
+    public function editDialog() {
         if ($this->isPost()) {
             $r = trim($_POST['r']);
             $d_r = D($r);
@@ -1427,8 +1409,7 @@ class ProductAction extends Action
         }
     }
 
-    public function listDialog()
-    {
+    public function listDialog() {
         if ($this->isPost()) {
             $r = $_POST['r'];
             $model_id = isset($_POST['id']) ? intval($_POST['id']) : 0;
@@ -1459,8 +1440,7 @@ class ProductAction extends Action
         }
     }
 
-    public function addDialog()
-    {
+    public function addDialog() {
         if ($this->isPost()) {
             $r = $_POST['r'];
             $model_id = isset($_POST['model_id']) ? intval($_POST['model_id']) : 0;
@@ -1490,8 +1470,7 @@ class ProductAction extends Action
     }
 
     //弹出框
-    public function allProductDialog()
-    {
+    public function allProductDialog() {
         $d_product = D('ProductView');
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
 
@@ -1593,8 +1572,7 @@ class ProductAction extends Action
         $this->display();
     }
 
-    public function changeContent()
-    {
+    public function changeContent() {
         if ($this->isAjax()) {
             $product = D('ProductView'); // 实例化User对象
             import('@.ORG.Page'); // 导入分页类
@@ -1711,8 +1689,7 @@ class ProductAction extends Action
         }
     }
 
-    public function category()
-    {
+    public function category() {
         $product_category = M('product_category');
         $category_list = $product_category->select();
         $category_list = getSubCategory(0, $category_list, '');
@@ -1728,8 +1705,7 @@ class ProductAction extends Action
         $this->display();
     }
 
-    public function category_add()
-    {
+    public function category_add() {
         if ($this->isPost()) {
             $category = D('ProductCategory');
             if (!trim($_POST['name'])) {
@@ -1752,8 +1728,7 @@ class ProductAction extends Action
         }
     }
 
-    public function category_delete()
-    {
+    public function category_delete() {
         $product_category = M('Product_category');
         $product = M('product');
         if ($_POST['category_list']) {
@@ -1792,8 +1767,7 @@ class ProductAction extends Action
     }
 
     //编辑产品分类信息
-    public function category_edit()
-    {
+    public function category_edit() {
         if ($_GET['id']) {
             $product_category = M('product_category');
             $category_list = $product_category->select();
@@ -1827,8 +1801,7 @@ class ProductAction extends Action
     }
 
     //产品销量统计
-    public function analytics()
-    {
+    public function analytics() {
         $m_product = M('product');
 
         if (intval($_GET['role'])) {
@@ -1965,8 +1938,7 @@ class ProductAction extends Action
         $this->display();
     }
 
-    public function getProductByBusiness()
-    {
+    public function getProductByBusiness() {
         $business_id = $_GET['id'];
         if ($business_id) {
             $r_business_product = M('rBusinessProduct');
@@ -1981,8 +1953,7 @@ class ProductAction extends Action
     }
 
     //删除图片
-    public function delImg()
-    {
+    public function delImg() {
         $images_id = $_GET['images_id'];
         if ($images_id) {
             $m_product_images = M('productImages');
@@ -1998,8 +1969,7 @@ class ProductAction extends Action
     }
 
     //图片排序
-    public function sortImg()
-    {
+    public function sortImg() {
         $images_files = $_POST['images_arr'];
         $imagesArr = explode(',', $images_files);
         if ($imagesArr) {
@@ -2016,8 +1986,7 @@ class ProductAction extends Action
     }
 
     //导出
-    public function excelExport($productList = false)
-    {
+    public function excelExport($productList = false) {
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
@@ -2130,13 +2099,11 @@ class ProductAction extends Action
         session('export_status', 0);
     }
 
-    public function getCurrentStatus()
-    {
+    public function getCurrentStatus() {
         $this->ajaxReturn(intval(session('export_status')), 'success', 1);
     }
 
-    public function excelImport()
-    {
+    public function excelImport() {
         if ($this->isPost()) {
             if (isset($_FILES['excel']['size']) && $_FILES['excel']['size'] != null) {
                 import('@.ORG.UploadFile');
@@ -2170,8 +2137,7 @@ class ProductAction extends Action
         }
     }
 
-    public function excelImportact()
-    {
+    public function excelImportact() {
         $m_product = D('product');
         $m_product_data = D('ProductData');
         $savePath = $_GET['path'];
@@ -2256,8 +2222,7 @@ class ProductAction extends Action
         }
     }
 
-    public function excelImportDownload()
-    {
+    public function excelImportDownload() {
         C('OUTPUT_ENCODE', false);
         import("ORG.PHPExcel.PHPExcel");
         $objPHPExcel = new PHPExcel();
@@ -2351,8 +2316,7 @@ class ProductAction extends Action
     }
 
     //产品树 弹出框
-    public function mutildialog()
-    {
+    public function mutildialog() {
         $where = array();
         if ($_REQUEST["field"]) {
             if (trim($_REQUEST['field']) == "all") {
@@ -2464,8 +2428,7 @@ class ProductAction extends Action
     }
 
     //产品树 弹出框
-    public function mutildialog_business()
-    {
+    public function mutildialog_business() {
         if ($_REQUEST["field"]) {
             if (trim($_REQUEST['field']) == "all") {
                 /* $field = is_numeric(trim($_REQUEST['search'])) ? 'product.name|cost_price|sales_price|link|pre_sale_count|stock_count' : 'product.name|link|development_team'; */
@@ -2585,8 +2548,7 @@ class ProductAction extends Action
      * 第一层产品
      *
      * */
-    public function mutildialog_product()
-    {
+    public function mutildialog_product() {
         $m_product = M('Product');
         if ($_GET['business_id']) {
             $business_id = intval($_GET['business_id']);
@@ -2649,8 +2611,7 @@ class ProductAction extends Action
         }
     }
 
-    public function mutildialog_product_contract()
-    {
+    public function mutildialog_product_contract() {
         $m_r_contract_sales = M('r_contract_sales');
         $m_sales = M('sales');
         if ($contract_id = $_GET['contract_id']) {
@@ -2674,8 +2635,7 @@ class ProductAction extends Action
      * 首页获取产品销量和销售额统计
      * @ level 0:自己的数据  1:自己和下属的数据
      * */
-    public function getmonthlysales()
-    {
+    public function getmonthlysales() {
         $m_product = M('product');
         $m_sales = M('sales');
         $m_sales_product = M('salesProduct');
@@ -2735,8 +2695,7 @@ class ProductAction extends Action
      * 首页获取最高销量的产品统计
      * @ level 0:自己的数据  1:自己和下属的数据
      * */
-    public function getmonthlyamount()
-    {
+    public function getmonthlyamount() {
         $m_product = M('product');
         $m_sales = M('sales');
         $m_sales_product = M('salesProduct');
@@ -2783,8 +2742,7 @@ class ProductAction extends Action
     }
 
     //财务统计高级搜索
-    public function advance_search()
-    {
+    public function advance_search() {
         $module_name = trim($_GET['module_name']);
         $action_name = trim($_GET['action_name']);
         $idArray = getPerByAction($module_name, $action_name, false);
@@ -2808,16 +2766,14 @@ class ProductAction extends Action
     }
 
     //高级搜索获取产品类别
-    public function categoryList()
-    {
+    public function categoryList() {
         $category = M('product_category')->select();
         $category_list = getSubCategory(0, $category, '');
         $this->ajaxReturn($category_list, '', 1);
     }
 
     //修改人才状态
-    public function editstatus()
-    {
+    public function editstatus() {
         if ($this->isPost()) {
             $product_id = $_POST['product_id'] ? $_POST['product_id'] : '';
             if ($product_id) {
@@ -2849,8 +2805,7 @@ class ProductAction extends Action
         }
     }
 
-    function checkTel()
-    {
+    function checkTel() {
         if (IS_POST) {
             $resume = M('resume');
             $where['telephone'] = I('post.tel');
