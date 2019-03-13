@@ -74,6 +74,13 @@ class ProductAction extends Action
             if (!$data['data']) {
                 $this->ajaxReturn(['succ' => 0 , 'code' => 500 , 'message'=> '没有匹配数据']);
             }
+            //检查简历是否存存在
+            $name = isset($data['data']['name']) ? trim($data['data']['name']) : '';
+            $telephone = isset($data['data']['telephone']) ? trim($data['data']['telephone']) : '';
+            $email = isset($data['data']['email']) ? trim($data['data']['email']) : '';
+            if($this->isResumeExist($name,$telephone,$email)){
+                $this->ajaxReturn(['succ' => 0 , 'code' => 500 , 'message'=> "{$name}简历已经存在"]);
+            }
 
             try {
                 //主数据保存
@@ -126,6 +133,31 @@ class ProductAction extends Action
 //            var_dump($data);
 //            exit;
         }
+    }
+
+    /**
+     * @desc 检查简历是否存在
+     * @param $name
+     * @param $phone
+     * @param $email
+     * @return bool|mixed|string
+     */
+    private function isResumeExist($name, $phone, $email) {
+        //手机号或者邮箱存在
+        if ((!$phone && !$email) || !$name) {
+            return false;
+        }
+        //根据手机号检查
+        $where = ['name' => $name];
+        if ($phone) {
+            $where['telephone'] = $phone;
+            $info =  M('resume')->where($where)->find();
+            return isset($info['eid']);
+        }
+        //根据邮箱查重
+        $where['email'] = $email;
+        $info =  M('resume')->where($where)->find();
+        return isset($info['eid']);
     }
 
     /**
