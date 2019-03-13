@@ -1,7 +1,6 @@
 <?php
 
-class ProductAction extends Action
-{
+class ProductAction extends Action {
 
     protected static $degree = [
         1 => '高中',
@@ -32,6 +31,16 @@ class ProductAction extends Action
         $upload->maxSize = 1024 * 1024 * 1024; // 设置附件上传大小
         $upload->exts = array('doc', 'docx', 'zip', 'rar', 'mht', 'htm', 'html'); // 设置附件上传类型
         $upload->savePath = './Uploads/temp/';
+
+        $project_id = BaseUtils::getStr(I('pro_id'), 'int');
+        if ($project_id) {
+            $business_id = M('business')->where(['business_id' => $project_id])->field('business_id,customer_id')->find();
+            if (!$business_id) {
+                $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => "项目不存在,解析推荐失败"]);
+            }
+        }
+
+
 
         if (empty($_FILES['file'])) {
             $this->appReturn(0, '上传失败');
@@ -81,7 +90,24 @@ class ProductAction extends Action
             $saveName = $name . '_' . $v['filename'];
             if ($idExt = $this->isResumeExist($name, $telephone, $email)) {
                 //上传附件到OSS
-                $this->upOssFile($filePath, $saveName,$idExt,$v['fileSize']);
+                $this->upOssFile($filePath, $saveName, $idExt, $v['fileSize']);
+                if ($project_id) {
+                    $fine_id = M('fine_project')->where(['resume_id' => $idExt, 'project_id' => $project_id])->field('id')->find();
+                    if (empty($fine_id['id'])) {
+                        $data = [
+                            'resume_id' => $idExt,
+                            'project_id' => $project_id,
+                            'com_id' => $business_id['customer_id'],
+                            'tracker' => session('role_id'),
+                            'status' => 1,
+                            'addtime' => time()
+                        ];
+                        M('fine_project')->add($data);
+                        $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => "{$name}简历已经存在,并且已经推荐到此该项目中"]);
+                    } else {
+                        $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => "{$name}简历已经存在,并且此简历已经存在此该项目中"]);
+                    }
+                }
                 $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => "{$name}简历已经存在"]);
             }
 
@@ -96,7 +122,7 @@ class ProductAction extends Action
                 $resume_id = M()->getLastInsID();
 
                 //上传附件到OSS
-                $this->upOssFile($filePath, $saveName,$resume_id,$v['fileSize']);
+                $this->upOssFile($filePath, $saveName, $resume_id, $v['fileSize']);
 
                 //info数据
                 $data['info']['eid'] = $resume_id;
@@ -129,6 +155,19 @@ class ProductAction extends Action
                     M('resume_edu')->add($edu);
                 }
 
+                if ($project_id) {
+                    $data = [
+                        'resume_id' => $resume_id,
+                        'project_id' => $project_id,
+                        'com_id' => $business_id['customer_id'],
+                        'tracker' => session('role_id'),
+                        'status' => 1,
+                        'addtime' => time()
+                    ];
+                    M('fine_project')->add($data);
+                    $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => "解析成功,并且已经推荐到此该项目中"]);
+                }
+
                 $this->ajaxReturn(['succ' => 1, 'code' => 200, 'message' => '解析成功']);
             } catch (Exception $ex) {
                 $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => $ex->getMessage()]);
@@ -156,7 +195,7 @@ class ProductAction extends Action
         $fileData = ['name' => $saveName, 'role_id' => session('role_id'), 'size' => $size, 'create_date' => time(), 'file_path' => $ossFileName];
         M('file')->add($fileData);
         $fileId = M('file')->getLastInsID();
-        $fileId > 0 && M('r_resume_file')->add(['resume_id'=>$resumeId,'file_id'=>$fileId,'is_resolve'=>1]);
+        $fileId > 0 && M('r_resume_file')->add(['resume_id' => $resumeId, 'file_id' => $fileId, 'is_resolve' => 1]);
         return;
     }
 
@@ -1081,8 +1120,8 @@ class ProductAction extends Action
         }
 
         //简历附件
-        $file_ids = M('rResumeFile')->where(['resume_id' =>$eid,'is_resolve'=>1])->getField('file_id', true);
-        if($file_ids){
+        $file_ids = M('rResumeFile')->where(['resume_id' => $eid, 'is_resolve' => 1])->getField('file_id', true);
+        if ($file_ids) {
             $resume['file_resolve'] = M('file')->where('file_id in (%s)', implode(',', $file_ids))->select();
             foreach ($resume['file_resolve'] as &$fileInfo) {
                 $fileInfo['owner'] = D('RoleView')->where('role.role_id = %d', $fileInfo['role_id'])->find();
@@ -1091,7 +1130,7 @@ class ProductAction extends Action
         }
 
         //文件
-        $file_ids = M('rResumeFile')->where(['resume_id' =>$eid,'is_resolve'=>0])->getField('file_id', true);
+        $file_ids = M('rResumeFile')->where(['resume_id' => $eid, 'is_resolve' => 0])->getField('file_id', true);
         $info['file'] = M('file')->where('file_id in (%s)', implode(',', $file_ids))->select();
         $file_count = 0;
         foreach ($info['file'] as $key => $value) {
@@ -2207,7 +2246,7 @@ class ProductAction extends Action
             $ascii = 65;
             $cv = '';
             foreach ($field_list as $field) {
-                $info = trim((String)$currentSheet->getCell($cv . chr($ascii) . $currentRow)->getValue());
+                $info = trim((String) $currentSheet->getCell($cv . chr($ascii) . $currentRow)->getValue());
                 if ($field['is_main'] == 1) {
                     if ($field['field'] == 'category_id') {
                         $m_product_category = M('ProductCategory');
@@ -2314,15 +2353,15 @@ class ProductAction extends Action
                     //数据有效性   start
                     $objValidation = $objActSheet->getCell($cv . chr($ascii) . '3')->getDataValidation();
                     $objValidation->setType(PHPExcel_Cell_DataValidation::TYPE_LIST)
-                        ->setErrorStyle(PHPExcel_Cell_DataValidation::STYLE_INFORMATION)
-                        ->setAllowBlank(false)
-                        ->setShowInputMessage(true)
-                        ->setShowErrorMessage(true)
-                        ->setShowDropDown(true)
-                        ->setErrorTitle('输入的值有误')
-                        ->setError('您输入的值不在下拉框列表内.')
-                        ->setPromptTitle('--请选择--')
-                        ->setFormula1('"' . $select_value . '"');
+                            ->setErrorStyle(PHPExcel_Cell_DataValidation::STYLE_INFORMATION)
+                            ->setAllowBlank(false)
+                            ->setShowInputMessage(true)
+                            ->setShowErrorMessage(true)
+                            ->setShowDropDown(true)
+                            ->setErrorTitle('输入的值有误')
+                            ->setError('您输入的值不在下拉框列表内.')
+                            ->setPromptTitle('--请选择--')
+                            ->setFormula1('"' . $select_value . '"');
                     //数据有效性  end
                 }
                 $objActSheet->setCellValue($cv . chr($ascii) . '2', $field['name']);
@@ -2850,4 +2889,5 @@ class ProductAction extends Action
             $resume->where($where)->find() ? $this->ajaxReturn(true) : $this->ajaxReturn(false);
         }
     }
+
 }
