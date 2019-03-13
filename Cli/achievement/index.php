@@ -63,7 +63,11 @@ foreach ($userList as $userInfo) {
         //检查是否同步过
         if (checkExist($userId, $reportTime, $conn)) {
             $dateStartInt = $nextDayInt; //时间+1天
-            continue;
+            $mode = 2; // update
+            $where = ['eq'=>['user_id' => $userId,'report_date' => $reportTime] ];
+//            continue;
+        } else {
+            $mode = 1;//insert
         }
 
         //1、业绩统计
@@ -101,12 +105,17 @@ foreach ($userList as $userInfo) {
         //17、cc备注
         $data['cc_num'] = ccnum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         $dateStartInt = $nextDayInt; //时间+1天
-        $dataList[] = $data;
+        if($mode == 1){
+            $dataList[] = $data;
+        } else {
+            $dataList = $data;
+        }
     }
+    
     if (!$dataList && empty($dataList)) {
         continue;
     }
-    if (!saveData($dataList, $conn)) {
+    if (!saveData($dataList, $conn ,$mode,$where)) {
         echo "{$userName} data save error" . PHP_EOL;
     }
     echo "{$userName} SUCCESS" . PHP_EOL;
@@ -134,12 +143,16 @@ function checkExist($userId, $date, $conn)
  * @param  [type] $conn [description]
  * @return [type]       [description]
  */
-function saveData($data, $conn)
-{
+function saveData($data, $conn, $mode,$where = []) {
     $table = 'mx_report_intergral';
     $connMake = new sqlMaker($conn, array('tableName' => $table));
-    $sql = $connMake->insertRows($data);
-    return $conn->exec($sql);
+    if ($mode == 1) {
+        $sql = $connMake->insertRows($data);
+        return $conn->exec($sql);
+    } elseif($mode == 2) {
+        $sql = $connMake->updateRow(['data' => $data,'where' => $where]);
+        return $conn->exec($sql);
+    }
 }
 
 /**

@@ -494,8 +494,6 @@ class ResumeData {
                     }
 
                     if ((strpos($text, $this->encode('手机：')) !== FALSE && preg_match('/\d{11}/', $text)) || (strpos($text, $this->encode('邮箱：')) !== FALSE && preg_match('/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/', $text))) {
-                        var_dump(1);
-                        exit;
                         $_phone = explode('|', $text);
 
                         if (!empty($_phone) && is_array($_phone)) {
