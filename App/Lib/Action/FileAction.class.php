@@ -361,7 +361,7 @@ class FileAction extends Action{
         $num = strlen(getExtension($name))+1;
         $result = substr($name,0,-$num);
         if( strpos($path, 'oss-cn-hangzhou.aliyuncs.com')){
-            download($path,trim(urldecode($_GET['file_name'])),false);
+            ossFileDown($path);
             return;
         }
 		if(file_exists($path) && $result && strpos($path, 'Uploads') && !strpos($path, '..')){
