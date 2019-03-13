@@ -85,7 +85,17 @@
     .label_n{
         margin-right: 5px;
     }
+    #picker{
+        display: inline-block;
+    position: relative;
+    top: 16px;
+    margin-top: -19px;
+    }
 </style>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/webuploader/webuploader.css">
+
+<!--引入JS-->
+<script type="text/javascript" src="__PUBLIC__/webuploader/webuploader.js"></script>
 <ul class="nav nav-tabs" id="left_list">
     <li class="active">
         <a href="#tab0" data-toggle="tab" type="tab0">
@@ -139,9 +149,61 @@
                 <div class="" style="padding-bottom: 15px">
                     <a class="btn btn-default" href="/index.php?m=product&a=add&pro_id={:I('id')}">新增一份简历</a>
                     <a class="btn btn-default" href="/index.php?m=product&a=index&pro_id={$project['business_id']}" target="_blank">从人才库搜索</a>
+                    <div id="picker">简历解析</div>
                     <!--<a class="btn btn-default" href="/index.php?m=product&a=add_more&pro_id={$project['business_id']}" target="_blank">批量导入简历</a>-->
                 </div>
+                <script>
+                    $(function(){
+                        let id = "{$project['business_id']}";
+                        var uploader = WebUploader.create({
+                                swf: '__PUBLIC__/webuploader/Uploader.swf',
+                                server: '/index.php?m=product&a=resolve',
+                                pick:{ 
+                                    id:'#picker',
+                                    multiple:false, 
+                                    },
+                                auto: true,
+                                resize: false,
+                                accept: {
+                                    extensions: 'doc,docx,html,pdf',
+                                },
+                                duplicate:true,
+                                'fileSingleSizeLimit': 1024 * 1024,
+                                fileNumLimit:1,
+                                formData:{id}
+                            });
+                        uploader.on( 'uploadProgress', function( file, percentage ) {
+                        });
+                        uploader.on('uploadSuccess',(file,res)=>{
+                            swal(res.message,"",res.code==200?'success':"warning");
+                            if(res.code == 200){
+                                setTimeout(()=>{
+                                location.reload();
+                                },1000)
+                            }
 
+                        })
+                        uploader.on('uploadError',(file,res)=>{
+                            swal(res.message,"",res.code==200?'success':"warning");
+                            if(res.code == 200){
+                                setTimeout(()=>{
+                                location.reload();
+                                },1000)
+                            }
+
+                        })
+                        uploader.on( 'error', type=> {
+										if(type == 'Q_TYPE_DENIED'){
+                                            swal('上传类型错误',"","warning");
+										}else if(type == 'Q_EXCEED_SIZE_LIMIT'){
+                                            swal('文件过大',"","warning");
+										}
+									});
+                        uploader.on('beforeFileQueued',file=> {
+                            
+                        });
+                    });
+                </script>
                 <div class="houxuanren" style="padding-bottom: 15px">
                     <ul class="nav nav-tabs" style="background: #f9fafc;height: 70px;">
                         <!--<li class="active"><a class="" href="#tj"  data-toggle="tab" type="tj">智能推荐</a></li>-->

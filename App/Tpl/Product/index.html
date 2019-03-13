@@ -181,7 +181,6 @@
 									uploader.on( 'uploadProgress', function( file, percentage ) {
 									});
                                     uploader.on('uploadSuccess',(file,res)=>{
-                                        console.log(res);
                                         swal(res.message,"",res.code==200?'success':"warning");
                                         if(res.code == 200){
                                             setTimeout(()=>{
@@ -191,7 +190,6 @@
 
                                     })
                                     uploader.on('uploadError',(file,res)=>{
-                                        console.log(2,res);
                                         swal(res.message,"",res.code==200?'success':"warning");
                                         if(res.code == 200){
                                             setTimeout(()=>{
@@ -202,9 +200,9 @@
                                     })
 									uploader.on( 'error', type=> {
 										if(type == 'Q_TYPE_DENIED'){
-                                            console.log('上传类型错误')	
+                                            swal('上传类型错误',"","warning");
 										}else if(type == 'Q_EXCEED_SIZE_LIMIT'){
-                                            console.log('文件过大')
+                                            swal('文件过大',"","warning");
 										}
 									});
                                     uploader.on('beforeFileQueued',file=> {
