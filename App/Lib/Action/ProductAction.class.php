@@ -145,9 +145,9 @@ class ProductAction extends Action
             return false;
         }
         //根据手机号检查
-        $where = ['name' => $name];
+
         if ($phone) {
-            $where['telephone'] = $phone;
+            $where = ['name' => $name,'telephone'=>$phone];
             $info = M('resume')->where($where)->find();
             if ($info) {
                 return true;
@@ -157,7 +157,7 @@ class ProductAction extends Action
             return false;
         }
         //根据邮箱查重
-        $where['email'] = $email;
+        $where = ['name' => $name,'email'=>$email];
         $info = M('resume')->where($where)->find();
         return isset($info['eid']);
     }
