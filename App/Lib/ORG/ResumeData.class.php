@@ -87,8 +87,25 @@ class ResumeData {
                     $str = substr($str, 0, -$len);
                 }
                 $str = explode('<palign="left">', $str);
-            } elseif (strpos($text, 'lietou-static.com')) {
+            } elseif (strpos($text, 'lietou-static.com') !== false || (strpos($text, 'Image1') !== false && strpos($text, 'Image2') !== false)) {
                 $mode = 3; //猎聘
+                $str = strip_tags($text, "<b><p>");
+                $str = preg_replace('/\n/is', '', $str);
+                $str = preg_replace('/ |　/is', '', $str);
+                $str = preg_replace('/&nbsp;/is', '', $str);
+                $str = preg_replace("/style=.+?['|\"]/i", '', $str); //去除样式  
+                $str = preg_replace("/class=.+?['|\"]/i", '', $str); //去除样式  
+                $str = preg_replace("/id=.+?['|\"]/i", '', $str); //去除样式     
+                $str = preg_replace("/lang=.+?['|\"]/i", '', $str); //去除样式      
+                $str = preg_replace("/width=.+?['|\"]/i", '', $str); //去除样式   
+                $str = preg_replace("/height=.+?['|\"]/i", '', $str); //去除样式   
+                $str = preg_replace("/border=.+?['|\"]/i", '', $str); //去除样式   
+                $str = preg_replace("/face=.+?['|\"]/i", '', $str); //去除样式   
+                $str = preg_replace("/align=.+?['|\"]/", '', $str);
+                $str = explode('</p>', $str);
+            } elseif (strpos($text, $this->encode('重庆南方新华企业管理咨询')) !== false && strpos($text, '图片 19') !== false) {
+                //展昭导出
+                $mode = 4;
                 $str = strip_tags($text, "<b><p>");
                 $str = preg_replace('/\n/is', '', $str);
                 $str = preg_replace('/ |　/is', '', $str);
@@ -126,7 +143,8 @@ class ResumeData {
                 }
                 $str = explode('<palign="left">', $str);
             }
-
+            $str =str_replace('&#65533;', '', $str);
+            
             return array(
                 'mode' => $mode,
                 'text' => $str
@@ -796,7 +814,10 @@ class ResumeData {
                 } elseif (strpos($text, $this->encode('手机号码：')) !== FALSE || strpos($text, $this->encode('电子邮件：')) !== FALSE) {
                     $dbData[$liepin_conifg[$this->decode($text)]] = strip_tags(trim($data['text'][$k + 1]));
                 } elseif (strpos($text, $this->encode('所在地：')) !== FALSE || strpos($text, $this->encode('期望地点：')) !== FALSE) {
-                    $dbData[$liepin_conifg[$this->decode($text)]] = $this->getCityCode($this->decode(strip_tags(trim($data['text'][$k + 1]))));
+                    $_location = explode('-', strip_tags(trim($data['text'][$k + 1])));
+                    if($_location[0]){
+                        $dbData[$liepin_conifg[$this->decode($text)]] = $this->getCityCode($this->decode($_location[0]));
+                    }
                 } elseif (strpos($text, $this->encode('目前年薪：')) !== FALSE) {
                     if (is_numeric(strip_tags(trim($data['text'][$k + 1])))) {
                         $dbData[$liepin_conifg[$this->decode($text)]] = strip_tags(trim($data['text'][$k + 1]));
@@ -867,7 +888,7 @@ class ResumeData {
                 }
 
                 if (strpos($text, $this->encode('项目经历')) !== FALSE && strpos($text, $this->encode('项目经历')) === 0) {
-                    $job_tag = 0;
+                    $job_tag = 0; 
                     $project_tag = 1;
                     continue;
                 }
@@ -988,17 +1009,25 @@ class ResumeData {
                         $introduce_tag = 0;
                     }
                 }
+            } elseif ($data['mode'] == 4) {
+                if ($text == $this->encode('基本信息')) {
+                    $baseinfo_tag = 1;
+                    continue;
+                }
+                
+                if(!is_array($text) && strpos($text, $this->encode('姓　　名')) !== FALSE){
+                    
+                }
+                
             }
         }
-        //var_dump(['data' => $dbData, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData]);
-        //exit;
         return ['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData];
     }
 
     private function getCityCode($name = '') {
         if ($name)
             $name = BaseUtils::getStr($name);
-        $city_id = M('city')->where(['name' => $name])->field('city_id')->find();
+        $city_id = M('city')->where(['name' => ['like',"%{$name}%"]])->field('city_id')->find();
         return $city_id['city_id'];
     }
 
