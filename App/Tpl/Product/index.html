@@ -10,9 +10,10 @@
 <script src="__PUBLIC__/style/js/plugins/jsTree/jstree.min.js"></script>
 <link href="__PUBLIC__/style/css/plugins/jsTree/style.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/webuploader/webuploader.css">
-
+<link rel="stylesheet" href="__PUBLIC__/css/ideDialog.css">
 <!--引入JS-->
 <script type="text/javascript" src="__PUBLIC__/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ideDialog.js"></script>
 <style>
     .file {
         position: relative;
@@ -44,6 +45,15 @@
 <style>
     body{
         overflow-y: hidden;
+    }
+    #picker div:nth-child(1){
+        height:30px;
+        width: 90px;
+        line-height: 30px;
+        text-align: center;
+        padding: 0;
+        background: #6cf;
+        margin-right: 8px;
     }
     .option{padding-left:-30px;}
     #oDivL_tab_Test3{background-color: #fff;}
@@ -122,6 +132,7 @@
         })
     })
 </script>
+<div class='ideDialog'></div>
 <div style="display:none" id="dialog-log" title="加入项目">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
@@ -136,7 +147,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="ibox float-e-margins">
-                <div class="title-bar" style="position: relative;z-index: 99;">
+                <div class="title-bar" style="position: relative;z-index: 98;">
                     <div class="row  clearfix" id="title-hide" style="display:none;">
                         <ul class="breadcrum pull-left">
                             <li>已选中&nbsp;<span id="icheck_num"></span>&nbsp;项</li>
@@ -157,17 +168,14 @@
                             <li class="last_li"><big><a class="fa fa-times pull-right" id="back-show"></a></big></li>
                         </ul>
                     </div>
-                    
                     <script>
-                        
 								$(function(){
-                                    
 									var uploader = WebUploader.create({
 										    swf: '__PUBLIC__/webuploader/Uploader.swf',
 										    server: '/index.php?m=product&a=resolve',
-										    pick:{ 
+										    pick:{
                                                 id:'#picker',
-                                                multiple:false, 
+                                                multiple:false,
                                                 },
 										    auto: true,
 										    resize: false,
@@ -206,14 +214,14 @@
 										}
 									});
                                     uploader.on('beforeFileQueued',file=> {
-                                        
                                     });
 								});
 							</script>
                     <div class="row " id="title-show">
-                        <ul class="nav pull-left">
+                        <ul class="nav pull-left" style='display: flex;'>
                             <a href="{:U('product/add')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 新增人才</a>
                             <a id="picker">简历解析</a>
+                            <div class="ideBtn">简历查重</div>
                         </ul>
                         <form class="form-inline" id="" action="" method="get">
                             <ul class="breadcrum pull-right" style="margin-bottom: 0px">
@@ -352,70 +360,7 @@
                                                                     </if>
                                                                     </td>
                                                     </if>
-                                                    
                                                 </volist>
-                                                <!--<td  style="position: relative;">-->
-                                                <!--<if condition = "$vo['r_status'] eq '想看机会'">-->
-                                                <!--<span class="label label-success editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '现状稳定'"/>-->
-                                                <!--<span class="label label-danger editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '需要联系'"/>-->
-                                                <!--<span class="label editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '推荐客户'"/>-->
-                                                <!--<span class="label label-purple editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '客户面试'"/>-->
-                                                <!--<span class="label css-Interview editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '成功Offer'"/>-->
-                                                <!--<span class="label label-primary editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '黑名单'"/>-->
-                                                <!--<span class="label label-black editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '无状态'"/>-->
-                                                <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '项目淘汰'"/>-->
-                                                <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '保证期中'"/>-->
-                                                <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '过保证期'"/>-->
-                                                <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '人选不考虑'"/>-->
-                                                <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '加入项目'"/>-->
-                                                <!--<span class="label label-warning editstatus">{$vo['r_status']}</span>-->
-                                                <!--<elseif  condition =  "$vo['r_status'] eq '空号'"/>-->
-                                                <!--<span class="label label-black editstatus">{$vo['r_status']}</span>-->
-                                                <!--<else />-->
-                                                <!--<span class="label label-primary editstatus">编辑 </span>-->
-                                                <!--</if>-->
-
-                                                <!--<div class="status_ico form-inline editable-wrap editable-select" role="form" blur="cancel">-->
-                                                <!--<div class="editable-controls form-group">-->
-                                                <!--<select class="form-control" style="vertical-align: baseline;height: 34px;">-->
-                                                <!--<option value="想看机会" label="想看机会">想看机会</option>-->
-                                                <!--<option value="现状稳定" label="现状稳定">现状稳定</option>-->
-                                                <!--<option value="需要联系" label="需要联系">需要联系</option>-->
-                                                <!--<option value="加入项目" label="加入项目">加入项目</option>-->
-                                                <!--<option value="推荐客户" label="推荐客户">推荐客户</option>-->
-                                                <!--<option value="客户面试" label="客户面试">客户面试</option>-->
-                                                <!--<option value="成功Offer" label="成功Offer">成功Offer</option>-->
-                                                <!--<option value="保证期中" label="保证期中">保证期中</option>-->
-                                                <!--<option value="过保证期" label="过保证期">过保证期</option>-->
-                                                <!--<option value="项目淘汰" label="项目淘汰">项目淘汰</option>-->
-                                                <!--<option value="人选不考虑" label="人选不考虑">人选不考虑</option>-->
-                                                <!--<option value="黑名单" label="黑名单">黑名单</option>-->
-                                                <!--<option value="空号" label="空号">空号</option>-->
-                                                <!--<option value="无状态" label="无状态">无状态</option>-->
-                                                <!--</select>-->
-                                                <!--<span class="editable-buttons">-->
-                                                <!--<button type="button" class="btn btn-primary status_btnedit">-->
-                                                <!--<span class="glyphicon glyphicon-ok"></span>-->
-                                                <!--</button>-->
-                                                <!--<button type="button" class="btn btn-default">-->
-                                                <!--<span class="glyphicon glyphicon-remove"></span>-->
-                                                <!--</button>-->
-                                                <!--</span>-->
-                                                <!--</div>-->
-                                                <!--</div>-->
-                                                <!--</td>-->
                                                 <td>
                                                     <div class="btn-group ">
                                                         <button data-toggle="dropdown" class="btn btn-white btn-xs dropdown-toggle" aria-expanded="false"><i class="fa fa-qrcode"></i></span>
