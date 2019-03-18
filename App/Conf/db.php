@@ -13,7 +13,7 @@ if (strpos($_SERVER['SERVER_ADDR'], '192.168.0.116') !== FALSE) {//测试环境
 } else if (strpos($_SERVER['SERVER_ADDR'], '192.168') !== FALSE) { //本地环境
     return array(
         'DB_TYPE' => 'mysqli',
-        'DB_HOST' => '192.168.0.116',
+        'DB_HOST' => '192.168.0.123',
         'DB_PORT' => '3306',
         'DB_NAME' => 'pinping',
         'DB_USER' => 'root',
