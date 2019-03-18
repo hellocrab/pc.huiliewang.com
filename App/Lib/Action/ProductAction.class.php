@@ -118,6 +118,10 @@ class ProductAction extends Action {
                 $data['data']['creator_role_name'] = session('name');
                 $data['data']['addtime'] = time();
                 $data['data']['lastupdate'] = time();
+                
+                if(empty($data['data']['name'])){
+                    $data['data']['name'] = '未知';
+                }
                 M('resume')->add($data['data']);
                 $resume_id = M()->getLastInsID();
 
