@@ -14,6 +14,9 @@ class ProductAction extends Action
         8 => '博士后'
     ];
 
+    /**
+     *
+     */
     public function _initialize() {
         $title = "人才管理";
         $this->assign("title", $title);

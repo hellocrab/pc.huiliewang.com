@@ -442,11 +442,44 @@
                     <div class="tab-pane fade back_box" id="tab3">
                         <div class="panel-body">
                             <div class="ibox">
-                                <if condition="$resume['url']">
-                                    <input type="hidden" value="{$resume.url}" id="resumeurl">
-                                    <body onload="load()">
-                                        <iframe id="iframe" style="width: 100%;min-height:1000px;"></iframe>
-                                    </body>
+                                <if condition="$resume['file_resolve']">
+                                    <!--<input type="hidden" value="{$resume.url}" id="resumeurl">-->
+                                    <!--<body onload="load()">-->
+                                        <!--<iframe id="iframe" style="width: 100%;min-height:1000px;"></iframe>-->
+                                    <!--</body>-->
+                                    <table class="table product-table">
+                                        <tr>
+                                            <td>附件名称</td>
+                                            <td>{:L('SIZE')}</td>
+                                            <td>上传人</td>
+                                            <td>上传时间</td>
+                                            <td>操作</td>
+                                        </tr>
+                                        <volist name="resume.file_resolve" id="vo">
+                                            <tr>
+                                                <td>
+                                                    <img src="__PUBLIC__/productImg/{$vo['pic']}" alt="">&nbsp;&nbsp;&nbsp;
+                                                    <a <if condition="in_array(getExtension($vo['name']),imgFormat())">class="litebox_file" href="{$vo['file_path']}" data-litebox-group="group-{$info['resume_id']}" title="点击查看大图"<else/>href="javascript:;" file="{$vo.file_path}" filename="{$vo.name}" onclick="filedown(this);"</if>>{$vo.name}</a>
+                                                </td>
+                                                <td>
+                                                    {$vo.size}KB
+                                                </td>
+                                                <if condition="C('ismobile') neq 1">
+                                                    <td>
+                                                        <notempty name="vo.owner.user_name">{$vo.owner.user_name}</notempty>
+                                                    </td>
+                                                    <td>
+                                                        <notempty name="vo.create_date">{$vo.create_date|date="Y-m-d H:i",###}</notempty>
+                                                    </td>
+                                                    <td class="tdleft">
+                                                        <a href="javascript:;" file="{$vo.file_path}" filename="{$vo.name}" onclick="filedown(this);">下载</a>
+                                                    </td>
+                                                </if>
+                                            </tr>
+                                        </volist>
+
+                                    </table>
+
                                     <else />
                                     <include file="Public:nodata" />
                                 </if>

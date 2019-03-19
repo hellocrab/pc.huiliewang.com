@@ -87,9 +87,9 @@
     }
     #picker{
         display: inline-block;
-    position: relative;
-    top: 16px;
-    margin-top: -19px;
+        position: relative;
+        top: 16px;
+        margin-top: -19px;
     }
 </style>
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/webuploader/webuploader.css">
@@ -148,59 +148,59 @@
 
                 <div class="" style="padding-bottom: 15px">
                     <a class="btn btn-default" href="/index.php?m=product&a=add&pro_id={:I('id')}">新增一份简历</a>
-                    <a class="btn btn-default" href="/index.php?m=product&a=index&pro_id={$project['business_id']}" target="_blank">从人才库搜索</a>
+                    <a class="btn btn-default" href="/index.php?m=product&a=index&pro_id={:I('id')}" target="_blank">从人才库搜索</a>
                     <div id="picker">简历解析</div>
                     <!--<a class="btn btn-default" href="/index.php?m=product&a=add_more&pro_id={$project['business_id']}" target="_blank">批量导入简历</a>-->
                 </div>
                 <script>
-                    $(function(){
-                        let id = "{$project['business_id']}";
+                    $(function () {
+                        let pro_id = "{:I('id')}";
                         var uploader = WebUploader.create({
-                                swf: '__PUBLIC__/webuploader/Uploader.swf',
-                                server: '/index.php?m=product&a=resolve',
-                                pick:{ 
-                                    id:'#picker',
-                                    multiple:false, 
-                                    },
-                                auto: true,
-                                resize: false,
-                                accept: {
-                                    extensions: 'doc,docx,html,pdf',
-                                },
-                                duplicate:true,
-                                'fileSingleSizeLimit': 1024 * 1024,
-                                // fileNumLimit:1,
-                                formData:{id}
-                            });
-                        uploader.on( 'uploadProgress', function( file, percentage ) {
+                            swf: '__PUBLIC__/webuploader/Uploader.swf',
+                            server: '/index.php?m=product&a=resolve',
+                            pick: {
+                                id: '#picker',
+                                multiple: false,
+                            },
+                            auto: true,
+                            resize: false,
+                            accept: {
+                                extensions: 'doc,docx,html,pdf',
+                            },
+                            duplicate: true,
+                            'fileSingleSizeLimit': 1024 * 1024,
+                            // fileNumLimit:1,
+                            formData: {pro_id: pro_id}
                         });
-                        uploader.on('uploadSuccess',(file,res)=>{
-                            swal(res.message,"",res.code==200?'success':"warning");
-                            if(res.code == 200){
-                                setTimeout(()=>{
-                                location.reload();
-                                },1000)
+                        uploader.on('uploadProgress', function (file, percentage) {
+                        });
+                        uploader.on('uploadSuccess', (file, res) => {
+                            swal(res.message, "", res.code == 200 ? 'success' : "warning");
+                            if (res.code == 200) {
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1000)
                             }
 
                         })
-                        uploader.on('uploadError',(file,res)=>{
-                            swal(res.message,"",res.code==200?'success':"warning");
-                            if(res.code == 200){
-                                setTimeout(()=>{
-                                location.reload();
-                                },1000)
+                        uploader.on('uploadError', (file, res) => {
+                            swal(res.message, "", res.code == 200 ? 'success' : "warning");
+                            if (res.code == 200) {
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1000)
                             }
 
                         })
-                        uploader.on( 'error', type=> {
-										if(type == 'Q_TYPE_DENIED'){
-                                            swal('上传类型错误',"","warning");
-										}else if(type == 'Q_EXCEED_SIZE_LIMIT'){
-                                            swal('文件过大',"","warning");
-										}
-									});
-                        uploader.on('beforeFileQueued',file=> {
-                            
+                        uploader.on('error', type => {
+                            if (type == 'Q_TYPE_DENIED') {
+                                swal('上传类型错误', "", "warning");
+                            } else if (type == 'Q_EXCEED_SIZE_LIMIT') {
+                                swal('文件过大', "", "warning");
+                            }
+                        });
+                        uploader.on('beforeFileQueued', file => {
+
                         });
                     });
                 </script>
@@ -861,13 +861,13 @@
                                         </span>
                                     </if>
                                     </td>
-                                        <td style="text-align:center;padding:14px;color:#666;">{$vo['current_company']}</td>
-                                        <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
-                                        <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">男<else/>女</if></td>
-                                        <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}万</td>
-                                        <!-- <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td> -->
-                                        <td style="text-align:center;padding:14px;color:#666;"><a href="javascript:void(0);" class="role_info" rel="{$vo['tracker']}">{$vo['tracker_name']}</a></td>
-                                        <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date='Y-m-d H:i:s',###}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['current_company']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">男<else/>女</if></td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}万</td>
+                                    <!-- <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td> -->
+                                    <td style="text-align:center;padding:14px;color:#666;"><a href="javascript:void(0);" class="role_info" rel="{$vo['tracker']}">{$vo['tracker_name']}</a></td>
+                                    <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date='Y-m-d H:i:s',###}</td>
                                     </tr>
                                 </volist>
                             </if>
@@ -1583,17 +1583,17 @@
                                 <td style="text-align:center;">{$vo.business_name}</td>
                                 <td style="text-align:center;">{$vo.resume_name}</td>
                                 <td style="text-align:center;">
-                                    <if condition = "$vo[type] eq 'refuse'">
-                                        <p style="color:red">{$type_name[$vo[type]]}</p><input type="button" value="重新编辑提交" class="btn btn-default fapiao" data-id="{$vo['invoice_id']}">
-                                    <else />
-                                    <p style="color:green">{$type_name[$vo[type]]}</p>
-                                    </if>
-                                </td>
-                                <td style="text-align:center;">{$vo.cost_type}</td>
-                                <td style="text-align:center;">{$vo.billing_type}</td>
-                                <td style="text-align:center;">{$vo['create_time']|date="Y-m-d",###}</td>
-                                <td style="text-align:center;">{$vo['money']}元</td>
-                                <td style="text-align:center;"><notempty name="vo.user_name"><a class="role_info" rel="{$vo.create_role_id}" href="javascript:void(0)">{$vo.user_name}</a></notempty></td>
+                            <if condition = "$vo[type] eq 'refuse'">
+                                <p style="color:red">{$type_name[$vo[type]]}</p><input type="button" value="重新编辑提交" class="btn btn-default fapiao" data-id="{$vo['invoice_id']}">
+                                <else />
+                                <p style="color:green">{$type_name[$vo[type]]}</p>
+                            </if>
+                            </td>
+                            <td style="text-align:center;">{$vo.cost_type}</td>
+                            <td style="text-align:center;">{$vo.billing_type}</td>
+                            <td style="text-align:center;">{$vo['create_time']|date="Y-m-d",###}</td>
+                            <td style="text-align:center;">{$vo['money']}元</td>
+                            <td style="text-align:center;"><notempty name="vo.user_name"><a class="role_info" rel="{$vo.create_role_id}" href="javascript:void(0)">{$vo.user_name}</a></notempty></td>
                             </tr>
                         </volist>
                         <else/>
@@ -2573,43 +2573,43 @@
 
 <!--重新编辑发票提交 edit by yanghao 2019-02-23 -->
 <script>
-     //重新编辑发票提交
-        $(".fapiao").on("click",function () {
-            var id = $(this).attr("data-id");
-            $('#dialog-fapiao').dialog("open");
-            $('#dialog-fapiao').load("index.php?m=business&a=invoiceReCheck&id="+id);
-        })
-        $("#dialog-fapiao").dialog({
+    //重新编辑发票提交
+    $(".fapiao").on("click", function () {
+        var id = $(this).attr("data-id");
+        $('#dialog-fapiao').dialog("open");
+        $('#dialog-fapiao').load("index.php?m=business&a=invoiceReCheck&id=" + id);
+    })
+    $("#dialog-fapiao").dialog({
         autoOpen: false,
         modal: true,
         width: 580,
         maxHeight: 580,
-        position: ["center",100],
-        title:"发票",
-        close:function(){
+        position: ["center", 100],
+        title: "发票",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
         buttons: {
             "确定": function () {
-                var billing_type=$("select[name=billing_type] option:selected").text();
-                var invoice_header=$("input[name=invoice_header]").val();
-                var content=$("input[name=content]").val();
-                var price=$("input[name=price]").val();
-                if(billing_type==""){
-                    $("select[name=billing_type]").css("border","1px dotted #cc5965");
+                var billing_type = $("select[name=billing_type] option:selected").text();
+                var invoice_header = $("input[name=invoice_header]").val();
+                var content = $("input[name=content]").val();
+                var price = $("input[name=price]").val();
+                if (billing_type == "") {
+                    $("select[name=billing_type]").css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(invoice_header==""){
-                    $("input[name=invoice_header]").css("border","1px dotted #cc5965");
+                if (invoice_header == "") {
+                    $("input[name=invoice_header]").css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(content==""){
-                    $("input[name=content]").css("border","1px dotted #cc5965");
+                if (content == "") {
+                    $("input[name=content]").css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(price==""){
-                    $("input[name=price]").css("border","1px dotted #cc5965");
+                if (price == "") {
+                    $("input[name=price]").css("border", "1px dotted #cc5965");
                     return false;
                 }
                 $('#fapiao_form').submit();

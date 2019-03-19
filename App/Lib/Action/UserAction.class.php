@@ -297,7 +297,7 @@ class UserAction extends Action {
      * 电话外呼
      */
     public function call_out(){
-        $tel =  $_POST['tel'];
+        $tel =  $_POST['tel'] ? BaseUtils::getStr(trim($_POST['tel'])) : '0';
         $type = isset($_POST['type']) ? intval($_POST['type']) : 0; //1、简历 2、客户联系人
         $itemId = isset($_POST['itemId']) ? $_POST['itemId'] : 0; //客户联系人/简历ID
         if($itemId > 0){
