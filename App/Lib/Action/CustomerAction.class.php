@@ -936,7 +936,6 @@ class CustomerAction extends Action {
      *
      * */
     public function index() {
-//        dump($_GET);die;
         $d_v_customer = D('CustomerView');
         $m_contract = M('Contract');
         if ($_GET['content'] != 'resource' && empty($_GET['scene_id'])) {
@@ -2212,7 +2211,6 @@ class CustomerAction extends Action {
         }
         $this->customer = $customer;
         $this->business = $business;
-
         $m_r_customer_log = M('rCustomerLog');
         $m_log = M('Log');
         $m_user = M('User');
