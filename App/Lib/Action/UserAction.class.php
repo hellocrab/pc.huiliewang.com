@@ -310,7 +310,21 @@ class UserAction extends Action {
                 $tel = M('contacts')->where(['contacts_id'=>$itemId])->getField('telephone');
             }
         }
-        $sourceTel = session('tel');
+        
+        if(!session('tel')){
+            if(session('role_id')){
+                $user = M('user')->where(['role_id' => session('role_id')])->field('user_id,telephone')->find();
+                if($user['telephone']){
+                    session('tel', $user['telephone']);
+                    $sourceTel = $user['telephone'];
+                } else {
+                     echo json_encode(['code' => $msg->meta->success ? 1:0,'msg' => '请绑定手机号码']);
+                }
+            }
+        } else {
+            $sourceTel = session('tel');
+        }
+        
 //        $timestamp= date('YmdHis');
         //坐席上班
 //        $this->startWork($timestamp);

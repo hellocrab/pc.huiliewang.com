@@ -27,8 +27,8 @@ $(()=>{
     //提交
     $('.btnBox div:nth-child(2)').click(()=>{
         $.ajax({
-            url:'',
-            data:{},
+            url:"index.php?m=product&a=checkReuse",
+            data:{content:content},
             type:'post',
             success(res){
 

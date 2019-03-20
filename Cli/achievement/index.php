@@ -9,8 +9,8 @@ include realpath(__DIR__ . '/../sqlBase/sqlMaker/Mysql.php');
 
 //php index.php test 20190301 20190304
 $todayTime = date("Y-m-d", time());
-$dateStart = isset($argv[2]) ? ($argv[2]) : date("Y-m-d", strtotime("-1 day"));
-$dateEnd = isset($argv[3]) ? $argv[3] : $todayTime;
+$dateStart = isset($argv[2]) ? ($argv[2]) : $todayTime;//date("Y-m-d", strtotime("-1 day"));
+$dateEnd = isset($argv[3]) ? $argv[3] : date("Y-m-d", strtotime("+1 day"));
 $userIds = isset($argv[4]) ? $argv[4] : '';
 $env = isset($argv[1]) ? $argv[1] : '';
 
