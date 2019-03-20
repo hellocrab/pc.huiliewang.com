@@ -2815,4 +2815,114 @@ class ProductAction extends Action
             $resume->where($where)->find() ? $this->ajaxReturn(true) : $this->ajaxReturn(false);
         }
     }
+
+    /**
+     * 简历查重
+     */
+    public function checkReuse() {
+        $content = I('content');
+        $works = $this->matchWorks($content);
+        //根据工作经历查重
+        if (!$works || empty($works) || !is_array($works)) {
+            $this->ajaxReturn(0, '没有匹配到可用工作经历', 0);
+        }
+//        print_r($works);die;
+        $workCount = count($works);
+        $allResume = [];
+        foreach ($works as $job) {
+            $companyName = $job['company'];
+            $startWork = $job['start_time'];
+            $emdWork = $job['end_time'];
+            $companyList = M('resume_work')->where(['company' => ['like', "%{$companyName}%"]])->select();
+            if (!$companyList) {
+                continue;
+            }
+
+            foreach ($companyList as $companyInfo) {
+                if (!$companyInfo) {
+                    continue;
+                }
+                $startTime = $companyInfo['starttime'];
+                $endTime = $companyInfo['endtime'];
+                if ($startTime != $startWork && $endTime != $emdWork) {
+                    continue;
+                }
+                $eid = $companyInfo['eid'];
+                if (isset($allResume[$eid]) && $allResume[$eid] >= 1) {
+                    $allResume[$eid] = $allResume[$eid] + 1;
+                } else {
+                    $allResume[$eid] = 1;
+                }
+            }
+        }
+
+        //收集出现次数较多得ID
+        $returnIds = [];
+        foreach ($allResume as $eid => $count) {
+            $percent = $count / $workCount; //出现比例
+            if ($percent < 0.5) {
+                continue;
+            }
+            $returnIds[] = $eid;
+        }
+        if ($returnIds && $returnIds[1]) {
+            $this->ajaxReturn($returnIds, '查找到以下相似简历', 1);
+        }
+        $this->ajaxReturn([], '没有查找相似简历', 0);
+    }
+
+    /**
+     * @desc  匹配工作经历
+     * @param $content
+     * @return array|bool
+     */
+    public function matchWorks($content) {
+        $content = $this->charChange($content);
+        $content = preg_replace('/&lt;/is', '<', $content);
+        $content = preg_replace('/&gt;/is', '>', $content);
+        $content = preg_replace('/（/is', '(', $content);
+        $content = preg_replace('/）/is', ')', $content);
+        $content = preg_replace('/—/is', '-', $content);
+        //智联卓聘
+        $pregWorks = '/<p>(\d{4}年\d{1,2}月)-(\d{4}年\d{1,2}月|至今)\s{1,}([^>]*)\((\d{1,3}年\d{1,2}个月|\d{1,2}个月)\)\s{0,}<\/p>/isU';
+        preg_match_all($pregWorks, $content, $contentMatch);
+        if (!$contentMatch || !$contentMatch[3]) {
+            return false;
+        }
+        $startArr = $contentMatch[1];
+        $endArr = $contentMatch[2];
+        $nameArr = $contentMatch[3];
+        $jobs = [];
+        foreach ($startArr as $index => $start) {
+            $end = $endArr[$index];
+            $start = str_replace(['年', '月'], ['-', '-01'], $start);
+            $end = str_replace(['年', '月'], ['-', '-01'], $end);
+            $start = strtotime($start);
+            $end == '至今' ? $end = 0 : $end = strtotime($end);
+            $name = strip_tags(trim($nameArr[$index]));
+            if (!$name) {
+                continue;
+            }
+            $jobs[] = ['start_time' => $start, 'end_time' => $end, 'company' => $name];
+        }
+        return $jobs;
+
+    }
+
+    /**
+     * 转换成指定的编码
+     * @param $data
+     * @param string $charSet
+     * @return string
+     */
+    public function charChange($data, $charSet = 'UTF-8') {
+        if (empty($data)) {
+            return false;
+        }
+        $fileType = mb_detect_encoding($data, array('UTF-8', 'GBK', 'LATIN1', 'BIG5'));
+        if ($fileType != $charSet) {
+            $data = mb_convert_encoding($data, $charSet, $fileType);
+        }
+        return $data;
+    }
 }
