@@ -1913,7 +1913,7 @@ class CustomerAction extends Action {
         $m_r_contacts_customer = M('RContactsCustomer');
         $outdays = M('config')->where('name="customer_outdays"')->getField('value');
         $outdate = empty($outdays) ? 0 : time() - 86400 * $outdays;
-        $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
+//        $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
         $where['is_deleted'] = array('neq', 1);
         $where['_string'] = 'update_time > ' . $outdate . ' OR is_locked = 1';
 
@@ -2059,35 +2059,35 @@ class CustomerAction extends Action {
             $role_id = session('role_id');
             $m_customer_share = M('customer_share')->where(['by_sharing_id' => $role_id])->field('customer_id,by_sharing_id')->select();
             $sharing_id = session('role_id');
-            $customerid = [];
-            foreach ($m_customer_share as $k => $v) {
-                $by_sharing_id = explode(',', $v['by_sharing_id']);
-                if (in_array($sharing_id, $by_sharing_id)) {
-                    $customerid[] = $v['customer_id'];
-                }
-            }
-            $is_share = in_array($customer_id, $customerid);
-            if ($openrecycle == 2) {
-                if ($customer['owner_role_id'] != 0 && (($customer['update_time'] > $outdate && $customer['get_time'] > $contract_outdays) || $customer['is_locked'] == 1)) {
-                    if (!in_array($customer['owner_role_id'], $this->_permissionRes)) {
-                        if ($is_share) {
-                            $this->share_num = 1;
-                        } else {
-                            $this->error(L('HAVE NOT PRIVILEGES'));
-                        }
-                    }
-                }
-            } else {
-                if ($customer['owner_role_id'] != 0) {
-                    if (!in_array($customer['owner_role_id'], $this->_permissionRes)) {
-                        if ($is_share) {
-                            $this->share_num = 1;
-                        } else {
-                            $this->error(L('HAVE NOT PRIVILEGES'));
-                        }
-                    }
-                }
-            }
+//            $customerid = [];
+//            foreach ($m_customer_share as $k => $v) {
+//                $by_sharing_id = explode(',', $v['by_sharing_id']);
+//                if (in_array($sharing_id, $by_sharing_id)) {
+//                    $customerid[] = $v['customer_id'];
+//                }
+//            }
+//            $is_share = in_array($customer_id, $customerid);
+//            if ($openrecycle == 2) {
+//                if ($customer['owner_role_id'] != 0 && (($customer['update_time'] > $outdate && $customer['get_time'] > $contract_outdays) || $customer['is_locked'] == 1)) {
+//                    if (!in_array($customer['owner_role_id'], $this->_permissionRes)) {
+//                        if ($is_share) {
+//                            $this->share_num = 1;
+//                        } else {
+//                            $this->error(L('HAVE NOT PRIVILEGES'));
+//                        }
+//                    }
+//                }
+//            } else {
+//                if ($customer['owner_role_id'] != 0) {
+//                    if (!in_array($customer['owner_role_id'], $this->_permissionRes)) {
+//                        if ($is_share) {
+//                            $this->share_num = 1;
+//                        } else {
+//                            $this->error(L('HAVE NOT PRIVILEGES'));
+//                        }
+//                    }
+//                }
+//            }
 
 
             //维护人查询
