@@ -369,13 +369,14 @@ class LogAction extends Action{
         
         if( $this->_permissionRes) {
             $where['owner_role_id'] = ['in',$this->_permissionRes];//array('in', $owner_role_id);
-            $where['parter'] = array('like', array(session('role_id'), session('role_id') . ',%', '%,' . session('role_id'), '%,' . session('role_id') . ',%'), 'OR');
+//            $where['parter'] = array('like', array(session('role_id'), session('role_id') . ',%', '%,' . session('role_id'), '%,' . session('role_id') . ',%'), 'OR');
+            $where['_string'] = "FIND_IN_SET(".session('role_id').",business.parter)";
             $where['_logic'] = 'OR';
             $map['_complex'] = $where;
             $map['is_deleted'] = 0;
         }
 
-        $project = $d_business->order('business.create_time desc')->where($map)->limit(20)->select();
+        $project = $d_business->order('business.create_time desc')->where($map)->limit(30)->select();
         foreach ($project as $pro) {
             $_customer_ids[] = $pro['customer_id'];
         }
