@@ -2858,6 +2858,7 @@ class ProductAction extends Action
 
         //收集出现次数较多得ID
         $returnIds = [];
+        arsort($allResume);
         foreach ($allResume as $eid => $count) {
             $percent = $count / $workCount; //出现比例
             if ($percent < 0.5) {
