@@ -224,7 +224,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">出生年月：</label>
                                     <div class="col-sm-6">
-                                        <input class="form-control text-center timerinput" id="birthday" type="text"  onFocus="WdatePicker({dateFmt:'yyyy-MM', maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;height: 32px;text-align: left;" >
+                                        <input class="form-control text-center required timerinput" id="birday" data-color="birday" type="text"  onFocus="WdatePicker({dateFmt:'yyyy-MM', maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;height: 32px;text-align: left;" >
                                     </div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
@@ -263,7 +263,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">目前公司：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control" type="text" id="curCompany" name="curCompany" value="{$resume.curCompany}">
+                                        <input class="form-control required" data-color="ccompany" type="text" id="ccompany" name="curCompany" value="{$resume.curCompany}">
                                         <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -271,7 +271,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">目前职位：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control" type="text" id="curPosition" name="curPosition" value="{$resume.curPosition}">
+                                        <input class="form-control required" data-color="cposition" type="text" id="cposition" name="curPosition" value="{$resume.curPosition}">
                                         <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -672,7 +672,7 @@
         $("#dialog-file").dialog({
             autoOpen: false,
             modal: true,
-            width: width,
+            width: 800,
             maxHeight: 400,
             position: ["center", 100],
             buttons: {
@@ -731,6 +731,11 @@
                     var wantdqs= $("#wantdqs").val();
                     // var telephone=$("#telphone").val();
                     var telephone=$("input[name=telephone]").val();
+                    //添加出生年月、目前公司、目前职位的判断
+                    var birday = $('#birday').val();
+                    var ccompany = $('#ccompany').val();
+                    var cposition = $('#cposition').val();
+
                     var flag=0;
                     $("input[data-selector=industrys]").val(industrys);
                     $("input[data-selector=jobtitles]").val(jobtitles);
@@ -769,6 +774,22 @@
                         $("span[data-name=intentCity]").find("input").css("border","1px dotted #cc5965");
                         return;
                     }
+                    //添加出生年月、目前公司、目前职位的判断
+                    if(birday=="" || birday==null){
+                        alert_crm("请填写行业信息！");
+                        $("span[data-name=birday]").find("input").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    if(ccompany=="" || ccompany==null){
+                        alert_crm("请填写行业信息！");
+                        $("span[data-name=ccompany]").find("input").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    if(cposition=="" || cposition==null){
+                        alert_crm("请填写行业信息！");
+                        $("span[data-name=cposition]").find("input").css("border","1px dotted #cc5965");
+                        return;
+                    }
                     $.ajax({
                         url:"/index.php?m=product&a=check_tel",
                         type:"post",
@@ -790,7 +811,7 @@
                         }
                     });
 
-                    if(dqs && jobtitles && industrys && wantdqs && flag){
+                    if(dqs && jobtitles && industrys && wantdqs && flag && birday && ccompany && cposition){
                         form.submit();
                     }
 
