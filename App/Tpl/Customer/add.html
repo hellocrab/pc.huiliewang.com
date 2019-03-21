@@ -409,16 +409,16 @@
                 // $('#save_submit').click(function(){
                 //     $('#save_submit').prop('disabled',true);
                 // });
+				var industry = $("input[name=industry]").val();
+				var area = $("#city_area").val();
                 var flag = $('.ftw').html();
+                var introduce = $('#introduce').val();
                 var name = $('#con_name').val();
 				var tel = $('#con_telphone').val();
 				var qq = $('#con_qq_no').val();
 				var weixin = $('#con_wetchat').val();
 				var dqs = $("#wantdqs").val();
                 if(flag != ''){
-					if(name && tel && qq && weixin){
-                        form.submit();
-					}else{
 						if(dqs=="" || dqs==null){
                         	alert_crm("请填写所在城市信息！");
                         	return;
@@ -438,13 +438,25 @@
                             $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
                             return;
                         }
+                        if(!industry || industry <= 0){
+							alert_crm("请填写所属行业！");
+							return;
+						}
+                        if(!introduce || introduce == null){
+							alert_crm("请填写公司简介！");
+							return;
+						}
+                        if(!area || area == null){
+							alert_crm("请填写公司地址！");
+							return;
+						}
                         // if(weixin == '' || weixin == null){
                         //     alert_crm("请填写微信！");
                         //     $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
                         //     return;
                         // }
+					return;
                         form.submit();
-					}
 				}
 				else{
                     form.submit();
