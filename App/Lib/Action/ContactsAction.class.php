@@ -1074,11 +1074,13 @@ class ContactsAction extends Action {
             $contactRequestDo->itemId = $itemId;
             $contactRequestDo->userRoleId = $userRoleId;
             $contactRequestDo->type = $type;
+            $subRoleId = ($this->_permissionRes && is_array($this->_permissionRes)) ? implode(',', $this->_permissionRes) : '';
+            $contactRequestDo->subRoleId = $subRoleId;
             $res = $contactService->isScan($contactRequestDo);
             $data = $res->message;
             if ($res->success && $res->code == 200) {
                 $return = ['success' => true, 'code' => 200, 'info' => $data];
-            }else{
+            } else {
                 $return = ['success' => false, 'code' => 500, 'info' => $data];
             }
         } catch (Exception $e) {
