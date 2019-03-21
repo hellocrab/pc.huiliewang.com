@@ -681,7 +681,7 @@ class UserAction extends Action {
 			$roleList = $d_role->where($where)->select();
 			$departments_list[$k]['user'] = $roleList;
 		}
-		$pater_id = isset($_GET['pater_id']) ? $_GET['pater_id'] : '';
+		$pater_id = isset($_GET['pater']) ? $_GET['pater'] : '';
 		$this->departments_list = $departments_list;
         $this->assign('pater_id',$pater_id);
 		$this->display();
