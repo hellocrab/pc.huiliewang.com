@@ -387,7 +387,6 @@ class CustomerAction extends Action {
                         break;
                 }
             }
-
             if ($m_customer->create()) {
                 if ($m_customer_data->create() !== false) {
                     //保存联系人信息
