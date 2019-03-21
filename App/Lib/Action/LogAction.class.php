@@ -376,7 +376,7 @@ class LogAction extends Action{
             $map['is_deleted'] = 0;
         }
 
-        $project = $d_business->order('business.create_time desc')->where($map)->limit(30)->select();
+        $project = $d_business->order('business.create_time desc')->where($map)->limit(1000)->select();
         foreach ($project as $pro) {
             $_customer_ids[] = $pro['customer_id'];
         }
