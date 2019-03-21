@@ -418,11 +418,24 @@
 				var qq = $('#con_qq_no').val();
 				var weixin = $('#con_wetchat').val();
 				var dqs = $("#wantdqs").val();
+                if(!industry || industry == null){
+                    alert_crm("请填写所属行业！");
+                    return;
+                }
+                if(!introduce || introduce == null){
+                    alert_crm("请填写公司简介！");
+                    return;
+                }
+                if(!area || area == null){
+                    alert_crm("请填写公司地址！");
+                    return;
+                }
+                if(dqs=="" || dqs==null){
+                    alert_crm("请填写所在城市信息！");
+                    return;
+                }
                 if(flag != ''){
-						if(dqs=="" || dqs==null){
-                        	alert_crm("请填写所在城市信息！");
-                        	return;
-                    	}
+
 					    if(name == '' || name == null){
                             alert_crm("请填写姓名！");
                             $("input[data-selector=con_name]").css("border","1px dotted #cc5965");
@@ -438,18 +451,7 @@
                             $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
                             return;
                         }
-                        if(!industry || industry <= 0){
-							alert_crm("请填写所属行业！");
-							return;
-						}
-                        if(!introduce || introduce == null){
-							alert_crm("请填写公司简介！");
-							return;
-						}
-                        if(!area || area == null){
-							alert_crm("请填写公司地址！");
-							return;
-						}
+
                         // if(weixin == '' || weixin == null){
                         //     alert_crm("请填写微信！");
                         //     $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
