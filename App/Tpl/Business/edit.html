@@ -775,8 +775,16 @@
     });
 
     $('#parter_name').click(function () {
+        let temp = $('#parter_id').val();
         $('#dialog-role-list3').dialog('open');
-        $('#dialog-role-list3').load("{:U('User/mutilistdialog','by=all')}");
+        var str;
+        if(temp){
+            str = "{:U('User/mutilistdialog')}&by=all&pater="+temp;
+        }
+        else{
+            str = "{:U('User/mutilistdialog','by=all')}";
+        }
+        $('#dialog-role-list3').load(str);
     });
 
     $('#dialog-role-list3').dialog({
