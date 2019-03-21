@@ -1098,7 +1098,7 @@ function field_list_html($type = "add", $module = "", $d_module = array(), $spec
 					});
 					</script><select class="form-control " input_type="address" name="' . $v['field'] . '[\'state\']" style="width:32%;float:left;" ></select>
 						<select class="form-control " input_type="address" name="' . $v['field'] . '[\'city\']" style="width:32%;float:left;margin-left:1%;"></select>
-						<select class="form-control " input_type="address" name="' . $v['field'] . '[\'area\']" style="width:32%;float:left;margin-left:1%;"></select>
+						<select class="form-control " id="city_area" input_type="address" name="' . $v['field'] . '[\'area\']" style="width:32%;float:left;margin-left:1%;"></select>
 						<input class="form-control" input_type="address" type="text" name="' . $v['field'] . '[\'street\']" placeholder="' . L('THE STREET INFORMATION') . '" class="input-large" value="' . $street . '" style="float:left;margin-top:5px;">';
                     break;
                 case 'p_box':

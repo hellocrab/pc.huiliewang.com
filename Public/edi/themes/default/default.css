@@ -1,4 +1,11 @@
 /* common */
+.ke-content{
+	padding: 0;
+	margin: 0;
+	border: none;
+	width: 100%;
+	height: 100%;
+}
 .ke-inline-block {
 	display: -moz-inline-stack;
 	display: inline-block;
@@ -430,6 +437,7 @@
 	text-align: left;
 	overflow: hidden;
 	zoom: 1;
+	display: none !important;
 }
 .ke-toolbar-icon {
 	background-repeat: no-repeat;
@@ -512,6 +520,7 @@
 	overflow: hidden;
 	text-align: center;
 	cursor: s-resize;
+	display: none !important;
 }
 .ke-statusbar-center-icon {
 	background-position: -0px -754px;
