@@ -397,6 +397,7 @@ class ProductAction extends Action
                         $v = $v['value'];
                         $where['creator_role_id'] = $v;
                     } elseif (is_array($v)) {
+                        $v['value'] = trim( $v['value']);
                         if ($v['state']) {
                             $address_where[] = '%' . $v['state'] . '%';
 
@@ -2885,7 +2886,7 @@ class ProductAction extends Action
         $content = preg_replace('/）/is', ')', $content);
         $content = preg_replace('/—/is', '-', $content);
         //智联卓聘
-        $pregWorks = '/<p>(\d{4}年\d{1,2}月)-(\d{4}年\d{1,2}月|至今)\s{1,}([^>]*)\((\d{1,3}年\d{1,2}个月|\d{1,2}个月)\)\s{0,}<\/p>/isU';
+        $pregWorks = '/<p>(\d{4}年\d{1,2}月)\s{0,}-\s{0,}(\d{4}年\d{1,2}月|至今)\s{1,}([^>]*)\((\d{1,3}年\d{1,2}个月|\d{1,2}个月|\d{1,3}年)\)\s{0,}<\/p>/isU';
         preg_match_all($pregWorks, $content, $contentMatch);
         if (!$contentMatch || !$contentMatch[3]) {
             return false;

@@ -54,8 +54,9 @@ class ResumeData {
             }
 
             $text = file_get_contents($basePath . $htmlName);
-            if (strpos($text, $this->encode('智联招聘')) && !strpos($text, $this->encode('智联卓聘'))) {
-                $mode = 1; //智联招聘
+//            var_dump($text);exit;
+            if (strpos($text, $this->encode('智联招聘')) !== FALSE && !strpos($text, $this->encode('智联卓聘')) && strpos($text, '<p class="msonormal">') !== false) {
+                $mode = 1; //智联招聘 非表格
                 $str = strip_tags($text, "<b><p>");
                 $str = preg_replace('/s/', '', $str);
                 $str = str_replace('', '', $str);
@@ -120,6 +121,17 @@ class ResumeData {
                 $str = preg_replace("/face=.+?['|\"]/i", '', $str); //去除样式   
                 $str = preg_replace("/align=.+?['|\"]/", '', $str);
                 $str = explode('</p>', $str);
+            } elseif (strpos($text, $this->encode('智联招聘')) !== FALSE && !strpos($text, $this->encode('智联卓聘')) && strpos($text, '<p class="western">') !== false) {
+                $mode = 5; //智联招聘 表格
+                $str = strip_tags($text, "<b><p>");
+                $str = preg_replace('/s/', '', $str);
+                $str = str_replace('', '', $str);
+                $str = str_replace("\r\n", "", $str);
+                $str = str_replace("\n", "", $str);
+                $str = str_replace("\t", "", $str);
+                $str = str_replace("&nbp;", "", $str);
+                $str = str_replace("</p>", "", $str);
+                $str = explode('<p cla="wetern">', $str);
             } else {
                 $mode = 2; //智联卓聘
                 $str = strip_tags($text, "<b><p>");
@@ -143,8 +155,8 @@ class ResumeData {
                 }
                 $str = explode('<palign="left">', $str);
             }
-            $str =str_replace('&#65533;', '', $str);
-            
+            $str = str_replace('&#65533;', '', $str);
+
             return array(
                 'mode' => $mode,
                 'text' => $str
@@ -230,12 +242,14 @@ class ResumeData {
         $dbProjectData = [];
         $dbEduData = [];
         $dbLanguageData = [];
+        var_dump($data['text']);
+//        exit;
         foreach ($data['text'] as $k => $v) {
             $search = array(" ", " ", "    ", "\n", "\r", "\t", "\s", "&gt; ", "　　");
             $replace = array("", "", "", "", "", "", "", "", "");
             $text = trim(str_replace($search, $replace, $v));
             $text = strip_tags($text);
-            if ($data['mode'] == 1) {//智联招聘
+            if ($data['mode'] == 1) {//智联招聘 非表格
                 $baseinfo_tag = 1;
 
                 if ($baseinfo_tag == 1) {
@@ -815,7 +829,7 @@ class ResumeData {
                     $dbData[$liepin_conifg[$this->decode($text)]] = strip_tags(trim($data['text'][$k + 1]));
                 } elseif (strpos($text, $this->encode('所在地：')) !== FALSE || strpos($text, $this->encode('期望地点：')) !== FALSE) {
                     $_location = explode('-', strip_tags(trim($data['text'][$k + 1])));
-                    if($_location[0]){
+                    if ($_location[0]) {
                         $dbData[$liepin_conifg[$this->decode($text)]] = $this->getCityCode($this->decode($_location[0]));
                     }
                 } elseif (strpos($text, $this->encode('目前年薪：')) !== FALSE) {
@@ -888,7 +902,7 @@ class ResumeData {
                 }
 
                 if (strpos($text, $this->encode('项目经历')) !== FALSE && strpos($text, $this->encode('项目经历')) === 0) {
-                    $job_tag = 0; 
+                    $job_tag = 0;
                     $project_tag = 1;
                     continue;
                 }
@@ -1014,20 +1028,252 @@ class ResumeData {
                     $baseinfo_tag = 1;
                     continue;
                 }
-                
-                if(!is_array($text) && strpos($text, $this->encode('姓　　名')) !== FALSE){
+
+                if (!is_array($text) && strpos($text, $this->encode('姓　　名')) !== FALSE) {
                     
                 }
-                
+            } elseif ($data['mode'] == 5) {
+                $baseinfo_tag = 1;
+
+                if ($baseinfo_tag == 1) {
+                    if (strpos($text, 'ID&#65306;)') !== FALSE && strpos($text, $this->encode('手机：')) !== FALSE) {
+                        //姓名 手机
+                        $name_content = strip_tags($text);
+                        preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\/|\.)\d{1,2}/', $text, $match);
+                        $name_content = str_replace($match[0], '', $name_content);
+                        $name_content = str_replace('ID&#65306;)', '', $name_content);
+                        $name_content = str_replace(')', '', $name_content);
+                        preg_match('/[A-Za-z0-9]+/', $name_content, $match_str);
+                        $name_content = trim(str_replace($match_str[0], '', $name_content));
+                        $_info = explode($this->encode('手机：'), $name_content);
+                        $dbData['name'] = $this->decode(str_replace('&#12288;', '', $_info[0]));
+                        $dbData['telephone'] = $_info[1];
+                    }
+
+                    if (strpos($text, $this->encode('年工作经验')) !== FALSE && strpos($text, $this->encode('岁')) !== FALSE) {
+                        //性别 岁数 学历
+                        $_text = str_replace('&#12288;', '', $text);
+                        
+                        if(preg_match('/\d{11}/', $_text,$match_phone)){
+                            $_text = str_replace($match_phone[0], '', $_text);
+                            $_text = str_replace($this->encode('手机：'), '', $_text);
+                            $dbData['telephone'] =$match_phone[0];
+                        }
+                        
+                        if(strpos($_text, 'E-mail&#65306;') !== FALSE){
+                            $_text = str_replace('E-mail&#65306;', '', $_text);
+                            var_dump($_text);exit;
+                            if(preg_match("/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i", $_text,$match_email)){
+                                var_dump($match_email);exit;
+                            }
+                        }
+                        
+                        $_text = explode($this->encode('年工作经验'), $text);
+                        $_edu = $this->decode($_text[1]);
+                        if (strpos($_edu, '未婚') !== FALSE) {
+                            $_edu = str_replace('未婚', '', $_edu);
+                            $dbData['marital_status'] = 1;
+                        }
+                        if (strpos($_edu, '已婚') !== FALSE) {
+                            $_edu = str_replace('已婚', '', $_edu);
+                            $dbData['marital_status'] = 2;
+                        }
+                        if (strpos($_edu, '保密') !== FALSE) {
+                            $dbData['marital_status'] = 3;
+                            $_edu = str_replace('保密', '', $_edu);
+                        }
+
+                        $dbData['edu'] = $_edu;
+
+                        $_info = explode(')', $_text[0]);
+                        $dbData['startWorkyear'] = date('Y', time()) - $_info[1];
+                        $_inf = explode($this->encode('岁'), $_info[0]);
+                        $_birth = $_inf[1];
+                        $_birth = str_replace($this->encode('月'), '', $_birth);
+                        $_birth = str_replace('(', '', $_birth);
+                        $_birth = explode($this->encode('年'), $_birth);
+
+                        $dbData['birthYear'] = $_birth[0];
+                        $dbData['birthMouth'] = $_birth[1];
+                        $dbData['birthday'] = strtotime($_birth[0] . '-' . $_birth[1]);
+
+                        if (strpos($_inf[0], $this->encode('男')) !== false) {
+                            $dbData['sex'] = 1;
+                        }
+
+                        if (strpos($_inf[0], $this->encode('女')) !== false) {
+                            $dbData['sex'] = 2;
+                        }
+                    }
+
+                    if (strpos($text, $this->encode('现居住地：')) !== FALSE) {
+                        $_city = explode('|', $text);
+                        $dbData['location'] = $this->getCityCode($this->decode(str_replace($this->encode('现居住地：'), '', $_city[0])));
+                    }
+
+                    if (strpos($text, 'E-mail') !== FALSE) {
+                        $_email = explode('E-mail', $text);
+                        $dbData['email'] = str_replace($this->encode('：'), '', $_email[1]);
+                    }
+                }
+
+                if ($text == $this->encode('求职意向')) {
+                    $baseinfo_tag = 0;
+                    $callInfo_tag = 1;
+                    continue;
+                }
+
+                //求职意向
+                if ($callInfo_tag == 1) {
+                    if (strpos($text, $this->encode('期望工作地区：')) !== FALSE || strpos($text, $this->encode('目前状况：')) !== FALSE || strpos($text, $this->encode('期望从事职业：')) !== FALSE || strpos($text, $this->encode('期望从事行业：')) !== FALSE) {
+                        $dbData[$zlzp_config[$this->decode($text)]] = $this->decode(strip_tags($data['text'][$k + 1]));
+                    }
+                }
+
+                //自我评价
+                if ($text == $this->encode('自我评价')) {
+                    $callInfo_tag = 0;
+                    $dbData['introduce'] = $dbDataInfo['evaluate'] = $this->decode(strip_tags($data['text'][$k + 1]));
+                    continue;
+                }
+
+                //工作经历
+                if ($text == $this->encode('工作经历')) {
+                    $job_tag = 1;
+                    continue;
+                }
+
+                if ($job_tag == 1) {
+                    preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\.)/', $this->decode($text), $match);
+                    preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\.)\d{4}(\-|\/|\.)\d{1,2}/', $text, $match_all);
+                    $_tag = strpos($text, $this->encode('至今'));
+                    if (($match[0] && $tag !== FALSE) || $match_all) {
+                        $job_id++;
+                        if (!empty($match_all)) {
+                            $time = explode($match_all[2], $match_all[0]);
+                            $dbJobData[$job_id]['starttime'] = strpos($time[0], '.') !== FALSE ? strtotime(str_replace('.', '-', $time[0])) : strtotime($time[0]);
+                            $dbJobData[$job_id]['endtime'] = strpos($time[1], '.') !== FALSE ? strtotime(str_replace('.', '-', $time[1])) : strtotime($time[1]);
+                            $_company_name = str_replace($match_all[0], '', $text);
+                            $_company_name = explode('(', $_company_name);
+                            $dbJobData[$job_id]['company'] = $this->decode($_company_name[0]);
+                        } else {
+                            $_starttime = str_replace($match[2], '', $match[0]);
+                            $dbJobData[$job_id]['starttime'] = strpos($_starttime, '.') !== FALSE ? strtotime(str_replace('.', '-', $_starttime)) : strtotime($_starttime);
+                            $dbJobData[$job_id]['endtime'] = -9999;
+                            $_company_name = str_replace($match[0], '', $text);
+                            $_company_name = str_replace($this->encode('至今'), '', $_company_name);
+                            $_company_name = explode('(', $_company_name);
+                            $dbJobData[$job_id]['company'] = $this->decode($_company_name[0]);
+                        }
+
+                        //职位
+                        $job_po = explode('|', strip_tags(trim($data['text'][$k + 1])));
+                        $dbJobData[$job_id]['jobPosition'] = $this->decode($job_po[0]);
+
+                        if ($job_id == 1) {
+                            $dbData['curCompany'] = $this->decode($_company_name[0]);
+                            $dbData['curPosition'] = $this->decode($job_po[0]);
+                        }
+                    }
+
+                    //工作描述
+                    if ($text == $this->encode('工作描述：')) {
+                        $dbJobData[$job_id]['duty'] = $this->decode(strip_tags($data['text'][$k + 1]));
+                    }
+                }
+
+                //项目经历
+                if ($text == $this->encode('项目经历')) {
+                    $job_tag = 0;
+                    $project_tag = 1;
+                    continue;
+                }
+
+                if ($project_tag == 1) {
+                    preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\.)/', $this->decode($text), $match);
+                    preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\.)\d{4}(\-|\/|\.)\d{1,2}/', $text, $match_all);
+                    $_tag = strpos($text, $this->encode('至今'));
+                    if (($match[0] && $tag !== FALSE) || $match_all) {
+                        $project_id++;
+                        if (!empty($match_all)) {
+                            $time = explode($match_all[2], $match_all[0]);
+                            $dbProjectData[$project_id]['starttime'] = strpos($time[0], '.') !== FALSE ? strtotime(str_replace('.', '-', $time[0])) : strtotime($time[0]);
+                            $dbProjectData[$project_id]['endtime'] = strpos($time[1], '.') !== FALSE ? strtotime(str_replace('.', '-', $time[1])) : strtotime($time[1]);
+                            $_project_name = str_replace($match_all[0], '', $text);
+                            $_project_name = explode('(', $_project_name);
+                            $dbProjectData[$project_id]['proName'] = $this->decode($_project_name[0]);
+                        } else {
+                            $_starttime = str_replace($match[2], '', $match[0]);
+                            $dbProjectData[$project_id]['starttime'] = strpos($_starttime, '.') !== FALSE ? strtotime(str_replace('.', '-', $_starttime)) : strtotime($_starttime);
+                            $dbProjectData[$project_id]['endtime'] = -9999;
+                            $_project_name = str_replace($match[0], '', $text);
+                            $_project_name = str_replace($this->encode('至今'), '', $_project_name);
+                            $_project_name = explode('(', $_project_name);
+                            $dbProjectData[$project_id]['proName'] = $this->decode($_project_name[0]);
+                        }
+                    }
+
+                    //责任描述：
+                    if ($text == $this->encode('责任描述：')) {
+                        $dbProjectData[$project_id]['responsibility'] = $this->decode(strip_tags($data['text'][$k + 1]));
+                    }
+
+                    //项目描述：
+                    if ($text == $this->encode('项目描述：')) {
+                        $dbProjectData[$project_id]['proDes'] = $this->decode(strip_tags($data['text'][$k + 1]));
+                    }
+                }
+
+                //教育经历
+                if ($text == $this->encode('教育经历')) {
+                    $project_tag = 0;
+                    $edu_tag = 1;
+                    continue;
+                }
+
+                if ($edu_tag == 1) {
+                    preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\.)/', $this->decode($text), $match);
+                    preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\.)\d{4}(\-|\/|\.)\d{1,2}/', $text, $match_all);
+                    $_tag = strpos($text, $this->encode('至今'));
+                    if (($match[0] && $tag !== FALSE) || $match_all) {
+                        $edu_id++;
+                        if (!empty($match_all)) {
+                            $time = explode($match_all[2], $match_all[0]);
+                            $dbEduData[$edu_id]['starttime'] = strpos($time[0], '.') !== FALSE ? strtotime(str_replace('.', '-', $time[0])) : strtotime($time[0]);
+                            $dbEduData[$edu_id]['endtime'] = strpos($time[1], '.') !== FALSE ? strtotime(str_replace('.', '-', $time[1])) : strtotime($time[1]);
+                            $_edu_name = str_replace($match_all[0], '', $text);
+                            $_edu_name = explode('(', $_edu_name);
+                            $dbEduData[$edu_id]['schoolName'] = $this->decode($_edu_name[0]);
+                        } else {
+                            $_starttime = str_replace($match[2], '', $match[0]);
+                            $dbEduData[$edu_id]['starttime'] = strpos($_starttime, '.') !== FALSE ? strtotime(str_replace('.', '-', $_starttime)) : strtotime($_starttime);
+                            $dbEduData[$edu_id]['endtime'] = -9999;
+                            $_edu_name = str_replace($match[0], '', $text);
+                            $_edu_name = str_replace($this->encode('至今'), '', $_edu_name);
+                            $_edu_name = explode('(', $_edu_name);
+                            $dbEduData[$edu_id]['schoolName'] = $this->decode($_edu_name[0]);
+                        }
+                    }
+                }
+
+
+                //教在校实践经历
+                if ($text == $this->encode('在校实践经历')) {
+                    $edu_tag = 0;
+                    $school_tag = 1;
+                    continue;
+                }
             }
         }
+        var_dump(['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData]);
+        exit;
         return ['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData];
     }
 
     private function getCityCode($name = '') {
         if ($name)
             $name = BaseUtils::getStr($name);
-        $city_id = M('city')->where(['name' => ['like',"%{$name}%"]])->field('city_id')->find();
+        $city_id = M('city')->where(['name' => ['like', "%{$name}%"]])->field('city_id')->find();
         return $city_id['city_id'];
     }
 
