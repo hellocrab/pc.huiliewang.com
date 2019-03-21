@@ -416,14 +416,12 @@
             let temp = $('#parter_id').val();
             $('#dialog-role-list3').dialog('open');
             var str;
-            console.log(1,temp)
             if(temp){
                 str = "{:U('User/mutilistdialog')}&by=all&pater="+temp;
             }
             else{
                 str = "{:U('User/mutilistdialog','by=all')}";
             }
-            console.log(temp,str)
             $('#dialog-role-list3').load(str);
         });
 
