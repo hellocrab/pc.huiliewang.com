@@ -108,7 +108,7 @@
 												</if>
 												<elseif condition="$vo['field'] == 'name'"/>
 												<div class="col-md-6">
-													<input class="form-control required" id="name"onkeyup="checkinfo(name)"  name="name" placeholder="" type="text" maxlength="30"/>
+													<input class="form-control required" id="name" onkeyup="checkinfo(name)"  name="name" placeholder="" type="text" maxlength="30"/>
 												</div>
 												<if condition = "$vo['tip_start'] eq 1">
 													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -291,7 +291,7 @@
 							<div class="col-md-6">
 								<input class="form-control "  type="text" data-selector="con_wetchat" id="con_wetchat" name="con_contacts[wetchat]"  value="" placeholder="" />
 								<span id="con_contacts[wetchat]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2 ftw"></div>
+							<div class="col-md-2 "></div>
 							</div>
 							<div class="form-group">
 							<label class="col-md-4 control-label">邮编：</label>
@@ -409,16 +409,16 @@
                 // $('#save_submit').click(function(){
                 //     $('#save_submit').prop('disabled',true);
                 // });
+				var industry = $("input[name=industry]").val();
+				var area = $("#city_area").val();
                 var flag = $('.ftw').html();
+                var introduce = $('#introduce').val();
                 var name = $('#con_name').val();
 				var tel = $('#con_telphone').val();
 				var qq = $('#con_qq_no').val();
 				var weixin = $('#con_wetchat').val();
 				var dqs = $("#wantdqs").val();
                 if(flag != ''){
-					if(name && tel && qq && weixin){
-                        form.submit();
-					}else{
 						if(dqs=="" || dqs==null){
                         	alert_crm("请填写所在城市信息！");
                         	return;
@@ -438,13 +438,24 @@
                             $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
                             return;
                         }
-                        if(weixin == '' || weixin == null){
-                            alert_crm("请填写微信！");
-                            $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
-                            return;
+                        if(!industry || industry <= 0){
+							alert_crm("请填写所属行业！");
+							return;
 						}
+                        if(!introduce || introduce == null){
+							alert_crm("请填写公司简介！");
+							return;
+						}
+                        if(!area || area == null){
+							alert_crm("请填写公司地址！");
+							return;
+						}
+                        // if(weixin == '' || weixin == null){
+                        //     alert_crm("请填写微信！");
+                        //     $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
+                        //     return;
+                        // }
                         form.submit();
-					}
 				}
 				else{
                     form.submit();
@@ -471,7 +482,7 @@
                     joiner.push($(this).val());
                     joiner_name.push($(this).attr('rel'));
                 })
-                joiner = joiner.join(",");
+				joiner = joiner.join(",");
                 joiner_name = joiner_name.join(",");
                 var nameskey=sessionStorage.getItem("nameskey");
                 var idskey=sessionStorage.getItem("idskey");
