@@ -268,6 +268,22 @@ class ResumeData {
                         }
                     }
 
+                    if (strpos($text, 'ID&#65306;') !== FALSE) {
+                        //姓名 手机
+                        $name_content = strip_tags($text);
+                        preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\/|\.)\d{1,2}/', $text, $match);
+                        $name_content = str_replace($match[0], '', $name_content);
+                        $name_content = str_replace('ID&#65306;', '', $name_content);
+                        $name_content = str_replace(')', '', $name_content);
+                        $name_content = str_replace('(', '', $name_content);
+                        preg_match('/[A-Za-z0-9]+/', $name_content, $match_str);
+                        $name_content = trim(str_replace($match_str[0], '', $name_content));
+                        $_info = explode($this->encode('手机：'), $name_content);
+                        $dbData['name'] = $this->decode(str_replace('&#12288;', '', $_info[0]));
+                        $dbData['telephone'] = $_info[1];
+                    }
+
+
                     if (strpos($text, $this->encode('年工作经验')) !== FALSE && strpos($text, $this->encode('岁')) !== FALSE) {
                         //性别 岁数 学历
                         $_text = explode($this->encode('年工作经验'), $text);
@@ -1274,8 +1290,8 @@ class ResumeData {
                 }
             }
         }
-//        var_dump(['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData]);
-//        exit;
+        var_dump(['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData]);
+        exit;
         return ['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData];
     }
 
