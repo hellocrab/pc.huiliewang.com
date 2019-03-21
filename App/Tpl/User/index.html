@@ -92,7 +92,7 @@ $(function(){
 											<td>员工编号</td>
 											<td>角色</td>
 											<td>手机号</td>
-											<td>邮箱</td>								
+											<td>邮箱</td>
 											<td>部门</td>
 											<td>职位</td>
 										</tr>
@@ -171,8 +171,8 @@ $(function(){
 								</div>
 							</div>
 						</div>
-					</form>						
-				</div>						
+					</form>
+				</div>
 			</div>
         </div>
     </div>
@@ -181,7 +181,7 @@ $(function(){
 	<div class="row-fluid">
 		<div class="span12">
 			<div class="container2" style="padding:5px;margin:-15px 0 15px">
-				
+
 			</div>
 			<div class="row-fluid" style="background-color:#fff">
 			</div>
@@ -240,7 +240,7 @@ $(function(){
 </div>
 <script type="text/javascript">
 /*模态框关闭或打开 先清除内容*/
-$(".modal").on("hide.bs.modal", function() {  
+$(".modal").on("hide.bs.modal", function() {
     $(this).removeData("bs.modal");
 });
 $(".modal").on("show.bs.modal", function() {
@@ -293,7 +293,7 @@ function changeContent(){
 	}else if(a=='5'){
 		window.location.href="{:U('user/department')}{:U('user/role')}";
 	}
-} 
+}
 <if condition="C('ismobile') eq 1">width=$('.container').width() * 0.9;<else/>width=600;</if>
 $('#dialog-message').dialog({
 	autoOpen: false,
@@ -339,9 +339,9 @@ function del_user(status){
 	swal({
 		title: "温馨提示",
 		text: "您确定要"+status_name+"此账号吗？",
-		type: "warning",   
-		showCancelButton: true,   
-		confirmButtonColor: "#DD6B55",   
+		type: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#DD6B55",
 		confirmButtonText: "是的，我要"+status_name+"！",
         cancelButtonText:'让我再考虑一下…',
         closeOnConfirm:false,
