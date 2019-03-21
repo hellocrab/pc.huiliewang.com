@@ -73,14 +73,14 @@ class ProductAction extends Action
             $data = $reData->getData($v);
 
             if (!$data['data']) {
-                $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => '没有匹配数据']);
+                $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => '没有匹配数据']);
             }
             //检查简历是否存存在
             $name = isset($data['data']['name']) ? trim($data['data']['name']) : '';
             $telephone = isset($data['data']['telephone']) ? trim($data['data']['telephone']) : '';
             $email = isset($data['data']['email']) ? trim($data['data']['email']) : '';
             if ($this->isResumeExist($name, $telephone, $email)) {
-                $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => "{$name}简历已经存在"]);
+                $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在"]);
             }
 
             try {
