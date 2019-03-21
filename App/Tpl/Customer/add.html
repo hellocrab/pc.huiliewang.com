@@ -108,7 +108,7 @@
 												</if>
 												<elseif condition="$vo['field'] == 'name'"/>
 												<div class="col-md-6">
-													<input class="form-control required" id="name"onkeyup="checkinfo(name)"  name="name" placeholder="" type="text" maxlength="30"/>
+													<input class="form-control required" id="name" onkeyup="checkinfo(name)"  name="name" placeholder="" type="text" maxlength="30"/>
 												</div>
 												<if condition = "$vo['tip_start'] eq 1">
 													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -414,10 +414,15 @@
 				var tel = $('#con_telphone').val();
 				var qq = $('#con_qq_no').val();
 				var weixin = $('#con_wetchat').val();
+				var dqs = $("#wantdqs").val();
                 if(flag != ''){
 					if(name && tel && qq && weixin){
                         form.submit();
 					}else{
+						if(dqs=="" || dqs==null){
+                        	alert_crm("请填写所在城市信息！");
+                        	return;
+                    	}
 					    if(name == '' || name == null){
                             alert_crm("请填写姓名！");
                             $("input[data-selector=con_name]").css("border","1px dotted #cc5965");
@@ -433,11 +438,11 @@
                             $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
                             return;
                         }
-                        if(weixin == '' || weixin == null){
-                            alert_crm("请填写微信！");
-                            $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
-                            return;
-                        }
+                        // if(weixin == '' || weixin == null){
+                        //     alert_crm("请填写微信！");
+                        //     $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
+                        //     return;
+                        // }
                         form.submit();
 					}
 				}
@@ -466,7 +471,7 @@
                     joiner.push($(this).val());
                     joiner_name.push($(this).attr('rel'));
                 })
-                joiner = joiner.join(",");
+				joiner = joiner.join(",");
                 joiner_name = joiner_name.join(",");
                 var nameskey=sessionStorage.getItem("nameskey");
                 var idskey=sessionStorage.getItem("idskey");
