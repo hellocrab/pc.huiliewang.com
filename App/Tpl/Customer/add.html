@@ -414,10 +414,15 @@
 				var tel = $('#con_telphone').val();
 				var qq = $('#con_qq_no').val();
 				var weixin = $('#con_wetchat').val();
+				var dqs = $("#wantdqs").val();
                 if(flag != ''){
 					if(name && tel && qq && weixin){
                         form.submit();
 					}else{
+						if(dqs=="" || dqs==null){
+                        	alert_crm("请填写所在城市信息！");
+                        	return;
+                    	}
 					    if(name == '' || name == null){
                             alert_crm("请填写姓名！");
                             $("input[data-selector=con_name]").css("border","1px dotted #cc5965");
@@ -437,7 +442,7 @@
                             alert_crm("请填写微信！");
                             $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
                             return;
-                        }
+						}
                         form.submit();
 					}
 				}
