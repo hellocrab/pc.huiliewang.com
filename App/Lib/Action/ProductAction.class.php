@@ -84,6 +84,7 @@ class ProductAction extends Action {
             if (!$data['data']) {
                 $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => '没有匹配数据']);
             }
+            
             //检查简历是否存存在
             $name = isset($data['data']['name']) ? trim($data['data']['name']) : '';
             $telephone = isset($data['data']['telephone']) ? trim($data['data']['telephone']) : '';
@@ -124,6 +125,10 @@ class ProductAction extends Action {
 
                 if (empty($data['data']['name'])) {
                     $data['data']['name'] = '未知';
+                }
+                
+                if (empty($data['data']['telephone'])) {
+                    $data['data']['telephone'] = '未知';
                 }
 
                 M('resume')->add($data['data']);
