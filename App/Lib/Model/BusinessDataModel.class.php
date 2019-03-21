@@ -28,7 +28,7 @@
 						$this->_validate[] = $validate;
 						break;
 					case 'mobile';
-						$validate[1] = '/|^1[358][0-9]{9}$/';
+						$validate[1] = '/|^1[3587946][0-9]{9}$/';
 						$this->_validate[] = $validate;
 						break;
 					case 'phone';
