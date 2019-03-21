@@ -397,6 +397,7 @@ class ProductAction extends Action
                         $v = $v['value'];
                         $where['creator_role_id'] = $v;
                     } elseif (is_array($v)) {
+                        $v['value'] = trim( $v['value']);
                         if ($v['state']) {
                             $address_where[] = '%' . $v['state'] . '%';
 

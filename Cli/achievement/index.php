@@ -8,6 +8,7 @@ ini_set("memory_limit", "1024M");
 include realpath(__DIR__ . '/../sqlBase/sqlMaker/Mysql.php');
 
 //php index.php test 20190301 20190304
+//php index.php product 20190301 20190304
 $todayTime = date("Y-m-d", time());
 $dateStart = isset($argv[2]) ? ($argv[2]) : $todayTime;//date("Y-m-d", strtotime("-1 day"));
 $dateEnd = isset($argv[3]) ? $argv[3] : date("Y-m-d", strtotime("+1 day"));
@@ -62,7 +63,7 @@ foreach ($userList as $userInfo) {
         echo "date: {$reportTime} " . PHP_EOL;
         //检查是否同步过
         if (checkExist($userId, $reportTime, $conn)) {
-            $dateStartInt = $nextDayInt; //时间+1天
+//            $dateStartInt = $nextDayInt; //时间+1天
             $mode = 2; // update
             $where = ['eq'=>['user_id' => $userId,'report_date' => $reportTime] ];
 //            continue;
@@ -88,6 +89,7 @@ foreach ($userList as $userInfo) {
         $data['interviewt_num'] = $interviewNum['conuntTimes'] ? $interviewNum['conuntTimes'] : 0;
         //9、offer统计
         $data['offer_num'] = offerNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
+
         //10、offer挂掉统计
         $data['offerd_num'] = offeredNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         //11、入职统计
@@ -105,17 +107,19 @@ foreach ($userList as $userInfo) {
         //17、cc备注
         $data['cc_num'] = ccnum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         $dateStartInt = $nextDayInt; //时间+1天
+
         if($mode == 1){
             $dataList[] = $data;
         } else {
-            $dataList = $data;
+//            $dataList = $data;
+            saveData($data, $conn ,$mode,$where); //更新
         }
     }
     
     if (!$dataList && empty($dataList)) {
         continue;
     }
-    if (!saveData($dataList, $conn ,$mode,$where)) {
+    if (!saveData($dataList, $conn ,1,$where)) {
         echo "{$userName} data save error" . PHP_EOL;
     }
     echo "{$userName} SUCCESS" . PHP_EOL;
@@ -387,9 +391,9 @@ function achievementNum($userId, $dateStartInt, $nextDayInt, $conn)
     $query = $conn->query($sql);
     if ($query) {
         $info = $query->fetch(PDO::FETCH_ASSOC);
-        return $info['counts'] > 0 ? $info['counts'] : 0;
+        return $info['counts'] > 0 ? $info['counts'] : '0.00';
     } else {
-        return 0;
+        return '0.00';
     }
 }
 
@@ -519,7 +523,7 @@ function dbconn($env='')
     $testConf = [
         'product' => 'mysql',
         'api' => 'pdo',
-        'host' => '192.168.1.177',
+        'host' => '192.168.0.123',
         'port' => 3306,
         'dbname' => 'pinping',
         'username' => 'root',

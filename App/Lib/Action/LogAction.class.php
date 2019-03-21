@@ -374,6 +374,11 @@ class LogAction extends Action{
             $where['_logic'] = 'OR';
             $map['_complex'] = $where;
             $map['is_deleted'] = 0;
+        } else {
+            $where['_string'] = "FIND_IN_SET(" . session('role_id') . ",business.owner_role_id)";
+            $where['_logic'] = 'OR';
+            $map['_complex'] = $where;
+            $map['is_deleted'] = 0;
         }
 
         $project = $d_business->order('business.create_time desc')->where($map)->limit(1000)->select();

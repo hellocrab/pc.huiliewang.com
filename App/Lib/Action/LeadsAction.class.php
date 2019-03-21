@@ -1830,9 +1830,6 @@ class LeadsAction extends Action {
         ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
         $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
-//        $this->list =  D("ResumeView")->where($where)->select();
-//
-//        dump($this->list);die;
         $this->display();
     }
 
@@ -1848,12 +1845,14 @@ class LeadsAction extends Action {
         $role_id > 0 && $where['fine_project.tracker'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
         $where['fine_project.status'] = array('egt', 4);
-        $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("ProjectView")->where($where)->select();
-//        $this->list =  D("ResumeView")->where($where)->select();
-//        dump($this->list);
-//        die;
-//        dump($this->list);die;
+        $where['fine_project_interview.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_interview');
+        $list = $projectSafeModel->where($where)->select();
+        $newList = [];
+        foreach ($list as $info){
+            $newList[$info['resume_id']] = $info;
+        }
+        $this->list = $newList;
 
         $this->display();
     }
@@ -1870,9 +1869,9 @@ class LeadsAction extends Action {
         $role_id > 0 && $where['fine_project.tracker'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
         $where['fine_project.interview_times'] = array('egt', 1);
-        $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("ProjectView")->where($where)->select();
-//        $this->list =  D("ResumeView")->where($where)->select();
+        $where['fine_project_interview.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_interview');
+        $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
 
