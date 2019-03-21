@@ -54,7 +54,8 @@ class ResumeData {
             }
 
             $text = file_get_contents($basePath . $htmlName);
-//            var_dump($text);exit;
+//            var_dump($text);
+//            exit;
             if (strpos($text, $this->encode('智联招聘')) !== FALSE && !strpos($text, $this->encode('智联卓聘')) && strpos($text, '<p class="msonormal">') !== false) {
                 $mode = 1; //智联招聘 非表格
                 $str = strip_tags($text, "<b><p>");
@@ -88,7 +89,7 @@ class ResumeData {
                     $str = substr($str, 0, -$len);
                 }
                 $str = explode('<palign="left">', $str);
-            } elseif (strpos($text, 'lietou-static.com') !== false || (strpos($text, 'Image1') !== false && strpos($text, 'Image2') !== false)) {
+            } elseif (strpos($text, 'lietou-static.com') !== false || (strpos($text, 'Image1') !== false || strpos($text, '图片 1') !== false || strpos($text, '# 1') !== false) || (strpos($text, 'Image2') !== false || strpos($text, '# 2') !== false || strpos($text, '图片 2') !== false)) {
                 $mode = 3; //猎聘
                 $str = strip_tags($text, "<b><p>");
                 $str = preg_replace('/\n/is', '', $str);
