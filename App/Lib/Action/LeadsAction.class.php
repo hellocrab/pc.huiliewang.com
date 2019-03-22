@@ -2241,6 +2241,9 @@ class LeadsAction extends Action {
         $this->content_id = intval($_GET['content_id']);
         $this->assign('ishow',$ishow);
         $this->alert = parseAlert();
+        $lastInfo = M('report_intergral')->field('create_time')->order('create_time desc')->find();
+        $lastTime = date('Y-m-d H:i:s', $lastInfo['create_time']);
+        $this->assign('lastTime', $lastTime);
         $this->display();
     }
 
