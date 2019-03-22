@@ -3087,6 +3087,7 @@ class BusinessAction extends Action
                 }
             }
             if ($roleIds == null && $where['department_id'] == null) {
+                $where['full_name'] = array('like','%'.$where['full_name'].'%');
                 $roleIds = $m_user->where($where)->field('role_id')->select();
             } else {
                 if ($where['full_name'] != '' || $where['telephone'] != '') {
