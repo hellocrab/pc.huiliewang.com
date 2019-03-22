@@ -36,6 +36,13 @@
 <script type="text/javascript">
 	
 $(function(){
+	let temp = "{$pater_id}";
+	let arr = temp.split(',');
+	if(arr.length!=0){
+		arr.map(val=>{
+			$('input[value="'+val+'"]').attr('checked',true)
+		})
+	}
 	$('.ta').click(
 		function(){
 			var num = $(this).attr('rel');

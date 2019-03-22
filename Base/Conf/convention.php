@@ -35,7 +35,7 @@ return  array(
     'ACTION_SUFFIX'         =>  '', // 操作方法后缀
 
     /* Cookie设置 */
-    'COOKIE_EXPIRE'         => 0,    // Coodie有效期
+    'COOKIE_EXPIRE'         => 24*3600*0.5,    // Coodie有效期
     'COOKIE_DOMAIN'         => '',      // Cookie有效域名
     'COOKIE_PATH'           => '/',     // Cookie路径
     'COOKIE_PREFIX'         => '',      // Cookie前缀 避免冲突
@@ -102,7 +102,7 @@ return  array(
 
     /* SESSION设置 */
     'SESSION_AUTO_START'    => true,    // 是否自动开启Session
-    'SESSION_OPTIONS'       => array(), // session 配置数组 支持type name id path expire domian 等参数
+    'SESSION_OPTIONS'       => array('expire'=>3600*24*0.5,'name'=>'session_id'), // session 配置数组 支持type name id path expire domian 等参数
     'SESSION_TYPE'          => '', // session hander类型 默认无需设置 除非扩展了session hander驱动
     'SESSION_PREFIX'        => '', // session 前缀
     //'VAR_SESSION_ID'      => 'session_id',     //sessionID的提交变量

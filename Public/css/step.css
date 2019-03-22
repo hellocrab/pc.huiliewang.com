@@ -40,11 +40,11 @@ a {
 .step-arrow li a:before {
     position: absolute;
     z-index: 2;
-    width: 36px;
-    height: 36px;
+    /* width: 36px; */
+    /* height: 36px; */
     line-height: 36px;
     top: 0;
-    left: 2rem;
+    left: 17%;
     font-weight: bold;
     font-size: 2rem;
     overflow: hidden;

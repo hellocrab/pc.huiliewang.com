@@ -1,7 +1,12 @@
 <style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
 
-
-
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
 </style>
 <link href="__PUBLIC__/style/css/dialog.css" rel="stylesheet">
 
@@ -44,18 +49,77 @@
                </td>
            </tr>
            <tr>
-               <td style="text-align: right;">结果备注:</td>
+               <td style="text-align: right;">年龄:</td>
                <td style="padding-left: 20px;">
-                   <textarea name="remarks" col="3" row="5" class="ccbeizhu" placeholder="最多不超过1000字">{$cc_list['remarks']}</textarea>
+                   <input type="text" class="form-control" name="age" value="{$cc_list['age']}"/>
+               </td>
+           </tr>
+           <tr>
+               <td style="text-align: right;">在职/离职:</td>
+               <td style="padding-left: 20px;">
+                    <select name="onwork" class="form-control">
+                        <option value="" <if condition="$cc_list['onwork'] eq  ''">selected="selected"</if>>----</option>
+                        <option value="1" <if condition="$cc_list['onwork'] eq '1'">selected="selected"</if>>离职</option>
+                        <option value="2" <if condition="$cc_list['onwork'] eq '2'">selected="selected"</if>>在职</option>
+                    </select>
+               </td>
+           </tr>
+           <tr style="margin-top: 10px;">
+               <td style="text-align: right;">目前公司和职位:</td>
+               <td style="padding-left: 20px;">
+                   <input type="text" class="form-control" name="company_position" value="{$cc_list['company_position']}"/>
+               </td>
+           </tr>
+           <tr>
+               <td style="text-align: right;">目前薪酬:</td>
+               <td style="padding-left: 20px;">
+                   <input type="text" class="form-control" name="current_receive"  value="{$cc_list['current_receive']}"/>
+               </td>
+           </tr>
+           <tr>
+               <td style="text-align: right;">期望薪酬:</td>
+               <td style="padding-left: 20px;">
+                   <input type="text" class="form-control" name="exp_receive" value="{$cc_list['exp_receive']}"/>
+               </td>
+           </tr>
+           <tr>
+               <td style="text-align: right;">离职/看新机会的原因:</td>
+               <td style="padding-left: 20px;">
+                   <textarea class="form-control" name="off_reason" col="2" row="5">{$cc_list['off_reason']}</textarea>
+               </td>
+           </tr>
+           <tr>
+               <td style="text-align: right">期望的机会类型:</td>
+               <td style="padding-left: 20px;">
+                   <input class="form-control" type="text" name="chance"  value="{$cc_list['chance']}"/>
+               </td>
+           </tr>
+           <tr>
+               <td style="text-align: right">婚育状况:</td>
+               <td style="padding-left: 20px;">
+                   <select name="marital" class="form-control">
+                       <option value="" <if condition="$cc_list['marital'] eq ''">selected="selected"</if>>----</option>
+                       <option value="1" <if condition="$cc_list['marital'] eq '1'">selected="selected"</if>>未婚</option>
+                       <option value="2" <if condition="$cc_list['marital'] eq '2'">selected="selected"</if>>已婚</option>
+                   </select>
+               </td>
+           </tr>
+           <tr>
+               <td style="text-align: right">籍贯:</td>
+               <td style="padding-left: 20px;">
+                   <input type="text" class="form-control" name="native" value="{$cc_list['native']}">
+               </td>
+           </tr>
+           <tr>
+               <td style="text-align: right">未来规划:</td>
+               <td style="padding-left: 20px;">
+                   <textarea name="plans" class="form-control" col="2" row="5">{$cc_list['plans']}</textarea>
                </td>
            </tr>
        </table>
     </div>
 </div>
 </form>
-
-
-
 
 <script>
 

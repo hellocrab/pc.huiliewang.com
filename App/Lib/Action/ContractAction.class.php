@@ -41,6 +41,9 @@ class ContractAction extends Action {
 			if ($m_contract->where(array('number'=>$contract_custom.trim($_POST['number'])))->find()) {
 				$this->error('该合同编号已存在！');
 			}
+			if(!$_POST['file']){
+                $this->error('请上传合同附件！');
+            }
 			//处理自定义字段数据
 			$field_list = M('Fields')->where(array('model'=>'contract','in_add'=>1))->order('order_id')->select();
 			foreach ($field_list as $v){
@@ -338,6 +341,7 @@ class ContractAction extends Action {
 					$m_contract->owner_role_id = $_POST['owner_role_id'] ? $_POST['owner_role_id'] : session('role_id');
 					$m_contract->update_time = time();
 					$m_contract->count_nums = $_POST['total_amount_val'];
+                    2 == $contract_info['is_checked'] && $m_contract->is_checked = 0;
 
 					if ($m_contract_data->create() !== false) {
 						$a = $m_contract->where(array('contract_id'=>$contract_id))->save();
@@ -482,7 +486,7 @@ class ContractAction extends Action {
 								alert('error','修改失败，请重试！',U('contract/view','id='.$contract_id));
 							}
 						} else {
-							alert('error','修改失败，请重试！',U('contract/view','id='.$contract_id));
+//							alert('error','修改失败，请重试！',U('contract/view','id='.$contract_id));
 						}
 					}else{
 						$this->error($m_contract_data->getError());
@@ -490,6 +494,7 @@ class ContractAction extends Action {
 				} else {
 					$this->error($m_contract->getError());
 				}
+                alert('success','修改成功！',U('contract/view','id='.$contract_id));
 			}else{
 				$sales_id = M('rContractSales')->where('contract_id = %d && sales_type = 0',$contract_id)->getField('sales_id');
 				$d_sales = D('SalesmoduleView');
@@ -1183,7 +1188,7 @@ class ContractAction extends Action {
 		}
 		$this->parameter = implode('&', $params);
 		//by_parameter(特殊处理)
-		$this->by_parameter = str_replace('by='.$_GET['by'], '', implode('&', $params));
+//		$this->by_parameter = str_replace('by='.$_GET['by'], '', implode('&', $params));
 
 		$m_business = M('Business');
 		$m_user = M('User');
@@ -1532,6 +1537,7 @@ class ContractAction extends Action {
 						// $data['examine_role_id'] = $step_role_id ? : 0;
 						// $data['order_id'] = 0;
 						$data['is_checked'] = 2;
+                        $data['examine_role_id'] = $_POST['examine_role_id'] ?  intval($_POST['examine_role_id']) : intval(session('role_id')) ;
 						$data['examine_type_id'] = 0;
 						$data['order_id'] = intval($_POST['order_id'])-1;
 					} else {
@@ -1619,6 +1625,7 @@ class ContractAction extends Action {
 							$url = U('contract/view','id='.$contract_id);
 							sendMessage($contract['creator_role_id'],'您创建的合同《<a href="'.$url.'">'.$contract['number'].'-'.$contract['contract_name'].'</a>》<font style="color:green;">已通过审核</font>！',1);
 						} elseif ($is_agree == 2 && $is_end == 1) {
+                            $url = U('contract/view','id='.$contract_id);
 							sendMessage($contract['creator_role_id'],'您创建的合同《<a href="'.$url.'">'.$contract['number'].'-'.$contract['contract_name'].'</a>》<font style="color:red;">经审核已被拒绝！请及时更正！</font>！',1);
 						}
 						alert('success', L('CHECK_SUCCESS'), $_SERVER['HTTP_REFERER']);

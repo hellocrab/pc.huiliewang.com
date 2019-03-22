@@ -605,6 +605,15 @@ $('#submit_password').click(function() {
 		})
 		return false;
 	}
+	var new_pass = $('#new_password').val();
+	if(new_pass.length < 6 || new_pass.length > 16) {
+		swal({
+			title: "温馨提示",
+			text: "密码长度应为6~16位字符！",
+			type: "warning"
+		})
+		return false;
+	}
 	$('#old_password').val($.md5($('#old_password').val()));
 	$('#new_password').val($.md5($('#new_password').val()));
 	$('#confirm_password').val($.md5($('#confirm_password').val()));

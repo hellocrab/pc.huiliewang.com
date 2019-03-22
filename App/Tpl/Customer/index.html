@@ -222,13 +222,13 @@
                                                                         </volist>
                                                                         </div>
                                                                         </li>
-                                                                        <li style="float:left;width:100%;">
-                                                                            <a href="javascript:void(0);" id="add_scene" style="width:100%;color:#676a6c;padding:5px !important;float:left;">
-                                                                                <div style="padding:0 10px;">
-                                                                                    <span class="pull-left" style="line-height:26px;"><i class="fa fa-plus-circle"></i>&nbsp;新建场景</span>
-                                                                                </div>
-                                                                            </a>
-                                                                        </li>
+                                                                        <!--<li style="float:left;width:100%;">-->
+                                                                            <!--<a href="javascript:void(0);" id="add_scene" style="width:100%;color:#676a6c;padding:5px !important;float:left;">-->
+                                                                                <!--<div style="padding:0 10px;">-->
+                                                                                    <!--<span class="pull-left" style="line-height:26px;"><i class="fa fa-plus-circle"></i>&nbsp;新建场景</span>-->
+                                                                                <!--</div>-->
+                                                                            <!--</a>-->
+                                                                        <!--</li>-->
                                                                         <li style="float:left;width:100%;">
                                                                             <a href="javascript:void(0);" id="setting_scene" style="width:100%;color:#676a6c;padding:5px !important;float:left;">
                                                                                 <div style="padding:0 10px;">
@@ -387,7 +387,7 @@
                                                                                 <td style="width:30px;border-right:1px solid #e7eaec;"></td>
                                                                             </if>
                                                                             <if condition="$cn_is_show eq 1"><td>客户联系人</td></if>
-                                                                            <if condition="$ct_is_show eq 1"><td>联系电话</td></if>
+                                                                            <!-- <if condition="$ct_is_show eq 1"><td>联系电话</td></if> -->
 
                                                                             <volist name="field_array" id="vo">
                                                                                 <if condition="$vo['field'] neq 'name'">
@@ -446,9 +446,18 @@
                                                                                                         </td>
                                                                                                     </if>
                                                                                                     <if condition="$cn_is_show eq 1">
-                                                                                                        <td><a href="{:U('contacts/view','id='.$vo['contacts_id'])}">{$vo['contacts_name']}</a></td>
+                                                                                                        <td>
+                                                                                                            <a href="{:U('contacts/view','id='.$vo['contacts_id'])}">{$vo['contacts_name']}</a>
+                                                                                                            <if condition='$vo["contacts_name"]'>
+                                                                                                            <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo['contacts_id']}" data-toggle="dropdown" href="#" title="呼叫">
+                                                                                                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                                                                                </a>
+                                                                                                            </if>
+                                                                                                        </td>
                                                                                                     </if>
-                                                                                                    <if condition="$ct_is_show eq 1"><td>{$vo['contacts_telephone']}</td></if>
+                                                                                                    <!-- <if condition="$ct_is_show eq 1"><td>{$vo['contacts_telephone']}<if condition="$vo.contacts_telephone neq ''"><a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo['contacts_telephone']}" data-toggle="dropdown" href="#" title="呼叫">
+                                                                                                        <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                                                                    </a></if></td></if> -->
 
                                                                                                     <volist name="field_array" id="v">
                                                                                                         <if condition="$v['field'] neq 'name'">
@@ -556,9 +565,9 @@
                                                                                                             </td>
                                                                                                         </if>
                                                                                                         <td class="detail-right" style="width:30px;">
-                                                                                                            <a data-toggle="tooltip" data-placement="top" <if condition ="$vo['set_top'] eq 1"> data-original-title="取消置顶" <else />data-original-title="置顶" </if> href="{:U('customer/settop','module=customer&module_id='.$vo['customer_id'])}">
-                                                                                                                <i class="fa fa-x fa-thumb-tack" style="font-size:16px;"></i>
-                                                                                                            </a>
+                                                                                                            <!--<a data-toggle="tooltip" data-placement="top" <if condition ="$vo['set_top'] eq 1"> data-original-title="取消置顶" <else />data-original-title="置顶" </if> href="{:U('customer/settop','module=customer&module_id='.$vo['customer_id'])}">-->
+                                                                                                                <!--<i class="fa fa-x fa-thumb-tack" style="font-size:16px;"></i>-->
+                                                                                                            <!--</a>-->
                                                                                                         </td>
                                                                                                         <td class="detail-right" style="width:30px;">
                                                                                                             <!--<a data-toggle="tooltip" data-placement="top" class="addproduct" data-original-title="添加项目" rel="{$vo['customer_id']}" href="/index.php?m=business&a=add">-->
@@ -989,6 +998,25 @@
                                                                                                             $('#call_modal').append(html);
                                                                                                         });
 
+                                                                                                        //号码呼出_guo_02/22
+                                                                                                        $(document).ready(function () {
+                                                                                                            $(".call_out").on('click',function () {
+                                                                                                                var itemId = $(this).attr('rel');
+                                                                                                                $.post(
+                                                                                                                    "{:U('user/call_out')}",
+                                                                                                                    {itemId: itemId,type:2,tel:''},
+                                                                                                                    function (data) {
+                                                                                                                        var obj = $.parseJSON(data);
+                                                                                                                        if(obj.code){
+                                                                                                                        swal("操作成功！", "拨打电话成功,请稍等电话接通！", "success");
+                                                                                    //                                     alert_crm(data.message);
+                                                                                                                    }else{
+                                                                                                                        alert_crm(obj.msg+",请联系管理员！");
+                                                                                                                    }
+                                                                                                                    }
+                                                                                                                );
+                                                                                                            });
+                                                                                                        });
                                                                                                         //dropdown menu 不关闭
                                                                                                         $('#dropdown_order').on('click', function (event) {
                                                                                                             event.stopPropagation();

@@ -52,7 +52,7 @@
                     <td class="result_select" style="padding-left: 20px;">
                         <div class="form-group">
                                 <input type="hidden" name="tikect_type" value="猎头顾问" />
-                                <input type="hidden" name="user" class="user_id" value="{:session('user_id')}" />
+                                <input type="hidden" name="user" class="user_id" value="{$createUserId|default='0'}" />
                                 <input class="form-control required user_name" aria-required="true" placeholder="请点击选择"  type="text" name="joiner_name" value="{$user_name}" readonly="true" style="cursor:pointer;" title="请点击选择"/>
                         </div>
                         <!--<select class="form-control" name="user[]">-->
@@ -92,4 +92,40 @@
         </div>
     </div>
 </div>
+
+<script>
+    
+    $('.user_name').click(function () {
+        user_name = $(this);
+        user_id = $(this).prev();
+        $('#dialog-role-list2').dialog('open');
+        $('#dialog-role-list2').load("{:U('User/listDialogs')}");
+    });
+
+
+    $('#dialog-role-list2').dialog({
+        autoOpen: false,
+        modal: true,
+        width: 700,
+        maxHeight: 400,
+        buttons: {
+            "{:L('CONFIRM')}": function () {
+                var item = $('input:radio[name="owner"]:checked').val();
+                var name = $('input:radio[name="owner"]:checked').attr('rel');
+                if(item){
+                    user_name.val(name);
+                    user_id.val(item);
+                }
+
+                $(this).dialog("close");
+            },
+            "{:L('CANCEL')}": function () {
+                $(this).dialog("close");
+            }
+        },
+        position:["center",100]
+    });
+
+
+</script>
 

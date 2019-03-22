@@ -143,13 +143,16 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">加入项目：</label>
                                     <div class="col-md-6">
-                                        <input type="hidden" name="customer_id" id="business_id" value="">
+                                        <input type="hidden" name="business_id" id="business_id" value="">
                                         <input class="form-control" placeholder="请点击选择需要加入的项目" type="text" name="business_name" id="business_name"  value="{$resume.business_name}" readonly="true" style="cursor:pointer;" title="请点击选择">
+                                    </div>
+                                    <div class="col-md-2 clean_business" style="color: #ff8b26">
+                                        <label for="">取消项目</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">姓名：</label>
+                                    <label class="col-md-3 control-label">姓名:</label>
                                     <div class="col-md-6">
                                         <!--<input  type="hidden" id="status" name="status" value="推荐客户">-->
                                         <input class="form-control required" type="text" id="name" name="name" value="{$resume.name}">
@@ -195,22 +198,22 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">出生年月：</label>
                                     <div class="col-sm-6">
-                                        <input class="form-control text-center timerinput" id="birthday" type="text"  onFocus="WdatePicker({dateFmt:'yyyy-MM', maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;height: 32px;text-align: left;" value="{$resume.birthday|date="Y-m",###}">
+                                        <input class="form-control text-center timerinput" id="birthday" type="text"  onFocus="WdatePicker({dateFmt:'yyyy-MM', maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;height: 32px;text-align: left;" <if condition="$resume.birthday neq ''">value="{$resume.birthday|date='Y-m',###}"</if>>
                                     </div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;"></span></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">开始工作时间：</label>
                                     <div class="col-sm-6">
-                                        <input class="form-control text-center timerinput" id="startWorkyear" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="startWorkyear" style="width: 100%;height: 32px;text-align: left;" value="{$resume.startWorkyear|date="Y-m",###}">
+                                        <input class="form-control text-center timerinput" id="startWorkyear" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="startWorkyear" style="width: 100%;height: 32px;text-align: left;" <if condition="$resume.startWorkyear neq '' && $resume.startWorkyear neq '0'">value="{$resume.startWorkyear}"</if>>
                                     </div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;"></span></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">手机：</label>
                                     <div class="col-md-6">
-                                        <label style="display: inline-block;height: 32px;line-height: 32px;">{$resume.telephone}</label>
-                                        <!--<input class="form-control required mobile" type="text" id="telphone" name="telephone" value="{$resume.telephone}">-->
+                                        <!--<label style="display: inline-block;height: 32px;line-height: 32px;">{$resume.telephone}</label>-->
+                                        <input class="form-control required mobile" type="text" id="telphone" name="telephone" value="{$resume.telephone}">
                                         <span id="sketchTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -668,7 +671,7 @@
         /*form表单验证*/
         $("#form").validate({
             submitHandler:function(form){
-                $('#save_submit').off().on("click",function(){
+                // $('#save_submit').off().on("click",function(){
                     var industrys = $("#industrys").val();
                     var jobtitles = $("#jobtitles").val();
                     var dqs = $("#dqs").val();
@@ -718,10 +721,9 @@
                     if(dqs && jobtitles && industrys && wantdqs){
                         form.submit();
                     }
-                });
+                // });
             }
         });
-
         $("#uploadresume").on("change",function () {
             var dataform = new FormData();
             dataform.append("file",$('#uploadresume')[0].files[0]);
@@ -802,7 +804,7 @@
         });
 
         $('#business_name').click(function () {
-            $('#dialog-business').dialog('open');
+            $('#dialog-business').dialog('option',{title:'选择项目'}).dialog('open');
             $('#dialog-business').load("{:U('business/listdialog')}");
         });
     })
@@ -865,6 +867,11 @@
                 item.parent().remove();
             }
             $(this).closest(".panel-body3").remove();
+        })
+        //清空加入的项目
+        $('body').on("click",'.clean_business',function () {
+            $("input[name=business_id]").val('');
+            $("input[name=business_name]").val('');
         })
     })
 

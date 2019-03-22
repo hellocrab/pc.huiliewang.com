@@ -156,6 +156,9 @@
     .icohover:hover .ico_xiugai{
         display: block;
     }
+    tbody td{
+        min-width: 5rem;
+    }
 </style>
 <script type="text/javascript" src="__PUBLIC__/js/PCASClass.js" ></script>
 <div class="full-height">
@@ -253,11 +256,15 @@
         <!--客户面试-->
         <if condition="$project['status'] eq interview">
         <div class="row baccc">
+            <eq name="isEndInterview" value="0">
             <input type="button" value="客户面试" class="btn btn-default khms"  data-id="{$project['id']}">
+                <else />
+                <!--<input type="button" value="客户面试" class="btn btn-default khms"  data-id="{$project['id']}">-->
+            </eq>
             <input type="button" value="开票" class="btn btn-default fapiao"   data-id="{$project['id']}">
 
                 <switch name="pro_type">
-                    <case value="传统项目|其他|入职快">
+                    <case value="2|3">
                         <input type="button" value="面试通过" class="btn btn-default mstg"   data-id="{$project['id']}">
                         <input type="button" value="不合适" class="btn btn-default remove"   data-id="{$project['id']}">
                     </case>
@@ -289,6 +296,7 @@
         <if condition="$project['status'] eq enter">
         <div class="row baccc">
             <input type="button" value="淘汰" class="btn btn-default remove"  data-id="{$project['id']}">
+            <input type="button" value="过保" class="btn btn-default safe"  data-id="{$project['id']}">
             <input type="button" value="开票" class="btn btn-default fapiao"  data-id="{$project['id']}">
             <input type="button" value="费用变更" class="btn btn-default changefy"  data-id="{$project['id']}">
             <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
@@ -386,9 +394,75 @@
                                                 </td>
                                             </tr>
                                             <tr height="24px">
-                                                <td align="right" style="font-size: 12px;color: #999999;">备注：</td>
+                                                <td align="right" style="font-size: 12px;color: #999999;">年龄:</td>
                                                 <td style="font-size: 12px;color: #666666;">
-                                                    {$vo['remarks']}
+                                                    {$vo['age']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">在职/离职:</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    <if condition="$vo.onwork eq '1'">
+                                                        离职
+                                                        <elseif condition="$vo.onwork eq '2'"/>
+                                                        在职
+                                                        <else/>
+                                                        -
+                                                    </if>
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">目前公司和职位:</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['company_position']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">目前薪酬:</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['current_receive']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">期望薪酬:</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['exp_receive']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">离职/看新机会的原因:</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo.off_reason}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">期望的机会类型:</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['chance']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">婚育状况:</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    <if condition="$vo.marital eq '1'">
+                                                        未婚
+                                                        <elseif condition="$vo.marital eq '2'"/>
+                                                        已婚
+                                                        <else/>
+                                                        -
+                                                    </if>
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">籍贯:</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['native']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">未来规划:</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['plans']}
                                                 </td>
                                             </tr>
                                         </table>
@@ -1677,8 +1751,8 @@
     $("#dialog-addCCbz").dialog({
         autoOpen: false,
          modal: true,
-        width: 580,
-        maxHeight: 450,
+        width: 680,
+        maxHeight: 1000,
         position: ["center",100],
         title:"添加CC备注("+name+")",
         close:function(){
@@ -2024,7 +2098,7 @@
             }else{
                 $('#dialog-addCCbz').load("/index.php?m=business&a=addcc&id="+id);
             }
-        })
+        });
 
         //推荐顾问面试
         $(".tjgwms").on("click",function () {
@@ -2032,7 +2106,38 @@
             var id=$(this).attr("data-id");
             var key=$(this).attr("data-key")?$(this).attr("data-key"):0;
             $('#dialog-gwms').load("/index.php?m=business&a=addgwms&id="+id+"&key="+key);
-        })
+        });
+        //过保操作
+        $(".safe").on("click",function () {
+            swal({
+                    title: "确定要过保操作吗？",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确定",
+                    closeOnConfirm: false
+                },
+                function(){
+                    $.ajax({
+                        type:"post",
+                        url:"{:U('business/safe')}",
+                        data:{
+                            kind:"safe",
+                            id:"{$project['id']}"
+                        },
+                        success:function (data) {
+                            if(data.status == 1){
+                                swal("温馨提示！", "过保操作成功！", "success");
+                            }else {
+                                swal("温馨提示！", "过保操作失败", "error");
+                            }
+                            location.reload();
+                            // swal("温馨提示！", "项目状态推进成功！", "success");
+                            // location.reload();
+                        },
+                    })
+                });
+        });
 
         //推荐人才给客户
         $(".tjkehu").click(function(){

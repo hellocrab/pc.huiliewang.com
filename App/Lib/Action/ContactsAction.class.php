@@ -6,7 +6,7 @@ class ContactsAction extends Action {
         $this->assign("title",$title);
 		$action = array(
 			'permission'=>array(),
-			'allow'=>array('checklistdialog','revert', 'mdelete','add_dialog','qrcode','excelimport','validate','reltobusiness','changetofirstcontact')
+			'allow'=>array('checklistdialog','revert', 'mdelete','add_dialog','qrcode','excelimport','validate','reltobusiness','changetofirstcontact','infoScan','isScan')
 		);
 		B('Authenticate', $action);
 		$this->_permissionRes = getPerByAction(MODULE_NAME,ACTION_NAME);
@@ -1022,4 +1022,70 @@ class ContactsAction extends Action {
 			unlink($filename);
 		}
 	}
+
+    /**
+     * 查看联系人信息
+     */
+    public function infoScan() {
+        header("Access-Control-Allow-Origin: *");
+        $userRoleId = I('role_id', session('role_id'));
+        $type = I('type', 1);
+        $itemId = I('item_id', 0);
+        try {
+            import('@.ORG.ApiClient');
+            ApiClient::init();
+            $contactService = new com\hlw\huiliewang\interfaces\ContactInfoServiceClient(null);
+            ApiClient::build($contactService);
+            $contactRequestDo = new com\hlw\huiliewang\dataobject\contactInfo\contactScanRequestDTO();
+
+            $contactRequestDo->itemId = $itemId;
+            $contactRequestDo->userRoleId = $userRoleId;
+            $contactRequestDo->type = $type;
+            $res = $contactService->scan($contactRequestDo);
+            $data = $res->message;
+            if ($res->success && $res->code == 200) {
+                $data = json_decode($data, true);
+                $return = ['success' => true, 'code' => 200, 'info' => $data];
+            }else{
+                $return = ['success' => false, 'code' => 500, 'info' => $data];
+            }
+        } catch (Exception $e) {
+            $return = ['success' => false, 'code' => 500, 'info' => $e->getMessage()];
+        }
+        $this->ajaxReturn($return);
+    }
+
+    /**
+     * 是否可以查询权限
+     */
+    public function isScan() {
+        header("Access-Control-Allow-Origin: *");
+        $userRoleId = I('role_id', session('role_id'));
+        $type = I('type', 1);
+        $itemId = I('item_id', 0);
+        try {
+            import('@.ORG.ApiClient');
+            ApiClient::init();
+            $contactService = new com\hlw\huiliewang\interfaces\ContactInfoServiceClient(null);
+
+            ApiClient::build($contactService);
+            $contactRequestDo = new com\hlw\huiliewang\dataobject\contactInfo\contactScanRequestDTO();
+
+            $contactRequestDo->itemId = $itemId;
+            $contactRequestDo->userRoleId = $userRoleId;
+            $contactRequestDo->type = $type;
+            $subRoleId = ($this->_permissionRes && is_array($this->_permissionRes)) ? implode(',', $this->_permissionRes) : '';
+            $contactRequestDo->subRoleId = $subRoleId;
+            $res = $contactService->isScan($contactRequestDo);
+            $data = $res->message;
+            if ($res->success && $res->code == 200) {
+                $return = ['success' => true, 'code' => 200, 'info' => $data];
+            } else {
+                $return = ['success' => false, 'code' => 500, 'info' => $data];
+            }
+        } catch (Exception $e) {
+            $return = ['success' => false, 'code' => 500, 'info' => $e->getMessage()];
+        }
+        $this->ajaxReturn($return);
+    }
 }

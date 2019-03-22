@@ -77,25 +77,11 @@
                             <input type="text" class="form-control" name="name" value="{$customer['name']}" id="customer_name">
                         </div>
                         <div class="col-lg-1 hide"></div>
-                        <!--<label class="col-sm-2 control-label">客户类型</label>-->
-                        <!--<div class="col-sm-4">-->
-                            <!--<p class="form-p-owner" style="margin-bottom: 0px;">-->
-                                <!--<a class="" href="javascript:void(0)">-->
-                                    <!--<if condition = "$customer['customer_type'] eq '0'">-->
-                                        <!--<span class="label label-danger">面试快</span>-->
-                                        <!--<elseif  condition = "$customer['customer_type'] eq '1'"/>-->
-                                        <!--<span class="label label-info">传统项目客户</span>-->
-                                        <!--<else />-->
-                                        <!--<span class="label label-warning">其他类型</span>-->
-                                    <!--</if>-->
-                                <!--</a>-->
-                            <!--</p>-->
-                        <!--</div>-->
                         <label class="col-sm-2 control-label">客户状态</label>
                         <div class="col-sm-4">
                             <p class="form-p-owner" style="margin-bottom: 0px;">
                                 <a class="" href="javascript:void(0)">
-                                    <if condition = "$vo['customer_status'] eq '重点客户'">
+                                    <if condition = "$customer['customer_status'] eq '重点客户'">
                                         <span class="label label-success editstatus">重点客户</span>
                                         <elseif  condition =  "$customer['customer_status'] eq '试单客户'"/>
                                         <span class="label label-danger editstatus">试单客户</span>

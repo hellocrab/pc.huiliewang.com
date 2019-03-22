@@ -65,7 +65,17 @@
 					                                </div>
 					                            </div>
 				                            </td>
-										</tr> -->
+										</tr>-->
+										<tr>
+											<th colspan="2">呼叫中心余额</th>
+										</tr>
+										<tr>
+											<td class="tdleft">余额:</td>
+											<td>
+												<span id="time_long"></span>
+												<input type="button" style="margin-left: 2%;" class="btn btn-primary tdright" id="balance" value="查询">
+											</td>
+										</tr>
 										<tr>
 											<th colspan="2">{:L('OTHER_SETTING')}</th>
 										</tr>
@@ -289,6 +299,20 @@ $(".modal").on("hide.bs.modal", function() {
 $(".modal").on("show.bs.modal", function() {
     $(this).removeData("bs.modal");
 });
+$(document).ready(function () {
+	$("#balance").on('click',function () {
+        $(this).prop('disabled',true);
+        $.post(
+            "{:U('setting/searchBalance')}",
+            function (data) {
+				var balance = JSON.parse(data);
+				$("#time_long").html("剩余时长:"+balance.data);
+                $("#balance").prop('disabled',false);
+            }
+        );
+    });
+});
+
 
 $(function(){
 	new PCAS("state","city","{$defaultinfo.state}","{$defaultinfo.city}");

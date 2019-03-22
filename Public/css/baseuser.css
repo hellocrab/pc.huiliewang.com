@@ -37,7 +37,7 @@ html,body{
 .logininfo{
 	position: relative; 
 	min-width:380px ;
-	height: 45%;
+	height:400px;
 	background: rgba(255,255,255,0.8);
 	align-self: center;
 	margin: 0 auto;

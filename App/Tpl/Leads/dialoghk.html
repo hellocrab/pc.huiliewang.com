@@ -5,6 +5,21 @@
             font-weight: bold;
             background: #f5f5f6;
         }
+        .tabThFixed{
+            display:table;
+            width:100%;
+            table-layout:fixed;
+        }
+        .mainTbody{
+            display:block;
+            height:350px;
+            overflow-y:scroll
+        }
+        .mainTbody tr{
+            display:table;
+            width:100%;
+            table-layout:fixed
+        }
         .dilog tr{
             height: 15px;
         }
@@ -12,25 +27,36 @@
 	<input type="hidden" name="id" value="{$leads_id}"/>
     <div class="nicescroll" style="left:0px;top:0px;">
         <table class="table table-hover dilog" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
-            <tr class="tabTh" style="width: 100%;">
-                <td  style="padding-left: 15px;text-align: left;">员工姓名</td>
+            <!--<tr class="tabTh" style="width: 100%;">-->
+                <!--<td  style="padding-left: 15px;text-align: left;">员工姓名</td>-->
+                <!--<td>部门</td>-->
+                <!--<td>回款金额</td>-->
+                <!--<td>所属客户</td>-->
+                <!--<td>所属项目</td>-->
+                <!--<td>候选人</td>-->
+                <!--<td>到账时间</td>-->
+            <!--</tr>-->
+            <tbody style="display: block;overflow-y: scroll">
+            <tr class="tabTh tabThFixed" style="width: 100%;">
+                <td  style="padding-left: 15px;text-align: left;">候选人</td>
                 <td>部门</td>
                 <td>回款金额</td>
                 <td>所属客户</td>
                 <td>所属项目</td>
-                <td>候选人</td>
+                <td>操作人</td>
                 <td>到账时间</td>
             </tr>
-            <tbody>
+            </tbody>
+            <tbody class="mainTbody">
             <volist name="list" id="vo">
                 <tr>
-                    <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.user_name}</a></td>
+                    <td style="min-width: 80px;"><a href="{:U('product/view','id='.$vo['eid'])}" target="_blank">{$vo.resume_name}</a></td>
                     <td style="min-width: 100px;">{$vo.department_name}</td>
                     <td style="min-width: 80px;">{$vo.money}</td>
                     <td style="min-width: 80px;"><a href="{:U('customer/view', 'id='.$vo['customer_id'])}" target="_blank">{$vo.customer_name}</a></td>
                     <td style="min-width: 80px;"><a href="{:U('business/view','id='.$vo['business_id'])}" target="_blank">{$vo.business_name}</a></td>
-                    <td style="min-width: 80px;"><a href="{:U('product/view','id='.$vo['eid'])}" target="_blank">{$vo.resume_name}</a></td>
-                    <td style="min-width: 80px;">{$vo.create_time|date='Y-m-d',###}</td>
+                    <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.user_name}</a></td>
+                    <td style="min-width: 80px;">{$vo.create_time|date='Y-m-d  h:m',###}</td>
                 </tr>
             </volist>
             </tbody>

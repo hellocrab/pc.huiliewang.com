@@ -7,7 +7,7 @@
 		'TMPL_ACTION_SUCCESS' => 'Public:message',
 		'TMPL_EXCEPTION_FILE'=>'./App/Tpl/Public/exception.html',
 		'DEFAULT_TIMEZONE' => 'PRC',
-		'LOAD_EXT_CONFIG' => 'db,version,authorize.config,call',
+		'LOAD_EXT_CONFIG' => 'db,version,authorize.config,call,redis',
 		'LOG_RECORD' => true,
 		'LOG_LEVEL'  =>'EMERG',
 		'OUTPUT_ENCODE' => false,
@@ -22,5 +22,12 @@
 		'TOKEN_NAME'=>'__hash__',    // 令牌验证的表单隐藏字段名称
 		'TOKEN_TYPE'=>'md5',  //令牌哈希验证规则 默认为MD5
 		'TOKEN_RESET'=>true,  //令牌验证出错后是否重置令牌 默认为true
+        "BUSINESS_TYPE"=> [
+            1 => '面试快',
+            2 => '入职快',
+            3 => '专业猎头',
+            4 => '慧简历',
+            5 => '其他'
+        ],
 	);
 ?>

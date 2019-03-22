@@ -85,7 +85,17 @@
     .label_n{
         margin-right: 5px;
     }
+    #picker{
+        display: inline-block;
+        position: relative;
+        top: 16px;
+        margin-top: -19px;
+    }
 </style>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/webuploader/webuploader.css">
+
+<!--引入JS-->
+<script type="text/javascript" src="__PUBLIC__/webuploader/webuploader.js"></script>
 <ul class="nav nav-tabs" id="left_list">
     <li class="active">
         <a href="#tab0" data-toggle="tab" type="tab0">
@@ -98,7 +108,7 @@
             <a href="#tab2" data-toggle="tab" type="tab2">职位详情</a>
         </li>
         <li class="">
-            <a href="#tab3" data-toggle="tab" type="tab3"><label class="label_n fp_num">1</label>联系人</a>
+            <a href="#tab3" data-toggle="tab" type="tab3"><label class="label_n fp_num">{$contacts_list|count}</label>联系人</a>
         </li>
         <!--<li class="">-->
         <!--<a href="#tab4" data-toggle="tab" type="tab4">跟进记录</a>-->
@@ -138,10 +148,62 @@
 
                 <div class="" style="padding-bottom: 15px">
                     <a class="btn btn-default" href="/index.php?m=product&a=add&pro_id={:I('id')}">新增一份简历</a>
-                    <a class="btn btn-default" href="/index.php?m=product&a=index&pro_id={$project['business_id']}" target="_blank">从人才库搜索</a>
+                    <a class="btn btn-default" href="/index.php?m=product&a=index&pro_id={:I('id')}" target="_blank">从人才库搜索</a>
+                    <div id="picker">简历解析</div>
                     <!--<a class="btn btn-default" href="/index.php?m=product&a=add_more&pro_id={$project['business_id']}" target="_blank">批量导入简历</a>-->
                 </div>
+                <script>
+                    $(function () {
+                        let pro_id = "{:I('id')}";
+                        var uploader = WebUploader.create({
+                            swf: '__PUBLIC__/webuploader/Uploader.swf',
+                            server: '/index.php?m=product&a=resolve',
+                            pick: {
+                                id: '#picker',
+                                multiple: false,
+                            },
+                            auto: true,
+                            resize: false,
+                            accept: {
+                                extensions: 'doc,docx,html,pdf',
+                            },
+                            duplicate: true,
+                            'fileSingleSizeLimit': 1024 * 1024,
+                            // fileNumLimit:1,
+                            formData: {pro_id: pro_id}
+                        });
+                        uploader.on('uploadProgress', function (file, percentage) {
+                        });
+                        uploader.on('uploadSuccess', (file, res) => {
+                            swal(res.message, "", res.code == 200 ? 'success' : "warning");
+                            if (res.code == 200) {
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1000)
+                            }
 
+                        })
+                        uploader.on('uploadError', (file, res) => {
+                            swal(res.message, "", res.code == 200 ? 'success' : "warning");
+                            if (res.code == 200) {
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1000)
+                            }
+
+                        })
+                        uploader.on('error', type => {
+                            if (type == 'Q_TYPE_DENIED') {
+                                swal('上传类型错误', "", "warning");
+                            } else if (type == 'Q_EXCEED_SIZE_LIMIT') {
+                                swal('文件过大', "", "warning");
+                            }
+                        });
+                        uploader.on('beforeFileQueued', file => {
+
+                        });
+                    });
+                </script>
                 <div class="houxuanren" style="padding-bottom: 15px">
                     <ul class="nav nav-tabs" style="background: #f9fafc;height: 70px;">
                         <!--<li class="active"><a class="" href="#tj"  data-toggle="tab" type="tj">智能推荐</a></li>-->
@@ -199,7 +261,7 @@
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">职位</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">性别</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">年薪</td>
-                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td>
+                                <!-- <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td> -->
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
                             <tbody>
@@ -254,7 +316,7 @@
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">职位</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">性别</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">年薪</td>
-                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td>
+                                <!-- <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td> -->
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">跟进人</td>
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
@@ -326,9 +388,9 @@
                                 <td style="text-align:center;padding:14px;color:#666;">
                                     <div class="nowap" style="max-width: 100px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title=" {$vo['current_job']}"> {$vo['current_job']}</div>
                                 </td>
-                                <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">女<else/>男</if></td>
-                                <td style="text-align:center;padding:14px;color:#666;">{$vo['hope_salary']}万</td>
-                                <td style="text-align:center;padding:14px;color:#666;">{$vo['telephone']}</td>
+                                <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">男<else/>女</if></td>
+                                <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}万</td>
+                                <!-- <td style="text-align:center;padding:14px;color:#666;">{$vo['telephone']}</td> -->
                                 <td style="text-align:center;padding:14px;color:#666;"><a href="javascript:void(0);" class="role_info" rel="{$vo['tracker']}">{$vo['tracker_name']}</a></td>
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['addtime']|date='Y-m-d H:i:s',###}</td>
                                 </tr>
@@ -363,7 +425,7 @@
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">职位</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">性别</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">年薪</td>
-                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td>
+                                <!-- <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td> -->
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">跟进人</td>
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
@@ -412,8 +474,8 @@
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_company']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">男<else/>女</if></td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['hope_salary']}万</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}万</td>
+                                    <!-- <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td> -->
                                     <td style="text-align:center;padding:14px;color:#666;"><a href="javascript:void(0);" class="role_info" rel="{$vo['tracker']}">{$vo['tracker_name']}</a></td>
                                     <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date='Y-m-d H:i:s',###}</td>
                                     </tr>
@@ -448,7 +510,7 @@
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">职位</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">性别</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">年薪</td>
-                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td>
+                                <!-- <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td> -->
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">跟进人</td>
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
@@ -477,8 +539,8 @@
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_company']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">男<else/>女</if></td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['hope_salary']}万</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}万</td>
+                                    <!-- <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td> -->
                                     <td style="text-align:center;padding:14px;color:#666;"><a href="javascript:void(0);" class="role_info" rel="{$vo['tracker']}">{$vo['tracker_name']}</a></td>
                                     <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date='Y-m-d H:i:s',###}</td>
                                     </tr>
@@ -513,7 +575,7 @@
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">职位</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">性别</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">年薪</td>
-                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td>
+                                <!-- <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td> -->
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">跟进人</td>
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
@@ -542,8 +604,8 @@
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_company']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">男<else/>女</if></td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['hope_salary']}万</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}万</td>
+                                    <!-- <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td> -->
                                     <td style="text-align:center;padding:14px;color:#666;"><a href="javascript:void(0);" class="role_info" rel="{$vo['tracker']}">{$vo['tracker_name']}</a></td>
                                     <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date='Y-m-d H:i:s',###}</td>
                                     </tr>
@@ -578,7 +640,7 @@
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">职位</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">性别</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">年薪</td>
-                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td>
+                                <!-- <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td> -->
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">跟进人</td>
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
@@ -607,8 +669,8 @@
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_company']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">男<else/>女</if></td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['hope_salary']}万</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}万</td>
+                                    <!-- <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td> -->
                                     <td style="text-align:center;padding:14px;color:#666;"><a href="javascript:void(0);" class="role_info" rel="{$vo['tracker']}">{$vo['tracker_name']}</a></td>
                                     <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date='Y-m-d H:i:s',###}</td>
                                     </tr>
@@ -643,7 +705,7 @@
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">职位</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">性别</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">年薪</td>
-                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td>
+                                <!-- <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td> -->
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">跟进人</td>
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
@@ -672,8 +734,8 @@
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_company']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">男<else/>女</if></td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['hope_salary']}万</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}万</td>
+                                    <!-- <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td> -->
                                     <td style="text-align:center;padding:14px;color:#666;"><a href="javascript:void(0);" class="role_info" rel="{$vo['tracker']}">{$vo['tracker_name']}</a></td>
                                     <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date='Y-m-d H:i:s',###} </td>
                                     </tr>
@@ -708,7 +770,7 @@
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">职位</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">性别</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">年薪</td>
-                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td>
+                                <!-- <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td> -->
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">跟进人</td>
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
@@ -737,8 +799,8 @@
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_company']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
                                     <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">男<else/>女</if></td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['hope_salary']}万</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}万</td>
+                                    <!-- <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td> -->
                                     <td style="text-align:center;padding:14px;color:#666;"><a href="javascript:void(0);" class="role_info" rel="{$vo['tracker']}">{$vo['tracker_name']}</a></td>
                                     <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date='Y-m-d H:i:s',###}</td>
                                     </tr>
@@ -773,7 +835,7 @@
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">职位</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">性别</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">年薪</td>
-                                <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td>
+                                <!-- <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td> -->
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">跟进人</td>
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">最近操作时间</td>
                             </tr>
@@ -799,13 +861,13 @@
                                         </span>
                                     </if>
                                     </td>
-                                    <td style="text-align:center;padding:14px;color:#666;">公司名称</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">职位</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">男</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">24万</td>
-                                    <td style="text-align:center;padding:14px;color:#666;">18785858585</td>
-                                    <td style="text-align:center;padding:14px;color:#666;"><a href="#">跟进人</a></td>
-                                    <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">2018-03-16 09:49:03</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['current_company']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['current_job']}</td>
+                                    <td style="text-align:center;padding:14px;color:#666;"><if condition="$vo['sex'] eq 1">男<else/>女</if></td>
+                                    <td style="text-align:center;padding:14px;color:#666;">{$vo['curSalary']}万</td>
+                                    <!-- <td style="text-align:center;padding:14px;color:#666;">{$vo['telphone']}</td> -->
+                                    <td style="text-align:center;padding:14px;color:#666;"><a href="javascript:void(0);" class="role_info" rel="{$vo['tracker']}">{$vo['tracker_name']}</a></td>
+                                    <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">{$vo['updatetime']|date='Y-m-d H:i:s',###}</td>
                                     </tr>
                                 </volist>
                             </if>
@@ -1182,6 +1244,8 @@
                             </div>
                             <elseif condition="$vo.field eq pro_type || $vo.field eq customer_id || $vo.field eq contacts_id || $vo.field eq  grade" />
 
+                            <elseif condition="$vo.field eq nextstep_time && $business_info[$vo[field]] eq 0" />
+
                             <else/>
                             <div class="col-lg-6 form_bottm">
                                 <div class="col-lg-3 text-right">{$vo.name}</div>
@@ -1222,9 +1286,9 @@
                         <tr class="tabTh" style="background-color:#f9fafc;">
                             <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">姓名</td>
                             <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">重要程度</td>
-                            <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">手机号</td>
-                            <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">邮箱</td>
-                            <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">QQ</td>
+                            <!-- <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">手机号</td> -->
+                            <!-- <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">邮箱</td> -->
+                            <!-- <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">QQ</td> -->
                             <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">职位</td>
                             <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">尊称</td>
                             <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">创建者</td>
@@ -1236,9 +1300,9 @@
                             <tr>
                                 <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;"><a href="{:U('contacts/view','id='.$vo['contacts_id'])}">{$vo['name']}<span class="" style="{$mail_contacts_id == $vo['contacts_id'] ? '':'display:none'}">{$vo['name']}</span></a></td>
                                 <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['crm_dbxxve']}</td>
-                                <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['telephone']}</td>
-                                <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['email']}</td>
-                                <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['qq_no']}</td>
+                                <!-- <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['telephone']}</td> -->
+                                <!-- <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['email']}</td> -->
+                                <!-- <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['qq_no']}</td> -->
                                 <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['post']}</td>
                                 <td style="text-align:center;padding:14px;color:#666;border-right: 1px solid #e7eaec;">{$vo['saltname']}</td>
                                 <td style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#999"><a class="role_info" rel="{$vo['creator_role_id']}" href="javascript:void(0)">{$vo['user_name']}</a></td>
@@ -1519,13 +1583,17 @@
                                 <td style="text-align:center;">{$vo.business_name}</td>
                                 <td style="text-align:center;">{$vo.resume_name}</td>
                                 <td style="text-align:center;">
-                                    {$type_name[$vo[type]]}
-                                </td>
-                                <td style="text-align:center;">{$vo.cost_type}</td>
-                                <td style="text-align:center;">{$vo.billing_type}</td>
-                                <td style="text-align:center;">{$vo['create_time']|date="Y-m-d",###}</td>
-                                <td style="text-align:center;">{$vo['money']}元</td>
-                                <td style="text-align:center;"><notempty name="vo.user_name"><a class="role_info" rel="{$vo.create_role_id}" href="javascript:void(0)">{$vo.user_name}</a></notempty></td>
+                            <if condition = "$vo[type] eq 'refuse'">
+                                <p style="color:red">{$type_name[$vo[type]]}</p><input type="button" value="重新编辑提交" class="btn btn-default fapiao" data-id="{$vo['invoice_id']}">
+                                <else />
+                                <p style="color:green">{$type_name[$vo[type]]}</p>
+                            </if>
+                            </td>
+                            <td style="text-align:center;">{$vo.cost_type}</td>
+                            <td style="text-align:center;">{$vo.billing_type}</td>
+                            <td style="text-align:center;">{$vo['create_time']|date="Y-m-d",###}</td>
+                            <td style="text-align:center;">{$vo['money']}元</td>
+                            <td style="text-align:center;"><notempty name="vo.user_name"><a class="role_info" rel="{$vo.create_role_id}" href="javascript:void(0)">{$vo.user_name}</a></notempty></td>
                             </tr>
                         </volist>
                         <else/>
@@ -1657,6 +1725,15 @@
     </div>
 </div>
 <div style="display:none" id="dialog-setting_reply" title="管理快捷沟通">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<div style="display:none" id="dialog-fapiao">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
             <div class="sk-bounce1"></div>
@@ -2492,5 +2569,57 @@
                 });
     });
 
+</script>
+
+<!--重新编辑发票提交 edit by yanghao 2019-02-23 -->
+<script>
+    //重新编辑发票提交
+    $(".fapiao").on("click", function () {
+        var id = $(this).attr("data-id");
+        $('#dialog-fapiao').dialog("open");
+        $('#dialog-fapiao').load("index.php?m=business&a=invoiceReCheck&id=" + id);
+    })
+    $("#dialog-fapiao").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 580,
+        maxHeight: 580,
+        position: ["center", 100],
+        title: "发票",
+        close: function () {
+            //selectStatus();//更新
+            $(this).html("");
+        },
+        buttons: {
+            "确定": function () {
+                var billing_type = $("select[name=billing_type] option:selected").text();
+                var invoice_header = $("input[name=invoice_header]").val();
+                var content = $("input[name=content]").val();
+                var price = $("input[name=price]").val();
+                if (billing_type == "") {
+                    $("select[name=billing_type]").css("border", "1px dotted #cc5965");
+                    return false;
+                }
+                if (invoice_header == "") {
+                    $("input[name=invoice_header]").css("border", "1px dotted #cc5965");
+                    return false;
+                }
+                if (content == "") {
+                    $("input[name=content]").css("border", "1px dotted #cc5965");
+                    return false;
+                }
+                if (price == "") {
+                    $("input[name=price]").css("border", "1px dotted #cc5965");
+                    return false;
+                }
+                $('#fapiao_form').submit();
+                $(this).dialog("close");
+            },
+            "取消": function () {
+                //selectStatus();//更新
+                $(this).dialog("close");
+            }
+        }
+    });
 </script>
 

@@ -5,28 +5,109 @@
             font-weight: bold;
             background: #f5f5f6;
         }
+        .tabThFixed{
+            display:table;
+            width:100%;
+            table-layout:fixed;
+
+        }
         .dilog tr{
             height: 15px;
         }
+        #oDivL_tab_Test3{background-color: #fff;z-index: inherit !important;}
+        .table{max-width: none;}
+        .tabTh{background-color: #fff;}
+        .ibox-span{
+            float: left;
+            line-height: 30px;
+        }
+        .form-horizontal .form-group{margin-left:0px;margin-right:0px;}
+        .subnum td{
+            color: #ffffff !important;
+        }
+        .mainTbody{
+            display:block;
+            height:350px;
+            overflow-y:scroll
+        }
+        .mainTbody tr{
+            display:table;
+            width:100%;
+            table-layout:fixed
+        }
     </style>
+    <script>
+        $(function(){
+//    var scroll_width = 7;
+//	$("#table_div").height(window.innerHeight-$("#table_div").offset().top-$("#tfoot_div").height()-30);
+//	$(window).resize(function(){
+//		$("#table_div").height(window.innerHeight-$("#table_div").offset().top-$("#tfoot_div").height()-30);
+//		$("#oDivL_tab_Test3").height($("#table_div").height()).width($("#oTableLH_tab_Test3").width());
+//		$("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width());
+//	});
+//
+//	$(".nicescroll").niceScroll({
+//		cursorcolor: "#999",//#CC0071 光标颜色
+//	    cursoropacitymax: 0.4, //改变不透明度非常光标处于活动状态（scrollabar“可见”状态），范围从1到0
+//	    touchbehavior: false, //使光标拖动滚动像在台式电脑触摸设备
+//	    cursorwidth: scroll_width+"px", //像素光标的宽度
+//	    cursorborder: "0", //     游标边框css定义
+//	    cursorborderradius: "3px",//以像素为光标边界半径
+//	    autohidemode: false, //是否隐藏滚动条
+//	    zindex:100,
+//	    background:"#F3F3F5",//滚动条背景色
+//	});
+//	$("#tab_Test3").FrozenTable(1,0,1);
+//	$("#oDivL_tab_Test3").height($("#table_div").height()).width($("#oTableLH_tab_Test3").width());
+//	$("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width());
+
+            var scroll_width = 10;
+
+            $(".nicescroll").niceScroll({
+                cursorcolor: "#999",//#CC0071 光标颜色
+                cursoropacitymax: 0.4, //改变不透明度非常光标处于活动状态（scrollabar“可见”状态），范围从1到0
+                touchbehavior: false, //使光标拖动滚动像在台式电脑触摸设备
+                cursorwidth: scroll_width+"px", //像素光标的宽度
+                cursorborder: "0", //     游标边框css定义
+                cursorborderradius: "3px",//以像素为光标边界半径
+                autohidemode: false, //是否隐藏滚动条
+                zindex:100,
+                background:"#F3F3F5",//滚动条背景色
+            });
+        })
+
+    </script>
 	<input type="hidden" name="id" value="{$leads_id}"/>
     <div class="nicescroll" style="left:0px;top:0px;">
-        <table class="table table-hover dilog" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
-            <tr class="tabTh" style="width: 100%;">
-                <td  style="padding-left: 15px;text-align: left;">员工姓名</td>
-                <td>部门</td>
+        <table class="table table-hover table-striped table_thead_fixed table-bordered" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
+            <!--<tr class="tabTh" style="width: 100%;">-->
+                <!--<td  style="padding-left: 15px;text-align: left;">员工姓名</td>-->
+                <!--<td>部门</td>-->
+                <!--<td>候选人</td>-->
+                <!--<td>项目名称</td>-->
+                <!--<td>所属客户</td>-->
+                <!--<td>操作人</td>-->
+                <!--<td>操作时间</td>-->
+            <!--</tr>-->
+            <tbody style="display: block;overflow-y: scroll">
+            <tr class="tabTh tabThFixed" style="width: 100%;">
                 <td>候选人</td>
                 <td>项目名称</td>
                 <td>所属客户</td>
+                <td>操作人</td>
+                <td>部门</td>
+                <td>操作时间</td>
             </tr>
-            <tbody>
+            </tbody>
+            <tbody class="mainTbody">
             <volist name="list" id="vo">
                 <tr>
-                    <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.tracker_name}</a></td>
-                    <td style="min-width: 100px;">{$vo.department_name}</td>
                     <td style="min-width: 80px;"><a href="{:U('product/view','id='.$vo['eid'])}" target="_blank">{$vo.name}</a></td>
                     <td style="min-width: 80px;"><a href="{:U('business/view','id='.$vo['business_id'])}" target="_blank">{$vo.business_name}</a></td>
                     <td style="min-width: 80px;"><a href="{:U('customer/view', 'id='.$vo['customer_id'])}" target="_blank">{$vo.customer_name}</a></td>
+                    <td style="min-width: 80px;"><a href="{:U('customer/view', 'id='.$vo['tracker_name'])}" target="_blank">{$vo.tracker_name}</a></td>
+                    <td style="min-width: 100px;">{$vo.department_name}</td>
+                    <td style="min-width: 80px;">{$vo.addtime|date='Y-m-d  h:m',###}</td>
                 </tr>
             </volist>
 

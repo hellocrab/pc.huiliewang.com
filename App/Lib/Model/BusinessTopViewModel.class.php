@@ -8,7 +8,7 @@
 			//置顶逻辑
 			$data_top = array('set_top','top_time');
 
-			$data_top['_on'] = "business.business_id = top.module_id and top.module = 'business' and top.create_role_id = ".session('role_id');
+			$data_top['_on'] = "business.business_id = top.module_id and top.module = 'business' and business.is_deleted = 0 and top.create_role_id = ".session('role_id');
 
 			$this->viewFields = array('business'=>$data_list,'top'=>$data_top);
 		}

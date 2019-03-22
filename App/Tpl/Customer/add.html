@@ -71,7 +71,8 @@
 													<div class="col-md-6">
 														{$vo.html}
 													</div>
-													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+															<!--<div class="col-md-2 showeee"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>-->
+															<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
 													<else/>
 													<div class="col-md-8">
 														{$vo.html}
@@ -82,7 +83,8 @@
 													<div class="col-md-7">
 														{$vo.html}
 													</div>
-													<div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+														<!--<div class="col-md-1 showeee"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>-->
+														<div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
 													<else/>
 													<div class="col-md-8">
 														{$vo.html}
@@ -106,7 +108,7 @@
 												</if>
 												<elseif condition="$vo['field'] == 'name'"/>
 												<div class="col-md-6">
-													<input class="form-control required" id="name"onkeyup="checkinfo(name)"  name="name" placeholder="" type="text" />
+													<input class="form-control required" id="name" onkeyup="checkinfo(name)"  name="name" placeholder="" type="text" maxlength="30"/>
 												</div>
 												<if condition = "$vo['tip_start'] eq 1">
 													<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -129,8 +131,8 @@
 								<div class="form-group">
 									<label class="col-md-4 control-label">维护人：</label>
 									<div class="col-md-6">
-										<input type="hidden" name="customer_owner_id" id="user_id" value="{$business.customer_id}" />
-										<input class="form-control required" aria-required="true" placeholder="请点击选择"  type="text" name="customer_owner_name" id="user_name" value="{$business.customer_name}" readonly="true" style="cursor:pointer;" title="请点击选择"/>
+										<input type="hidden" name="customer_owner_id" id="user_id" value="{$Think.session.role_id}" />
+										<input class="form-control required" aria-required="true" placeholder="请点击选择"  type="text" name="customer_owner_name" id="user_name" value="{$Think.session.full_name}" readonly="true" style="cursor:pointer;" title="请点击选择"/>
 									</div>
 									<div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
 								</div>
@@ -181,12 +183,13 @@
 							<div class="all-inline">
 								<span class="sq-tag"></span>
 								<div class="text-tag">
-									<span>首要联系人</span>
+									<span>客户联系人</span>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-10 add_body_form">
-							<volist name="contacts_field_list['main']" id="vo" key="key">
+							<!--contacts_field_list['main']-->
+							<volist name="contacts_field_list['mainn']" id="vo" key="key">
 								<if condition = "$vo['form_type'] neq 'customer'">
 									<div class="form-group">
 										<label class="col-md-4 control-label">{$vo.name}：</label>
@@ -212,7 +215,98 @@
 									</div>
 								</if>
 							</volist>
+							<!--  直接写表单 3/20  -->
+							<div class="form-group">
+								<label class="col-md-4 control-label">重要程度：</label>
+								<div class="col-md-6">
+									<select class="form-control " id="con_contacts[crm_dbxxve]" name="con_contacts[crm_dbxxve]">
+										<option value=''>--请选择--</option>
+										<option value='非常重要'>非常重要</option>
+										<option value='重要' selected="selected" >重要</option>
+										<option value='一般'>一般</option>
+										<option value='较弱'>较弱</option>
+										<option value='离职'>离职</option>
+									</select>
+									<span id="con_contacts[crm_dbxxve]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
+								<div class="col-md-2"></div>
+								</div><div class="form-group">
+								<label class="col-md-4 control-label">姓名：</label>
+							<div class="col-md-6">
+								<input class="form-control " data-selector="con_name" type="text" id="con_name" name="con_contacts[name]"  value="" placeholder="" />
+								<span id="con_contacts[name]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
+							<div class="col-md-2 ftw"></div>
+							</div>
+							<div class="form-group">
+							<label class="col-md-4 control-label">职位：</label>
+							<div class="col-md-6">
+								<input class="form-control "  type="text" id="con_contacts[post]" name="con_contacts[post]"  value="" placeholder="" />
+								<span id="con_contacts[post]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
+							<div class="col-md-2"></div>
+							</div>
+							<div class="form-group">
+							<label class="col-md-4 control-label">手机：</label>
+							<div class="col-md-6">
+								<input class="form-control " data-selector="con_telphone" type="mobile" id="con_telphone" name="con_contacts[telephone]"  value="" />
+								<span id="con_contacts[telephone]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
+							<div class="col-md-2 ftw"></div>
+							</div>
+							<div class="form-group">
+							<label class="col-md-4 control-label">QQ：</label>
+							<div class="col-md-6">
+								<input class="form-control " data-selector="con_qq_no"  type="text" id="con_qq_no" name="con_contacts[qq_no]"  value="" placeholder="" />
+								<span id="con_contacts[qq_no]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
+							<div class="col-md-2 ftw"></div>
+							</div>
+							<div class="form-group">
+							<label class="col-md-4 control-label">性别：</label>
+							<div class="col-md-6">
+								<select class="form-control " id="con_contacts[crm_zswstr]" name="con_contacts[crm_zswstr]">
+									<option value=''>--请选择--</option>
+									<option value='男' selected="selected" >男</option>
+									<option value='女'>女</option></select>
+								<span id="con_contacts[crm_zswstr]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
+							<div class="col-md-2"></div>
+							</div>
+							<div class="form-group">
+							<label class="col-md-4 control-label">邮箱：</label>
+							<div class="col-md-6">
+								<input class="form-control " type="email" id="con_contacts[email]" name="con_contacts[email]"  value="" />
+								<span id="con_contacts[email]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
+							<div class="col-md-2"></div>
+							</div>
+							<div class="form-group">
+							<label class="col-md-4 control-label">地址：</label>
+							<div class="col-md-8">
+								<script type="text/javascript">
+                                    $(function(){
+                                        new PCAS("con_contacts[contacts_address]['state']","con_contacts[contacts_address]['city']","con_contacts[contacts_address]['area']","","","");
+                                    });
+								</script><select class="form-control " input_type="address" name="con_contacts[contacts_address]['state']" style="width:32%;float:left;" ></select>
+								<select class="form-control " input_type="address" name="con_contacts[contacts_address]['city']" style="width:32%;float:left;margin-left:1%;"></select>
+								<select class="form-control " input_type="address" name="con_contacts[contacts_address]['area']" style="width:32%;float:left;margin-left:1%;"></select>
+								<input class="form-control" input_type="address" type="text" name="con_contacts[contacts_address]['street']" placeholder="街道信息" class="input-large" value="" style="float:left;margin-top:5px;">											</div>
+							</div>
+							<div class="form-group">
+							<label class="col-md-4 control-label">微信：</label>
+							<div class="col-md-6">
+								<input class="form-control "  type="text" data-selector="con_wetchat" id="con_wetchat" name="con_contacts[wetchat]"  value="" placeholder="" />
+								<span id="con_contacts[wetchat]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
+							<div class="col-md-2 "></div>
+							</div>
+							<div class="form-group">
+							<label class="col-md-4 control-label">邮编：</label>
+							<div class="col-md-6">
+								<input class="form-control "  type="text" id="con_contacts[zip_code]" name="con_contacts[zip_code]"  value="" placeholder="" />
+								<span id="con_contacts[zip_code]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
+							<div class="col-md-2"></div>
+							</div><div class="form-group">
+							<label class="col-md-4 control-label">备注：</label>
+							<div class="col-md-8">
+								<textarea class="form-control" rows="5"></textarea>
+							</div>
 						</div>
+						</div>
+					</div>
 						<if condition = "$contacts_field_list['data']">
 							<div class="col-md-12 add_body_title">
 								<div classs="all-inline">
@@ -275,7 +369,7 @@
 </div>
 <script>
 	$(document).ready(function () {
-		$('#user_name').val('');
+		// $('#user_name').val('');
     });
     function checkinfo(param){
         var field_value = $('#'+param).val();
@@ -297,22 +391,84 @@
                 'json');
         }
     }
+
+    //客户来源 变换时
+    function outline_change(obj){
+        if(obj.value == '面试快' || obj.value == '入职快' ||obj.value == '专业猎头'  ){
+            $('.ftw').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
+        }else {
+            $('.ftw').html('');
+        };
+    }
+
     $(document).ready(function(){
         $('#save_submit').prop('disabled',false);
         /*form表单验证*/
         $("#form").validate({
             submitHandler:function(form){
-                $('#save_submit').click(function(){
-                    $('#save_submit').prop('disabled',true);
-                });
-                form.submit();
+                // $('#save_submit').click(function(){
+                //     $('#save_submit').prop('disabled',true);
+                // });
+				var industry = $("input[name=industry]").val();
+				var area = $("#city_area").val();
+                var flag = $('.ftw').html();
+                var introduce = $('#introduce').val();
+                var name = $('#con_name').val();
+				var tel = $('#con_telphone').val();
+				var qq = $('#con_qq_no').val();
+				var weixin = $('#con_wetchat').val();
+				var dqs = $("#wantdqs").val();
+                if(!industry || industry == null){
+                    alert_crm("请填写所属行业！");
+                    return;
+                }
+                if(!introduce || introduce == null){
+                    alert_crm("请填写公司简介！");
+                    return;
+                }
+                if(!area || area == null){
+                    alert_crm("请填写公司地址！");
+                    return;
+                }
+                if(dqs=="" || dqs==null){
+                    alert_crm("请填写所在城市信息！");
+                    return;
+                }
+                if(flag != ''){
+
+					    if(name == '' || name == null){
+                            alert_crm("请填写姓名！");
+                            $("input[data-selector=con_name]").css("border","1px dotted #cc5965");
+                            return;
+						}
+                        if(tel == '' || tel == null){
+                            alert_crm("请填写手机！");
+                            $("input[data-selector=con_telphone]").css("border","1px dotted #cc5965");
+                            return;
+                        }
+                        if(qq == '' || qq == null){
+                            alert_crm("请填写qq！");
+                            $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
+                            return;
+                        }
+
+                        // if(weixin == '' || weixin == null){
+                        //     alert_crm("请填写微信！");
+                        //     $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
+                        //     return;
+                        // }
+                        form.submit();
+				}
+				else{
+                    form.submit();
+				}
             }
         });
     });
 
     $('#user_name').click(function () {
         $('#dialog-role-list2').dialog('open');
-        $('#dialog-role-list2').load("{:U('User/listDialog')}");
+        $('#dialog-role-list2').load("{:U('User/listDialog')}&d_name={$Think.session.full_name|default=''}");
     });
 
     $('#dialog-role-list2').dialog({
@@ -328,7 +484,7 @@
                     joiner.push($(this).val());
                     joiner_name.push($(this).attr('rel'));
                 })
-                joiner = joiner.join(",");
+				joiner = joiner.join(",");
                 joiner_name = joiner_name.join(",");
                 var nameskey=sessionStorage.getItem("nameskey");
                 var idskey=sessionStorage.getItem("idskey");

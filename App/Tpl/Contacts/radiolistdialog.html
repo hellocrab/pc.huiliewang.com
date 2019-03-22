@@ -64,7 +64,7 @@
 			<volist name="contactsList" id="vo">
 				<tr>
 					<td>
-						<input type="radio" name="contacts" class="contacts_rad" value="{$vo.contacts_id}"/>
+						<input type="radio" name="contacts" class="contacts_rad" checked value="{$vo.contacts_id}"/>
 						<input type="hidden" name="customer_id" value="{$vo['customer']['customer_id']}" rel="{$vo['customer']['name']}"/>
 					</td>
 					<td>{$vo.name}</td>

@@ -111,7 +111,7 @@ $(function(){
 									</div>
 								</div>
 							</div>
-							<div class="row" >
+							<div class="row">
 								<div class="col-lg-12">
 									<ul class="nav pull-left" style="margin:2px 0 0 0;">
 										<li>
@@ -130,7 +130,7 @@ $(function(){
 												</volist>
 											</select>
 										</div>
-									</div>
+                                    </div>
 									<div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
 										<div class="input-group">
 											<select class="form-control input-sm select2" style="min-width:165px;max-width: 165px;height: 0px;" name="role" id="role" onchange="changeCondition()">
@@ -143,7 +143,8 @@ $(function(){
 									</div>
 									<div class="pull-left" style="margin-left: 20px;">
 										<button type="submit" id="analytics_search" class="btn btn-primary">{:L('SEARCH')}</button>
-									</div>
+                                    </div>
+                                    <span style="dispaly:inline-block;line-height:30px;float:right">最后更新时间：{$lastTime}</span>
 								</div>
 							</div>
 						</form>
@@ -155,78 +156,94 @@ $(function(){
 								<table class="table table-hover table-striped table_thead_fixed table-bordered" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
                                     <tr class="tabTh">
 										<td  style="min-width:170px;padding-left: 15px;text-align: left;" nowrap="nowrap">员工姓名</td>
-										<td style="min-width: 100px;">英文名</td>
+										<!--<td style="min-width: 100px;">时间</td>-->
 										<td style="min-width: 100px;">部门</td>
-										<td style="min-width: 80px;">业绩</td>
-										<td style="min-width: 80px;">提成</td>
+										<td style="min-width: 100px;">职位名称</td>
+                                        <td style="min-width: 100px;">顾问英文名</td>
+                                        <td style="min-width: 80px;">业绩</td>
+										<td style="min-width: 100px;">callist</td>
+										<td style="min-width: 100px;">cc备注</td>
+										<!--<td style="min-width: 80px;">提成</td>-->
 										<td style="min-width: 80px;">回款个数</td>
 										<td style="min-width: 80px;">新增BD数</td>
 										<td style="min-width: 80px;">新增客户数</td>
 										<td style="min-width: 80px;">新增项目数</td>
 										<td style="min-width: 80px;">新增简历数</td>
-										<td style="min-width: 80px;">推荐企业人选数</td>
+										<td style="min-width: 80px;">推荐简历数</td>
 										<td style="min-width: 80px;">面试人数</td>
 										<td style="min-width: 80px;">面试次数</td>
-										<td style="min-width: 80px;">到场数</td>
+										<!--<td style="min-width: 80px;">到场数</td>-->
 										<td style="min-width: 80px;">Offer</td>
-										<td style="min-width: 80px;">Offer掉</td>
+										<td style="min-width: 80px;">掉Offer数</td>
 										<td style="min-width: 80px;">入职数</td>
 										<td style="min-width: 80px;">过保数</td>
 									</tr>
                                     <tr class="totalnum" style="background: #70B4E8;color: #fff !important;font-size: 13px;">
                                         <td style="color:#fff;">{:L('TOTAL')}</td>
-                                        <td style="color:#fff;">&nbsp;</td>
+                                        <!--<td style="color:#fff;">&nbsp;</td>-->
                                         <td style="color:#fff;"></td>
-                                        <td style="color:#fff;">{$integral}</td>
                                         <td style="color:#fff;"></td>
-                                        <td style="color:#fff;"><if condition="$hkNum neq 0"><a href="javascript:void(0);" class="c_f hknum">{$hkNum}</a><else/>{$hkNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$bdNum neq 0"><a href="javascript:void(0);" class="c_f bdnum">{$bdNum}</a><else/>{$bdNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$customerNum neq 0"><a href="javascript:void(0);" class="c_f customernum">{$customerNum}</a><else/>{$customerNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$projectNum neq 0"><a href="javascript:void(0);" class="c_f projectnum">{$projectNum}</a><else/>{$projectNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$resumeNum neq 0"><a href="javascript:void(0);" class="c_f resumenum">{$resumeNum}</a><else/>{$resumeNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$fineNum neq 0"><a href="javascript:void(0);" class="c_f finenum">{$fineNum}</a><else/>{$fineNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$interviewNum neq 0"><a href="javascript:void(0);" class="c_f interviewnum">{$interviewNum}</a><else/>{$interviewNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$interviewtNum neq 0"><a href="javascript:void(0);" class="c_f interviewtnum">{$interviewtNum}</a><else/>{$interviewtNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$presentNum neq 0"><a href="javascript:void(0);" class="c_f presentnum">{$presentNum}</a><else/>{$presentNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$offerNum neq 0"><a href="javascript:void(0);" class="c_f offernum">{$offerNum}</a><else/>{$offerNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$offerdNum neq 0"><a href="javascript:void(0);" class="c_f offerdnum">{$offerdNum}</a><else/>{$offerdNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$enterNum neq 0"><a href="javascript:void(0);" class="c_f enternum">{$enterNum}</a><else/>{$enterNum}</if></td>
-                                        <td style="color:#fff;"><if condition="$safeNum neq 0"><a href="javascript:void(0);" class="c_f safenum">{$safeNum}</a><else/>{$safeNum}</if></td>
+                                        <td style="color:#fff;"></td>
+                                        <td style="color:#fff;">{$countList[integral]}</td>
+                                        <td style="color:#fff;"><if condition="$countList[callistnum] neq 0"><a href="javascript:void(0);" class="c_f callistnum">{$countList[callistnum]}</a><else/>{$countList[callistnum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[ccnum] neq 0"><a href="javascript:void(0);" class="c_f ccnum">{$countList[ccnum]}</a><else/>{$countList[ccnum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[hkNum] neq 0"><a href="javascript:void(0);" class="c_f hknum">{$countList[hkNum]}</a><else/>{$countList[hkNum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[bdNum] neq 0"><a href="javascript:void(0);" class="c_f bdnum">{$countList[bdNum]}</a><else/>{$countList[bdNum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[customerNum] neq 0"><a href="javascript:void(0);" class="c_f customernum">{$countList[customerNum]}</a><else/>{$countList[customerNum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[projectNum] neq 0"><a href="javascript:void(0);" class="c_f projectnum">{$countList[projectNum]}</a><else/>{$countList[projectNum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[resumeNum] neq 0"><a href="javascript:void(0);" class="c_f resumenum">{$countList[resumeNum]}</a><else/>{$countList[resumeNum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[fineNum] neq 0"><a href="javascript:void(0);" class="c_f finenum">{$countList[fineNum]}</a><else/>{$countList[fineNum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[interviewNum] neq 0"><a href="javascript:void(0);" class="c_f interviewnum">{$countList[interviewNum]}</a><else/>{$countList[interviewNum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[interviewtNum] neq 0"><a href="javascript:void(0);" class="c_f interviewtnum">{$countList[interviewtNum]}</a><else/>{$countList[interviewtNum]}</if></td>
+                                        <!--<td style="color:#fff;"><if condition="$countList[presentNum] neq 0"><a href="javascript:void(0);" class="c_f presentnum">{$countList[presentNum]}</a><else/>{$countList[presentNum]}</if></td>-->
+                                        <td style="color:#fff;"><if condition="$countList[offerNum] neq 0"><a href="javascript:void(0);" class="c_f offernum">{$countList[offerNum]}</a><else/>{$countList[offerNum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[offerdNum] neq 0"><a href="javascript:void(0);" class="c_f offerdnum">{$countList[offerdNum]}</a><else/>{$countList[offerdNum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[enterNum] neq 0"><a href="javascript:void(0);" class="c_f enternum">{$countList[enterNum]}</a><else/>{$countList[enterNum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[safeNum] neq 0"><a href="javascript:void(0);" class="c_f safenum">{$countList[safeNum]}</a><else/>{$countList[safeNum]}</if></td>
                                     </tr>
                                     <tbody>
-
-										<volist name="list" id="vo">
+                                        <volist name="list" id="vo">
 										<tr>
 											<td>
-												<a  class="role_info" rel="{$vo.role_id}" href="javascript:void(0)">{$vo.full_name}</a>
+												<a  class="role_info" rel="{$vo.user_role_id}" href="javascript:void(0)">{$vo.user_name}</a>
 											</td>
-											<td>{$vo.second_name}</td>
+											<!--<td>{$vo.report_date|default=''}</td>-->
 											<td>
-												{$vo.department_name}
+												{$vo.department}
 											</td>
-											<td>
-												{$vo.integral}
-											</td>
-											<td>提成</td>
-											<td> <if condition="$vo['hkNum'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.role_id}">{$vo.hkNum}</a><else/>{$vo.hkNum}</if></td>
-											<td> <if condition="$vo['bdNum'] neq 0"><a href="javascript:void(0);" class="bdnum" data-id="{$vo.role_id}">{$vo.bdNum}</a><else/>{$vo['bdNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['customerNum'] neq 0"><a href="javascript:void(0);" class="customernum" data-id="{$vo.role_id}">{$vo.customerNum}</a><else/>{$vo['customerNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['projectNum'] neq 0"><a href="javascript:void(0);" class="projectnum" data-id="{$vo.role_id}">{$vo.projectNum}</a><else/>{$vo['projectNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['resumeNum'] neq 0"><a href="javascript:void(0);" class="resumenum" data-id="{$vo.role_id}">{$vo.resumeNum}</a><else/>{$vo['resumeNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['fineNum'] neq 0"><a href="javascript:void(0);" class="finenum" data-id="{$vo.role_id}">{$vo.fineNum}</a><else/>{$vo['fineNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewNum'] neq 0"><a href="javascript:void(0);" class="interviewnum" data-id="{$vo.role_id}">{$vo.interviewNum}</a><else/>{$vo['interviewNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewtNum'] neq 0"><a href="javascript:void(0);" class="interviewtnum" data-id="{$vo.role_id}">{$vo.interviewtNum}</a><else/>{$vo['interviewtNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['presentNum'] neq 0"><a href="javascript:void(0);" class="presentnum" data-id="{$vo.role_id}">{$vo.presentNum}</a><else/>{$vo['presentNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerNum'] neq 0"><a href="javascript:void(0);" class="offernum" data-id="{$vo.role_id}">{$vo.offerNum}</a><else/>{$vo['offerNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerdNum'] neq 0"><a href="javascript:void(0);" class="offerdnum" data-id="{$vo.role_id}">{$vo.offerdNum}</a><else/>{$vo['offerdNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['enterNum'] neq 0"><a href="javascript:void(0);" class="enternum" data-id="{$vo.role_id}">{$vo.enterNum}</a><else/>{$vo['enterNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['safeNum'] neq 0"><a href="javascript:void(0);" class="safenum" data-id="{$vo.role_id}">{$vo.safeNum}</a><else/>{$vo['safeNum']}</if></td>
+                                            <td>{$vo.position_name}</td>
+                                            <td>{$vo.second_name}</td>
+                                            <td>
+                                                {$vo.integral}
+                                            </td>
+                                            <td><if condition="$vo[callistnum] neq 0"><a href="javascript:void(0);" class="callistnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo[callistnum]}</a><else/>{$vo[callistnum]}</if></td>
+                                            <td><if condition="$vo[ccnum] neq 0"><a href="javascript:void(0);" class="ccnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo[ccnum]}</a><else/>{$vo[ccnum]}</if></td>
+											<!--<td>{$vo.get_money}</td>-->
+											<td width="80" nowrap="nowrap"> <if condition="$vo['hkNum'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.hkNum}</a><else/>{$vo.hkNum}</if></td>
+											<td width="80" nowrap="nowrap"> <if condition="$vo['bdNum'] neq 0"><a href="javascript:void(0);" class="bdnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.bdNum}</a><else/>{$vo['bdNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['customerNum'] neq 0"><a href="javascript:void(0);" class="customernum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.customerNum}</a><else/>{$vo['customerNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['projectNum'] neq 0"><a href="javascript:void(0);" class="projectnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.projectNum}</a><else/>{$vo['projectNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['resumeNum'] neq 0"><a href="javascript:void(0);" class="resumenum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.resumeNum}</a><else/>{$vo['resumeNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['fineNum'] neq 0"><a href="javascript:void(0);" class="finenum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.fineNum}</a><else/>{$vo['fineNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewNum'] neq 0"><a href="javascript:void(0);" class="interviewnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.interviewNum}</a><else/>{$vo['interviewNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewtNum'] neq 0"><a href="javascript:void(0);" class="interviewtnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.interviewtNum}</a><else/>{$vo['interviewtNum']}</if></td>
+                                            <!--<td width="80" nowrap="nowrap"> <if condition="$vo['presentNum'] neq 0"><a href="javascript:void(0);" class="presentnum" data-id="{$vo.user_role_id}">{$vo.presentNum}</a><else/>{$vo['presentNum']}</if></td>-->
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerNum'] neq 0"><a href="javascript:void(0);" class="offernum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.offerNum}</a><else/>{$vo['offerNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerdNum'] neq 0"><a href="javascript:void(0);" class="offerdnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.offerdNum}</a><else/>{$vo['offerdNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['enterNum'] neq 0"><a href="javascript:void(0);" class="enternum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.enterNum}</a><else/>{$vo['enterNum']}</if></td>
+                                            <td width="80" nowrap="nowrap"> <if condition="$vo['safeNum'] neq 0"><a href="javascript:void(0);" class="safenum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.safeNum}</a><else/>{$vo['safeNum']}</if></td>
 										</tr>
 										</volist>
 									</tbody>
 								</table>
+                                <empty name="list">
+                                <include file="Public:nodata" />
+                                </empty>
 							</div>
 							<div id="tfoot_div" class="clearfix">
+                                <div class="clearfix" id="tfoot_page">
+                                    {$page}<include file="Public:listrows" />
+                                </div>
 							</div>
 						</div>
 						<div id="source_content" class="hidden">
@@ -261,6 +278,24 @@ $(function(){
     </div>
 </div>
 <div class="" style="display:none;" id="dialog-hknum" title="回款个数">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<div class="" style="display:none;" id="dialog-callistnum" title="callist">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<div class="" style="display:none;" id="dialog-ccnum" title="cc备注">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
             <div class="sk-bounce1"></div>
@@ -305,7 +340,7 @@ $(function(){
         </div>
     </div>
 </div>
-<div class="" style="display:none;" id="dialog-finenum" title="推荐企业人选数">
+<div class="" style="display:none;" id="dialog-finenum" title="推荐简历数">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
             <div class="sk-bounce1"></div>
@@ -465,23 +500,71 @@ $(function(){
         }
     });
 
-
-
 	$(".hknum").click(function () {
 	    var id = $(this).attr("data-id");
-        $("#dialog-hknum").dialog('open');
-        $("#dialog-hknum").load('{:U("leads/dialoghk",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num = $(this).text();
+        $("#dialog-hknum").dialog('option',{title:'回款个数('+num+')'}).dialog('open');
+        $("#dialog-hknum").load('{:U("leads/dialoghk",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
+    //callistnum
+    $(".callistnum").click(function () {
+        var id = $(this).attr("data-id");
+        var num = $(this).text();
+        if($(this).attr("rel") == '')
+            $("#dialog-callistnum").dialog('option',{title:'callist数('+num+')'}).dialog('open');
+        else
+            $("#dialog-callistnum").dialog('option',{title:'callist数('+$(this).attr("rel")+')'}).dialog('open');
+        $("#dialog-callistnum").load('{:U("leads/dialogcallist",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+    })
+
+    $("#dialog-callistnum").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 1500,
+        maxHeight: 700,
+        position: ["center",100],
+        buttons: {
+            "确定": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+	//cc备注
+    $(".ccnum").click(function () {
+        var id = $(this).attr("data-id");
+        var num = $(this).text();
+        if($(this).attr("rel") == '')
+            $("#dialog-ccnum").dialog('option',{title:'cc备注('+num+')'}).dialog('open');
+        else
+            $("#dialog-ccnum").dialog('option',{title:'cc备注('+$(this).attr("rel")+')'}).dialog('open');
+        $("#dialog-ccnum").load('{:U("leads/dialogcc",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+    })
+
+    $("#dialog-ccnum").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 1500,
+        maxHeight: 700,
+        position: ["center",100],
+        buttons: {
+            "确定": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
     $(".bdnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-bdnum").dialog('open');
-        $("#dialog-bdnum").load('{:U("leads/dialogbd",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num = $(this).text();
+        $("#dialog-bdnum").dialog('option',{title:'新增BD数('+num+')'}).dialog('open');
+        $("#dialog-bdnum").load('{:U("leads/dialogbd",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
 
     $("#dialog-bdnum").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1500,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -492,13 +575,14 @@ $(function(){
     });
 	$(".customernum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-customernum").dialog('open');
-        $("#dialog-customernum").load('{:U("leads/dialogcustomer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num = $(this).text();
+        $("#dialog-customernum").dialog('option',{title:'新增客户数('+num+')'}).dialog('open');
+        $("#dialog-customernum").load('{:U("leads/dialogcustomer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-customernum").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -510,13 +594,14 @@ $(function(){
 
     $(".projectnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-projectnum").dialog('open');
-        $("#dialog-projectnum").load('{:U("leads/dialogprojectnum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num = $(this).text();
+        $("#dialog-projectnum").dialog('option',{title:'新增项目数('+num+')'}).dialog('open');
+        $("#dialog-projectnum").load('{:U("leads/dialogprojectnum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-projectnum").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -528,13 +613,14 @@ $(function(){
 
 	$(".resumenum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-resumenum").dialog('open');
-        $("#dialog-resumenum").load('{:U("leads/dialogresumenum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num = $(this).text();
+        $("#dialog-resumenum").dialog('option',{title:'新增简历数('+num+')'}).dialog('open');
+        $("#dialog-resumenum").load('{:U("leads/dialogresumenum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-resumenum").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -545,13 +631,14 @@ $(function(){
     });
 	$(".finenum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-finenum").dialog('open');
-        $("#dialog-finenum").load('{:U("leads/dialogfinenum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num = $(this).text();
+        $("#dialog-finenum").dialog('option',{title:'推荐简历数('+num+')'}).dialog('open');
+        $("#dialog-finenum").load('{:U("leads/dialogfinenum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-finenum").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -562,13 +649,14 @@ $(function(){
     });
 	$(".interviewnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-interview").dialog('open');
-        $("#dialog-interview").load('{:U("leads/dialoginterview",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num = $(this).text();
+        $("#dialog-interview").dialog('option',{title:'面试人数('+num+')'}).dialog('open');
+        $("#dialog-interview").load('{:U("leads/dialoginterview",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-interview").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -579,13 +667,14 @@ $(function(){
     });
     $(".interviewtnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-interviewt").dialog('open');
-        $("#dialog-interviewt").load('{:U("leads/dialoginterviewt",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num = $(this).text();
+        $("#dialog-interviewt").dialog('option',{title:'面试次数('+num+')'}).dialog('open');
+        $("#dialog-interviewt").load('{:U("leads/dialoginterviewt",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-interviewt").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -596,13 +685,14 @@ $(function(){
     });
     $(".presentnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-present").dialog('open');
-        $("#dialog-present").load('{:U("leads/dialogpresent",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num =  $(this).text();
+        $("#dialog-present").dialog('option',{title:'到场数('+num+')'}).dialog('open');
+        $("#dialog-present").load('{:U("leads/dialogpresent",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
     })
     $("#dialog-present").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -613,13 +703,14 @@ $(function(){
     });
     $(".offernum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-offer").dialog('open');
-        $("#dialog-offer").load('{:U("leads/dialogoffer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
-    })
+        var num = $(this).text();
+        $("#dialog-offer").dialog('option',{title:'offer数('+num+')'}).dialog('open');
+        $("#dialog-offer").load('{:U("leads/dialogoffer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
+    });
     $("#dialog-offer").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -630,13 +721,14 @@ $(function(){
     });
     $(".offerdnum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-offerd").dialog('open');
-        $("#dialog-offerd").load('{:U("leads/dialogofferd",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num = $(this).text();
+        $("#dialog-offerd").dialog('option',{title:'掉offer数('+num+')'}).dialog('open');
+        $("#dialog-offerd").load('{:U("leads/dialogofferd",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
     })
     $("#dialog-offerd").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -647,13 +739,14 @@ $(function(){
     });
     $(".enternum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-enter").dialog('open');
-        $("#dialog-enter").load('{:U("leads/dialogenter",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num = $(this).text();
+        $("#dialog-enter").dialog('option',{title:'入职数('+num+')'}).dialog('open');
+        $("#dialog-enter").load('{:U("leads/dialogenter",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-enter").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {
@@ -664,13 +757,14 @@ $(function(){
     });
     $(".safenum").click(function () {
         var id = $(this).attr("data-id");
-        $("#dialog-safe").dialog('open');
-        $("#dialog-safe").load('{:U("leads/dialogsafe",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id);
+        var num = $(this).text();
+        $("#dialog-safe").dialog('option',{title:'过保数('+num+')'}).dialog('open');
+        $("#dialog-safe").load('{:U("leads/dialogsafe",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
     $("#dialog-safe").dialog({
         autoOpen: false,
         modal: true,
-        width: 1000,
+        width: 1300,
         maxHeight: 700,
         position: ["center",100],
         buttons: {

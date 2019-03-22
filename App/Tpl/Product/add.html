@@ -110,12 +110,12 @@
                             </div>
                             <div  id="resume-search-form" class="col-md-8 add_body_form" style="margin-left:15px;">
                                 <input type="hidden" name="url" />
-                                <div class="form-group">
+                                <div class="form-group" style="display: none;">
                                     <label class="col-md-3 control-label">上传简历：</label>
                                     <div class="col-md-7" style="margin-left: -15px;">
                                         <div class="submitfiles"></div>
                                         <div class="col-md-4">
-                                            <select class="form-control required" id="standard"  aria-required="true">
+                                            <select class="form-control required" id="standard" onchange="changeShow();" aria-required="true">
                                                 <option value="原始简历">原始简历</option>
                                                 <option value="推荐报告">推荐报告</option>
                                                 <option value="背景调查">背景调查</option>
@@ -123,15 +123,19 @@
                                             </select>
                                             <span id="standardTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                         </div>
-
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 ishow">
                                             <div class="btn btn-default fileinput-button" style="width: 100%;">
                                                 <span>上传简历</span>
                                                 <input type="file"  id="uploadresume"/>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 others" style="display: none;">
+                                            <div class="pull-left">
+                                                <a href="javascript:void(0);" type="button" class="add_file btn btn-primary"><i class="fa fa-upload"></i>&nbsp;&nbsp;上传</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 ishow">
                                             <div class="btn btn-default textdialog" style="width: 100%;">
                                                 <span>粘贴简历</span>
                                             </div>
@@ -144,7 +148,10 @@
                                     <label class="col-md-3 control-label">加入项目：</label>
                                     <div class="col-md-6">
                                         <input type="hidden" name="business_id" id="business_id" value="{:I('pro_id')}">
-                                        <input class="form-control" placeholder="请点击选择需要加入的项目" type="text" name="business_name" id="business_name" value="{$project_name}" readonly="true" style="cursor:pointer;" title="请点击选择">
+                                            <input class="form-control" placeholder="请点击选择需要加入的项目" type="text" name="business_name" id="business_name" value="{$project_name}" readonly="true" style="cursor:pointer;" title="请点击选择">
+                                    </div>
+                                    <div class="col-md-2 clean_business" style="color: #ff8b26">
+                                        <label for="">取消项目</label>
                                     </div>
                                 </div>
 
@@ -217,9 +224,9 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">出生年月：</label>
                                     <div class="col-sm-6">
-                                        <input class="form-control text-center timerinput" id="birthday" type="text"  onFocus="WdatePicker({dateFmt:'yyyy-MM', maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;height: 32px;text-align: left;" >
+                                        <input class="form-control text-center required timerinput" id="birday" data-color="birday" type="text"  onFocus="WdatePicker({dateFmt:'yyyy-MM', maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;height: 32px;text-align: left;" >
                                     </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;"></span></div>
+                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">邮箱：</label>
@@ -233,11 +240,13 @@
                                     <label class="col-md-3 control-label">学历：</label>
                                     <div class="col-md-6">
                                         <select class="form-control required" id="education" name="edu" aria-required="true">
-                                            <option value="专科">专科</option>
+                                            <option value="高中">高中</option>
+                                            <option value="中专">中专</option>
+                                            <option value="大专">大专</option>
                                             <option value="本科">本科</option>
                                             <option value="硕士">硕士</option>
-                                            <option value="MBA/EMBA">MBA/EMBA</option>
                                             <option value="博士">博士</option>
+                                            <option value="MBA/EMBA">MBA/EMBA</option>
                                             <option value="博士后">博士后</option>
                                         </select>
                                         <span style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
@@ -254,18 +263,18 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">目前公司：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control" type="text" id="curCompany" name="curCompany" value="{$resume.curCompany}">
+                                        <input class="form-control required" data-color="ccompany" type="text" id="ccompany" name="curCompany" value="{$resume.curCompany}">
                                         <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
-                                    <div class="col-md-2"></div>
+                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">目前职位：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control" type="text" id="curPosition" name="curPosition" value="{$resume.curPosition}">
+                                        <input class="form-control required" data-color="cposition" type="text" id="cposition" name="curPosition" value="{$resume.curPosition}">
                                         <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
-                                    <div class="col-md-2"></div>
+                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">目前年薪：</label>
@@ -619,6 +628,15 @@
         </div>
     </div>
 </div>
+<div class="" style="display:none;" id="dialog-file" title="{:L('ADD_ATTACHMENT')}">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
 <link href="__PUBLIC__/css/selector.css" rel="stylesheet" />
 <script type="text/javascript" src="__PUBLIC__/js/uploadPreview.js"></script>
 <script src="__PUBLIC__/js/citydata.js"></script>
@@ -631,6 +649,44 @@
 //	var selector = $(this).attr('id');
 //	$("#"+selector).uploadPreview({ Img: selector+"_prev", Width: 120, Height: 120 });
     });
+
+    function changeShow() {
+        var v = $("#standard").val();
+        if(v == '原始简历'){
+            $('.others').css('display','none');
+            $('.ishow').css('display','block');
+        }
+        else{
+            $('.ishow').css('display','none');
+            $('.others').css('display','block');
+        }
+    }
+
+    $(document).ready(function () {
+
+        $(".add_file").click(function () {
+            $('#dialog-file').dialog('open');alert('dsafdsafe56651');
+            $('#dialog-file').load('{:U("file/add","r=RResumeFile&module=resume&id=".$resume[eid])}');
+        });
+
+        $("#dialog-file").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 800,
+            maxHeight: 400,
+            position: ["center", 100],
+            buttons: {
+                "确定": function () {
+                    location.reload();
+                },
+                "取消": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+    });
+
     $(document).ready(function(){
         $('#telphone').on('change',function () {
            let _this = $(this);
@@ -668,12 +724,18 @@
         /*form表单验证*/
         $("#form").validate({
             submitHandler:function(form){
-                $('#save_submit').off().on("click",function(){
+                // $('#save_submit').off().on("click",function(){
                     var industrys = $("#industrys").val();
                     var jobtitles = $("#jobtitles").val();
                     var dqs = $("#dqs").val();
                     var wantdqs= $("#wantdqs").val();
-                    var telephone=$("#telphone").val();
+                    // var telephone=$("#telphone").val();
+                    var telephone=$("input[name=telephone]").val();
+                    //添加出生年月、目前公司、目前职位的判断
+                    var birday = $('#birday').val();
+                    var ccompany = $('#ccompany').val();
+                    var cposition = $('#cposition').val();
+
                     var flag=0;
                     $("input[data-selector=industrys]").val(industrys);
                     $("input[data-selector=jobtitles]").val(jobtitles);
@@ -712,6 +774,22 @@
                         $("span[data-name=intentCity]").find("input").css("border","1px dotted #cc5965");
                         return;
                     }
+                    //添加出生年月、目前公司、目前职位的判断
+                    if(birday=="" || birday==null){
+                        alert_crm("请填写行业信息！");
+                        $("span[data-name=birday]").find("input").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    if(ccompany=="" || ccompany==null){
+                        alert_crm("请填写行业信息！");
+                        $("span[data-name=ccompany]").find("input").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    if(cposition=="" || cposition==null){
+                        alert_crm("请填写行业信息！");
+                        $("span[data-name=cposition]").find("input").css("border","1px dotted #cc5965");
+                        return;
+                    }
                     $.ajax({
                         url:"/index.php?m=product&a=check_tel",
                         type:"post",
@@ -733,11 +811,11 @@
                         }
                     });
 
-                    if(dqs && jobtitles && industrys && wantdqs && flag){
+                    if(dqs && jobtitles && industrys && wantdqs && flag && birday && ccompany && cposition){
                         form.submit();
                     }
 
-                });
+                // });
 
             }
         });
@@ -843,7 +921,7 @@
         });
 
         $('#business_name').click(function () {
-            $('#dialog-business').dialog('open');
+            $('#dialog-business').dialog('option',{title:'加入项目'}).dialog('open');
             $('#dialog-business').load("{:U('business/listdialog')}");
         });
     })
@@ -979,6 +1057,12 @@
                 item.parent().remove();
             }
             $(this).closest(".panel-body3").remove();
+        })
+
+        //清空加入的项目
+        $('body').on("click",'.clean_business',function () {
+            $("input[name=business_id]").val('');
+            $("input[name=business_name]").val('');
         })
     })
 

@@ -76,15 +76,15 @@
                         <div class="col-sm-4">
                             <p class="form-p color-a-edit">
                             <if condition="$business_info['pro_type'] eq '1'">
-                                <span class="label label-success">{$pro_type[$business_info['pro_type']]}</span>
+                                <span class="label">{$pro_type[$business_info['pro_type']]}</span>
                                 <elseif condition="$business_info['pro_type'] eq '2'"/>
-                                <span class="label label-danger">{$pro_type[$business_info['pro_type']]}</span>
+                                <span class="label">{$pro_type[$business_info['pro_type']]}</span>
                                 <elseif condition="$business_info['pro_type'] eq '3'"/>
-                                <span class="label label-black">{$pro_type[$business_info['pro_type']]}</span>
+                                <span class="label">{$pro_type[$business_info['pro_type']]}</span>
                                 <elseif condition="$business_info['pro_type'] eq '4'"/>
-                                <span class="label label-black">{$pro_type[$business_info['pro_type']]}</span>
+                                <span class="label">{$pro_type[$business_info['pro_type']]}</span>
                                 <else/>
-                                <span class="label label-warning">其他</span>
+                                <span class="label">其他</span>
                             </if>
                             </p>
                         </div>
@@ -133,12 +133,22 @@
                                 </span>
                             </p>
                         </div>
-                        <label class="col-sm-2 control-label">创建时间</label>
+                                                <label class="col-sm-2 control-label">项目成员</label>
+                        <div class="col-sm-4">
+                            <p class="form-p">
+                                <span>
+                                    <volist name="business_info['parter']" id="vo">
+                                     <a class="role_info" rel="{$vo['id']}" href="javascript:void(0)" style="margin-right: 5px;">{$vo['name']}</a>
+                                     </volist>
+                                </span>
+                            </p>
+                        </div>
+<!--                        <label class="col-sm-2 control-label">创建时间</label>
                         <div class="col-sm-4">
                             <p class="form-p">
                                 <span>{$business_info['create_time']|date="Y-m-d h:i:m",###}</span>
                             </p>
-                        </div>
+                        </div>-->
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">BD</label>
@@ -151,7 +161,7 @@
                         <label class="col-sm-2 control-label">最后更新时间</label>
                         <div class="col-sm-4">
                             <p class="form-p">
-                                <span>{$business_info['update_time']|date="Y-m-d h:i:m",###}</span>
+                                <span>{$business_info['update_time']|date="Y-m-d H:i:m",###}</span>
                             </p>
                         </div>
                     </div>
@@ -210,13 +220,13 @@
 </div>
 <div class="wrapper wrapper-content animated fadeIn" style="padding-top:10px;">
     <div class="ibox-content" style="padding-top:9px;padding-bottom:4px;">
-        <ul class="nav nav-pills nav-justified step step-arrow">
+        <ol class="nav nav-pills nav-justified step step-arrow">
             <volist name="status_list" id="vo">
                 <li <if condition = "$vo['order_id'] elt $business_info['status_order_id']">class="active"</if>>
                 <a class="business_step" rel="{$vo['status_id']}" rel1="{$vo['name']}" href="javascript:void(0);" title="点击推进项目状态">{$vo['name']}</a>
                 </li>
             </volist>
-        </ul>
+        </ol>
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeIn" style="padding-top:10px;">

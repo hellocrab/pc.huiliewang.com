@@ -113,27 +113,38 @@ function owner_name_select($role_id) {
 //高级搜索生成where条件
 function field($search, $condition = '') {
     switch ($condition) {
-        case "is" : $where = array('eq', $search);
+        case "is" :
+            $where = array('eq', $search);
             break;
-        case "isnot" : $where = array('neq', $search);
+        case "isnot" :
+            $where = array('neq', $search);
             break;
-        case "contains" : $where = array('like', '%' . $search . '%');
+        case "contains" :
+            $where = array('like', '%' . $search . '%');
             break;
-        case "not_contain" : $where = array('notlike', '%' . $search . '%');
+        case "not_contain" :
+            $where = array('notlike', '%' . $search . '%');
             break;
-        case "start_with" : $where = array('like', $search . '%');
+        case "start_with" :
+            $where = array('like', $search . '%');
             break;
-        case "not_start_with" : $where = array('notlike', $search . '%');
+        case "not_start_with" :
+            $where = array('notlike', $search . '%');
             break;
-        case "end_with" : $where = array('like', '%' . $search);
+        case "end_with" :
+            $where = array('like', '%' . $search);
             break;
-        case "is_empty" : $where = array('eq', '');
+        case "is_empty" :
+            $where = array('eq', '');
             break;
-        case "is_not_empty" : $where = array('neq', '');
+        case "is_not_empty" :
+            $where = array('neq', '');
             break;
-        case "gt" : $where = array('gt', $search);
+        case "gt" :
+            $where = array('gt', $search);
             break;
-        case "egt" : $where = array('egt', $search);
+        case "egt" :
+            $where = array('egt', $search);
             break;
         case "lt" :
             if (strtotime($search) !== false && strtotime($search) != -1) {
@@ -142,19 +153,26 @@ function field($search, $condition = '') {
                 $where = array('lt', $search);
             }
             break;
-        case "elt" : $where = array('elt', $search);
+        case "elt" :
+            $where = array('elt', $search);
             break;
-        case "eq" : $where = array('eq', $search);
+        case "eq" :
+            $where = array('eq', $search);
             break;
-        case "neq" : $where = array('neq', $search);
+        case "neq" :
+            $where = array('neq', $search);
             break;
-        case "between" : $where = array('between', array(strtotime($search) - 1, strtotime($search) + 86400));
+        case "between" :
+            $where = array('between', array(strtotime($search) - 1, strtotime($search) + 86400));
             break;
-        case "nbetween" : $where = array('not between', array(strtotime($search), strtotime($search) + 86399));
+        case "nbetween" :
+            $where = array('not between', array(strtotime($search), strtotime($search) + 86399));
             break;
-        case "tgt" : $where = array('gt', strtotime($search) + 86400);
+        case "tgt" :
+            $where = array('gt', strtotime($search) + 86400);
             break;
-        default : $where = array('eq', $search);
+        default :
+            $where = array('eq', $search);
     }
     return $where;
 }
@@ -614,6 +632,7 @@ function alert($type = 'info', $msg = '', $url = '', $time = 1000) {
     if (!empty($msg)) {
         $alert[$type][] = $msg;
         cookie('alert', serialize($alert));
+        cookie('add_time', time());
     }
     cookie('alerttime', $time);
 
@@ -633,8 +652,8 @@ function alert($type = 'info', $msg = '', $url = '', $time = 1000) {
 function parseAlert() {
     $alert['content'] = unserialize(stripslashes(cookie('alert')));
     $alert['time'] = cookie('alerttime');
+    $alert['alerttime'] = cookie('add_time');
     cookie('alert', null);
-
     return $alert;
 }
 
@@ -803,7 +822,7 @@ function bsendemail($address, $title, $content, $file = array(), $author = false
             }
         }
         //$mail->AddAttachment($content); //上传附件内容
-        return($mail->Send());
+        return ($mail->Send());
     } catch (phpmailerException $e) {
         // echo $e->errorMessage(); //Pretty error messages from PHPMailer
     } catch (Exception $e) {
@@ -877,11 +896,11 @@ function array_sort($arr, $keys, $type = 'asc') {
 }
 
 /**
- * function	对二位数组进行指定规则的排序
- * return	排序后的二维数组
- * @arr 	传入要排序的数组
- * @keys	要排序的字段
- * @type	排序规则
+ * function    对二位数组进行指定规则的排序
+ * return    排序后的二维数组
+ * @arr    传入要排序的数组
+ * @keys    要排序的字段
+ * @type    排序规则
  * */
 function array_sorts($arr, $keys, $type = 'asc') {
     $keysvalue = $new_array = array();
@@ -902,7 +921,7 @@ function array_sorts($arr, $keys, $type = 'asc') {
 
 //自定义字段html输出     $field为特殊验重字段   $d_module=($ModuelView)  $special为contacts时，用于客户添加时的联系人字段名处理
 function field_list_html($type = "add", $module = "", $d_module = array(), $special) {
-    if ($type == "add") {
+    if ($type == "add" || $type == "edit") {
         if ($module == 'customer') {
             $field_list = M('Fields')->where(array('model' => $module, 'in_add' => 1))->order('order_id')->select();
         } else {
@@ -911,7 +930,6 @@ function field_list_html($type = "add", $module = "", $d_module = array(), $spec
     } else {
         $field_list = M('Fields')->where('model = "' . $module . '"')->order('order_id')->select();
     }
-
 //	var_dump($field_list);exit();
     foreach ($field_list as $k => $v) {
         if (trim($v['input_tips'])) {
@@ -985,7 +1003,10 @@ function field_list_html($type = "add", $module = "", $d_module = array(), $spec
             }
             switch ($v['form_type']) {
                 case 'textarea' :
-                    $field_list[$k]['html'] = '<textarea rows="5" class="form-control ' . $required . '" id="' . $v['field'] . '" name="' . $v['field'] . '" >' . $value . '</textarea><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
+                    //线下项目 简介和地址必填
+//                    $field_list[$k]['html'] = '<textarea rows="5" class="form-control ' . $required . '" id="' . $v['field'] . '" name="' . $v['field'] . '" >' . $value . '</textarea><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
+                    $field_list[$k]['html'] = '<textarea rows="5" class="form-control" id="' . $v['field'] . '" name="' . $v['field'] . '" >' . $value . '</textarea><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
+
                     break;
                 case 'box' :
                     $setting_str = '$setting=' . $v['setting'] . ';';
@@ -1008,7 +1029,12 @@ function field_list_html($type = "add", $module = "", $d_module = array(), $spec
                                 $str .= ">$v2</option>";
                             }
                         }
-                        $field_list[$k]['html'] = '<select class="form-control ' . $required . '" id="' . $v['field'] . '" name="' . $v['field'] . '">' . $str . '</select><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
+                        //更改  只有线下的项目 简介和地址必填 ，添加onchange事件
+                        if ($v['field'] == 'origin')
+                            $field_list[$k]['html'] = '<select class="form-control ' . $required . '" id="' . $v['field'] . '" name="' . $v['field'] . '" onchange="outline_change(this);">' . $str . '</select><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
+                        else
+                            $field_list[$k]['html'] = '<select class="form-control ' . $required . '" id="' . $v['field'] . '" name="' . $v['field'] . '">' . $str . '</select><span id="' . $v['field'] . 'Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>' . $input_tips;
+                        //
                         break;
                     } elseif ($setting['type'] == 'radio') {
                         $str = '';
@@ -1072,7 +1098,7 @@ function field_list_html($type = "add", $module = "", $d_module = array(), $spec
 					});
 					</script><select class="form-control " input_type="address" name="' . $v['field'] . '[\'state\']" style="width:32%;float:left;" ></select>
 						<select class="form-control " input_type="address" name="' . $v['field'] . '[\'city\']" style="width:32%;float:left;margin-left:1%;"></select>
-						<select class="form-control " input_type="address" name="' . $v['field'] . '[\'area\']" style="width:32%;float:left;margin-left:1%;"></select>
+						<select class="form-control " id="city_area" input_type="address" name="' . $v['field'] . '[\'area\']" style="width:32%;float:left;margin-left:1%;"></select>
 						<input class="form-control" input_type="address" type="text" name="' . $v['field'] . '[\'street\']" placeholder="' . L('THE STREET INFORMATION') . '" class="input-large" value="' . $street . '" style="float:left;margin-top:5px;">';
                     break;
                 case 'p_box':
@@ -1383,14 +1409,13 @@ function sendSMS($telphone, $message, $sign_name = "sign_name", $sendtime = '') 
             $inheader = 0;
         }
         if ($inheader == 0) {
-            
+
         }
     }
 
 
     preg_match('/<string xmlns=\"http:\/\/tempuri.org\/\">(.*)<\/string>/', $line, $str);
     $result = explode("-", $str[1]);
-
 
 
     if (count($result) > 1) {
@@ -1440,7 +1465,7 @@ function sendtestSMS($uid, $uname, $telphone) {
             $inheader = 0;
         }
         if ($inheader == 0) {
-            
+
         }
     }
     preg_match('/<string xmlns=\"http:\/\/tempuri.org\/\">(.*)<\/string>/', $line, $str);
@@ -1506,7 +1531,6 @@ function sendGroupSMS($telphone, $message, $sign_name = "sign_name", $sendtime =
 
     preg_match('/<string xmlns=\"http:\/\/tempuri.org\/\">(.*)<\/string>/', $line, $str);
     $result = explode("-", $str[1]);
-
 
 
     if (count($result) > 1) {
@@ -1659,31 +1683,44 @@ function vali_permission($m, $a) {
         return true;
     } else {
         switch ($a) {
-            case "listdialog" : $a = 'index';
+            case "listdialog" :
+                $a = 'index';
                 break;
-            case "adddialog" : $a = 'add';
+            case "adddialog" :
+                $a = 'add';
                 break;
-            case "excelimport" : $a = 'add';
+            case "excelimport" :
+                $a = 'add';
                 break;
-            case "excelexport" : $a = 'view';
+            case "excelexport" :
+                $a = 'view';
                 break;
-            case "cares" : $a = 'index';
+            case "cares" :
+                $a = 'index';
                 break;
-            case "caresview" : $a = 'view';
+            case "caresview" :
+                $a = 'view';
                 break;
-            case "caresedit" : $a = 'edit';
+            case "caresedit" :
+                $a = 'edit';
                 break;
-            case "caresdelete" : $a = 'delete';
+            case "caresdelete" :
+                $a = 'delete';
                 break;
-            case "caresadd" : $a = 'add';
+            case "caresadd" :
+                $a = 'add';
                 break;
-            case "receive" : $a = 'add';
+            case "receive" :
+                $a = 'add';
                 break;
-            case "role_add" : $a = 'add';
+            case "role_add" :
+                $a = 'add';
                 break;
-            case "sendsms" : $a = 'marketing';
+            case "sendsms" :
+                $a = 'marketing';
                 break;
-            case "sendemail" : $a = 'marketing';
+            case "sendemail" :
+                $a = 'marketing';
                 break;
         }
         $url = strtolower($m) . '/' . strtolower($a);
@@ -1697,8 +1734,8 @@ function vali_permission($m, $a) {
 }
 
 /**
- * @ atuhor		: Lynn
- * @ function 	: formmat the print_r to debug the array conveniently
+ * @ atuhor        : Lynn
+ * @ function    : formmat the print_r to debug the array conveniently
  * */
 function println($data, $offset = true) {
     if (empty($data)) {
@@ -1714,8 +1751,8 @@ function println($data, $offset = true) {
 }
 
 /**
- * @ atuhor		: zf
- * @ function 	: 验证某条数据的权限
+ * @ atuhor        : zf
+ * @ function    : 验证某条数据的权限
  * */
 function check_permission($module_id, $module, $permission_field = 'owner_role_id') {
     $role_id = intval(session('role_id'));
@@ -1728,21 +1765,40 @@ function check_permission($module_id, $module, $permission_field = 'owner_role_i
 }
 
 /**
- * @ atuhor		: zf
- * @ function 	: 下载方法
+ * OSs 文件下载
+ * @param $file
+ */
+function ossFileDown($file) {
+    $info = get_headers($file, true); // $url就是文件的全路径 注意是全路径 get_headers函数会打印出oss文件的详细信息
+    $fp = fopen($file, 'rb');
+    if (!$file || !$fp) {
+        header('HTTP/1.1 404 Not Found');
+        echo "Error: 404 Not Found.(server file path error)<!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding -->";
+        exit;
+    }
+    $size = $info['Content-Length'];
+    $filename = basename($file);
+    header("Content-type:application/octet-stream");
+    header("Content-Disposition:attachment;filename = " . $filename);
+    header("Accept-ranges:bytes");
+    header("Accept-length:" . $size);
+    readfile($file);
+}
+
+/**
+ * @ atuhor        : zf
+ * @ function    : 下载方法
  * */
 function download($file, $name = '') {
     $fileName = $name ? $name : pathinfo($file, PATHINFO_FILENAME);
+
     $filePath = realpath($file);
-
     $fp = fopen($filePath, 'rb');
-
     if (!$filePath || !$fp) {
         header('HTTP/1.1 404 Not Found');
         echo "Error: 404 Not Found.(server file path error)<!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding --><!-- Padding -->";
         exit;
     }
-
     $fileName = $fileName . '.' . pathinfo($filePath, PATHINFO_EXTENSION);
     $encoded_filename = urlencode($fileName);
     $encoded_filename = str_replace("+", "%20", $encoded_filename);
@@ -1771,9 +1827,9 @@ function download($file, $name = '') {
 }
 
 /**
- * @author		: myron
- * @function	: 获取表信息
- * @table_name	: 表名(不含表前缀)
+ * @author        : myron
+ * @function    : 获取表信息
+ * @table_name    : 表名(不含表前缀)
  * */
 function getTableInfo($table_name) {
     $sql = 'SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = "' . C('DB_NAME') . '" and table_name LIKE "' . C('DB_PREFIX') . $table_name . '"';
@@ -1806,54 +1862,74 @@ function cmp_func($a, $b) {
 }
 
 /**
- * @ atuhor		: zf
- * @ function 	: 判断有无具体操作的权限  返回值为权限类型
- * @ return 	: 返回值为权限类型  1、自己和下属  2、所有人 3、仅自己  4、部门所有人
- * @ des	 	: 参数说明：
+ * @ atuhor        : zf
+ * @ function    : 判断有无具体操作的权限  返回值为权限类型
+ * @ return    : 返回值为权限类型  1、自己和下属  2、所有人 3、仅自己  4、部门所有人
+ * @ des        : 参数说明：
  *                $module 对应的模块名 小写
  *                $action 对应的方法名
  * */
 function getCheckUrlByAction($m, $a) {
     switch (strtolower($a)) {
-        case "listdialog" : $a = 'index';
+        case "listdialog" :
+            $a = 'index';
             break;
-        case "radiolistdialog" : $a = 'index';
+        case "radiolistdialog" :
+            $a = 'index';
             break;
-        case "checklistdialog" : $a = 'index';
+        case "checklistdialog" :
+            $a = 'index';
             break;
-        case "changedialog" : $a = 'index';
+        case "changedialog" :
+            $a = 'index';
             break;
-        case "adddialog" : $a = 'add';
+        case "adddialog" :
+            $a = 'add';
             break;
-        case "cares" : $a = 'index';
+        case "cares" :
+            $a = 'index';
             break;
-        case "excelimportdownload" : $a = 'excelimport';
+        case "excelimportdownload" :
+            $a = 'excelimport';
             break;
-        case "selectexcelexport" : $a = 'excelexport';
+        case "selectexcelexport" :
+            $a = 'excelexport';
             break;
-        case "receive" : $a = 'add';
+        case "receive" :
+            $a = 'add';
             break;
-        case "search" : $a = 'index';
+        case "search" :
+            $a = 'index';
             break;
-        case "role_add" : $a = 'add';
+        case "role_add" :
+            $a = 'add';
             break;
-        case "remove" : $a = 'edit';
+        case "remove" :
+            $a = 'edit';
             break;
-        case "changecontent" : $a = 'index';
+        case "changecontent" :
+            $a = 'index';
             break;
-        case "advance" : $a = 'edit';
+        case "advance" :
+            $a = 'edit';
             break;
-        case "close" : $a = 'edit';
+        case "close" :
+            $a = 'edit';
             break;
-        case "revert" : $a = 'delete';
+        case "revert" :
+            $a = 'delete';
             break;
-        case "getcustomerlist" : $a = 'index';
+        case "getcustomerlist" :
+            $a = 'index';
             break;
-        case "fenpei" : $a = 'add';
+        case "fenpei" :
+            $a = 'add';
             break;
-        case "getwarehouselist" : $a = 'warehouse';
+        case "getwarehouselist" :
+            $a = 'warehouse';
             break;
-        case "changetofirstcontact" : $a = 'edit';
+        case "changetofirstcontact" :
+            $a = 'edit';
             break;
         case "addcategory" :
         case "editcategory" :
@@ -1861,28 +1937,31 @@ function getCheckUrlByAction($m, $a) {
                 $a = 'category';
             }
             break;
-        case "revokecheck" : $a = 'check';
+        case "revokecheck" :
+            $a = 'check';
             break;
-        default: $a = strtolower($a);
+        default:
+            $a = strtolower($a);
             break;
     }
     return strtolower($m . '/' . $a);
 }
 
 /**
- * @ atuhor		: zf
- * @ function 	: 判断有无具体操作的权限  返回值为权限类型
- * @ return 	: 返回值为权限类型  1、自己和下属  2、所有人 3、仅自己  4、部门所有人
- * @ des	 	: 参数说明：
+ * @ atuhor        : zf
+ * @ function    : 判断有无具体操作的权限  返回值为权限类型
+ * @ return    : 返回值为权限类型  1、自己和下属  2、所有人 3、仅自己  4、部门所有人
+ * @ des        : 参数说明：
  *                $module 对应的模块名 小写
  *                $action 对应的方法名
  * */
 function checkPerByAction($m, $a) {
     $m_permission = M('permission');
     $url = getCheckUrlByAction($m, $a);
-
     if (session('?admin')) {
         //2为所有人
+        return 2;
+    } elseif ($url == 'user/call_out' || "business/invoiceReCheck") {//全员拥有功能
         return 2;
     } elseif ($per = $m_permission->where('url = "%s" and position_id = %d', $url, session('position_id'))->find()) {
         //有$url操作权限；
@@ -1917,20 +1996,23 @@ function getPerByAction($m, $a, $sub_role = false) {
             return array(-1);
         else
             return $below_ids;
-    }else {
+    } else {
         //管理员拥有所有人的数据权限
         if (session('?admin'))
             return getSubRoleId(true, 1);
         $role_array = array();
         switch ($per_type) {
             //权限类型为1 包含自己和下属的数据 返回自己和下属role_id数组
-            case 1: $role_array = getSubRoleId();
+            case 1:
+                $role_array = getSubRoleId();
                 break;
             //权限类型为2 返回false 不加判断条件即所有人都有的权限。
-            case 2: $role_array = getSubRoleId(true, 1);
+            case 2:
+                $role_array = getSubRoleId(true, 1);
                 break;
             //权限类型为3 仅自己的数据 返回数组 返回仅包含自己role_id的数组
-            case 3: $role_array = array(session('role_id'));
+            case 3:
+                $role_array = array(session('role_id'));
                 break;
             //默认 部门所有人
             case 4:
@@ -1945,10 +2027,10 @@ function getPerByAction($m, $a, $sub_role = false) {
 }
 
 /**
- * @ atuhor		: zf
- * @ function 	: 根据操作权限获取roleid
- * @ return 	: 返回roleid的数组
- * @ des	 	: 参数说明：
+ * @ atuhor        : zf
+ * @ function    : 根据操作权限获取roleid
+ * @ return    : 返回roleid的数组
+ * @ des        : 参数说明：
  *                $per_array为包含操作的数组 array('leads/add', 'customer/add')
  * */
 function getRoleByPer($per_array) {
@@ -1966,10 +2048,10 @@ function getRoleByPer($per_array) {
 }
 
 /**
- * @ atuhor		: zf
- * @ function 	: 根据当前处理程序判断顶部菜单按钮项
- * @ return 	: 返回顶部的数组
- * @ des	 	: 参数说明：
+ * @ atuhor        : zf
+ * @ function    : 根据当前处理程序判断顶部菜单按钮项
+ * @ return    : 返回顶部的数组
+ * @ des        : 参数说明：
  *                $module_name为模块名, $action_name为方法名
  * */
 function setSelectedMenu($module_name, $action_name) {
@@ -2011,7 +2093,8 @@ function setSelectedMenu($module_name, $action_name) {
             return 'menu_setting';
         case 'message':
             return 'menu_home';
-        default : return 'index';
+        default :
+            return 'index';
     }
 }
 
@@ -2074,7 +2157,7 @@ function isAjaxRequest() {
 /**
  * author : myron
  * function : 读取标签
- * param 	: limit 显示条数。如果没有limit，默认读取所有标签并以热度排序。如果有limit，读取限制条数的标签，并以热度排序
+ * param    : limit 显示条数。如果没有limit，默认读取所有标签并以热度排序。如果有limit，读取限制条数的标签，并以热度排序
  * */
 function getTags($limit) {
     $m_tags = M('tags');
@@ -2266,7 +2349,7 @@ function getpermission($m) {
                 $permission[$permission_info[1]] = 1;
             }
         }
-        return (object) $permission;
+        return (object)$permission;
     }
 }
 
@@ -2511,7 +2594,7 @@ function getTimeBySec($time) {
         }
         Return $t;
     } else {
-        return (bool) FALSE;
+        return (bool)FALSE;
     }
 }
 
@@ -2565,9 +2648,9 @@ function getDateRange($timestamp) {
 
 /**
  * 人民币转大写
- * @param 
+ * @param
  * @author
- * @return 
+ * @return
  */
 function cny($ns) {
     static $cnums = array("零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"),
@@ -2612,35 +2695,50 @@ function taskActionLog($task_id, $type, $about_role_id, $params_content) {
     $data['about_role_id'] = $about_role_id;
 
     switch ($type) {
-        case 1 : $content = '添加任务';
+        case 1 :
+            $content = '添加任务';
             break;
-        case 2 : $content = '修改任务' . $params_content;
+        case 2 :
+            $content = '修改任务' . $params_content;
             break;
-        case 3 : $content = '完成任务';
+        case 3 :
+            $content = '完成任务';
             break;
-        case 4 : $content = '取消完成任务';
+        case 4 :
+            $content = '取消完成任务';
             break;
-        case 5 : $content = '归档了任务';
+        case 5 :
+            $content = '归档了任务';
             break;
-        case 6 : $content = '激活了任务';
+        case 6 :
+            $content = '激活了任务';
             break;
-        case 7 : $content = '分配任务给&nbsp;&nbsp;';
+        case 7 :
+            $content = '分配任务给&nbsp;&nbsp;';
             break;
-        case 8 : $content = '取消分配任务给&nbsp;&nbsp;';
+        case 8 :
+            $content = '取消分配任务给&nbsp;&nbsp;';
             break;
-        case 9 : $content = '提醒&nbsp;&nbsp;';
+        case 9 :
+            $content = '提醒&nbsp;&nbsp;';
             break;
-        case 10 : $content = '移除&nbsp;&nbsp;';
+        case 10 :
+            $content = '移除&nbsp;&nbsp;';
             break;
-        case 11 : $content = '添加子任务&nbsp;&nbsp;' . $params_content;
+        case 11 :
+            $content = '添加子任务&nbsp;&nbsp;' . $params_content;
             break;
-        case 12 : $content = '完成子任务&nbsp;&nbsp;' . $params_content;
+        case 12 :
+            $content = '完成子任务&nbsp;&nbsp;' . $params_content;
             break;
-        case 13 : $content = '取消完成子任务&nbsp;&nbsp;' . $params_content;
+        case 13 :
+            $content = '取消完成子任务&nbsp;&nbsp;' . $params_content;
             break;
-        case 14 : $content = '从列表&nbsp;&nbsp;' . $params_content;
+        case 14 :
+            $content = '从列表&nbsp;&nbsp;' . $params_content;
             break;
-        case 15 : $content = '修改子任务&nbsp;&nbsp;' . $params_content;
+        case 15 :
+            $content = '修改子任务&nbsp;&nbsp;' . $params_content;
             break;
     }
     $data['content'] = $content;
@@ -2708,15 +2806,20 @@ function dataEvent($subject, $start_date, $module, $module_id) {
     $data['subject'] = $subject;
 
     switch ($module) {
-        case 'remind' : $color = '#46be8a';
+        case 'remind' :
+            $color = '#46be8a';
             break;
-        case 'leads' : $color = '#57c7d4';
+        case 'leads' :
+            $color = '#57c7d4';
             break;
-        case 'contract' : $color = '#f96868';
+        case 'contract' :
+            $color = '#f96868';
             break;
-        case 'customer' : $color = '#f2a654';
+        case 'customer' :
+            $color = '#f2a654';
             break;
-        default : $color = '#62a8ea';
+        default :
+            $color = '#62a8ea';
             break;
     }
     $data['color'] = $color;
@@ -2819,7 +2922,7 @@ function build_tree($rows, $root_id) {
 
 /**
  * 在日程数据中追加，周期性提醒内容
- * @param 
+ * @param
  * */
 function cycel_event($start_time, $end_time) {
     $list = array();
@@ -2867,7 +2970,7 @@ function cycel_event($start_time, $end_time) {
 
 /**
  * 递归查询签约合同(暂不用，有问题)
- * @param 
+ * @param
  * */
 function contract_history($contract_id, $ids, $is_first) {
     $array = array();
@@ -2899,9 +3002,9 @@ function contract_history($contract_id, $ids, $is_first) {
 
 /**
  * 计算两个经纬度之间的距离
- * @param 
- * @author 
- * @return 
+ * @param
+ * @author
+ * @return
  */
 function getDistance($lat1, $lng1, $lat2, $lng2) {
     $earthRadius = 6367000; //approximate radius of earth in meters
@@ -2911,11 +3014,11 @@ function getDistance($lat1, $lng1, $lat2, $lng2) {
       to work with the formula
      */
 
-    $lat1 = ($lat1 * pi() ) / 180;
-    $lng1 = ($lng1 * pi() ) / 180;
+    $lat1 = ($lat1 * pi()) / 180;
+    $lng1 = ($lng1 * pi()) / 180;
 
-    $lat2 = ($lat2 * pi() ) / 180;
-    $lng2 = ($lng2 * pi() ) / 180;
+    $lat2 = ($lat2 * pi()) / 180;
+    $lng2 = ($lng2 * pi()) / 180;
 
     /*
       Using the
@@ -2969,4 +3072,61 @@ function bd_encrypt($gg_lon, $gg_lat) {
     $data['bd_lon'] = round($bd_lon, 6);
     $data['bd_lat'] = round($bd_lat, 6);
     return $data;
+}
+
+function timeplug() {
+    //（计算开始、结束时间距今天的天数）
+    $daterange = array();
+    //上个月
+    $daterange[0]['start_day'] = (strtotime(date('Y-m-d', time())) - strtotime(date('Y-m-d', mktime(0, 0, 0, date('m') - 1, 1, date('Y'))))) / 86400;
+    $daterange[0]['end_day'] = (strtotime(date('Y-m-d', time())) - strtotime(date('Y-m-01 00:00:00'))) / 86400;
+    //本月
+    $daterange[1]['start_day'] = (strtotime(date('Y-m-d', time())) - strtotime(date('Y-m-01 00:00:00'))) / 86400;
+    $daterange[1]['end_day'] = 0;
+    //上季度
+    $month = date('m');
+    if ($month == 1 || $month == 2 || $month == 3) {
+        $year = date('Y') - 1;
+        $daterange_start_time = strtotime(date($year . '-10-01 00:00:00'));
+        $daterange_end_time = strtotime(date($year . '-12-31 23:59:59'));
+    } elseif ($month == 4 || $month == 5 || $month == 6) {
+        $daterange_start_time = strtotime(date('Y-01-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-03-31 23:59:59"));
+    } elseif ($month == 7 || $month == 8 || $month == 9) {
+        $daterange_start_time = strtotime(date('Y-04-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-06-30 23:59:59"));
+    } else {
+        $daterange_start_time = strtotime(date('Y-07-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-09-30 23:59:59"));
+    }
+    $daterange[2]['start_day'] = (strtotime(date('Y-m-d', time())) - $daterange_start_time) / 86400;
+    $daterange[2]['end_day'] = (strtotime(date('Y-m-d', time())) - $daterange_end_time - 1) / 86400;
+    //本季度
+    $month = date('m');
+    if ($month == 1 || $month == 2 || $month == 3) {
+        $daterange_start_time = strtotime(date('Y-01-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-03-31 23:59:59"));
+    } elseif ($month == 4 || $month == 5 || $month == 6) {
+        $daterange_start_time = strtotime(date('Y-04-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-06-30 23:59:59"));
+    } elseif ($month == 7 || $month == 8 || $month == 9) {
+        $daterange_start_time = strtotime(date('Y-07-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-09-30 23:59:59"));
+    } else {
+        $daterange_start_time = strtotime(date('Y-10-01 00:00:00'));
+        $daterange_end_time = strtotime(date("Y-12-31 23:59:59"));
+    }
+    $daterange[3]['start_day'] = (strtotime(date('Y-m-d', time())) - $daterange_start_time) / 86400;
+    $daterange[3]['end_day'] = 0;
+    //上一年
+    $year = date('Y') - 1;
+    $daterange_start_time = strtotime(date($year . '-01-01 00:00:00'));
+    $daterange_end_time = strtotime(date('Y-01-01 00:00:00'));
+    $daterange[4]['start_day'] = (strtotime(date('Y-m-d', time())) - $daterange_start_time) / 86400;
+    $daterange[4]['end_day'] = (strtotime(date('Y-m-d', time())) - $daterange_end_time) / 86400;
+    //本年度
+    $daterange_start_time = strtotime(date('Y-01-01 00:00:00'));
+    $daterange[5]['start_day'] = (strtotime(date('Y-m-d', time())) - $daterange_start_time) / 86400;
+    $daterange[5]['end_day'] = 0;
+    return $daterange;
 }

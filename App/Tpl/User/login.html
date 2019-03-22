@@ -30,6 +30,11 @@
                                     .errorInput {border:1px solid red;}
                                 </style>
                                 <style type="text/css">
+                                    body{
+                                        height: 100vh;
+                                        overflow: scroll;
+                                        position: relative;
+                                    }
                                     #zhuce {
                                         padding-left: 30px;
                                         font-family: AdobeHeitiStd-Regular;
@@ -86,7 +91,7 @@
                                 <body>
                                     <include file="Public:alert" />
                                     <div class="content-login">
-                                        <div class="imgdefault" style="background:url(__PUBLIC__/img/default.jpg)no-repeat; width:100%; height:100%; background-size:100% 100%; position:absolute; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='__PUBLIC__/img/default.jpg',sizingMethod='scale');  " >
+                                        <div class="imgdefault" style="background:url(__PUBLIC__/img/default.jpg)no-repeat; width:100%; height:950px; background-size:100% 100%; position:absolute; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='__PUBLIC__/img/default.jpg',sizingMethod='scale');  " >
 
                                         </div>
                                         <div class="logininfo">
@@ -104,7 +109,7 @@
                                                         <input type="password" class="inputinfo" name="password" id="password" value="" placeholder="密码">
                                                     </div>
                                                     <p class="logininputList" style="padding-top: 30px;">
-                                                        <a style="margin-right: 240px;" href="javascript:void(0);" id="do_regist">注册</a>
+                                                        <!--<a style="margin-right: 240px;" href="javascript:void(0);" id="do_regist">注册</a>-->
                                                         <a style="margin-right: 15px;" href="{:U('user/lostpw')}">忘记密码?</a>
                                                     </p>
                                                     <div class="logininputList" style="margin-top:12px;margin-bottom: 10px;">
@@ -120,10 +125,10 @@
                                         </div>
                                         <div style="position: absolute;float: left;top:10%;left:30%;z-index: 99;padding:4px;width:100px;display: none;" id="regist">
                                             <div style="width: 600px;height: 600px;background-color: #ffffff;box-shadow: 3px 5px 20px 1px rgba(4, 0, 0, 0.13);border-radius: 15px;opacity: 0.98;">
-                                                <div style="padding: 10px;width: 100%;height: 60px;">
+<!--                                                <div style="padding: 10px;width: 100%;height: 60px;">
                                                     <p id="zhuce">注册</p>
                                                     <a href="javascript:void(0);" id="close"><img src="..\..\..\Public\img\close.png"/></a>
-                                                </div>
+                                                </div>-->
                                                 <div id="line"></div>
                                                 <img src="..\..\..\Public\img\first.png" class="div1" style="display: block;"/>
                                                 <img src="..\..\..\Public\img\second.png" class="div2" style="display: none;"/>
@@ -168,8 +173,8 @@
                                                         <div class="form-group up">
                                                             <label  class="col-sm-3 labell">性别:</label>
                                                             <div class="col-sm-4" >
-                                                                <div style="position:absolute;float: left;" class="radio radio-info radio-inline"><input type="radio" value="male" checked="checked" class="sex form-inline" name="sex" />男</div>
-                                                                <div style="position:absolute;float: left;margin-left: 60px;" class="radio radio-info radio-inline"><input type="radio" value="female" class="sex form-inline" name="sex"/>女</div>
+                                                                <div style="position:absolute;float: left;" class="radio radio-info radio-inline"><input type="radio" value="1" checked="checked" class="sex form-inline" name="sex" />男</div>
+                                                                <div style="position:absolute;float: left;margin-left: 60px;" class="radio radio-info radio-inline"><input type="radio" value="2" class="sex form-inline" name="sex"/>女</div>
                                                             </div>
                                                         </div>
                                                         <button type="button" id="nextdiv2" style="margin-left: 80px;margin-top:90px;width: 270px;height: 60px;background-color: #00aaef;border-radius: 15px;" class="btn btn-primary">下一步</button>
@@ -424,7 +429,23 @@
                                     });
                                     $('#submit').click(function () {
                                         var entry = $('#entry').val();
+                                        var department = $('#department').val();
+                                        var role = $('#role').val();
+                                        var type = $('#type').val();
+                                        var jobrank = $('#jobrank').val();
                                         if (entry == '') {
+                                            return false;
+                                        }
+                                        if (department == '') {
+                                            return false;
+                                        }
+                                        if (role == '') {
+                                            return false;
+                                        }
+                                        if (type == '') {
+                                            return false;
+                                        }
+                                        if (jobrank == '') {
                                             return false;
                                         }
                                     });

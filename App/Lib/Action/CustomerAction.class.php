@@ -57,7 +57,30 @@ class CustomerAction extends Action {
      *  Ajax检测客户名称
      *
      * */
-    public function check() {
+    public function check(){
+        $where = [];
+        if ($_REQUEST['customer_id']) {
+            $where['customer_id'] = array('neq', $_REQUEST['customer_id']);
+        }
+        $name = $_POST['name'];
+        $name && $where['name'] = ['like',"%{$name}%"];
+        $m_customer = M('customer');
+        $search_array =  $m_customer->where($where)->getField('name', true);
+
+        foreach ($search_array as &$info){
+            $info = str_replace("$name", "<span style='color:red;'>$name</span>", $info);
+        }
+        if (empty($search_array)) {
+            $this->ajaxReturn(0, L('ABLE_ADD'), 0);
+        } else {
+            $this->ajaxReturn($search_array, L('CUSTOMER_IS_CREATED'), 1);
+        }
+    }
+    /**
+     *  Ajax检测客户名称
+     *
+     * */
+    public function check_back() {
         if ($_REQUEST['customer_id']) {
             $where['customer_id'] = array('neq', $_REQUEST['customer_id']);
         }
@@ -176,6 +199,10 @@ class CustomerAction extends Action {
             $owner_role_id = session('role_id');
         }
         $data['owner_role_id'] = $owner_role_id;
+        $data['customer_owner_id'] = $owner_role_id;
+        $data['customer_owner_id'] = $owner_role_id;
+        $data['customer_owner_name'] =  M("user")->where('role_id = %d', $owner_role_id)->getField('full_name');
+
         $data['update_time'] = time();
         $data['get_time'] = time();
         //是否分配需要提醒
@@ -360,7 +387,6 @@ class CustomerAction extends Action {
                         break;
                 }
             }
-
             if ($m_customer->create()) {
                 if ($m_customer_data->create() !== false) {
                     //保存联系人信息
@@ -439,6 +465,7 @@ class CustomerAction extends Action {
                         $leads_data['contacts_id'] = $contacts_id;
                         $leads_data['transform_role_id'] = session('role_id');
                         M('Leads')->where('leads_id = %d', $leads_id)->save($leads_data);
+//                        M('Leads')->where('leads_id = %d', $leads_id)->save($leads_data);
                     }
 
                     //记录操作记录
@@ -508,19 +535,16 @@ class CustomerAction extends Action {
                     alert('error', '你的客户数量已超出限制！请联系管理员', U('customer/index'));
                 }
             }
-
             if (intval($_GET['leads_id'])) {
                 $leads = D('LeadsView')->where('leads.leads_id = %d', intval($_GET['leads_id']))->find();
                 $this->leads = $leads;
                 $this->field_list = field_list_html("edit", "customer", $leads);
             } else {
                 $this->field_list = field_list_html("add", "customer");
-
-//                header("Content-type: text/html; charset=utf-8");
-//                var_dump($this->field_list);exit();
+//                header('content-type:text/html;charset=utf-8');
+//                dump($this->field_list['main']);die;
                 $this->contacts_field_list = field_list_html("add", "contacts", "", "contacts");
             }
-
             $user = M('user')->where('status =%d', 1)->field('full_name,user_id')->select();
             $this->assign("user", $user);
             $this->refer_url = $_SERVER['HTTP_REFERER'];
@@ -672,6 +696,7 @@ class CustomerAction extends Action {
                     //修改字段记录
                     $old_customer = M('Customer')->where('customer_id= %d', $customer['customer_id'])->find();  //修改前数据
                     $a = $m_customer->where('customer_id= %s', $customer['customer_id'])->save();
+                    M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->save($_POST['con_contacts']);
 
                     $new_customer = $m_customer->where('customer_id= %d', $customer['customer_id'])->find(); //修改后数据
                     $update_ago = array_diff_assoc($new_customer, $old_customer); //获取已修改的字段
@@ -746,11 +771,17 @@ class CustomerAction extends Action {
             $customer['grade'] = ($customer['grade'] > 5 || $customer['grade'] < 0) ? 0 : $customer['grade'];
             $this->customer = $customer;
             $this->assign('info', $customer);
-
-//            var_dump($customer);exit();
-//            var_dump($customer);exit();
             $res = $this->field_list = field_list_html("edit", "customer", $customer);
+//            header('content-type:text/html;charset= utf-8;');
+//            dump($customer);die;
             $user = M('user')->where('status =%d', 1)->field('full_name,user_id')->select();
+//            编辑客户联系人显示页3-8_guo
+            $contacts = M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->find();
+            foreach ($contacts as $k => $v){
+                $contacts['con_contacts['.$k.']'] = $v;
+            }
+//            dump($contacts);die;
+            $this->contacts_field_list = field_list_html("edit", "contacts",$contacts,"contacts");
             $this->assign("user", $user);
             $this->display();
         }
@@ -920,12 +951,13 @@ class CustomerAction extends Action {
 
         $where = array();
         $params = array();
-        $order = "top.set_top desc,top.top_time desc,customer.update_time desc,customer.customer_id asc";
+        $order = "customer.update_time desc,customer.customer_id asc"; //top.set_top desc,top.top_time desc,
 
         if ($_GET['order_field'] && $_GET['order_type']) {
-            $order = 'top.set_top desc,top.top_time desc,customer.' . trim($_GET['order_field']) . ' ' . trim($_GET['order_type']) . ',customer.customer_id asc';
+            $order = 'customer.' . trim($_GET['order_field']) . ' ' . trim($_GET['order_type']) . ',customer.customer_id asc'; //top.set_top desc,top.top_time desc,
         }
 
+        //我的客户
         //查询分享给我的
         $m_share = M('customerShare');
         $sharing_id = session('role_id');
@@ -955,6 +987,20 @@ class CustomerAction extends Action {
                 break;
             case 'myshare' : $where['customer_id'] = array('in', $share_customer_ids);
                 break;
+            case 'all':
+                $ownerAllIds = implode(',', $this->_permissionRes); //所有的ID
+                !$ownerAllIds && $ownerAllIds = session('role_id');
+                $customerIdStr = implode(',', $customerid); //分享给我的
+                if($customerIdStr){
+                    $whereShare = [];
+                    $whereShare['owner_role_id'] = array('in', $ownerAllIds);
+                    $whereShare['customer.customer_id'] = array('in', $customerIdStr);
+                    $whereShare['_logic'] = 'OR';
+                    $where['_complex'] = $whereShare;
+                }else{
+                    $where['owner_role_id'] = array('in', $ownerAllIds);
+                }
+                break;
             default :
                 if ($this->_get('content') == 'resource') {
                     if ($openrecycle == 2) {
@@ -968,7 +1014,7 @@ class CustomerAction extends Action {
                 break;
         }
         if (!isset($where['owner_role_id']) && $this->_get('content') !== 'resource') {
-            if ($by != 'deleted' && $by != 'share') {
+            if ($by != 'deleted' && $by != 'share' && $by != 'myshare' && $by != 'all') {
                 $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
             }
         }
@@ -1007,20 +1053,17 @@ class CustomerAction extends Action {
                     if ($field == $v['field'] || $field == 'customer.create_time' || $field == 'customer.update_time')
                         $search = is_numeric($search) ? $search : strtotime($search);
                 }
-                if ($field == 'name') {
-                    //$where['name'] = array('like',$search);
-                    $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
-                    $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
-                    $contacts_str = implode(',', $contacts_ids);
-                    if ($contacts_str) {
+                if ($field == 'name' && $search) {
+                    $contactsCustomerIds = CustomerModel::getIdsByContact($search);
+                    if ($contactsCustomerIds) {
                         $field_where = array();
                         $field_where['customer.name'] = array('like', '%' . $search . '%');
-                        $field_where['customer.contacts_id'] = array('in', $contacts_str);
+                        $field_where['customer.customer_id'] = array('in', $contactsCustomerIds);
                         $field_where['_logic'] = 'OR';
                         $where['_complex'] = $field_where;
-                        // $where['_string'] = 'customer.name like "%'.$search.'%" or customer.contacts_id in ('.$contacts_str.')';
                     } else {
                         $where['customer.name'] = array('like', '%' . $search . '%');
+
                     }
                 } else {
                     switch ($condition) {
@@ -1028,7 +1071,7 @@ class CustomerAction extends Action {
                             break;
                         case "isnot" : $where[$field] = array('neq', $search);
                             break;
-                        case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                        case "contains" : $search && $where[$field] = array('like', '%' . $search . '%');
                             break;
                         case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
                             break;
@@ -1180,7 +1223,7 @@ class CustomerAction extends Action {
         $map_scene['is_hide'] = 0;
         header("Content-type: text/html; charset=utf-8");
         $scene_list = $m_scene->where($map_scene)->order('order_id asc,id asc')->select();
-//		var_dump($scene_list);exit();
+//		var_dump(session('role_id'));exit();
         foreach ($scene_list as $k => $v) {
             if ($v['type'] == 0) {
                 eval('$data = ' . $v["data"] . ';');
@@ -1367,6 +1410,8 @@ class CustomerAction extends Action {
 
             import("@.ORG.Page");
             $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
+            $customerIds =[];
+            $myCustomerIds = M('customer')->where(['owner_role_id'=>session('role_id')])->getField('customer_id', true);
             switch ($by){
                 case 'sub':
                     if($below_ids[0]!=-1){
@@ -1379,23 +1424,39 @@ class CustomerAction extends Action {
                     break;
                 case 'share':
                     unset($customerIdsData);
+                    unset($myCustomerIds);
+                    break;
+                case 'myshare':
+                    unset($myCustomerIds);
+                    unset($customerIdsData);
+                    break;
+                case 'all':
+                    unset($myCustomerIds);
+                    unset($customerIdsData);
                     break;
                 default:
                     $customerIdsData = $m_customer_share->where(array('by_sharing_id'=>$sharing_id))->field('customer_id')->select();
                     break;
             }
-            if($customerIdsData){
+
+            if($this->_get('content')!='resource' && ($customerIdsData || $myCustomerIds)){
                 foreach ($customerIdsData as $k =>$v){
                     $customerIds[] = $v['customer_id'];
                 }
-                $map['customer_id'] = array('in',$customerIds);
-                $map['_complex'] = $where;
-                $map['_logic'] = 'or';
+                $ids = array_unique(array_merge($myCustomerIds, $customerIds));
+
+                if (!empty($ids)) {
+                    $map['customer_id'] = array('in', $ids);
+                    $map['_complex'] = $where;
+                    $map['_logic'] = 'and';
+                }
             }else{
                 $map = $where;
             }
             if($subGoOn!=1){
-                $list = $d_v_customer->where($map)->order($order)->page($p . ',' . $listrows)->select();
+//                $list = $d_v_customer->where($map)->order($order)->page($p . ',' . $listrows)->select();
+                $list = $d_v_customer->lists($map,$order,$p . ',' . $listrows);
+//                print_r($d_v_customer->getLastSql());die;
                 $count = $d_v_customer->where($map)->count();
             }
             $p_num = ceil($count / $listrows);
@@ -1424,7 +1485,7 @@ class CustomerAction extends Action {
                             $customer_ids = array();
                             $customer_ids = $d_v_customer->where($where)->getField('customer_id', true);
                         }
-                        $all_list = $d_business->where(array('business.customer_id' => array('in', $customer_ids)))->order('top.set_top desc, top.top_time desc ,business_id desc')->limit($limit)->select();
+                        $all_list = $d_business->where(array('business.customer_id' => array('in', $customer_ids)))->order('business_id desc')->limit($limit)->select(); //top.set_top desc, top.top_time desc ,
 
                         foreach ($all_list as $k => $v) {
                             $customer_info = array();
@@ -1570,12 +1631,13 @@ class CustomerAction extends Action {
                     $order_params[] = "listrows=" . $listrows;
                 }
             }
-//			var_dump($params);exit();
+            isset($by) && $params[]= "by={$by}";
             $this->order_parameter = implode('&', $order_params); //排序专用params
             $this->parameter = implode('&', $params);
+// 3/7 Guo_消除缓存
             //by_parameter(特殊处理)
+//            $this->by_parameter = str_replace('by=' . $_GET['by'], '', implode('&', $params));
 
-            $this->by_parameter = str_replace('by=' . $_GET['by'], '', implode('&', $params));
             $Page->parameter = implode('&', $params);
             $this->assign('page', $Page->show());
 
@@ -1661,7 +1723,7 @@ class CustomerAction extends Action {
             }
             $this->field_list = $mainFields;
             //高级搜索
-            //$this->fields_search = $fields_search;
+//            $this->fields_search = $fields_search;
             $this->scene_list = $scene_list;
             $this->alert = parseAlert();
             $this->display();
@@ -1850,7 +1912,7 @@ class CustomerAction extends Action {
         $m_r_contacts_customer = M('RContactsCustomer');
         $outdays = M('config')->where('name="customer_outdays"')->getField('value');
         $outdate = empty($outdays) ? 0 : time() - 86400 * $outdays;
-        $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
+//        $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
         $where['is_deleted'] = array('neq', 1);
         $where['_string'] = 'update_time > ' . $outdate . ' OR is_locked = 1';
 
@@ -1961,6 +2023,7 @@ class CustomerAction extends Action {
      *
      * */
     public function view() {
+        $a = time();
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
         $this->industry_name = $industry_name;
@@ -1986,42 +2049,44 @@ class CustomerAction extends Action {
             $m_config = M('Config');
             $outdays = $m_config->where('name="customer_outdays"')->getField('value');
             $outdate = empty($outdays) ? 0 : time() - 86400 * $outdays;
-
             $c_outdays = $m_config->where('name="contract_outdays"')->getField('value');
             $c_outdays = empty($c_outdays) ? 0 : $c_outdays;
             $contract_outdays = empty($c_outdays) ? 0 : time() - 86400 * $c_outdays;
             $openrecycle = $m_config->where('name="openrecycle"')->getField('value');
+            
             //查询分享的
-            $m_customer_share = M('customer_share')->select();
+            $role_id = session('role_id');
+            $m_customer_share = M('customer_share')->where(['by_sharing_id' => $role_id])->field('customer_id,by_sharing_id')->select();
             $sharing_id = session('role_id');
-            foreach ($m_customer_share as $k => $v) {
-                $by_sharing_id = explode(',', $v['by_sharing_id']);
-                if (in_array($sharing_id, $by_sharing_id)) {
-                    $customerid[] = $v['customer_id'];
-                }
-            }
-            $is_share = in_array($customer_id, $customerid);
-            if ($openrecycle == 2) {
-                if ($customer['owner_role_id'] != 0 && (($customer['update_time'] > $outdate && $customer['get_time'] > $contract_outdays) || $customer['is_locked'] == 1)) {
-                    if (!in_array($customer['owner_role_id'], $this->_permissionRes)) {
-                        if ($is_share) {
-                            $this->share_num = 1;
-                        } else {
-                            $this->error(L('HAVE NOT PRIVILEGES'));
-                        }
-                    }
-                }
-            } else {
-                if ($customer['owner_role_id'] != 0) {
-                    if (!in_array($customer['owner_role_id'], $this->_permissionRes)) {
-                        if ($is_share) {
-                            $this->share_num = 1;
-                        } else {
-                            $this->error(L('HAVE NOT PRIVILEGES'));
-                        }
-                    }
-                }
-            }
+//            $customerid = [];
+//            foreach ($m_customer_share as $k => $v) {
+//                $by_sharing_id = explode(',', $v['by_sharing_id']);
+//                if (in_array($sharing_id, $by_sharing_id)) {
+//                    $customerid[] = $v['customer_id'];
+//                }
+//            }
+//            $is_share = in_array($customer_id, $customerid);
+//            if ($openrecycle == 2) {
+//                if ($customer['owner_role_id'] != 0 && (($customer['update_time'] > $outdate && $customer['get_time'] > $contract_outdays) || $customer['is_locked'] == 1)) {
+//                    if (!in_array($customer['owner_role_id'], $this->_permissionRes)) {
+//                        if ($is_share) {
+//                            $this->share_num = 1;
+//                        } else {
+//                            $this->error(L('HAVE NOT PRIVILEGES'));
+//                        }
+//                    }
+//                }
+//            } else {
+//                if ($customer['owner_role_id'] != 0) {
+//                    if (!in_array($customer['owner_role_id'], $this->_permissionRes)) {
+//                        if ($is_share) {
+//                            $this->share_num = 1;
+//                        } else {
+//                            $this->error(L('HAVE NOT PRIVILEGES'));
+//                        }
+//                    }
+//                }
+//            }
 
 
             //维护人查询
@@ -2081,9 +2146,15 @@ class CustomerAction extends Action {
                 $business_id[] = $v['business_id'];
             }
             //联系人信息
-            // $contacts_ids = M('rContactsCustomer')->where('customer_id = %d', $customer_id)->getField('contacts_id', true);
-            // $customer['contacts'] = M('contacts')->where('contacts_id in (%s) and is_deleted=0', implode(',', $contacts_ids))->select();
+            $contacts_ids = M('rContactsCustomer')->where('customer_id = %d', $customer_id)->getField('contacts_id', true);
+
             $customer['contacts_name'] = M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->getField('name');
+            if(!$customer['contacts_name']){
+                $contactName = M('contacts')->where('contacts_id in (%s) and is_deleted=0', implode(',', $contacts_ids))->getField('name');
+                $contactid = M('contacts')->where('contacts_id in (%s) and is_deleted=0', implode(',', $contacts_ids))->getField('contacts_id');
+                $customer['contacts_name'] = $contactName;
+                $customer['contacts_id']  = $contactid;
+            }
             $field_list = field_list_html("edit", "customer", $customer);
             $array_field = array();
             foreach ($field_list['main'] as $k => $v) {
@@ -2122,6 +2193,7 @@ class CustomerAction extends Action {
         $business = M("business")->where("customer_id=%d", I('id'))->select();
         $where['customer_id'] = $customer['customer_id'];
         $this->contacts_list = $d_contacts->where($where)->select();
+        $businessStatus = M('business_status')->where(array('type_id' => 1))->order('order_id asc')->cache(true)->getField('status_id,name',true);
         foreach ($business as $key => $list) {
             if ($list['joiner']) {
                 $joiner = explode(",", $list['joiner']);
@@ -2133,10 +2205,11 @@ class CustomerAction extends Action {
                 $business[$key]['joiner'] = $arr;
 //                $business[$key]['joiner'] = implode(",",$arr);
             }
+            $business[$key]['pro_type'] = isset(C('BUSINESS_TYPE')[$list['pro_type']]) ? C('BUSINESS_TYPE')[$list['pro_type']] : '';
+            $business[$key]['status_type'] = isset($businessStatus[$list['status_id']]) ? $businessStatus[$list['status_id']] : '无状态';
         }
         $this->customer = $customer;
         $this->business = $business;
-
         $m_r_customer_log = M('rCustomerLog');
         $m_log = M('Log');
         $m_user = M('User');
@@ -2481,7 +2554,7 @@ class CustomerAction extends Action {
 
         $current_page = intval($_GET['current_page']);
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-        //ob_end_clean();
+        ob_end_clean();
         header("Content-Type: application/vnd.ms-excel;");
         header("Content-Disposition:attachment;filename=mxcrm_customer_" . date('Y-m-d', mktime()) . "_" . $current_page . ".xls");
         header("Pragma:no-cache");
@@ -3764,7 +3837,9 @@ class CustomerAction extends Action {
             } else {
                 $where['customer_id'] = array('in', $customer_ids);
                 $cus_list = $m_customer->where($where)->field('customer_id,owner_role_id')->select();
-                if ($m_customer->where($where)->setField('owner_role_id', $role_id)) {
+//                if ($m_customer->where($where)->setField('owner_role_id', $role_id)) {
+                $saveData = ['owner_role_id'=>$role_id,'customer_owner_id'=>$role_id,'customer_owner_name'=>$role_info['full_name']];
+                if ($m_customer->where($where)->save($saveData)) {
                     foreach ($cus_list as $k => $v) {
                         //查询相关客户的商机和合同
                         $old_user_name = $m_user->where('role_id =%d', $v['owner_role_id'])->getField('full_name');

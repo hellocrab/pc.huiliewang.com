@@ -13,6 +13,9 @@ class ProductAction extends Action {
         8 => '博士后'
     ];
 
+    /**
+     *
+     */
     public function _initialize() {
         $title = "人才管理";
         $this->assign("title", $title);
@@ -23,6 +26,216 @@ class ProductAction extends Action {
 //		);
 //		B('Authenticate', $action);
 //		$this->_permissionRes = getPerByAction(MODULE_NAME,ACTION_NAME);
+    }
+
+    public function resolve() {
+        import('@.ORG.UploadFile');
+        $upload = new UploadFile(); // 实例化上传类
+        $upload->maxSize = 1024 * 1024 * 1024; // 设置附件上传大小
+        $upload->exts = array('doc', 'docx', 'zip', 'rar', 'mht', 'htm', 'html'); // 设置附件上传类型
+        $upload->savePath = './Uploads/temp/';
+
+
+        $project_id = BaseUtils::getStr(I('pro_id'), 'int');
+        if ($project_id) {
+            $business_id = M('business')->where(['business_id' => $project_id])->field('business_id,customer_id')->find();
+            if (!$business_id) {
+                $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => "项目不存在,解析推荐失败"]);
+            }
+        }
+
+        if (empty($_FILES['file'])) {
+            $this->appReturn(0, '上传失败');
+        }
+
+        $info = $upload->uploadOne($_FILES['file']);
+        if (!$info) {
+            $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => '上传失败']);
+        }
+
+        $file = array(
+            'file_name' => $info[0]['name'],
+            'user_id' => $this->userId,
+            'size' => $info[0]['size'],
+            'status' => 2,
+            'file_total' => 1,
+            'repeat' => 0,
+            'success' => 0,
+            'fail' => 0,
+            'integral' => 0,
+            'ext' => $info[0]['extension'],
+            'basePath' => $info[0]['savepath'],
+            'path' => $info[0]['savepath'] . $info[0]['savename'],
+            'addtime' => time()
+        );
+
+        $imporFile[] = array('path' => $file['path'],
+            'basePath' => $file['basePath'],
+            'ext' => $file['ext'],
+            'filename' => $info[0]['savename'],
+            'fileSize' => $file['size']
+        );
+        //保存简历
+        foreach ($imporFile as $v) {
+            import('@.ORG.ResumeData');
+            $reData = new ResumeData();
+            $data = $reData->getData($v);
+
+            if (!$data['data']) {
+                $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => '没有匹配数据']);
+            }
+            
+            //检查简历是否存存在
+            $name = isset($data['data']['name']) ? trim($data['data']['name']) : '';
+            $telephone = isset($data['data']['telephone']) ? trim($data['data']['telephone']) : '';
+            $email = isset($data['data']['email']) ? trim($data['data']['email']) : '';
+            $filePath = realpath($v['path']);
+            $saveName = $name . '_' . $v['filename'];
+
+            if ($idExt = $this->isResumeExist($name, $telephone, $email)) {
+                //上传附件到OSS
+                $this->upOssFile($filePath, $saveName, $idExt, $v['fileSize']);
+                if ($project_id) {
+                    $fine_id = M('fine_project')->where(['resume_id' => $idExt, 'project_id' => $project_id])->field('id')->find();
+                    if (empty($fine_id['id'])) {
+                        $data = [
+                            'resume_id' => $idExt,
+                            'project_id' => $project_id,
+                            'com_id' => $business_id['customer_id'],
+                            'tracker' => session('role_id'),
+                            'status' => 1,
+                            'addtime' => time()
+                        ];
+                        M('fine_project')->add($data);
+                        $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在,并且已经推荐到此该项目中"]);
+                    } else {
+                        $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在,并且此简历已经存在此该项目中"]);
+                    }
+                }
+                $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在"]);
+            }
+
+            try {
+                //主数据保存
+                $data['data']['creator_role_id'] = session('role_id');
+                $data['data']['creator_role_name'] = session('tel');
+                $data['data']['creator_role_name'] = session('name');
+                $data['data']['addtime'] = time();
+                $data['data']['lastupdate'] = time();
+
+                if (empty($data['data']['name'])) {
+                    $data['data']['name'] = '未知';
+                }
+                
+                if (empty($data['data']['telephone'])) {
+                    $data['data']['telephone'] = '未知';
+                }
+
+                M('resume')->add($data['data']);
+                $resume_id = M()->getLastInsID();
+
+                //上传附件到OSS
+                $this->upOssFile($filePath, $saveName, $resume_id, $v['fileSize']);
+
+                //info数据
+                $data['info']['eid'] = $resume_id;
+                M('resume_data')->add($data['info']);
+
+                //工作经历保存
+                if (!empty($data['job'])) {
+                    foreach ($data['job'] as $j) {
+                        $j['eid'] = $resume_id;
+                        $_position = $j['position'];
+                        unset($j['position']);
+                        M('resume_work')->add($j);
+                        $work_id = M('resume_work')->getLastInsID();
+
+                        $_position['work_id'] = $work_id;
+                        M('resume_work_position')->add($_position);
+                    }
+                }
+                //项目经历
+                if (!empty($data['project'])) {
+                    foreach ($data['project'] as $p) {
+                        $p['eid'] = $resume_id;
+                        M('resume_project')->add($p);
+                    }
+                }
+
+                //教育经历
+                foreach ($data['edu'] as $edu) {
+                    $edu['eid'] = $resume_id;
+                    M('resume_edu')->add($edu);
+                }
+
+                if ($project_id) {
+                    $data = [
+                        'resume_id' => $resume_id,
+                        'project_id' => $project_id,
+                        'com_id' => $business_id['customer_id'],
+                        'tracker' => session('role_id'),
+                        'status' => 1,
+                        'addtime' => time()
+                    ];
+                    M('fine_project')->add($data);
+                    $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "解析成功,并且已经推荐到此该项目中"]);
+                }
+
+                $this->ajaxReturn(['succ' => 1, 'code' => 200, 'message' => '解析成功']);
+            } catch (Exception $ex) {
+                $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => $ex->getMessage()]);
+            }
+        }
+    }
+
+    /**
+     * @desc 简历附件上传
+     * @param $filePath
+     * @param $saveName
+     * @param $resumeId
+     * @param int $size
+     */
+    private function upOssFile($filePath, $saveName, $resumeId, $size = 0) {
+        $ossObj = new AliOssAction();
+        $ossFileName = $ossObj::upFile($filePath, $saveName);
+        if (!$ossFileName) {
+            return;
+        }
+        $fileData = ['name' => $saveName, 'role_id' => session('role_id'), 'size' => $size, 'create_date' => time(), 'file_path' => $ossFileName];
+        M('file')->add($fileData);
+        $fileId = M('file')->getLastInsID();
+        $fileId > 0 && M('r_resume_file')->add(['resume_id' => $resumeId, 'file_id' => $fileId, 'is_resolve' => 1]);
+        return;
+    }
+
+    /**
+     * @desc 检查简历是否存在
+     * @param $name
+     * @param $phone
+     * @param $email
+     * @return bool|mixed|string
+     */
+    private function isResumeExist($name, $phone, $email) {
+        //手机号或者邮箱存在
+        if ((!$phone && !$email) || !$name) {
+            return false;
+        }
+        //根据手机号检查
+
+        if ($phone) {
+            $where = ['name' => $name, 'telephone' => $phone];
+            $info = M('resume')->where($where)->find();
+            if ($info) {
+                return $info['eid'];
+            }
+        }
+        if (!$email) {
+            return false;
+        }
+        //根据邮箱查重
+        $where = ['name' => $name, 'email' => $email];
+        $info = M('resume')->where($where)->find();
+        return isset($info['eid']) ? $info['eid'] : false;
     }
 
     /**
@@ -213,9 +426,9 @@ class ProductAction extends Action {
                 if ($field == 'name') {
                     //$where['name'] = array('like',$search);
                     $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
-                    if(strlen($search)==11&&is_numeric($search)){
-                        $where['telephone'] = array('eq',$search);
-                    }else{
+                    if (strlen($search) == 11 && is_numeric($search)) {
+                        $where['telephone'] = array('eq', $search);
+                    } else {
                         $where['name'] = array('like', '%' . $search . '%');
                     }
                 }
@@ -257,6 +470,7 @@ class ProductAction extends Action {
                         $v = $v['value'];
                         $where['creator_role_id'] = $v;
                     } elseif (is_array($v)) {
+                        $v['value'] = trim($v['value']);
                         if ($v['state']) {
                             $address_where[] = '%' . $v['state'] . '%';
 
@@ -370,7 +584,7 @@ class ProductAction extends Action {
         $count = $resume->where($where)->count() ? $resume->where($where)->count() : '0';
 
         $p_num = ceil($count / $listrows);
-        $p = isset($_GET['p']) ? $_GET['p'] : 1;
+        $p = isset($_GET['p']) && $_GET['p'] > 0 ? $_GET['p'] : 1;
         if ($p_num < $p) {
             $p = $p_num;
         }
@@ -414,7 +628,7 @@ class ProductAction extends Action {
                         $list[$k]['location'] = $city_name[$list[$k]['location']];
                     }
                     if ($list[$k]['sex']) {
-                        $list[$k]['sex'] = $list[$k]['sex'] = 1 ? "男" : "女";
+                        $list[$k]['sex'] = $list[$k]['sex'] == 1 ? "男" : "女";
                     }
                 }
                 $this->excelExport($list);
@@ -425,12 +639,12 @@ class ProductAction extends Action {
             $list = $resume->where($where)->order('addtime desc')->Page($p . ',' . $listrows)->select();
         }
 
-
         foreach ($list as $key => $li) {
             $where = "";
             $where['eid'] = $li['eid'];
             $where['role_id'] = session("role_id");
             $list[$key]['favorite'] = M("resume_collection")->where($where)->find();
+            $list[$key]['birthday'] <= 0 && $list[$key]['birthday'] = strtotime("{$list[$key]['birthYear']}-{$list[$key]['birthMouth']}");
         }
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
@@ -441,7 +655,6 @@ class ProductAction extends Action {
 
         $Page = new Page($count, $listrows); // 实例化分页类 传入总记录数和每页显示的记录数
         $show = $Page->show(); // 分页显示输出
-
 
 
         $this->assign('list', $list); // 赋值数据集
@@ -462,7 +675,12 @@ class ProductAction extends Action {
 //            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
-            $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
+            if ($_POST['birthday']) {
+                $bluck = $_POST['birthday'];
+                $_POST['birthYear'] = intval(date('Y', $bluck));
+                $_POST['birthMouth'] = intval(date("m", $bluck));
+            }
+            $_POST['startWorkyear'] = date('Y', strtotime($_POST['startWorkyear']));
 
             $projectExp = $_POST['projectExp'];
             $eduExp = $_POST['eduExp'];
@@ -523,6 +741,26 @@ class ProductAction extends Action {
                         M("resume_project")->add($data);
                     }
                 }
+                //候选人加入项目
+                $businessId = $_POST['business_id'];
+                if ($businessId) {
+                    $businessInfo = M("business")->where("business_id=%d", $businessId)->field("customer_id")->find();
+                    $data = [];
+                    $data['resume_id'] = $eid;
+                    $data['project_id'] = $_POST['business_id'];
+                    $data['tracker'] = session("role_id");
+                    $data['com_id'] = $businessInfo['customer_id'];
+                    $data['status'] = 1;
+
+                    $where = ['resume_id' => $eid, 'project_id' => $businessId, 'com_id' => $businessInfo['customer_id']];
+                    if (!M("fine_project")->where($where)->find()) {
+                        $data['addtime'] = time();
+                        M("fine_project")->add($data);
+                    } else {
+                        M("fine_project")->where($where)->save($data);
+                    }
+                    alert('success', L('PRODUCT_ADDED_SUCCESSFULLY'), U('business/view', 'id=' . $_POST['business_id']));
+                }
 
                 alert('success', L('PRODUCT_EDIT_SUCCESS'), U('product/index'));
             } else {
@@ -531,12 +769,16 @@ class ProductAction extends Action {
         } else {
             if (I("id")) {
                 $where['eid'] = I("id");
-                $this->resume = M("resume")->where($where)->find();
+                $info = M("resume")->where($where)->find();
                 $this->resume_work = M("resume_work")->where($where)->select();
                 $this->resume_edu = M("resume_edu")->where($where)->select();
                 $this->resume_project = M("resume_project")->where($where)->select();
                 $alert = parseAlert();
                 $this->alert = $alert;
+                $info['birthday'] = $info['birthday'] > 0 ? $info['birthday'] : strtotime("{$info['birthYear']}-{$info['birthMouth']}");
+                $resume = $info;
+                strlen($resume['startWorkyear']) > 4 && $resume['startWorkyear'] = date('Y-m', $resume['startWorkyear']);
+                $this->assign('resume', $resume);
             }
 //            $m_warehouse = M('warehouse');
             // $this->house_list = $m_warehouse ->select();
@@ -645,6 +887,11 @@ class ProductAction extends Action {
 //            $m_customer_data = D('CustomerData');
             $field_list = M('Fields')->where(array('model' => 'resume', 'in_add' => 1))->order('order_id')->select();
             $_POST['birthday'] = strtotime($_POST['birthday']);
+            if ($_POST['birthday']) {
+                $bluck = $_POST['birthday'];
+                $_POST['birthYear'] = intval(date('Y', $bluck));
+                $_POST['birthMouth'] = intval(date("m", $bluck));
+            }
             $_POST['startWorkyear'] = strtotime($_POST['startWorkyear']);
             $_POST['addtime'] = time();
             $_POST['lastupdate'] = time();
@@ -699,8 +946,8 @@ class ProductAction extends Action {
 
 
                 if ($_POST['business_id']) {
-                    $customer_id = M("business")->where("business_id=%d", $data['business_id'])->field("customer_id")->find();
-                    $data = "";
+                    $customer_id = M("business")->where("business_id=%d", $_POST['business_id'])->field("customer_id")->find();
+                    $data = [];
                     $data['resume_id'] = $eid;
                     $data['project_id'] = $_POST['business_id'];
                     $data['tracker'] = session("role_id");
@@ -859,24 +1106,44 @@ class ProductAction extends Action {
         $resume = D("ResumeView")->where("resume.eid=%d", $eid)->find();
         $resume['label'] = explode(",", $resume['label']);
         if ($resume['startWorkyear']) {
-            $resume['exp'] = date("Y") - $resume['startWorkyear'] . "年工作经验";
+            $startYear = $resume['startWorkyear'];
+            strlen($resume['startWorkyear']) > 4 && $startYear = date('Y', $resume['startWorkyear']);
+            $resume['exp'] = date("Y") - $startYear . "年工作经验";
         }
         if ($resume['location']) {
             $resume['location'] = $city_name[$resume['location']];
         }
         if ($resume['birthYear']) {
             $resume['age'] = date("Y") - $resume['birthYear'];
-        }
-        if (!$resume['birthMouth']) {
-            $resume['birthMouth'] = '';
         } else {
+            if ($resume['birthday'])
+                $resume['age'] = date("Y") - date('Y', $resume['birthday']);
+            else
+                $resume['age'] = '';
+        }
+        $resume['birthday'] > 0 ? $resume['birthday'] : strtotime("{$resume['birthYear']}-{$resume['birthMouth']}");
+        if (!$resume['birthMouth']) {
+            $resume['birthMouth'] = date("Y") - date('m', $resume['birthday']);
+        } else {
+
             $resume['birthMouth'] = '-' . $resume['birthMouth'];
         }
 
-
+        
+        //简历附件
+        $file_ids = M('rResumeFile')->where(['resume_id' => $eid, 'is_resolve' => 1])->getField('file_id', true);
+        if ($file_ids) {
+            $resume['file_resolve'] = M('file')->where('file_id in (%s)', implode(',', $file_ids))->select();
+            foreach ($resume['file_resolve'] as &$fileInfo) {
+                $fileInfo['owner'] = D('RoleView')->where('role.role_id = %d', $fileInfo['role_id'])->find();
+                $fileInfo['size'] = ceil($fileInfo['size'] / 1024);
+            }
+        }
+        
+        
         //文件
         $file_ids = M('rResumeFile')->where('resume_id = %d', $eid)->getField('file_id', true);
-        $info['file'] = M('file')->where('file_id in (%s)', implode(',', $file_ids))->select();
+        $file_ids = M('rResumeFile')->where(['resume_id' => $eid, 'is_resolve' => 0])->getField('file_id', true);
         $file_count = 0;
         foreach ($info['file'] as $key => $value) {
             $info['file'][$key]['owner'] = D('RoleView')->where('role.role_id = %d', $value['role_id'])->find();
@@ -939,38 +1206,39 @@ class ProductAction extends Action {
         }
 
         if ($resume['job_class']) {
-            $job_class = explode(";", $resume['job_class']);
-            $resume['job_class'] = [];
+            $arr = "";
+            $job_class = explode(",", $resume['job_class']);
             foreach ($job_class as $list) {
-                $resume['job_class'][] = $list;
+                $arr[] = $job_name[$list];
             }
+            $resume['job_class'] = implode(',', $arr);
         }
 
         if ($resume['industry']) {
+            $arr = "";
             $industry = explode(",", $resume['industry']);
-            $resume['industry'] = "";
             foreach ($industry as $list) {
-                $resume['industry'][] = $industry_name[$list];
+                $arr[] = $industry_name[$list];
             }
+            $resume['now_industry'] = implode(',', $arr);
         }
         $resume['now_industry'] = $resume['now_industry'];
 
-        $resume['sex'] = $resume['sex'] = 1 ? "女" : "男";
+        $resume['sex'] = $resume['sex'] == 1 ? "男" : "女";
         $resume_work = M("resume_work")->where("eid=%d", $eid)->select();
-        foreach ($resume_work as $kw => $rw){
-            $_position = M('resume_work_position')->where(['work_id'=>$rw['id']])->find();
+        foreach ($resume_work as $kw => $rw) {
+            $_position = M('resume_work_position')->where(['work_id' => $rw['id']])->find();
             $resume_work[$kw]['position'][] = $_position;
         }
         $this->resume_work = $resume_work;
-        
+
         $this->resume_data = M("resume_data")->where("eid=%d", $eid)->select();
 
         //edu 
         $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
-        $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
-        $resume['school'] = $this->resume_edu[0]['schoolName'];
-
-
+//        $resume['edu'] = self::$degree[$this->resume_edu[0]['degree']];
+        $resume['school'] = $this->resume_edu[count($this->resume_edu) - 1]['schoolName'];
+        $resume['creator_role_name'] = M('user')->where(['role_id' => $resume['creator_role_id']])->getField('full_name');
         $this->resume_project = M("resume_project")->where("eid=%d", $eid)->select();
         $map['eid'] = $resume['eid'];
         $map['role_id'] = session("role_id");
@@ -978,10 +1246,7 @@ class ProductAction extends Action {
         if ($collect) {
             $resume['favorite'] = 1;
         }
-
         $this->resume = $resume;
-
-
 
         $m_r_customer_log = M('rResumeLog');
         $m_log = M('Log');
@@ -1011,7 +1276,8 @@ class ProductAction extends Action {
         $this->process = array("calllist" => "CallList", "adviser" => "顾问面试", "tj" => "简历推荐", "interview" => "客户面试", "pass" => "面试通过", "offer" => "Offer", "enter" => "入职", "safe" => "过保");
         //参与项目
         $this->project = D("ProjectView")->where("fine_project.resume_id=%d", $eid)->select();
-
+//        header('content-type:text/html;charset=utf-8');
+//        dump($resume);die;
         $this->display();
     }
 
@@ -1059,13 +1325,13 @@ class ProductAction extends Action {
         }
 
         if ($resume['job_class']) {
-
+            $arr = "";
             $job_class = explode(",", $resume['job_class']);
             $resume['job_class'] = "";
             foreach ($job_class as $list) {
                 $resume['job_class'][] = $job_name[$list];
             }
-            //            $resume['job_class'] = implode(",",$arr);
+            $resume['job_class'] = implode(",", $arr);
         }
 
         if ($resume['industry']) {
@@ -1078,7 +1344,7 @@ class ProductAction extends Action {
             //            $resume['industry'] = implode(",",$arr);
         }
 
-        $resume['sex'] = $resume['sex'] = 1 ? "男" : "女";
+        $resume['sex'] = $resume['sex'] == 1 ? "男" : "女";
         $this->resume_work = M("resume_work")->where("eid=%d", $eid)->select();
         $this->resume_edu = M("resume_edu")->where("eid=%d", $eid)->select();
         $this->resume_project = M("resume_project")->where("eid=%d", $eid)->select();
@@ -1306,41 +1572,59 @@ class ProductAction extends Action {
                 $search = is_numeric($search) ? $search : strtotime($search);;
             if (!empty($field) && !empty($search)) {
                 switch ($condition) {
-                    case "is" : $where[$field] = array('eq', $search);
+                    case "is" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "isnot" : $where[$field] = array('neq', $search);
+                    case "isnot" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                    case "contains" :
+                        $where[$field] = array('like', '%' . $search . '%');
                         break;
-                    case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                    case "not_contain" :
+                        $where[$field] = array('notlike', '%' . $search . '%');
                         break;
-                    case "start_with" : $where[$field] = array('like', $search . '%');
+                    case "start_with" :
+                        $where[$field] = array('like', $search . '%');
                         break;
-                    case "end_with" : $where[$field] = array('like', '%' . $search);
+                    case "end_with" :
+                        $where[$field] = array('like', '%' . $search);
                         break;
-                    case "is_empty" : $where[$field] = array('eq', '');
+                    case "is_empty" :
+                        $where[$field] = array('eq', '');
                         break;
-                    case "is_not_empty" : $where[$field] = array('neq', '');
+                    case "is_not_empty" :
+                        $where[$field] = array('neq', '');
                         break;
-                    case "gt" : $where[$field] = array('gt', $search);
+                    case "gt" :
+                        $where[$field] = array('gt', $search);
                         break;
-                    case "egt" : $where[$field] = array('egt', $search);
+                    case "egt" :
+                        $where[$field] = array('egt', $search);
                         break;
-                    case "lt" : $where[$field] = array('lt', $search);
+                    case "lt" :
+                        $where[$field] = array('lt', $search);
                         break;
-                    case "elt" : $where[$field] = array('elt', $search);
+                    case "elt" :
+                        $where[$field] = array('elt', $search);
                         break;
-                    case "eq" : $where[$field] = array('eq', $search);
+                    case "eq" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "neq" : $where[$field] = array('neq', $search);
+                    case "neq" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                    case "between" :
+                        $where[$field] = array('between', array($search - 1, $search + 86400));
                         break;
-                    case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                    case "nbetween" :
+                        $where[$field] = array('not between', array($search, $search + 86399));
                         break;
-                    case "tgt" : $where[$field] = array('gt', $search + 86400);
+                    case "tgt" :
+                        $where[$field] = array('gt', $search + 86400);
                         break;
-                    default : $where[$field] = array('eq', $search);
+                    default :
+                        $where[$field] = array('eq', $search);
                 }
             }
             $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'search=' . $_REQUEST["search"]);
@@ -1396,41 +1680,59 @@ class ProductAction extends Action {
                     $search = is_numeric($search) ? $search : strtotime($search);;
                 if (!empty($field) && !empty($search)) {
                     switch ($condition) {
-                        case "is" : $where[$field] = array('eq', $search);
+                        case "is" :
+                            $where[$field] = array('eq', $search);
                             break;
-                        case "isnot" : $where[$field] = array('neq', $search);
+                        case "isnot" :
+                            $where[$field] = array('neq', $search);
                             break;
-                        case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                        case "contains" :
+                            $where[$field] = array('like', '%' . $search . '%');
                             break;
-                        case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                        case "not_contain" :
+                            $where[$field] = array('notlike', '%' . $search . '%');
                             break;
-                        case "start_with" : $where[$field] = array('like', $search . '%');
+                        case "start_with" :
+                            $where[$field] = array('like', $search . '%');
                             break;
-                        case "end_with" : $where[$field] = array('like', '%' . $search);
+                        case "end_with" :
+                            $where[$field] = array('like', '%' . $search);
                             break;
-                        case "is_empty" : $where[$field] = array('eq', '');
+                        case "is_empty" :
+                            $where[$field] = array('eq', '');
                             break;
-                        case "is_not_empty" : $where[$field] = array('neq', '');
+                        case "is_not_empty" :
+                            $where[$field] = array('neq', '');
                             break;
-                        case "gt" : $where[$field] = array('gt', $search);
+                        case "gt" :
+                            $where[$field] = array('gt', $search);
                             break;
-                        case "egt" : $where[$field] = array('egt', $search);
+                        case "egt" :
+                            $where[$field] = array('egt', $search);
                             break;
-                        case "lt" : $where[$field] = array('lt', $search);
+                        case "lt" :
+                            $where[$field] = array('lt', $search);
                             break;
-                        case "elt" : $where[$field] = array('elt', $search);
+                        case "elt" :
+                            $where[$field] = array('elt', $search);
                             break;
-                        case "eq" : $where[$field] = array('eq', $search);
+                        case "eq" :
+                            $where[$field] = array('eq', $search);
                             break;
-                        case "neq" : $where[$field] = array('neq', $search);
+                        case "neq" :
+                            $where[$field] = array('neq', $search);
                             break;
-                        case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                        case "between" :
+                            $where[$field] = array('between', array($search - 1, $search + 86400));
                             break;
-                        case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                        case "nbetween" :
+                            $where[$field] = array('not between', array($search, $search + 86399));
                             break;
-                        case "tgt" : $where[$field] = array('gt', $search + 86400);
+                        case "tgt" :
+                            $where[$field] = array('gt', $search + 86400);
                             break;
-                        default : $where[$field] = array('eq', $search);
+                        default :
+                            $where[$field] = array('eq', $search);
                     }
                 }
                 $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'search=' . $_REQUEST["search"]);
@@ -2142,41 +2444,59 @@ class ProductAction extends Action {
                         $search = is_numeric($search) ? $search : strtotime($search);
                 }
                 switch ($condition) {
-                    case "is" : $where[$field] = array('eq', $search);
+                    case "is" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "isnot" : $where[$field] = array('neq', $search);
+                    case "isnot" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                    case "contains" :
+                        $where[$field] = array('like', '%' . $search . '%');
                         break;
-                    case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                    case "not_contain" :
+                        $where[$field] = array('notlike', '%' . $search . '%');
                         break;
-                    case "start_with" : $where[$field] = array('like', $search . '%');
+                    case "start_with" :
+                        $where[$field] = array('like', $search . '%');
                         break;
-                    case "end_with" : $where[$field] = array('like', '%' . $search);
+                    case "end_with" :
+                        $where[$field] = array('like', '%' . $search);
                         break;
-                    case "is_empty" : $where[$field] = array('eq', '');
+                    case "is_empty" :
+                        $where[$field] = array('eq', '');
                         break;
-                    case "is_not_empty" : $where[$field] = array('neq', '');
+                    case "is_not_empty" :
+                        $where[$field] = array('neq', '');
                         break;
-                    case "gt" : $where[$field] = array('gt', $search);
+                    case "gt" :
+                        $where[$field] = array('gt', $search);
                         break;
-                    case "egt" : $where[$field] = array('egt', $search);
+                    case "egt" :
+                        $where[$field] = array('egt', $search);
                         break;
-                    case "lt" : $where[$field] = array('lt', $search);
+                    case "lt" :
+                        $where[$field] = array('lt', $search);
                         break;
-                    case "elt" : $where[$field] = array('elt', $search);
+                    case "elt" :
+                        $where[$field] = array('elt', $search);
                         break;
-                    case "eq" : $where[$field] = array('eq', $search);
+                    case "eq" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "neq" : $where[$field] = array('neq', $search);
+                    case "neq" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                    case "between" :
+                        $where[$field] = array('between', array($search - 1, $search + 86400));
                         break;
-                    case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                    case "nbetween" :
+                        $where[$field] = array('not between', array($search, $search + 86399));
                         break;
-                    case "tgt" : $where[$field] = array('gt', $search + 86400);
+                    case "tgt" :
+                        $where[$field] = array('gt', $search + 86400);
                         break;
-                    default : $where[$field] = array('eq', $search);
+                    default :
+                        $where[$field] = array('eq', $search);
                 }
                 //$params = array('field='.trim($_REQUEST['field']), 'condition='.$condition, 'search='.$_REQUEST["search"]);
             }
@@ -2235,41 +2555,59 @@ class ProductAction extends Action {
                         $search = is_numeric($search) ? $search : strtotime($search);
                 }
                 switch ($condition) {
-                    case "is" : $where[$field] = array('eq', $search);
+                    case "is" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "isnot" : $where[$field] = array('neq', $search);
+                    case "isnot" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "contains" : $where[$field] = array('like', '%' . $search . '%');
+                    case "contains" :
+                        $where[$field] = array('like', '%' . $search . '%');
                         break;
-                    case "not_contain" : $where[$field] = array('notlike', '%' . $search . '%');
+                    case "not_contain" :
+                        $where[$field] = array('notlike', '%' . $search . '%');
                         break;
-                    case "start_with" : $where[$field] = array('like', $search . '%');
+                    case "start_with" :
+                        $where[$field] = array('like', $search . '%');
                         break;
-                    case "end_with" : $where[$field] = array('like', '%' . $search);
+                    case "end_with" :
+                        $where[$field] = array('like', '%' . $search);
                         break;
-                    case "is_empty" : $where[$field] = array('eq', '');
+                    case "is_empty" :
+                        $where[$field] = array('eq', '');
                         break;
-                    case "is_not_empty" : $where[$field] = array('neq', '');
+                    case "is_not_empty" :
+                        $where[$field] = array('neq', '');
                         break;
-                    case "gt" : $where[$field] = array('gt', $search);
+                    case "gt" :
+                        $where[$field] = array('gt', $search);
                         break;
-                    case "egt" : $where[$field] = array('egt', $search);
+                    case "egt" :
+                        $where[$field] = array('egt', $search);
                         break;
-                    case "lt" : $where[$field] = array('lt', $search);
+                    case "lt" :
+                        $where[$field] = array('lt', $search);
                         break;
-                    case "elt" : $where[$field] = array('elt', $search);
+                    case "elt" :
+                        $where[$field] = array('elt', $search);
                         break;
-                    case "eq" : $where[$field] = array('eq', $search);
+                    case "eq" :
+                        $where[$field] = array('eq', $search);
                         break;
-                    case "neq" : $where[$field] = array('neq', $search);
+                    case "neq" :
+                        $where[$field] = array('neq', $search);
                         break;
-                    case "between" : $where[$field] = array('between', array($search - 1, $search + 86400));
+                    case "between" :
+                        $where[$field] = array('between', array($search - 1, $search + 86400));
                         break;
-                    case "nbetween" : $where[$field] = array('not between', array($search, $search + 86399));
+                    case "nbetween" :
+                        $where[$field] = array('not between', array($search, $search + 86399));
                         break;
-                    case "tgt" : $where[$field] = array('gt', $search + 86400);
+                    case "tgt" :
+                        $where[$field] = array('gt', $search + 86400);
                         break;
-                    default : $where[$field] = array('eq', $search);
+                    default :
+                        $where[$field] = array('eq', $search);
                 }
                 //$params = array('field='.trim($_REQUEST['field']), 'condition='.$condition, 'search='.$_REQUEST["search"]);
             }
@@ -2436,7 +2774,7 @@ class ProductAction extends Action {
 
             $total_amount[] = $single_amounts;
             $total_price[] = $single_price;
-            $moon ++;
+            $moon++;
         }
         $total_sales = array('amount' => $total_amount, 'price' => $total_price);
         $this->ajaxReturn($total_sales, 'success', 1);
@@ -2487,7 +2825,7 @@ class ProductAction extends Action {
             }
 
             $productData[] = array($product_name, intval($product_amount)); //月度最高销售量产品
-            $moon ++;
+            $moon++;
         }
         $this->ajaxReturn($productData, 'success', 1);
     }
@@ -2555,11 +2893,123 @@ class ProductAction extends Action {
             $this->display();
         }
     }
-    function checkTel(){
-        if(IS_POST){
+
+    function checkTel() {
+        if (IS_POST) {
             $resume = M('resume');
             $where['telephone'] = I('post.tel');
-            $resume->where($where)->find()?$this->ajaxReturn(true):$this->ajaxReturn(false);
+            $resume->where($where)->find() ? $this->ajaxReturn(true) : $this->ajaxReturn(false);
         }
     }
+
+    /**
+     * 简历查重
+     */
+    public function checkReuse() {
+        $content = I('content');
+        $works = $this->matchWorks($content);
+        //根据工作经历查重
+        if (!$works || empty($works) || !is_array($works)) {
+            $this->ajaxReturn(0, '没有匹配到可用工作经历', 0);
+        }
+//        print_r($works);die;
+        $workCount = count($works);
+        $allResume = [];
+        foreach ($works as $job) {
+            $companyName = $job['company'];
+            $startWork = $job['start_time'];
+            $emdWork = $job['end_time'];
+            $companyList = M('resume_work')->where(['company' => ['like', "%{$companyName}%"]])->select();
+            if (!$companyList) {
+                continue;
+            }
+
+            foreach ($companyList as $companyInfo) {
+                if (!$companyInfo) {
+                    continue;
+                }
+                $startTime = $companyInfo['starttime'];
+                $endTime = $companyInfo['endtime'];
+                if ($startTime != $startWork && $endTime != $emdWork) {
+                    continue;
+                }
+                $eid = $companyInfo['eid'];
+                if (isset($allResume[$eid]) && $allResume[$eid] >= 1) {
+                    $allResume[$eid] = $allResume[$eid] + 1;
+                } else {
+                    $allResume[$eid] = 1;
+                }
+            }
+        }
+
+        //收集出现次数较多得ID
+        $returnIds = [];
+        arsort($allResume);
+        foreach ($allResume as $eid => $count) {
+            $percent = $count / $workCount; //出现比例
+            if ($percent < 0.5) {
+                continue;
+            }
+            $returnIds[] = $eid;
+        }
+        if ($returnIds && $returnIds[1]) {
+            $this->ajaxReturn($returnIds, '查找到以下相似简历', 1);
+        }
+        $this->ajaxReturn([], '没有查找相似简历', 0);
+    }
+
+    /**
+     * @desc  匹配工作经历
+     * @param $content
+     * @return array|bool
+     */
+    public function matchWorks($content) {
+        $content = $this->charChange($content);
+        $content = preg_replace('/&lt;/is', '<', $content);
+        $content = preg_replace('/&gt;/is', '>', $content);
+        $content = preg_replace('/（/is', '(', $content);
+        $content = preg_replace('/）/is', ')', $content);
+        $content = preg_replace('/—/is', '-', $content);
+        //智联卓聘
+        $pregWorks = '/<p>(\d{4}年\d{1,2}月)\s{0,}-\s{0,}(\d{4}年\d{1,2}月|至今)\s{1,}([^>]*)\((\d{1,3}年\d{1,2}个月|\d{1,2}个月|\d{1,3}年)\)\s{0,}<\/p>/isU';
+        preg_match_all($pregWorks, $content, $contentMatch);
+        if (!$contentMatch || !$contentMatch[3]) {
+            return false;
+        }
+        $startArr = $contentMatch[1];
+        $endArr = $contentMatch[2];
+        $nameArr = $contentMatch[3];
+        $jobs = [];
+        foreach ($startArr as $index => $start) {
+            $end = $endArr[$index];
+            $start = str_replace(['年', '月'], ['-', '-01'], $start);
+            $end = str_replace(['年', '月'], ['-', '-01'], $end);
+            $start = strtotime($start);
+            $end == '至今' ? $end = 0 : $end = strtotime($end);
+            $name = strip_tags(trim($nameArr[$index]));
+            if (!$name) {
+                continue;
+            }
+            $jobs[] = ['start_time' => $start, 'end_time' => $end, 'company' => $name];
+        }
+        return $jobs;
+    }
+
+    /**
+     * 转换成指定的编码
+     * @param $data
+     * @param string $charSet
+     * @return string
+     */
+    public function charChange($data, $charSet = 'UTF-8') {
+        if (empty($data)) {
+            return false;
+        }
+        $fileType = mb_detect_encoding($data, array('UTF-8', 'GBK', 'LATIN1', 'BIG5'));
+        if ($fileType != $charSet) {
+            $data = mb_convert_encoding($data, $charSet, $fileType);
+        }
+        return $data;
+    }
+
 }

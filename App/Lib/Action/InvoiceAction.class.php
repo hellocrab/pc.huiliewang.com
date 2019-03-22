@@ -55,10 +55,6 @@ class InvoiceAction extends Action{
 //        unset($param['a']);
 
 
-
-
-
-
         $this->process = array("calllist"=>"CallList","adviser"=>"顾问面试","tj"=>"简历推荐","interview"=>"客户面试","pass"=>"面试通过","offer"=>"Offer","enter"=>"入职","safe"=>"过保");
         $type = I("type")?I("type"):"apply";
         $this->type = $type;
@@ -174,7 +170,25 @@ class InvoiceAction extends Action{
 //                }
 //            }
         }
-        $this->fields_search = $fields_search;
+
+        //业务形态和时间的筛选
+        $type_business = $_GET['type_business'] ? BaseUtils::getStr($_GET['type_business'] ,'string') : '' ;
+        $applyed_time = $_GET['applyed_time'] ? BaseUtils::getStr($_GET['applyed_time'],'string') : '' ;
+        $applyed_endtime = $_GET['applyed_endtime'] ? BaseUtils::getStr($_GET['applyed_endtime'],'string') : '';
+        if($type_business)
+            $where['project_type'] = $type_business;
+        if ($applyed_time && $applyed_endtime)
+            $where['create_time'] = array('between',array(strtotime($applyed_time),strtotime($applyed_endtime)));
+        if(! ($applyed_time && $applyed_endtime)){
+            if($applyed_time)
+                $where['create_time'] = array('gt',strtotime($applyed_time));
+            if($applyed_endtime)
+                $where['create_time'] = array('lt',strtotime($applyed_endtime));
+        }
+        header('content-type:text/html;charset=utf-8');
+        unset($where['type_business']);
+        unset($where['applyed_time']);
+        unset($where['applyed_endtime']);
 
         $where['type'] = $type;
         if(trim($_GET['act']) == 'excel'){
@@ -210,9 +224,7 @@ class InvoiceAction extends Action{
         if($p_num<$p){
             $p = $p_num;
         }
-
         $invoice_list = $d_invoice->where($where)->page($p.','.$listrows)->order($order)->select();
-
         foreach ($invoice_list as $key=>$list){
             $invoice_list[$key]['examine_content'] = unserialize($list['examine_content']);
             $invoice_list[$key]['billing_content'] = unserialize($list['billing_content']);
@@ -1172,11 +1184,15 @@ class InvoiceAction extends Action{
     }
 
     public function distribution_int(){
-        $this->user_name = M("user")->where("user_id=%d",session("user_id"))->getField("full_name");
+
         $id = I("id");
         header("Content-type: text/html; charset=utf-8");
-        $invoice  = M("invoice")->field("money,fine_id")->where("invoice_id=%d",$id)->find();
+        $invoice  = M("invoice")->field("money,fine_id,create_role_id")->where("invoice_id=%d",$id)->find();
+        $createUserId = $invoice['create_role_id'];
+        $userInfo= M("user")->where("role_id=%d",$createUserId)->find();
+        $this->user_name = $userInfo['full_name'];
         $this->assign("money",$invoice['money']);
+        $this->assign("createUserId",$userInfo['user_id']);
 
         if($this->isPost()){
             $project = M("fine_project")->where("id=%d",$invoice['fine_id'])->field("resume_id,project_id,com_id,tracker")->find();
