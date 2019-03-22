@@ -836,6 +836,31 @@ class SettingAction extends Action{
                 $rec_date = $m_config -> where('name="receivables_time"') -> setField('value',$_POST['receivables_time']);
             }
 
+            //人才信息查看有效期
+            if(!$m_config->where('name="resume_look_time"')->find()){
+                $resume_look['name'] = 'resume_look_time';
+                $resume_look['value'] = $_POST['resume_look_time'];
+                $resume_look = $m_config ->add($resume_look);
+            }else {
+                $resume_look = $m_config -> where('name="resume_look_time"') -> setField('value',$_POST['resume_look_time']);
+            }
+            //客户信息查看有效期
+            if(!$m_config->where('name="contacts_look_time"')->find()){
+                $contacts_look['name'] = 'contacts_look_time';
+                $contacts_look['value'] = $_POST['contacts_look_time'];
+                $contacts_look = $m_config ->add($contacts_look);
+            }else {
+                $contacts_look = $m_config -> where('name="contacts_look_time"') -> setField('value',$_POST['contacts_look_time']);
+            }
+            //人才查看次数/天
+            if(!$m_config->where('name="resume_look_count"')->find()){
+                $resume_look_count['name'] = 'resume_look_count';
+                $resume_look_count['value'] = $_POST['resume_look_count'];
+                $resume_look_count = $m_config ->add($resume_look_count);
+            }else {
+                $resume_look_count = $m_config -> where('name="resume_look_count"') -> setField('value',$_POST['resume_look_count']);
+            }
+
             $leads_outdays = $m_config -> where('name="leads_outdays"') -> setField('value',$_POST['leads_outdays']);
             $result_customer_outdays = $m_config->where('name = "customer_outdays"')->setField('value', $_POST['customer_outdays']);
             $result_contract_outdays = $m_config->where('name = "contract_outdays"')->setField('value', $_POST['contract_outdays']);
@@ -853,7 +878,7 @@ class SettingAction extends Action{
             $result_customer_limit_condition = $m_config->where('name = "customer_limit_condition"')->setField('value', $_POST['customer_limit_condition']);
             $result_customer_limit_counts = $m_config->where('name = "customer_limit_counts"')->setField('value', $_POST['customer_limit_counts']);
             $is_invoice = $m_config->where('name = "is_invoice"')->setField('value', $_POST['is_invoice']);
-            if($result_defaultinfo || $result_contract_outdays || $contract_custom  || $leads_outdays || $result_customer_outdays || $result_customer_limit_condition || $result_customer_limit_counts || $is_invoice || $result_openrecycle || $bc_check || $cc_check || $fc_check || $business_custom || $receivables_custom || $user_custom || $customer_num ||$rec_date){
+            if($resume_look || $contacts_look || $resume_look_count || $result_defaultinfo || $result_contract_outdays || $contract_custom  || $leads_outdays || $result_customer_outdays || $result_customer_limit_condition || $result_customer_limit_counts || $is_invoice || $result_openrecycle || $bc_check || $cc_check || $fc_check || $business_custom || $receivables_custom || $user_custom || $customer_num ||$rec_date){
                 alert('success',L('SUCCESSFULLY SET AND SAVED'),U('setting/setup'));
             } else {
                 alert('error',L('DATA UNCHANGED'),U('setting/setup'));
