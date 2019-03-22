@@ -375,8 +375,7 @@ class LogAction extends Action{
             $map['_complex'] = $where;
             $map['is_deleted'] = 0;
         } else {
-            $where['owner_role_id'] = session('role_id');
-            $where['_string'] = "FIND_IN_SET(".session('role_id').",business.parter)";
+            $where['_string'] = "FIND_IN_SET(" . session('role_id') . ",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter) ";
             $where['_logic'] = 'OR';
             $map['_complex'] = $where;
             $map['is_deleted'] = 0;
