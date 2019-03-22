@@ -345,9 +345,9 @@
                                         <div class="status_ico form-inline editable-wrap editable-select" role="form" blur="cancel">
                                             <div class="editable-controls form-group">
                                                 <select class="form-control" style="vertical-align: baseline;height: 34px;">
-                                                    <volist name="businessStatusList" id="businessStatus" key="key">
+                                                    <foreach  name="businessStatusList" item="businessStatus" key="key">
                                                         <option value="{$key|default='0'}" label="{$businessStatus|default=''}">{$businessStatus|default=''}</option>
-                                                    </volist>
+                                                    </foreach >
                                                 </select>
                                                 <span class="editable-buttons">
                                                     <button type="button" class="btn btn-primary jinzhan_btnedit">
