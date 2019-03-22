@@ -3095,6 +3095,7 @@ class BusinessAction extends Action
                 $roleIds = $m_user->where($where)->field('role_id')->select();
             } else {
                 if ($where['full_name'] != '' || $where['telephone'] != '') {
+                    $where['full_name'] = array('like','%'.$where['full_name'].'%');
                     $roleIdsWhere = $m_user->where($where)->field('role_id')->select();
                     $roleIdsDepartment = $roleIds;
                     unset($roleIds);
