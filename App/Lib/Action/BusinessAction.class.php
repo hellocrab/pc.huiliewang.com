@@ -171,6 +171,7 @@ class BusinessAction extends Action
             case 'me' :
 //                $where['business.owner_role_id'] = session('role_id');
                 $where['business.creator_role_id'] = session('role_id');
+                
                 break;
             case 'all' :
 //                $where['business.owner_role_id'] = session('role_id');
@@ -182,6 +183,7 @@ class BusinessAction extends Action
                 $where['business.owner_role_id'] = array('in',$ownerAllIds);
                 break;
         }
+       
         if ($_REQUEST["field"]) {
             $field = trim($_REQUEST['field']);
             $search = empty($_REQUEST['search']) ? '' : trim($_REQUEST['search']);
@@ -409,6 +411,7 @@ class BusinessAction extends Action
         if (!isset($where['business.owner_role_id'])) {
             //权限
             $where['business.owner_role_id'] = array('in', $this->_permissionRes);
+            $where['_string'] = "FIND_IN_SET(".session('role_id').",business.parter)";
         }
         //商机状态
         if ($_GET['status_id']) {
@@ -464,6 +467,7 @@ class BusinessAction extends Action
 //            $where['_logic'] = 'OR';
             $where['_logic'] = 'AND';
         }
+        $where['_logic'] = 'OR';
         unset($where['business.owner_role_id']);
         $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
         $count = $d_v_business->where($where)->order($order)->count();
@@ -3087,6 +3091,7 @@ class BusinessAction extends Action
                 }
             }
             if ($roleIds == null && $where['department_id'] == null) {
+                $where['full_name'] = array('like','%'.$where['full_name'].'%');
                 $roleIds = $m_user->where($where)->field('role_id')->select();
             } else {
                 if ($where['full_name'] != '' || $where['telephone'] != '') {
