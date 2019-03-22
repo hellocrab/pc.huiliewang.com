@@ -3150,6 +3150,10 @@ class BusinessAction extends Action
             import('@.ORG.Page'); // 导入分页类
             $Page = new Page($count, $listrows); // 实例化分页类 传入总记录数和每页显示的记录数
             $show = $Page->show(); // 分页显示输出
+            //渲染输入内容
+            $this->assign('full_name',$_GET['name']);
+            $this->assign('tel',$_GET['tel']);
+            $this->assign('department_id',$_GET['department_id']);
             $this->assign('page', $show); // 赋值分页输出
             $this->assign("listrows", $listrows);
             $this->assign('data', $data);
