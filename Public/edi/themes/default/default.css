@@ -1,17 +1,21 @@
 /* common */
-.ke-content{
-	padding: 0;
-	margin: 0;
-	border: none;
-	width: 100%;
-	height: 100%;
-}
 .ke-inline-block {
 	display: -moz-inline-stack;
 	display: inline-block;
 	vertical-align: middle;
 	zoom: 1;
 	*display: inline;
+}
+.ke-container-default{
+	width: 100% !important;
+	height: 100% !important;
+	border: none !important;
+}
+.ke-edit{
+	height:100% !important;
+}
+.ke-edit-iframe{
+	height:100% !important;
 }
 .ke-clearfix {
 	zoom: 1;
@@ -499,6 +503,7 @@
 	margin: 0;
 	padding: 0;
 	overflow: auto;
+	width: 100%;
 }
 .ke-edit-textarea {
 	font: 12px/1.5 "Consolas", "Monaco", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
