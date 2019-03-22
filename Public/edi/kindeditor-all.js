@@ -8842,7 +8842,7 @@ SWFUpload.Console.writeLine = function (message) {
 			console.setAttribute("wrap", "off");
 			console.wrap = "off";
 			console.style.overflow = "auto";
-			console.style.width = "700px";
+			// console.style.width = "700px";
 			console.style.height = "350px";
 			console.style.margin = "5px";
 			documentForm.appendChild(console);

@@ -2,7 +2,7 @@
 $(()=>{
     const dialog = $('.ideDialog');
     const btn = $('.ideBtn');
-    let content = '';//接收编辑器内容
+    // let content = '';//接收编辑器内容
     let temp = $(`<div class="ideBox">
                     <span class='ideNotice'>请将简历内容粘贴在此处:</span>
                     <div class="ide">
@@ -33,6 +33,7 @@ $(()=>{
     });
     //提交
     $('.btnBox div:nth-child(2)').click(()=>{
+        let content = editor.html();
         $.ajax({
             url:"index.php?m=product&a=checkReuse",
             data:{content:content},
