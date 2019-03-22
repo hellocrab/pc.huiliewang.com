@@ -456,7 +456,7 @@ class BusinessAction extends Action
         // $where['name'] = array('neq','..');
 
         if($ownerAllIds && $by == 'all'){
-//            $ownerWhere['business.joiner'] = ['in',$this->_permissionRes];
+            $ownerWhere['business.joiner'] = ['in',$this->_permissionRes];
             $ownerWhere['_logic'] = 'OR';
             $ownerWhere['_string'] = "FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
             $where['_complex'] = $ownerWhere;
