@@ -398,7 +398,7 @@ function achievementNum($userId, $dateStartInt, $nextDayInt, $conn)
 }
 
 /**
- * 推荐人员数量
+ * 推荐人员数量 [推荐人员数是推荐人才到客户]
  * @param  [type] $userId   [description]
  * @param  [type] $dateStartInt [description]
  * @param  [type] $nextDayInt   [description]
@@ -408,7 +408,7 @@ function achievementNum($userId, $dateStartInt, $nextDayInt, $conn)
 function fineProjectNum($userId, $dateStartInt, $nextDayInt, $conn)
 {
     $table = 'mx_fine_project';
-    $sql = "SELECT count(*) as counts from {$table} where tracker = {$userId} and addtime >= {$dateStartInt} and addtime < {$nextDayInt}";
+    $sql = "SELECT count(*) as counts from {$table} where tracker = {$userId} and tjaddtime >= {$dateStartInt} and tjaddtime < {$nextDayInt}";
     $query = $conn->query($sql);
     if ($query) {
         $info = $query->fetch(PDO::FETCH_ASSOC);
