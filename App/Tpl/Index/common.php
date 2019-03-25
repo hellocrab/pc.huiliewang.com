@@ -638,8 +638,10 @@ function parseAlert() {
     return $alert;
 }
 
-function getUserByRoleId($role_id) {
-    $role = D('RoleView')->where('role.role_id = %d', $role_id)->find();
+function getUserByRoleId($role_id,$status = 0) {
+    $where = ['role.role_id'=>$role_id];
+    $status > 0 && $where['user.status'] = $status;
+    $role = D('RoleView')->where($where)->find();
     return $role;
 }
 

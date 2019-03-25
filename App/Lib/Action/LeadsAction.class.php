@@ -4,7 +4,8 @@
  * 线索模块
  *
  * */
-class LeadsAction extends Action {
+class LeadsAction extends Action
+{
 
     /**
      * 用于判断权限
@@ -18,7 +19,7 @@ class LeadsAction extends Action {
         $this->assign("title", $title);
         $action = array(
             'permission' => array(),
-            'allow' => array('transform', 'checkinfo', 'changecontent', 'getaddchartbyroleid', 'getownchartbyroleid', 'check', 'receive', 'fenpei', 'batchreceive', 'assigndialog', 'batchassign', 'revert', 'validate', 'remove', 'excelimportdownload', 'getcurrentstatus', 'excelimportact', 'change_customer', 'field_save', 'analyticsCount', 'analytics', 'dialoghk', 'dialogbd', 'dialogcustomer', 'dialogprojectnum', 'dialogresumenum', 'dialogfinenum', 'dialoginterview', 'dialoginterviewt', 'dialogpresent', 'dialogoffer', 'dialogofferd', 'dialogenter','dialogsafe')
+            'allow' => array('transform', 'checkinfo', 'changecontent', 'getaddchartbyroleid', 'getownchartbyroleid', 'check', 'receive', 'fenpei', 'batchreceive', 'assigndialog', 'batchassign', 'revert', 'validate', 'remove', 'excelimportdownload', 'getcurrentstatus', 'excelimportact', 'change_customer', 'field_save', 'analyticsCount', 'analytics', 'dialoghk', 'dialogbd', 'dialogcustomer', 'dialogprojectnum', 'dialogresumenum', 'dialogfinenum', 'dialoginterview', 'dialoginterviewt', 'dialogpresent', 'dialogoffer', 'dialogofferd', 'dialogenter', 'dialogsafe','exportExcel')
         );
         B('Authenticate', $action);
         $this->_permissionRes = getPerByAction(MODULE_NAME, ACTION_NAME);
@@ -832,8 +833,7 @@ class LeadsAction extends Action {
                         $this->error(L('LEADS_MODIFIED_FAILED'));
                     }
                 } else {
-                    $this->error($m_leads_data->getError());
-                    ;
+                    $this->error($m_leads_data->getError());;
                 }
             } else {
                 $this->error($m_leads->getError());
@@ -1278,7 +1278,7 @@ class LeadsAction extends Action {
                 if ($field['form_type'] == 'address') {
                     $address = array();
                     for ($i = 0; $i < 4; $i++) {
-                        $info = (String) $currentSheet->getCell($cv . chr($ascii) . $currentRow)->getValue();
+                        $info = (String)$currentSheet->getCell($cv . chr($ascii) . $currentRow)->getValue();
                         $address[] = $info;
                         $ascii++;
                         if ($ascii == 91) {
@@ -1305,7 +1305,7 @@ class LeadsAction extends Action {
                             $info = PHPExcel_Style_NumberFormat::toFormattedString($info, $formatcode);
                         }
                     } else {
-                        $info = (String) $cell->getCalculatedValue();
+                        $info = (String)$cell->getCalculatedValue();
                     }
                     if ($field['is_main'] == 1) {
                         $data[$field['field']] = ($field['form_type'] == 'datetime' && $info != null) ? intval(strtotime($info)) : $info;
@@ -1654,54 +1654,54 @@ class LeadsAction extends Action {
     /*
      * callist个数弹窗
      */
-    public function dialogcallist(){
+    public function dialogcallist() {
         $start_time = I("start_date");
         $end_time = I("end_date");
         $role_id = I("id");
         $where['addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $roleIds = I("roleIds",'');
+        $roleIds = I("roleIds", '');
         $role_id > 0 && $where['tracker'] = $role_id;
-        ($role_id <=0 && $roleIds) && $where['tracker'] = ['in',$roleIds];
+        ($role_id <= 0 && $roleIds) && $where['tracker'] = ['in', $roleIds];
         $list = D("ProjectView")->where($where)->select();
         include APP_PATH . "Common/job.cache.php";
-        foreach ($list as $k => $v){
-            if($v['job_class']){
+        foreach ($list as $k => $v) {
+            if ($v['job_class']) {
                 $arr = [];
-                $job_class = explode(",",$v['job_class']);
-                foreach ($job_class as $fv){
+                $job_class = explode(",", $v['job_class']);
+                foreach ($job_class as $fv) {
                     $arr[] = $job_name[$fv];
                 }
-                $list[$k]['job_class'] = implode(",",$arr);
+                $list[$k]['job_class'] = implode(",", $arr);
             }
         }
-        $this->assign('list',$list);
+        $this->assign('list', $list);
         $this->display();
     }
 
     /*
      * cc备注弹窗
      */
-    public function dialogcc(){
+    public function dialogcc() {
         $start_time = I("start_date");
         $end_time = I("end_date");
         $role_id = I("id");
         $where['addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $roleIds = I("roleIds",'');
+        $roleIds = I("roleIds", '');
         $role_id > 0 && $where['tracker'] = $role_id;
-        ($role_id <=0 && $roleIds) && $where['tracker'] = ['in',$roleIds];
+        ($role_id <= 0 && $roleIds) && $where['tracker'] = ['in', $roleIds];
         $list = D("FineProjectCcView")->where($where)->select();
         include APP_PATH . "Common/job.cache.php";
-        foreach ($list as $k => $v){
-            if($v['job_class']){
+        foreach ($list as $k => $v) {
+            if ($v['job_class']) {
                 $arr = [];
-                $job_class = explode(",",$v['job_class']);
-                foreach ($job_class as $fv){
+                $job_class = explode(",", $v['job_class']);
+                foreach ($job_class as $fv) {
                     $arr[] = $job_name[$fv];
                 }
-                $list[$k]['job_class'] = implode(",",$arr);
+                $list[$k]['job_class'] = implode(",", $arr);
             }
         }
-        $this->assign('list',$list);
+        $this->assign('list', $list);
         $this->display();
     }
 
@@ -1713,10 +1713,10 @@ class LeadsAction extends Action {
         $start_time = I("start_date");
         $end_time = I("end_date");
         $role_id = I("id");
-        $where['invoice.type'] = ['in',["distribution",'grant']];
-        $roleIds = I("roleIds",'');
+        $where['invoice.type'] = ['in', ["distribution", 'grant']];
+        $roleIds = I("roleIds", '');
         $role_id > 0 && $where['invoice.create_role_id'] = $role_id;
-        ($role_id <=0 && $roleIds) && $where['invoice.create_role_id'] = ['in',$roleIds];
+        ($role_id <= 0 && $roleIds) && $where['invoice.create_role_id'] = ['in', $roleIds];
 
         $where['invoice.create_time'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("InvoiceView")->where($where)->select();
@@ -1732,9 +1732,9 @@ class LeadsAction extends Action {
         $end_time = I("end_date");
         $role_id = I("id");
         $where['create_time'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $roleIds = I("roleIds",'');
+        $roleIds = I("roleIds", '');
         $role_id > 0 && $where['creator_role_id'] = $role_id;
-        ($role_id <=0 && $roleIds) && $where['creator_role_id'] = ['in',$roleIds];
+        ($role_id <= 0 && $roleIds) && $where['creator_role_id'] = ['in', $roleIds];
         $this->list = D("ContractView")->where($where)->select();
         $this->display();
     }
@@ -1797,7 +1797,7 @@ class LeadsAction extends Action {
         //引入城市数据
         include APP_PATH . "Common/city.cache.php";
         //修改  年龄和城市
-        foreach ($list as $k => $v){
+        foreach ($list as $k => $v) {
             //修改意向城市信息
             if ($v['intentCity']) {
                 $arr = "";
@@ -1806,15 +1806,15 @@ class LeadsAction extends Action {
                     $arr[] = $city_name[$vl];
                 }
                 $list[$k]['intentCity'] = implode(",", $arr);
-            }else{
+            } else {
                 $list[$k]['intentCity'] = '-';
             }
             //按照birthYear修改年龄信息
-            if($v['birthYear'])
-                $list[$k]['age'] = intval(date("Y",time())) -  intval($v['birthYear']);
+            if ($v['birthYear'])
+                $list[$k]['age'] = intval(date("Y", time())) - intval($v['birthYear']);
 
         }
-        $this->assign('list',$list);
+        $this->assign('list', $list);
         $this->display();
     }
 
@@ -1828,7 +1828,7 @@ class LeadsAction extends Action {
         $role_id = intval(I("id"));
         $role_id > 0 && $where['fine_project.tracker'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
-        $where['fine_project.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $where['fine_project.tjaddtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("ProjectView")->where($where)->select();
         $this->display();
     }
@@ -1849,7 +1849,7 @@ class LeadsAction extends Action {
         $projectSafeModel = new ProjectStepViewModel('fine_project_interview');
         $list = $projectSafeModel->where($where)->select();
         $newList = [];
-        foreach ($list as $info){
+        foreach ($list as $info) {
             $newList[$info['resume_id']] = $info;
         }
         $this->list = $newList;
@@ -2129,27 +2129,88 @@ class LeadsAction extends Action {
      * @param $p
      * @param $pageSize
      */
-    private function analyticsNum($map, $p, $pageSize)
-    {
+    private function analyticsNum($map, $p, $pageSize, $isExport = 0) {
+        if($isExport){
+            $p = 1;
+            $pageSize = 300; //导出条数300条
+        }
         $countFields = 'sum(integral) as integral,sum(customer_num) as customerNum,sum(project_num) as projectNum,'
-                . 'sum(resume_num) as resumeNum,sum(fine_project_num) as fineNum,sum(interview_num) as interviewNum,sum(bd_num) as bdNum,' .
-                'sum(hk_num) as hkNum,sum(present_num) as presentNum,sum(safe_num) as safeNum,sum(enter_num) as enterNum ,' .
-                'sum(offerd_num) as offerdNum,sum(offer_num) as offerNum,sum(interviewt_num) as interviewtNum , sum(callist_num) as callistnum , sum(cc_num) as ccnum' ;
-        $list = M('report_intergral')->where($map)->field('id,user_role_id,user_id,user_name,department,department_id,'.$countFields)->group('user_id')->order('integral desc,customerNum desc')->page($p, $pageSize)->select();
+            . 'sum(resume_num) as resumeNum,sum(fine_project_num) as fineNum,sum(interview_num) as interviewNum,sum(bd_num) as bdNum,' .
+            'sum(hk_num) as hkNum,sum(present_num) as presentNum,sum(safe_num) as safeNum,sum(enter_num) as enterNum ,' .
+            'sum(offerd_num) as offerdNum,sum(offer_num) as offerNum,sum(interviewt_num) as interviewtNum , sum(callist_num) as callistnum , sum(cc_num) as ccnum';
+        $list = M('report_intergral')->where($map)->field('id,user_role_id,user_id,user_name,department,department_id,' . $countFields)->group('user_id')->order('integral desc,customerNum desc')->page($p, $pageSize)->select();
         //增加员工职位字段和顾问英文名字段
-        foreach ($list as $k => $v){
-            $position_name = D('ReportView')->where(array('role_id'=>$v['user_role_id']))->getField('position');
-            $second_name = M("User")->where(array('user_id'=>intval($v['user_id'])))->getField('second_name');
+        foreach ($list as $k => $v) {
+            $position_name = D('ReportView')->where(array('role_id' => $v['user_role_id']))->getField('position');
+            $second_name = M("User")->where(array('user_id' => intval($v['user_id'])))->getField('second_name');
             $list[$k]['position_name'] = $position_name;
             $list[$k]['second_name'] = $second_name;
         }
         $countList = M('report_intergral')->field($countFields)->where($map)->find();
+        if ($isExport) {
+            $cellName = [
+                ['user_name', '员工姓名'], ['department', '部门'], ['position_name', '职位名称'], ['second_name', '顾问英文名'],
+                ['integral', '业绩'], ['callistnum', 'callist'], ['ccnum', 'cc备注'], ['ccnum', 'cc备注'], ['hkNum', '回款个数'],
+                ['bdNum', '新增BD数'], ['customerNum', '新增客户数'], ['projectNum', '新增项目数'], ['resumeNum', '新增简历数'],
+                ['fineNum', '推荐简历数'], ['interviewNum', '面试人数'], ['interviewtNum', '面试次数'], ['offerNum', 'Offer'],
+                ['offerdNum', '掉Offer数'], ['enterNum', '入职数'], ['safeNum', '过保数']];
+            $this->exportExcel('员工业绩报表--', $cellName, $list, $countList);
+            return;
+        }
         $this->assign("list", $list);
         $this->assign("countList", $countList);
-//        header('content-type:text/html;charset=utf-8;');
-//        dump($list);
-//        dump($countList);
-//        die;
+    }
+
+    /**
+     * @param string $expTitle 标题
+     * @param $expCellName 导出字段名称
+     * @param $expTableData  导出数据列表
+     * @param string $countList 数据统计列表
+     * @throws PHPExcel_Exception
+     * @throws PHPExcel_Reader_Exception
+     * @throws PHPExcel_Writer_Exception
+     */
+
+    function exportExcel($expTitle = '', $expCellName, $expTableData, $countList = '') {
+        {
+            if (count($expTableData) == 0) {
+                exit();
+            }
+            $xlsTitle = iconv('utf-8', 'gb2312', $expTitle);//文件名称
+            $fileName = $xlsTitle . time();//or $xlsTitle 文件名称可根据自己情况设定
+            $cellNum = count($expCellName);
+            $dataNum = count($expTableData);
+            import("ORG.PHPExcel.PHPExcel");
+            $objPHPExcel = new PHPExcel();
+            $objActSheet = $objPHPExcel->getActiveSheet(0);
+            $cellName = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ');
+
+            $objPHPExcel->getActiveSheet(0)->mergeCells('A1:' . $cellName[$cellNum - 1] . '1');//合并单元格
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $expTitle . '  Export time:' . date('Y-m-d H:i:s'));
+            for ($i = 0; $i < $cellNum; $i++) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i] . '2', $expCellName[$i][1]);
+                $objActSheet->getColumnDimension($cellName[$i])->setAutoSize(true);
+                $objActSheet->getColumnDimension($cellName[$i])->setWidth(50);
+            }
+            for ($k = 0; $k < $cellNum; $k++) {
+                $k == 0 && $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[0] . (3), '共计:');
+                ($k <= 3 && $k > 0) && $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$k] . (3), '');
+                $k > 3 && $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$k] . (3), $countList[$expCellName[$k][0]]);
+            }
+            // Miscellaneous glyphs, UTF-8
+            for ($i = 0; $i < $dataNum; $i++) {
+                for ($j = 0; $j < $cellNum; $j++) {
+                    $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j] . ($i + 4),$expTableData[$i][$expCellName[$j][0]]);
+                }
+            }
+            header('pragma:public');
+            @ob_end_clean();//清除缓冲区,避免乱码
+            header('Content-type: application/octet-stream;charset=utf-8;name="' . $xlsTitle . '.xls"');
+            header("Content-Disposition:attachment;filename=$fileName.xls");//attachment新窗口打印inline本窗口打印
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            exit();
+        }
     }
 
     /**
@@ -2185,7 +2246,7 @@ class LeadsAction extends Action {
             }
             $end_time = $between_date[1] ? strtotime(date('Y-m-d 23:59:59', strtotime($between_date[1]))) : strtotime(date('Y-m-d 23:59:59', time()));
             //当时间是某具体的一天时
-            if($between_date[0] == $between_date[1]){
+            if ($between_date[0] == $between_date[1]) {
                 $flag = true;
                 $start_time = strtotime(date('Y-m-d 00:00:00', strtotime($between_date[1])));
                 $end_time = $start_time + 86400;
@@ -2204,7 +2265,7 @@ class LeadsAction extends Action {
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
         $map = ['report_date' => [['egt', $this->start_date], ['elt', $this->end_date]]];
         //所筛选的时间段是同一天，页面显示同一天
-        if($flag)
+        if ($flag)
             $this->end_date = date('Y-m-d', $end_time - 86400);
         else
             $this->end_date = date('Y-m-d', $end_time);
@@ -2212,7 +2273,8 @@ class LeadsAction extends Action {
         $map['user_role_id'] = $role_id_array ? ['in', $role_id_array] : '';
         $count = M('report_intergral')->where($map)->group('user_id')->select();
         $count = count($count);
-        $this->analyticsNum($map, $p, $pageSize);
+        $isExport = isset($_GET['isExport']) ? intval($_GET['isExport']) : 0;
+        $this->analyticsNum($map, $p, $pageSize, $isExport);
         import('@.ORG.Page'); // 导入分页类
         $page = new Page($count, $pageSize);
         $show = $page->show(); // 分页显示输出
@@ -2231,7 +2293,7 @@ class LeadsAction extends Action {
 
         $roleList = array();
         foreach ($below_ids as $roleId) {
-            $roleList[$roleId] = getUserByRoleId($roleId);
+            $roleList[$roleId] = getUserByRoleId($roleId, 1);
         }
         $this->roleList = $roleList;
         $this->roleIds = implode(',', $role_id_array);
@@ -2239,7 +2301,7 @@ class LeadsAction extends Action {
         $this->daterange = $dateRange;
         $this->type_id = intval($_GET['type_id']);
         $this->content_id = intval($_GET['content_id']);
-        $this->assign('ishow',$ishow);
+        $this->assign('ishow', $ishow);
         $this->alert = parseAlert();
         $lastInfo = M('report_intergral')->field('create_time')->order('create_time desc')->find();
         $lastTime = date('Y-m-d H:i:s', $lastInfo['create_time']);
@@ -2795,8 +2857,8 @@ class LeadsAction extends Action {
                 $dataList['total'] = 0;
                 for ($i = 1; $i < 13; $i++) {
                     $month = ($i * 3) - 2;
-                    $dataList['month' . $i] = (int) $val[$month];
-                    $dataList['topachieve' . $i] = (int) $val[($i * 3) - 1];
+                    $dataList['month' . $i] = (int)$val[$month];
+                    $dataList['topachieve' . $i] = (int)$val[($i * 3) - 1];
                     $dataList['attendanceRate' . $i] = $val[$i * 3];
                     $dataList['total'] += $dataList['month' . $i];
                 }
