@@ -12,7 +12,7 @@ class UserAction extends Action {
         $this->assign("title",$title);
 		$action = array(
 			'permission'=>array('login','lostpw','resetpw','active','notice','loginajax','listDialogs'),
-			'allow'=>array('logout','role_ajax_add','getrolebydepartment','dialoginfo','edit', 'listdialog','listdialogs', 'mutilistdialog', 'getrolelist', 'getpositionlist','changecontent','getactionauthority','department','userimg','contacts','yanchong','editpassword','getpositionlistbydepartment')
+			'allow'=>array('logout','role_ajax_add','getrolebydepartment','dialoginfo','edit', 'listdialog','listdialogs', 'mutilistdialog', 'getrolelist', 'getpositionlist','changecontent','getactionauthority','department','userimg','contacts','yanchong','editpassword','getpositionlistbydepartment','changeDepartment')
 		);
 		B('Authenticate', $action);
 	}
@@ -310,7 +310,7 @@ class UserAction extends Action {
                 $tel = M('contacts')->where(['contacts_id'=>$itemId])->getField('telephone');
             }
         }
-        
+
         if(!session('tel')){
             if(session('role_id')){
                 $user = M('user')->where(['role_id' => session('role_id')])->field('user_id,telephone')->find();
@@ -324,7 +324,7 @@ class UserAction extends Action {
         } else {
             $sourceTel = session('tel');
         }
-        
+
 //        $timestamp= date('YmdHis');
         //坐席上班
 //        $this->startWork($timestamp);
@@ -881,6 +881,7 @@ class UserAction extends Action {
             $m_user = M('User');
 			$m_role = M('Role');
 			$user = $m_user->where('user_id = %d', intval($_POST['user_id']))->find();
+			$oldPositionId = $m_role->where(['user_id'=>$user['user_id']])->getField('position_id');
 			$new_number = trim($_POST['prefixion']).trim($_POST['number']);
 			if($user['number'] != $new_number){
 				$result = $m_user->where(array('number'=>$new_number,'user_id'=>array('neq',intval($_POST['user_id']))))->find();
@@ -938,6 +939,8 @@ class UserAction extends Action {
 				$m_user->job_rank = $this->_post('jobrank','trim');
 
 				if($m_user->save() || $is_update){
+				    //更改数据【部门变更】
+                    $this->changeDepartment($user['user_id'], $_POST['position_id'],$oldPositionId);
 					actionLog($_POST['user_id']);
 					if($_POST['user_id'] ==session('user_id')){
 						unset ($_SESSION['name']) ;
@@ -1016,6 +1019,20 @@ class UserAction extends Action {
 		}
 	}
 
+    /**
+     * @desc 用户职位变化更改报表数据
+     * @param $userId
+     * @param $positionId
+     * @param $oldPositionId
+     */
+	public function changeDepartment($userId,$positionId,$oldPositionId){
+	    //更改业绩报表的部门数据
+        if($oldPositionId != $positionId){
+            $departmentId = M('position')->where(['position_id'=>$positionId])->getField('department_id');
+            $departmentName = M('role_department')->where(['department_id'=>$departmentId])->getField('name');
+            M('report_intergral')->where(['user_id'=>$userId])->save(['department_id'=>$departmentId,'department'=>$departmentName]);
+        }
+    }
 	public function dialogInfo(){
 		$role_id = intval($_REQUEST['id']);
 		$role = D('RoleView')->where('role.role_id = %d', $role_id)->find();
