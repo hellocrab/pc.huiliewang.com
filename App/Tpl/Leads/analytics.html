@@ -510,10 +510,10 @@ $(function(){
     $(".callistnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        if($(this).attr("rel") == '')
+        // if($(this).attr("rel") == '')
             $("#dialog-callistnum").dialog('option',{title:'callist数('+num+')'}).dialog('open');
-        else
-            $("#dialog-callistnum").dialog('option',{title:'callist数('+$(this).attr("rel")+')'}).dialog('open');
+        // else
+        //     $("#dialog-callistnum").dialog('option',{title:'callist数('+$(this).attr("rel")+')'}).dialog('open');
         $("#dialog-callistnum").load('{:U("leads/dialogcallist",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
 
@@ -534,10 +534,10 @@ $(function(){
     $(".ccnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        if($(this).attr("rel") == '')
-            $("#dialog-ccnum").dialog('option',{title:'cc备注('+num+')'}).dialog('open');
-        else
-            $("#dialog-ccnum").dialog('option',{title:'cc备注('+$(this).attr("rel")+')'}).dialog('open');
+        // if($(this).attr("rel") == '')
+        $("#dialog-ccnum").dialog('option',{title:'cc备注('+num+')'}).dialog('open');
+        // else
+        //     $("#dialog-ccnum").dialog('option',{title:'cc备注('+$(this).attr("rel")+')'}).dialog('open');
         $("#dialog-ccnum").load('{:U("leads/dialogcc",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
     })
 
@@ -832,7 +832,7 @@ $(function(){
 				options = '<option value="all">{:L('All')}</option>';
 				if(data.data != null){
 					$.each(data.data, function(k, v){
-						options += '<option value="'+v.role_id+'">'+v.role_name+"-"+v.user_name+'</option>';
+                        options += '<option value="'+v.role_id+'">'+v.role_name+"-"+v.user_name+'</option>';
 					});
 				}
 				$("#role").html(options);
