@@ -1914,7 +1914,8 @@ class CustomerAction extends Action {
         $outdate = empty($outdays) ? 0 : time() - 86400 * $outdays;
 //        $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
         $where['is_deleted'] = array('neq', 1);
-        $where['_string'] = 'update_time > ' . $outdate . ' OR is_locked = 1';
+        //暂时不需要这个限定 editor by YH 20190325 
+//        $where['_string'] = 'update_time > ' . $outdate . ' OR is_locked = 1';
 
         if ($_REQUEST["field"]) {
             $field = trim($_REQUEST['field']);
