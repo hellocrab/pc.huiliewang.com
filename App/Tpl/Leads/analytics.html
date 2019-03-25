@@ -429,15 +429,15 @@ $(function(){
             position: ["center",100]
         });
 
-
-        $("#btnExport").click(function(){
-            $('#tab_Test3').tableExport({
-                type:'excel',
-                escape:'false',
-                fileName: '员工业绩表汇总',
-                worksheetName: 'xlsWorksheetName'
-            });
-        });
+        //
+        // $("#btnExport").click(function(){
+        //     $('#tab_Test3').tableExport({
+        //         type:'excel',
+        //         escape:'false',
+        //         fileName: '员工业绩表汇总',
+        //         worksheetName: 'xlsWorksheetName',
+        //     });
+        // });
     })
     //时间插件
     $('#reservation').daterangepicker({
@@ -867,3 +867,13 @@ $(function(){
         cursor: inherit;
     }
 </style>
+<script>
+
+    $('#btnExport').click(function () {
+        var between_date = $('#reservation').val();
+        var department_id = $("#department option:selected").val();
+        var role = $("#role option:selected").val();
+        var url = '{:U("leads/analytics")}&isExport=1&role='+role+'&between_date='+between_date+'&department='+department_id;
+         window.location.href = url;
+    });
+</script>
