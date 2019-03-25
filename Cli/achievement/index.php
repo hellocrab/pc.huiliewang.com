@@ -33,7 +33,7 @@ if ($dateEndInt > strtotime($todayTime)) {
 
 $conn = dbconn($env); //数据库连接
 //用户列表
-$userSql = "SELECT * from mx_user";
+$userSql = "SELECT * from mx_user where status = 1 ";
 $userIds && $userSql = $userSql . " WHERE user_id in ({$userIds}) ";
 $userQuery = $conn->query($userSql);
 $userList = $userQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -523,7 +523,7 @@ function dbconn($env='')
     $testConf = [
         'product' => 'mysql',
         'api' => 'pdo',
-        'host' => '192.168.0.123',
+        'host' => '192.168.0.150',
         'port' => 3306,
         'dbname' => 'pinping',
         'username' => 'root',
