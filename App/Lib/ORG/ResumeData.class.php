@@ -1144,6 +1144,10 @@ class ResumeData {
                         $dbEduData[$edu_id]['degree'] = $_degree;
                         $dbEduData[$edu_id]['recruitment'] = $this->decode($_edu_info[2]) == '统招' ? 1 : 0;
                     }
+                    
+                    if($edu_id == 1){
+                        $dbData['edu'] = $this->decode($_edu_info[1]);
+                    }
                 }
 
                 if ($text == $this->encode('工作经历')) {
@@ -1151,9 +1155,130 @@ class ResumeData {
                     $job_tag = 1;
                     continue;
                 }
-                
-                if($job_tag == 1){
-                    
+
+                if ($job_tag == 1) {
+                    if (!is_array($text) && strpos($text, $this->encode('年')) !== false && strpos($text, $this->encode('个月')) !== false) {
+                        $job_id++;
+                        $_is_end = 0;
+                        $_job_info = str_replace($this->encode('月'), '', $text); //&mdash;
+                        $_job_info = str_replace($this->encode('年'), '-', $_job_info);
+
+                        if (strpos($_job_info, $this->encode('至今')) !== false) {
+                            $dbJobData[$job_id]['endtime'] = -9999;
+                            $dbJobData[$job_id]['position']['end_date'] = -9999;
+                            $_job_info = str_replace($this->encode('至今'), '', $_job_info);
+                            $_is_end = 1;
+                        }
+
+                        $_date_tag = preg_match_all('/\d{4}(\-|\/|\.)\d{1,2}/', $_job_info, $match);
+                        if ($_date_tag) {
+                            $_date = $match[0];
+                            $dbJobData[$job_id]['starttime'] = strtotime(str_replace('.', '-', $_date[0]));
+                            $dbJobData[$job_id]['position']['start_date'] = strtotime(str_replace('.', '-', $_date[0]));
+                            if (!$_is_end) {
+                                $dbJobData[$job_id]['endtime'] = strtotime(str_replace('.', '-', $_date[1]));
+                                $dbJobData[$job_id]['position']['end_date'] = strtotime(str_replace('.', '-', $_date[1]));
+                            }
+                        }
+
+                        $_job_info = explode(')', $_job_info);
+                        $_job_info = $_job_info[1];
+
+                        if (strpos($_job_info, '-') !== FALSE) {
+                            $_job_info = explode('-', $_job_info);
+                            $dbJobData[$job_id]['company'] = $this->decode($_job_info[0]);
+                            $dbJobData[$job_id]['jobPosition'] = $this->decode($_job_info[1]);
+                            $dbJobData[$job_id]['position']['position'] = $this->decode($_job_info[1]);
+                        } else {
+                            $dbJobData[$job_id]['company'] = $_job_info;
+                        }
+
+                        if ($job_id == 1) {
+                            $dbData['curCompany'] = $this->decode($_job_info[0]);
+                            $dbData['curPosition'] = $this->decode($_job_info[1]);
+                        }
+                    }
+
+                    if (!is_array($text) && (strpos($text, $this->encode('汇报对象：')) !== FALSE || strpos($text, $this->encode('工作地点：')) !== FALSE || strpos($text, $this->encode('所在部门：')) !== FALSE || strpos($text, $this->encode('薪资：')) !== FALSE)) {
+                        $_job_position = explode('|', $text);
+                        foreach ($_job_position as $_jp) {
+                            if (strpos($_jp, $this->encode('汇报对象：')) !== FALSE) {
+                                $dbJobData[$job_id]['position']['report_to'] = $this->decode(str_replace($this->encode('汇报对象：'), '', $_jp));
+                            } elseif (strpos($_jp, $this->encode('工作地点：')) !== FALSE) {
+                                $dbJobData[$job_id]['position']['city_id'] = $this->getCityCode($this->decode(str_replace($this->encode('工作地点：'), '', $_jp)));
+                                $dbJobData[$job_id]['position']['city_text'] = $this->decode(str_replace($this->encode('工作地点：'), '', $_jp));
+                            } elseif (strpos($_jp, $this->encode('所在部门：')) !== FALSE) {
+                                $dbJobData[$job_id]['position']['department'] = $this->decode(str_replace($this->encode('所在部门：'), '', $_jp));
+                                $dbJobData[$job_id]['depart'] = $this->decode(str_replace($this->encode('所在部门：'), '', $_jp));
+                            } elseif (strpos($_jp, $this->encode('下属人数：')) !== FALSE) {
+                                $_jp = str_replace($this->encode('下属人数：'), '', $_jp);
+                                $_jp = str_replace($this->encode('人'), '', $_jp);
+                                $dbJobData[$job_id]['position']['underling_num'] = $_jp ? $_jp : 0;
+                            } elseif (strpos($_jp, $this->encode('下属人数：')) !== FALSE) {
+                                $dbJobData[$job_id]['position'][$liepin_conifg['下属人数：']] = $this->decode(str_replace($this->encode('下属人数：'), '', $_jp));
+                            }
+                        }
+                    }
+
+                    if (!is_array($text) && (strpos($text, $this->encode('公司介绍：')) !== FALSE)) {
+                        if (strip_tags($data['text'][$k + 1]) !== $this->encode('工作职责：')) {
+                            $dbJobData[$job_id]['companyDes'] == $this->decode(strip_tags($data['text'][$k + 1]));
+                        }
+                    }
+
+                    if (!is_array($text) && (strpos($text, $this->encode('工作职责：')) !== FALSE)) {
+                        if (strip_tags($data['text'][$k + 1]) !== $this->encode('工作业绩：')) {
+                            $dbJobData[$job_id]['duty'] == $this->decode(strip_tags($data['text'][$k + 1]));
+                        }
+                    }
+                }
+
+                if ($text == $this->encode('项目经历')) {
+                    $job_tag = 0;
+                    $project_tag = 1;
+                    continue;
+                }
+
+                if ($project_tag == 1) {
+                    preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\.)/', $this->decode($text), $match);
+                    preg_match('/\d{4}(\-|\/|\.)\d{1,2}(\-|\.)\d{4}(\-|\/|\.)\d{1,2}/', $text, $match_all);
+                    $_tag = strpos($text, $this->encode('至今'));
+                    if (($match[0] && $tag !== FALSE) || $match_all) {
+                        $project_id++;
+                        if (!empty($match_all)) {
+                            $time = explode($match_all[2], $match_all[0]);
+                            $dbProjectData[$project_id]['starttime'] = strpos($time[0], '.') !== FALSE ? strtotime(str_replace('.', '-', $time[0])) : strtotime($time[0]);
+                            $dbProjectData[$project_id]['endtime'] = strpos($time[1], '.') !== FALSE ? strtotime(str_replace('.', '-', $time[1])) : strtotime($time[1]);
+                            $_project_name = str_replace($match_all[0], '', $text);
+                            $_project_name = explode('(', $_project_name);
+                            $dbProjectData[$project_id]['proName'] = $this->decode($_project_name[0]);
+                        } else {
+                            $_starttime = str_replace($match[2], '', $match[0]);
+                            $dbProjectData[$project_id]['starttime'] = strpos($_starttime, '.') !== FALSE ? strtotime(str_replace('.', '-', $_starttime)) : strtotime($_starttime);
+                            $dbProjectData[$project_id]['endtime'] = -9999;
+                            $_project_name = str_replace($match[0], '', $text);
+                            $_project_name = str_replace($this->encode('至今'), '', $_project_name);
+                            $_project_name = explode('(', $_project_name);
+                            $dbProjectData[$project_id]['proName'] = $this->decode($_project_name[0]);
+                        }
+                    }
+
+                    //责任描述：
+                    if ($text == $this->encode('责任描述：')) {
+                        $dbProjectData[$project_id]['responsibility'] = $this->decode(strip_tags($data['text'][$k + 1]));
+                    }
+
+                    //项目描述：
+                    if ($text == $this->encode('项目描述：')) {
+                        if (strpos(strip_tags($data['text'][$k + 1]), $this->encode('教育经历')) !== FALSE) {
+                            $_text = str_replace($this->encode('教育经历'), '', strip_tags($data['text'][$k + 1]));
+                            $dbProjectData[$project_id]['proDes'] = $this->decode($_text);
+                            $project_tag = 0;
+                            $edu_tag = 1;
+                        } else {
+                            $dbProjectData[$project_id]['proDes'] = $this->decode(strip_tags($data['text'][$k + 1]));
+                        }
+                    }
                 }
             } elseif ($data['mode'] == 5) {
                 $baseinfo_tag = 1;
@@ -1395,8 +1520,6 @@ class ResumeData {
                 }
             }
         }
-//        var_dump(['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData]);
-//        exit;
         return ['data' => $dbData, 'info' => $dbDataInfo, 'job' => $dbJobData, 'project' => $dbProjectData, 'edu' => $dbEduData, 'language' => $dbLanguageData];
     }
 
