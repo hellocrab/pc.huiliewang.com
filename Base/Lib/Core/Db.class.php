@@ -187,7 +187,7 @@ class Db {
                     $r = C('DB_SLAVE_NO');
                 }else{
                     // 读操作连接从服务器
-                    $r = floor(mt_rand(C('DB_MASTER_NUM'),count($_config['hostname'])-1));   // 每次随机连接的数据库
+                    $r = floor(mt_rand(0,count($_config['hostname'])-1));   // 每次随机连接的数据库
                 }
             }
         }else{

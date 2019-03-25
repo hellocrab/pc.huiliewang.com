@@ -2183,7 +2183,7 @@ class LeadsAction extends Action {
             if ($between_date[0]) {
                 $start_time = strtotime($between_date[0]);
             }
-            $end_time = $between_date[1] ? strtotime(date('Y-m-d 00:00:00', strtotime($between_date[1]))) : strtotime(date('Y-m-d 00:00:00', time()));
+            $end_time = $between_date[1] ? strtotime(date('Y-m-d 23:59:59', strtotime($between_date[1]))) : strtotime(date('Y-m-d 23:59:59', time()));
             //当时间是某具体的一天时
             if($between_date[0] == $between_date[1]){
                 $flag = true;
@@ -2202,7 +2202,7 @@ class LeadsAction extends Action {
 
         $pageSize = isset($_GET['listrows']) ? intval($_GET['listrows']) : 15;
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
-        $map = ['report_date' => [['egt', $this->start_date], ['lt', $this->end_date]]];
+        $map = ['report_date' => [['egt', $this->start_date], ['elt', $this->end_date]]];
         //所筛选的时间段是同一天，页面显示同一天
         if($flag)
             $this->end_date = date('Y-m-d', $end_time - 86400);
