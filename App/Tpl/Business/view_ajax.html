@@ -2596,6 +2596,7 @@
                 var invoice_header = $("input[name=invoice_header]").val();
                 var content = $("input[name=content]").val();
                 var price = $("input[name=price]").val();
+                var description=$("textarea[name=description]").val();
                 if (billing_type == "") {
                     $("select[name=billing_type]").css("border", "1px dotted #cc5965");
                     return false;
@@ -2610,6 +2611,10 @@
                 }
                 if (price == "") {
                     $("input[name=price]").css("border", "1px dotted #cc5965");
+                    return false;
+                }
+                if (description == "") {
+                    $("textarea[name=description]").css("border", "1px dotted #cc5965");
                     return false;
                 }
                 $('#fapiao_form').submit();
