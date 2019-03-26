@@ -973,7 +973,9 @@ class BusinessAction extends Action
         $owner_role_ids = explode(',',($business_info['owner_role_id']));
 //        if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
         if ($business_info && (!in_array(session('role_id'),$owner_role_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
-            alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+            if(!in_array($business_info['creator_role_id'],$below_ids) && !in_array($business_info['owner_role_id'],$below_ids)){
+                alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+            }
         }
 
         if ($business_info['joiner']) {
