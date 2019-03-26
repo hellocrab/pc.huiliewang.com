@@ -178,7 +178,8 @@
                             swal(res.message, "", res.code == 200 ? 'success' : "warning");
                             if (res.code == 200) {
                                 setTimeout(() => {
-                                    location.reload();
+                                    // location.reload();
+                                    location.href = '/index.php?m=product&a=view&id='+res.resume_id;
                                 }, 1000)
                             }
 
