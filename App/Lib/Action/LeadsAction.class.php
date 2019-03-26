@@ -1850,6 +1850,7 @@ class LeadsAction extends Action
         $list = $projectSafeModel->where($where)->select();
         $newList = [];
         foreach ($list as $info) {
+            $info['beizhu'] = M('fine_project_bz')->where(['fine_id'=>$info['fine_id'],'status'=>3])->order('id desc')->getField('beizhu');
             $newList[$info['resume_id']] = $info;
         }
         $this->list = $newList;
