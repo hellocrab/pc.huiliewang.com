@@ -2150,7 +2150,7 @@ class LeadsAction extends Action
         if ($isExport) {
             $cellName = [
                 ['user_name', '员工姓名'], ['department', '部门'], ['position_name', '职位名称'], ['second_name', '顾问英文名'],
-                ['integral', '业绩'], ['callistnum', 'callist'], ['ccnum', 'cc备注'], ['ccnum', 'cc备注'], ['hkNum', '回款个数'],
+                ['integral', '业绩'], ['callistnum', 'callist'], ['ccnum', 'cc备注'], ['hkNum', '回款个数'],
                 ['bdNum', '新增BD数'], ['customerNum', '新增客户数'], ['projectNum', '新增项目数'], ['resumeNum', '新增简历数'],
                 ['fineNum', '推荐简历数'], ['interviewNum', '面试人数'], ['interviewtNum', '面试次数'], ['offerNum', 'Offer'],
                 ['offerdNum', '掉Offer数'], ['enterNum', '入职数'], ['safeNum', '过保数']];
@@ -2187,10 +2187,15 @@ class LeadsAction extends Action
 
             $objPHPExcel->getActiveSheet(0)->mergeCells('A1:' . $cellName[$cellNum - 1] . '1');//合并单元格
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $expTitle . '  Export time:' . date('Y-m-d H:i:s'));
+            $objPHPExcel->getActiveSheet()->getStyle('A1:' . $cellName[$cellNum - 1] . '1')->getFont()->setBold(true); //字体加粗
+            $objPHPExcel->getActiveSheet()->getStyle('A1:' . $cellName[$cellNum - 1] . '1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $size = [80, 80, 80, 80, 20, 20, 20, 20 ,80, 20, 20, 20, 20 ,80, 20, 20, 20, 20, 20, 20];
             for ($i = 0; $i < $cellNum; $i++) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i] . '2', $expCellName[$i][1]);
                 $objActSheet->getColumnDimension($cellName[$i])->setAutoSize(true);
-                $objActSheet->getColumnDimension($cellName[$i])->setWidth(50);
+                $objActSheet->getColumnDimension($cellName[$i])->setWidth($size[$i]);
+                $objPHPExcel->getActiveSheet()->getStyle($cellName[$i] . '2')->getFont()->setBold(true); //字体加粗
+                $objPHPExcel->getActiveSheet()->getStyle($cellName[$i] . '2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             }
             for ($k = 0; $k < $cellNum; $k++) {
                 $k == 0 && $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[0] . (3), '共计:');
