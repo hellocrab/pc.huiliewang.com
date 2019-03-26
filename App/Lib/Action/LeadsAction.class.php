@@ -19,7 +19,7 @@ class LeadsAction extends Action
         $this->assign("title", $title);
         $action = array(
             'permission' => array(),
-            'allow' => array('transform', 'checkinfo', 'changecontent', 'getaddchartbyroleid', 'getownchartbyroleid', 'check', 'receive', 'fenpei', 'batchreceive', 'assigndialog', 'batchassign', 'revert', 'validate', 'remove', 'excelimportdownload', 'getcurrentstatus', 'excelimportact', 'change_customer', 'field_save', 'analyticsCount', 'analytics', 'dialoghk', 'dialogbd', 'dialogcustomer', 'dialogprojectnum', 'dialogresumenum', 'dialogfinenum', 'dialoginterview', 'dialoginterviewt', 'dialogpresent', 'dialogoffer', 'dialogofferd', 'dialogenter', 'dialogsafe','exportExcel')
+            'allow' => array('transform', 'checkinfo', 'changecontent', 'getaddchartbyroleid', 'getownchartbyroleid', 'check', 'receive', 'fenpei', 'batchreceive', 'assigndialog', 'batchassign', 'revert', 'validate', 'remove', 'excelimportdownload', 'getcurrentstatus', 'excelimportact', 'change_customer', 'field_save', 'analyticsCount', 'analytics', 'dialoghk', 'dialogbd', 'dialogcustomer', 'dialogprojectnum', 'dialogresumenum', 'dialogfinenum', 'dialoginterview', 'dialoginterviewt', 'dialogpresent', 'dialogoffer', 'dialogofferd', 'dialogenter', 'dialogsafe','exportExcel','dialogcallist','dialogcc')
         );
         B('Authenticate', $action);
         $this->_permissionRes = getPerByAction(MODULE_NAME, ACTION_NAME);
@@ -2293,7 +2293,12 @@ class LeadsAction extends Action
         if ($per_type == 2 || session('?admin')) {
             $departmentList = M('roleDepartment')->select();
         } else {
-            $departmentList = M('roleDepartment')->where('department_id =%d', session('department_id'))->select();
+            $ids = getSubDepartmentBrId();
+            if($ids){
+                $departmentList = M('roleDepartment')->where(['department_id'=>['in',$ids]])->select();
+            }else{
+                $departmentList = M('roleDepartment')->where('department_id =%d', session('department_id'))->select();
+            }
         }
         $this->assign('departmentList', $departmentList);
 
