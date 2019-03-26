@@ -1,6 +1,7 @@
 <?php
 
-class ProductAction extends Action {
+class ProductAction extends Action
+{
 
     protected static $degree = [
         1 => '高中',
@@ -22,7 +23,7 @@ class ProductAction extends Action {
 
 //		$action = array(
 //			'permission'=>array('getProductByBusiness'),
-//			'allow'=>array('adddialog','editdialog', 'allproductdialog','validate','check','delimg','sortimg','mutildialog','changecontent','getmonthlyamount','getmonthlysales','getcurrentstatus','mutildialog_product_contract','mutildialog_product','advance_search','categorylist')
+//			'allow'=>array('adddialog','editdialog', 'allproductdialog','validate','check','delimg','sortimg','mutildialog','changecontent','getmonthlyamount','getmonthlysales','getcurrentstatus','mutildialog_product_contract','mutildialog_product','advance_search','categorylist','matchWorksZP','checkReuse','matchWorksLP','matchWorksZL','charChange')
 //		);
 //		B('Authenticate', $action);
 //		$this->_permissionRes = getPerByAction(MODULE_NAME,ACTION_NAME);
@@ -84,7 +85,7 @@ class ProductAction extends Action {
             if (!$data['data']) {
                 $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => '没有匹配数据']);
             }
-            
+
             //检查简历是否存存在
             $name = isset($data['data']['name']) ? trim($data['data']['name']) : '';
             $telephone = isset($data['data']['telephone']) ? trim($data['data']['telephone']) : '';
@@ -126,7 +127,7 @@ class ProductAction extends Action {
                 if (empty($data['data']['name'])) {
                     $data['data']['name'] = '未知';
                 }
-                
+
                 if (empty($data['data']['telephone'])) {
                     $data['data']['telephone'] = '未知';
                 }
@@ -1129,7 +1130,7 @@ class ProductAction extends Action {
             $resume['birthMouth'] = '-' . $resume['birthMouth'];
         }
 
-        
+
         //简历附件
         $file_ids = M('rResumeFile')->where(['resume_id' => $eid, 'is_resolve' => 1])->getField('file_id', true);
         if ($file_ids) {
@@ -1139,8 +1140,8 @@ class ProductAction extends Action {
                 $fileInfo['size'] = ceil($fileInfo['size'] / 1024);
             }
         }
-        
-        
+
+
         //文件
         $file_ids = M('rResumeFile')->where('resume_id = %d', $eid)->getField('file_id', true);
         $file_ids = M('rResumeFile')->where(['resume_id' => $eid, 'is_resolve' => 0])->getField('file_id', true);
@@ -2907,12 +2908,26 @@ class ProductAction extends Action {
      */
     public function checkReuse() {
         $content = I('content');
-        $works = $this->matchWorks($content);
+        $content = $this->charChange($content);
+        $content = preg_replace('/&lt;/is', '<', $content);
+        $content = preg_replace('/&gt;/is', '>', $content);
+        $content = preg_replace('/（/is', '(', $content);
+        $content = preg_replace('/）/is', ')', $content);
+        $content = preg_replace('/—/is', '-', $content);
+        $content = str_replace(['&amp;', '&nbsp;', 'nbsp;'], ['', '', ' '], $content);
+        $content = str_replace(['&quot;'], ['"'], $content);
+
+        $works = $this->matchWorksZL($content);
+        if(!$works){
+            $works = $this->matchWorksLP($content);
+        }
+        if(!$works){
+            $works = $this->matchWorksZP($content);
+        }
         //根据工作经历查重
         if (!$works || empty($works) || !is_array($works)) {
             $this->ajaxReturn(0, '没有匹配到可用工作经历', 0);
         }
-//        print_r($works);die;
         $workCount = count($works);
         $allResume = [];
         foreach ($works as $job) {
@@ -2959,19 +2974,13 @@ class ProductAction extends Action {
     }
 
     /**
-     * @desc  匹配工作经历
+     * @desc  匹配工作经历 【卓聘】
      * @param $content
      * @return array|bool
      */
-    public function matchWorks($content) {
-        $content = $this->charChange($content);
-        $content = preg_replace('/&lt;/is', '<', $content);
-        $content = preg_replace('/&gt;/is', '>', $content);
-        $content = preg_replace('/（/is', '(', $content);
-        $content = preg_replace('/）/is', ')', $content);
-        $content = preg_replace('/—/is', '-', $content);
+    public function matchWorksZP($content) {
         //智联卓聘
-        $pregWorks = '/<p>(\d{4}年\d{1,2}月)\s{0,}-\s{0,}(\d{4}年\d{1,2}月|至今)\s{1,}([^>]*)\((\d{1,3}年\d{1,2}个月|\d{1,2}个月|\d{1,3}年)\)\s{0,}<\/p>/isU';
+        $pregWorks = '/(\d{4}年\d{1,2}月)\s{0,}-\s{0,}(\d{4}年\d{1,2}月|至今)\s{0,}([^>]*)\((\d{1,3}年\d{1,2}个月|\d{1,2}个月|\d{1,3}年)\)/isU';
         preg_match_all($pregWorks, $content, $contentMatch);
         if (!$contentMatch || !$contentMatch[3]) {
             return false;
@@ -2986,6 +2995,76 @@ class ProductAction extends Action {
             $end = str_replace(['年', '月'], ['-', '-01'], $end);
             $start = strtotime($start);
             $end == '至今' ? $end = 0 : $end = strtotime($end);
+            $name = strip_tags(trim($nameArr[$index]));
+            if (!$name) {
+                continue;
+            }
+            $jobs[] = ['start_time' => $start, 'end_time' => $end, 'company' => $name];
+        }
+        return $jobs;
+    }
+
+    /**
+     * @desc  匹配工作经历 【智联】
+     * @param $content
+     * @return array|bool
+     */
+    public function matchWorksZL($content) {
+        //智联卓聘
+        $ulPreg = '/工作经历(.*)(项目经历|专业技能)/isU';
+        preg_match($ulPreg, $content, $matchUl);
+        if (!$matchUl[1]) {
+            return;
+        }
+        $content = $matchUl[1];
+        //智联
+        $pregWorks = '/<p class="timeline__header"[^>]*>.*(\d{4}\.\d{2}).*(\d{4}\.\d{2}|至今).*<span style="box-sizing: inherit;[^>]*">(.*)<\/span>.*<\/p>/isU';
+        preg_match_all($pregWorks, $content, $contentMatch);
+
+        if (!$contentMatch || !$contentMatch[3]) {
+            return false;
+        }
+        $startArr = $contentMatch[1];
+        $endArr = $contentMatch[2];
+        $nameArr = $contentMatch[3];
+        $jobs = [];
+        foreach ($startArr as $index => $start) {
+            $end = $endArr[$index];
+            $start = str_replace(['年', '月','.'], ['-', '-01','-'], $start);
+            $end = str_replace(['年', '月','.'], ['-', '-01','-'], $end);
+            $start = strtotime($start . '-01');
+            $end == '至今' ? $end = 0 : $end = strtotime($end. '-01');
+            $name = strip_tags(trim($nameArr[$index]));
+            if (!$name) {
+                continue;
+            }
+            $jobs[] = ['start_time' => $start, 'end_time' => $end, 'company' => $name];
+        }
+        return $jobs;
+    }
+    /**
+     * @desc  匹配工作经历 [猎聘网]
+     * @param $content
+     * @return array|bool
+     */
+    public function matchWorksLP($content) {
+        //猎聘网
+        $pregWorks = '/<span class="work-time"[^>]*>(\d{4}\.\d{2})\s{1,2}-\s{1,2}(\d{4}\.\d{2}|至今)<\/span><span class="compony"[^>]*>(.*)<span[^>]*>.*<\/span><\/span>/isU';
+        preg_match_all($pregWorks, $content, $contentMatch);
+
+        if (!$contentMatch || !$contentMatch[3]) {
+            return false;
+        }
+        $startArr = $contentMatch[1];
+        $endArr = $contentMatch[2];
+        $nameArr = $contentMatch[3];
+        $jobs = [];
+        foreach ($startArr as $index => $start) {
+            $end = $endArr[$index];
+            $start = str_replace(['年', '月','.'], ['-', '-01','-'], $start);
+            $end = str_replace(['年', '月','.'], ['-', '-01','-'], $end);
+            $start = strtotime($start . '-01');
+            $end == '至今' ? $end = 0 : $end = strtotime($end. '-01');
             $name = strip_tags(trim($nameArr[$index]));
             if (!$name) {
                 continue;
