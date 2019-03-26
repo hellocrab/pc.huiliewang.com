@@ -182,7 +182,7 @@ class ProductAction extends Action
                     $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "解析成功,并且已经推荐到此该项目中"]);
                 }
 
-                $this->ajaxReturn(['succ' => 1, 'code' => 200, 'message' => '解析成功']);
+                $this->ajaxReturn(['succ' => 1, 'code' => 200, 'message' => '解析成功','resume_id' => $resume_id]);
             } catch (Exception $ex) {
                 $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => $ex->getMessage()]);
             }
