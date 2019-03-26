@@ -42,20 +42,33 @@ class ResumeData {
             if ($filename) {
                 $htmlName = '/' . $filename[0] . '.html';
             }
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $envPath = env('OFFICE_PATH');
+            
+            if (ENV != 'online') {
+                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    $envPath = env('OFFICE_PATH');
 
-                $cmd = "{$envPath}soffice.exe --convert-to html:HTML --outdir $dir $source";
+                    $cmd = "{$envPath}soffice.exe --convert-to html:HTML --outdir $dir $source";
+                } else {
+                    $result = shell_exec('libreoffice --invisible --convert-to html ' . $relPath . ' --outdir ' . $basePath);
+                    if (!$result) {
+                        return false;
+                    }
+                }
+                $text = file_get_contents($basePath . $htmlName);
             } else {
-                $result = shell_exec('libreoffice --invisible --convert-to html ' . $relPath . ' --outdir ' . $basePath);
+                mt_srand(time());
+                $docker_num = mt_rand(1, 15);
+                $_filename = implode('.', $filename);
+                $relPath = '/root/html1/'.$_filename;
+                $basePath = '/root/html1';
+                $result = shell_exec('docker exec office'.$docker_num.' libreoffice --invisible --convert-to html ' . $relPath . ' --outdir ' . $basePath);
                 if (!$result) {
                     return false;
                 }
+                $text = file_get_contents(realpath($path) . $htmlName);
             }
-
-            $text = file_get_contents($basePath . $htmlName);
-//            var_dump($text);
-//            exit;
+            
+            
             if (strpos($text, $this->encode('智联招聘')) !== FALSE && !strpos($text, $this->encode('智联卓聘')) && strpos($text, '<p class="msonormal">') !== false) {
                 $mode = 1; //智联招聘 非表格
                 $str = strip_tags($text, "<b><p>");
@@ -1144,8 +1157,8 @@ class ResumeData {
                         $dbEduData[$edu_id]['degree'] = $_degree;
                         $dbEduData[$edu_id]['recruitment'] = $this->decode($_edu_info[2]) == '统招' ? 1 : 0;
                     }
-                    
-                    if($edu_id == 1){
+
+                    if ($edu_id == 1) {
                         $dbData['edu'] = $this->decode($_edu_info[1]);
                     }
                 }
