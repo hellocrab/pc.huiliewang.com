@@ -930,7 +930,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', U("invoice/index",'&type=refuse'));
             }
         }
         $this->display();
@@ -946,7 +946,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', U("invoice/index",'&type=refund'));
             }
         }
         $this->display();
@@ -1236,7 +1236,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', U("invoice/index",'&type=grant'));
             }
         }
         $this->display();
