@@ -34,7 +34,32 @@ $(() => {
       url: "index.php?m=product&a=checkReuse",
       data: { content: content },
       type: "post",
-      success(res) {}
+      success(res) {
+        if(res.status===0){
+          alert_crm(res.info);
+          dialog.css("display", "none");
+          ue.setContent('');
+        }else{
+          let con = '';
+          for(let i = 0;i<res.data.length;i++){
+            let url = "http://localhost/index.php?m=product&a=view&id="+res.data[i]
+            con = con + `<a href="`+url+`" target="_blank" >相似简历`+(i+1)+`</a>`
+          }
+          let temp = $(`<div class="showBox">
+            <div class="show_">
+              <i class="fa fa-times closeShow"></i>
+              <p>查找到`+res.data.length+`
+              份相似简历</p><div class="links">
+              `+con+`
+              </div>
+            </div>
+          </div>`);
+          $('.ideBox').append(temp);
+          $('.closeShow').click(ev=>{
+            $('.showBox ').remove();
+          })
+        }
+      }
     });
   });
 });

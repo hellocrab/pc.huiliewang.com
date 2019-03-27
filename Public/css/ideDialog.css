@@ -84,3 +84,34 @@
     height: 100% !important;
     overflow: scroll !important;
 }
+.showBox{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 999;
+}
+.show_{
+    width: 300px;
+    margin: auto;
+    background: #fff;
+    margin-top: 120px;
+    padding: 20px;
+    position: relative;
+}
+.closeShow{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+.show_ p{
+    border-bottom: 1px solid #ccc;
+    color: #d7170f;
+}
+.show_ a{
+    display: inline-block;
+    margin-right: 50px;
+}
