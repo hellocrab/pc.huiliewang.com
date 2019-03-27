@@ -2252,11 +2252,6 @@ class LeadsAction extends Action
             }
             $end_time = $between_date[1] ? strtotime(date('Y-m-d 23:59:59', strtotime($between_date[1]))) : strtotime(date('Y-m-d 23:59:59', time()));
             //当时间是某具体的一天时
-            if ($between_date[0] == $between_date[1]) {
-                $flag = true;
-                $start_time = strtotime(date('Y-m-d 00:00:00', strtotime($between_date[1])));
-                $end_time = $start_time + 86400;
-            }
         } else {
             $ishow = "含今日";
             $start_time = strtotime(date('Y-m-01 00:00:00'));
@@ -2270,13 +2265,9 @@ class LeadsAction extends Action
         $pageSize = isset($_GET['listrows']) ? intval($_GET['listrows']) : 15;
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
         //所筛选的时间段是同一天，页面显示同一天
-        if ($flag)
-            $this->end_date = date('Y-m-d', $end_time - 86400);
-        else
-            $this->end_date = date('Y-m-d', $end_time);
         // _guo_03/26  $map一行与上面块调换位置(同一天显示数量不准确)
         $map = ['report_date' => [['egt', $this->start_date], ['elt', $this->end_date]]];
-        $map['user_role_id'] = $role_id_array ? ['in', $role_id_array] : '';
+        $map['user_role_id'] = $role_id_array ? ['in', $role_id_array] : 208;
         $count = M('report_intergral')->where($map)->group('user_id')->select();
         $count = count($count);
         $isExport = isset($_GET['isExport']) ? intval($_GET['isExport']) : 0;
