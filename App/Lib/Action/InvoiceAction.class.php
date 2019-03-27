@@ -914,7 +914,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', U("invoice/index",'&type=examine'));
             }
         }
         $this->display();
@@ -962,7 +962,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', U("invoice/index",'&type=billing'));
             }
         }
         $this->display();
@@ -978,7 +978,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', U("invoice/index",'&type=money'));
             }
         }
         $this->display();
@@ -995,10 +995,11 @@ class InvoiceAction extends Action{
         if($this->isPost()){
             $id = $_POST['invoice_id'];
             $result = M("invoice")->where("invoice_id=%d",$id)->save($_POST);
-            if($result){
-                alert('success', '发票修改成功！', U("invoice/index"));
+            $invoice = M("invoice")->where("invoice_id=%d",$id)->find();
+            if($result !== false){
+                alert('success', '发票修改成功！', U("invoice/index",'&type='.$invoice['type']));
             }else{
-                alert('error', '发票修改失败！', U("invoice/index"));
+                alert('error', '发票修改失败！', U("invoice/index",'&type='.$invoice['type']));
             }
         }
         if(trim($_GET['act']) == 'excel'){
@@ -1175,7 +1176,7 @@ class InvoiceAction extends Action{
             }
             if($result){
 
-                alert('success','分配成功！',$_SERVER['HTTP_REFERER']);
+                alert('success','分配成功！',U("invoice/index",'&type=distribution'));
             }else{
                 alert('error','分配失败！',$_SERVER['HTTP_REFERER']);
             }
@@ -1214,7 +1215,7 @@ class InvoiceAction extends Action{
 
             if($result){
 
-                alert('success','分配成功！',$_SERVER['HTTP_REFERER']);
+                alert('success','分配成功！',U("invoice/index",'&type=distribution'));
             }else{
                 alert('error','分配失败！',$_SERVER['HTTP_REFERER']);
             }
