@@ -450,16 +450,22 @@ class ProductAction extends Action
             foreach ($_GET as $k => $v) {
                 if (!in_array($k, $no_field_array)) {
                     if ($k == "industry" && $v) {
+                        $industryName = M('industry')->where(['industry_id'=>$v])->getField('name');
                         if ($where['_string']) {
-                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',industry)";
+//                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',industry)";
+                            $where['_string'] .= " and industry  like '%{$industryName}%' ";
                         } else {
-                            $where['_string'] = "FIND_IN_SET('" . $v . "',industry)";
+//                            $where['_string'] = "FIND_IN_SET('" . $v . "',industry)";
+                            $where['_string'] = "industry  like  '%{$industryName}%' ";
                         }
                     } elseif ($k == "job_class" && $v) {
+                        $jobName = M('job_class')->where(['job_id'=>$v])->getField('name');
                         if ($where['_string']) {
-                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',job_class)";
+//                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',job_class)";
+                            $where['_string'] .= " and job_class like '%{$jobName}%'";
                         } else {
-                            $where['_string'] = "FIND_IN_SET('" . $v . "',job_class)";
+//                            $where['_string'] = "FIND_IN_SET('" . $v . "',job_class)";
+                            $where['_string'] = "job_class like '%{$jobName}%'";
                         }
                     } elseif ($k == "intentCity" && $v) {
                         if ($where['_string']) {
