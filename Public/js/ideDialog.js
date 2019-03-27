@@ -42,7 +42,7 @@ $(() => {
         }else{
           let con = '';
           for(let i = 0;i<res.data.length;i++){
-            let url = "http://localhost/index.php?m=product&a=view&id="+res.data[i]
+            let url = "/index.php?m=product&a=view&id="+res.data[i]
             con = con + `<a href="`+url+`" target="_blank" >相似简历`+(i+1)+`</a>`
           }
           let temp = $(`<div class="showBox">

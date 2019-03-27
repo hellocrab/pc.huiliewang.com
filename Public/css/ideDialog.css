@@ -79,6 +79,7 @@
 }
 #edui1_iframeholder{
     height: 100% !important;
+    width: 100% !important;
 }
 .view{
     height: 100% !important;
@@ -110,6 +111,7 @@
 .show_ p{
     border-bottom: 1px solid #ccc;
     color: #d7170f;
+    padding-bottom: 10px;
 }
 .show_ a{
     display: inline-block;
