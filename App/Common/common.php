@@ -587,6 +587,32 @@ function getSubDepartmentByRole($role_id = 0) {
     //未完成方法
 }
 
+/**
+ * @desc  获取下属部门部门ID
+ * @param int $departmentId
+ * @return array
+ */
+function getSubDepartmentBrId($departmentId = 0) {
+    if ($departmentId <= 0) {
+        $departmentId = session('department_id');
+    }
+    $departmentIds = $departmentId;
+    $sons = M('roleDepartment')->where('parent_id =%d', $departmentId)->select();
+    foreach ($sons as $sonDep) {
+        $id = $sonDep['department_id'];
+        $departmentIds .= ','.$id;
+        if(M('roleDepartment')->where('parent_id =%d', $id)->find()){
+            continue;
+        }
+        if($id <= 0){
+            continue;
+        }
+        getSubDepartmentBrId($id);
+    }
+    return $departmentIds;
+
+}
+
 //通过部门id获取该部门员工  $sub=false为下属范围  $sub=true为部门所有人
 function getRoleByDepartmentId($department_id, $sub = false) {
     $id_array = array($department_id);

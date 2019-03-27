@@ -399,6 +399,7 @@ class LogAction extends Action{
         $user = $resume->where("eid=%d", $_GET['id'])->select();
         $this->assign('project', $project);
         $this->assign('user', $user[0]);
+        $this->assign('business_id', isset($_GET['business_id']) ? $_GET['business_id'] : 0);
         $this->display();
     }
 

@@ -195,7 +195,7 @@
                                         swal(res.message,"",res.code==200?'success':"warning");
                                         if(res.code == 200){
                                             setTimeout(()=>{
-                                            location.reload();
+                                            location.href = '/index.php?m=product&a=view&id='+res.resume_id;
                                             },1000)
                                         }
 
@@ -1025,13 +1025,14 @@
 
     $(".log_calllist").click(function () {
         $('#dialog-log').dialog('open');
-        $('#dialog-log').load('{:U("log/resume_project","r=RCustomerLog&module=customer&id=")}' + $(this).attr('rel'));
+        var proId = "{$Think.get.pro_id|default='0'}";
+        $('#dialog-log').load('{:U("log/resume_project","r=RCustomerLog&module=customer&id=")}' + $(this).attr('rel') + '&business_id='+proId);
         $.fn.modal.Constructor.prototype.enforceFocus = function () {};
     });
 
 
 
-
+    var proId = "{$Think.get.pro_id|default='0'}";
     $("#dialog-log").dialog({
         autoOpen: false,
         // modal: true,
@@ -1050,7 +1051,7 @@
                         if (data.status == 1) {
                             swal("操作成功！", "该人选成功加入项目！", "success");
                             $("#dialog-log").dialog("close");
-                            // location.reload();
+                            location.href="{:U('business/view')}&id="+proId;
                         } else {
                             swal({
                                 title: "操作失败！",

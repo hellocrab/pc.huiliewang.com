@@ -134,7 +134,6 @@ class BusinessAction extends Action
                 $where['business.creator_role_id'] = session('role_id');
                 break;
             case 'sub' :
-//                $where['business.owner_role_id'] = array('in', $below_ids);
                 $where['business.creator_role_id'] = array('in', $below_ids);
                 break;
             case 'subcreate' :
@@ -169,14 +168,9 @@ class BusinessAction extends Action
                 $order = 'business.update_time desc,business.business_id asc';
                 break;
             case 'me' :
-//                $where['business.owner_role_id'] = session('role_id');
                 $where['business.creator_role_id'] = session('role_id');
-                
                 break;
             case 'all' :
-//                $where['business.owner_role_id'] = session('role_id');
-                // 3/6号修改全部项目筛选
-//                $where['business.creator_role_id'] = session('role_id');
                 $where['business.owner_role_id'] = array('in',$ownerAllIds);
                 break;
             default :
@@ -196,7 +190,7 @@ class BusinessAction extends Action
                 $where[$field] = array('in', $customer_ids);
             } elseif ($field == "status_id") {
                 unset($where['status_id']);
-            } elseif ($field == 'name') {
+            } elseif ($field == 'name' && !empty($search)) {
                 //获取客户ID
                 $cus_where['name'] = array('like', '%' . $search . '%');
                 $customer_ids = M('Customer')->where($cus_where)->getField('customer_id', true);
@@ -217,13 +211,13 @@ class BusinessAction extends Action
             } else {
                 switch ($condition) {
                     case "is" :
-                        $where[$field] = array('eq', $search);
+                        !empty($search) && $where[$field] = array('eq', $search);
                         break;
                     case "isnot" :
                         $where[$field] = array('neq', $search);
                         break;
                     case "contains" :
-                        $where[$field] = array('like', '%' . $search . '%');
+                        !empty($search) && $where[$field] = array('like', '%' . $search . '%');
                         break;
                     case "not_contain" :
                         $where[$field] = array('notlike', '%' . $search . '%');
@@ -405,10 +399,7 @@ class BusinessAction extends Action
             }
         }
 
-//        if (!isset($where['is_deleted'])) {
-//            $where['business.is_deleted'] = 0;
-//        }
-        if (!isset($where['business.owner_role_id'])) {
+        if (!isset($where['business.owner_role_id']) && $by != 'sub') {
             //权限
             $where['business.owner_role_id'] = array('in', $this->_permissionRes);
             $where['_string'] = "FIND_IN_SET(".session('role_id').",business.parter)";
@@ -453,21 +444,15 @@ class BusinessAction extends Action
             $params[] = "listrows=" . $listrows;
         }
         import("@.ORG.Page");
-
-        //过滤空商机
-        // $where['code'] = array('neq','');
-        // $where['name'] = array('neq','..');
-
         if($ownerAllIds && $by == 'all'){
             $ownerWhere['business.joiner'] = ['in',$this->_permissionRes];
             $ownerWhere['_logic'] = 'OR';
             $ownerWhere['_string'] = "FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
             $where['_complex'] = $ownerWhere;
             //3/6修改——guo
-//            $where['_logic'] = 'OR';
-            $where['_logic'] = 'AND';
+            $where['_logic'] = 'OR';
         }
-        $where['_logic'] = 'OR';
+        $where['_logic'] = 'AND';
         unset($where['business.owner_role_id']);
         $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
         $count = $d_v_business->where($where)->order($order)->count();
@@ -988,7 +973,13 @@ class BusinessAction extends Action
         $owner_role_ids = explode(',',($business_info['owner_role_id']));
 //        if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
         if ($business_info && (!in_array(session('role_id'),$owner_role_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
-            alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+            if($below_ids && is_array($below_ids)){
+                if(!in_array($business_info['creator_role_id'],$below_ids) && !in_array($business_info['owner_role_id'],$below_ids)){
+                    alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+                }
+            }else{
+                alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+            }
         }
 
         if ($business_info['joiner']) {
@@ -1092,14 +1083,14 @@ class BusinessAction extends Action
 
         $business_id = I("id");
         $fine_project = D("ProjectView");
-        $project['calllist'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 1, I("id"))->select();
-        $project['adviser'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 2, I("id"))->select();
-        $project['tj'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 3, I("id"))->select();
-        $project['interview'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 4, I("id"))->select();
-        $project['pass'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 5, I("id"))->select();
-        $project['offer'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 6, I("id"))->select();
-        $project['enter'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 7, I("id"))->select();
-        $project['safe'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 8, I("id"))->select();
+        $project['calllist'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 1, I("id"))->order('fine_project.addtime desc')->select();
+        $project['adviser'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 2, I("id"))->order('fine_project.updatetime desc')->select();
+        $project['tj'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 3, I("id"))->order('fine_project.tjaddtime desc')->select();
+        $project['interview'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 4, I("id"))->order('fine_project.updatetime desc')->select();
+        $project['pass'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 5, I("id"))->order('fine_project.updatetime desc')->select();
+        $project['offer'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 6, I("id"))->order('fine_project.updatetime desc')->select();
+        $project['enter'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 7, I("id"))->order('fine_project.updatetime desc')->select();
+        $project['safe'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 8, I("id"))->order('fine_project.updatetime desc')->select();
 //        $project['tj'] = M("fine_project")->where("status='%s' and project_id=%d","tj",I("id"))->select();
 //        $project['interview'] = M("fine_project")->where("status='%s' and project_id=%d","interview",I("id"))->select();
 //        $project['pass'] = M("fine_project")->where("status='%s' and project_id=%d","pass",I("id"))->select();

@@ -185,7 +185,7 @@
                                             <label class="col-md-4 control-label">{$vo.name}：</label>
                                             <if condition="$vo['form_type'] == 'textarea'">
                                                 <if condition = "$vo['tip_start'] eq 1">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-6" >
                                                         {$vo.html}
                                                     </div>
                                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -373,9 +373,22 @@
         /*form表单验证*/
         $("#form").validate({
             submitHandler: function (form) {
-                $('#save_submit').click(function () {
-                    $('#save_submit').prop('disabled', true);
-                });
+                // $('#save_submit').click(function () {
+                //     $('#save_submit').prop('disabled', true);
+                // });
+                //行业、职能必填
+                var industrys = $("#wantdqs").val();
+                var jobtitles = $("#jobtitles").val();
+                if(jobtitles=="" || jobtitles==null){
+                    alert_crm("请填写职能信息！");
+                    $("input[data-selector=jobtitles]").css("border","1px dotted #cc5965");
+                    return;
+                }
+                if(industrys=="" || industrys==null){
+                    alert_crm("请填写城市信息！");
+                    $("input[data-selector=wantdqs]").css("border","1px dotted #cc5965");
+                    return;
+                }
                 form.submit();
             }
         });

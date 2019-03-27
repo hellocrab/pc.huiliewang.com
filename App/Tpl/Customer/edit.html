@@ -210,39 +210,39 @@
 								<div class="col-md-6">
 									<select class="form-control " id="con_contacts[crm_dbxxve]" name="con_contacts[crm_dbxxve]">
 										<option value=''>--请选择--</option>
-										<option value='非常重要'>非常重要</option>
-										<option value='重要' selected="selected" >重要</option>
-										<option value='一般'>一般</option>
-										<option value='较弱'>较弱</option>
-										<option value='离职'>离职</option>
+										<option value='非常重要' <if condition="$contacts[crm_dbxxve] eq '非常重要'">selected='selected'</if>>非常重要</option>
+										<option value='重要' <if condition="$contacts[crm_dbxxve] eq '重要'">selected='selected'</if> >重要</option>
+										<option value='一般'<if condition="$contacts[crm_dbxxve] eq '一般'">selected='selected'</if> >一般</option>
+										<option value='较弱' <if condition="$ontacts[crm_dbxxve] eq '较弱'">selected='selected'</if> >较弱</option>
+										<option value='离职' <if condition="$contacts[crm_dbxxve] eq '离职'">selected='selected'</if> >离职</option>
 									</select>
 									<span id="con_contacts[crm_dbxxve]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2"></div>
 							</div><div class="form-group">
 							<label class="col-md-4 control-label">姓名：</label>
 							<div class="col-md-6">
-								<input class="form-control " data-selector="con_name" type="text" id="con_name" name="con_contacts[name]"  value="" placeholder="" />
+								<input class="form-control " data-selector="con_name" type="text" id="con_name" name="con_contacts[name]"  value="{$contacts[name]}" placeholder="" />
 								<span id="con_contacts[name]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 							<div class="col-md-2 ftw"></div>
 						</div>
 							<div class="form-group">
 								<label class="col-md-4 control-label">职位：</label>
 								<div class="col-md-6">
-									<input class="form-control "  type="text" id="con_contacts[post]" name="con_contacts[post]"  value="" placeholder="" />
+									<input class="form-control "  type="text" id="con_contacts[post]" name="con_contacts[post]"  value="{$contacts[post]}" placeholder="" />
 									<span id="con_contacts[post]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2"></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-4 control-label">手机：</label>
 								<div class="col-md-6">
-									<input class="form-control " data-selector="con_telphone" type="mobile" id="con_telphone" name="con_contacts[telephone]"  value="" />
+									<input class="form-control " data-selector="con_telphone" type="mobile" id="con_telphone" name="con_contacts[telephone]"  value="{$contacts[telephone]}" />
 									<span id="con_contacts[telephone]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2 ftw"></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-4 control-label">QQ：</label>
 								<div class="col-md-6">
-									<input class="form-control " data-selector="con_qq_no"  type="text" id="con_qq_no" name="con_contacts[qq_no]"  value="" placeholder="" />
+									<input class="form-control " data-selector="con_qq_no"  type="text" id="con_qq_no" name="con_contacts[qq_no]"  value="{$contacts[qq_no]}" placeholder="" />
 									<span id="con_contacts[qq_no]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2 ftw"></div>
 							</div>
@@ -251,15 +251,15 @@
 								<div class="col-md-6">
 									<select class="form-control " id="con_contacts[crm_zswstr]" name="con_contacts[crm_zswstr]">
 										<option value=''>--请选择--</option>
-										<option value='男' selected="selected" >男</option>
-										<option value='女'>女</option></select>
+										<option value='男' <if condition="$contacts[crm_zswstr] eq '男'">selected='selected'</if> >男</option>
+										<option value='女' <if condition="$contacts[crm_zswstr] eq '女'">selected='selected'</if> >女</option></select>
 									<span id="con_contacts[crm_zswstr]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2"></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-4 control-label">邮箱：</label>
 								<div class="col-md-6">
-									<input class="form-control " type="email" id="con_contacts[email]" name="con_contacts[email]"  value="" />
+									<input class="form-control " type="email" id="con_contacts[email]" name="con_contacts[email]"  value="{$contacts[email]}" />
 									<span id="con_contacts[email]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2"></div>
 							</div>
@@ -268,30 +268,31 @@
 								<div class="col-md-8">
 									<script type="text/javascript">
                                         $(function(){
-                                            new PCAS("con_contacts[contacts_address]['state']","con_contacts[contacts_address]['city']","con_contacts[contacts_address]['area']","","","");
+                                            new PCAS("con_contacts[contacts_address]['state']","con_contacts[contacts_address]['city']","con_contacts[contacts_address]['area']","{$contacts['state']}","{$contacts['city']}","{$contacts['area']}");
                                         });
 									</script><select class="form-control " input_type="address" name="con_contacts[contacts_address]['state']" style="width:32%;float:left;" ></select>
 									<select class="form-control " input_type="address" name="con_contacts[contacts_address]['city']" style="width:32%;float:left;margin-left:1%;"></select>
 									<select class="form-control " input_type="address" name="con_contacts[contacts_address]['area']" style="width:32%;float:left;margin-left:1%;"></select>
-									<input class="form-control" input_type="address" type="text" name="con_contacts[contacts_address]['street']" placeholder="街道信息" class="input-large" value="" style="float:left;margin-top:5px;">											</div>
+									<input class="form-control" input_type="address" type="text" name="con_contacts[contacts_address]['street']" placeholder="街道信息" class="input-large" value="{$contacts['street']}" style="float:left;margin-top:5px;">											</div>
 							</div>
+
 							<div class="form-group">
 								<label class="col-md-4 control-label">微信：</label>
 								<div class="col-md-6">
-									<input class="form-control "  type="text" data-selector="con_wetchat" id="con_wetchat" name="con_contacts[wetchat]"  value="" placeholder="" />
+									<input class="form-control "  type="text" data-selector="con_wetchat" id="con_wetchat" name="con_contacts[wetchat]"  value="{$contacts[wetchat]}" placeholder="" />
 									<span id="con_contacts[wetchat]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2 "></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-4 control-label">邮编：</label>
 								<div class="col-md-6">
-									<input class="form-control "  type="text" id="con_contacts[zip_code]" name="con_contacts[zip_code]"  value="" placeholder="" />
+									<input class="form-control "  type="text" id="con_contacts[zip_code]" name="con_contacts[zip_code]"  value="{$contacts[zip_code]}" placeholder="" />
 									<span id="con_contacts[zip_code]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2"></div>
 							</div><div class="form-group">
 							<label class="col-md-4 control-label">备注：</label>
 							<div class="col-md-8">
-								<textarea class="form-control" rows="5"></textarea>
+								<textarea class="form-control" name="con_contacts[description]" rows="5">{$contacts[description]}</textarea>
 							</div>
 						</div>
 						</div>

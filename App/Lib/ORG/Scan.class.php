@@ -8,7 +8,7 @@ $webscan_post=1;
 $webscan_get=1;
 $webscan_cookie=1;
 $webscan_referre=1;
-$webscan_white_directory='admin';
+$webscan_white_directory='admin|checkReuse';
 $webscan_white_url = array('index.php' => 'm=admin');
 
 //get拦截规则
