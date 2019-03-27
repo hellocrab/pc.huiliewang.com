@@ -1233,8 +1233,10 @@ class BusinessAction extends Action
         $project['calllist_remark'] = M("fine_project_bz")->where($where)->select();
         $project['remove_remark'] = M("fine_project_bhs")->where($where)->select();
         foreach ($project as $key => $list) {
-
             foreach ($list as $k => $li) {
+                if($key == 'cc_remark' && isset($li['role_id'])){
+                    $li['cc_user'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
                 $data[$li['addtime']][$key] = $li;
             }
         }
