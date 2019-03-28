@@ -995,20 +995,23 @@ class BusinessAction extends Action
         $parterRoleIds = explode(',', $business_info['parter']);
         $createUserRoleId =  $business_info['creator_role_id'];
         //是否是自己的项目全部项之一
-        if ($business_info && (!in_array($useRoleId,$owner_role_ids) && !in_array($useRoleId,$parterRoleIds ) && $useRoleId !=$business_info['joiner'] && $useRoleId != $createUserRoleId)) {
-            if($below_ids && is_array($below_ids)){
-                $isAllow = false;
-                //是否是其中下属的全部项之一
-                foreach ($below_ids as $sonRoleId){
-                    if($sonRoleId == $createUserRoleId || $sonRoleId == $business_info['joiner'] || in_array($sonRoleId,$parterRoleIds) || in_array($sonRoleId,$owner_role_ids)){
-                        $isAllow = true;
-                        break;
-                    }
-                }
-                !$isAllow &&  alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
-            }else{
+        if(!$business_info){
+            alert('error', '项目不存在！', $_SERVER['HTTP_REFERER']);
+        }
+        if (!in_array($useRoleId,$owner_role_ids) && !in_array($useRoleId,$parterRoleIds ) && $useRoleId !=$business_info['joiner'] && $useRoleId != $createUserRoleId) {
+            if(!$below_ids || !is_array($below_ids)){
+                //没有下属
                 alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
             }
+            $isAllow = false;
+            //是否是其中下属的全部项之一
+            foreach ($below_ids as $sonRoleId){
+                if($sonRoleId == $createUserRoleId || $sonRoleId == $business_info['joiner'] || in_array($sonRoleId,$parterRoleIds) || in_array($sonRoleId,$owner_role_ids)){
+                    $isAllow = true;
+                    break;
+                }
+            }
+            !$isAllow &&  alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
         }
 
 
