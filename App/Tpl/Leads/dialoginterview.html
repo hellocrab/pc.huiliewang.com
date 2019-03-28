@@ -51,6 +51,7 @@
                 <td>推荐顾问</td>
                 <td>所属客户</td>
                 <td>备注</td>
+                <td>操作时间</td>
             </tr>
             </tbody>
             <tbody class="mainTbody">
@@ -71,6 +72,7 @@
                     <td>{$vo.tracker_name}</td>
                     <td>{$vo.customer_name}</td>
                     <td>{$vo.beizhu|default=''}</td>
+                    <td>{$vo.addtime|date='Y-m-d H:i',###}</td>
                 </tr>
             </volist>
 
