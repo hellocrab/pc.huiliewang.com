@@ -2133,7 +2133,7 @@ class LeadsAction extends Action
     private function analyticsNum($map, $p, $pageSize, $isExport = 0) {
         if($isExport){
             $p = 1;
-            $pageSize = 300; //导出条数300条
+            $pageSize = 1000; //导出条数300条
         }
         $countFields = 'sum(integral) as integral,sum(customer_num) as customerNum,sum(project_num) as projectNum,'
             . 'sum(resume_num) as resumeNum,sum(fine_project_num) as fineNum,sum(interview_num) as interviewNum,sum(bd_num) as bdNum,' .
