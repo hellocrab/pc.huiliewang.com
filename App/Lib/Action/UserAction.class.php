@@ -337,24 +337,24 @@ class UserAction extends Action {
             'Accept:' . 'application/json'
             );
 //            'Authorization:'.$auth
-//        $data = ["callerNbr"=>"+86".$sourceTel,
-//            "calleeNbr"=>"+86".$tel ,
-//            "userData"=>"7be4a9ce-8ea2-4c74-b822-f4472194621d",
-//            "setingNbr" => "PP2703844206"];
-//        $data = json_encode($data);
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-//        curl_setopt($ch, CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_POST, true);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-//        $msg = curl_exec($ch);
-//        $msg = json_decode($msg);
+        $data = ["callerNbr"=>"+86".$sourceTel,
+            "calleeNbr"=>"+86".$tel ,
+            "userData"=>"7be4a9ce-8ea2-4c74-b822-f4472194621d",
+            "setingNbr" => "PP2703844206"];
+        $data = json_encode($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $msg = curl_exec($ch);
+        $msg = json_decode($msg);
 //        坐席下班
 //        $this->offWork($timestamp);
 //        $result = json_decode($msg, true);
 //        $uuid=$result['resp']['Msg'];
-        echo json_encode(['code' => $msg->meta->success ? 1:0,'msg' => '服务中断中']);
+        echo json_encode(['code' => $msg->meta->success ? 1:0,'msg' => $msg->meta->message]);
     }
 
     /**
