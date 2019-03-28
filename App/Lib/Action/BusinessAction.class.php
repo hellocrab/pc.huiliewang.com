@@ -448,7 +448,7 @@ class BusinessAction extends Action
         //我全部项目 1、我创建的 2、分配给我的 3、项目成员是我的 4、维护人是我的 5、分享给我的
         if( $by == 'all'){
             //自己全部
-            $ownerWhere['_string'] = "business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
+            $ownerWhere['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
             $where['_complex'] = $ownerWhere;
             $where['_logic'] = 'OR';
         }
