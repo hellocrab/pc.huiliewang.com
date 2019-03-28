@@ -3062,17 +3062,20 @@ class BusinessAction extends Action
             $business = M('Business');
             $whereBusiness['business_id'] = $msg['business_id'];
             $ownerRoleId = $business->where($whereBusiness)->field('owner_role_id')->find();
-            $ownerRoleId = explode(',', $ownerRoleId['owner_role_id']);
-            $map = $ownerRoleId;
+            $map = [];
             $roleId = $msg['role_id'];
             $type = '0';
-            foreach ($ownerRoleId as $k => $v) {
-                if ($v == $roleId) {
-                    $type = '1';
-                    unset($ownerRoleId[$k]);
+            if ($ownerRoleId['owner_role_id']){
+                $ownerRoleId = explode(',', $ownerRoleId['owner_role_id']);
+                $map = $ownerRoleId;
+                foreach ($ownerRoleId as $k => $v) {
+                    if ($v == $roleId) {
+                        $type = '1';
+                        unset($ownerRoleId[$k]);
+                    }
                 }
             }
-            if ($type == '0') {
+            if ($type == '0' && $roleId > 0) {
                 $map[] = $roleId;
                 $business->where($whereBusiness)->setField(array('owner_role_id' => implode(',', $map))) ? $this->ajaxReturn('0') : $this->ajaxReturn('1');
             } else {

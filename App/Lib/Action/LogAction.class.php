@@ -422,7 +422,7 @@ class LogAction extends Action{
                 $data['addtime'] = time();
                 $id = M("fine_project")->add($data);
                 if($id){
-                    $this->ajaxReturn($id,'',1);
+                    $this->ajaxReturn(['id'=>$id,'project_id'=>$data['project_id']],'',1);
                 }
             }
 

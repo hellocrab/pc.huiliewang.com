@@ -1051,7 +1051,14 @@
                         if (data.status == 1) {
                             swal("操作成功！", "该人选成功加入项目！", "success");
                             $("#dialog-log").dialog("close");
-                            location.href="{:U('business/view')}&id="+proId;
+                            var projectId = data.data.project_id;
+                            if(!proId || proId == 0){
+                                proId = projectId;
+                            }
+                            if(proId){
+                                location.href="{:U('business/view')}&id="+proId;
+                            }
+
                         } else {
                             swal({
                                 title: "操作失败！",
