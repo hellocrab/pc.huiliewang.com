@@ -134,7 +134,7 @@ class BusinessAction extends Action
                 $where['business.creator_role_id'] = session('role_id');
                 break;
             case 'sub' :
-                $where['business.creator_role_id'] = array('in', $below_ids);
+//                $where['business.creator_role_id'] = array('in', $below_ids);
                 break;
             case 'subcreate' :
                 $where['creator_role_id'] = array('in', $below_ids);
@@ -171,10 +171,10 @@ class BusinessAction extends Action
                 $where['business.creator_role_id'] = session('role_id');
                 break;
             case 'all' :
-                $where['business.owner_role_id'] = array('in',$ownerAllIds);
+//                $where['business.owner_role_id'] = array('in',$ownerAllIds);
                 break;
             default :
-                $where['business.owner_role_id'] = array('in',$ownerAllIds);
+//                $where['business.owner_role_id'] = array('in',$ownerAllIds);
                 break;
         }
        
@@ -399,11 +399,11 @@ class BusinessAction extends Action
             }
         }
 
-        if (!isset($where['business.owner_role_id']) && $by != 'sub') {
-            //权限
-            $where['business.owner_role_id'] = array('in', $this->_permissionRes);
-            $where['_string'] = "FIND_IN_SET(".session('role_id').",business.parter)";
-        }
+//        if (!isset($where['business.owner_role_id']) && $by != 'sub') {
+//            //权限
+//            $where['business.owner_role_id'] = array('in', $this->_permissionRes);
+////            $where['_string'] = " FIND_IN_SET(".session('role_id').",business.parter)";
+//        }
         //商机状态
         if ($_GET['status_id']) {
             $where['status_id'] = intval($_GET['status_id']);
@@ -444,14 +444,33 @@ class BusinessAction extends Action
             $params[] = "listrows=" . $listrows;
         }
         import("@.ORG.Page");
-        if($ownerAllIds && $by == 'all'){
-            $ownerWhere['business.joiner'] = ['in',$this->_permissionRes];
-            $ownerWhere['_logic'] = 'OR';
-            $ownerWhere['_string'] = "FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
+
+        //我全部项目 1、我创建的 2、分配给我的 3、项目成员是我的 4、维护人是我的 5、分享给我的
+        if( $by == 'all'){
+            //自己全部
+            $ownerWhere['_string'] = "business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
             $where['_complex'] = $ownerWhere;
-            //3/6修改——guo
             $where['_logic'] = 'OR';
         }
+
+        //我的项目  自己创建的项目
+        if($by == 'me'){
+        }
+
+        //下属项目不包阔自己的 1、下属创建的 2、分配给下属的 3、项目成员是下属的 4、维护人是下属的 5、分享给下属的
+        if($by == 'sub' && $below_ids){
+            $below_ids_str = implode(',',$below_ids);
+            $ownerWhere['_string'] = "business.creator_role_id in (".$below_ids_str.") OR business.joiner in (".$below_ids_str.")";
+            foreach ($below_ids as $childRoleId){
+                if($childRoleId <= 0){
+                    continue;
+                }
+                $ownerWhere['_string'] .= "OR FIND_IN_SET({$childRoleId},business.owner_role_id) OR FIND_IN_SET({$childRoleId},business.parter)";
+            }
+            $where['_complex'] = $ownerWhere;
+            $where['_logic'] = 'OR';
+        }
+
         $where['_logic'] = 'AND';
         unset($where['business.owner_role_id']);
         $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
