@@ -987,19 +987,30 @@ class BusinessAction extends Action
         $m_contacts = M('Contacts');
         $m_business_status = M('BusinessStatus');
         $below_ids = getPerByAction('business', 'view');
+
         //判断权限
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
         $owner_role_ids = explode(',',($business_info['owner_role_id']));
-//        if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
-        if ($business_info && (!in_array(session('role_id'),$owner_role_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
+        $useRoleId = session('role_id'); //joiner
+        $parterRoleIds = explode(',', $business_info['parter']);
+        $createUserRoleId =  $business_info['creator_role_id'];
+        //是否是自己的项目全部项之一
+        if ($business_info && (!in_array($useRoleId,$owner_role_ids) && !in_array($useRoleId,$parterRoleIds ) && $useRoleId !=$business_info['joiner'] && $useRoleId != $createUserRoleId)) {
             if($below_ids && is_array($below_ids)){
-                if(!in_array($business_info['creator_role_id'],$below_ids) && !in_array($business_info['owner_role_id'],$below_ids)){
-                    alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+                $isAllow = false;
+                //是否是其中下属的全部项之一
+                foreach ($below_ids as $sonRoleId){
+                    if($sonRoleId == $createUserRoleId || $sonRoleId == $business_info['joiner'] || in_array($sonRoleId,$parterRoleIds) || in_array($sonRoleId,$owner_role_ids)){
+                        $isAllow = true;
+                        break;
+                    }
                 }
+                !$isAllow &&  alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
             }else{
                 alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
             }
         }
+
 
         if ($business_info['joiner']) {
             $customer_owner_ids = explode(",", $business_info['joiner']);
