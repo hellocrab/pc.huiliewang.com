@@ -59,7 +59,7 @@ class InvoiceAction extends Action{
         $type = I("type")?I("type"):"apply";
         $this->type = $type;
         $d_invoice = D('InvoiceView');
-        $order = 'update_time desc';
+        $order = 'create_time desc';
         $where = array();
         $p = intval($_GET['p']) ? intval($_GET['p']) : 1;
         $m_customer = M('Customer');
@@ -914,7 +914,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index",'&type=examine'));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
@@ -930,7 +930,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index",'&type=refuse'));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
@@ -946,7 +946,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index",'&type=refund'));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
@@ -962,7 +962,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index",'&type=billing'));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
@@ -978,7 +978,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index",'&type=money'));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
@@ -1176,7 +1176,7 @@ class InvoiceAction extends Action{
             }
             if($result){
 
-                alert('success','分配成功！',U("invoice/index",'&type=distribution'));
+                alert('success','分配成功！',$_SERVER['HTTP_REFERER']);
             }else{
                 alert('error','分配失败！',$_SERVER['HTTP_REFERER']);
             }
@@ -1215,7 +1215,7 @@ class InvoiceAction extends Action{
 
             if($result){
 
-                alert('success','分配成功！',U("invoice/index",'&type=distribution'));
+                alert('success','分配成功！',$_SERVER['HTTP_REFERER']);
             }else{
                 alert('error','分配失败！',$_SERVER['HTTP_REFERER']);
             }
@@ -1236,7 +1236,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index",'&type=grant'));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
