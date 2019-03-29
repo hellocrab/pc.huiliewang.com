@@ -234,45 +234,45 @@
 							<div class="col-md-6">
 								<input class="form-control " data-selector="con_name" type="text" id="con_name" name="con_contacts[name]"  value="" placeholder="" />
 								<span id="con_contacts[name]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2 ftw"></div>
+							<div class="col-md-2 ftw ftww all"></div>
 							</div>
 							<div class="form-group">
 							<label class="col-md-4 control-label">职位：</label>
 							<div class="col-md-6">
-								<input class="form-control "  type="text" id="con_contacts[post]" name="con_contacts[post]"  value="" placeholder="" />
+								<input class="form-control "  type="text" id="con_post" data-selector="con_post" name="con_contacts[post]"  value="" placeholder="" />
 								<span id="con_contacts[post]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2"></div>
+							<div class="col-md-2 ftww all"></div>
 							</div>
 							<div class="form-group">
 							<label class="col-md-4 control-label">手机：</label>
 							<div class="col-md-6">
 								<input class="form-control " data-selector="con_telphone" type="mobile" id="con_telphone" name="con_contacts[telephone]"  value="" />
 								<span id="con_contacts[telephone]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2 ftw"></div>
+							<div class="col-md-2 ftw ftww all"></div>
 							</div>
 							<div class="form-group">
 							<label class="col-md-4 control-label">QQ：</label>
 							<div class="col-md-6">
 								<input class="form-control " data-selector="con_qq_no"  type="text" id="con_qq_no" name="con_contacts[qq_no]"  value="" placeholder="" />
 								<span id="con_contacts[qq_no]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2 ftw"></div>
+							<div class="col-md-2 ftw ftww all"></div>
 							</div>
 							<div class="form-group">
 							<label class="col-md-4 control-label">性别：</label>
 							<div class="col-md-6">
-								<select class="form-control " id="con_contacts[crm_zswstr]" name="con_contacts[crm_zswstr]">
+								<select class="form-control " data-selector="con_sex" id="con_sex" name="con_contacts[crm_zswstr]">
 									<option value=''>--请选择--</option>
 									<option value='男' selected="selected" >男</option>
 									<option value='女'>女</option></select>
 								<span id="con_contacts[crm_zswstr]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2"></div>
+							<div class="col-md-2 ftww all te"></div>
 							</div>
 							<div class="form-group">
 							<label class="col-md-4 control-label">邮箱：</label>
 							<div class="col-md-6">
-								<input class="form-control " type="email" id="con_contacts[email]" name="con_contacts[email]"  value="" />
+								<input class="form-control " data-selector="con_email" type="email" id="con_email" name="con_contacts[email]"  value="" />
 								<span id="con_contacts[email]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2"></div>
+							<div class="col-md-2 ftww all"></div>
 							</div>
 							<div class="form-group">
 							<label class="col-md-4 control-label">地址：</label>
@@ -394,10 +394,14 @@
 
     //客户来源 变换时
     function outline_change(obj){
-        if(obj.value == '面试快' || obj.value == '入职快' ||obj.value == '专业猎头'  ){
+        if( (obj.value.search('猎聘') != -1) || (obj.value.search('猎萝卜') != -1)){
+            $('.all').html('');
             $('.ftw').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
-        }else {
-            $('.ftw').html('');
+        }else if(obj.value.search('线下')){
+            $('.all').html('');
+            $('.ftww').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
+		}else {
+            $('.all').html('');
         };
     }
 
@@ -412,12 +416,16 @@
 				var industry = $("input[name=industry]").val();
 				var area = $("#city_area").val();
                 var flag = $('.ftw').html();
+                var flag1 = $('.te').html();
                 var introduce = $('#introduce').val();
                 var name = $('#con_name').val();
 				var tel = $('#con_telphone').val();
 				var qq = $('#con_qq_no').val();
 				var weixin = $('#con_wetchat').val();
 				var dqs = $("#wantdqs").val();
+				var pos = $('#con_post').val();
+				var sex= $('#con_sex').val();
+				var email = $('#con_email').val();
                 if(!industry || industry == null){
                     alert_crm("请填写所属行业！");
                     return;
@@ -435,7 +443,6 @@
                     return;
                 }
                 if(flag != ''){
-
 					    if(name == '' || name == null){
                             alert_crm("请填写姓名！");
                             $("input[data-selector=con_name]").css("border","1px dotted #cc5965");
@@ -446,9 +453,10 @@
                             $("input[data-selector=con_telphone]").css("border","1px dotted #cc5965");
                             return;
                         }
-                        if(qq == '' || qq == null){
-                            alert_crm("请填写qq！");
+                        if(qq == '' || qq == null || weixin == '' || weixin == null){
+                            alert_crm("请填写qq或者微信！");
                             $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
+                            $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
                             return;
                         }
 
@@ -458,6 +466,35 @@
                         //     return;
                         // }
                         form.submit();
+				}else if(flag1 != ''){
+                    if(name == '' || name == null){
+                        alert_crm("请填写姓名！");
+                        $("input[data-selector=con_name]").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    if(tel == '' || tel == null){
+                        alert_crm("请填写手机！");
+                        $("input[data-selector=con_telphone]").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    if(qq == '' || qq == null || weixin == '' || weixin == null){
+                        alert_crm("请填写qq或者微信！");
+                        $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
+                        $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
+                        return;
+                    }
+                    if(pos == ''  ||pos == null){
+                        alert_crm("请填写职位！");
+                        $("input[data-selector=con_post]").css("border","1px dotted #cc5965");
+					}
+                    if(sex == ''  ||sex == null){
+                        alert_crm("请填写职位！");
+                        $("input[data-selector=con_sex]").css("border","1px dotted #cc5965");
+                    }
+                    if(email == ''  ||email == null){
+                        alert_crm("请填写职位！");
+                        $("input[data-selector=con_email]").css("border","1px dotted #cc5965");
+                    }
 				}
 				else{
                     form.submit();
