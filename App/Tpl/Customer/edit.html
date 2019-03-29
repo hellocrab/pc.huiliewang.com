@@ -412,6 +412,9 @@
                 var qq = $('#con_qq_no').val();
                 var weixin = $('#con_wetchat').val();
                 var dqs = $("#wantdqs").val();
+                var pos = $('#con_post').val();
+                var sex= $('#con_sex').val();
+                var email = $('#con_email').val();
                 if(dqs=="" || dqs==null){
                     alert_crm("请填写所在城市信息！");
                     return;
@@ -478,11 +481,14 @@
                     if(sex == ''  ||sex == null){
                         alert_crm("请填写职位！");
                         $("input[data-selector=con_sex]").css("border","1px dotted #cc5965");
+                        return;
                     }
                     if(email == ''  ||email == null){
                         alert_crm("请填写职位！");
                         $("input[data-selector=con_email]").css("border","1px dotted #cc5965");
+                        return;
                     }
+                    form.submit();
 				}
                 else{
                     form.submit();

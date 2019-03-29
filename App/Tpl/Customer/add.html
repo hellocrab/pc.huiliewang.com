@@ -495,7 +495,9 @@
                     if(email == ''  ||email == null){
                         alert_crm("请填写邮箱！");
                         $("input[data-selector=con_email]").css("border","1px dotted #cc5965");
+                        return;
                     }
+                    form.submit();
 				}
 				else{
                     form.submit();
