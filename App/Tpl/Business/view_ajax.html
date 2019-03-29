@@ -1230,7 +1230,7 @@
                             <elseif condition="$vo.field eq industry" />
                             <div class="col-lg-6 form_bottm">
                                 <div class="col-lg-3 text-right">{$vo.name}</div>
-                                <div class="col-lg-7">{$industry_name[$business_info[$vo[field]]]}</div>
+                                <div class="col-lg-7">{$business_info['industryName']}</div>
                             </div>
                             <elseif condition="$vo.field eq address" />
                             <div class="col-lg-6 form_bottm">
@@ -1240,7 +1240,7 @@
                             <elseif condition="$vo.field eq jobclass" />
                             <div class="col-lg-6 form_bottm">
                                 <div class="col-lg-3 text-right">{$vo.name}</div>
-                                <div class="col-lg-7">{$job_name[$business_info[$vo[field]]]}</div>
+                                <div class="col-lg-7">{$business_info['jobclassName']}</div>
                             </div>
                             <elseif condition="$vo.field eq pro_type || $vo.field eq customer_id || $vo.field eq contacts_id || $vo.field eq  grade" />
 

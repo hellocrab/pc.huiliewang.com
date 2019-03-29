@@ -1145,6 +1145,23 @@ class BusinessAction extends Action
 
         $d_business = D('BusinessView');
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
+        $jobclass = $business_info['jobclass'];
+        if($jobclass){
+            $className = '';
+            foreach (explode(',',$jobclass) as $classId){
+                 $className .= $job_name[$classId] .'  ';
+            }
+        }
+        $industry = $business_info['industry'];
+        if($industry){
+            $industryName = '';
+            foreach (explode(',',$industry) as $classId){
+                $industryName .= $industry_name[$classId] .'  ';
+            }
+        }
+
+        $business_info['jobclassName'] = $className;
+        $business_info['industryName'] = $industryName;
         $this->business_info = $business_info;
         //自定义字段
         $this->field_list = M('Fields')->where(array('model' => 'business', 'field' => array('not in', array('name', 'status_id'))))->order('is_main desc, order_id asc')->select();

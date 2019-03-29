@@ -1718,7 +1718,7 @@ class LeadsAction extends Action
         $role_id > 0 && $where['invoice.create_role_id'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['invoice.create_role_id'] = ['in', $roleIds];
 
-        $where['invoice.create_time'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $where['invoice.update_time'] = array(array('lt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("InvoiceView")->where($where)->order('create_time desc')->select();
         $this->display();
     }
@@ -2267,7 +2267,7 @@ class LeadsAction extends Action
         //所筛选的时间段是同一天，页面显示同一天
         // _guo_03/26  $map一行与上面块调换位置(同一天显示数量不准确)
         $map = ['report_date' => [['egt', $this->start_date], ['elt', $this->end_date]]];
-        $map['user_role_id'] = $role_id_array ? ['in', $role_id_array] : 208;
+        $map['user_role_id'] = $role_id_array ? ['in', $role_id_array] : session('role_id');
         $count = M('report_intergral')->where($map)->group('user_id')->select();
         $count = count($count);
         $isExport = isset($_GET['isExport']) ? intval($_GET['isExport']) : 0;
