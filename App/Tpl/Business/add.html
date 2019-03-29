@@ -95,7 +95,7 @@
     padding: 3px;
     border-radius:2px;
 }
-.memberGroup:hover,.members:hover,.chiose:hover{
+.memberGroup:hover,.members:hover,.chiose:hover,.hoverGroup{
     background: #409eff;
     color: #fff;
 }
@@ -108,6 +108,9 @@
 .chiose{
     padding: 3px;
     border-radius:2px;
+}
+.chioseBox{
+    margin-right: 0;
 }
 .noChild{
     text-align: center;
@@ -535,6 +538,8 @@
                             //二级联动
                             let index = ev.currentTarget.attributes.index.value;
                             let members = '';
+                            $('.memberGroup').removeClass('hoverGroup');
+                            $(`.memberGroup[index="${index}"]`).addClass('hoverGroup');
                             if(res.data[index].children.length>0){
                                 for(let i = 0; i<res.data[index].children.length;i++){
                                     members += `<div class='members' member_id='${res.data[index].children[i].role_id}' member_name='${res.data[index].children[i].user_name}'>${res.data[index].children[i].user_name}</div>`

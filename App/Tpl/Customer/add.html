@@ -397,7 +397,7 @@
         if( (obj.value.search('猎聘') != -1) || (obj.value.search('猎萝卜') != -1)){
             $('.all').html('');
             $('.ftw').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
-        }else if(obj.value.search('线下')){
+        }else if(obj.value.search('线下')!=-1){
             $('.all').html('');
             $('.ftww').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
 		}else {

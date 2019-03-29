@@ -219,50 +219,50 @@
 									<span id="con_contacts[crm_dbxxve]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2"></div>
 							</div><div class="form-group">
-							<label class="col-md-4 control-label">姓名：</label>
-							<div class="col-md-6">
-								<input class="form-control " data-selector="con_name" type="text" id="con_name" name="con_contacts[name]"  value="{$contacts[name]}" placeholder="" />
-								<span id="con_contacts[name]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2 ftw"></div>
-						</div>
-							<div class="form-group">
+								<label class="col-md-4 control-label">姓名：</label>
+								<div class="col-md-6">
+									<input class="form-control " data-selector="con_name" type="text" id="con_name" name="con_contacts[name]"  value="" placeholder="" />
+									<span id="con_contacts[name]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
+								<div class="col-md-2 ftw ftww all"></div>
+								</div>
+								<div class="form-group">
 								<label class="col-md-4 control-label">职位：</label>
 								<div class="col-md-6">
-									<input class="form-control "  type="text" id="con_contacts[post]" name="con_contacts[post]"  value="{$contacts[post]}" placeholder="" />
+									<input class="form-control "  type="text" id="con_post" data-selector="con_post" name="con_contacts[post]"  value="" placeholder="" />
 									<span id="con_contacts[post]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-								<div class="col-md-2"></div>
-							</div>
-							<div class="form-group">
+								<div class="col-md-2 ftww all"></div>
+								</div>
+								<div class="form-group">
 								<label class="col-md-4 control-label">手机：</label>
 								<div class="col-md-6">
-									<input class="form-control " data-selector="con_telphone" type="mobile" id="con_telphone" name="con_contacts[telephone]"  value="{$contacts[telephone]}" />
+									<input class="form-control " data-selector="con_telphone" type="mobile" id="con_telphone" name="con_contacts[telephone]"  value="" />
 									<span id="con_contacts[telephone]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-								<div class="col-md-2 ftw"></div>
-							</div>
-							<div class="form-group">
+								<div class="col-md-2 ftw ftww all"></div>
+								</div>
+								<div class="form-group">
 								<label class="col-md-4 control-label">QQ：</label>
 								<div class="col-md-6">
-									<input class="form-control " data-selector="con_qq_no"  type="text" id="con_qq_no" name="con_contacts[qq_no]"  value="{$contacts[qq_no]}" placeholder="" />
+									<input class="form-control " data-selector="con_qq_no"  type="text" id="con_qq_no" name="con_contacts[qq_no]"  value="" placeholder="" />
 									<span id="con_contacts[qq_no]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-								<div class="col-md-2 ftw"></div>
-							</div>
-							<div class="form-group">
+								<div class="col-md-2 ftw ftww all"></div>
+								</div>
+								<div class="form-group">
 								<label class="col-md-4 control-label">性别：</label>
 								<div class="col-md-6">
-									<select class="form-control " id="con_contacts[crm_zswstr]" name="con_contacts[crm_zswstr]">
+									<select class="form-control " data-selector="con_sex" id="con_sex" name="con_contacts[crm_zswstr]">
 										<option value=''>--请选择--</option>
-										<option value='男' <if condition="$contacts[crm_zswstr] eq '男'">selected='selected'</if> >男</option>
-										<option value='女' <if condition="$contacts[crm_zswstr] eq '女'">selected='selected'</if> >女</option></select>
+										<option value='男' selected="selected" >男</option>
+										<option value='女'>女</option></select>
 									<span id="con_contacts[crm_zswstr]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-								<div class="col-md-2"></div>
-							</div>
-							<div class="form-group">
+								<div class="col-md-2 ftww all te"></div>
+								</div>
+								<div class="form-group">
 								<label class="col-md-4 control-label">邮箱：</label>
 								<div class="col-md-6">
-									<input class="form-control " type="email" id="con_contacts[email]" name="con_contacts[email]"  value="{$contacts[email]}" />
+									<input class="form-control " data-selector="con_email" type="email" id="con_email" name="con_contacts[email]"  value="" />
 									<span id="con_contacts[email]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-								<div class="col-md-2"></div>
-							</div>
+								<div class="col-md-2 ftww all"></div>
+								</div>
 							<div class="form-group">
 								<label class="col-md-4 control-label">地址：</label>
 								<div class="col-md-8">
@@ -374,15 +374,19 @@
 
     //客户来源 变换时
     function outline_change(obj){
-        if(obj.value == '面试快' || obj.value == '入职快' ||obj.value == '专业猎头'  ){
+        if( (obj.value.search('猎聘') != -1) || (obj.value.search('猎萝卜') != -1)){
+            $('.all').html('');
             $('.ftw').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
-        }else {
-            $('.ftw').html('');
+        }else if(obj.value.search('线下')!=-1){
+            $('.all').html('');
+            $('.ftww').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
+		}else {
+            $('.all').html('');
         };
     }
 
     $(document).ready(function(){
-        // outline_change();
+		setTimeout(outline_change,500,document.querySelector('#origin'))
         /*form表单验证*/
         var ori = $("#origin").val();
 
