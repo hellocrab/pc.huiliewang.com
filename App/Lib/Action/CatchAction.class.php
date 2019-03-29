@@ -31,6 +31,7 @@ class CatchAction extends Action {
     }
 
     public function userlogin() {
+        exit;
         if($this->mid == 1){
             $login_data = ['account' => self::USER_ACCOUNT1, 'password' => self::USER_PASSWORD1];
         }elseif ($this->mid == 2) {
@@ -53,6 +54,7 @@ class CatchAction extends Action {
     }
 
     public function getResumesLimit() {
+        exit;
         var_dump($this->mid);
         $cookie = M('catch_cookie')->where(['status' => 0, 'mid' => $this->mid])->find();
 
@@ -188,6 +190,7 @@ class CatchAction extends Action {
     
     public function getResumes() 
             {
+        exit;
         $res = M('catch_resumes_limit')->where(['status' => 0, 'm_id' => $this->mid])->field('id,now,resumes_list')->order('id desc')->find();
         $cookie = M('catch_cookie')->where(['status' => 0, 'mid' => $this->mid])->find();
         $_list = explode(',', $res['resumes_list']);
