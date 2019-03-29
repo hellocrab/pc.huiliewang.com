@@ -1881,7 +1881,7 @@ class BusinessAction extends Action
             $_POST['role_id'] = session("role_id");
             $_POST['addtime'] = time();
             $_POST['fine_id'] = $id;
-
+            
             $interview = M("fine_project_interview")->order('addtime desc')->getField("interview");
             if ($interview) {
                 $_POST['interview'] = $interview;
