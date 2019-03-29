@@ -365,10 +365,10 @@ class LogAction extends Action{
         }else{
             $owner_role_id = getSubRoleId();
         }
-        if( $this->_permissionRes) {
-            $below_ids_str = implode(',',$owner_role_id);
+        if( $this->_permissionRes && is_array($this->_permissionRes)) {
+            $below_ids_str = implode(',',$this->_permissionRes);
             $where['_string'] = "business.creator_role_id in (".$below_ids_str.") OR business.joiner in (".$below_ids_str.")";
-            foreach ($owner_role_id as $childRoleId){
+            foreach ($this->_permissionRes as $childRoleId){
                 if($childRoleId <= 0){
                     continue;
                 }
