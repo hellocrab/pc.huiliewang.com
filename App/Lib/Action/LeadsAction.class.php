@@ -1685,11 +1685,11 @@ class LeadsAction extends Action
         $start_time = I("start_date");
         $end_time = I("end_date");
         $role_id = I("id");
-        $where['addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $where['fine_project_cc.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $roleIds = I("roleIds", '');
-        $role_id > 0 && $where['tracker'] = $role_id;
-        ($role_id <= 0 && $roleIds) && $where['tracker'] = ['in', $roleIds];
-        $list = D("FineProjectCcView")->where($where)->order('addtime desc')->select();
+        $role_id > 0 && $where['fine_project_cc.role_id'] = $role_id;
+        ($role_id <= 0 && $roleIds) && $where['fine_project_cc.role_id'] = ['in', $roleIds];
+        $list = D("FineProjectCcView")->where($where)->order('fine_project_cc.addtime desc')->select();
         include APP_PATH . "Common/job.cache.php";
         foreach ($list as $k => $v) {
             if ($v['job_class']) {
