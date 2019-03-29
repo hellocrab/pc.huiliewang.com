@@ -56,6 +56,65 @@
         display: block;
         margin-bottom: 6px;
     }
+    .listBox{
+        display: flex;
+        height: 100%;
+    }
+    .listBox>div{
+        flex: 1;
+        margin-right: 20px;
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+    }
+    .listBox>div::-webkit-scrollbar
+{
+    width:6px;
+    height:0px;
+    background-color:#F5F5F5;
+}
+/*定义滚动条轨道
+ 内阴影+圆角*/
+ .listBox>div::-webkit-scrollbar-track
+{
+    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius:10px;
+    background-color:#F5F5F5;
+}
+/*定义滑块
+ 内阴影+圆角*/
+ .listBox>div::-webkit-scrollbar-thumb
+{
+    border-radius:10px;
+    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3);
+    background-color:#555;
+}
+.memberGroup,.members{
+    cursor: pointer;
+    padding: 3px;
+    border-radius:2px;
+}
+.memberGroup:hover,.members:hover,.chiose:hover{
+    background: #409eff;
+    color: #fff;
+}
+.chiose i{
+    float: right;
+    margin-top: 3px;
+    margin-right: 3px;
+    cursor:pointer;
+}
+.chiose{
+    padding: 3px;
+    border-radius:2px;
+}
+.noChild{
+    text-align: center;
+    margin-top: 100px;
+    font-size: 20px;
+    color: #ccc;
+}
 </style>
 <script>
     $(function () {
@@ -428,14 +487,101 @@
         $('#parter_name').click(function () {
             let temp = $('#parter_id').val();
             $('#dialog-role-list3').dialog('open');
-            var str;
-            if(temp){
-                str = "{:U('User/mutilistdialog')}&by=all&pater="+temp;
-            }
-            else{
-                str = "{:U('User/mutilistdialog','by=all')}";
-            }
-            $('#dialog-role-list3').load(str);
+            $.ajax({
+                type:'post',
+                url:'/index.php?m=user&a=userList',
+                success(res){
+                    if(res.code==200){
+                        let group = "";//渲染分组
+                        for(let i = 0; i<res.data.length;i++){
+                            group += `<div class='memberGroup' index='${i}'>${res.data[i].name}</div>`
+                        }
+                        let chiose = [];//保存已选人员
+                        let chioseStr = '';
+                        if($('#parter_name').val()!=''){
+                            let names = $('#parter_name').val().split(',');
+                            let ids = $('#parter_id').val().split(',');
+                            ids.map((val,index)=>{
+                                chioseStr += `<div class='chiose' member_id='${val}' member_name='${names[index]}'>
+                                    ${names[index]}
+                                    <i class="fa fa-times-circle delChiose" member_id='${val}'/>
+                                </div>`
+                                chiose.push(val);
+                            })
+                        }
+                        const element = `
+                        <div class="listBox">
+                            <div class='groupBox'>
+                                ${group}
+                            </div>
+                            <div class="memberBox">
+                            </div>
+                            <div class="chioseBox">
+                                ${chioseStr}
+                            </div>
+                        </div>
+                        `
+                        $('#dialog-role-list3').empty();
+                        $('#dialog-role-list3').append(element);
+                        $('.delChiose').click(ev=>{
+                                    //删除
+                                    let delID = ev.currentTarget.attributes.member_id.value;
+                                    $(`.chiose[member_id="${delID}"]`).remove();
+                                    chiose.splice(chiose.findIndex(val=>{
+                                        return val == delID;
+                                    }),1)
+                                })
+                        $('.memberGroup').click(ev=>{
+                            //二级联动
+                            let index = ev.currentTarget.attributes.index.value;
+                            let members = '';
+                            if(res.data[index].children.length>0){
+                                for(let i = 0; i<res.data[index].children.length;i++){
+                                    members += `<div class='members' member_id='${res.data[index].children[i].role_id}' member_name='${res.data[index].children[i].user_name}'>${res.data[index].children[i].user_name}</div>`
+                                }
+                            }else{
+                                members = `<div class="noChild">该部门暂无可选人员</div>`
+                            }
+                            $('.memberBox').empty();
+                            $('.memberBox').append(members);
+                        $('.members').click(ev=>{
+                            //添加人员
+                            let memberId = ev.currentTarget.attributes.member_id.value;
+                            let memberName = ev.currentTarget.attributes.member_name.value;
+                            if(chiose.findIndex(val=>{
+                                return val == memberId;
+                            })==-1){
+                                chiose.push(memberId)
+                                $('.chioseBox').append(`<div class='chiose' member_id='${memberId}' member_name='${memberName}'>
+                                    ${memberName}
+                                    <i class="fa fa-times-circle delChiose" member_id='${memberId}'/>
+                                </div>`)
+                                $('.delChiose').click(ev=>{
+                                    //删除
+                                    let delID = ev.currentTarget.attributes.member_id.value;
+                                    $(`.chiose[member_id="${delID}"]`).remove();
+                                    chiose.splice(chiose.findIndex(val=>{
+                                        return val == delID;
+                                    }),1)
+                                })
+                            }else{
+                                $(`.chiose[member_id="${memberId}"]`).remove();
+                                chiose.splice(chiose.findIndex(val=>{
+                                    return val == memberId;
+                                }),1)
+                            }
+                        })
+                    })
+                    }
+                }
+            })
+            // var str;
+            // if(temp){
+            //     str = "{:U('User/mutilistdialog')}&by=all&pater="+temp;
+            // }
+            // else{
+            //     str = "{:U('User/mutilistdialog','by=all')}";
+            // }
         });
 
         $('#contacts_name').click(function () {
@@ -529,7 +675,7 @@
 
     $('#dialog-role-list3').dialog({
         autoOpen: false,
-        modal: false,
+        modal: true,
         width: 800,
         height: 400,
         close: function () {
@@ -539,9 +685,9 @@
             "{:L('CONFIRM')}": function () {
                 var parter = new Array();
                 var parter_name = new Array();
-               $(".muti_role_id:checked").each(function () {
-                    parter.push($(this).val());
-                    parter_name.push($(this).attr('rel'));
+               $(".chiose").each(function () {
+                    parter.push($(this).attr('member_id'));
+                    parter_name.push($(this).attr('member_name'));
                 })
                 parter = parter.join(",");
                 parter_name = parter_name.join(",");
