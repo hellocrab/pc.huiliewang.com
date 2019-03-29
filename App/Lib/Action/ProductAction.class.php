@@ -108,12 +108,12 @@ class ProductAction extends Action
                             'addtime' => time()
                         ];
                         M('fine_project')->add($data);
-                        $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在,并且已经推荐到此该项目中"]);
+                        $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在,并且已经推荐到此该项目中" ,'resume_id' => $idExt]);
                     } else {
-                        $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在,并且此简历已经存在此该项目中"]);
+                        $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在,并且此简历已经存在此该项目中",'resume_id' => $idExt]);
                     }
                 }
-                $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在"]);
+                $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在",'resume_id' => $idExt]);
             }
 
             try {
@@ -179,7 +179,7 @@ class ProductAction extends Action
                         'addtime' => time()
                     ];
                     M('fine_project')->add($data);
-                    $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "解析成功,并且已经推荐到此该项目中"]);
+                    $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "解析成功,并且已经推荐到此该项目中",'resume_id' => $resume_id]);
                 }
 
                 $this->ajaxReturn(['succ' => 1, 'code' => 200, 'message' => '解析成功','resume_id' => $resume_id]);

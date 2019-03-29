@@ -12,7 +12,7 @@ class UserAction extends Action {
         $this->assign("title",$title);
 		$action = array(
 			'permission'=>array('login','lostpw','resetpw','active','notice','loginajax','listDialogs'),
-			'allow'=>array('logout','role_ajax_add','getrolebydepartment','dialoginfo','edit', 'listdialog','listdialogs', 'mutilistdialog', 'getrolelist', 'getpositionlist','changecontent','getactionauthority','department','userimg','contacts','yanchong','editpassword','getpositionlistbydepartment','changeDepartment')
+			'allow'=>array('userList','logout','role_ajax_add','getrolebydepartment','dialoginfo','edit', 'listdialog','listdialogs', 'mutilistdialog', 'getrolelist', 'getpositionlist','changecontent','getactionauthority','department','userimg','contacts','yanchong','editpassword','getpositionlistbydepartment','changeDepartment')
 		);
 		B('Authenticate', $action);
 	}
@@ -658,6 +658,19 @@ class UserAction extends Action {
         $this->display();
     }
 
+    /**
+     * @desc 用户列表接口
+     */
+    public function userList() {
+        $d_role = D('RoleView');
+        $departments = M('roleDepartment')->field('department_id,name')->select();
+        foreach ($departments as &$info) {
+            $userWhere = ['status' => 1, 'position.department_id' => $info['department_id']];
+            $users = $d_role->field('role_id,user_name')->where($userWhere)->select();
+            $info['children'] = $users ? $users : [];
+        }
+        $this->ajaxReturn(['code' => 200, 'data' => $departments]);
+    }
 
 	public function mutiListDialog(){
 		//1表示所有人  2表示下属

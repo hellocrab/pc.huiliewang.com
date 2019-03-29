@@ -448,7 +448,7 @@ class BusinessAction extends Action
         //我全部项目 1、我创建的 2、分配给我的 3、项目成员是我的 4、维护人是我的 5、分享给我的
         if( $by == 'all'){
             //自己全部
-            $ownerWhere['_string'] = "business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
+            $ownerWhere['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
             $where['_complex'] = $ownerWhere;
             $where['_logic'] = 'OR';
         }
@@ -1145,6 +1145,23 @@ class BusinessAction extends Action
 
         $d_business = D('BusinessView');
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
+        $jobclass = $business_info['jobclass'];
+        if($jobclass){
+            $className = '';
+            foreach (explode(',',$jobclass) as $classId){
+                 $className .= $job_name[$classId] .'  ';
+            }
+        }
+        $industry = $business_info['industry'];
+        if($industry){
+            $industryName = '';
+            foreach (explode(',',$industry) as $classId){
+                $industryName .= $industry_name[$classId] .'  ';
+            }
+        }
+
+        $business_info['jobclassName'] = $className;
+        $business_info['industryName'] = $industryName;
         $this->business_info = $business_info;
         //自定义字段
         $this->field_list = M('Fields')->where(array('model' => 'business', 'field' => array('not in', array('name', 'status_id'))))->order('is_main desc, order_id asc')->select();
@@ -3062,17 +3079,20 @@ class BusinessAction extends Action
             $business = M('Business');
             $whereBusiness['business_id'] = $msg['business_id'];
             $ownerRoleId = $business->where($whereBusiness)->field('owner_role_id')->find();
-            $ownerRoleId = explode(',', $ownerRoleId['owner_role_id']);
-            $map = $ownerRoleId;
+            $map = [];
             $roleId = $msg['role_id'];
             $type = '0';
-            foreach ($ownerRoleId as $k => $v) {
-                if ($v == $roleId) {
-                    $type = '1';
-                    unset($ownerRoleId[$k]);
+            if ($ownerRoleId['owner_role_id']){
+                $ownerRoleId = explode(',', $ownerRoleId['owner_role_id']);
+                $map = $ownerRoleId;
+                foreach ($ownerRoleId as $k => $v) {
+                    if ($v == $roleId) {
+                        $type = '1';
+                        unset($ownerRoleId[$k]);
+                    }
                 }
             }
-            if ($type == '0') {
+            if ($type == '0' && $roleId > 0) {
                 $map[] = $roleId;
                 $business->where($whereBusiness)->setField(array('owner_role_id' => implode(',', $map))) ? $this->ajaxReturn('0') : $this->ajaxReturn('1');
             } else {

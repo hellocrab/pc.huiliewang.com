@@ -1662,7 +1662,7 @@ class LeadsAction extends Action
         $roleIds = I("roleIds", '');
         $role_id > 0 && $where['tracker'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['tracker'] = ['in', $roleIds];
-        $list = D("ProjectView")->where($where)->select();
+        $list = D("ProjectView")->where($where)->order('addtime desc')->select();
         include APP_PATH . "Common/job.cache.php";
         foreach ($list as $k => $v) {
             if ($v['job_class']) {
@@ -1689,7 +1689,7 @@ class LeadsAction extends Action
         $roleIds = I("roleIds", '');
         $role_id > 0 && $where['tracker'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['tracker'] = ['in', $roleIds];
-        $list = D("FineProjectCcView")->where($where)->select();
+        $list = D("FineProjectCcView")->where($where)->order('addtime desc')->select();
         include APP_PATH . "Common/job.cache.php";
         foreach ($list as $k => $v) {
             if ($v['job_class']) {
@@ -1719,7 +1719,7 @@ class LeadsAction extends Action
         ($role_id <= 0 && $roleIds) && $where['invoice.create_role_id'] = ['in', $roleIds];
 
         $where['invoice.create_time'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("InvoiceView")->where($where)->select();
+        $this->list = D("InvoiceView")->where($where)->order('create_time desc')->select();
         $this->display();
     }
 
@@ -1735,7 +1735,7 @@ class LeadsAction extends Action
         $roleIds = I("roleIds", '');
         $role_id > 0 && $where['creator_role_id'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['creator_role_id'] = ['in', $roleIds];
-        $this->list = D("ContractView")->where($where)->select();
+        $this->list = D("ContractView")->where($where)->order('create_time desc')->select();
         $this->display();
     }
 
@@ -1757,7 +1757,7 @@ class LeadsAction extends Action
         $role_id > 0 && $where['customer.creator_role_id'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['customer.creator_role_id'] = ['in', $roleIds];
         $where['customer.create_time'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("CustomerInfoView")->where($where)->select();
+        $this->list = D("CustomerInfoView")->where($where)->order('create_time desc')->select();
         $this->display();
     }
 
@@ -1776,7 +1776,7 @@ class LeadsAction extends Action
         $role_id > 0 && $where['business.creator_role_id'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['business.creator_role_id'] = ['in', $roleIds];
         $where['business.create_time'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("BusinessView")->where($where)->select();
+        $this->list = D("BusinessView")->where($where)->order('create_time desc')->select();
         $this->display();
     }
 
@@ -1793,7 +1793,7 @@ class LeadsAction extends Action
         ($role_id <= 0 && $roleIds) && $where['resume.creator_role_id'] = ['in', $roleIds];
 //        $where['resume.creator_role_id'] = $role_id;
         $where['resume.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $list = D("ResumeView")->where($where)->select();
+        $list = D("ResumeView")->where($where)->order('addtime desc')->select();
         //引入城市数据
         include APP_PATH . "Common/city.cache.php";
         //修改  年龄和城市
@@ -1829,7 +1829,7 @@ class LeadsAction extends Action
         $role_id > 0 && $where['fine_project.tracker'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
         $where['fine_project.tjaddtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("ProjectView")->where($where)->select();
+        $this->list = D("ProjectView")->where($where)->order('addtime desc')->select();
         $this->display();
     }
 
@@ -1847,7 +1847,7 @@ class LeadsAction extends Action
         $where['fine_project.status'] = array('egt', 4);
         $where['fine_project_interview.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $projectSafeModel = new ProjectStepViewModel('fine_project_interview');
-        $list = $projectSafeModel->where($where)->select();
+        $list = $projectSafeModel->where($where)->order('timestart desc')->select();
         $newList = [];
         foreach ($list as $info) {
             $info['beizhu'] = M('fine_project_bz')->where(['fine_id'=>$info['fine_id'],'status'=>3])->order('id desc')->getField('beizhu');
@@ -2267,7 +2267,7 @@ class LeadsAction extends Action
         //所筛选的时间段是同一天，页面显示同一天
         // _guo_03/26  $map一行与上面块调换位置(同一天显示数量不准确)
         $map = ['report_date' => [['egt', $this->start_date], ['elt', $this->end_date]]];
-        $map['user_role_id'] = $role_id_array ? ['in', $role_id_array] : 208;
+        $map['user_role_id'] = $role_id_array ? ['in', $role_id_array] : session('role_id');
         $count = M('report_intergral')->where($map)->group('user_id')->select();
         $count = count($count);
         $isExport = isset($_GET['isExport']) ? intval($_GET['isExport']) : 0;
