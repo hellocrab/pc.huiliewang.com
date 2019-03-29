@@ -221,28 +221,28 @@
 							</div><div class="form-group">
 								<label class="col-md-4 control-label">姓名：</label>
 								<div class="col-md-6">
-									<input class="form-control " data-selector="con_name" type="text" id="con_name" name="con_contacts[name]"  value="" placeholder="" />
+									<input class="form-control " data-selector="con_name" type="text" id="con_name" name="con_contacts[name]"  value="{$contacts[name]}" placeholder="" />
 									<span id="con_contacts[name]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2 ftw ftww all"></div>
 								</div>
 								<div class="form-group">
 								<label class="col-md-4 control-label">职位：</label>
 								<div class="col-md-6">
-									<input class="form-control "  type="text" id="con_post" data-selector="con_post" name="con_contacts[post]"  value="" placeholder="" />
+									<input class="form-control "  type="text" id="con_post" data-selector="con_post" name="con_contacts[post]"  value="{$contacts[post]}" placeholder="" />
 									<span id="con_contacts[post]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2 ftww all"></div>
 								</div>
 								<div class="form-group">
 								<label class="col-md-4 control-label">手机：</label>
 								<div class="col-md-6">
-									<input class="form-control " data-selector="con_telphone" type="mobile" id="con_telphone" name="con_contacts[telephone]"  value="" />
+									<input class="form-control " data-selector="con_telphone" type="mobile" id="con_telphone" name="con_contacts[telephone]"  value="{$contacts[telephone]}" />
 									<span id="con_contacts[telephone]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2 ftw ftww all"></div>
 								</div>
 								<div class="form-group">
 								<label class="col-md-4 control-label">QQ：</label>
 								<div class="col-md-6">
-									<input class="form-control " data-selector="con_qq_no"  type="text" id="con_qq_no" name="con_contacts[qq_no]"  value="" placeholder="" />
+									<input class="form-control " data-selector="con_qq_no"  type="text" id="con_qq_no" name="con_contacts[qq_no]"  value="{$contacts[qq_no]}" placeholder="" />
 									<span id="con_contacts[qq_no]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2 ftw ftww all"></div>
 								</div>
@@ -251,15 +251,15 @@
 								<div class="col-md-6">
 									<select class="form-control " data-selector="con_sex" id="con_sex" name="con_contacts[crm_zswstr]">
 										<option value=''>--请选择--</option>
-										<option value='男' selected="selected" >男</option>
-										<option value='女'>女</option></select>
+										<option value='男' <if condition="$contacts[crm_zswstr] eq '男'">selected='selected'</if> >男</option>
+										<option value='女' <if condition="$contacts[crm_zswstr] eq '女'">selected='selected'</if> >女</option></select>
 									<span id="con_contacts[crm_zswstr]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2 ftww all te"></div>
 								</div>
 								<div class="form-group">
 								<label class="col-md-4 control-label">邮箱：</label>
 								<div class="col-md-6">
-									<input class="form-control " data-selector="con_email" type="email" id="con_email" name="con_contacts[email]"  value="" />
+									<input class="form-control " data-selector="con_email" type="email" id="con_email" name="con_contacts[email]"  value="{$contacts[email]}" />
 									<span id="con_contacts[email]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
 								<div class="col-md-2 ftww all"></div>
 								</div>
@@ -404,8 +404,8 @@
 
                 var industry = $("input[name=industry]").val();
                 var area = $("#city_area").val();
-				var flag = $('.ftw').html();
-                var flag1 = $('.te').html();
+                if($('.ftw').html() != '') flag = 1;
+                if($('.te').html() != '') flag = 2;
                 var introduce = $('#introduce').val();
                 var name = $('#con_name').val();
                 var tel = $('#con_telphone').val();
@@ -428,7 +428,7 @@
                     alert_crm("请填写公司地址！");
                     return;
                 }
-                if(flag != ''){
+                if(flag == 1){
 
                     if(name == '' || name == null){
                         alert_crm("请填写姓名！");
@@ -440,9 +440,10 @@
                         $("input[data-selector=con_telphone]").css("border","1px dotted #cc5965");
                         return;
                     }
-                    if(qq == '' || qq == null){
-                        alert_crm("请填写qq！");
+                    if((qq == '' || qq == null) && (weixin == '' || weixin == null)){
+                        alert_crm("请填写qq或者微信！");
                         $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
+                        $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
                         return;
                     }
                     // if(weixin == '' || weixin == null){
@@ -452,7 +453,7 @@
                     // }
                     form.submit();
 				}
-				else if(flag1 != ''){
+				else if(flag == 2){
                     if(name == '' || name == null){
                         alert_crm("请填写姓名！");
                         $("input[data-selector=con_name]").css("border","1px dotted #cc5965");
@@ -463,7 +464,7 @@
                         $("input[data-selector=con_telphone]").css("border","1px dotted #cc5965");
                         return;
                     }
-                    if(qq == '' || qq == null || weixin == '' || weixin == null){
+                    if((qq == '' || qq == null) && (weixin == '' || weixin == null)){
                         alert_crm("请填写qq或者微信！");
                         $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
                         $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
@@ -472,6 +473,7 @@
                     if(pos == ''  ||pos == null){
                         alert_crm("请填写职位！");
                         $("input[data-selector=con_post]").css("border","1px dotted #cc5965");
+                        return;
 					}
                     if(sex == ''  ||sex == null){
                         alert_crm("请填写职位！");
