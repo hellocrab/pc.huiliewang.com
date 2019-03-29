@@ -1842,8 +1842,8 @@ class LeadsAction extends Action
         $end_time = I("end_date");
         $roleIds = I("roleIds", '');
         $role_id = intval(I("id"));
-        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
-        ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
+        $role_id > 0 && $where['fine_project_interview.role_id'] = $role_id;
+        ($role_id <= 0 && $roleIds) && $where['fine_project_interview.role_id'] = ['in', $roleIds];
         $where['fine_project.status'] = array('egt', 4);
         $where['fine_project_interview.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $projectSafeModel = new ProjectStepViewModel('fine_project_interview');
@@ -1867,8 +1867,8 @@ class LeadsAction extends Action
         $end_time = I("end_date");
         $roleIds = I("roleIds", '');
         $role_id = intval(I("id"));
-        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
-        ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
+        $role_id > 0 && $where['fine_project_interview.role_id'] = $role_id;
+        ($role_id <= 0 && $roleIds) && $where['fine_project_interview.role_id'] = ['in', $roleIds];
         $where['fine_project.interview_times'] = array('egt', 1);
         $where['fine_project_interview.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $projectSafeModel = new ProjectStepViewModel('fine_project_interview');
@@ -1902,8 +1902,8 @@ class LeadsAction extends Action
         $end_time = I("end_date");
         $roleIds = I("roleIds", '');
         $role_id = intval(I("id"));
-        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
-        ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
+        $role_id > 0 && $where['fine_project_offer.role_id'] = $role_id;
+        ($role_id <= 0 && $roleIds) && $where['fine_project_offer.role_id'] = ['in', $roleIds];
         $where['fine_project.status'] = array('egt', 6);
         $where['fine_project_offer.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
 //        $this->list = D("ProjectView")->where($where)->select();
@@ -1936,8 +1936,8 @@ class LeadsAction extends Action
         $end_time = I("end_date");
         $roleIds = I("roleIds", '');
         $role_id = intval(I("id"));
-        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
-        ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
+        $role_id > 0 && $where['fine_project_enter.role_id'] = $role_id;
+        ($role_id <= 0 && $roleIds) && $where['fine_project_enter.role_id'] = ['in', $roleIds];
 
         $where['fine_project.status'] = array('egt', 7);
         $where['fine_project_enter.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');

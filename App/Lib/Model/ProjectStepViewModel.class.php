@@ -13,7 +13,7 @@
 			$this->viewFields = array(
                 'fine_project'=>array('*','_type'=>'LEFT'),
                 'project_status'=>array("status_name","status","_on"=>"fine_project.status=project_status.status_id",'_type'=>'LEFT'),
-                $tableName=>array("fine_id","timestart","status_type","_on"=>"fine_project.id={$tableName}.fine_id",'_type'=>'LEFT'),
+                $tableName=>array("*","_on"=>"fine_project.id={$tableName}.fine_id",'_type'=>'LEFT'),
                 'user'=>array('user_id','full_name'=>'tracker_name','thumb_path','_on'=>'user.role_id=fine_project.tracker','_type'=>'LEFT'),
                 'business'=>array('business_id','industry','name'=>'business_name','_on'=>'business.business_id=fine_project.project_id','_type'=>'LEFT'),
                 'customer'=>array('customer_id','name'=>'customer_name','_on'=>'customer.customer_id=fine_project.com_id','_type'=>'LEFT'),

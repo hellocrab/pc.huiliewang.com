@@ -252,7 +252,7 @@ function enterNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_enter';
-    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as enter where enter.fine_id = pro.id and pro.tracker = {$userRoleId} and  enter.addtime >= {$dateStartInt} and enter.addtime < {$nextDayInt} ";
+    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as enter where enter.fine_id = pro.id and enter.role_id = {$userRoleId} and  enter.addtime >= {$dateStartInt} and enter.addtime < {$nextDayInt} ";
 
     $query = $conn->query($sql);
     if ($query) {
@@ -275,7 +275,7 @@ function offeredNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_bhs';
-    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as bhs where bhs.fine_id = pro.id and pro.tracker = {$userRoleId} and bhs.status=6 and bhs.addtime >= {$dateStartInt} and bhs.addtime < {$nextDayInt}";
+    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as bhs where bhs.fine_id = pro.id and bhs.role_id = {$userRoleId} and bhs.status=6 and bhs.addtime >= {$dateStartInt} and bhs.addtime < {$nextDayInt}";
 
     $query = $conn->query($sql);
     if ($query) {
@@ -299,7 +299,7 @@ function offerNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_offer';
-    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as offer where offer.fine_id = pro.id and pro.tracker = {$userRoleId} and offer.addtime >= {$dateStartInt} and offer.addtime < {$nextDayInt}";
+    $sql = "SELECT count(distinct(pro.resume_id)) as counts FROM {$tableProject} as pro , {$tableInterview} as offer where offer.fine_id = pro.id and offer.role_id = {$userRoleId} and offer.addtime >= {$dateStartInt} and offer.addtime < {$nextDayInt}";
     $query = $conn->query($sql);
     if ($query) {
         $info = $query->fetch(PDO::FETCH_ASSOC);
@@ -322,7 +322,7 @@ function interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_interview';
-    $sql = "SELECT count(distinct(pro.resume_id)) as countPerson,count(*) as conuntTimes FROM {$tableProject} as pro , {$tableInterview} as vie where vie.fine_id = pro.id and pro.tracker = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime < {$nextDayInt} ";
+    $sql = "SELECT count(distinct(pro.resume_id)) as countPerson,count(*) as conuntTimes FROM {$tableProject} as pro , {$tableInterview} as vie where vie.fine_id = pro.id and vie.role_id = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime < {$nextDayInt} ";
     $query = $conn->query($sql);
     if ($query) {
         $info = $query->fetch(PDO::FETCH_ASSOC);
@@ -523,7 +523,7 @@ function dbconn($env='')
     $testConf = [
         'product' => 'mysql',
         'api' => 'pdo',
-        'host' => '192.168.0.150',
+        'host' => '192.168.0.168',
         'port' => 3306,
         'dbname' => 'pinping',
         'username' => 'root',
