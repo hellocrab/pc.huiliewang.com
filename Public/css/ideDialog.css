@@ -117,3 +117,7 @@
     display: inline-block;
     margin-right: 50px;
 }
+.links{
+    max-height: 150px;
+    overflow-y: scroll;
+}
