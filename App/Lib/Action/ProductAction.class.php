@@ -360,6 +360,7 @@ class ProductAction extends Action
     public function index() {
 
         $by = $this->_get('by', 'trim');
+        if(empty($by)) $by='myself';
         if ($by == 'favorite') {
             $eids = M("resume_collection")->where("role_id=%d", session("role_id"))->getField("eid", true);
             $where['eid'] = array('in', $eids);
