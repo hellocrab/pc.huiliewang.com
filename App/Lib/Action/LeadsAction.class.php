@@ -1718,7 +1718,7 @@ class LeadsAction extends Action
         $role_id > 0 && $where['invoice.create_role_id'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['invoice.create_role_id'] = ['in', $roleIds];
 
-        $where['invoice.create_time'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $where['invoice.update_time'] = array(array('lt', $end_time), array('egt', $start_time), 'and');
         $this->list = D("InvoiceView")->where($where)->order('create_time desc')->select();
         $this->display();
     }
