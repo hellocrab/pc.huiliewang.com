@@ -83,7 +83,7 @@ class ProductAction extends Action
             $data = $reData->getData($v);
 
             if (!$data['data']) {
-                $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => '没有匹配数据']);
+                $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => '没有匹配数据']);
             }
 
             //检查简历是否存存在
