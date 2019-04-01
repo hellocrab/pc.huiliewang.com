@@ -406,17 +406,17 @@ class ProductAction extends Action
             $condition = empty($_REQUEST['condition']) ? 'is' : trim($_REQUEST['condition']);
             if ($this->_request('state')) {
                 $state = $this->_request('state', 'trim');
-                $address_where[] = '%' . $state . '%';
+                $address_where[] = $state . '%';
                 if ($this->_request('city')) {
                     $city = $this->_request('city', 'trim');
-                    $address_where[] = '%' . $city . '%';
+                    $address_where[] = $city . '%';
                     if ($this->_request('area')) {
                         $area = $this->_request('area', 'trim');
-                        $address_where[] = '%' . $this->_request('area', 'trim') . '%';
+                        $address_where[] = $this->_request('area', 'trim') . '%';
                     }
                 }
                 if ($search)
-                    $address_where[] = '%' . $search . '%';
+                    $address_where[] =  $search . '%';
                 $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'state=' . $this->_request('state', 'trim'), 'city=' . $this->_request('city', 'trim'), 'area=' . $this->_request('area', 'trim'), 'search=' . $this->_request('search', 'trim'));
                 if ($condition == 'not_contain') {
                     $where[$field] = array('notlike', $address_where, 'OR');
@@ -427,11 +427,11 @@ class ProductAction extends Action
 
                 if ($field == 'name') {
                     //$where['name'] = array('like',$search);
-                    $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
+//                    $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
                     if (strlen($search) == 11 && is_numeric($search)) {
                         $where['telephone'] = array('eq', $search);
                     } else {
-                        $where['name'] = array('like', '%' . $search . '%');
+                        $where['name'] = array('like',  $search . '%');
                     }
                 }
             }
@@ -454,19 +454,19 @@ class ProductAction extends Action
                         $industryName = M('industry')->where(['industry_id'=>$v])->getField('name');
                         if ($where['_string']) {
 //                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',industry)";
-                            $where['_string'] .= " and industry  like '%{$industryName}%' ";
+                            $where['_string'] .= " and industry  like '{$industryName}%' ";
                         } else {
 //                            $where['_string'] = "FIND_IN_SET('" . $v . "',industry)";
-                            $where['_string'] = "industry  like  '%{$industryName}%' ";
+                            $where['_string'] = "industry  like  '{$industryName}%' ";
                         }
                     } elseif ($k == "job_class" && $v) {
                         $jobName = M('job_class')->where(['job_id'=>$v])->getField('name');
                         if ($where['_string']) {
 //                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',job_class)";
-                            $where['_string'] .= " and job_class like '%{$jobName}%'";
+                            $where['_string'] .= " and job_class like '{$jobName}%'";
                         } else {
 //                            $where['_string'] = "FIND_IN_SET('" . $v . "',job_class)";
-                            $where['_string'] = "job_class like '%{$jobName}%'";
+                            $where['_string'] = "job_class like '{$jobName}%'";
                         }
                     } elseif ($k == "intentCity" && $v) {
                         if ($where['_string']) {
@@ -480,17 +480,17 @@ class ProductAction extends Action
                     } elseif (is_array($v)) {
                         $v['value'] = trim($v['value']);
                         if ($v['state']) {
-                            $address_where[] = '%' . $v['state'] . '%';
+                            $address_where[] =  $v['state'] . '%';
 
                             if ($v['city']) {
-                                $address_where[] = '%' . $v['city'] . '%';
+                                $address_where[] =$v['city'] . '%';
 
                                 if ($v['area']) {
-                                    $address_where[] = '%' . $v['area'] . '%';
+                                    $address_where[] =  $v['area'] . '%';
                                 }
                             }
                             if ($v['search'])
-                                $address_where[] = '%' . $v['search'] . '%';
+                                $address_where[] = $v['search'] . '%';
 
                             if ($v['condition'] == 'not_contain') {
                                 $where[$k] = array('notlike', $address_where, 'OR');
@@ -645,6 +645,7 @@ class ProductAction extends Action
             }
         } else {
             $list = $resume->where($where)->order('addtime desc')->Page($p . ',' . $listrows)->select();
+//            print_r($resume->getLastSql());die;
         }
 
         foreach ($list as $key => $li) {
