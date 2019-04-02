@@ -108,7 +108,7 @@
                                     <!--<li><a href="javascript:void(0)" class="btn_examine" data_type="multi"><i class="fa fa-legal"></i>&nbsp;审批</a></li>-->
                                     <!--<li><a href="javascript:void(0)" class="excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></li>-->
                                     <li><a  href="javascript:void(0)" class="btn_delete" data_type="multi"><i class="fa fa-times"></i>&nbsp;撤销</a></li>
-                                    <li><a  href="javascript:void(0)" class="btn_passed" data_type="multi"><i class="fa fa-legal"></i>&nbsp;通过</a></li>
+                                    <if condition="$type eq 'apply'"><li><a  href="javascript:void(0)" class="btn_passed" data_type="multi"><i class="fa fa-legal"></i>&nbsp;通过</a></li></if>
                                     <li class="last_li"><big><a class="fa fa-times pull-right btnclose" id="back-show"></a></big></li>
                                 </ul>
                             </div>
