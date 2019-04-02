@@ -236,17 +236,19 @@
                                     <div class="input-group">
                                         <input type="hidden" name="m" value="product"/>
                                         <input type="hidden" name="a" value="index"/>
-                                        <input type="hidden" name="field" value="name"/>
+                                        <input type="hidden" name="field" value="search"/>
+                                        <if condition = "$_GET['by'] neq ''">
+                                        <input type="hidden" name="by" value="{$_GET['by']}"/>
+                                        </if>
                                         <input type="hidden" name="condition" value="contains"/>
-                                        <input id="short_search" type="text" style="width:180px;" placeholder="请输入人才姓名或手机号" onkeydown='if (event.keyCode == 13) {
-                                                            $("#short_search_btn").trigger("click");
-                                                            return false;
-                                                        }' class="form-control input-sm" name="search" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
+                                        <input id="short_search" type="text" style="width:180px;" placeholder="请输入职能岗位" class="form-control input-sm" name="search_job" <if condition = "$_GET['search_job'] neq ''">value="{$_GET['search_job']}"</if>/>
+                                        <input id="short_search" type="text" style="width:180px;" placeholder="请输入人才姓名或手机号" class="form-control input-sm" name="search_name" <if condition = "$_GET['search_name'] neq ''">value="{$_GET['search_name']}"</if>/>
+                                        
                                         <span class="input-group-btn">
                                             <button class="btn btn-default btn-search" id="short_search_btn" type="submit"><i class="fa fa-search"></i></button>
                                         </span>
                                     </div>
-                                    &nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>
+                                    <!--&nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
 
                                 </li>&nbsp;&nbsp;
                                 <div class="btn-group ">
