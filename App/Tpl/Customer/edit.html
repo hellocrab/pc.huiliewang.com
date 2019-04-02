@@ -462,6 +462,11 @@
                         $("input[data-selector=con_name]").css("border","1px dotted #cc5965");
                         return;
                     }
+                    if(pos == ''  ||pos == null){
+                        alert_crm("请填写职位！");
+                        $("input[data-selector=con_post]").css("border","1px dotted #cc5965");
+                        return;
+                    }
                     if(tel == '' || tel == null){
                         alert_crm("请填写手机！");
                         $("input[data-selector=con_telphone]").css("border","1px dotted #cc5965");
@@ -473,11 +478,6 @@
                     //     $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
                     //     return;
                     // }
-                    if(pos == ''  ||pos == null){
-                        alert_crm("请填写职位！");
-                        $("input[data-selector=con_post]").css("border","1px dotted #cc5965");
-                        return;
-					}
                     if(sex == ''  ||sex == null){
                         alert_crm("请填写性别！");
                         $("input[data-selector=con_sex]").css("border","1px dotted #cc5965");

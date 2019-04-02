@@ -1893,7 +1893,7 @@ class BusinessAction extends Action
         foreach ($data as $k => $v){
             $gjtime = strtotime($v['gjtime']);
             $now = time();
-            if(($now - $gjtime) >= 0 && 60 >($now - $gjtime)){
+            if(($now - $gjtime) >= 0 && 2 >=($now - $gjtime)){
                 $url = U('business/view','id='.$v['project_id']);
                 sendMessage($role_id,'&nbsp;&nbsp;温馨提醒：候选人《<a href="'.$url.'" title="点击查看">'.$v['name'].'</a>》<font style="color:green;">需进行跟进沟通</font>！',1);
             }
