@@ -734,6 +734,8 @@
                     $(function(){
                     /*站内信*/
                     message_tips();
+                    /*跟进面试通知*/
+                    attention();
 //                    login_tips();
                     $("#header_send_message").click(function(){
                     $('#dialog-message-send').dialog('open');
@@ -818,6 +820,19 @@
                             setTimeout('login_tips()', 20000);
                     }
 
+                    /*轮询跟进面试*/
+                    function attention() {
+                        $.get(
+                            '{:U("business/notice")}',
+                            {},
+                            function (data) {
+
+                            },
+                            'json'
+                        );
+                        setTimeout('attention()',60000);
+                    }
+                    
                     /*轮询*/
                     var mark_count = 1; //标记第一次弹出
                     /*初始默认值*/

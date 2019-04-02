@@ -1829,7 +1829,7 @@ class LeadsAction extends Action
         $role_id > 0 && $where['fine_project.tracker'] = $role_id;
         ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
         $where['fine_project.tjaddtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("ProjectView")->where($where)->order('addtime desc')->select();
+        $this->list = D("ProjectView")->where($where)->order('tjaddtime desc')->select();
         $this->display();
     }
 

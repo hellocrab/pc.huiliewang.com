@@ -63,7 +63,7 @@ Notification = function () {
             $(document).find('.notification-' + notification.id).addClass('lightSpeedOut');
             number = number - 1;
             // hide(notification.id);
-        }, 4000 * delay);
+        }, 41000 * delay);
     };
 
     return {
