@@ -255,7 +255,7 @@
 							<div class="col-md-6">
 								<input class="form-control " data-selector="con_qq_no"  type="text" id="con_qq_no" name="con_contacts[qq_no]"  value="" placeholder="" />
 								<span id="con_contacts[qq_no]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2 ftw ftww all"></div>
+							<div class="col-md-2"></div>
 							</div>
 							<div class="form-group">
 							<label class="col-md-4 control-label">性别：</label>
@@ -453,12 +453,12 @@
                             $("input[data-selector=con_telphone]").css("border","1px dotted #cc5965");
                             return;
                         }
-                        if((qq == '' || qq == null) && (weixin == '' || weixin == null)){
-                            alert_crm("请填写qq或者微信！");
-                            $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
-                            $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
-                            return;
-                        }
+                        // if((qq == '' || qq == null) && (weixin == '' || weixin == null)){
+                        //     alert_crm("请填写qq或者微信！");
+                        //     $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
+                        //     $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
+                        //     return;
+                        // }
 
                         // if(weixin == '' || weixin == null){
                         //     alert_crm("请填写微信！");
@@ -482,12 +482,12 @@
                         $("input[data-selector=con_telphone]").css("border","1px dotted #cc5965");
                         return;
                     }
-                    if( (qq == '' || qq == null) && (weixin == '' || weixin == null)){
-                        alert_crm("请填写qq或者微信！");
-                        $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
-                        $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
-                        return;
-                    }
+                    // if( (qq == '' || qq == null) && (weixin == '' || weixin == null)){
+                    //     alert_crm("请填写qq或者微信！");
+                    //     $("input[data-selector=con_qq_no]").css("border","1px dotted #cc5965");
+                    //     $("input[data-selector=con_wetchat]").css("border","1px dotted #cc5965");
+                    //     return;
+                    // }
                     if(sex == ''  ||sex == null){
                         alert_crm("请填写性别！");
                         $("input[data-selector=con_sex]").css("border","1px dotted #cc5965");
