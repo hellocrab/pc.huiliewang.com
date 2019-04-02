@@ -430,8 +430,8 @@ class ProductAction extends Action {
                     //$where['name'] = array('like',$search);
 //                    $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
                     if ($search_name) {
-                        if (strlen($search) == 11 && is_numeric($search)) {
-                            $where['telephone'] = array('eq', "'{$search_name}'");
+                        if (strlen($search_name) >= 11 && is_numeric($search_name)) {
+                            $where['telephone'] = array('eq', "{$search_name}");
                         } else {
                             $where['name'] = array('like', $search_name . '%');
                         }
