@@ -165,6 +165,9 @@
                                     <span id="to_product"><a href="javascript:void(0)" id="favorite"><i class="fa fa-star-o"></i>&nbsp;收藏</a></span>
                                 </li>
                             </if>
+                            <li class="single_btn">
+                                <span id="delete"><a href="javascript:void(0)" id="delete"><i class="fa fa-star-o"></i>&nbsp;删除</a></span>
+                            </li>
                             <li>
                                 <span><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></span>
                             </li>
@@ -884,7 +887,7 @@
         });
         $('#delete').click(function () {
             swal({
-                title: "确定要下架该人才吗？",
+                title: "确定要删除该人才吗？",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -892,7 +895,7 @@
                 closeOnConfirm: false
             },
                     function () {
-                        $("#form1").attr('action', '{:U("product/delete")}');
+                        $("#form1").attr('action', '{:U("product/del")}');
                         $("#form1").submit();
                     });
         });

@@ -23,7 +23,7 @@ class ProductAction extends Action
 
 //		$action = array(
 //			'permission'=>array('getProductByBusiness'),
-//			'allow'=>array('adddialog','editdialog', 'allproductdialog','validate','check','delimg','sortimg','mutildialog','changecontent','getmonthlyamount','getmonthlysales','getcurrentstatus','mutildialog_product_contract','mutildialog_product','advance_search','categorylist','matchWorksZP','checkReuse','matchWorksLP','matchWorksZL','charChange')
+//			'allow'=>array('adddialog','editdialog', 'allproductdialog','validate','check','delimg','sortimg','mutildialog','changecontent','getmonthlyamount','getmonthlysales','getcurrentstatus','mutildialog_product_contract','mutildialog_product','advance_search','categorylist','matchWorksZP','checkReuse','matchWorksLP','matchWorksZL','charChange','del')
 //		);
 //		B('Authenticate', $action);
 //		$this->_permissionRes = getPerByAction(MODULE_NAME,ACTION_NAME);
@@ -1359,6 +1359,38 @@ class ProductAction extends Action
         $this->resume_project = M("resume_project")->where("eid=%d", $eid)->select();
         $this->resume = $resume;
         $this->display();
+    }
+
+    /**
+     * @desc 简历删除
+     */
+    public function del() {
+        $product_ids = I('product_id',[]);
+        if(!$product_ids || empty($product_ids) || !is_array($product_ids)){
+            alert('error', '参数错误！', $_SERVER['HTTP_REFERER']);
+        }
+        if(!$this->isPost()){
+            alert('error', '请求出错！', $_SERVER['HTTP_REFERER']);
+        }
+        $resumeModel = M('resume');
+        foreach ($product_ids as $eid){
+            $id = intval($eid);
+            $resumeInfo = $resumeModel->where(['eid' => $id])->find();
+            //权限判断
+            if (!$resumeInfo || $resumeInfo['creator_role_id'] != session('role_id')) {
+                alert('error', "您无权删除简历{$resumeInfo['name']}！", $_SERVER['HTTP_REFERER']);
+            }
+            //删除判断
+            if (M('fine_project')->where(['resume_id' => $id])->find()) {
+                alert('error', "简历{$resumeInfo['name']}已经有项目了,不能删除", $_SERVER['HTTP_REFERER']);
+            }
+        }
+        $product_ids_str = implode($product_ids);
+        $res = $resumeModel->where('eid in (%s)', $product_ids_str)->delete();
+        if (!$res) {
+            alert('error', '删除失败，请联系管理员！', $_SERVER['HTTP_REFERER']);
+        }
+        alert('success', '删除成功！', $_SERVER['HTTP_REFERER']);
     }
 
     public function delete() {
