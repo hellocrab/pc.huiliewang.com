@@ -87,7 +87,7 @@
 																	<i class="iconfont iconshow eye"></i>
 																</p>
 																<elseif condition="$vo['field'] eq 'crm_ljgmqr'" />
-																<p class="" >
+																<p class="crmshow" >
 																	************
 																	<i class="iconfont iconshow eye"></i>
 																</p>
@@ -431,6 +431,7 @@ $('.eye').click(ar=>{
 						document.querySelector('.mailshow').innerHTML=val.info.email;
                         document.querySelector('.qqshow').innerHTML=val.info.qq;
                         document.querySelector('.wxshow').innerHTML=val.info.wetchat;
+                        document.querySelector('.crmshow').innerHTML=val.info.crm_ljgmqr;
                     }
                 }
             )
