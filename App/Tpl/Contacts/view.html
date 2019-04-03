@@ -404,37 +404,35 @@ $(function(){
 });
 //切换电话显示
 $('.eye').click(ar=>{
-                                                                        var item = "{$contacts['contacts_id']}";
-                                                                        var roleID = "{$Think.session.role_id}";
-                                                                            $.post(
-                                                                                "{:U('contacts/isScan')}",
-                                                                                {role_id:roleID,item_id:item,type:2},
-                                                                                res=>{
-                                                                                    if(res.code==200){
-                                                                                        if(res.info){
-                                                                                            var r=confirm(res.info);
-	                                                                                        if (r==false){
-                                                                                                return
-	                                                                                        }
-                                                                                        }
-                                                                                            $.post(
-                                                                                                    "{:U('contacts/infoScan')}",
-                                                                                                    {role_id:roleID,item_id:item,type:2},
-                                                                                                    val=>{
-                                                                                                        if(val.code==200){
-                                                                                                            document.querySelector('.telshow').innerHTML=val.info.telephone;
-																											document.querySelector('.mailshow').innerHTML=val.info.email;
-                                                                                                            document.querySelector('.qqshow').innerHTML=val.info.qq;
-                                                                                                            document.querySelector('.wxshow').innerHTML=val.info.wetchat;
-                                                                                                        }
-                                                                                                    }
-                                                                                                )
-                                                                                            
-                                                                                        
-                                                                                    }else{
-                                                                                        alert(res.info)
-                                                                                    }
-                                                                                })
+    var item = "{$contacts['contacts_id']}";
+    var roleID = "{$Think.session.role_id}";
+    $.post(
+        "{:U('contacts/isScan')}",
+        {role_id:roleID,item_id:item,type:2},
+        res=>{
+            if(res.code==200){
+            if(res.info){
+            	var r=confirm(res.info);
+	        	if (r==false){
+                	return
+	        	}
+        	}
+            $.post(
+                "{:U('contacts/infoScan')}",
+                {role_id:roleID,item_id:item,type:2},
+                val=>{
+                    if(val.code==200){
+                        document.querySelector('.telshow').innerHTML=val.info.telephone;
+						document.querySelector('.mailshow').innerHTML=val.info.email;
+                        document.querySelector('.qqshow').innerHTML=val.info.qq;
+                        document.querySelector('.wxshow').innerHTML=val.info.wetchat;
+                    }
+                }
+            )
+    		}else{
+        		alert(res.info)
+    		}
+})
                                                                     })
 </script>
 <include file="Public:footer" />
