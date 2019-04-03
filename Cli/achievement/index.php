@@ -41,6 +41,9 @@ $userList = $userQuery->fetchAll(PDO::FETCH_ASSOC);
 //循环每个用户
 foreach ($userList as $userInfo) {
     //按照每天统计
+    if(!$userInfo || !$userInfo['role_id'] || !$userInfo['user_id']){
+        continue;
+    }
     $dataList = [];
     $userRoleId = $userInfo['role_id'];
     $userName = $userInfo['full_name'] ? $userInfo['full_name'] : $userInfo['name'];
@@ -54,8 +57,8 @@ foreach ($userList as $userInfo) {
         $data['user_id'] = $userId;
         $data['user_role_id'] = $userRoleId;
         $data['user_name'] = $userName;
-        $data['department'] = $depInfo['name'];
-        $data['department_id'] = $depInfo['department_id'];
+        $data['department'] = isset($depInfo['name']) ? $depInfo['name'] : '';
+        $data['department_id'] = isset($depInfo['department_id']) ? $depInfo['department_id'] : 0;
         $reportTime = date('Y-m-d', $dateStartInt);
         $data['report_date'] = $reportTime;
         $data['create_time'] = time();
@@ -69,6 +72,7 @@ foreach ($userList as $userInfo) {
 //            continue;
         } else {
             $mode = 1;//insert
+            $where = [];
         }
 
         //1、业绩统计
@@ -84,9 +88,9 @@ foreach ($userList as $userInfo) {
         $data['fine_project_num'] = fineProjectNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         //7、面试人数
         $interviewNum = interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
-        $data['interview_num'] = $interviewNum['countPerson'] ? $interviewNum['countPerson'] : 0;
+        $data['interview_num'] = isset($interviewNum['countPerson']) ? $interviewNum['countPerson'] : 0;
         //8、面试次数
-        $data['interviewt_num'] = $interviewNum['conuntTimes'] ? $interviewNum['conuntTimes'] : 0;
+        $data['interviewt_num'] = isset($interviewNum['countTimes']) ? $interviewNum['countTimes'] : 0;
         //9、offer统计
         $data['offer_num'] = offerNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
 
@@ -111,15 +115,14 @@ foreach ($userList as $userInfo) {
         if($mode == 1){
             $dataList[] = $data;
         } else {
-//            $dataList = $data;
-            saveData($data, $conn ,$mode,$where); //更新
+            saveData($data, $conn ,2,$where); //更新
         }
     }
     
     if (!$dataList && empty($dataList)) {
         continue;
     }
-    if (!saveData($dataList, $conn ,1,$where)) {
+    if (!saveData($dataList, $conn ,1, [])) {
         echo "{$userName} data save error" . PHP_EOL;
     }
     echo "{$userName} SUCCESS" . PHP_EOL;
@@ -149,13 +152,23 @@ function checkExist($userId, $date, $conn)
  */
 function saveData($data, $conn, $mode,$where = []) {
     $table = 'mx_report_intergral';
-    $connMake = new sqlMaker($conn, array('tableName' => $table));
-    if ($mode == 1) {
-        $sql = $connMake->insertRows($data);
-        return $conn->exec($sql);
-    } elseif($mode == 2) {
-        $sql = $connMake->updateRow(['data' => $data,'where' => $where]);
-        return $conn->exec($sql);
+    try{
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn->beginTransaction();
+        $connMake = new sqlMaker($conn, array('tableName' => $table));
+        $res = false;
+        if ($mode == 1) {
+            $sql = $connMake->insertRows($data);
+            $res = $conn->exec($sql);
+        } elseif($mode == 2) {
+            $sql = $connMake->updateRow(['data' => $data,'where' => $where]);
+            $res =  $conn->exec($sql);
+        }
+        $conn->commit();
+        return $res;
+    }catch(Exception $e){
+        $conn->rollBack();
+        echo "Failed: " . $e->getMessage();
     }
 }
 
@@ -322,7 +335,7 @@ function interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_interview';
-    $sql = "SELECT count(distinct(pro.resume_id)) as countPerson,count(*) as conuntTimes FROM {$tableProject} as pro , {$tableInterview} as vie where vie.fine_id = pro.id and vie.role_id = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime < {$nextDayInt} ";
+    $sql = "SELECT count(distinct(pro.resume_id)) as countPerson,count(*) as countTimes FROM {$tableProject} as pro , {$tableInterview} as vie where vie.fine_id = pro.id and vie.role_id = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime < {$nextDayInt} ";
     $query = $conn->query($sql);
     if ($query) {
         $info = $query->fetch(PDO::FETCH_ASSOC);
