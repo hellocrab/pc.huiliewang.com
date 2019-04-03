@@ -45,7 +45,7 @@
 			    		        <div class="ibox">
 									<form role="form" class="form-horizontal view-group" method="post">
 										<?php $tag = 0; ?>
-										<volist name="field_list" id="vo">
+											<volist name="field_list" id="vo">
 										<if condition="$vo['form_type'] == 'textarea' or $vo['form_type'] == 'editor'">
 											<if condition="$tag%2 neq 0">
 											</div>
@@ -83,6 +83,11 @@
 																</p>
 																<elseif condition="$vo['field'] eq 'qq_no'" />
 																<p class=" qqshow" >
+																	************
+																	<i class="iconfont iconshow eye"></i>
+																</p>
+																<elseif condition="$vo['field'] eq 'crm_ljgmqr'" />
+																<p class="crmshow" >
 																	************
 																	<i class="iconfont iconshow eye"></i>
 																</p>
@@ -426,6 +431,7 @@ $('.eye').click(ar=>{
 						document.querySelector('.mailshow').innerHTML=val.info.email;
                         document.querySelector('.qqshow').innerHTML=val.info.qq;
                         document.querySelector('.wxshow').innerHTML=val.info.wetchat;
+                        document.querySelector('.crmshow').innerHTML=val.info.mobile;
                     }
                 }
             )
