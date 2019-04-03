@@ -3158,3 +3158,33 @@ function timeplug() {
     $daterange[5]['end_day'] = 0;
     return $daterange;
 }
+
+/**
+ * @desc 计算指定月份的第几个法定工作日
+ * @param $monthInt
+ * @param int $num
+ * @return false|int
+ */
+function getWeekDay($monthInt, $num = 2) {
+    $apiUrl = "http://timor.tech/api/holiday/info/";
+    $monthStartInt = strtotime(date('Ym01', $monthInt));
+    $monthEndInt = strtotime('+1 months', $monthStartInt);
+    $numPass = 0;
+    while ($monthStartInt < $monthEndInt) {
+        if ($numPass >= $num) {
+            return $monthStartInt;
+            break;
+        }
+        $currentDay = date('Y-m-d', $monthStartInt);
+        import("@.ORG.Curl");
+        $apiDayRes = BaseUtils::file_get_contents_safe($apiUrl . $currentDay);
+        $apiDay = json_decode($apiDayRes, true);
+        //计算是否是工作日
+        if (isset($apiDay['holiday']) && $apiDay['holiday']['holiday'] == true) {
+            $monthStartInt = strtotime('+1 days', $monthStartInt);
+            continue;
+        }
+        $monthStartInt = strtotime('+1 days', $monthStartInt);
+        $numPass++;
+    }
+}
