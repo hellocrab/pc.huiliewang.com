@@ -16,6 +16,7 @@ class ComposerStaticInitfc8912469f0e0880696bfc016ce46f55
         array (
             'PhpOffice\\PhpWord\\' => 18,
             'PhpOffice\\Common\\' => 17,
+            'PhpAmqpLib\\' => 11,
         ),
     );
 
@@ -35,6 +36,10 @@ class ComposerStaticInitfc8912469f0e0880696bfc016ce46f55
         'PhpOffice\\Common\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoffice/common/src/Common',
+        ),
+        'PhpAmqpLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-amqplib/php-amqplib/PhpAmqpLib',
         ),
     );
 

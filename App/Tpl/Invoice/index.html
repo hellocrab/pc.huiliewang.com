@@ -108,6 +108,7 @@
                                     <!--<li><a href="javascript:void(0)" class="btn_examine" data_type="multi"><i class="fa fa-legal"></i>&nbsp;审批</a></li>-->
                                     <li><a href="javascript:void(0)" class="excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></li>
                                     <li><a  href="javascript:void(0)" class="btn_delete" data_type="multi"><i class="fa fa-times"></i>&nbsp;撤销</a></li>
+                                    <if condition="$type eq 'apply'"><li><a  href="javascript:void(0)" class="btn_passed" data_type="multi"><i class="fa fa-legal"></i>&nbsp;通过</a></li></if>
                                     <li class="last_li"><big><a class="fa fa-times pull-right btnclose" id="back-show"></a></big></li>
                                 </ul>
                             </div>
@@ -1004,6 +1005,24 @@
                     function () {
                         window.location.href = "{:U('invoice/revoke', 'invoice_id=')}" + id;
                     })
+        });
+        //批量通过
+        $('.btn_passed').click(function () {
+            var id = 0;
+            var title = "";
+            id = $(this).closest(".breadcrum").find(".select_arr").val();
+            title = "确定要通过选中的发票吗？";
+            swal({
+                    title: title,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确定",
+                    closeOnConfirm: false
+                },
+                function () {
+                    window.location.href = "{:U('invoice/examine_all', 'invoice_id=')}" + id;
+                })
         });
         //开票
         $(".btn_count").on("click", function () {

@@ -1067,7 +1067,7 @@ class CustomerAction extends Action {
                     $contactsCustomerIds = CustomerModel::getIdsByContact($search);
                     if ($contactsCustomerIds) {
                         $field_where = array();
-                        $field_where['customer.name'] = array('like', '%' . $search . '%');
+                        $field_where['customer.name'] = array('like', $search . '%');
                         $field_where['customer.customer_id'] = array('in', $contactsCustomerIds);
                         $field_where['_logic'] = 'OR';
                         $where['_complex'] = $field_where;

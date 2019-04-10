@@ -109,6 +109,18 @@
 </style>
 <script>
     $(function () {
+        $('#short_search').val() && $('.clearVal').css('display','inline-block');
+        $('#short_search').on('input',ev=>{
+            if(ev.target.value!=''){
+                $('.clearVal').css('display','inline-block')
+            }else{
+                $('.clearVal').css('display','none')
+            }
+        })
+        $('.clearVal').click(ev=>{
+            $('#short_search').val('');
+            $('.clearVal').css('display','none');
+        })
         var scroll_width = 10;
         // var oTableLH_tab_Test3 = 38;
         $("#table_div").height(window.innerHeight - $("#table_div").offset().top - $("#tfoot_div").height() - parseInt($("#table_container").css("padding-bottom").replace("px", "")) - 10);
@@ -243,6 +255,7 @@
                                                                 <li>
                                                                     搜索：
                                                                     <div class="input-group">
+                                                                        <span class="fa fa-times-circle clearVal" style="margin: 10px -10px;position: relative;z-index: 5;display:none;cursor:pointer"></span>
                                                                         <input type="hidden" name="m" value="customer"/>
                                                                         <input type="hidden" name="a" value="index"/>
                                                                         <input type="hidden" name="field" value="name"/>
@@ -267,7 +280,7 @@
                                                                                                             return false;
                                                                                                         }' class="form-control input-sm" name="search" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
                                                                         <span class="input-group-btn">
-                                                                            <button class="btn btn-default btn-search" id="short_search_btn" type="submit"><i class="fa fa-search"></i></button>
+                                                                            <button class="btn btn-default btn-search" id="short_search_btn" type="submit" style="height:32px;"><i class="fa fa-search"></i></button>
                                                                         </span>
                                                                     </div>
                                                                     &nbsp;&nbsp;<!--<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
@@ -854,7 +867,6 @@
                                                                                                                                                     $("#searchContent_" + key_id + "").html('<select class="selectpicker show-tick form-control input-sm" data-live-search="true" id="search_' + key_id + '" name="' + search_owner_role_id + '" style="width:auto">' + options + '</select>');
                                                                                                                                                     var owner_roleid = "{$fields_search[$vo['field']][value]}";
                                                                                                                                                     $('#search_' + key_id + ' option[value=' + owner_roleid + ']').prop('selected', true);
-
                                                                                                                                                 },
                                                                                                                                                 dataType: 'json'
                                                                                                                                             });
@@ -862,6 +874,7 @@
                                                                                                                                         <elseif condition="$vo['field'] eq 'status_id'"/>
                                                                                                                                         <span id="bus_status_id" rel="{$key1}" rel1="{$vo['field']}[value]" rel2="{$fields_search[$vo['field']][value]}"/>
                                                                                                                                         <script type="text/javascript">
+                                                                                                                                            $()
                                                                                                                                             var key_id = $('#bus_status_id').attr('rel');
                                                                                                                                             var search = $('#bus_status_id').attr('rel1');
                                                                                                                                             var search_roleid = $('#bus_status_id').attr('rel2');
