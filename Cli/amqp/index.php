@@ -19,6 +19,9 @@ include realpath(__DIR__ . '/../../vendor/php-amqplib/RabbitMqBase.php');
  */
 class consumeUser
 {
+    protected $isDeleteUser = false;
+    protected $isDeleteReport = true;
+
     /**
      * @desc 回掉数据处理
      * @param $msg
@@ -27,7 +30,7 @@ class consumeUser
         $body = $msg->body;
         echo date('Y-m-d H:i:s') . " [x] Received", $body, PHP_EOL;
         $bodyArr = json_decode($body, true);
-        $userId = $bodyArr['user_id'];
+        $userId = isset($bodyArr['user_id']) ? intval($bodyArr['user_id']) : 0;
         echo $userId;
         $res = $this->changeUser($userId);
         $res && $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
@@ -40,7 +43,9 @@ class consumeUser
      * @return bool
      */
     public function changeUser($userId, $time = 0) {
-
+        if ($userId <= 0) {
+            return true;
+        }
         $conn = self::dbconn();
         $tableUser = 'mx_user';
         $tableReport = 'mx_report_intergral';
@@ -50,17 +55,23 @@ class consumeUser
         if (!$userInfo || $userInfo['status'] != 2) {
             return true;
         }
-        $connUserMake = new sqlMaker($conn, array('tableName' => $tableUser));
-        $userWhere = ['eq' => ['user_id' => $userId]];
-        $connReportMake = new sqlMaker($conn, array('tableName' => $tableReport));
-        $reportWhere = ['eq' => ['user_id' => $userId]];
+
+        $where = ['eq' => ['user_id' => $userId]];
         try {
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $conn->beginTransaction();
-            $sql = $connUserMake->delete(['where' => $userWhere]);
-            $sqlReport = $connReportMake->delete(['where' => $reportWhere]);
-            $conn->exec($sql);
-            $conn->exec($sqlReport);
+            //用户信息删除
+            if ($this->isDeleteUser) {
+                $connUserMake = new sqlMaker($conn, array('tableName' => $tableUser));
+                $sql = $connUserMake->delete(['where' => $where]);
+                $conn->exec($sql);
+            }
+            //用户报表信息删除
+            if ($this->isDeleteReport) {
+                $connReportMake = new sqlMaker($conn, array('tableName' => $tableReport));
+                $sqlReport = $connReportMake->delete(['where' => $where]);
+                $conn->exec($sqlReport);
+            }
             $conn->commit();
             $res = true;
         } catch (Exception $e) {

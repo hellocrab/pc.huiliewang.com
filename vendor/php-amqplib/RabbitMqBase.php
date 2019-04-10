@@ -14,7 +14,6 @@ date_default_timezone_set('PRC');
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use  PhpAmqpLib\Wire\AMQPTable;
-use think\Exception;
 
 class RabbitMqBase
 {
@@ -23,11 +22,7 @@ class RabbitMqBase
      * @var array
      */
     protected $config = [
-        'host' => 'localhost',
-        'port' => 5672,
-        'user' => 'guest',
-        'pass' => 'guest',
-        'vhost' => '/'
+        'host' => 'localhost', 'port' => 5672, 'user' => 'guest', 'pass' => 'guest', 'vhost' => '/'
     ];
 
     /**
@@ -124,16 +119,18 @@ class RabbitMqBase
 
 
     /**
-     * @desc 发布消息
+     * @desc 发布消息[延迟消息]
      * @param $mess
      * @param int $expiration 过期时间 毫秒
      */
     public function deadMessage($mess = '', $expiration = 3000) {
         try {
+            //声明两个队列,给cache发送  使其过期然后定向到另一个
             $this->channel->exchange_declare("delay_{$this->exchange}", self::$type, false, false, false);
             $this->channel->exchange_declare("cache_{$this->exchange}", self::$type, false, false, false);
             //设置队列的过期时间
             $tale = new AMQPTable();
+            // 表示过期后由哪个exchange处理
             $tale->set('x-dead-letter-exchange', "delay_{$this->exchange}");
             $tale->set('x-dead-letter-routing-key', "delay_{$this->exchange}_key");
 //        $tale->set('x-message-ttl', intval($ttl));
