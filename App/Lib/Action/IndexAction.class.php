@@ -15,7 +15,6 @@ class IndexAction extends Action {
     public function index() {
         $title = "首页";
         $this->assign("title", $title);
-
         //手机访问跳转
         if (isMobile()) {
             $mobile = str_replace('index.php', 'mobile', $_SERVER["PHP_SELF"]);
@@ -345,6 +344,11 @@ class IndexAction extends Action {
         } else {
             $briefing_role_ids = getSubRoleId();
         }
+        //检出当前用户所在部门下所有role_id,//部门下role_id
+        $department_id_session = intval(session('department_id'));
+        $subPositionId_Arr = M('position')->where('department_id = %d', $department_id_session)->order('position_id asc')->getField('position_id', true);
+        $subRoleId_Arr = M('role')->where(array('position_id' => array('in', $subPositionId_Arr)))->getField('role_id', true);
+
         $create_time = array();
         //今日时间范围
         $start_time_day = strtotime(date('Y-m-d'));
@@ -374,19 +378,44 @@ class IndexAction extends Action {
         $business_count = array();
         $log_count = array();
         $mylog_count = array();
+        //个人数据 4/9
+        $self_customer_count = array();
+        $self_contacts_count = array();
+        $self_business_count  = array();
+        $self_contact_count = array();
+        //所在部门下数据 4/10
+        $dep_customer_count = array();
+        $dep_contacts_count = array();
+        $dep_business_count = array();
+        $dep_contact_count = array();
         foreach ($create_time as $k => $v) {
             $customer_count[] = $m_customer->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
             $contacts_count[] = $m_contacts->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
             $business_count[] = $m_business->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
-//            $resume_count[] = $m_resume->where(array('creator_role_id' => array('in', $briefing_role_ids), 'addtime' => $v))->count();
+            //$resume_count[] = $m_resume->where(array('creator_role_id' => array('in', $briefing_role_ids), 'addtime' => $v))->count();
             $contract_count[] = $m_contract->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
-//            $log_count[] = $m_log->where(array('role_id' => array('in', $briefing_role_ids), 'category_id' => 1, 'create_date' => $v))->count(); //沟通日志
-//            $mylog_count[] = $m_log->where(array('role_id' => array('in', $briefing_role_ids), 'category_id' => array('neq', 1), 'create_date' => $v))->count(); //工作日志
+            //$log_count[] = $m_log->where(array('role_id' => array('in', $briefing_role_ids), 'category_id' => 1, 'create_date' => $v))->count(); //沟通日志
+            //$mylog_count[] = $m_log->where(array('role_id' => array('in', $briefing_role_ids), 'category_id' => array('neq', 1), 'create_date' => $v))->count(); //工作日志
+
+            //个人数据获取
+            $self_customer_count[] = $m_customer->where(array('creator_role_id'=>session('role_id'),'is_deleted' => 0 , 'create_time' =>  $v)) ->count();
+            $self_contacts_count[] = $m_contacts->where(array('creator_role_id'=>session('role_id'),'is_deleted' => 0 , 'create_time' =>  $v)) ->count();
+            $self_contact_count[] = $m_contract->where(array('creator_role_id'=>session('role_id'),'is_deleted' => 0 , 'create_time' =>  $v)) ->count();
+            $self_business_count[] = $m_business->where(array('creator_role_id'=>session('role_id'),'is_deleted' => 0 , 'create_time' =>  $v)) ->count();
+
+            //部门数据获取
+            $dep_customer_count[] = $m_customer->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+            $dep_contacts_count[] = $m_contacts->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+            $dep_business_count[] = $m_business->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+            $dep_contact_count[] = $m_contract->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+
         }
+        /**个人首页数据*/
+
         //是否填写日志
 //        $mylog_count_today = $m_log->where(array('role_id' => session('role_id'), 'category_id' => array('neq', 1), 'create_date' => $create_time[0]))->count(); //工作日志
 //        $this->mylog_count_today = $mylog_count_today;
-
+//
 //        //指标数据
 //        $blows_id = getPerByAction('finance', 'target'); //权限判断
 //        $m_receivables = M('Receivables');
@@ -432,6 +461,13 @@ class IndexAction extends Action {
 //        }
         $anly_count = array('customer_count' => $customer_count, 'contacts_count' => $contacts_count, 'business_count' => $business_count, 'contract_count' => $contract_count, 'log_count' => $log_count, 'mylog_count' => $mylog_count, 'sum_price' => $sum_price, 'sum_price_month' => $sum_price_month, 'sum_price_week' => $sum_price_week, 'sum_price_year' => $sum_price_year, 'schedule' => $schedule);
         $this->anly_count = $anly_count;
+
+        //封装个人统计 4/9
+        $self_count = array('self_customer_count'=>$self_customer_count,'self_contacts_count'=>$self_contacts_count,'self_business_count'=>$self_business_count,'self_contract_count'=>$self_contact_count);
+        $this->self_count = $self_count;
+        //封装部门统计 4/10
+        $dep_count = array('dep_customer_count'=>$dep_customer_count,'dep_contacts_count'=>$dep_contacts_count,'dep_business_count'=>$dep_business_count,'dep_contract_count'=>$dep_contact_count);
+        $this->dep_count = $dep_count;
 
         $this->alert = parseAlert();
         $this->display();
@@ -537,6 +573,17 @@ class IndexAction extends Action {
                 }
                 $params = array('field=' . trim($_REQUEST['field']), 'search=' . $search);
             }
+
+            //模糊查询 , , 参数by,name
+            $name = $_GET['search'] ? BaseUtils::getStr($_GET['search']) : '';
+            if(!$name){
+                //根据模糊姓名，查出所有role_id
+                $data = M('user')->where(array('full_name'=>array('like','%'.$name.'%')))->getField('role_id',true);
+                //合并$where['role_id'][1],并封装
+                $data = array_intersect($data,$where['role_id'][1]);
+                $where['role_id'] = array('in', $data);
+            }
+
             $action_log = $m_action_log->where($where)->order('create_time desc')->page($p . ',10')->select();
             $count = $m_action_log->where($where)->count();
             import("@.ORG.Page");
