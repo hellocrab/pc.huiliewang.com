@@ -421,7 +421,8 @@ function achievementNum($userId, $dateStartInt, $nextDayInt, $conn)
 function fineProjectNum($userId, $dateStartInt, $nextDayInt, $conn)
 {
     $table = 'mx_fine_project';
-    $sql = "SELECT count(*) as counts from {$table} where tracker = {$userId} and tjaddtime >= {$dateStartInt} and tjaddtime < {$nextDayInt}";
+//    $sql = "SELECT count(*) as counts from {$table} where tracker = {$userId} and tjaddtime >= {$dateStartInt} and tjaddtime < {$nextDayInt}";
+    $sql = "SELECT count(*) as counts from {$table} where if(tj_role_id <= 0,tracker = {$userId},tj_role_id = {$userId}) and tjaddtime >= {$dateStartInt} and tjaddtime < {$nextDayInt}";
     $query = $conn->query($sql);
     if ($query) {
         $info = $query->fetch(PDO::FETCH_ASSOC);
@@ -536,7 +537,7 @@ function dbconn($env='')
     $testConf = [
         'product' => 'mysql',
         'api' => 'pdo',
-        'host' => '192.168.0.168',
+        'host' => '192.168.0.129',
         'port' => 3306,
         'dbname' => 'pinping',
         'username' => 'root',

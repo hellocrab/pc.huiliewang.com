@@ -1648,6 +1648,7 @@ class BusinessAction extends Action
                 $arr['status'] = 3;
                 $arr['tjaddtime'] = time();
                 $arr['updatetime'] = time();
+                $arr['tj_role_id'] = session('role_id');
 //                $data['operator'] = session("user_id");
 //                $data['addtime'] = time();
 //                $arr['tj_log'] = serialize($data);

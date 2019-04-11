@@ -1826,10 +1826,14 @@ class LeadsAction extends Action
         $end_time = I("end_date");
         $roleIds = I("roleIds", '');
         $role_id = intval(I("id"));
-        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
-        ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
-        $where['fine_project.tjaddtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("ProjectView")->where($where)->order('tjaddtime desc')->select();
+
+//        $role_id > 0 && $where['fine_project.tracker'] = $role_id;
+//        ($role_id <= 0 && $roleIds) && $where['fine_project.tracker'] = ['in', $roleIds];
+//        $where['fine_project.tjaddtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $whereStr = "fine_project.tjaddtime >= {$start_time} and fine_project.tjaddtime <= {$end_time} ";
+        $role_id > 0 && $whereStr .= " and if(tj_role_id <= 0,fine_project.tracker = {$role_id},fine_project.tj_role_id = {$role_id}) ";
+        ($role_id <= 0 && $roleIds) && $whereStr .= " and if(tj_role_id <= 0,fine_project.tracker in ({$roleIds}),fine_project.tj_role_id in ({$roleIds})) ";
+        $this->list = D("ProjectView")->where($whereStr)->order('tjaddtime desc')->select();
         $this->display();
     }
 
