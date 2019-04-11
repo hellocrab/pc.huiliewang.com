@@ -448,7 +448,11 @@ class BusinessAction extends Action
         //我全部项目 1、我创建的 2、分配给我的 3、项目成员是我的 4、维护人是我的 5、分享给我的
         if( $by == 'all'){
             //自己全部
-            $ownerWhere['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
+            $ownerWhere['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter) ";
+            if($this->_permissionRes){
+                $allRoles = implode(',',$this->_permissionRes);
+                $ownerWhere['_string'] .= " OR business.creator_role_id in ({$allRoles})";
+            }
             $where['_complex'] = $ownerWhere;
             $where['_logic'] = 'OR';
         }
@@ -998,18 +1002,26 @@ class BusinessAction extends Action
         if(!$business_info){
             alert('error', '项目不存在！', $_SERVER['HTTP_REFERER']);
         }
+        if(!$this->_permissionRes){
+            alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+        }
         if (!in_array($useRoleId,$owner_role_ids) && !in_array($useRoleId,$parterRoleIds ) && $useRoleId !=$business_info['joiner'] && $useRoleId != $createUserRoleId) {
-            if(!$below_ids || !is_array($below_ids)){
-                //没有下属
+
+            $isAccess = in_array($createUserRoleId,$this->_permissionRes);
+            if((!$below_ids || !is_array($below_ids)) && !$isAccess){
+                //没有下属或者没有查看
                 alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
             }
             $isAllow = false;
             //是否是其中下属的全部项之一
             foreach ($below_ids as $sonRoleId){
                 if($sonRoleId == $createUserRoleId || $sonRoleId == $business_info['joiner'] || in_array($sonRoleId,$parterRoleIds) || in_array($sonRoleId,$owner_role_ids)){
-                    $isAllow = true;
+                    $isAllow = true   ;
                     break;
                 }
+            }
+            if(!$isAllow && $isAccess){
+                $isAllow = true;
             }
             !$isAllow &&  alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
         }
