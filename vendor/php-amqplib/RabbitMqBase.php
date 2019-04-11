@@ -149,6 +149,9 @@ class RabbitMqBase
      * @return bool
      */
     public function deadMessage($mess = [], $expiration = 3000) {
+        if (!$mess) {
+            return false;
+        }
         try {
             //声明两个队列,给cache发送  使其过期然后定向到另一个
             $this->channel->exchange_declare("delay_{$this->exchange}", self::$type, false, false, false);
