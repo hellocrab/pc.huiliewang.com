@@ -127,9 +127,9 @@ class RabbitMqBase
      */
     private function log($message, $status = 'SUCCESS', $model = 'send', $type = 'user') {
         $logPath = __DIR__ . '/../../vendor/php-amqplib/log/';
-        $logFile = $logPath . "{$type}_success.{$model}.log";
+        $logFile = $logPath . "{$type}_success_{$model}.log";
         if ($status != 'SUCCESS') {
-            $logFile = $logPath . "{$type}_error.{$model}.log";
+            $logFile = $logPath . "{$type}_error_{$model}.log";
         }
         if (!is_dir($logPath)) {
             mkdir($logPath, 0777);
