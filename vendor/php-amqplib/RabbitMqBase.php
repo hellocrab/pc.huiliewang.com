@@ -117,13 +117,38 @@ class RabbitMqBase
         return !$this->connection->isConnected();
     }
 
+    /**
+     * @desc 日志记录
+     * @param $message 消息
+     * @param string $status 状态
+     * @param string $type 类型【用户队列/】
+     * @param string $model 模式 【发送/接收】
+     * @return bool|int|void
+     */
+    private function log($message, $status = 'SUCCESS', $model = 'send', $type = 'user') {
+        $logPath = __DIR__ . '/../../vendor/php-amqplib/log/';
+        $logFile = $logPath . "{$type}_success.{$model}.log";
+        if ($status != 'SUCCESS') {
+            $logFile = $logPath . "{$type}_error.{$model}.log";
+        }
+        if (!is_dir($logPath)) {
+            mkdir($logPath, 0777);
+        }
+        if (is_array($message)) {
+            $message = json_encode($message);
+        }
+        $time = date('Y-m-d H:i:s', time());
+        $log = "LogTime: {$time} Status: {$status} " . PHP_EOL . "Message: {$message}" . PHP_EOL . PHP_EOL;
+        return file_put_contents($logFile, $log, FILE_APPEND);
+    }
 
     /**
      * @desc 发布消息[延迟消息]
-     * @param $mess
-     * @param int $expiration 过期时间 毫秒
+     * @param array $mess
+     * @param int $expiration
+     * @return bool
      */
-    public function deadMessage($mess = '', $expiration = 3000) {
+    public function deadMessage($mess = [], $expiration = 3000) {
         try {
             //声明两个队列,给cache发送  使其过期然后定向到另一个
             $this->channel->exchange_declare("delay_{$this->exchange}", self::$type, false, false, false);
@@ -152,12 +177,13 @@ class RabbitMqBase
             //加入队列
             $this->channel->basic_publish($msg, "cache_{$this->exchange}", "cache_{$this->exchange}_key");
         } catch (\Exception $e) {
-            echo $e->getMessage();
-            return;
+            $this->log($mess, 'ERROR: ' . $e->getMessage());
+            return false;
         }
-        echo date('Y-m-d H:i:s') . " [x] Sent 'Hello World!' " . PHP_EOL;
-
         $this->close();
+        //记录日志
+        $this->log($mess);
+        return true;
     }
 
     /**
@@ -179,6 +205,8 @@ class RabbitMqBase
             $this->channel->basic_consume("delay_{$this->queueName}", '', false, false, false, false, self::$callBack);
         } catch (\Exception $e) {
             echo $e->getMessage();
+            $this->log('接收数据失败', 'ERROR: ' . $e->getMessage(), 'receive');
+            return;
         }
         while (count($this->channel->callbacks)) {
             $this->channel->wait();

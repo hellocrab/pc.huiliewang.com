@@ -2543,4 +2543,32 @@ class UserAction extends Action {
         }
 
     }
+
+    /**
+     * @desc 清空用户数据队列
+     * @param $userId
+     * @return bool|void
+     */
+    private function deleteUserDataDelay($userId) {
+
+        if ($userId <= 0) {
+            return;
+        }
+        //当前月份
+        $currMoth = date('Y-m-01', time());
+        //次月月份
+        $nextMoth = date('Y-m-01', strtotime($currMoth . '+1 month'));
+        $nextMothTime = strtotime($nextMoth);
+        //次算次月第几个工作日[排除法定节假日]
+        $deleteTime = getWeekDay($nextMothTime, 2);
+        $delayTime = $deleteTime - time();
+
+        //加入消息队列处理数据
+        $vendorPath = __DIR__ . '/../../../vendor/';
+        require_once $vendorPath . 'autoload.php';
+        require_once $vendorPath . 'php-amqplib/RabbitMqBase.php';
+        $mq = new \RabbitMq\RabbitMqBase();
+        $res = $mq->deadMessage(['user_id' => $userId, 'time' => $deleteTime, 'ttl' => $delayTime], $delayTime);
+        return $res;
+    }
 }
