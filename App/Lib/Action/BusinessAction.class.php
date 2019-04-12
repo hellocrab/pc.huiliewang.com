@@ -1381,7 +1381,7 @@ class BusinessAction extends Action
                 }
 
                 if ($key == "invoice") {
-                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
+                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
                     $data[$li['create_time']][$key] = $li;
                 } else {
                     $data[$li['addtime']][$key] = $li;
@@ -1414,6 +1414,7 @@ class BusinessAction extends Action
                 }
 
                 if ($key == "invoice") {
+                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
                     $data[$li['create_time']][$key] = $li;
                 } else {
                     $data[$li['addtime']][$key] = $li;
@@ -1446,6 +1447,7 @@ class BusinessAction extends Action
                 }
 
                 if ($key == "invoice") {
+                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
                     $data[$li['create_time']][$key] = $li;
                 } else {
                     $data[$li['addtime']][$key] = $li;
