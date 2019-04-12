@@ -30,13 +30,15 @@ class consumeUser
         $body = $msg->body;
         echo date('Y-m-d H:i:s') . " [x] Received", $body, PHP_EOL;
         $bodyArr = json_decode($body, true);
-        $userIds = isset($bodyArr['user_ids']) ? intval($bodyArr['user_id']) : 0;
-        $res = false;
-        foreach ($userIds as $userId){
-            echo $userId;
-            $res = $this->changeUser($userId);
+        $userIds = isset($bodyArr['user_ids']) ? $bodyArr['user_ids'] : [];
+        $res = true;
+        if($userIds){
+            foreach ($userIds as $userId){
+                echo $userId;
+                $res = $this->changeUser($userId);
+            }
         }
-        $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
+        $res && $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
     }
 
     /**
