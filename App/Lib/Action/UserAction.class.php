@@ -740,6 +740,7 @@ class UserAction extends Action {
 			}
 			if($del_ids){
 				$res_del = $m_user->where(array('user_id'=>array('in',$del_ids)))->setField('status',$value);
+				$res_del && $this->deleteUserDataDelay($del_ids);
 			}
 			if($res_add || $res_del){
 				$this->ajaxReturn('','操作成功！',1);
@@ -2546,13 +2547,13 @@ class UserAction extends Action {
 
     /**
      * @desc 清空用户数据队列
-     * @param $userId
+     * @param $userIds
      * @return bool|void
      */
-    private function deleteUserDataDelay($userId) {
+    private function deleteUserDataDelay($userIds=[]) {
 
-        if ($userId <= 0) {
-            return;
+        if (!$userIds || !is_array($userIds) ) {
+            return false;
         }
         //当前月份
         $currMoth = date('Y-m-01', time());
@@ -2568,7 +2569,6 @@ class UserAction extends Action {
         require_once $vendorPath . 'autoload.php';
         require_once $vendorPath . 'php-amqplib/RabbitMqBase.php';
         $mq = new \RabbitMq\RabbitMqBase();
-        $res = $mq->deadMessage(['user_id' => $userId, 'time' => $deleteTime, 'ttl' => $delayTime], $delayTime);
-        return $res;
+        return $mq->deadMessage(['user_ids' => $userIds, 'time' => $deleteTime, 'ttl' => $delayTime], $delayTime);
     }
 }

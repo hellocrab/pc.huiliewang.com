@@ -22,7 +22,7 @@ class RabbitMqBase
      * @var array
      */
     protected $config = [
-        'host' => 'localhost', 'port' => 5672, 'user' => 'guest', 'pass' => 'guest', 'vhost' => '/'
+        'host' => '192.168.0.129', 'port' => 5672, 'user' => 'test', 'pass' => 'test', 'vhost' => '/'
     ];
 
     /**
