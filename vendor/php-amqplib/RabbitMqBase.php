@@ -60,6 +60,11 @@ class RabbitMqBase
      * @var string
      */
     private static $type = 'direct';
+    /**
+     * 错误信息
+     * @var string
+     */
+    protected $errorMessage = '';
 
 
     /**
@@ -88,12 +93,12 @@ class RabbitMqBase
                 $this->config['vhost']
             );
         } catch (\Exception $e) {
-            echo $e->getMessage();
-            return;
+            $this->errorMessage = $e->getMessage();
+            return false;
         }
         if (!$this->connection->isConnected()) {
-            echo '链接异常';
-            return;
+            $this->errorMessage = '链接异常';
+            return false;
         }
         $this->channel = $this->connection->channel();
     }
@@ -150,6 +155,7 @@ class RabbitMqBase
      */
     public function deadMessage($mess = [], $expiration = 3000) {
         if (!$mess) {
+            $this->errorMessage = '消息为空';
             return false;
         }
         try {
@@ -181,6 +187,7 @@ class RabbitMqBase
             $this->channel->basic_publish($msg, "cache_{$this->exchange}", "cache_{$this->exchange}_key");
         } catch (\Exception $e) {
             $this->log($mess, 'ERROR: ' . $e->getMessage());
+            $this->errorMessage = $e->getMessage();
             return false;
         }
         $this->close();
@@ -207,7 +214,7 @@ class RabbitMqBase
             $this->channel->basic_qos(null, 1, null);
             $this->channel->basic_consume("delay_{$this->queueName}", '', false, false, false, false, self::$callBack);
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            $this->errorMessage = $e->getMessage();
             $this->log('接收数据失败', 'ERROR: ' . $e->getMessage(), 'receive');
             return;
         }
