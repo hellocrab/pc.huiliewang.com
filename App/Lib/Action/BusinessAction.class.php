@@ -177,7 +177,7 @@ class BusinessAction extends Action
 //                $where['business.owner_role_id'] = array('in',$ownerAllIds);
                 break;
         }
-       
+
         if ($_REQUEST["field"]) {
             $field = trim($_REQUEST['field']);
             $search = empty($_REQUEST['search']) ? '' : trim($_REQUEST['search']);
@@ -1037,7 +1037,7 @@ class BusinessAction extends Action
             }
             $business_info['joiner'] = $customer_owner_name;
         }
-        
+
         //加入项目成员
         if ($business_info['parter']) {
             $bussiness_parter_ids = explode(',', $business_info['parter']);
@@ -1299,6 +1299,10 @@ class BusinessAction extends Action
                 if($key == 'cc_remark' && isset($li['role_id'])){
                     $li['cc_user'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
                 }
+                if(($key == 'calllist_remark' || $key == 'remove_remark') && isset($li['role_id'])){
+                $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
+
                 $data[$li['addtime']][$key] = $li;
             }
         }
@@ -1321,6 +1325,9 @@ class BusinessAction extends Action
         foreach ($project as $key => $list) {
 
             foreach ($list as $k => $li) {
+                if(($key == 'adviser_content' || $key == 'adviser_more' || $key == 'adviser_remark' || $key == 'remove_remark')&& isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
                 $data[$li['addtime']][$key] = $li;
             }
         }
@@ -1342,6 +1349,9 @@ class BusinessAction extends Action
         foreach ($project as $key => $list) {
 
             foreach ($list as $k => $li) {
+                if(($key == 'tj_more' || $key == 'tj_remark' || $key == 'remove_remark') && isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
                 $data[$li['addtime']][$key] = $li;
             }
         }
@@ -1365,7 +1375,13 @@ class BusinessAction extends Action
         $project['invoice'] = M("invoice")->where($where)->select();
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
+
+                if(($key == 'interview_content' || $key == 'interview_remark' || $key == 'remove_remark') && isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
+
                 if ($key == "invoice") {
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
                     $data[$li['create_time']][$key] = $li;
                 } else {
                     $data[$li['addtime']][$key] = $li;
@@ -1393,6 +1409,10 @@ class BusinessAction extends Action
         $project['invoice'] = M("invoice")->where($where)->select();
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
+                if(($key == 'offer_content' || $key == 'remove_remark' || $key == 'offer_remark') && isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
+
                 if ($key == "invoice") {
                     $data[$li['create_time']][$key] = $li;
                 } else {
@@ -1421,6 +1441,10 @@ class BusinessAction extends Action
         $project['invoice'] = M("invoice")->where($where)->select();
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
+                if(($key == 'enter_content' || $key == 'enter_remark' || $key == 'remove_remark') && isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
+
                 if ($key == "invoice") {
                     $data[$li['create_time']][$key] = $li;
                 } else {
@@ -1436,6 +1460,7 @@ class BusinessAction extends Action
     {
         $project = D("ProjectView")->where("fine_project.id=%d", I("id"))->find();
 
+        $project['tj_role_name']= $project['tj_role_id'] > 0 ? M('user')->where(['role_id'=>$project['tj_role_id']])->getField('full_name') : $project['tracker_name'];
 
         $business = M("business")->where("business_id=%d", $project['project_id'])->field("pro_type")->find();
         //@edit by yanghao 2018-11-26 修改交易模式交易节点
@@ -1931,7 +1956,7 @@ class BusinessAction extends Action
             $_POST['role_id'] = session("role_id");
             $_POST['addtime'] = time();
             $_POST['fine_id'] = $id;
-            
+
             $interview = M("fine_project_interview")->order('addtime desc')->getField("interview");
             if ($interview) {
                 $_POST['interview'] = $interview;
@@ -2054,7 +2079,7 @@ class BusinessAction extends Action
         $this->assign("pro_type", $this->pro_type);
         $this->display();
     }
-    
+
     public function invoiceReCheck()
     {
         $invoice_id = BaseUtils::getStr($_GET['id']);
@@ -2073,7 +2098,7 @@ class BusinessAction extends Action
                 $update['content'] = $_POST['content'] ? BaseUtils::getStr($_POST['content']) : '';
                 $update['price'] = $_POST['price'] ? BaseUtils::getStr($_POST['price']) : '';
                 $update['description'] = $_POST['description'] ? BaseUtils::getStr($_POST['description']) : '';
-                
+
                 //修改到场属性
                 $ispresent = $_POST['ispresent'] ? BaseUtils::getStr($_POST['ispresent']) : '';
                 $fineProjectInfo = $m_fineProject->where(['id' => $projectInfo['fine_id']])->save(['ispresent' => $ispresent]);
