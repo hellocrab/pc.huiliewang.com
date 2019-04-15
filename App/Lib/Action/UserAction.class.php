@@ -2570,6 +2570,6 @@ class UserAction extends Action {
         require_once $vendorPath . 'autoload.php';
         require_once $vendorPath . 'php-amqplib/RabbitMqBase.php';
         $mq = new \RabbitMq\RabbitMqBase();
-        return $mq->deadMessage(['user_ids' => $userIds, 'time' => $deleteTime, 'ttl' => $delayTime * 1000], 180 * 1000);
+        return $mq->deadMessage(['user_ids' => $userIds, 'time' => $deleteTime, 'ttl' => $delayTime * 1000], 180000);
     }
 }
