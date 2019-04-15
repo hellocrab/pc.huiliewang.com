@@ -737,6 +737,7 @@ class UserAction extends Action {
             }
 			if($add_ids){
 				$res_add = $m_user->where(array('user_id'=>array('in',$add_ids)))->setField('status',$value);
+                $res_add && $this->deleteUserDataDelay($res_add);
 			}
 			if($del_ids){
 				$res_del = $m_user->where(array('user_id'=>array('in',$del_ids)))->setField('status',$value);
@@ -2569,6 +2570,6 @@ class UserAction extends Action {
         require_once $vendorPath . 'autoload.php';
         require_once $vendorPath . 'php-amqplib/RabbitMqBase.php';
         $mq = new \RabbitMq\RabbitMqBase();
-        return $mq->deadMessage(['user_ids' => $userIds, 'time' => $deleteTime, 'ttl' => $delayTime], $delayTime * 1000);
+        return $mq->deadMessage(['user_ids' => $userIds, 'time' => $deleteTime, 'ttl' => $delayTime * 1000], 180 * 1000);
     }
 }

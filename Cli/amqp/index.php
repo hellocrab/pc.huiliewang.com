@@ -28,11 +28,14 @@ class consumeUser
      */
     public function dealData($msg) {
         $body = $msg->body;
-        echo date('Y-m-d H:i:s') . " [x] Received", $body, PHP_EOL;
+
         $bodyArr = json_decode($body, true);
         $userIds = isset($bodyArr['user_ids']) ? $bodyArr['user_ids'] : [];
         $res = true;
         if($userIds){
+            echo "TTL: ".$bodyArr['ttl'];
+            echo "开始时间：".date('Y-m-d H:i:s',$bodyArr['time']);PHP_EOL;
+            echo "当前时间: ".date('Y-m-d H:i:s') . " [x] Received", $body, PHP_EOL;
             foreach ($userIds as $userId){
                 echo $userId;
                 $res = $this->changeUser($userId);
