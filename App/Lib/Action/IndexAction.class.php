@@ -492,7 +492,8 @@ class IndexAction extends Action {
     //offer、面试人数、推荐简历数 各栏统计的接口( 参数part & range)
     public function face_part(){
         $part = $_GET['part']; // offer、面试人数、推荐简历数
-        $time_range = $_GET['range'] ? BaseUtils::getStr($_GET['range']) : ''; //currentweek、currentmonth、lastweek、lastmonth
+        $part = 'offer_num';
+        $time_range = $_GET['range'] ? BaseUtils::getStr($_GET['range']) : 'currentweek'; //currentweek、currentmonth、lastweek、lastmonth
         $be = $this->time_range($time_range);
         foreach ($be as $k=>$v){
             $be[$k] = date('Y-m-d',$v);
@@ -508,10 +509,18 @@ class IndexAction extends Action {
                 $data = M('report_intergral')->field('sum(fine_project_num) as fineNum')->where(array('report_date'=>array('between',$be)))->find();
                 break;
         }
-        $data = ['succ' => true, 'code' => 200, 'info' => $data];
+        $data = ['succ' => true, 'code' => 200, 'data' => $data];
         $this->ajaxReturn($data);
     }
     //首页项目统计接口( 参数)
+    public function pipeline(){
+        $type = $_GET['type'] ? BaseUtils::getStr($_GET['type']) :  'business_ing';
+        switch ($type){
+            case 'business_ing':
+                $d_v_business = D('BusinessTopView');
+//                $d_v_business->where(array('status_id'=>1))->
+        }
+    }
 
     //本周，上周，本月，上月。默认是本周
     public function time_range($range){
@@ -659,7 +668,7 @@ class IndexAction extends Action {
 
             //模糊查询 , , 参数by,name
             $name = $_GET['search'] ? BaseUtils::getStr($_GET['search']) : '';
-            if(!$name){
+            if($name){
                 //根据模糊姓名，查出所有role_id
                 $data = M('user')->where(array('full_name'=>array('like','%'.$name.'%')))->getField('role_id',true);
                 //合并$where['role_id'][1],并封装
@@ -885,9 +894,11 @@ class IndexAction extends Action {
                 if ($action_log) {
                     $action_log = ['succ' => true, 'code' => 200 , 'info' => $action_log];
                     $this->ajaxReturn($action_log);
+//                    $this->ajaxReturn($action_log,'success',1);
                 } else {
                     $action_log = ['succ' => true, 'code' => 200 , 'info' => '没有更多数据啦！'];
                     $this->ajaxReturn($action_log);
+//                    $this->ajaxReturn('没有更多数据啦！','error',0);
                 }
             }
         }
