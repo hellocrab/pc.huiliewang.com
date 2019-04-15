@@ -794,7 +794,12 @@ class ProductAction extends Action {
             if (I("id")) {
                 $where['eid'] = I("id");
                 $info = M("resume")->where($where)->find();
-                $this->resume_work = M("resume_work")->where($where)->select();
+                $resume_work = M("resume_work")->where($where)->select();
+                foreach ($resume_work as $kw => $rw) {
+                    $_position = M('resume_work_position')->where(['work_id' => $rw['id']])->find();
+                    $resume_work[$kw]['position'][] = $_position;
+                }
+                $this->resume_work = $resume_work;
                 $this->resume_edu = M("resume_edu")->where($where)->select();
                 $this->resume_project = M("resume_project")->where($where)->select();
                 $alert = parseAlert();
@@ -1255,7 +1260,6 @@ class ProductAction extends Action {
             $resume_work[$kw]['position'][] = $_position;
         }
         $this->resume_work = $resume_work;
-
         $this->resume_data = M("resume_data")->where("eid=%d", $eid)->select();
 
         //edu 

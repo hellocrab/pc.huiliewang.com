@@ -342,8 +342,7 @@
         'A_SYSTEM_ERROR_OCCURRED'=>'系统发生错误',
         'WRONG_LOCATION'=>'错误位置',
         'ERROR_TIPS_1'=>'<p>很抱歉，让您看到了这个不友好的界面，您可以尝试通过以下方式解决</p>
-	<p>1,您可以清空缓存后，重新访问; &nbsp;  &nbsp; </p>
-	<p>2.您可以开启调试模式，查看问题详情; &nbsp;  &nbsp; ',
+	<p>1,您可以清空缓存后，重新访问; &nbsp;  &nbsp; </p>',
         'ERROR_TIPS_2'=>'',
 		'YOU_DO_NOT_HAVE_THIS_RIGHT'=>'您没有此权利!',
 		'PURCHASE'					=> '采购',

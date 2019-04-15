@@ -15,7 +15,6 @@ class IndexAction extends Action {
     public function index() {
         $title = "首页";
         $this->assign("title", $title);
-
         //手机访问跳转
         if (isMobile()) {
             $mobile = str_replace('index.php', 'mobile', $_SERVER["PHP_SELF"]);
@@ -345,6 +344,11 @@ class IndexAction extends Action {
         } else {
             $briefing_role_ids = getSubRoleId();
         }
+        //检出当前用户所在部门下所有role_id,//部门下role_id
+        $department_id_session = intval(session('department_id'));
+        $subPositionId_Arr = M('position')->where('department_id = %d', $department_id_session)->order('position_id asc')->getField('position_id', true);
+        $subRoleId_Arr = M('role')->where(array('position_id' => array('in', $subPositionId_Arr)))->getField('role_id', true);
+
         $create_time = array();
         //今日时间范围
         $start_time_day = strtotime(date('Y-m-d'));
@@ -368,25 +372,59 @@ class IndexAction extends Action {
         $start_time_year = strtotime("$year-01-01");
         $end_time_year = strtotime("$year_next-01-01");
         $create_time[3] = array('between', array($start_time_year, $end_time_year));
+        //上周时间
+        $now_date = date('Y-m-d');
+        $first = 1; //$first =1 表示每周星期一为开始时间 0表示每周日为开始时间
+        $w = date('w',strtotime($now_date));
+        $d = $w ? $w - $first : 6;
+        $d += 7;
+        $start_last_week = strtotime("" . $now_date . " -" . $d . " days"); //上周一开始时间
+        $end_last_week = strtotime("".date('Y-m-d',$start_last_week).' +7 days');//上周末结束时间
+        $create_time[4] = array('between',array($start_last_week,$end_last_week));
 
         $customer_count = array();
         $contacts_count = array();
         $business_count = array();
         $log_count = array();
         $mylog_count = array();
+        //个人数据 4/9
+        $self_customer_count = array();
+        $self_contacts_count = array();
+        $self_business_count  = array();
+        $self_contact_count = array();
+        //所在部门下数据 4/10
+        $dep_customer_count = array();
+        $dep_contacts_count = array();
+        $dep_business_count = array();
+        $dep_contact_count = array();
         foreach ($create_time as $k => $v) {
             $customer_count[] = $m_customer->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
             $contacts_count[] = $m_contacts->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
             $business_count[] = $m_business->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
-//            $resume_count[] = $m_resume->where(array('creator_role_id' => array('in', $briefing_role_ids), 'addtime' => $v))->count();
+            //$resume_count[] = $m_resume->where(array('creator_role_id' => array('in', $briefing_role_ids), 'addtime' => $v))->count();
             $contract_count[] = $m_contract->where(array('creator_role_id' => array('in', $briefing_role_ids), 'is_deleted' => 0, 'create_time' => $v))->count();
-//            $log_count[] = $m_log->where(array('role_id' => array('in', $briefing_role_ids), 'category_id' => 1, 'create_date' => $v))->count(); //沟通日志
-//            $mylog_count[] = $m_log->where(array('role_id' => array('in', $briefing_role_ids), 'category_id' => array('neq', 1), 'create_date' => $v))->count(); //工作日志
+            //$log_count[] = $m_log->where(array('role_id' => array('in', $briefing_role_ids), 'category_id' => 1, 'create_date' => $v))->count(); //沟通日志
+            //$mylog_count[] = $m_log->where(array('role_id' => array('in', $briefing_role_ids), 'category_id' => array('neq', 1), 'create_date' => $v))->count(); //工作日志
+
+            //个人数据获取
+            $self_customer_count[] = $m_customer->where(array('creator_role_id'=>session('role_id'),'is_deleted' => 0 , 'create_time' =>  $v)) ->count();
+            $self_contacts_count[] = $m_contacts->where(array('creator_role_id'=>session('role_id'),'is_deleted' => 0 , 'create_time' =>  $v)) ->count();
+            $self_contact_count[] = $m_contract->where(array('creator_role_id'=>session('role_id'),'is_deleted' => 0 , 'create_time' =>  $v)) ->count();
+            $self_business_count[] = $m_business->where(array('creator_role_id'=>session('role_id'),'is_deleted' => 0 , 'create_time' =>  $v)) ->count();
+
+            //部门数据获取
+            $dep_customer_count[] = $m_customer->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+            $dep_contacts_count[] = $m_contacts->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+            $dep_business_count[] = $m_business->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+            $dep_contact_count[] = $m_contract->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+
         }
+        /**个人首页数据*/
+
         //是否填写日志
 //        $mylog_count_today = $m_log->where(array('role_id' => session('role_id'), 'category_id' => array('neq', 1), 'create_date' => $create_time[0]))->count(); //工作日志
 //        $this->mylog_count_today = $mylog_count_today;
-
+//
 //        //指标数据
 //        $blows_id = getPerByAction('finance', 'target'); //权限判断
 //        $m_receivables = M('Receivables');
@@ -433,8 +471,89 @@ class IndexAction extends Action {
         $anly_count = array('customer_count' => $customer_count, 'contacts_count' => $contacts_count, 'business_count' => $business_count, 'contract_count' => $contract_count, 'log_count' => $log_count, 'mylog_count' => $mylog_count, 'sum_price' => $sum_price, 'sum_price_month' => $sum_price_month, 'sum_price_week' => $sum_price_week, 'sum_price_year' => $sum_price_year, 'schedule' => $schedule);
         $this->anly_count = $anly_count;
 
+        //渲染个人统计 4/9
+        $self_count = array('self_customer_count'=>$self_customer_count,'self_contacts_count'=>$self_contacts_count,'self_business_count'=>$self_business_count,'self_contract_count'=>$self_contact_count);
+        $this->self_count = $self_count;
+        //渲染部门统计 4/10
+        $dep_count = array('dep_customer_count'=>$dep_customer_count,'dep_contacts_count'=>$dep_contacts_count,'dep_business_count'=>$dep_business_count,'dep_contract_count'=>$dep_contact_count);
+        $this->dep_count = $dep_count;
+        //渲染上班人数、offer人数、客户面试数、推荐客户数
+        $be = $this->time_range();
+        foreach ($be as $k=>$v){
+            $be[$k] = date('Y-m-d',$v);
+        }
+//        M('user')->select();
+        $data = M('report_intergral')->field('sum(offer_num) as offerNum,sum(interview_num) as interviewNum,sum(fine_project_num) as fineNum')->where(array('report_date'=>array('between',$be)))->find();
+        $this->datasum = $data;
         $this->alert = parseAlert();
         $this->display();
+    }
+
+    //offer、面试人数、推荐简历数 各栏统计的接口( 参数part & range)
+    public function face_part(){
+        $part = $_GET['part']; // offer、面试人数、推荐简历数
+        $time_range = $_GET['range'] ? BaseUtils::getStr($_GET['range']) : ''; //currentweek、currentmonth、lastweek、lastmonth
+        $be = $this->time_range($time_range);
+        foreach ($be as $k=>$v){
+            $be[$k] = date('Y-m-d',$v);
+        }
+        switch ($part){
+            case 'offer_num':
+                $data = M('report_intergral')->field('sum(offer_num) as offerNum')->where(array('report_date'=>array('between',$be)))->find();
+                break;
+            case 'interview_num':
+                $data = M('report_intergral')->field('sum(interview_num) as interviewNum')->where(array('report_date'=>array('between',$be)))->find();
+                break;
+            case 'fine_project':
+                $data = M('report_intergral')->field('sum(fine_project_num) as fineNum')->where(array('report_date'=>array('between',$be)))->find();
+                break;
+        }
+        $data = ['succ' => true, 'code' => 200, 'info' => $data];
+        $this->ajaxReturn($data);
+    }
+    //首页项目统计接口( 参数)
+
+    //本周，上周，本月，上月。默认是本周
+    public function time_range($range){
+        switch ($range){
+
+        case 'lastweek':
+            //上周时间
+        $now_date = date('Y-m-d');
+        $first = 1; //$first =1 表示每周星期一为开始时间 0表示每周日为开始时间
+        $w = date('w',strtotime($now_date));
+        $d = $w ? $w - $first : 6;
+        $d += 7;
+        $start_last_week = strtotime("" . $now_date . " -" . $d . " days"); //上周一开始时间
+        $end_last_week = strtotime("".date('Y-m-d',$start_last_week).' +7 days');//上周末结束时间
+        $between_time = array($start_last_week,$end_last_week);
+        break;
+
+        case 'currentmonth':
+            //本月时间范围
+        $start_time_month = strtotime(date('Y-m-01'));
+        $end_time_month = strtotime(date("Y") . "-" . date("m") . "-" . date("t")) + 86400;
+        $between_time = array($start_time_month, $end_time_month);
+        break;
+
+        case 'lastmonth':
+            //上月时间范围
+        $begin_time = date('Y-m-01 00:00:00',strtotime('-1 month'));
+        $end_time = date("Y-m-d 23:59:59", strtotime(-date('d').'day'));
+        $between_time = array(strtotime($begin_time),strtotime($end_time));
+        break;
+        default :
+                //本周时间范围
+                $now_date = date("Y-m-d"); //当前日期
+                $first = 1; //$first =1 表示每周星期一为开始时间 0表示每周日为开始时间
+                $w = date("w", strtotime($now_date)); //获取当前周的第几天 周日是 0 周一 到周六是 1 -6
+                $d = $w ? $w - $first : 6; //如果是周日 -6天
+                $start_time_week = strtotime("" . $now_date . " -" . $d . " days"); //本周开始时间
+                $end_time_week = strtotime("" . date("Y-m-d", $start_time_week) . " +7 days"); //本周结束时间
+                $between_time = array($start_time_week, $end_time_week);
+                break;
+        }
+        return $between_time;
     }
 
     //签到地图加载
@@ -537,6 +656,17 @@ class IndexAction extends Action {
                 }
                 $params = array('field=' . trim($_REQUEST['field']), 'search=' . $search);
             }
+
+            //模糊查询 , , 参数by,name
+            $name = $_GET['search'] ? BaseUtils::getStr($_GET['search']) : '';
+            if(!$name){
+                //根据模糊姓名，查出所有role_id
+                $data = M('user')->where(array('full_name'=>array('like','%'.$name.'%')))->getField('role_id',true);
+                //合并$where['role_id'][1],并封装
+                $data = array_intersect($data,$where['role_id'][1]);
+                $where['role_id'] = array('in', $data);
+            }
+
             $action_log = $m_action_log->where($where)->order('create_time desc')->page($p . ',10')->select();
             $count = $m_action_log->where($where)->count();
             import("@.ORG.Page");
@@ -753,9 +883,11 @@ class IndexAction extends Action {
                 $this->display();
             } else {
                 if ($action_log) {
-                    $this->ajaxReturn($action_log, 'success', 1);
+                    $action_log = ['succ' => true, 'code' => 200 , 'info' => $action_log];
+                    $this->ajaxReturn($action_log);
                 } else {
-                    $this->ajaxReturn('没有更多数据啦！', 'error', 0);
+                    $action_log = ['succ' => true, 'code' => 200 , 'info' => '没有更多数据啦！'];
+                    $this->ajaxReturn($action_log);
                 }
             }
         }

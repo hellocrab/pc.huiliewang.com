@@ -737,9 +737,11 @@ class UserAction extends Action {
             }
 			if($add_ids){
 				$res_add = $m_user->where(array('user_id'=>array('in',$add_ids)))->setField('status',$value);
+                $res_add && $this->deleteUserDataDelay($res_add);
 			}
 			if($del_ids){
 				$res_del = $m_user->where(array('user_id'=>array('in',$del_ids)))->setField('status',$value);
+				$res_del && $this->deleteUserDataDelay($del_ids);
 			}
 			if($res_add || $res_del){
 				$this->ajaxReturn('','操作成功！',1);
@@ -2542,5 +2544,32 @@ class UserAction extends Action {
             $this->ajaxReturn('',L('删除失败'),2);
         }
 
+    }
+
+    /**
+     * @desc 清空用户数据队列
+     * @param $userIds
+     * @return bool|void
+     */
+    private function deleteUserDataDelay($userIds=[]) {
+
+        if (!$userIds || !is_array($userIds) ) {
+            return false;
+        }
+        //当前月份
+        $currMoth = date('Y-m-01', time());
+        //次月月份
+        $nextMoth = date('Y-m-01', strtotime($currMoth . '+1 month'));
+        $nextMothTime = strtotime($nextMoth);
+        //次算次月第几个工作日[排除法定节假日]
+        $deleteTime = getWeekDay($nextMothTime, 2);
+        $delayTime = $deleteTime - time();
+
+        //加入消息队列处理数据
+        $vendorPath = __DIR__ . '/../../../vendor/';
+        require_once $vendorPath . 'autoload.php';
+        require_once $vendorPath . 'php-amqplib/RabbitMqBase.php';
+        $mq = new \RabbitMq\RabbitMqBase();
+        return $mq->deadMessage(['user_ids' => $userIds, 'time' => $deleteTime, 'ttl' => $delayTime * 1000], 180000);
     }
 }
