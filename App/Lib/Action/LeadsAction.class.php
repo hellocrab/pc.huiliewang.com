@@ -2301,7 +2301,7 @@ class LeadsAction extends Action
 
         $roleList = array();
         foreach ($below_ids as $roleId) {
-            $roleList[$roleId] = getUserByRoleId($roleId, 1);
+            $roleList[$roleId] = getUserByRoleId($roleId);
         }
         $this->roleList = $roleList;
         $this->roleIds = implode(',', $role_id_array);

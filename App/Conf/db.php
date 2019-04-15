@@ -19,6 +19,7 @@ if (strpos($_SERVER['SERVER_ADDR'], '192.168.0.123') !== FALSE) {//测试环境
         'DB_USER' => 'root',
         'DB_PWD' => '123456',
         'DB_PREFIX' => 'mx_',
+
     );
 } else {//线上环境
     return array(

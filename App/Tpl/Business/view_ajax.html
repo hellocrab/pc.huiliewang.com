@@ -158,7 +158,7 @@
                             var itemId = $(this).attr('rel');
                             $.post(
                                 "{:U('user/call_out')}",
-                                {itemId: itemId,type:2,tel:''},
+                                {itemId: itemId,type:1,tel:''},
                                 function (data) {
                                     var obj = $.parseJSON(data);
                                     if(obj.code){
