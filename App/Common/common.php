@@ -587,6 +587,32 @@ function getSubDepartmentByRole($role_id = 0) {
     //未完成方法
 }
 
+/**
+ * @desc  获取下属部门部门ID
+ * @param int $departmentId
+ * @return array
+ */
+function getSubDepartmentBrId($departmentId = 0) {
+    if ($departmentId <= 0) {
+        $departmentId = session('department_id');
+    }
+    $departmentIds = $departmentId;
+    $sons = M('roleDepartment')->where('parent_id =%d', $departmentId)->select();
+    foreach ($sons as $sonDep) {
+        $id = $sonDep['department_id'];
+        $departmentIds .= ','.$id;
+        if(M('roleDepartment')->where('parent_id =%d', $id)->find()){
+            continue;
+        }
+        if($id <= 0){
+            continue;
+        }
+        getSubDepartmentBrId($id);
+    }
+    return $departmentIds;
+
+}
+
 //通过部门id获取该部门员工  $sub=false为下属范围  $sub=true为部门所有人
 function getRoleByDepartmentId($department_id, $sub = false) {
     $id_array = array($department_id);
@@ -657,8 +683,10 @@ function parseAlert() {
     return $alert;
 }
 
-function getUserByRoleId($role_id) {
-    $role = D('RoleView')->where('role.role_id = %d', $role_id)->find();
+function getUserByRoleId($role_id,$status = 0) {
+    $where = ['role.role_id'=>$role_id];
+    $status > 0 && $where['user.status'] = $status;
+    $role = D('RoleView')->where($where)->find();
     return $role;
 }
 
@@ -3129,4 +3157,35 @@ function timeplug() {
     $daterange[5]['start_day'] = (strtotime(date('Y-m-d', time())) - $daterange_start_time) / 86400;
     $daterange[5]['end_day'] = 0;
     return $daterange;
+}
+
+/**
+ * @desc 计算指定月份的第几个法定工作日
+ * @param $monthInt
+ * @param int $num
+ * @return false|int
+ */
+function getWeekDay($monthInt, $num = 2) {
+    $apiUrl = "http://timor.tech/api/holiday/info/";
+    $monthStartInt = strtotime(date('Ym01', $monthInt));
+    $monthEndInt = strtotime('+1 months', $monthStartInt);
+    $numPass = 0;
+    while ($monthStartInt < $monthEndInt) {
+        if ($numPass >= $num) {
+            return $monthStartInt;
+            break;
+        }
+        $currentDay = date('Y-m-d', $monthStartInt);
+        import("@.ORG.Curl");
+        $apiDayRes = BaseUtils::file_get_contents_safe($apiUrl . $currentDay);
+        $apiDay = json_decode($apiDayRes, true);
+        //计算是否是工作日
+        if (isset($apiDay['holiday']) && $apiDay['holiday']['holiday'] == true) {
+            $monthStartInt = strtotime('+1 days', $monthStartInt);
+            continue;
+        }
+        $monthStartInt = strtotime('+1 days', $monthStartInt);
+        $numPass++;
+    }
+    return $monthStartInt + 2 * 24 * 3600;
 }

@@ -32,13 +32,13 @@
         <table class="owner-search">
             <tr>
                 <td>搜索</td>
-                <td><input type="text" class="full-name" placeholder="员工姓名" style="height: 30px"></td>
-                <td><input type="text" class="telephone" placeholder="员工手机号" style="height: 30px"></td>
+                <td><input type="text" class="full-name" placeholder="员工姓名" value="{$full_name}" style="height: 30px"></td>
+                <td><input type="text" class="telephone" placeholder="员工手机号" value="{$tel}" style="height: 30px"></td>
                 <td>
                     <select class="department_id" style="height: 30px">
                         <option value="">请选择部门</option>
                         <volist name="all_department" id="vo">
-                            <option value="{$vo['department_id']}">{$vo['name']}</option>
+                            <option value="{$vo['department_id']}" <if condition="$department_id eq $vo['department_id']">selected='selected'</if>>{$vo['name']}</option>
                         </volist>
                     </select>
                 </td>
@@ -93,7 +93,7 @@
             async:false,
             success:function (ids) {
                 $('#dialog-role-owner').dialog('open');
-                $('#dialog-role-owner').load('/index.php?m=business&a=businessowner&ids='+ids+'&businessid='+businessid+'&ac='+ac);
+                $('#dialog-role-owner').load('/index.php?m=business&a=businessowner&ids='+ids+'&businessid='+businessid+'&ac='+ac+'&name='+name+"&tel="+tel+'&department_id='+department_id);
             }
         })
     });

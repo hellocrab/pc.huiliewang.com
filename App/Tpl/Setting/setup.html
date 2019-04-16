@@ -197,6 +197,24 @@
 												<select id="city" name="city" class="form-control"></select>
 											</td>
 										</tr>
+										<tr>
+											<td class="tdleft">人才信息查看有效期</td>
+											<td>
+												<input type="text" style="width:50px;" class="form-control" name="resume_look_time" value="{$config_array['resume_look_time']|default=30}"/>{:L('DAY')}
+											</td>
+										</tr>
+										<tr>
+											<td class="tdleft">客户信息查看有效期</td>
+											<td>
+												<input type="text" style="width:50px;" class="form-control" name="contacts_look_time" value="{$config_array['contacts_look_time']|default=15}"/>{:L('DAY')}
+											</td>
+										</tr>
+										<tr>
+											<td class="tdleft">人才查看次数/天</td>
+											<td>
+												<input type="text" style="width:50px;" class="form-control" name="resume_look_count" value="{$config_array['resume_look_count']|default=50}"/>人
+											</td>
+										</tr>
 									</tbody>
 								</table>
 							</div>

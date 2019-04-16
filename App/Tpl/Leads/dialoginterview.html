@@ -46,10 +46,12 @@
                 <td>推荐职位</td>
                 <td>面试官</td>
                 <td>初试时间</td>
-                <td>面试结果</td>
-                <td>面试结果备注</td>
+<!--                <td>面试结果</td>
+                <td>面试结果备注</td>-->
                 <td>推荐顾问</td>
                 <td>所属客户</td>
+                <td>备注</td>
+                <td>操作时间</td>
             </tr>
             </tbody>
             <tbody class="mainTbody">
@@ -57,18 +59,20 @@
                 <tr>
                     <td style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="{$vo.id}">{$vo.name}</a></td>
                     <td>{$vo.current_company}</td>
-                    <td></td>
+                    <td>{$vo.current_department}</td>
                     <td>{$vo.current_job}</td>
                     <td><if condition="$vo.sex eq '1'">男<else/>女</if></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{$vo.age}</td>
+                    <td>{$vo.edu}</td>
+                    <td>{$vo.business_name}</td>
+                    <td>{$vo.status_type}</td>
+                    <td>{$vo.timestart}</td>
+<!--                    <td></td>
+                    <td></td>-->
                     <td>{$vo.tracker_name}</td>
                     <td>{$vo.customer_name}</td>
+                    <td>{$vo.beizhu|default=''}</td>
+                    <td>{$vo.addtime|date='Y-m-d H:i',###}</td>
                 </tr>
             </volist>
 

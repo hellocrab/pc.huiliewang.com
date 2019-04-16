@@ -330,7 +330,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">将候选人设为不合适</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -361,7 +361,8 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <!--<span style="margin-left: 10px;">{$project['tracker_name']}</span>-->
+                                        <span style="margin-left: 10px;">{$vo['cc_user']|default=''}</span>
                                         <label style="margin-left: 15px;">添加了CC备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -482,7 +483,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -515,7 +516,7 @@
                                pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$project['addtime']); ?></span>
-                        <a href="#" class="mal10">{$project['tracker_name']}</a>
+                        <a href="#" class="mal10">{$vo.tracker_name|default=$project['tracker_name']}</a>
                     </div>
                     <div class="hangr" style="margin-top: 20px;">
                         <table>
@@ -546,7 +547,7 @@
                                         </div>
                                         <div class="hangr" style="margin-top: 20px;">
                                             <img src="{$project['thumb_path']}" class="imgtou">
-                                            <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                            <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                             <label style="margin-left: 15px;">推荐了顾问面试</label>
                                             <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                                 <span class="fa fa-angle-down"></span>
@@ -587,7 +588,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -624,7 +625,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了顾问面试备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -704,7 +705,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">将候选人设为不合适</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -745,7 +746,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了推荐反馈</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -810,7 +811,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -846,7 +847,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">将候选人设为不合适</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -879,7 +880,7 @@
                             </div>
                             <div class="hangr" style="margin-top: 20px;">
                                 <img src="{$project['thumb_path']}" class="imgtou">
-                                <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                <span style="margin-left: 10px;">{$project['tj_role_name']}</span>
                                 <label style="margin-left: 15px;">将候选人进行简历推荐</label>
                             </div>
                         </div>
@@ -892,7 +893,7 @@
                                pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$project['tjaddtime']); ?></span>
-                        <a href="#" class="mal10">{$project['tracker_name']}</a>
+                        <a href="#" class="mal10">{$project['tj_role_name']}</a>
                     </div>
                     <div class="hangr" style="margin-top: 20px;">
                         <table>
@@ -924,7 +925,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了客户面试（第{$vo['interview']}面）</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -964,6 +965,13 @@
                                                     {$vo['status_type']}
                                                 </td>
                                             </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">备注：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['description']}
+                                                </td>
+                                            </tr>
+
                                         </table>
                                     </div>
                                 </div>
@@ -981,7 +989,7 @@
                                 </div>
                                 <div class="hangr" style="margin-top: 20px;">
                                     <img src="{$project['thumb_path']}" class="imgtou">
-                                    <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                    <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                     <label style="margin-left: 15px;">添加了备注</label>
                                     <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                         <span class="fa fa-angle-down"></span>
@@ -1017,7 +1025,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了开票</label>
                                         <!--<div  class="pull-right icohover" style="position: relative;margin-right: 20px;">-->
                                             <!--<span class="fa fa-angle-down"></span>-->
@@ -1089,7 +1097,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">将候选人设为不合适</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -1126,7 +1134,7 @@
                             </div>
                             <div class="hangr" style="margin-top: 20px;">
                                 <img src="{$project['thumb_path']}" class="imgtou">
-                                <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                 <label style="margin-left: 15px;">将人选设为不合适</label>
                                 <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                     <span class="fa fa-angle-down"></span>
@@ -1153,7 +1161,7 @@
                                pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$project['passtime']); ?></span>
-                        <a href="#" class="mal10">{$project['tracker_name']}</a>
+                        <a href="#" class="mal10">{$vo.tracker_name|default=$project['tracker_name']}</a>
                     </div>
                     <div class="hangr" style="margin-top: 20px;">
                         <table>
@@ -1185,7 +1193,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">设置为Offer</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -1247,7 +1255,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了开票</label>
                                         <!--<div  class="pull-right icohover" style="position: relative;margin-right: 20px;">-->
                                             <!--<span class="fa fa-angle-down"></span>-->
@@ -1319,7 +1327,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -1356,7 +1364,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">将候选人设为不合适</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -1396,7 +1404,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了入职信息</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -1452,7 +1460,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">将候选人设为不合适</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -1482,7 +1490,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
@@ -1518,7 +1526,7 @@
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
                                         <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了开票</label>
                                         <!--<div  class="pull-right icohover" style="position: relative;margin-right: 20px;">-->
                                             <!--<span class="fa fa-angle-down"></span>-->
@@ -1597,7 +1605,7 @@
                             </div>
                             <div class="hangr" style="margin-top: 20px;">
                                 <img src="{$project['thumb_path']}" class="imgtou">
-                                <span style="margin-left: 10px;">{$project['tracker_name']}</span>
+                                <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                 <label style="margin-left: 15px;">将人选设为不合适</label>
                                 <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                     <span class="fa fa-angle-down"></span>
@@ -1624,7 +1632,7 @@
                                pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$project['addtime']); ?></span>
-                        <a href="#" class="mal10">{$project['tracker_name']}</a>
+                        <a href="#" class="mal10">{$vo.tracker_name|default=$project['tracker_name']}</a>
                     </div>
                     <div class="hangr" style="margin-top: 20px;">
                         <table>
@@ -1972,6 +1980,7 @@
                 var invoice_header=$("input[name=invoice_header]").val();
                 var content=$("input[name=content]").val();
                 var price=$("input[name=price]").val();
+                var description=$("textarea[name=description]").val();
                 if(billing_type==""){
                     $("select[name=billing_type]").css("border","1px dotted #cc5965");
                     return false;
@@ -1986,6 +1995,10 @@
                 }
                 if(price==""){
                     $("input[name=price]").css("border","1px dotted #cc5965");
+                    return false;
+                }
+                if (description == "") {
+                    $("textarea[name=description]").css("border", "1px dotted #cc5965");
                     return false;
                 }
                 $('#fapiao_form').submit();

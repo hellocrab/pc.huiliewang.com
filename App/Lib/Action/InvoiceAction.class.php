@@ -59,7 +59,7 @@ class InvoiceAction extends Action{
         $type = I("type")?I("type"):"apply";
         $this->type = $type;
         $d_invoice = D('InvoiceView');
-        $order = 'update_time desc';
+        $order = 'create_time desc';
         $where = array();
         $p = intval($_GET['p']) ? intval($_GET['p']) : 1;
         $m_customer = M('Customer');
@@ -914,10 +914,23 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
+    }
+
+    public function examine_all(){
+        $invoice_id = $_GET['invoice_id']?$_GET['invoice_id']:0;
+        $data['type'] = "examine";
+        $data['is_checked'] = 1;
+        $data['examine_content'] = '批量通过';
+        $data['update_time'] = time();
+        $result = M("invoice")->where("invoice_id in (%s)",$invoice_id)->save($data);
+        if($result)
+            alert('success', '发票状态屁量修改成功！', $_SERVER['HTTP_REFERER']);
+        else
+            alert('error','撤销失败！',$_SERVER['HTTP_REFERER']);
     }
 
     //退款
@@ -930,7 +943,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
@@ -946,7 +959,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
@@ -962,7 +975,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
@@ -978,7 +991,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
@@ -995,10 +1008,11 @@ class InvoiceAction extends Action{
         if($this->isPost()){
             $id = $_POST['invoice_id'];
             $result = M("invoice")->where("invoice_id=%d",$id)->save($_POST);
-            if($result){
-                alert('success', '发票修改成功！', U("invoice/index"));
+            $invoice = M("invoice")->where("invoice_id=%d",$id)->find();
+            if($result !== false){
+                alert('success', '发票修改成功！', U("invoice/index",'&type='.$invoice['type']));
             }else{
-                alert('error', '发票修改失败！', U("invoice/index"));
+                alert('error', '发票修改失败！', U("invoice/index",'&type='.$invoice['type']));
             }
         }
         if(trim($_GET['act']) == 'excel'){
@@ -1235,7 +1249,7 @@ class InvoiceAction extends Action{
             $data['update_time'] = time();
             $result = M("invoice")->where("invoice_id=%d",$id)->save($data);
             if($result){
-                alert('success', '发票状态修改成功！', U("invoice/index"));
+                alert('success', '发票状态修改成功！', $_SERVER['HTTP_REFERER']);
             }
         }
         $this->display();
@@ -1269,7 +1283,7 @@ class InvoiceAction extends Action{
     public function revoke(){
         $invoice_id = $_GET['invoice_id']?$_GET['invoice_id']:0;
         if($invoice_id){
-            $result = M("invoice")->where("invoice_id in ('%s')",$invoice_id)->delete();
+            $result = M("invoice")->where("invoice_id in (%s)",$invoice_id)->delete();
             if($result){
                 alert('success','撤销成功！',$_SERVER['HTTP_REFERER']);
             }else{

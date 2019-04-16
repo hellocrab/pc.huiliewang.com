@@ -16,8 +16,7 @@ class LogAction extends Action{
 			'allow'=>array('add', 'delete', 'anly','notepad','getnotepad','mycommont','commentshow','myreply','replyalldel','replydel','viewajax','commun_list')
 		);
 		B('Authenticate', $action);
-                
-                $this->_permissionRes = getPerByAction(MODULE_NAME, ACTION_NAME);
+		$this->_permissionRes = getPerByAction(MODULE_NAME, ACTION_NAME);
 
 	}
 	/**
@@ -366,16 +365,21 @@ class LogAction extends Action{
         }else{
             $owner_role_id = getSubRoleId();
         }
-        
-        if( $this->_permissionRes) {
-            $where['owner_role_id'] = ['in',$this->_permissionRes];//array('in', $owner_role_id);
-//            $where['parter'] = array('like', array(session('role_id'), session('role_id') . ',%', '%,' . session('role_id'), '%,' . session('role_id') . ',%'), 'OR');
-            $where['_string'] = "FIND_IN_SET(".session('role_id').",business.parter)";
+        if( $this->_permissionRes && is_array($this->_permissionRes)) {
+            $below_ids_str = implode(',',$this->_permissionRes);
+            $where['_string'] = "business.creator_role_id in (".$below_ids_str.") OR business.joiner in (".$below_ids_str.")";
+            foreach ($this->_permissionRes as $childRoleId){
+                if($childRoleId <= 0){
+                    continue;
+                }
+                $where['_string'] .= "OR FIND_IN_SET({$childRoleId},business.owner_role_id) OR FIND_IN_SET({$childRoleId},business.parter)";
+            }
             $where['_logic'] = 'OR';
             $map['_complex'] = $where;
             $map['is_deleted'] = 0;
         } else {
-            $where['_string'] = "FIND_IN_SET(" . session('role_id') . ",business.owner_role_id)";
+            //我全部项目
+            $where['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
             $where['_logic'] = 'OR';
             $map['_complex'] = $where;
             $map['is_deleted'] = 0;
@@ -399,6 +403,7 @@ class LogAction extends Action{
         $user = $resume->where("eid=%d", $_GET['id'])->select();
         $this->assign('project', $project);
         $this->assign('user', $user[0]);
+        $this->assign('business_id', isset($_GET['business_id']) ? $_GET['business_id'] : 0);
         $this->display();
     }
 
@@ -421,7 +426,7 @@ class LogAction extends Action{
                 $data['addtime'] = time();
                 $id = M("fine_project")->add($data);
                 if($id){
-                    $this->ajaxReturn($id,'',1);
+                    $this->ajaxReturn(['id'=>$id,'project_id'=>$data['project_id']],'',1);
                 }
             }
 

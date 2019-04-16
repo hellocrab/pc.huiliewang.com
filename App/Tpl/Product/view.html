@@ -141,6 +141,137 @@
                                     <a href="javascript:void(0)" class="addgw" id="addbq" style="vertical-align: -webkit-baseline-middle;margin-left: 10px;">+添加标签</a>
                                 </div>
                             </div>
+                            <p style='padding-left:25px;margin:0'>备注</p>
+                            <div id="tab5" class="tab-pane fade in" >
+                                <div class="panel-body" style='padding-top:12px;'>
+                                    <if condition="$content neq 'resource'">
+                                        <div id="form-div">
+                                            <form id="add-form" action="{:U('Log/add')}" method="post">
+                                                <input type='hidden' name="r" value="rResumeLog"/>
+                                                <input type='hidden' name="module" value="resume"/>
+                                                <input type='hidden' id="resume_id" name="id" value="{$resume['eid']}"/>
+                                                <input type='hidden' name="role_id" value="{$Think.session.role_id}"/>
+                                                <textarea name="content" placeholder="添加跟进记录" id="log-text" style="resize:none;" class="form-control" cols="30" rows="2"></textarea>
+                                                <table class="table business_table" style="border:none;margin-top:15px;display:none;" id="business_table">
+                                                    <tr >
+                                                        <td class="tdleft" style="width:120px;">跟进类型：</td>
+                                                        <td style="width:120px;">
+                                                            <select name="status_id" id="status_id" class="form-control" onchange="selectStatus()">
+                                                                <option value="">--请选择--</option>
+                                                                <option value="1">电话</option><option value="2">发邮件</option><option value="3">发短信</option><option value="4">见面拜访</option><option value="5">基本情况</option><option value="6">备注</option>
+                                                                <!--<volist name="status_list" id="vo">-->
+                                                                <!--<option value="{$vo['id']}">{$vo['name']}</option>-->
+                                                                <!--</volist>-->
+                                                            </select>
+                                                        </td>
+                                                        <td style="border-top:0;">&nbsp;&nbsp;</td>
+                                                        <td class="tdleft" style="width:120px;">快捷添加：</td>
+                                                        <td style="width:300px;">
+                                                            <select id="replay_list" class="form-control select2" onchange="selectReply()" style="width:80%;float:left;">
+                                                                <option value="">--请选择--</option>
+                                                                <volist name="reply_list" id="vo">
+                                                                    <option value="{$vo['content']}" rel="{$vo['status_id']}">{$vo['str_content']}</option>
+                                                                </volist>
+                                                            </select>&nbsp;&nbsp;
+                                                            <a href="javascript:void(0)" id="setting_reply_dialog" title="管理快捷跟进模板" style="line-height: 30px;margin-left:10px;"><i class="fa fa-cog" style="color:#999;"></i></a>
+                                                        </td>
+                                                        <td  style="border-top:0;">&nbsp;&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="tdleft" style="width:120px;">下次联系时间：</td>
+                                                        <td style="width:120px;">
+                                                            <input type="text" value="" id="nextstep_time_log" class="form-control Wdate" name="nextstep_time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm'})" style="width: 170px;">
+                                                        </td>
+                                                        <td>&nbsp;&nbsp;</td>
+                                                        <td class="tdleft" style="width:120px;">保存为跟进模板：</td>
+                                                        <td style="width:120px;">
+                                                            <div class="checkbox checkbox-primary">
+                                                                <input type="hidden" name="type" value="2" />
+                                                                <input name="save_reply" class="select_list" id="save_reply" type="checkbox" value="1"/>
+                                                                <label for=""></label>
+                                                            </div>
+                                                        </td>
+                                                        <td>&nbsp;&nbsp;</td>
+                                                    </tr>
+                                                </table>
+                                                <div>
+                                                    <div class="text-right" id="log-btn" style="padding-top:8px;display:none;"><button class="btn btn-primary" id="add_log" type="button">添加</button>&nbsp;</div><br>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </if>
+                                    <div id="log-list" style="margin-top: 10px;">
+                                        <volist name="log_list" id="vo">
+                                            <div class="ibox-content gray-log" log-rel="{$vo['log_id']}" >
+                                                <div class="social-feed-separated clearfix">
+                                                    <div class="social-feed-box">
+                                                        <if condition="$content neq 'resource' && $vo['sign'] eq '0' && $vo['role_id'] eq session('role_id')">
+                                                            <div class="pull-right social-action dropdown">
+                                                                <span data-toggle="dropdown" class="dropdown-toggle">
+                                                                    <i style="font-size:20px;cursor:pointer" class="fa fa-angle-down"></i>
+                                                                </span>
+                                                                <ul class="dropdown-menu m-t-xs" >
+                                                                    <li><a rel="{$vo['log_id']}" href="javascript:void(0);" type="{$vo['log_type']}" onclick="del_confirm(this);">{:L('DELETE')}</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </if>
+                                                        <if condition = "$vo['sign'] eq 1">
+                                                            <div class="social-avatar">
+                                                                <img alt="image" style="width:35px;height:35px;" class="img-circle" src="{$vo['owner']['thumb_path']}">
+                                                                <a class="role_info name-colors"  rel="{$vo['owner']['role_id']}" href="javascript:void(0);">{$vo['owner']['full_name']}</a>&nbsp;&nbsp;
+                                                                <span class="text-muted">发布了一条签到记录</span>&nbsp;&nbsp;&nbsp;
+                                                                <span class="text-muted" >{$vo['create_date']|date="Y-m-d H:i",###}</span>
+                                                                <div class="text-muted" style="padding:0 15px 0 50px;">
+                                                                    <div class="conent0" style="width:100%;">
+                                                                        <img style="width:15px;height:15px;vertical-align:text-bottom;" src="__PUBLIC__/img/location.png"/>
+                                                                        <span style="color:#666">{$vo['sign_info']['address']}</span>
+                                                                        <input class="longitude" type="hidden" rel="{$vo['sign_info']['y']}"/>
+                                                                        <!-- <a href="javascript:void(0);" style="font-size:12px;" class="map" >显示地图</a> -->
+                                                                        <div id="allmap{$vo['log_id']}" rel="allmap{$vo['log_id']}" class="allmap"></div>
+                                                                        <input class="latitude" type="hidden" rel="{$vo['sign_info']['x']}"/>
+                                                                    </div>
+                                                                    <div class="conent0">
+                                                                        <span style="color:#000">签到说明：{$vo['sign_info']['log']}</span>
+                                                                    </div>
+                                                                    <div class="conent0">
+                                                                        <div style="color:#000">现场照片：</div>
+                                                                        <volist name="vo['sign_img']" id="v">
+                                                                            <div class="box-secondary" rel="{$vo.img_id}" style="width:100px;height:100px;float:left;margin-left:5px;">
+                                                                                <a href="{$v.path}" target="_self" class="litebox_file" data-litebox-group="group-{$vo['log_id']}">
+                                                                                    <img src="{$v.path}" class="thumbnail thumb100" style="width:100%;height:100%;">
+                                                                                </a>
+                                                                            </div>
+                                                                        </volist>
+                                                                        <div style="clear:both;"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <else />
+                                                            <div class="social-avatar">
+                                                                <img alt="image" style="width:35px;height:35px;" class="img-circle" src="{$vo['owner']['thumb_path']}">
+                                                                <a class="role_info name-colors"  rel="{$vo.owner.role_id}" href="javascript:void(0);">{$vo['owner']['full_name']}</a>&nbsp;&nbsp;
+                                                                <span class="text-muted">发布了一条快速记录</span>&nbsp;&nbsp;&nbsp;
+                                                                <span class="text-muted" >{$vo.create_date|date="Y-m-d H:i",###}&nbsp;&nbsp;<a title="沟通类型" href="javascript:void(0);">{$vo['status_name']}</a></span>
+                                                            </div>
+                                                            <div class="social-body">
+                                                                <span style="word-wrap:break-word;line-height: 21px;color: #000;">{$vo['content']}</span>
+                                                                <if condition = "$vo['code']">
+                                                                    <div class="log-relation"><i class="fa fa-bookmark"></i>&nbsp;<span>相关商机 : {$vo['code']}</span></div>
+                                                                </if>
+                                                                <if condition = "$vo['nextstep_time']">
+                                                                    <div class="social-avatar" style="padding-top:10px;">
+                                                                        <span class="text-muted pull-right">下次联系时间：{$vo['nextstep_time']|date="Y-m-d H:i",###}</span>
+                                                                    </div>
+                                                                </if>
+                                                            </div>
+                                                        </if>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -149,7 +280,6 @@
                         <li><a href="#tab3" data-toggle="tab" type="tab3">简历原件</a></li>
                         <li class="active" ><a href="#tab1" data-toggle="tab" type="tab1">人才详情</a></li>
                         <li><a href="#tab4" data-toggle="tab" type="tab4">参与项目</a></li>
-                        <li><a href="#tab5" data-toggle="tab" type="tab5">备注</a></li>
                         <li><a href="#tab6" data-toggle="tab" type="tab6" style="display: none;">简历日志</a></li>
                         <li><a href="#tab2" data-toggle="tab" type="tab2">附件</a></li>
                     </ul>
@@ -595,136 +725,7 @@
                             </if>
                         </div>
                     </div>
-                    <div id="tab5" class="tab-pane fade in">
-                        <div class="panel-body">
-                            <if condition="$content neq 'resource'">
-                                <div id="form-div">
-                                    <form id="add-form" action="{:U('Log/add')}" method="post">
-                                        <input type='hidden' name="r" value="rResumeLog"/>
-                                        <input type='hidden' name="module" value="resume"/>
-                                        <input type='hidden' id="resume_id" name="id" value="{$resume['eid']}"/>
-                                        <input type='hidden' name="role_id" value="{$Think.session.role_id}"/>
-                                        <textarea name="content" placeholder="添加跟进记录" id="log-text" style="resize:none;" class="form-control" cols="30" rows="2"></textarea>
-                                        <table class="table business_table" style="border:none;margin-top:15px;display:none;" id="business_table">
-                                            <tr >
-                                                <td class="tdleft" style="width:120px;">跟进类型：</td>
-                                                <td style="width:120px;">
-                                                    <select name="status_id" id="status_id" class="form-control" onchange="selectStatus()">
-                                                        <option value="">--请选择--</option>
-                                                        <option value="1">电话</option><option value="2">发邮件</option><option value="3">发短信</option><option value="4">见面拜访</option><option value="5">基本情况</option><option value="6">备注</option>
-                                                        <!--<volist name="status_list" id="vo">-->
-                                                        <!--<option value="{$vo['id']}">{$vo['name']}</option>-->
-                                                        <!--</volist>-->
-                                                    </select>
-                                                </td>
-                                                <td style="border-top:0;">&nbsp;&nbsp;</td>
-                                                <td class="tdleft" style="width:120px;">快捷添加：</td>
-                                                <td style="width:300px;">
-                                                    <select id="replay_list" class="form-control select2" onchange="selectReply()" style="width:80%;float:left;">
-                                                        <option value="">--请选择--</option>
-                                                        <volist name="reply_list" id="vo">
-                                                            <option value="{$vo['content']}" rel="{$vo['status_id']}">{$vo['str_content']}</option>
-                                                        </volist>
-                                                    </select>&nbsp;&nbsp;
-                                                    <a href="javascript:void(0)" id="setting_reply_dialog" title="管理快捷跟进模板" style="line-height: 30px;margin-left:10px;"><i class="fa fa-cog" style="color:#999;"></i></a>
-                                                </td>
-                                                <td  style="border-top:0;">&nbsp;&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tdleft" style="width:120px;">下次联系时间：</td>
-                                                <td style="width:120px;">
-                                                    <input type="text" value="" id="nextstep_time_log" class="form-control Wdate" name="nextstep_time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm'})" style="width: 170px;">
-                                                </td>
-                                                <td>&nbsp;&nbsp;</td>
-                                                <td class="tdleft" style="width:120px;">保存为跟进模板：</td>
-                                                <td style="width:120px;">
-                                                    <div class="checkbox checkbox-primary">
-                                                        <input type="hidden" name="type" value="2" />
-                                                        <input name="save_reply" class="select_list" id="save_reply" type="checkbox" value="1"/>
-                                                        <label for=""></label>
-                                                    </div>
-                                                </td>
-                                                <td>&nbsp;&nbsp;</td>
-                                            </tr>
-                                        </table>
-                                        <div>
-                                            <div class="text-right" id="log-btn" style="padding-top:8px;display:none;"><button class="btn btn-primary" id="add_log" type="button">添加</button>&nbsp;</div><br>
-                                        </div>
-                                    </form>
-                                </div>
-                            </if>
-                            <div id="log-list" style="margin-top: 10px;">
-                                <volist name="log_list" id="vo">
-                                    <div class="ibox-content gray-log" log-rel="{$vo['log_id']}" >
-                                        <div class="social-feed-separated clearfix">
-                                            <div class="social-feed-box">
-                                                <if condition="$content neq 'resource' && $vo['sign'] eq '0' && $vo['role_id'] eq session('role_id')">
-                                                    <div class="pull-right social-action dropdown">
-                                                        <span data-toggle="dropdown" class="dropdown-toggle">
-                                                            <i style="font-size:20px;cursor:pointer" class="fa fa-angle-down"></i>
-                                                        </span>
-                                                        <ul class="dropdown-menu m-t-xs" >
-                                                            <li><a rel="{$vo['log_id']}" href="javascript:void(0);" type="{$vo['log_type']}" onclick="del_confirm(this);">{:L('DELETE')}</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </if>
-                                                <if condition = "$vo['sign'] eq 1">
-                                                    <div class="social-avatar">
-                                                        <img alt="image" style="width:35px;height:35px;" class="img-circle" src="{$vo['owner']['thumb_path']}">
-                                                        <a class="role_info name-colors"  rel="{$vo['owner']['role_id']}" href="javascript:void(0);">{$vo['owner']['full_name']}</a>&nbsp;&nbsp;
-                                                        <span class="text-muted">发布了一条签到记录</span>&nbsp;&nbsp;&nbsp;
-                                                        <span class="text-muted" >{$vo['create_date']|date="Y-m-d H:i",###}</span>
-                                                        <div class="text-muted" style="padding:0 15px 0 50px;">
-                                                            <div class="conent0" style="width:100%;">
-                                                                <img style="width:15px;height:15px;vertical-align:text-bottom;" src="__PUBLIC__/img/location.png"/>
-                                                                <span style="color:#666">{$vo['sign_info']['address']}</span>
-                                                                <input class="longitude" type="hidden" rel="{$vo['sign_info']['y']}"/>
-                                                                <!-- <a href="javascript:void(0);" style="font-size:12px;" class="map" >显示地图</a> -->
-                                                                <div id="allmap{$vo['log_id']}" rel="allmap{$vo['log_id']}" class="allmap"></div>
-                                                                <input class="latitude" type="hidden" rel="{$vo['sign_info']['x']}"/>
-                                                            </div>
-                                                            <div class="conent0">
-                                                                <span style="color:#000">签到说明：{$vo['sign_info']['log']}</span>
-                                                            </div>
-                                                            <div class="conent0">
-                                                                <div style="color:#000">现场照片：</div>
-                                                                <volist name="vo['sign_img']" id="v">
-                                                                    <div class="box-secondary" rel="{$vo.img_id}" style="width:100px;height:100px;float:left;margin-left:5px;">
-                                                                        <a href="{$v.path}" target="_self" class="litebox_file" data-litebox-group="group-{$vo['log_id']}">
-                                                                            <img src="{$v.path}" class="thumbnail thumb100" style="width:100%;height:100%;">
-                                                                        </a>
-                                                                    </div>
-                                                                </volist>
-                                                                <div style="clear:both;"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <else />
-                                                    <div class="social-avatar">
-                                                        <img alt="image" style="width:35px;height:35px;" class="img-circle" src="{$vo['owner']['thumb_path']}">
-                                                        <a class="role_info name-colors"  rel="{$vo.owner.role_id}" href="javascript:void(0);">{$vo['owner']['full_name']}</a>&nbsp;&nbsp;
-                                                        <span class="text-muted">发布了一条快速记录</span>&nbsp;&nbsp;&nbsp;
-                                                        <span class="text-muted" >{$vo.create_date|date="Y-m-d H:i",###}&nbsp;&nbsp;<a title="沟通类型" href="javascript:void(0);">{$vo['status_name']}</a></span>
-                                                    </div>
-                                                    <div class="social-body">
-                                                        <span style="word-wrap:break-word;line-height: 21px;color: #000;">{$vo['content']}</span>
-                                                        <if condition = "$vo['code']">
-                                                            <div class="log-relation"><i class="fa fa-bookmark"></i>&nbsp;<span>相关商机 : {$vo['code']}</span></div>
-                                                        </if>
-                                                        <if condition = "$vo['nextstep_time']">
-                                                            <div class="social-avatar" style="padding-top:10px;">
-                                                                <span class="text-muted pull-right">下次联系时间：{$vo['nextstep_time']|date="Y-m-d H:i",###}</span>
-                                                            </div>
-                                                        </if>
-                                                    </div>
-                                                </if>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </volist>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="tab-pane " id="tab6">
                         <div class="panel-body">
                             <div class="header1">
@@ -897,7 +898,7 @@
                                                                 });
                                                                 function url_jump(maodian) {
                                                                     var url = "{:U('product/view','id=')}{$resume[eid]}" + maodian;
-                                                                    window.history.replaceState({}, 0, 'http://' + window.location.host + url);
+                                                                    window.history.replaceState({}, 0, window.location.protocol + "//" + window.location.host + url);
                                                                 }
 
 //初始化图片查看插件

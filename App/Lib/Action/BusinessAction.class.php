@@ -134,8 +134,7 @@ class BusinessAction extends Action
                 $where['business.creator_role_id'] = session('role_id');
                 break;
             case 'sub' :
-//                $where['business.owner_role_id'] = array('in', $below_ids);
-                $where['business.creator_role_id'] = array('in', $below_ids);
+//                $where['business.creator_role_id'] = array('in', $below_ids);
                 break;
             case 'subcreate' :
                 $where['creator_role_id'] = array('in', $below_ids);
@@ -169,19 +168,16 @@ class BusinessAction extends Action
                 $order = 'business.update_time desc,business.business_id asc';
                 break;
             case 'me' :
-//                $where['business.owner_role_id'] = session('role_id');
                 $where['business.creator_role_id'] = session('role_id');
                 break;
             case 'all' :
-//                $where['business.owner_role_id'] = session('role_id');
-                // 3/6号修改全部项目筛选
-//                $where['business.creator_role_id'] = session('role_id');
-                $where['business.owner_role_id'] = array('in',$ownerAllIds);
+//                $where['business.owner_role_id'] = array('in',$ownerAllIds);
                 break;
             default :
-                $where['business.owner_role_id'] = array('in',$ownerAllIds);
+//                $where['business.owner_role_id'] = array('in',$ownerAllIds);
                 break;
         }
+
         if ($_REQUEST["field"]) {
             $field = trim($_REQUEST['field']);
             $search = empty($_REQUEST['search']) ? '' : trim($_REQUEST['search']);
@@ -194,7 +190,7 @@ class BusinessAction extends Action
                 $where[$field] = array('in', $customer_ids);
             } elseif ($field == "status_id") {
                 unset($where['status_id']);
-            } elseif ($field == 'name') {
+            } elseif ($field == 'name' && !empty($search)) {
                 //获取客户ID
                 $cus_where['name'] = array('like', '%' . $search . '%');
                 $customer_ids = M('Customer')->where($cus_where)->getField('customer_id', true);
@@ -215,13 +211,13 @@ class BusinessAction extends Action
             } else {
                 switch ($condition) {
                     case "is" :
-                        $where[$field] = array('eq', $search);
+                        !empty($search) && $where[$field] = array('eq', $search);
                         break;
                     case "isnot" :
                         $where[$field] = array('neq', $search);
                         break;
                     case "contains" :
-                        $where[$field] = array('like', '%' . $search . '%');
+                        !empty($search) && $where[$field] = array('like', '%' . $search . '%');
                         break;
                     case "not_contain" :
                         $where[$field] = array('notlike', '%' . $search . '%');
@@ -403,13 +399,11 @@ class BusinessAction extends Action
             }
         }
 
-//        if (!isset($where['is_deleted'])) {
-//            $where['business.is_deleted'] = 0;
+//        if (!isset($where['business.owner_role_id']) && $by != 'sub') {
+//            //权限
+//            $where['business.owner_role_id'] = array('in', $this->_permissionRes);
+////            $where['_string'] = " FIND_IN_SET(".session('role_id').",business.parter)";
 //        }
-        if (!isset($where['business.owner_role_id'])) {
-            //权限
-            $where['business.owner_role_id'] = array('in', $this->_permissionRes);
-        }
         //商机状态
         if ($_GET['status_id']) {
             $where['status_id'] = intval($_GET['status_id']);
@@ -451,19 +445,37 @@ class BusinessAction extends Action
         }
         import("@.ORG.Page");
 
-        //过滤空商机
-        // $where['code'] = array('neq','');
-        // $where['name'] = array('neq','..');
-
-        if($ownerAllIds && $by == 'all'){
-            $ownerWhere['business.joiner'] = ['in',$this->_permissionRes];
-            $ownerWhere['_logic'] = 'OR';
-            $ownerWhere['_string'] = "FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
+        //我全部项目 1、我创建的 2、分配给我的 3、项目成员是我的 4、维护人是我的 5、分享给我的
+        if( $by == 'all'){
+            //自己全部
+            $ownerWhere['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter) ";
+            if($this->_permissionRes){
+                $allRoles = implode(',',$this->_permissionRes);
+                $ownerWhere['_string'] .= " OR business.creator_role_id in ({$allRoles})";
+            }
             $where['_complex'] = $ownerWhere;
-            //3/6修改——guo
-//            $where['_logic'] = 'OR';
-            $where['_logic'] = 'AND';
+            $where['_logic'] = 'OR';
         }
+
+        //我的项目  自己创建的项目
+        if($by == 'me'){
+        }
+
+        //下属项目不包阔自己的 1、下属创建的 2、分配给下属的 3、项目成员是下属的 4、维护人是下属的 5、分享给下属的
+        if($by == 'sub' && $below_ids){
+            $below_ids_str = implode(',',$below_ids);
+            $ownerWhere['_string'] = "business.creator_role_id in (".$below_ids_str.") OR business.joiner in (".$below_ids_str.")";
+            foreach ($below_ids as $childRoleId){
+                if($childRoleId <= 0){
+                    continue;
+                }
+                $ownerWhere['_string'] .= "OR FIND_IN_SET({$childRoleId},business.owner_role_id) OR FIND_IN_SET({$childRoleId},business.parter)";
+            }
+            $where['_complex'] = $ownerWhere;
+            $where['_logic'] = 'OR';
+        }
+
+        $where['_logic'] = 'AND';
         unset($where['business.owner_role_id']);
         $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
         $count = $d_v_business->where($where)->order($order)->count();
@@ -979,13 +991,41 @@ class BusinessAction extends Action
         $m_contacts = M('Contacts');
         $m_business_status = M('BusinessStatus');
         $below_ids = getPerByAction('business', 'view');
+
         //判断权限
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
         $owner_role_ids = explode(',',($business_info['owner_role_id']));
-//        if ($business_info && (!in_array($business_info['owner_role_id'], $below_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
-        if ($business_info && (!in_array(session('role_id'),$owner_role_ids) && !in_array(session('role_id'), explode(',', $business_info['parter'])))) {
+        $useRoleId = session('role_id'); //joiner
+        $parterRoleIds = explode(',', $business_info['parter']);
+        $createUserRoleId =  $business_info['creator_role_id'];
+        //是否是自己的项目全部项之一
+        if(!$business_info){
+            alert('error', '项目不存在！', $_SERVER['HTTP_REFERER']);
+        }
+        if(!$this->_permissionRes){
             alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
         }
+        if (!in_array($useRoleId,$owner_role_ids) && !in_array($useRoleId,$parterRoleIds ) && $useRoleId !=$business_info['joiner'] && $useRoleId != $createUserRoleId) {
+
+            $isAccess = in_array($createUserRoleId,$this->_permissionRes);
+            if((!$below_ids || !is_array($below_ids)) && !$isAccess){
+                //没有下属或者没有查看
+                alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+            }
+            $isAllow = false;
+            //是否是其中下属的全部项之一
+            foreach ($below_ids as $sonRoleId){
+                if($sonRoleId == $createUserRoleId || $sonRoleId == $business_info['joiner'] || in_array($sonRoleId,$parterRoleIds) || in_array($sonRoleId,$owner_role_ids)){
+                    $isAllow = true   ;
+                    break;
+                }
+            }
+            if(!$isAllow && $isAccess){
+                $isAllow = true;
+            }
+            !$isAllow &&  alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+        }
+
 
         if ($business_info['joiner']) {
             $customer_owner_ids = explode(",", $business_info['joiner']);
@@ -997,7 +1037,7 @@ class BusinessAction extends Action
             }
             $business_info['joiner'] = $customer_owner_name;
         }
-        
+
         //加入项目成员
         if ($business_info['parter']) {
             $bussiness_parter_ids = explode(',', $business_info['parter']);
@@ -1088,14 +1128,14 @@ class BusinessAction extends Action
 
         $business_id = I("id");
         $fine_project = D("ProjectView");
-        $project['calllist'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 1, I("id"))->select();
-        $project['adviser'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 2, I("id"))->select();
-        $project['tj'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 3, I("id"))->select();
-        $project['interview'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 4, I("id"))->select();
-        $project['pass'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 5, I("id"))->select();
-        $project['offer'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 6, I("id"))->select();
-        $project['enter'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 7, I("id"))->select();
-        $project['safe'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 8, I("id"))->select();
+        $project['calllist'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 1, I("id"))->order('fine_project.addtime desc')->select();
+        $project['adviser'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 2, I("id"))->order('fine_project.updatetime desc')->select();
+        $project['tj'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 3, I("id"))->order('fine_project.tjaddtime desc')->select();
+        $project['interview'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 4, I("id"))->order('fine_project.updatetime desc')->select();
+        $project['pass'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 5, I("id"))->order('fine_project.updatetime desc')->select();
+        $project['offer'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 6, I("id"))->order('fine_project.updatetime desc')->select();
+        $project['enter'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 7, I("id"))->order('fine_project.updatetime desc')->select();
+        $project['safe'] = $fine_project->where("fine_project.status=%d and fine_project.project_id=%d", 8, I("id"))->order('fine_project.updatetime desc')->select();
 //        $project['tj'] = M("fine_project")->where("status='%s' and project_id=%d","tj",I("id"))->select();
 //        $project['interview'] = M("fine_project")->where("status='%s' and project_id=%d","interview",I("id"))->select();
 //        $project['pass'] = M("fine_project")->where("status='%s' and project_id=%d","pass",I("id"))->select();
@@ -1117,6 +1157,23 @@ class BusinessAction extends Action
 
         $d_business = D('BusinessView');
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
+        $jobclass = $business_info['jobclass'];
+        if($jobclass){
+            $className = '';
+            foreach (explode(',',$jobclass) as $classId){
+                 $className .= $job_name[$classId] .'  ';
+            }
+        }
+        $industry = $business_info['industry'];
+        if($industry){
+            $industryName = '';
+            foreach (explode(',',$industry) as $classId){
+                $industryName .= $industry_name[$classId] .'  ';
+            }
+        }
+
+        $business_info['jobclassName'] = $className;
+        $business_info['industryName'] = $industryName;
         $this->business_info = $business_info;
         //自定义字段
         $this->field_list = M('Fields')->where(array('model' => 'business', 'field' => array('not in', array('name', 'status_id'))))->order('is_main desc, order_id asc')->select();
@@ -1238,8 +1295,14 @@ class BusinessAction extends Action
         $project['calllist_remark'] = M("fine_project_bz")->where($where)->select();
         $project['remove_remark'] = M("fine_project_bhs")->where($where)->select();
         foreach ($project as $key => $list) {
-
             foreach ($list as $k => $li) {
+                if($key == 'cc_remark' && isset($li['role_id'])){
+                    $li['cc_user'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
+                if(($key == 'calllist_remark' || $key == 'remove_remark') && isset($li['role_id'])){
+                $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
+
                 $data[$li['addtime']][$key] = $li;
             }
         }
@@ -1262,6 +1325,9 @@ class BusinessAction extends Action
         foreach ($project as $key => $list) {
 
             foreach ($list as $k => $li) {
+                if(($key == 'adviser_content' || $key == 'adviser_more' || $key == 'adviser_remark' || $key == 'remove_remark')&& isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
                 $data[$li['addtime']][$key] = $li;
             }
         }
@@ -1283,6 +1349,9 @@ class BusinessAction extends Action
         foreach ($project as $key => $list) {
 
             foreach ($list as $k => $li) {
+                if(($key == 'tj_more' || $key == 'tj_remark' || $key == 'remove_remark') && isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
                 $data[$li['addtime']][$key] = $li;
             }
         }
@@ -1306,7 +1375,13 @@ class BusinessAction extends Action
         $project['invoice'] = M("invoice")->where($where)->select();
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
+
+                if(($key == 'interview_content' || $key == 'interview_remark' || $key == 'remove_remark') && isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
+
                 if ($key == "invoice") {
+                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
                     $data[$li['create_time']][$key] = $li;
                 } else {
                     $data[$li['addtime']][$key] = $li;
@@ -1334,7 +1409,12 @@ class BusinessAction extends Action
         $project['invoice'] = M("invoice")->where($where)->select();
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
+                if(($key == 'offer_content' || $key == 'remove_remark' || $key == 'offer_remark') && isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
+
                 if ($key == "invoice") {
+                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
                     $data[$li['create_time']][$key] = $li;
                 } else {
                     $data[$li['addtime']][$key] = $li;
@@ -1362,7 +1442,12 @@ class BusinessAction extends Action
         $project['invoice'] = M("invoice")->where($where)->select();
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
+                if(($key == 'enter_content' || $key == 'enter_remark' || $key == 'remove_remark') && isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
+
                 if ($key == "invoice") {
+                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
                     $data[$li['create_time']][$key] = $li;
                 } else {
                     $data[$li['addtime']][$key] = $li;
@@ -1377,6 +1462,7 @@ class BusinessAction extends Action
     {
         $project = D("ProjectView")->where("fine_project.id=%d", I("id"))->find();
 
+        $project['tj_role_name']= $project['tj_role_id'] > 0 ? M('user')->where(['role_id'=>$project['tj_role_id']])->getField('full_name') : $project['tracker_name'];
 
         $business = M("business")->where("business_id=%d", $project['project_id'])->field("pro_type")->find();
         //@edit by yanghao 2018-11-26 修改交易模式交易节点
@@ -1601,6 +1687,7 @@ class BusinessAction extends Action
                 $arr['status'] = 3;
                 $arr['tjaddtime'] = time();
                 $arr['updatetime'] = time();
+                $arr['tj_role_id'] = session('role_id');
 //                $data['operator'] = session("user_id");
 //                $data['addtime'] = time();
 //                $arr['tj_log'] = serialize($data);
@@ -1836,6 +1923,26 @@ class BusinessAction extends Action
         $this->display();
     }
 
+    //面试二次通知
+    function notice(){
+        $role_id = intval(session('role_id'));
+        $where['role_id'] = array( 'eq' , $role_id);
+        $where['gjtime'] = array('neq','');
+        $where['noticed'] = array('neq' ,1);
+//        $data = M('fine_project_cc')->where($where)->select();
+        $data = D('FineProjectCcResume')->where($where)->select();
+        foreach ($data as $k => $v){
+            $gjtime = strtotime($v['gjtime']);
+            $now = time();
+            if(($now - $gjtime) >= 0 && 60 >=($now - $gjtime)){
+                $url = U('business/view','id='.$v['project_id']);
+                sendMessage($role_id,'&nbsp;&nbsp;温馨提醒：候选人《<a href="'.$url.'" title="点击查看">'.$v['name'].'</a>》<font style="color:green;">需进行跟进沟通</font>！',1);
+                //标记已提醒过一次
+                M('fine_project_cc')->where(array('id'=>$v['id']))->setField(array('noticed'=>1));
+            }
+        }
+    }
+
     //客户面试
     public function khms()
     {
@@ -1974,7 +2081,7 @@ class BusinessAction extends Action
         $this->assign("pro_type", $this->pro_type);
         $this->display();
     }
-    
+
     public function invoiceReCheck()
     {
         $invoice_id = BaseUtils::getStr($_GET['id']);
@@ -1993,7 +2100,7 @@ class BusinessAction extends Action
                 $update['content'] = $_POST['content'] ? BaseUtils::getStr($_POST['content']) : '';
                 $update['price'] = $_POST['price'] ? BaseUtils::getStr($_POST['price']) : '';
                 $update['description'] = $_POST['description'] ? BaseUtils::getStr($_POST['description']) : '';
-                
+
                 //修改到场属性
                 $ispresent = $_POST['ispresent'] ? BaseUtils::getStr($_POST['ispresent']) : '';
                 $fineProjectInfo = $m_fineProject->where(['id' => $projectInfo['fine_id']])->save(['ispresent' => $ispresent]);
@@ -3032,17 +3139,20 @@ class BusinessAction extends Action
             $business = M('Business');
             $whereBusiness['business_id'] = $msg['business_id'];
             $ownerRoleId = $business->where($whereBusiness)->field('owner_role_id')->find();
-            $ownerRoleId = explode(',', $ownerRoleId['owner_role_id']);
-            $map = $ownerRoleId;
+            $map = [];
             $roleId = $msg['role_id'];
             $type = '0';
-            foreach ($ownerRoleId as $k => $v) {
-                if ($v == $roleId) {
-                    $type = '1';
-                    unset($ownerRoleId[$k]);
+            if ($ownerRoleId['owner_role_id']){
+                $ownerRoleId = explode(',', $ownerRoleId['owner_role_id']);
+                $map = $ownerRoleId;
+                foreach ($ownerRoleId as $k => $v) {
+                    if ($v == $roleId) {
+                        $type = '1';
+                        unset($ownerRoleId[$k]);
+                    }
                 }
             }
-            if ($type == '0') {
+            if ($type == '0' && $roleId > 0) {
                 $map[] = $roleId;
                 $business->where($whereBusiness)->setField(array('owner_role_id' => implode(',', $map))) ? $this->ajaxReturn('0') : $this->ajaxReturn('1');
             } else {
@@ -3087,9 +3197,11 @@ class BusinessAction extends Action
                 }
             }
             if ($roleIds == null && $where['department_id'] == null) {
+                $where['full_name'] = array('like','%'.$where['full_name'].'%');
                 $roleIds = $m_user->where($where)->field('role_id')->select();
             } else {
                 if ($where['full_name'] != '' || $where['telephone'] != '') {
+                    $where['full_name'] = array('like','%'.$where['full_name'].'%');
                     $roleIdsWhere = $m_user->where($where)->field('role_id')->select();
                     $roleIdsDepartment = $roleIds;
                     unset($roleIds);
@@ -3145,6 +3257,10 @@ class BusinessAction extends Action
             import('@.ORG.Page'); // 导入分页类
             $Page = new Page($count, $listrows); // 实例化分页类 传入总记录数和每页显示的记录数
             $show = $Page->show(); // 分页显示输出
+            //渲染输入内容
+            $this->assign('full_name',$_GET['name']);
+            $this->assign('tel',$_GET['tel']);
+            $this->assign('department_id',$_GET['department_id']);
             $this->assign('page', $show); // 赋值分页输出
             $this->assign("listrows", $listrows);
             $this->assign('data', $data);

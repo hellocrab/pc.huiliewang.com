@@ -91,6 +91,18 @@
 </style>
 <script>
     $(function () {
+        $('#short_search').val() && $('.clearVal').css('display','inline-block');
+        $('#short_search').on('input',ev=>{
+            if(ev.target.value!=''){
+                $('.clearVal').css('display','inline-block')
+            }else{
+                $('.clearVal').css('display','none')
+            }
+        })
+        $('.clearVal').click(ev=>{
+            $('#short_search').val('');
+            $('.clearVal').css('display','none');
+        })
         var scroll_width = 7;
         // var oTableLH_tab_Test3 = 38;
         $("#table_div").height(window.innerHeight - $("#table_div").offset().top - $("#tfoot_div").height() - parseInt($("#table_container").css("padding-bottom").replace("px", "")) - 10);
@@ -159,18 +171,19 @@
                                 </li>
                                 <li>
                                     搜索：
-                                    <div class="input-group">
+                                    <div class="input-group" style='height:37px'>
+                                        <span class="fa fa-times-circle clearVal" style="margin: 10px -10px;position: relative;z-index: 5;display:none;cursor:pointer;top:-8px;left:-4px"></span>
                                         <input type="hidden" name="m" value="business"/>
                                         <input type="hidden" name="a" value="index"/>
                                         <input type="hidden" name="field" value="name"/>
                                         <input type="hidden" name="condition" value="contains"/>
                                         <input type="hidden" name="by" value="{$_GET['by']}"/>
-                                        <input id="short_search" type="text" style="width:200px;" placeholder="职位名/客户名/联系人/电话" onkeydown='if (event.keyCode == 13) {
+                                        <input id="short_search" type="text" style="width:200px;margin-top:-8px" placeholder="职位名/客户名/联系人/电话" onkeydown='if (event.keyCode == 13) {
                                                     $("#short_search_btn").trigger("click");
                                                     return false;
                                                 }' class="form-control input-sm" name="search" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default btn-search" id="short_search_btn" type="submit"><i class="fa fa-search"></i></button>
+                                            <button class="btn btn-default btn-search" id="short_search_btn" type="submit" style="height:32px;"><i class="fa fa-search"></i></button>
                                         </span>
                                         <select class="form-control" name="pro_type" id="pro_type" style="margin:0px 10px;width:150px;">
                                             <option value="">--请选择项目类型--</option>
@@ -178,7 +191,7 @@
                                             <option value="2">入职快</option>
                                             <option value="3">专业猎头</option>
                                             <option value="4">慧简历</option>
-                                            <option value="5">其他</option>
+                                            <!--<option value="5">其他</option>-->
                                         </select>
                                         <select class="form-control" name="status_id" id="status_id" style="margin:0px 10px;width:150px;">
                                             <option value="">--请选择--</option>
@@ -345,9 +358,9 @@
                                         <div class="status_ico form-inline editable-wrap editable-select" role="form" blur="cancel">
                                             <div class="editable-controls form-group">
                                                 <select class="form-control" style="vertical-align: baseline;height: 34px;">
-                                                    <volist name="businessStatusList" id="businessStatus" key="key">
+                                                    <foreach  name="businessStatusList" item="businessStatus" key="key">
                                                         <option value="{$key|default='0'}" label="{$businessStatus|default=''}">{$businessStatus|default=''}</option>
-                                                    </volist>
+                                                    </foreach >
                                                 </select>
                                                 <span class="editable-buttons">
                                                     <button type="button" class="btn btn-primary jinzhan_btnedit">

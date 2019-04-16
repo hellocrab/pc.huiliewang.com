@@ -22,7 +22,7 @@ class ProductAction extends Action {
 
 //		$action = array(
 //			'permission'=>array('getProductByBusiness'),
-//			'allow'=>array('adddialog','editdialog', 'allproductdialog','validate','check','delimg','sortimg','mutildialog','changecontent','getmonthlyamount','getmonthlysales','getcurrentstatus','mutildialog_product_contract','mutildialog_product','advance_search','categorylist')
+//			'allow'=>array('adddialog','editdialog', 'allproductdialog','validate','check','delimg','sortimg','mutildialog','changecontent','getmonthlyamount','getmonthlysales','getcurrentstatus','mutildialog_product_contract','mutildialog_product','advance_search','categorylist','matchWorksZP','checkReuse','matchWorksLP','matchWorksZL','charChange','del')
 //		);
 //		B('Authenticate', $action);
 //		$this->_permissionRes = getPerByAction(MODULE_NAME,ACTION_NAME);
@@ -82,9 +82,9 @@ class ProductAction extends Action {
             $data = $reData->getData($v);
 
             if (!$data['data']) {
-                $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => '没有匹配数据']);
+                $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => '没有匹配数据']);
             }
-            
+
             //检查简历是否存存在
             $name = isset($data['data']['name']) ? trim($data['data']['name']) : '';
             $telephone = isset($data['data']['telephone']) ? trim($data['data']['telephone']) : '';
@@ -107,12 +107,12 @@ class ProductAction extends Action {
                             'addtime' => time()
                         ];
                         M('fine_project')->add($data);
-                        $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在,并且已经推荐到此该项目中"]);
+                        $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在,并且已经推荐到此该项目中", 'resume_id' => $idExt]);
                     } else {
-                        $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在,并且此简历已经存在此该项目中"]);
+                        $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在,并且此简历已经存在此该项目中", 'resume_id' => $idExt]);
                     }
                 }
-                $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在"]);
+                $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "{$name}简历已经存在", 'resume_id' => $idExt]);
             }
 
             try {
@@ -126,7 +126,7 @@ class ProductAction extends Action {
                 if (empty($data['data']['name'])) {
                     $data['data']['name'] = '未知';
                 }
-                
+
                 if (empty($data['data']['telephone'])) {
                     $data['data']['telephone'] = '未知';
                 }
@@ -178,10 +178,10 @@ class ProductAction extends Action {
                         'addtime' => time()
                     ];
                     M('fine_project')->add($data);
-                    $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "解析成功,并且已经推荐到此该项目中"]);
+                    $this->ajaxReturn(['succ' => 0, 'code' => 200, 'message' => "解析成功,并且已经推荐到此该项目中", 'resume_id' => $resume_id]);
                 }
 
-                $this->ajaxReturn(['succ' => 1, 'code' => 200, 'message' => '解析成功']);
+                $this->ajaxReturn(['succ' => 1, 'code' => 200, 'message' => '解析成功', 'resume_id' => $resume_id]);
             } catch (Exception $ex) {
                 $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => $ex->getMessage()]);
             }
@@ -359,6 +359,8 @@ class ProductAction extends Action {
     public function index() {
 
         $by = $this->_get('by', 'trim');
+        if (empty($by))
+            $by = 'myself';
         if ($by == 'favorite') {
             $eids = M("resume_collection")->where("role_id=%d", session("role_id"))->getField("eid", true);
             $where['eid'] = array('in', $eids);
@@ -396,25 +398,26 @@ class ProductAction extends Action {
             $name_field_array[] = $v;
         }
         $this->field_array = $name_field_array;
-
+//        var_dump($_REQUEST);exit;
         //普通查询
         if ($_REQUEST["field"]) {
             $field = trim($_REQUEST['field']);
-            $search = empty($_REQUEST['search']) ? '' : trim($_REQUEST['search']);
-            $condition = empty($_REQUEST['condition']) ? 'is' : trim($_REQUEST['condition']);
+            $search_name = empty($_REQUEST['search_name']) ? '' : trim($_REQUEST['search_name']);
+            $search_job = empty($_REQUEST['search_job']) ? '' : trim($_REQUEST['search_job']);
+//            $condition = empty($_REQUEST['condition']) ? 'is' : trim($_REQUEST['condition']);
             if ($this->_request('state')) {
                 $state = $this->_request('state', 'trim');
-                $address_where[] = '%' . $state . '%';
+                $address_where[] = $state . '%';
                 if ($this->_request('city')) {
                     $city = $this->_request('city', 'trim');
-                    $address_where[] = '%' . $city . '%';
+                    $address_where[] = $city . '%';
                     if ($this->_request('area')) {
                         $area = $this->_request('area', 'trim');
-                        $address_where[] = '%' . $this->_request('area', 'trim') . '%';
+                        $address_where[] = $this->_request('area', 'trim') . '%';
                     }
                 }
                 if ($search)
-                    $address_where[] = '%' . $search . '%';
+                    $address_where[] = $search . '%';
                 $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'state=' . $this->_request('state', 'trim'), 'city=' . $this->_request('city', 'trim'), 'area=' . $this->_request('area', 'trim'), 'search=' . $this->_request('search', 'trim'));
                 if ($condition == 'not_contain') {
                     $where[$field] = array('notlike', $address_where, 'OR');
@@ -423,15 +426,24 @@ class ProductAction extends Action {
                 }
             } else {
 
-                if ($field == 'name') {
+                if ($field == 'search') {
                     //$where['name'] = array('like',$search);
-                    $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
-                    if (strlen($search) == 11 && is_numeric($search)) {
-                        $where['telephone'] = array('eq', $search);
-                    } else {
-                        $where['name'] = array('like', '%' . $search . '%');
+//                    $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
+                    if ($search_name) {
+                        if (strlen($search_name) >= 11 && is_numeric($search_name)) {
+                            $where['telephone'] = array('eq', "{$search_name}");
+                        } else {
+                            $where['name'] = array('like', $search_name . '%');
+                        }
+                        $params[] = "search_name={$_REQUEST['search_name']}";
+                    }
+
+                    if ($search_job) {
+                        $where['job_class'] = array('like', $search_job . '%');
+                        $params[] = "search_job={$_REQUEST['search_job']}";
                     }
                 }
+                $params[] = "field={$_REQUEST['field']}";
             }
             //过滤不在权限范围内的role_id
             if (trim($_REQUEST['field']) == 'owner_role_id') {
@@ -449,16 +461,22 @@ class ProductAction extends Action {
             foreach ($_GET as $k => $v) {
                 if (!in_array($k, $no_field_array)) {
                     if ($k == "industry" && $v) {
+                        $industryName = M('industry')->where(['industry_id' => $v])->getField('name');
                         if ($where['_string']) {
-                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',industry)";
+//                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',industry)";
+                            $where['_string'] .= " and industry  like '{$industryName}%' ";
                         } else {
-                            $where['_string'] = "FIND_IN_SET('" . $v . "',industry)";
+//                            $where['_string'] = "FIND_IN_SET('" . $v . "',industry)";
+                            $where['_string'] = "industry  like  '{$industryName}%' ";
                         }
                     } elseif ($k == "job_class" && $v) {
+                        $jobName = M('job_class')->where(['job_id' => $v])->getField('name');
                         if ($where['_string']) {
-                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',job_class)";
+//                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',job_class)";
+                            $where['_string'] .= " and job_class like '{$jobName}%'";
                         } else {
-                            $where['_string'] = "FIND_IN_SET('" . $v . "',job_class)";
+//                            $where['_string'] = "FIND_IN_SET('" . $v . "',job_class)";
+                            $where['_string'] = "job_class like '{$jobName}%'";
                         }
                     } elseif ($k == "intentCity" && $v) {
                         if ($where['_string']) {
@@ -472,17 +490,17 @@ class ProductAction extends Action {
                     } elseif (is_array($v)) {
                         $v['value'] = trim($v['value']);
                         if ($v['state']) {
-                            $address_where[] = '%' . $v['state'] . '%';
+                            $address_where[] = $v['state'] . '%';
 
                             if ($v['city']) {
-                                $address_where[] = '%' . $v['city'] . '%';
+                                $address_where[] = $v['city'] . '%';
 
                                 if ($v['area']) {
-                                    $address_where[] = '%' . $v['area'] . '%';
+                                    $address_where[] = $v['area'] . '%';
                                 }
                             }
                             if ($v['search'])
-                                $address_where[] = '%' . $v['search'] . '%';
+                                $address_where[] = $v['search'] . '%';
 
                             if ($v['condition'] == 'not_contain') {
                                 $where[$k] = array('notlike', $address_where, 'OR');
@@ -596,6 +614,7 @@ class ProductAction extends Action {
                 $where['eid'] = array('in', $dc_id);
             }
             $list = $resume->where($where)->order('addtime desc')->Page($p . ',' . $listrows)->select();
+
             if (checkPerByAction('resume', 'excelexport')) {
                 session('export_status', 1);
                 foreach ($list as $k => $li) {
@@ -637,6 +656,8 @@ class ProductAction extends Action {
             }
         } else {
             $list = $resume->where($where)->order('addtime desc')->Page($p . ',' . $listrows)->select();
+//            var_dump($resume->getLastSql());
+//            print_r($resume->getLastSql());die;
         }
 
         foreach ($list as $key => $li) {
@@ -655,8 +676,11 @@ class ProductAction extends Action {
 
         $Page = new Page($count, $listrows); // 实例化分页类 传入总记录数和每页显示的记录数
         $show = $Page->show(); // 分页显示输出
-
-
+        $params[] = 'by=' . trim($_GET['by']);
+        $params[] = 't=' . $this->type;
+        $this->parameter = implode('&', $params);
+        //by_parameter(特殊处理)
+        $this->by_parameter = str_replace('by=' . $_GET['by'], '', implode('&', $params));
         $this->assign('list', $list); // 赋值数据集
         $this->assign('page', $show); // 赋值分页输出
         $this->assign('count', $count);
@@ -770,7 +794,12 @@ class ProductAction extends Action {
             if (I("id")) {
                 $where['eid'] = I("id");
                 $info = M("resume")->where($where)->find();
-                $this->resume_work = M("resume_work")->where($where)->select();
+                $resume_work = M("resume_work")->where($where)->select();
+                foreach ($resume_work as $kw => $rw) {
+                    $_position = M('resume_work_position')->where(['work_id' => $rw['id']])->find();
+                    $resume_work[$kw]['position'][] = $_position;
+                }
+                $this->resume_work = $resume_work;
                 $this->resume_edu = M("resume_edu")->where($where)->select();
                 $this->resume_project = M("resume_project")->where($where)->select();
                 $alert = parseAlert();
@@ -1129,7 +1158,7 @@ class ProductAction extends Action {
             $resume['birthMouth'] = '-' . $resume['birthMouth'];
         }
 
-        
+
         //简历附件
         $file_ids = M('rResumeFile')->where(['resume_id' => $eid, 'is_resolve' => 1])->getField('file_id', true);
         if ($file_ids) {
@@ -1139,8 +1168,8 @@ class ProductAction extends Action {
                 $fileInfo['size'] = ceil($fileInfo['size'] / 1024);
             }
         }
-        
-        
+
+
         //文件
         $file_ids = M('rResumeFile')->where('resume_id = %d', $eid)->getField('file_id', true);
         $file_ids = M('rResumeFile')->where(['resume_id' => $eid, 'is_resolve' => 0])->getField('file_id', true);
@@ -1231,7 +1260,6 @@ class ProductAction extends Action {
             $resume_work[$kw]['position'][] = $_position;
         }
         $this->resume_work = $resume_work;
-
         $this->resume_data = M("resume_data")->where("eid=%d", $eid)->select();
 
         //edu 
@@ -1350,6 +1378,38 @@ class ProductAction extends Action {
         $this->resume_project = M("resume_project")->where("eid=%d", $eid)->select();
         $this->resume = $resume;
         $this->display();
+    }
+
+    /**
+     * @desc 简历删除
+     */
+    public function del() {
+        $product_ids = I('product_id',[]);
+        if(!$product_ids || empty($product_ids) || !is_array($product_ids)){
+            alert('error', '参数错误！', $_SERVER['HTTP_REFERER']);
+        }
+        if(!$this->isPost()){
+            alert('error', '请求出错！', $_SERVER['HTTP_REFERER']);
+        }
+        $resumeModel = M('resume');
+        foreach ($product_ids as $eid){
+            $id = intval($eid);
+            $resumeInfo = $resumeModel->where(['eid' => $id])->find();
+            //权限判断
+            if (!$resumeInfo || $resumeInfo['creator_role_id'] != session('role_id')) {
+                alert('error', "您无权删除简历{$resumeInfo['name']}！", $_SERVER['HTTP_REFERER']);
+            }
+            //删除判断
+            if (M('fine_project')->where(['resume_id' => $id])->find()) {
+                alert('error', "简历{$resumeInfo['name']}已经有项目了,不能删除", $_SERVER['HTTP_REFERER']);
+            }
+        }
+        $product_ids_str = implode($product_ids);
+        $res = $resumeModel->where('eid in (%s)', $product_ids_str)->delete();
+        if (!$res) {
+            alert('error', '删除失败，请联系管理员！', $_SERVER['HTTP_REFERER']);
+        }
+        alert('success', '删除成功！', $_SERVER['HTTP_REFERER']);
     }
 
     public function delete() {
@@ -2907,12 +2967,26 @@ class ProductAction extends Action {
      */
     public function checkReuse() {
         $content = I('content');
-        $works = $this->matchWorks($content);
+        $content = $this->charChange($content);
+        $content = preg_replace('/&lt;/is', '<', $content);
+        $content = preg_replace('/&gt;/is', '>', $content);
+        $content = preg_replace('/（/is', '(', $content);
+        $content = preg_replace('/）/is', ')', $content);
+        $content = preg_replace('/—/is', '-', $content);
+        $content = str_replace(['&amp;', '&nbsp;', 'nbsp;'], ['', '', ' '], $content);
+        $content = str_replace(['&quot;'], ['"'], $content);
+
+        $works = $this->matchWorksZL($content);
+        if (!$works) {
+            $works = $this->matchWorksLP($content);
+        }
+        if (!$works) {
+            $works = $this->matchWorksZP($content);
+        }
         //根据工作经历查重
         if (!$works || empty($works) || !is_array($works)) {
             $this->ajaxReturn(0, '没有匹配到可用工作经历', 0);
         }
-//        print_r($works);die;
         $workCount = count($works);
         $allResume = [];
         foreach ($works as $job) {
@@ -2959,19 +3033,13 @@ class ProductAction extends Action {
     }
 
     /**
-     * @desc  匹配工作经历
+     * @desc  匹配工作经历 【卓聘】
      * @param $content
      * @return array|bool
      */
-    public function matchWorks($content) {
-        $content = $this->charChange($content);
-        $content = preg_replace('/&lt;/is', '<', $content);
-        $content = preg_replace('/&gt;/is', '>', $content);
-        $content = preg_replace('/（/is', '(', $content);
-        $content = preg_replace('/）/is', ')', $content);
-        $content = preg_replace('/—/is', '-', $content);
+    public function matchWorksZP($content) {
         //智联卓聘
-        $pregWorks = '/<p>(\d{4}年\d{1,2}月)\s{0,}-\s{0,}(\d{4}年\d{1,2}月|至今)\s{1,}([^>]*)\((\d{1,3}年\d{1,2}个月|\d{1,2}个月|\d{1,3}年)\)\s{0,}<\/p>/isU';
+        $pregWorks = '/(\d{4}年\d{1,2}月)\s{0,}-\s{0,}(\d{4}年\d{1,2}月|至今)\s{0,}([^>]*)\((\d{1,3}年\d{1,2}个月|\d{1,2}个月|\d{1,3}年)\)/isU';
         preg_match_all($pregWorks, $content, $contentMatch);
         if (!$contentMatch || !$contentMatch[3]) {
             return false;
@@ -2986,6 +3054,77 @@ class ProductAction extends Action {
             $end = str_replace(['年', '月'], ['-', '-01'], $end);
             $start = strtotime($start);
             $end == '至今' ? $end = 0 : $end = strtotime($end);
+            $name = strip_tags(trim($nameArr[$index]));
+            if (!$name) {
+                continue;
+            }
+            $jobs[] = ['start_time' => $start, 'end_time' => $end, 'company' => $name];
+        }
+        return $jobs;
+    }
+
+    /**
+     * @desc  匹配工作经历 【智联】
+     * @param $content
+     * @return array|bool
+     */
+    public function matchWorksZL($content) {
+        //智联卓聘
+        $ulPreg = '/工作经历(.*)(项目经历|专业技能)/isU';
+        preg_match($ulPreg, $content, $matchUl);
+        if (!$matchUl[1]) {
+            return;
+        }
+        $content = $matchUl[1];
+        //智联
+        $pregWorks = '/<p class="timeline__header"[^>]*>.*(\d{4}\.\d{2}).*(\d{4}\.\d{2}|至今).*<span style="box-sizing: inherit;[^>]*">(.*)<\/span>.*<\/p>/isU';
+        preg_match_all($pregWorks, $content, $contentMatch);
+
+        if (!$contentMatch || !$contentMatch[3]) {
+            return false;
+        }
+        $startArr = $contentMatch[1];
+        $endArr = $contentMatch[2];
+        $nameArr = $contentMatch[3];
+        $jobs = [];
+        foreach ($startArr as $index => $start) {
+            $end = $endArr[$index];
+            $start = str_replace(['年', '月', '.'], ['-', '-01', '-'], $start);
+            $end = str_replace(['年', '月', '.'], ['-', '-01', '-'], $end);
+            $start = strtotime($start . '-01');
+            $end == '至今' ? $end = 0 : $end = strtotime($end . '-01');
+            $name = strip_tags(trim($nameArr[$index]));
+            if (!$name) {
+                continue;
+            }
+            $jobs[] = ['start_time' => $start, 'end_time' => $end, 'company' => $name];
+        }
+        return $jobs;
+    }
+
+    /**
+     * @desc  匹配工作经历 [猎聘网]
+     * @param $content
+     * @return array|bool
+     */
+    public function matchWorksLP($content) {
+        //猎聘网
+        $pregWorks = '/<span class="work-time"[^>]*>(\d{4}\.\d{2})\s{1,2}-\s{1,2}(\d{4}\.\d{2}|至今)<\/span><span class="compony"[^>]*>(.*)<span[^>]*>.*<\/span><\/span>/isU';
+        preg_match_all($pregWorks, $content, $contentMatch);
+
+        if (!$contentMatch || !$contentMatch[3]) {
+            return false;
+        }
+        $startArr = $contentMatch[1];
+        $endArr = $contentMatch[2];
+        $nameArr = $contentMatch[3];
+        $jobs = [];
+        foreach ($startArr as $index => $start) {
+            $end = $endArr[$index];
+            $start = str_replace(['年', '月', '.'], ['-', '-01', '-'], $start);
+            $end = str_replace(['年', '月', '.'], ['-', '-01', '-'], $end);
+            $start = strtotime($start . '-01');
+            $end == '至今' ? $end = 0 : $end = strtotime($end . '-01');
             $name = strip_tags(trim($nameArr[$index]));
             if (!$name) {
                 continue;

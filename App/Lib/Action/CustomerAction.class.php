@@ -696,8 +696,8 @@ class CustomerAction extends Action {
                     //修改字段记录
                     $old_customer = M('Customer')->where('customer_id= %d', $customer['customer_id'])->find();  //修改前数据
                     $a = $m_customer->where('customer_id= %s', $customer['customer_id'])->save();
+                    $_POST['con_contacts']['contacts_address']  =   implode(chr(10),$_POST['con_contacts']['contacts_address']);
                     M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->save($_POST['con_contacts']);
-
                     $new_customer = $m_customer->where('customer_id= %d', $customer['customer_id'])->find(); //修改后数据
                     $update_ago = array_diff_assoc($new_customer, $old_customer); //获取已修改的字段
                     $m_fields = M('fields');
@@ -777,12 +777,22 @@ class CustomerAction extends Action {
             $user = M('user')->where('status =%d', 1)->field('full_name,user_id')->select();
 //            编辑客户联系人显示页3-8_guo
             $contacts = M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->find();
+            $address_array = explode(chr(10), $contacts['contacts_address']);
+            $state = $address_array[0];
+            $city = $address_array[1];
+            $area = $address_array[2];
+            $street = $address_array[3];
+            $contacts['state'] = $state;
+            $contacts['city'] = $city;
+            $contacts['area'] = $area;
+            $contacts['street'] =$street;
             foreach ($contacts as $k => $v){
                 $contacts['con_contacts['.$k.']'] = $v;
             }
 //            dump($contacts);die;
             $this->contacts_field_list = field_list_html("edit", "contacts",$contacts,"contacts");
             $this->assign("user", $user);
+            $this->assign('contacts',$contacts);
             $this->display();
         }
     }
@@ -1057,7 +1067,7 @@ class CustomerAction extends Action {
                     $contactsCustomerIds = CustomerModel::getIdsByContact($search);
                     if ($contactsCustomerIds) {
                         $field_where = array();
-                        $field_where['customer.name'] = array('like', '%' . $search . '%');
+                        $field_where['customer.name'] = array('like', $search . '%');
                         $field_where['customer.customer_id'] = array('in', $contactsCustomerIds);
                         $field_where['_logic'] = 'OR';
                         $where['_complex'] = $field_where;
@@ -1914,7 +1924,8 @@ class CustomerAction extends Action {
         $outdate = empty($outdays) ? 0 : time() - 86400 * $outdays;
 //        $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
         $where['is_deleted'] = array('neq', 1);
-        $where['_string'] = 'update_time > ' . $outdate . ' OR is_locked = 1';
+        //暂时不需要这个限定 editor by YH 20190325 
+//        $where['_string'] = 'update_time > ' . $outdate . ' OR is_locked = 1';
 
         if ($_REQUEST["field"]) {
             $field = trim($_REQUEST['field']);

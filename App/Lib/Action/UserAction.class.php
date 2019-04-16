@@ -12,7 +12,7 @@ class UserAction extends Action {
         $this->assign("title",$title);
 		$action = array(
 			'permission'=>array('login','lostpw','resetpw','active','notice','loginajax','listDialogs'),
-			'allow'=>array('logout','role_ajax_add','getrolebydepartment','dialoginfo','edit', 'listdialog','listdialogs', 'mutilistdialog', 'getrolelist', 'getpositionlist','changecontent','getactionauthority','department','userimg','contacts','yanchong','editpassword','getpositionlistbydepartment')
+			'allow'=>array('userList','logout','role_ajax_add','getrolebydepartment','dialoginfo','edit', 'listdialog','listdialogs', 'mutilistdialog', 'getrolelist', 'getpositionlist','changecontent','getactionauthority','department','userimg','contacts','yanchong','editpassword','getpositionlistbydepartment','changeDepartment')
 		);
 		B('Authenticate', $action);
 	}
@@ -229,167 +229,6 @@ class UserAction extends Action {
 		}
 	}
 
-
-    /**
-     * 电话系统外呼
-     */
-     function getsig($timestamp){
-        $authtoken = "0000000067f7f651016812bd9fb200b2"; // 账户授权令牌
-        $account = "nanfangxinhua";  // 企业账户
-        $sig = strtoupper(md5($authtoken .":". $account .":".$timestamp));
-        return $sig;
-    }
-
-    function getauth($timestamp){
-        $authtoken ="0000000067f7f651016812bd9fb200b2";// APPID
-        $datatoken = "19edad3f987b2db5e5037e259b9d8871";// appToken
-        $auth = base64_encode($authtoken .":". $timestamp .":". $datatoken);
-        return $auth;
-    }
-
-    //坐席上班
-    function startWork($timestamp){
-        $sig= $this->getsig($timestamp);
-        $auth=$this->getauth($timestamp);
-        $url = "http://47.96.62.197:8090/bind/agentOnWork/v2?Sig=".$sig;
-        $header = array('Content-Type:' . 'application/json;charset=utf-8',
-            'Accept:' . 'application/json',
-            'Authorization:'.$auth);
-        $data = ["voipAccount"=>"80414000000002"];
-        $data = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $msg = curl_exec($ch);
-        $result = json_decode($msg, true);
-        $uuid=$result['resp']['Msg'];
-        return $uuid;
-    }
-
-    //坐席下班
-    function offWork($timestamp){
-        $sig = $this->getsig($timestamp);
-        $auth = $this->getauth($timestamp);
-
-        $url = "http://47.96.62.197:8090/bind/agentOffWork/v2?Sig=".$sig;
-        $header = array('Content-Type:' . 'application/json;charset=utf-8',
-            'Accept:' . 'application/json',
-            'Authorization:'.$auth);
-        $data = ["voipAccount"=>"80414000000002"];
-        $data = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $msg = curl_exec($ch);
-        $result = json_decode($msg, true);
-        $uuid=$result['resp']['Msg'];
-        return $uuid;
-    }
-
-    /**
-     * @return mixed
-     * 电话外呼
-     */
-    public function call_out(){
-        $tel =  $_POST['tel'] ? BaseUtils::getStr(trim($_POST['tel'])) : '0';
-        $type = isset($_POST['type']) ? intval($_POST['type']) : 0; //1、简历 2、客户联系人
-        $itemId = isset($_POST['itemId']) ? $_POST['itemId'] : 0; //客户联系人/简历ID
-        if($itemId > 0){
-            //简历联系人电话
-            if($type == 1){
-                $tel = M('resume')->where(['eid'=>$itemId])->getField('telephone');
-            }
-            //客户联系人电话
-            if($type == 2){
-                $tel = M('contacts')->where(['contacts_id'=>$itemId])->getField('telephone');
-            }
-        }
-        
-        if(!session('tel')){
-            if(session('role_id')){
-                $user = M('user')->where(['role_id' => session('role_id')])->field('user_id,telephone')->find();
-                if($user['telephone']){
-                    session('tel', $user['telephone']);
-                    $sourceTel = $user['telephone'];
-                } else {
-                     echo json_encode(['code' => $msg->meta->success ? 1:0,'msg' => '请绑定手机号码']);
-                }
-            }
-        } else {
-            $sourceTel = session('tel');
-        }
-        
-//        $timestamp= date('YmdHis');
-        //坐席上班
-//        $this->startWork($timestamp);
-//        $sig= $this->getsig($timestamp);
-//        $auth=$this->getauth($timestamp);
-
-        //坐席外呼
-        $url = "http://211.152.35.81:8766/rest/voiceCall/api";
-        $header = array('Content-Type:' . 'application/json;charset=utf-8',
-            'Accept:' . 'application/json'
-            );
-//            'Authorization:'.$auth
-        $data = ["callerNbr"=>"+86".$sourceTel,
-            "calleeNbr"=>"+86".$tel ,
-            "userData"=>"7be4a9ce-8ea2-4c74-b822-f4472194621d",
-            "setingNbr" => "PP2703844206"];
-        $data = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $msg = curl_exec($ch);
-        $msg = json_decode($msg);
-//        坐席下班
-//        $this->offWork($timestamp);
-//        $result = json_decode($msg, true);
-//        $uuid=$result['resp']['Msg'];
-        echo json_encode(['code' => $msg->meta->success ? 1:0,'msg' => $msg->meta->message]);
-    }
-
-    /**
-     * 获取通话记录
-     */
-    public function call_record(){
-        $timestamp= date('YmdHis');
-        $sig = $this->getsig($timestamp);
-        $auth = $this->getauth($timestamp);
-
-        $url = "http://47.96.62.197:8090/query/callReCord/v1?Sig=".$sig;
-        $header = array('Content-Type:' . 'application/json;charset=utf-8',
-            'Accept:' . 'application/json',
-            'Authorization:'.$auth);
-        $data = ["CompanyName"=>"nanfangxinhua",
-                "MaxId"=>100,
-                "BeginTime"=>"",
-                "EndTime"=>"",
-                "CallSid"=>"",
-                "Caller"=>"",
-                "Callee"=>""
-            ];
-        $data = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $msg = curl_exec($ch);
-        $result = json_decode($msg, true);
-//        $uuid=$result['resp']['Msg'];
-        $this->assign('msg',$result[data]);
-        $this->display();
-    }
 
     /**
      * 注册框填充
@@ -658,6 +497,19 @@ class UserAction extends Action {
         $this->display();
     }
 
+    /**
+     * @desc 用户列表接口
+     */
+    public function userList() {
+        $d_role = D('RoleView');
+        $departments = M('roleDepartment')->field('department_id,name')->select();
+        foreach ($departments as &$info) {
+            $userWhere = ['status' => 1, 'position.department_id' => $info['department_id']];
+            $users = $d_role->field('role_id,user_name')->where($userWhere)->select();
+            $info['children'] = $users ? $users : [];
+        }
+        $this->ajaxReturn(['code' => 200, 'data' => $departments]);
+    }
 
 	public function mutiListDialog(){
 		//1表示所有人  2表示下属
@@ -724,9 +576,11 @@ class UserAction extends Action {
             }
 			if($add_ids){
 				$res_add = $m_user->where(array('user_id'=>array('in',$add_ids)))->setField('status',$value);
+                $res_add && $this->deleteUserDataDelay($res_add);
 			}
 			if($del_ids){
 				$res_del = $m_user->where(array('user_id'=>array('in',$del_ids)))->setField('status',$value);
+				$res_del && $this->deleteUserDataDelay($del_ids);
 			}
 			if($res_add || $res_del){
 				$this->ajaxReturn('','操作成功！',1);
@@ -881,6 +735,7 @@ class UserAction extends Action {
             $m_user = M('User');
 			$m_role = M('Role');
 			$user = $m_user->where('user_id = %d', intval($_POST['user_id']))->find();
+			$oldPositionId = $m_role->where(['user_id'=>$user['user_id']])->getField('position_id');
 			$new_number = trim($_POST['prefixion']).trim($_POST['number']);
 			if($user['number'] != $new_number){
 				$result = $m_user->where(array('number'=>$new_number,'user_id'=>array('neq',intval($_POST['user_id']))))->find();
@@ -938,6 +793,8 @@ class UserAction extends Action {
 				$m_user->job_rank = $this->_post('jobrank','trim');
 
 				if($m_user->save() || $is_update){
+				    //更改数据【部门变更】
+                    $this->changeDepartment($user['user_id'], $_POST['position_id'],$oldPositionId);
 					actionLog($_POST['user_id']);
 					if($_POST['user_id'] ==session('user_id')){
 						unset ($_SESSION['name']) ;
@@ -1016,6 +873,20 @@ class UserAction extends Action {
 		}
 	}
 
+    /**
+     * @desc 用户职位变化更改报表数据
+     * @param $userId
+     * @param $positionId
+     * @param $oldPositionId
+     */
+	public function changeDepartment($userId,$positionId,$oldPositionId){
+	    //更改业绩报表的部门数据
+        if($oldPositionId != $positionId){
+            $departmentId = M('position')->where(['position_id'=>$positionId])->getField('department_id');
+            $departmentName = M('role_department')->where(['department_id'=>$departmentId])->getField('name');
+            M('report_intergral')->where(['user_id'=>$userId])->save(['department_id'=>$departmentId,'department'=>$departmentName]);
+        }
+    }
 	public function dialogInfo(){
 		$role_id = intval($_REQUEST['id']);
 		$role = D('RoleView')->where('role.role_id = %d', $role_id)->find();
@@ -2512,5 +2383,32 @@ class UserAction extends Action {
             $this->ajaxReturn('',L('删除失败'),2);
         }
 
+    }
+
+    /**
+     * @desc 清空用户数据队列
+     * @param $userIds
+     * @return bool|void
+     */
+    private function deleteUserDataDelay($userIds=[]) {
+
+        if (!$userIds || !is_array($userIds) ) {
+            return false;
+        }
+        //当前月份
+        $currMoth = date('Y-m-01', time());
+        //次月月份
+        $nextMoth = date('Y-m-01', strtotime($currMoth . '+1 month'));
+        $nextMothTime = strtotime($nextMoth);
+        //次算次月第几个工作日[排除法定节假日]
+        $deleteTime = getWeekDay($nextMothTime, 2);
+        $delayTime = $deleteTime - time();
+
+        //加入消息队列处理数据
+        $vendorPath = __DIR__ . '/../../../vendor/';
+        require_once $vendorPath . 'autoload.php';
+        require_once $vendorPath . 'php-amqplib/RabbitMqBase.php';
+        $mq = new \RabbitMq\RabbitMqBase();
+        return $mq->deadMessage(['user_ids' => $userIds, 'time' => $deleteTime, 'ttl' => $delayTime * 1000], $delayTime * 1000);
     }
 }

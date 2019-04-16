@@ -10,12 +10,13 @@
 <script src="__PUBLIC__/style/js/plugins/jsTree/jstree.min.js"></script>
 <link href="__PUBLIC__/style/css/plugins/jsTree/style.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/webuploader/webuploader.css">
-<!-- <link rel="stylesheet" href="__PUBLIC__/css/ideDialog.css"> -->
+<link rel="stylesheet" href="__PUBLIC__/css/ideDialog.css">
 <!--引入JS-->
 <script type="text/javascript" src="__PUBLIC__/webuploader/webuploader.js"></script>
-<!-- <script type="text/javascript" src="__PUBLIC__/edi/kindeditor-all.js"></script>
-<script type="text/javascript" src="__PUBLIC__/edi/lang/zh-CN.js"></script>
-<script type="text/javascript" src="__PUBLIC__/js/ideDialog.js"></script> -->
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="__PUBLIC__/edi/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/edi/ueditor.all.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ideDialog.js"></script>
 <style>
     .file {
         position: relative;
@@ -134,7 +135,7 @@
         })
     })
 </script>
-<!-- <div class='ideDialog'></div> -->
+<div class='ideDialog'></div>
 <div style="display:none" id="dialog-log" title="加入项目">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
@@ -164,6 +165,9 @@
                                     <span id="to_product"><a href="javascript:void(0)" id="favorite"><i class="fa fa-star-o"></i>&nbsp;收藏</a></span>
                                 </li>
                             </if>
+                            <li class="single_btn">
+                                <span id="delete"><a href="javascript:void(0)" id="delete"><i class="fa fa-star-o"></i>&nbsp;删除</a></span>
+                            </li>
                             <li>
                                 <span><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></span>
                             </li>
@@ -194,7 +198,7 @@
                                         swal(res.message,"",res.code==200?'success':"warning");
                                         if(res.code == 200){
                                             setTimeout(()=>{
-                                            location.reload();
+                                            location.href = '/index.php?m=product&a=view&id='+res.resume_id;
                                             },1000)
                                         }
 
@@ -223,7 +227,7 @@
                         <ul class="nav pull-left" style='display: flex;'>
                             <a href="{:U('product/add')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 新增人才</a>
                             <a id="picker">简历解析</a>
-                            <!-- <div class="ideBtn">简历查重</div> -->
+                            <div class="ideBtn">简历查重</div>
                         </ul>
                         <form class="form-inline" id="" action="" method="get">
                             <ul class="breadcrum pull-right" style="margin-bottom: 0px">
@@ -232,12 +236,14 @@
                                     <div class="input-group">
                                         <input type="hidden" name="m" value="product"/>
                                         <input type="hidden" name="a" value="index"/>
-                                        <input type="hidden" name="field" value="name"/>
+                                        <input type="hidden" name="field" value="search"/>
+                                        <if condition = "$_GET['by'] neq ''">
+                                        <input type="hidden" name="by" value="{$_GET['by']}"/>
+                                        </if>
                                         <input type="hidden" name="condition" value="contains"/>
-                                        <input id="short_search" type="text" style="width:180px;" placeholder="请输入人才姓名或手机号" onkeydown='if (event.keyCode == 13) {
-                                                            $("#short_search_btn").trigger("click");
-                                                            return false;
-                                                        }' class="form-control input-sm" name="search" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
+                                        <input id="short_search" type="text" style="width:180px;" placeholder="请输入职能岗位" class="form-control input-sm" name="search_job" <if condition = "$_GET['search_job'] neq ''">value="{$_GET['search_job']}"</if>/>
+                                        <input id="short_search" type="text" style="width:180px;" placeholder="请输入人才姓名或手机号" class="form-control input-sm" name="search_name" <if condition = "$_GET['search_name'] neq ''">value="{$_GET['search_name']}"</if>/>
+                                        
                                         <span class="input-group-btn">
                                             <button class="btn btn-default btn-search" id="short_search_btn" type="submit"><i class="fa fa-search"></i></button>
                                         </span>
@@ -261,8 +267,8 @@
                             <li>
                                 <div class="input-group">
                                     <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value, target = '_self')" style="margin-bottom:5px;">
-                                        <option value="{:U('product/index','by=all&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'all'">selected="selected"</if>>全部人才</option>
                                         <option value="{:U('product/index','by=myself&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'myself'">selected="selected"</if>>我上传的人才</option>
+                                        <option value="{:U('product/index','by=all&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'all'">selected="selected"</if>>全部人才</option>
                                         <option value="{:U('product/index','by=favorite&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'favorite'">selected="selected"</if>>我的收藏
                                     </select>
                                 </div>
@@ -587,19 +593,19 @@
         <div style="margin-left: 35px;margin-top:10px;"><a href="javascript:void(0);" style="display: -moz-stack;margin: 30px 0px 0px; font-size: 12px; color: rgb(62, 133, 233);" id="add_btn">+添加筛选条件</a>
         </div>
         <div class="resume-search-form" style="margin-left: 20px;margin-top: 10px;">
-            <div  class="form-group" style="width: 100%;">
+<!--            <div  class="form-group" style="width: 100%;">
                 <div class="col-md-2 control-label">行业：</div>
                 <div class="col-md-9">
                     <input data-selector="industrys" class="text" type="text" placeholder="请选择行业" id="industrys" name="industry" data-ui="LocalDataUID" style="display: none;width:325px;height:40px;" rell="行业" value="{:I('industry')}" data-option="1"/>
                 </div>
-            </div>
+            </div>-->
 
-            <div  class="form-group" style="width: 100%;margin-top: 10px;">
+<!--            <div  class="form-group" style="width: 100%;margin-top: 10px;">
                 <div class="col-md-2 control-label">职能：</div>
                 <div class="col-md-9">
                     <input data-selector="jobtitles" class="text" type="text" placeholder="请选择职能" id="jobtitles" name="job_class" data-ui="LocalDataUID" style="display: none;width:325px;height:40px;"  data-option="1"  value="{:I('job_class')}"/>
                 </div>
-            </div>
+            </div>-->
 
             <div  class="form-group" style="width: 100%;margin-top: 10px;">
                 <div class="col-md-2 control-label">所在城市：</div>
@@ -660,7 +666,7 @@
                                             $(".call_out").on('click', function () {
                                                 var itemId = $(this).attr('rel');
                                                 $.post(
-                                                        "{:U('user/call_out')}",
+                                                        "{:U('callcenter/call_out')}",
                                                         {itemId: itemId,type:1,tel:''},
                                                         function (data) {
                                                             var obj = $.parseJSON(data);
@@ -883,7 +889,7 @@
         });
         $('#delete').click(function () {
             swal({
-                title: "确定要下架该人才吗？",
+                title: "确定要删除该人才吗？",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -891,7 +897,7 @@
                 closeOnConfirm: false
             },
                     function () {
-                        $("#form1").attr('action', '{:U("product/delete")}');
+                        $("#form1").attr('action', '{:U("product/del")}');
                         $("#form1").submit();
                     });
         });
@@ -1024,13 +1030,14 @@
 
     $(".log_calllist").click(function () {
         $('#dialog-log').dialog('open');
-        $('#dialog-log').load('{:U("log/resume_project","r=RCustomerLog&module=customer&id=")}' + $(this).attr('rel'));
+        var proId = "{$Think.get.pro_id|default='0'}";
+        $('#dialog-log').load('{:U("log/resume_project","r=RCustomerLog&module=customer&id=")}' + $(this).attr('rel') + '&business_id='+proId);
         $.fn.modal.Constructor.prototype.enforceFocus = function () {};
     });
 
 
 
-
+    var proId = "{$Think.get.pro_id|default='0'}";
     $("#dialog-log").dialog({
         autoOpen: false,
         // modal: true,
@@ -1049,7 +1056,14 @@
                         if (data.status == 1) {
                             swal("操作成功！", "该人选成功加入项目！", "success");
                             $("#dialog-log").dialog("close");
-                            // location.reload();
+                            var projectId = data.data.project_id;
+                            if(!proId || proId == 0){
+                                proId = projectId;
+                            }
+                            if(proId){
+                                location.href="{:U('business/view')}&id="+proId;
+                            }
+
                         } else {
                             swal({
                                 title: "操作失败！",
