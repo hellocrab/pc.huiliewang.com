@@ -193,6 +193,7 @@
                 <script>
                     $(function () {
                         $(".call_out").on('click', function () {
+                            var _this = this;
                             swal({
                                     title: "请选择线路",
                                     text: "选择一个电话线路",
@@ -206,46 +207,33 @@
                                     closeOnCancel: false
                                 },
                                 function (isConfirm) {
+                                    var channel;
                                     if (isConfirm) {
-                                        $.ajax({
-                                            cache: true,
-                                            type: "POST",
-                                            url: '{:U("business/advance","business_id=")}' +
-                                                business_id + '&status_id=' + status_id,
-                                            async: false,
-                                            success: function (data) {
-                                                var channel;
-                                                if (data.status == 1) {
-                                                    channel = 1;
-                                                } else {
-                                                    channel = 0;
-                                                }
-                                                var itemId = $(this).attr('rel');
-                                                $.post(
-                                                    "{:U('callcenter/call_out')}", {
-                                                        itemId: itemId,
-                                                        type: 1,
-                                                        tel: '',
-                                                        channel
-                                                    },
-                                                    function (data) {
-                                                        var obj = $.parseJSON(data);
-                                                        if (obj.code) {
-                                                            swal("操作成功！",
-                                                                "拨打电话成功,请稍等电话接通！",
-                                                                "success");
-                                                            //                                     alert_crm(data.message);
-                                                        } else {
-                                                            alert_crm(obj.msg +
-                                                                ",请联系管理员！");
-                                                        }
-                                                    }
-                                                );
-                                            }
-                                        });
+                                        channel = 1;
                                     } else {
-                                        swal("已取消", "您取消了推进操作！", "error");
+                                        channel = 0;
                                     }
+                                    var itemId = $(_this).attr('rel');
+                                    $.post(
+                                        "{:U('callcenter/call_out')}", {
+                                            itemId: itemId,
+                                            type: 1,
+                                            tel: '',
+                                            channel
+                                        },
+                                        function (data) {
+                                            var obj = $.parseJSON(data);
+                                            if (obj.code) {
+                                                swal("操作成功！",
+                                                    "拨打电话成功,请稍等电话接通！",
+                                                    "success");
+                                                //                                     alert_crm(data.message);
+                                            } else {
+                                                alert_crm(obj.msg +
+                                                    ",请联系管理员！");
+                                            }
+                                        }
+                                    );
                                 });
                         });
                         let pro_id = "{:I('id')}";
@@ -2116,7 +2104,9 @@
         })
     });
 
-<<<<<<< HEAD
+    <<
+    << << < HEAD
+
     function mapInit(x, y, mapID) {
         var map = new BMap.Map(mapID);
         var point = new BMap.Point(y, x);
@@ -2193,54 +2183,54 @@
                 $(this).dialog("close");
             }
         }
-    });
-=======
-                                function url_jump(maodian) {
-                                    $('#maodian').val(maodian);
-                                    var customer_id = "{$customer_id}";
-                                    var module_business_id = $('#module_business_id').val();
-                                    var bid = $('#bid').val();
-                                    if (module_business_id) {
-                                        var url = "{:U('business/view','id=')}" + module_business_id + maodian;
-                                    } else {
-                                        if (bid) {
-                                            var url = "{:U('customer/view','id=')}" + customer_id + '&bid=' + bid + maodian;
-                                        } else {
-                                            var url = "{:U('customer/view','id=')}" + customer_id + maodian;
-                                        }
-                                    }
-                                    window.history.replaceState({}, 0, window.location.protocol + "//" + window.location.host + url);
-                                }
-                                var business_id = "{$business_id}";
+    }); ===
+    === =
+    function url_jump(maodian) {
+        $('#maodian').val(maodian);
+        var customer_id = "{$customer_id}";
+        var module_business_id = $('#module_business_id').val();
+        var bid = $('#bid').val();
+        if (module_business_id) {
+            var url = "{:U('business/view','id=')}" + module_business_id + maodian;
+        } else {
+            if (bid) {
+                var url = "{:U('customer/view','id=')}" + customer_id + '&bid=' + bid + maodian;
+            } else {
+                var url = "{:U('customer/view','id=')}" + customer_id + maodian;
+            }
+        }
+        window.history.replaceState({}, 0, window.location.protocol + "//" + window.location.host + url);
+    }
+    var business_id = "{$business_id}";
 
-                                /**
-                                 * 附件 如果是图片时 双击可查看大图
-                                 */
-                                $('.litebox_file').liteBox({
-                                      revealSpeed: 400,
-                                      background: 'rgba(0,0,0,.8)',
-                                      overlayClose: true,
-                                      escKey: true,
-                                      navKey: true,
-                                      errorMessage: '图片加载失败.'
-                                });
-                                $("#dialog-file").dialog({
-                                    autoOpen: false,
-                                    modal: true,
-                                    width: 800,
-                                    maxHeight: 400,
-                                    position: ["center", 100],
-                                    buttons: {
-                                        "确定": function () {
-                                            location.reload();
-                                        },
-                                        "取消": function () {
-                                            $(this).html('');//清空缓存
-                                            $(this).dialog("close");
-                                        }
-                                    }
-                                });
->>>>>>> 9cf5905b27737e41dddfb59990fb63afa3b7314f
+    /**
+     * 附件 如果是图片时 双击可查看大图
+     */
+    $('.litebox_file').liteBox({
+        revealSpeed: 400,
+        background: 'rgba(0,0,0,.8)',
+        overlayClose: true,
+        escKey: true,
+        navKey: true,
+        errorMessage: '图片加载失败.'
+    });
+    $("#dialog-file").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 800,
+        maxHeight: 400,
+        position: ["center", 100],
+        buttons: {
+            "确定": function () {
+                location.reload();
+            },
+            "取消": function () {
+                $(this).html(''); //清空缓存
+                $(this).dialog("close");
+            }
+        }
+    }); >>>
+    >>> > 9 cf5905b27737e41dddfb59990fb63afa3b7314f
 
     $(".add_file").click(function () {
         $('#dialog-file').dialog('open');
