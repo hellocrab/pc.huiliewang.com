@@ -118,6 +118,7 @@
     font-size: 20px;
     color: #ccc;
 }
+
 </style>
 <script>
     $(function () {
@@ -127,6 +128,8 @@
         })
     })
 </script>
+<script src="__PUBLIC__/js/jquery-ui-timepicker-addon.js"></script>
+<script src="__PUBLIC/JS/jquery-ui-slide.min.js"></script>
 <div class="wrapper wrapper-content animated fadeIn">
     <include file="Public:alert" />
     <form class="form-horizontal" id="form" role="form" action="{:U('business/add')}" method="post" enctype="multipart/form-data">
@@ -303,7 +306,11 @@
                                                 </if>
                                                 <else/>
                                                 <div class="col-md-6">
-                                                    {$vo.html}
+                                                    <if condition="$vo['field'] neq 'startdate'">
+                                                        {$vo.html}
+                                                        <else/>
+                                                        <input class='startdate'></input>
+                                                    </if>
                                                 </div>
                                                 <if condition = "$vo['tip_start'] eq 1">
                                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -457,6 +464,7 @@
     });
 
     $(function () {
+        $('.startdate').datetimepicker();
         $('#name').blur(function () {
             name = $('#name').val();
             if (name != '') {
