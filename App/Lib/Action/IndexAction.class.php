@@ -512,6 +512,7 @@ class IndexAction extends Action {
         $data = ['succ' => true, 'code' => 200, 'data' => $data];
         $this->ajaxReturn($data);
     }
+
     //首页项目统计接口( 参数)
     public function pipeline(){
         include APP_PATH . "Common/job.cache.php";
@@ -519,7 +520,6 @@ class IndexAction extends Action {
         $fine_project = D("ProjectView");
         $d_business = D('BusinessView');
         $type = $_GET['type'] ? BaseUtils::getStr($_GET['type']) :  '';
-        $type = 'onjob';
         switch (trim($type)){
             case 'offer' :
                 $data = $fine_project->where(array('fine_project.status'=>6))->order('fine_project.updatetime desc')->limit(10)->select();
@@ -582,9 +582,8 @@ class IndexAction extends Action {
                 }
                 break;
         }
-        header('content-type:text/html;charset=utf-8');
-        dump($data);die;
-        return $data;
+        $data = ['succ' => true, 'code' => 200, 'data' => $data];
+        $this->ajaxReturn($data);
     }
 
     //本周，上周，本月，上月。默认是本周
