@@ -3187,4 +3187,5 @@ function getWeekDay($monthInt, $num = 2) {
         $monthStartInt = strtotime('+1 days', $monthStartInt);
         $numPass++;
     }
+    return $monthStartInt + 2 * 24 * 3600;
 }
