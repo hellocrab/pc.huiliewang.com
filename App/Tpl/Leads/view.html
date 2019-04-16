@@ -328,7 +328,7 @@ $('#left_list a').click(function (e) {
 function url_jump(maodian){
     var leads_id = "{$leads['leads_id']}";
     var url = "{:U('leads/view','id=')}"+leads_id+maodian;
-    window.history.replaceState({},0,'http://'+window.location.host+url);
+    window.history.replaceState({},0,window.location.protocol + "//"+window.location.host+url);
 }
 /**
  * 附件 如果是图片时 双击可查看大图

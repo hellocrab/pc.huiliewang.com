@@ -453,7 +453,7 @@
 	function url_jump(maodian){
 	    var order_id = "{$order_info['order_id']}";;
 	    var url = "{:U('order/view','id=')}"+order_id+maodian;
-	    window.history.replaceState({},0,'http://'+window.location.host+url);
+	    window.history.replaceState({},0,window.location.protocol + "//"+window.location.host+url);
 	}
 
 	var is_receivables = '{$is_receivables}';

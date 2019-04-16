@@ -267,7 +267,7 @@
 	function url_jump(maodian){
 	    var leads_id = "{$contacts['contacts_id']}";
 	    var url = "{:U('contacts/view','id=')}"+leads_id+maodian;
-	    window.history.replaceState({},0,'http://'+window.location.host+url);
+	    window.history.replaceState({},0,window.location.protocol + "//"+window.location.host+url);
 	}
 $("#qrcode").popover({
     trigger : 'manual',

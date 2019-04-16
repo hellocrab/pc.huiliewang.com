@@ -1001,14 +1001,7 @@
         var customer_id = "{$customer['customer_id']}";
         var url = "{:U('customer/view','id=')}"+customer_id+maodian+'&content='+content;
         $('#bid').val('');
-        var ishttps = 'https:' == document.location.protocol ? true: false;
-        var header = "";
-        if(ishttps){
-            header = 'https://';
-       }else{
-            header = 'http://';
-       }
-        window.history.replaceState({},0,header+window.location.host+url);
+        window.history.replaceState({},0,window.location.protocol + "//"+window.location.host+url);
     }
 
     $("#remind").click(function(){

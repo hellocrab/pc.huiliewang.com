@@ -1232,17 +1232,7 @@
                 var url = "{:U('customer/view','id=')}"+customer_id+"&content={:I('content')}"+maodian;
             }
         }
-
-        // $("body").scrollTop(0);
-        // window.location.href = 'http://'+window.location.host+url;
-        var ishttps = 'https:' == document.location.protocol ? true: false;
-        var header = "";
-        if(ishttps){
-            header = 'https://';
-        }else{
-             header = 'http://';
-        }
-        window.history.replaceState({},0,header+window.location.host+url);
+        window.history.replaceState({},0,window.location.protocol + "//" +window.location.host+url);
     }
     var business_id = "{$business_id}";
 

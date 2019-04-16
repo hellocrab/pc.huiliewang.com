@@ -372,7 +372,7 @@ function member_url_jump(maodian){
     $('#member-relation').removeClass('all_business');
     $('#member-relation').addClass('all_business_a');
     var url = "{:U('member/view','id=')}"+member_id+maodian;
-    window.history.replaceState({},0,'http://'+window.location.host+url);
+    window.history.replaceState({},0,window.location.protocol + "//"+window.location.host+url);
 }
 </script>
 <include file="Public:footer" />

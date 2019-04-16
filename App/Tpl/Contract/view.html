@@ -703,7 +703,7 @@ $('#left_list a').click(function (e) {
 function url_jump(maodian){
     var contract_id = "{$info['contract_id']}";;
     var url = "{:U('contract/view','id=')}"+contract_id+maodian;
-    window.history.replaceState({},0,'http://'+window.location.host+url);
+    window.history.replaceState({},0,window.location.protocol + "//" +window.location.host+url);
 }
 
 var is_receivables = '{$is_receivables}';

@@ -898,7 +898,7 @@
                                                                 });
                                                                 function url_jump(maodian) {
                                                                     var url = "{:U('product/view','id=')}{$resume[eid]}" + maodian;
-                                                                    window.history.replaceState({}, 0, 'http://' + window.location.host + url);
+                                                                    window.history.replaceState({}, 0, window.location.protocol + "//" + window.location.host + url);
                                                                 }
 
 //初始化图片查看插件

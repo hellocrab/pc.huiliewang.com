@@ -252,9 +252,7 @@
         }else{
             var url = "{:U('member/view','id=')}"+member_id+maodian;
         }
-        // $("body").scrollTop(0);
-        // window.location.href = 'http://'+window.location.host+url;
-        window.history.replaceState({},0,'http://'+window.location.host+url);
+        window.history.replaceState({},0,window.location.protocol + "//"+window.location.host+url);
     }
 
     /**
