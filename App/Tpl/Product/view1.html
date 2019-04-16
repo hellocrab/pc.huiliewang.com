@@ -686,7 +686,7 @@ $('#left_list a').click(function (e) {
 function url_jump(maodian){
     var product_id = "{$product['product_id']}";;
     var url = "{:U('product/view','id=')}"+product_id+maodian;
-    window.history.replaceState({},0,'http://'+window.location.host+url);
+    window.history.replaceState({},0, window.location.protocol + "//" +window.location.host+url);
 }
 
 //初始化图片查看插件

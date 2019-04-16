@@ -346,7 +346,7 @@ $('#left_list a').click(function (e) {
 function url_jump(maodian){
     var invoice_id = "{$invoice_info['invoice_id']}";;
     var url = "{:U('invoice/view','id=')}"+invoice_id+maodian;
-    window.history.replaceState({},0,'http://'+window.location.host+url);
+    window.history.replaceState({},0,window.location.protocol + "//"+window.location.host+url);
 }
 
 $("#check_invoice").click(function(){

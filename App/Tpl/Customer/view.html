@@ -1001,7 +1001,7 @@
         var customer_id = "{$customer['customer_id']}";
         var url = "{:U('customer/view','id=')}"+customer_id+maodian+'&content='+content;
         $('#bid').val('');
-        window.history.replaceState({},0,'http://'+window.location.host+url);
+        window.history.replaceState({},0,window.location.protocol + "//"+window.location.host+url);
     }
 
     $("#remind").click(function(){

@@ -279,14 +279,25 @@ class ContactsAction extends Action {
 			$c_outdays = empty($c_outdays) ? 0 : $c_outdays;
 			$contract_outdays = empty($c_outdays) ? 0 : time()-86400*$c_outdays;
 			$openrecycle = $m_config->where('name="openrecycle"')->getField('value');
-
+            $contacts = $d_contacts->where('contacts.contacts_id = %d' , $contacts_id)->find();
+            if(!$contacts){
+                $this->error('该联系人信息不存在');
+            }
+            $permissionRes = getPerByAction('contacts','view');
+            $owner_role_id = $customer_info['owner_role_id'];
+            $contacts_role_id = $contacts['creator_role_id'];
 			if ($openrecycle == 2) {
-				if($customer_info['owner_role_id'] != 0 && (($customer_info['update_time'] > $outdate && $customer_info['get_time'] > $contract_outdays) || $customer_info['is_locked'] == 1)){
-					if(!in_array($customer_info['owner_role_id'], getPerByAction('contacts','view')) && !session('?admin')){
+//				if($customer_info['owner_role_id'] != 0 && (($customer_info['update_time'] > $outdate && $customer_info['get_time'] > $contract_outdays) || $customer_info['is_locked'] == 1)){
+				if($owner_role_id != 0 || $customer_info['is_locked'] == 1){
+					if(!in_array($owner_role_id, $permissionRes ) && !in_array($contacts_role_id, $permissionRes) && !session('?admin')){
 						$this->error(L('HAVE NOT PRIVILEGES'));
 					}
 				}
-			}
+			}else{
+                if(!in_array($owner_role_id, $permissionRes) && !in_array($contacts_role_id, $permissionRes) && !session('?admin')){
+                    $this->error(L('HAVE NOT PRIVILEGES'));
+                }
+            }
 
 			//查询关联商机
 			$m_r_business = M('RBusinessContacts');
@@ -304,7 +315,7 @@ class ContactsAction extends Action {
 			}
 			//自定义字段显示
 			$field_list = M('Fields')->where('model = "contacts"')->order('order_id')->select();
-			$contacts = $d_contacts->where('contacts.contacts_id = %d' , $contacts_id)->find();
+//			$contacts = $d_contacts->where('contacts.contacts_id = %d' , $contacts_id)->find();
 			//日程信息
 			$m_event = M('Event');
 			$m_user = M('User');
@@ -1060,6 +1071,7 @@ class ContactsAction extends Action {
      */
     public function isScan() {
         header("Access-Control-Allow-Origin: *");
+        $this->_permissionRes = getPerByAction(MODULE_NAME,'view');
         $userRoleId = I('role_id', session('role_id'));
         $type = I('type', 1);
         $itemId = I('item_id', 0);
