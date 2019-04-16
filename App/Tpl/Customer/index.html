@@ -700,7 +700,7 @@
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Z0Fo0ib1GUgWlylCWeLvQh2U"></script>
+                                                                                                    <include file="Public:mapbaidu" />
 
                                                                                                     <div style="display:none" id="dialog-field-search" title="高级搜索">
                                                                                                         <form class="form-inline" id="searchForm" action="{:U('customer/index')}" method="get">
@@ -1016,7 +1016,7 @@
                                                                                                             $(".call_out").on('click',function () {
                                                                                                                 var itemId = $(this).attr('rel');
                                                                                                                 $.post(
-                                                                                                                    "{:U('user/call_out')}",
+                                                                                                                    "{:U('callcenter/call_out')}",
                                                                                                                     {itemId: itemId,type:2,tel:''},
                                                                                                                     function (data) {
                                                                                                                         var obj = $.parseJSON(data);

@@ -1050,7 +1050,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Z0Fo0ib1GUgWlylCWeLvQh2U"></script>
+<include file="Public:mapbaidu" />
 <link href="__PUBLIC__/css/litebox.css" rel="stylesheet" type="text/css">
 <script src="__PUBLIC__/js/litebox.min.js" type="text/javascript"></script>
 <script src="__PUBLIC__/js/images-loaded.min.js" type="text/javascript"></script>
@@ -1060,7 +1060,7 @@
                                             $(".call_out").on('click', function () {
                                                 var itemId = $(this).attr('rel');
                                                 $.post(
-                                                        "{:U('user/call_out')}",
+                                                        "{:U('callcenter/call_out')}",
                                                         {itemId: itemId,type:2,tel:''},
                                                         function (data) {
                                                             var obj = $.parseJSON(data);
@@ -1235,7 +1235,14 @@
 
         // $("body").scrollTop(0);
         // window.location.href = 'http://'+window.location.host+url;
-        window.history.replaceState({},0,'http://'+window.location.host+url);
+        var ishttps = 'https:' == document.location.protocol ? true: false;
+        var header = "";
+        if(ishttps){
+            header = 'https://';
+        }else{
+             header = 'http://';
+        }
+        window.history.replaceState({},0,header+window.location.host+url);
     }
     var business_id = "{$business_id}";
 
