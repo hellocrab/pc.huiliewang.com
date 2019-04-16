@@ -1989,7 +1989,7 @@ function checkPerByAction($m, $a) {
     if (session('?admin')) {
         //2为所有人
         return 2;
-    } elseif ($url == 'user/call_out' || "business/invoiceReCheck") {//全员拥有功能
+    } elseif ($url == 'callcenter/call_out' || "business/invoiceReCheck") {//全员拥有功能
         return 2;
     } elseif ($per = $m_permission->where('url = "%s" and position_id = %d', $url, session('position_id'))->find()) {
         //有$url操作权限；
