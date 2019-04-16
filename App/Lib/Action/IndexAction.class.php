@@ -514,12 +514,77 @@ class IndexAction extends Action {
     }
     //首页项目统计接口( 参数)
     public function pipeline(){
-        $type = $_GET['type'] ? BaseUtils::getStr($_GET['type']) :  'business_ing';
-        switch ($type){
-            case 'business_ing':
-                $d_v_business = D('BusinessTopView');
-//                $d_v_business->where(array('status_id'=>1))->
+        include APP_PATH . "Common/job.cache.php";
+        $d_v_business = D('BusinessTopView');
+        $fine_project = D("ProjectView");
+        $d_business = D('BusinessView');
+        $type = $_GET['type'] ? BaseUtils::getStr($_GET['type']) :  '';
+        $type = 'onjob';
+        switch (trim($type)){
+            case 'offer' :
+                $data = $fine_project->where(array('fine_project.status'=>6))->order('fine_project.updatetime desc')->limit(10)->select();
+                foreach ($data as $k=>$v){
+                    $da = M('resume')->field('name,birthday,telephone,email')->where(array('eid'=>$v['resume_id']))->find();
+                    $data[$k]['name'] = $da['name'];
+                    $data[$k]['birthday'] = $da['birthday'];
+                    $data[$k]['telephone'] = $da['telephone'];
+                    $data[$k]['email']= $da['email'];
+                    $data[$k]['status'] = '签订offer';
+                    $jobclass = $d_business->where(array('business.business_id' => $v['business_id']))->getField('jobclass');
+                    if($jobclass){
+                        $className = '';
+                        foreach (explode(',',$jobclass) as $classId){
+                            $className .= $job_name[$classId] .'  ';
+                        }
+                    }
+                    $data[$k]['user'] = M('user')->where(array('role_id'=>$v['tracker']))->getField('full_name');
+                    $data[$k]['jobname'] = $className;
+                }
+                break;
+            case 'onjob' :
+                $data = $fine_project->where(array('fine_project.status'=>6))->order('fine_project.updatetime desc')->limit(10)->select();
+                foreach ($data as $k=>$v){
+                    $da = M('resume')->field('name,birthday,telephone,email')->where(array('eid'=>$v['resume_id']))->find();
+                    $data[$k]['name'] = $da['name'];
+                    $data[$k]['birthday'] = $da['birthday'];
+                    $data[$k]['telephone'] = $da['telephone'];
+                    $data[$k]['email']= $da['email'];
+                    $data[$k]['status'] = '签订offer';
+                    $jobclass = $d_business->where(array('business.business_id' => $v['business_id']))->getField('jobclass');
+                    if($jobclass){
+                        $className = '';
+                        foreach (explode(',',$jobclass) as $classId){
+                            $className .= $job_name[$classId] .'  ';
+                        }
+                    }
+                    $data[$k]['user'] = M('user')->where(array('role_id'=>$v['tracker']))->getField('full_name');
+                    $data[$k]['jobname'] = $className;
+                }
+                break;
+            default:
+                $data = $d_v_business->where(array('status_id'=>1))-> order('update_time desc')-> limit(10)->select();
+                include APP_PATH . "Common/city.cache.php";
+                foreach ($data as $k=>$v){
+                    $data[$k]['customer'] = M('customer')->where(array('customer_id'=>$v['customer_id']))->getField('name');
+                    if ($data[$k]['address']) {
+                        $arr = array();
+                        $address = explode(",", $data[$k]['address']);
+                        foreach ($address as $li) {
+                            $arr[] = $city_name[$li];
+                        }
+                        $data[$k]['address'] = implode(",", $arr);
+                    }
+                    $roleIds = explode(',', $v['owner_role_id']);
+                    $where2['role_id'] = array('in', $roleIds);
+                    $data[$k]['owner'] = M('user')->where($where2)->field('full_name,role_id')->select();
+                    $data[$k]['updatetime'] = date('Y-m-d H:i');
+                    $data[$k]['status'] = '项目进展中';
+                }
+                break;
         }
+        header('content-type:text/html;charset=utf-8');
+        dump($data);die;
+        return $data;
     }
 
     //本周，上周，本月，上月。默认是本周
