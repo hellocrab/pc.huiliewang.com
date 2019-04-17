@@ -1,6 +1,7 @@
 <?php
 
-class CallcenterAction extends Action {
+class CallcenterAction extends Action
+{
 
     const APPID = '00000000699efd070169e76bd4970372';
     const APP_TOKEN = "3ff246aa87687839df55f843459e47b6";
@@ -26,7 +27,7 @@ class CallcenterAction extends Action {
     }
 
     //坐席上班
-    function startWork($timestamp, $sourceTel='') {
+    function startWork($timestamp, $sourceTel = '') {
         $sig = $this->getsig($timestamp);
         $auth = $this->getauth($timestamp);
         $url = "https://wdapi.yuntongxin.vip/bind/agentOnWork/v2?Sig=" . $sig;
@@ -115,7 +116,7 @@ class CallcenterAction extends Action {
         } elseif ($channel == 2) {
             //融营云坐席外呼
             $sourceTel = M('user')->where(['role_id' => session('role_id')])->getField('ryy_tel');
-            if($sourceTel){
+            if (!$sourceTel) {
                 echo json_encode(['code' => 0, 'msg' => '请设置坐席号，谢谢']);
             }
             $timestamp = date('YmdHis');
@@ -125,12 +126,11 @@ class CallcenterAction extends Action {
                 echo json_encode(['code' => $uuid == 200 ? 1 : 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']);
             }
             $callStatus = $this->rongYinYunCall($timestamp, $tel, $sourceTel);
-            if($callStatus['statuscode'] == 200){
+            if ($callStatus['statuscode'] == 200) {
                 echo json_encode(['code' => $callStatus['statuscode'] == 200 ? 1 : 0, 'msg' => '拨打成功']);
             }
             $this->offWork($timestamp, $sourceTel);
         }
-
 
 
 //        坐席下班
@@ -143,7 +143,7 @@ class CallcenterAction extends Action {
      * 融营云呼叫
      */
 
-    private function rongYinYunCall($timestamp, $tel ,$sourceTel) {
+    private function rongYinYunCall($timestamp, $tel, $sourceTel) {
         $sig = $this->getsig($timestamp);
         $auth = $this->getauth($timestamp);
         $url = "https://wdapi.yuntongxin.vip/bind/callEvent/v2?Sig=" . $sig;
@@ -151,7 +151,7 @@ class CallcenterAction extends Action {
             'Accept:' . 'application/json',
             'Authorization:' . $auth);
         $data = ["Appid" => self::APPID, "Phone" => $tel, "voipAccount" => $sourceTel];
-        
+
         $data = json_encode($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -228,7 +228,11 @@ class CallcenterAction extends Action {
         $this->display();
     }
 
-    public function callRecordAdd(){
+    private function record($fineId,$callsId) {
+
+    }
+
+    public function call_back() {
 
     }
 
