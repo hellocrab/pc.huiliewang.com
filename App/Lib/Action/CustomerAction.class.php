@@ -1014,7 +1014,8 @@ class CustomerAction extends Action {
             default :
                 if ($this->_get('content') == 'resource') {
                     if ($openrecycle == 2) {
-                        $where['_string'] = "customer.owner_role_id=0 or (customer.update_time < $outdate and customer.is_locked = 0) or (customer.get_time < $contract_outdays and customer.is_locked = 0)";
+//                        $where['_string'] = "customer.owner_role_id=0 or (customer.update_time < $outdate and customer.is_locked = 0) or (customer.get_time < $contract_outdays and customer.is_locked = 0)";
+                        $where['_string'] = "customer.owner_role_id=0 or (customer.update_time < $outdate and customer.is_locked = 0) or (customer.update_time < $outdate and customer.is_locked is null) or (customer.get_time < $contract_outdays and customer.is_locked = 0) or (customer.get_time < $contract_outdays and customer.is_locked is null)";
                     } else {
                         $where['customer.owner_role_id'] = "0";
                     }
