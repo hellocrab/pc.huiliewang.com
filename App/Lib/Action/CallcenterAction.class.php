@@ -305,7 +305,7 @@ class CallcenterAction extends Action
             $res = copy($data['recordUrl'], $localFile);
             if ($res) {
                 import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
-                $ossFile = "call_record/{$callerNum}/{$data['sec_id']}.wav";
+                $ossFile = "call_record/{$callerNum}/{$data['sec_id']}.{$extension}";
                 $ossClient = new AliOssAction();
                 $ossUrl = $ossClient->upFile($localFile, $ossFile);
                 unlink($localFile);
