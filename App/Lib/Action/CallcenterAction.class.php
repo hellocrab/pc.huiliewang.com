@@ -6,19 +6,6 @@ class CallcenterAction extends Action
     const APPID = '00000000699efd070169e76bd4970372';
     const APP_TOKEN = "3ff246aa87687839df55f843459e47b6";
 
-    public function index() {
-        import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
-//            http://122.13.2.212/4001004697/20190417/R00058036_20190417144458.wav
-        $res = copy('http://122.13.2.212/4001004697/20190417/R00058036_20190417144458.wav', './test.wav');
-        var_dump($res);
-
-        $ossFile = "call_record/4001004697/4001004697.wav";
-        $localFile = './test.wav';
-        $ossClient = new AliOssAction();
-        $res = $ossClient->upFile($localFile, $ossFile);
-        var_dump($res);
-    }
-
     /**
      * 融营云呼叫中心SIG获取
      */
@@ -147,12 +134,6 @@ class CallcenterAction extends Action
             }
             $this->offWork($timestamp, $sourceTel);
         }
-
-
-//        坐席下班
-//        $this->offWork($timestamp);
-//        $result = json_decode($msg, true);
-//        $uuid=$result['resp']['Msg'];
     }
 
     /**
@@ -314,7 +295,9 @@ class CallcenterAction extends Action
         //录音地址处理
         $data['oss_record_url'] = '';
         if ($data['recordUrl']) {
-            $localFile = $data['sec_id'];
+            $pathInfo = pathinfo($data['recordUrl']);
+            $extension = $pathInfo['extension'];
+            $localFile = "/Uploads/temp/{$data['sec_id']}.{$extension}"; //临时文件存放
             $res = copy($data['recordUrl'], $localFile);
             if (!$res) {
                 return false;
@@ -323,6 +306,7 @@ class CallcenterAction extends Action
             $ossFile = "call_record/{$callerNum}/{$data['sec_id']}.wav";
             $ossClient = new AliOssAction();
             $ossUrl = $ossClient->upFile($localFile, $ossFile);
+            unlink($localFile);
             $data['oss_record_url'] = $ossUrl;
         }
         return $this->record($data['sec_id'], $data);
