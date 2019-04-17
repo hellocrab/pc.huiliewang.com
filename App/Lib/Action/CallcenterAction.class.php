@@ -6,6 +6,19 @@ class CallcenterAction extends Action
     const APPID = '00000000699efd070169e76bd4970372';
     const APP_TOKEN = "3ff246aa87687839df55f843459e47b6";
 
+    public function index() {
+        import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
+//            http://122.13.2.212/4001004697/20190417/R00058036_20190417144458.wav
+        $res = copy('http://122.13.2.212/4001004697/20190417/R00058036_20190417144458.wav', './test.wav');
+        var_dump($res);
+
+        $ossFile = "call_record/4001004697/4001004697.wav";
+        $localFile = './test.wav';
+        $ossClient = new AliOssAction();
+        $res = $ossClient->upFile($localFile, $ossFile);
+        var_dump($res);
+    }
+
     /**
      * 融营云呼叫中心SIG获取
      */
@@ -84,6 +97,7 @@ class CallcenterAction extends Action
         $tel = $_POST['tel'] ? BaseUtils::getStr(trim($_POST['tel'])) : '0';
         $type = isset($_POST['type']) ? intval($_POST['type']) : 0; //1、简历 2、客户联系人
         $itemId = isset($_POST['itemId']) ? $_POST['itemId'] : 0; //客户联系人/简历ID
+        $fineId = isset($_POST['fineId']) ? $_POST['fineId'] : 0; //客户联系人/简历ID
         $channel = $_POST['channel'] ? BaseUtils::getStr(trim(I('channel'))) : 1;
         if ($itemId > 0) {
             //简历联系人电话
@@ -103,7 +117,7 @@ class CallcenterAction extends Action
                     session('tel', $user['telephone']);
                     $sourceTel = $user['telephone'];
                 } else {
-                    echo json_encode(['code' => $msg->meta->success ? 1 : 0, 'msg' => '请绑定手机号码']);
+                    exit(json_encode(['code' => 0, 'msg' => '请绑定手机号码']));
                 }
             }
         } else {
@@ -117,16 +131,18 @@ class CallcenterAction extends Action
             //融营云坐席外呼
             $sourceTel = M('user')->where(['role_id' => session('role_id')])->getField('ryy_tel');
             if (!$sourceTel) {
-                echo json_encode(['code' => 0, 'msg' => '请设置坐席号，谢谢']);
+                exit(json_encode(['code' => 0, 'msg' => '请设置坐席号，谢谢']));
             }
             $timestamp = date('YmdHis');
             $uuid = $this->startWork($timestamp, $sourceTel);
             if ($uuid != 200) {
                 //融营云服务暂时不可用
-                echo json_encode(['code' => $uuid == 200 ? 1 : 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']);
+                exit(json_encode(['code' => $uuid == 200 ? 1 : 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
             }
             $callStatus = $this->rongYinYunCall($timestamp, $tel, $sourceTel);
             if ($callStatus['statuscode'] == 200) {
+                $callsId = $callStatus['data'];
+                $this->record($callsId, ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel]);
                 echo json_encode(['code' => $callStatus['statuscode'] == 200 ? 1 : 0, 'msg' => '拨打成功']);
             }
             $this->offWork($timestamp, $sourceTel);
@@ -228,12 +244,88 @@ class CallcenterAction extends Action
         $this->display();
     }
 
-    private function record($fineId,$callsId) {
+    /**
+     * @desc  通话记录添加/维护
+     * @param $callsId
+     * @param array $data
+     * @return bool|mixed
+     */
+    private function record($callsId, $data = []) {
+        if (!$callsId || !$data) {
+            return false;
+        }
+        $recordObj = M('phone_record');
+        $callInfo = $recordObj->where(['sec_id' => $callsId])->find();
+        if (!$callInfo) {
+            //添加通话记录
+            $fineId = $data['fine_id'];
+            $settingNbr = $data['setingNbr'];
+            if (!$data['fine_id'] || !$data['setingNbr']) {
+                return false;
+            }
+            $fineInfo = M('fine_project')->where(['id' => $fineId])->find();
+            if (!$fineInfo) {
+                return false;
+            }
 
+            $dataUser = [
+                'role_id' => session('role_id'), 'sec_id' => $callsId, 'setingNbr' => $settingNbr, 'add_time' => time(), 'sessionId' => $callsId,
+                'user_name' => session('full_name'), 'department_id' => session('department_id'), 'user_id' => session('user_id'), 'callerNum' => $settingNbr
+            ];
+            $data = array_merge($dataUser, $data);
+            return $recordObj->add($data);
+        }
+        //更新通话记录
+        return $recordObj->where(['sec_id' => $callsId])->save($data);
     }
 
+    /**
+     * @desc 通话回掉地址
+     * Caller_Id_Number String 必填 坐席号码
+     * Destination_Number String 必填 客户号码
+     * Context String 必填 呼入呼出类型 0 呼出 1 呼入
+     * Start_Stamp DateTime 必填 开始时间
+     * End_Stamp DateTime 必填 结束时间
+     * Billsec Int 必填 通话时长
+     * RecordUrl String 可填 录音地址
+     * CallSid String 必填 通话唯一标识
+     * @return bool|mixed
+     */
     public function call_back() {
+        $content = file_get_contents('php://input');
+        if (!$content) {
+            return false;
+        }
+        $content = json_decode($content, true);
+        if (!$content['CallSid']) {
+            return false;
+        }
+        $data = [];
+        $data['sec_id'] = $content['CallSid']; //唯一标识
+        $data['duration'] = $content['Billsec']; //通话时长
+        $data['recordUrl'] = $content['recordUrl']; // 录音地址
+        $data['recordFlag'] = $content['recordUrl'] ? 1 : 0; // 录音地址
+        $data['call_end_time'] = $content['End_Stamp']; // 通话结束时间
+        $data['callOutAnswerTime'] = $content['Start_Stamp']; // 通话开始时间
+        $data['direction'] = $content['Context']; // 呼入呼出类型
+        $data['callback_time'] = time(); // 回掉时间记录
+        $callerNum = $content['Caller_Id_Number'];
 
+        //录音地址处理
+        $data['oss_record_url'] = '';
+        if ($data['recordUrl']) {
+            $localFile = $data['sec_id'];
+            $res = copy($data['recordUrl'], $localFile);
+            if (!$res) {
+                return false;
+            }
+            import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
+            $ossFile = "call_record/{$callerNum}/{$data['sec_id']}.wav";
+            $ossClient = new AliOssAction();
+            $ossUrl = $ossClient->upFile($localFile, $ossFile);
+            $data['oss_record_url'] = $ossUrl;
+        }
+        return $this->record($data['sec_id'], $data);
     }
 
 }
