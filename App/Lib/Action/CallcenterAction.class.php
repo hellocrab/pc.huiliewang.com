@@ -1,6 +1,6 @@
 <?php
 
-class CallCenterAction extends Action {
+class CallcenterAction extends Action {
 
     const APPID = '00000000699efd070169e76bd4970372';
     const APP_TOKEN = "3ff246aa87687839df55f843459e47b6";
@@ -26,20 +26,24 @@ class CallCenterAction extends Action {
     }
 
     //坐席上班
-    function startWork($timestamp) {
+    function startWork($timestamp, $sourceTel='') {
         $sig = $this->getsig($timestamp);
         $auth = $this->getauth($timestamp);
         $url = "https://wdapi.yuntongxin.vip/bind/agentOnWork/v2?Sig=" . $sig;
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
             'Accept:' . 'application/json',
             'Authorization:' . $auth);
-        $data = ["voipAccount" => "80469800000256"];
+        $data = ["voipAccount" => $sourceTel];
         $data = json_encode($data);
         $ch = curl_init();
+
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, '1.0');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $msg = curl_exec($ch);
         $result = json_decode($msg, true);
@@ -48,7 +52,7 @@ class CallCenterAction extends Action {
     }
 
     //坐席下班
-    function offWork($timestamp) {
+    function offWork($timestamp, $sourceTel) {
         $sig = $this->getsig($timestamp);
         $auth = $this->getauth($timestamp);
 
@@ -56,13 +60,14 @@ class CallCenterAction extends Action {
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
             'Accept:' . 'application/json',
             'Authorization:' . $auth);
-        $data = ["voipAccount" => "80469800000256"];
+        $data = ["voipAccount" => $sourceTel];
         $data = json_encode($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $msg = curl_exec($ch);
         $result = json_decode($msg, true);
@@ -89,7 +94,7 @@ class CallCenterAction extends Action {
                 $tel = M('contacts')->where(['contacts_id' => $itemId])->getField('telephone');
             }
         }
-
+        $sourceTel = '';
         if (!session('tel')) {
             if (session('role_id')) {
                 $user = M('user')->where(['role_id' => session('role_id')])->field('user_id,telephone')->find();
@@ -109,17 +114,21 @@ class CallCenterAction extends Action {
             $this->pinPingCall($sourceTel, $tel);
         } elseif ($channel == 2) {
             //融营云坐席外呼
+            $sourceTel = M('user')->where(['role_id' => session('role_id')])->getField('ryy_tel');
+            if($sourceTel){
+                echo json_encode(['code' => 0, 'msg' => '请设置坐席号，谢谢']);
+            }
             $timestamp = date('YmdHis');
-            $uuid = $this->startWork($timestamp);
+            $uuid = $this->startWork($timestamp, $sourceTel);
             if ($uuid != 200) {
                 //融营云服务暂时不可用
                 echo json_encode(['code' => $uuid == 200 ? 1 : 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']);
             }
-            $callStatus = $this->rongYinYunCall($timestamp, $tel);
+            $callStatus = $this->rongYinYunCall($timestamp, $tel, $sourceTel);
             if($callStatus['statuscode'] == 200){
                 echo json_encode(['code' => $callStatus['statuscode'] == 200 ? 1 : 0, 'msg' => '拨打成功']);
             }
-            $this->offWork($timestamp);
+            $this->offWork($timestamp, $sourceTel);
         }
 
 
@@ -130,18 +139,18 @@ class CallCenterAction extends Action {
 //        $uuid=$result['resp']['Msg'];
     }
 
-    /*
+    /**
      * 融营云呼叫
      */
 
-    private function rongYinYunCall($timestamp, $tel) {
+    private function rongYinYunCall($timestamp, $tel ,$sourceTel) {
         $sig = $this->getsig($timestamp);
         $auth = $this->getauth($timestamp);
         $url = "https://wdapi.yuntongxin.vip/bind/callEvent/v2?Sig=" . $sig;
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
             'Accept:' . 'application/json',
             'Authorization:' . $auth);
-        $data = ["Appid" => self::APPID, "Phone" => $tel, "voipAccount" => "80469800000256"];
+        $data = ["Appid" => self::APPID, "Phone" => $tel, "voipAccount" => $sourceTel];
         
         $data = json_encode($data);
         $ch = curl_init();
@@ -149,6 +158,11 @@ class CallCenterAction extends Action {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, '1.0');
+
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $msg = curl_exec($ch);
         $result = json_decode($msg, true);
@@ -212,6 +226,10 @@ class CallCenterAction extends Action {
 //        $uuid=$result['resp']['Msg'];
         $this->assign('msg', $result[data]);
         $this->display();
+    }
+
+    public function callRecordAdd(){
+
     }
 
 }
