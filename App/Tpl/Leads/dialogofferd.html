@@ -39,7 +39,8 @@
             <tbody class="mainTbody">
                 <volist name="list" id="vo">
                     <tr>
-                        <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.tracker_name}</a></td>
+                        <!--<td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.tracker_name}</a></td>-->
+                        <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap">{$vo.tracker_name}</td>
                         <td style="min-width: 100px;">{$vo.department_name}</td>
                         <td style="min-width: 80px;"><a href="{:U('product/view','id='.$vo['eid'])}" target="_blank">{$vo.name}</a></td>
                         <td style="min-width: 80px;"><a href="{:U('business/view','id='.$vo['business_id'])}" target="_blank">{$vo.business_name}</a></td>

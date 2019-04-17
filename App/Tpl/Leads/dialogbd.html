@@ -51,7 +51,8 @@
                     <td><a href="{:U('customer/view', 'id='.$vo['customer_id'])}" target="_blank">{$vo.customer_name}</a></td>
                     <td>{$vo.price}</td>
                     <td>{$vo.contract_name}</td>
-                    <td  style="padding-left: 15px;text-align: left;"><a href="javascript:void(0);" class="role_info" rel="">{$vo.owner_name}</a></td>
+                    <td  style="padding-left: 15px;text-align: left;">{$vo.owner_name}</td>
+                    <!--<td  style="padding-left: 15px;text-align: left;"><a href="javascript:void(0);" class="role_info" rel="">{$vo.owner_name}</a></td>-->
                     <td>{$vo.department_name}</td>
                     <td>{$vo.create_time|date='Y-m-d H:i',###}</td>
                 </tr>

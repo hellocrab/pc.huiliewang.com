@@ -78,7 +78,8 @@
                         <if condition="$vo.plans neq ''">未来规划:{$vo.plans}<br/></if>
                     </td>
                     <td>{$vo.addtime|date='Y-m-d H:i',###}</td>
-                    <td style="padding-left: 15px;text-align: left;"><a href="javascript:void(0);" class="role_info" rel="{$vo.user_id}">{$vo.user_name}</a></td>
+                    <td style="padding-left: 15px;text-align: left;">{$vo.user_name}</td>
+                    <!--<td style="padding-left: 15px;text-align: left;"><a href="javascript:void(0);" class="role_info" rel="{$vo.user_id}">{$vo.user_name}</a></td>-->
                 </tr>
             </volist>
 

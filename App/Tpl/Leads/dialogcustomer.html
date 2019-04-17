@@ -51,7 +51,8 @@
                     <td style="min-width: 80px;"><a href="{:U('customer/view', 'id='.$vo['customer_id'])}" target="_blank">{$vo.name}</a></td>
                     <td style="min-width: 80px;">{$industry_name[$vo[industry]]}</td>
                     <td style="min-width: 80px;">{$city_name[$vo[address]]}</td>
-                    <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.user_name}</a></td>
+                    <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap">{$vo.user_name}</td>
+                    <!--<td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.user_name}</a></td>-->
                     <td style="min-width: 100px;">{$vo.department_name}</td>
                     <td style="min-width: 80px;">{$vo.create_time|date="Y-m-d H:i",###}</td>
                 </tr>
