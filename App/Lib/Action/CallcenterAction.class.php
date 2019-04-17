@@ -297,7 +297,11 @@ class CallcenterAction extends Action
         if ($data['recordUrl']) {
             $pathInfo = pathinfo($data['recordUrl']);
             $extension = $pathInfo['extension'];
-            $localFile = "./Uploads/temp/{$data['sec_id']}.{$extension}"; //临时文件存放
+            $dir = "./Uploads/temp/";
+            if(!is_dir($dir)){
+                @mkdir($dir, 0755, true);
+            }
+            $localFile = "{$dir}{$data['sec_id']}.{$extension}"; //临时文件存放
             $res = copy($data['recordUrl'], $localFile);
             if ($res) {
                 import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
