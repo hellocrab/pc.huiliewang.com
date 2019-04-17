@@ -297,7 +297,7 @@ class CallcenterAction extends Action
         if ($data['recordUrl']) {
             $pathInfo = pathinfo($data['recordUrl']);
             $extension = $pathInfo['extension'];
-            $localFile = "/Uploads/temp/{$data['sec_id']}.{$extension}"; //临时文件存放
+            $localFile = "./Uploads/temp/{$data['sec_id']}.{$extension}"; //临时文件存放
             $res = copy($data['recordUrl'], $localFile);
             if (!$res) {
                 return false;
