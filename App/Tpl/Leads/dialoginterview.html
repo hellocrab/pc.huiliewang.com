@@ -57,20 +57,20 @@
             <tbody class="mainTbody">
             <volist name="list" id="vo">
                 <tr>
-                    <td style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="{$vo.id}">{$vo.name}</a></td>
+                    <td style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="{:U('product/view','id='.$vo['resume_id'])}" target="_blank"">{$vo.name}</a></td>
                     <td>{$vo.current_company}</td>
                     <td>{$vo.current_department}</td>
                     <td>{$vo.current_job}</td>
                     <td><if condition="$vo.sex eq '1'">男<else/>女</if></td>
                     <td>{$vo.age}</td>
                     <td>{$vo.edu}</td>
-                    <td>{$vo.business_name}</td>
+                    <td><a href="{:U('business/view','id='.$vo['project_id'])}" target="_blank">{$vo.business_name}</a></td>
                     <td>{$vo.status_type}</td>
                     <td>{$vo.timestart}</td>
 <!--                    <td></td>
                     <td></td>-->
                     <td>{$vo.tracker_name}</td>
-                    <td>{$vo.customer_name}</td>
+                    <td><a href="{:U('customer/view', 'id='.$vo['com_id'])}" target="_blank">{$vo.customer_name}</a></td>
                     <td>{$vo.beizhu|default=''}</td>
                     <td>{$vo.addtime|date='Y-m-d H:i',###}</td>
                 </tr>

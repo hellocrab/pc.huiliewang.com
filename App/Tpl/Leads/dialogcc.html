@@ -61,7 +61,7 @@
                     <td>{$vo.current_job}</td>
                     <td><if condition="$vo.sex eq 1">男<else/>女</if></td>
                     <td>{$vo.edu}</td>
-                    <td>{$vo.job_class}</td>
+                    <td><a href="{:U('business/view','id='.$vo['project_id'])}" target="_blank">{$vo.business_name}</a></td>
                     <td>{$vo.call_result}</td>
                     <td><if condition="$vo.gj eq 0">否<else/>是</if></td>
                     <td><if condition="$vo.target eq 0">否<else/>是</if></td>
