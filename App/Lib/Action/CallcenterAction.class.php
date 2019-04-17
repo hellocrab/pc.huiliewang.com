@@ -299,15 +299,14 @@ class CallcenterAction extends Action
             $extension = $pathInfo['extension'];
             $localFile = "./Uploads/temp/{$data['sec_id']}.{$extension}"; //临时文件存放
             $res = copy($data['recordUrl'], $localFile);
-            if (!$res) {
-                return false;
+            if ($res) {
+                import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
+                $ossFile = "call_record/{$callerNum}/{$data['sec_id']}.wav";
+                $ossClient = new AliOssAction();
+                $ossUrl = $ossClient->upFile($localFile, $ossFile);
+                unlink($localFile);
+                $data['oss_record_url'] = $ossUrl;
             }
-            import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
-            $ossFile = "call_record/{$callerNum}/{$data['sec_id']}.wav";
-            $ossClient = new AliOssAction();
-            $ossUrl = $ossClient->upFile($localFile, $ossFile);
-            unlink($localFile);
-            $data['oss_record_url'] = $ossUrl;
         }
         return $this->record($data['sec_id'], $data);
     }
