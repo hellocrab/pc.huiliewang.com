@@ -222,17 +222,27 @@
                                         function (data) {
                                             var obj = $.parseJSON(data);
                                             if (obj.code) {
+                                                $('.fa-times').remove()
                                                 swal("操作成功！",
                                                     "拨打电话成功,请稍等电话接通！",
                                                     "success");
                                                 //                                     alert_crm(data.message);
                                             } else {
+                                                $('.fa-times').remove()
                                                 alert_crm(obj.msg +
                                                     ",请联系管理员！");
                                             }
                                         }
                                     );
                                 });
+                            $('.cancel').css('backgroundColor','rgb(221, 107, 85)').on('mouseenter',ev=>{
+                                $('.cancel').css('backgroundColor','rgb(212,103,82)')
+                                }).on('mouseleave',ev=>{$('.cancel').css('backgroundColor','rgb(221, 107, 85)')})
+                            $('.sweet-alert').append(`<i style='position:absolute;top:10px;right:10px;cursor:pointer;' class='fa fa-times'/>`);
+                            $('.fa-times').click(ev=>{
+                                swal("已取消", "您取消了拨打电话！", "error");
+                                $('.fa-times').remove()
+                            })
                         });
                         let pro_id = "{:I('id')}";
                         var uploader = WebUploader.create({
