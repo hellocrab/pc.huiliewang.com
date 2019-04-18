@@ -274,46 +274,112 @@ class CallcenterAction extends Action
      */
     public function call_back() {
         $content = file_get_contents('php://input');
+//        $content = file_get_contents('./str.json');
         if (!$content) {
             return false;
         }
-        BaseUtils::addLog("融营云回掉参数 ： {$content}",'callback_log','/var/log/rongyinyun/');
+        BaseUtils::addLog("融营云回掉参数 ： {$content}", 'callback_log', '/var/log/rongyinyun/');
         $content = json_decode($content, true);
-        if (!$content['CallSid']) {
+        $contentList = $content['Table'];
+        if (!$contentList || empty($contentList)) {
             return false;
         }
-        $data = [];
-        $data['sec_id'] = $content['CallSid']; //唯一标识
-        $data['duration'] = $content['Billsec']; //通话时长
-        $data['recordUrl'] = $content['recordUrl']; // 录音地址
-        $data['recordFlag'] = $content['recordUrl'] ? 1 : 0; // 录音地址
-        $data['call_end_time'] = $content['End_Stamp']; // 通话结束时间
-        $data['callOutAnswerTime'] = $content['Start_Stamp']; // 通话开始时间
-        $data['direction'] = $content['Context']; // 呼入呼出类型
-        $data['callback_time'] = time(); // 回掉时间记录
-        $callerNum = $content['Caller_Id_Number'];
+        //循环list
+        foreach ($contentList as $content) {
+            if (!$content['CallSid']) {
+                continue;
+            }
+            $data = [];
+            //通话截至时间
+            $data['call_end_time'] = '';
+            if ($content['End_Stamp']) {
+                preg_match("/\((\d{10}).*\)/", $content['End_Stamp'], $matchEnd);
+                $endTime = $matchEnd[1];
+                if ($endTime) {
+                    $endTime += 8 * 3600;
+                    $data['call_end_time'] = date('Y-m-d H:i:s', $endTime);
+                }
 
-        //录音地址处理
-        $data['oss_record_url'] = '';
-        if ($data['recordUrl']) {
-            $pathInfo = pathinfo($data['recordUrl']);
-            $extension = $pathInfo['extension'];
-            $dir = "./Uploads/temp/";
-            if(!is_dir($dir)){
-                @mkdir($dir, 0755, true);
             }
-            $localFile = "{$dir}{$data['sec_id']}.{$extension}"; //临时文件存放
-            $res = copy($data['recordUrl'], $localFile);
-            if ($res) {
-                import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
-                $ossFile = "call_record/{$callerNum}/{$data['sec_id']}.{$extension}";
-                $ossClient = new AliOssAction();
-                $ossUrl = $ossClient->upFile($localFile, $ossFile);
-                unlink($localFile);
-                $data['oss_record_url'] = $ossUrl;
+            //通话开始时间
+            $data['callOutAnswerTime'] = '';
+            if ($content['Start_Stamp']) {
+                preg_match("/\((\d{10}).*\)/", $content['End_Stamp'], $match);
+                $startTime = $match[1];
+                if ($startTime) {
+                    $startTime += 8 * 3600;
+                    $data['callOutAnswerTime'] = date('Y-m-d H:i:s', $startTime);
+                }
             }
+            $data['sec_id'] = $content['CallSid']; //唯一标识
+            $data['duration'] = $content['Billsec']; //通话时长
+            $data['recordUrl'] = $content['RecordUrl']; // 录音地址
+            $data['recordFlag'] = $content['RecordUrl'] ? 1 : 0; // 录音地址
+            $data['direction'] = $content['Context']; // 呼入呼出类型
+            $data['callback_time'] = time(); // 回掉时间记录
+            $callerNum = $content['Caller_Id_Number'];
+
+            //录音地址处理
+            $data['oss_record_url'] = '';
+            if ($data['recordUrl']) {
+                $pathInfo = pathinfo($data['recordUrl']);
+                $extension = $pathInfo['extension'];
+                $dir = "./Uploads/temp/";
+                if (!is_dir($dir)) {
+                    @mkdir($dir, 0755, true);
+                }
+                $localFile = "{$dir}{$data['sec_id']}.{$extension}"; //临时文件存放
+                $res = copy($data['recordUrl'], $localFile);
+                if ($res) {
+                    import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
+                    $ossFile = "call_record/{$callerNum}/{$data['sec_id']}.{$extension}";
+                    $ossClient = new AliOssAction();
+                    $ossUrl = $ossClient->upFile($localFile, $ossFile);
+                    unlink($localFile);
+                    $data['oss_record_url'] = $ossUrl;
+                }
+            }
+            $this->record($data['sec_id'], $data);
         }
-        return $this->record($data['sec_id'], $data);
+
+    }
+
+
+    /**
+     * @desc  获取通话账单
+     * @param $timestamp
+     * @param $CallSid
+     * @return mixed
+     */
+    public function getRecords($timestamp, $CallSid) {
+        $sig = $this->getsig($timestamp);
+        $auth = $this->getauth($timestamp);
+        $url = "https://wdapi.yuntongxin.vip/query/callReCord/v1?Sig=" . $sig;
+        $header = array('Content-Type:' . 'application/json;charset=utf-8',
+            'Accept:' . 'application/json',
+            'Authorization:' . $auth);
+        $data = [
+            "Appid" => self::APPID,
+            "Caller" => '80469800000237',
+            "MaxId" => 100,
+            "CallSid" => $CallSid
+        ];
+
+        $data = json_encode($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, '1.0');
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $msg = curl_exec($ch);
+        $result = json_decode($msg, true);
+        return $result;
     }
 
 }
