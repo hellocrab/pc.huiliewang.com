@@ -110,6 +110,8 @@ foreach ($userList as $userInfo) {
         $data['callist_num'] = callistnum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         //17、cc备注
         $data['cc_num'] = ccnum($userRoleId, $dateStartInt, $nextDayInt, $conn);
+        //18、电话量
+        $data['callsucc_num'] = callSuccNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         $dateStartInt = $nextDayInt; //时间+1天
 
         if($mode == 1){
@@ -193,6 +195,31 @@ function presentNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
  * @param $conn
  * @return int
  */
+function callSuccNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
+{
+    $sql = "select count(*) as counts from (select count(pr.fine_id) from mx_phone_record as pr
+            left join mx_fine_project_cc as fpc on pr.fine_id=fpc.fine_id
+            where pr.role_id={$userRoleId} AND pr.duration>30 and  pr.add_time >= {$dateStartInt} and pr.add_time <= {$nextDayInt} and  fpc.addtime >= {$dateStartInt} and fpc.addtime <= {$nextDayInt}
+            GROUP BY pr.fine_id
+            ORDER BY fpc.id desc) as num";
+
+    $query = $conn->query($sql);
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
+}
+
+/**
+  * 
+  * @param type $userRoleId
+  * @param type $dateStartInt
+  * @param type $nextDayInt
+  * @param type $conn
+  * @return int
+  */
 function callistnum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
