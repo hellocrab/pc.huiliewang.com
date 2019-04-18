@@ -58,6 +58,12 @@ abstract class Action {
         //控制器初始化
         if(method_exists($this,'_initialize'))
             $this->_initialize();
+
+        $zxhNo = '';
+        if(session('role_id')){
+            $zxhNo = M('user')->where(['role_id'=>session('role_id')])->getField('ryy_tel');
+        }
+        $this->assign("zxhNo", $zxhNo);
     }
 
    /**
@@ -436,4 +442,6 @@ abstract class Action {
         // 执行后续操作
         tag('action_end');
     }
+
+
 }

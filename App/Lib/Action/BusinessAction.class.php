@@ -1279,8 +1279,6 @@ class BusinessAction extends Action
             $file_count++;
         }
         $this->info = $info;
-        $zxhNo = $m_user->where(['role_id'=>session('role_id')])->getField('ryy_tel');
-        $this->assign("zxhNo", $zxhNo);
 //        M("fine_project")
         $this->display();
     }
