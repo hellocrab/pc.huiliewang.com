@@ -1700,6 +1700,7 @@ class LeadsAction extends Action
                 }
                 $list[$k]['job_class'] = implode(",", $arr);
             }
+            $list[$k]['business_name'] = M('business')->where(array('business_id'=>$v['project_id']))->getField('name');
         }
         $this->assign('list', $list);
         $this->display();
@@ -1858,7 +1859,6 @@ class LeadsAction extends Action
             $newList[$info['resume_id']] = $info;
         }
         $this->list = $newList;
-
         $this->display();
     }
 

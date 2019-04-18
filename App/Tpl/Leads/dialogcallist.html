@@ -57,9 +57,10 @@
                     <td>{$vo.current_job}</td>
                     <td><if condition="$vo.sex eq 1">男<else/>女</if></td>
                     <td>{$vo.edu}</td>
-                    <td>{$vo.job_class}</td>
+                    <td><a href="{:U('business/view','id='.$vo['business_id'])}" target="_blank">{$vo.business_name}</a></td>
                     <td>{$vo.addtime|date='Y-m-d H:i',###}</td>
-                    <td style="padding-left: 15px;text-align: left;"><a href="javascript:void(0);" class="role_info" rel="user_id">{$vo.tracker_name}</a></td>
+                    <td style="padding-left: 15px;text-align: left;">{$vo.tracker_name}</td>
+                    <!--<td style="padding-left: 15px;text-align: left;"><a href="javascript:void(0);" class="role_info" rel="user_id">{$vo.tracker_name}</a></td>-->
                 </tr>
             </volist>
 

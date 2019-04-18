@@ -212,9 +212,11 @@
                                         channel = 2;
                                     }
                                     var itemId = $(_this).attr('rel');
+                                    var fineId = $(_this).attr('data-id');
                                     $.post(
                                         "{:U('callcenter/call_out')}", {
                                             itemId: itemId,
+                                            fineId: fineId,
                                             type: 1,
                                             tel: '',
                                             channel
@@ -385,7 +387,7 @@
                                     <tr>
                                         <td style="text-align:center;padding:14px;color:#666;">
                                             <a href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
-                                            <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo['resume_id']}" data-toggle="dropdown" href="#" title="呼叫">
+                                            <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-toggle="dropdown" href="#" title="呼叫">
                                                 <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                             </a>
                                         </td>

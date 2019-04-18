@@ -749,6 +749,12 @@ class UserAction extends Action {
 					alert('error','登录账号不能重复！',$_SERVER['HTTP_REFERER']);
 				}
 			}
+            if ($user['ryy_tel'] !== trim($_POST['ryy_tel'])) {
+                $zxh_result = $m_user->where(array('ryy_tel'=>trim($_POST['ryy_tel']),'user_id'=>array('neq',intval($_POST['user_id']))))->find();
+                if($zxh_result && !empty($_POST['ryy_tel'])){
+                    alert('error','坐席号不能重复！',$_SERVER['HTTP_REFERER']);
+                }
+            }
 
 			//检查坐席号
 			$extid = intval($_POST['extid']);

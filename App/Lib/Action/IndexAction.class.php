@@ -960,7 +960,7 @@ class IndexAction extends Action {
                     $this->ajaxReturn($action_log);
 //                    $this->ajaxReturn($action_log,'success',1);
                 } else {
-                    $action_log = ['succ' => true, 'code' => 200 , 'info' => '没有更多数据啦！'];
+                    $action_log = ['succ' => true, 'code' => 200 , 'info' => array()];
                     $this->ajaxReturn($action_log);
 //                    $this->ajaxReturn('没有更多数据啦！','error',0);
                 }

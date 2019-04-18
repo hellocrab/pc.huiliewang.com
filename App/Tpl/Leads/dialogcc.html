@@ -61,7 +61,7 @@
                     <td>{$vo.current_job}</td>
                     <td><if condition="$vo.sex eq 1">男<else/>女</if></td>
                     <td>{$vo.edu}</td>
-                    <td>{$vo.job_class}</td>
+                    <td><a href="{:U('business/view','id='.$vo['project_id'])}" target="_blank">{$vo.business_name}</a></td>
                     <td>{$vo.call_result}</td>
                     <td><if condition="$vo.gj eq 0">否<else/>是</if></td>
                     <td><if condition="$vo.target eq 0">否<else/>是</if></td>
@@ -78,7 +78,8 @@
                         <if condition="$vo.plans neq ''">未来规划:{$vo.plans}<br/></if>
                     </td>
                     <td>{$vo.addtime|date='Y-m-d H:i',###}</td>
-                    <td style="padding-left: 15px;text-align: left;"><a href="javascript:void(0);" class="role_info" rel="{$vo.user_id}">{$vo.user_name}</a></td>
+                    <td style="padding-left: 15px;text-align: left;">{$vo.user_name}</td>
+                    <!--<td style="padding-left: 15px;text-align: left;"><a href="javascript:void(0);" class="role_info" rel="{$vo.user_id}">{$vo.user_name}</a></td>-->
                 </tr>
             </volist>
 
