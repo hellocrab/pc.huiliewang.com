@@ -193,7 +193,37 @@
                     $(function () {
                         $(".call_out").on('click', function () {
                             var _this = this;
-                            swal({
+                            let seatNum = "{$zxhNo|default=''}";
+                            let itemId = $(_this).attr('rel');
+                            console.log(seatNum,typeof seatNum);
+                            if(seatNum){
+                                switchLine();
+                            }else{
+                                $.post(
+                                        "{:U('callcenter/call_out')}", {
+                                            itemId,
+                                            type: 1,
+                                            tel: '',
+                                            channel:1
+                                        },
+                                        function (data) {
+                                            var obj = $.parseJSON(data);
+                                            if (obj.code) {
+                                                $('.fa-times').remove()
+                                                swal("操作成功！",
+                                                    "拨打电话成功,请稍等电话接通！",
+                                                    "success");
+                                                //                                     alert_crm(data.message);
+                                            } else {
+                                                $('.fa-times').remove()
+                                                alert_crm(obj.msg +
+                                                    ",请联系管理员！");
+                                            }
+                                        }
+                                    );
+                            }
+                            function switchLine(){
+                                swal({
                                     title: "请选择线路",
                                     text: "选择一个电话线路",
                                     type: "warning",
@@ -211,12 +241,11 @@
                                     } else {
                                         channel = 2;
                                     }
-                                    var itemId = $(_this).attr('rel');
                                     var fineId = $(_this).attr('data-id');
                                     $.post(
                                         "{:U('callcenter/call_out')}", {
-                                            itemId: itemId,
-                                            fineId: fineId,
+                                            itemId,
+                                            fineId,
                                             type: 1,
                                             tel: '',
                                             channel
@@ -245,6 +274,7 @@
                                 swal("已取消", "您取消了拨打电话！", "error");
                                 $('.fa-times').remove()
                             })
+                            }
                         });
                         let pro_id = "{:I('id')}";
                         var uploader = WebUploader.create({
