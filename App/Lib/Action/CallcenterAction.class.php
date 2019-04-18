@@ -298,7 +298,7 @@ class CallcenterAction extends Action
             //通话开始时间
             $data['callOutAnswerTime'] = '';
             if ($content['Start_Stamp']) {
-                preg_match("/\((\d{10}).*\)/", $content['End_Stamp'], $match);
+                preg_match("/\((\d{10}).*\)/", $content['Start_Stamp'], $match);
                 $startTime = $match[1];
                 if ($startTime) {
                     $startTime += 8 * 3600;
