@@ -277,6 +277,7 @@ class CallcenterAction extends Action
         if (!$content) {
             return false;
         }
+        BaseUtils::addLog("融营云回掉参数 ： {$content}",'callback_log','/var/log/rongyinyun/');
         $content = json_decode($content, true);
         if (!$content['CallSid']) {
             return false;
