@@ -750,8 +750,8 @@ class UserAction extends Action {
 				}
 			}
             if ($user['ryy_tel'] !== trim($_POST['ryy_tel'])) {
-                $name_result = $m_user->where(array('ryy_tel'=>trim($_POST['ryy_tel']),'user_id'=>array('neq',intval($_POST['user_id']))))->find();
-                if($name_result){
+                $zxh_result = $m_user->where(array('ryy_tel'=>trim($_POST['ryy_tel']),'user_id'=>array('neq',intval($_POST['user_id']))))->find();
+                if($zxh_result && !empty($_POST['ryy_tel'])){
                     alert('error','坐席号不能重复！',$_SERVER['HTTP_REFERER']);
                 }
             }
