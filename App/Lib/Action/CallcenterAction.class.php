@@ -295,7 +295,7 @@ class CallcenterAction extends Action
                 preg_match("/\((\d{10}).*\)/", $content['End_Stamp'], $matchEnd);
                 $endTime = $matchEnd[1];
                 if ($endTime) {
-                    $endTime += 8 * 3600;
+//                    $endTime += 8 * 3600;
                     $data['call_end_time'] = date('Y-m-d H:i:s', $endTime);
                 }
 
@@ -306,7 +306,7 @@ class CallcenterAction extends Action
                 preg_match("/\((\d{10}).*\)/", $content['Start_Stamp'], $match);
                 $startTime = $match[1];
                 if ($startTime) {
-                    $startTime += 8 * 3600;
+//                    $startTime += 8 * 3600;
                     $data['callOutAnswerTime'] = date('Y-m-d H:i:s', $startTime);
                 }
             }
