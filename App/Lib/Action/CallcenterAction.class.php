@@ -283,6 +283,11 @@ class CallcenterAction extends Action
             if (!$content['CallSid']) {
                 continue;
             }
+            //判断是否存在
+            $callInfo = M('phone_record')->where(['sec_id' => $content['CallSid']])->find();
+            if(!$callInfo){
+                continue;
+            }
             $data = [];
             //通话截至时间
             $data['call_end_time'] = '';
