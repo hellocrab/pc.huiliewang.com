@@ -239,16 +239,10 @@ class CallcenterAction extends Action
         $callInfo = $recordObj->where(['sec_id' => $callsId])->find();
         if (!$callInfo) {
             //添加通话记录
-            $fineId = $data['fine_id'];
+            if (!$data['setingNbr']) {
+                return false;
+            }
             $settingNbr = $data['setingNbr'];
-            if (!$data['fine_id'] || !$data['setingNbr']) {
-                return false;
-            }
-            $fineInfo = M('fine_project')->where(['id' => $fineId])->find();
-            if (!$fineInfo) {
-                return false;
-            }
-
             $dataUser = [
                 'role_id' => session('role_id'), 'sec_id' => $callsId, 'setingNbr' => $settingNbr, 'add_time' => time(), 'sessionId' => $callsId,
                 'user_name' => session('full_name'), 'department_id' => session('department_id'), 'user_id' => session('user_id'), 'callerNum' => $settingNbr
