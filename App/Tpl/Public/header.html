@@ -1,218 +1,314 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>{$title}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="author" content="{:L('AUTHOR')}"/>
-        <!-- 360浏览器默认使用Webkit内核 -->
-        <meta name="renderer" content="webkit">
-        <link rel="shortcut icon" href="__PUBLIC__/ico/favicon.png"/>
-        <script src="__PUBLIC__/style/js/jquery-2.1.1.js"></script>
-        <link type="text/css" href="__PUBLIC__/css/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
-        <!--<link type="text/css" rel="stylesheet" href="__PUBLIC__/css/background-detail.css">-->
-        <link type="text/css" href="__PUBLIC__/css/bootstrap-responsive.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="__PUBLIC__/resume_selector/common.41f94c00.css">
-        <link rel="stylesheet" href="__PUBLIC__/resume_selector/resume.search.12eb3a9b.css">
-        <link href="__PUBLIC__/style/css/bootstrap.min.css" rel="stylesheet">
-        <link href="__PUBLIC__/style/font-awesome/css/font-awesome.css" rel="stylesheet">
-        <link href="__PUBLIC__/css/font-awesome.min.css" rel="stylesheet">
-        <link type="text/css" href="__PUBLIC__/css/hovershow.css" rel="stylesheet"/>
-        <!-- animate -->
-        <link rel='stylesheet' href='__PUBLIC__/css/animate/animate.min.css'>
-        <link rel="stylesheet" href="__PUBLIC__/css/animate/notification.css">
-        <style type="text/css">
-            a.active{
-                font-weight: bold;
-                color: #777;
-            }
-            .nobr{
-                white-space:nowrap;
-            }
-            #header-top{
-                position: fixed;
-                /*width: 87.3%;*/
-                right:0px;
-                z-index: 102;
-            }
-            .sidebar-collapse{z-index:9999;}
-            .tooltip{width:85px;line-height:36px;}
-            .tooltip-inner{padding:3px 12px;text-align:left;}
-            .table{margin-bottom:0px;}
-            @media (max-width: 768px){
-                .nav.left-side{
-                    display: none;
-                }
-            }
-            .navbar{margin-bottom:0px;}
-            .check_list{width: 20px;height: 20px;}
-            .check_all{width: 20px;height: 20px;}
-            .check_all{width: 20px;height: 20px;}
-            input[type=checkbox], input[type=radio]{margin-top:0px;}
-            .radio.radio-inline {padding-left: 0px;}
-            .alert-error{margin:20px;line-height:30px;}
-            .text{color:#000;}
-            .notification{top:150px;z-index:9999;}
 
-            .checkbox, .radio{margin:0 auto;}
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="author" content="{:L('AUTHOR')}" />
+    <!-- 360浏览器默认使用Webkit内核 -->
+    <meta name="renderer" content="webkit">
+    <link rel="shortcut icon" href="__PUBLIC__/ico/favicon.png" />
+    <script src="__PUBLIC__/style/js/jquery-2.1.1.js"></script>
+    <link type="text/css" href="__PUBLIC__/css/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
+    <!--<link type="text/css" rel="stylesheet" href="__PUBLIC__/css/background-detail.css">-->
+    <link type="text/css" href="__PUBLIC__/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="__PUBLIC__/resume_selector/common.41f94c00.css">
+    <link rel="stylesheet" href="__PUBLIC__/resume_selector/resume.search.12eb3a9b.css">
+    <link href="__PUBLIC__/style/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/style/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/font-awesome.min.css" rel="stylesheet">
+    <link type="text/css" href="__PUBLIC__/css/hovershow.css" rel="stylesheet" />
+    <!-- animate -->
+    <link rel='stylesheet' href='__PUBLIC__/css/animate/animate.min.css'>
+    <link rel="stylesheet" href="__PUBLIC__/css/animate/notification.css">
+    <style type="text/css">
+        a.active {
+            font-weight: bold;
+            color: #777;
+        }
 
-            /*闪烁效果*/
-            .crm_heart{
-                animation:heart 1s ease infinite;
+        .nobr {
+            white-space: nowrap;
+        }
+
+        #header-top {
+            position: fixed;
+            /*width: 87.3%;*/
+            right: 0px;
+            z-index: 102;
+        }
+
+        .sidebar-collapse {
+            z-index: 9999;
+        }
+
+        .tooltip {
+            width: 85px;
+            line-height: 36px;
+        }
+
+        .tooltip-inner {
+            padding: 3px 12px;
+            text-align: left;
+        }
+
+        .table {
+            margin-bottom: 0px;
+        }
+
+        @media (max-width: 768px) {
+            .nav.left-side {
+                display: none;
             }
-            .spanerror{
-                color: #cc5965;
-                display: inline-block;
-                margin-left: 5px;
-                font-weight: 700;
-                line-height: 20px;
-                margin-bottom: 5px;
+        }
+
+        .navbar {
+            margin-bottom: 0px;
+        }
+
+        .check_list {
+            width: 20px;
+            height: 20px;
+        }
+
+        .check_all {
+            width: 20px;
+            height: 20px;
+        }
+
+        .check_all {
+            width: 20px;
+            height: 20px;
+        }
+
+        input[type=checkbox],
+        input[type=radio] {
+            margin-top: 0px;
+        }
+
+        .radio.radio-inline {
+            padding-left: 0px;
+        }
+
+        .alert-error {
+            margin: 20px;
+            line-height: 30px;
+        }
+
+        .text {
+            color: #000;
+        }
+
+        .notification {
+            top: 150px;
+            z-index: 9999;
+        }
+
+        .checkbox,
+        .radio {
+            margin: 0 auto;
+        }
+
+        /*闪烁效果*/
+        .crm_heart {
+            animation: heart 1s ease infinite;
+        }
+
+        .spanerror {
+            color: #cc5965;
+            display: inline-block;
+            margin-left: 5px;
+            font-weight: 700;
+            line-height: 20px;
+            margin-bottom: 5px;
+        }
+
+        @keyframes heart {
+            0% {
+                color: #FF6D57;
             }
-            @keyframes heart {
-                0% {color:#FF6D57;}
-                100%{color:#93A6B5;}
+
+            100% {
+                color: #93A6B5;
             }
-            .loading{
-                width: 200px;
-                height: 200px;
-                position: absolute;
-                top:32%;
-                left:43%;
-                z-index: 999;
-            }
-            .loading1{
-                width: 205px;
-                top: -1%;
-                left: 3%;
-                position: absolute;
-            }
-            .loading2{
-                position: absolute;
-                width: 205px;
-                left: 3%;
-                top: -1%;
-                animation:loading2 1s infinite;
-                -webkit-animation:loading2 1s infinite;
-                /*transform-origin: 50% 50%;
+        }
+
+        .loading {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: 32%;
+            left: 43%;
+            z-index: 999;
+        }
+
+        .loading1 {
+            width: 205px;
+            top: -1%;
+            left: 3%;
+            position: absolute;
+        }
+
+        .loading2 {
+            position: absolute;
+            width: 205px;
+            left: 3%;
+            top: -1%;
+            animation: loading2 1s infinite;
+            -webkit-animation: loading2 1s infinite;
+            /*transform-origin: 50% 50%;
                 -webkit-transform: rotate(45deg);
                 -webkit-transform-origin:50% 50%;*/
+        }
+
+        .loading3 {
+            position: absolute;
+            width: 29px;
+            top: -7%;
+            left: 45%;
+            transform-origin: 61% 393%;
+            animation: loading3 1s infinite;
+            -webkit-animation: loading3 1s infinite;
+        }
+
+        @keyframes loading2 {
+            from {
+                transform: rotate(0deg)
             }
-            .loading3{
-                position: absolute;
-                width: 29px;
-                top: -7%;
-                left: 45%;
-                transform-origin:61% 393%;
-                animation:loading3 1s infinite;
-                -webkit-animation:loading3 1s infinite;
+
+            to {
+                transform: rotate(360deg)
             }
-            @keyframes loading2
+        }
+
+        @-webkit-keyframes loading2
+
+        /*Safari and Chrome*/
             {
-                from {transform: rotate(0deg)}
-                to {transform: rotate(360deg)}
+            from {
+                transform: rotate(0deg)
             }
 
-            @-webkit-keyframes loading2 /*Safari and Chrome*/
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes loading3 {
+            from {
+                transform: rotate(0deg)
+            }
+
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @-webkit-keyframes loading3
+
+        /*Safari and Chrome*/
             {
-                from {transform: rotate(0deg)}
-                to {transform: rotate(360deg)}
-            }
-            @keyframes loading3
-            {
-                from {transform: rotate(0deg)}
-                to {transform: rotate(360deg)}
+            from {
+                transform: rotate(0deg)
             }
 
-            @-webkit-keyframes loading3 /*Safari and Chrome*/
-            {
-                from {transform: rotate(0deg)}
-                to {transform: rotate(360deg)}
+            to {
+                transform: rotate(360deg)
             }
-            .backgroundDiv{
-                position: absolute;
-                background-color: rgba(0,0,0,0.5);
-                width: 100%;
-                height: 100%;
-                top:0;
-                z-index: 888;
-            }
-            input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
-                -webkit-appearance:textfield;
-            }
-            input[type="number"]{
-                -moz-appearance:textfield;
-        </style>
+        }
+
+        .backgroundDiv {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            top: 0;
+            z-index: 888;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: textfield;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+    </style>
 
 
-        <!-- Toastr style -->
-        <link href="__PUBLIC__/style/css/plugins/toastr/toastr.min.css" rel="stylesheet">
-        <!-- Sweet Alert -->
-        <link href="__PUBLIC__/style/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-        <link href="__PUBLIC__/style/css/style.css" rel="stylesheet">
-        <link href="__PUBLIC__/style/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
-        <!-- Mainly scripts -->
-        <script src="__PUBLIC__/style/js/bootstrap.min.js"></script>
-        <script src="__PUBLIC__/js/daterangepicker/moment.min.js"></script>
-        <script src="__PUBLIC__/style/js/jquery.form.js" type="text/javascript"></script>
-        <!-- <script src="__PUBLIC__/style/js/plugins/metisMenu/jquery.metisMenu.js"></script> -->
-        <script src="__PUBLIC__/style/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-        <!-- Toastr -->
-        <script src="__PUBLIC__/style/js/plugins/toastr/toastr.min.js"></script>
-        <!-- Custom and plugin javascript -->
-        <script src="__PUBLIC__/style/js/plugins/pace/pace.min.js"></script>
-        <script src="__PUBLIC__/style/js/inspinia.js"></script>
-        <script src="__PUBLIC__/js/mxcrm_zh-cn.js" type="text/javascript"></script>
-        <script src="__PUBLIC__/js/mxcrm.js" type="text/javascript"></script>
-        <!-- jQuery UI -->
-        <script src="__PUBLIC__/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript"></script>
-        <script src="__PUBLIC__/js/WdatePicker.js" type="text/javascript"></script>
-        <!-- Sweet alert -->
-        <script src="__PUBLIC__/style/js/plugins/sweetalert/sweetalert.min.js"></script>
-        <!-- Jquery Validate -->
-        <script src="__PUBLIC__/style/js/plugins/validate/jquery.validate.min.js"></script>
-        <script src="__PUBLIC__/style/js/plugins/validate/messages_zh.min.js"></script>
-        <script src="__PUBLIC__/js/bootstrap-tooltip.js"></script>
-        <!-- 下拉筛选 -->
-        <link rel="stylesheet" href="__PUBLIC__/css/bootstrap-select.css">
-        <script type="text/javascript" src="__PUBLIC__/js/bootstrap-select.js" charset="UTF-8"></script>
-        <!-- select2 -->
-        <link href="__PUBLIC__/style/css/plugins/select2/select2.min.css" rel="stylesheet">
-        <script src="__PUBLIC__/style/js/plugins/select2/select2.full.min.js"></script>
+    <!-- Toastr style -->
+    <link href="__PUBLIC__/style/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="__PUBLIC__/style/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="__PUBLIC__/style/css/style.css" rel="stylesheet">
+    <link href="__PUBLIC__/style/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css"
+        rel="stylesheet">
+    <!-- Mainly scripts -->
+    <script src="__PUBLIC__/style/js/bootstrap.min.js"></script>
+    <script src="__PUBLIC__/js/daterangepicker/moment.min.js"></script>
+    <script src="__PUBLIC__/style/js/jquery.form.js" type="text/javascript"></script>
+    <!-- <script src="__PUBLIC__/style/js/plugins/metisMenu/jquery.metisMenu.js"></script> -->
+    <script src="__PUBLIC__/style/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Toastr -->
+    <script src="__PUBLIC__/style/js/plugins/toastr/toastr.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="__PUBLIC__/style/js/plugins/pace/pace.min.js"></script>
+    <script src="__PUBLIC__/style/js/inspinia.js"></script>
+    <script src="__PUBLIC__/js/mxcrm_zh-cn.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/js/mxcrm.js" type="text/javascript"></script>
+    <!-- jQuery UI -->
+    <script src="__PUBLIC__/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/js/WdatePicker.js" type="text/javascript"></script>
+    <!-- Sweet alert -->
+    <script src="__PUBLIC__/style/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery Validate -->
+    <script src="__PUBLIC__/style/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="__PUBLIC__/style/js/plugins/validate/messages_zh.min.js"></script>
+    <script src="__PUBLIC__/js/bootstrap-tooltip.js"></script>
+    <!-- 下拉筛选 -->
+    <link rel="stylesheet" href="__PUBLIC__/css/bootstrap-select.css">
+    <script type="text/javascript" src="__PUBLIC__/js/bootstrap-select.js" charset="UTF-8"></script>
+    <!-- select2 -->
+    <link href="__PUBLIC__/style/css/plugins/select2/select2.min.css" rel="stylesheet">
+    <script src="__PUBLIC__/style/js/plugins/select2/select2.full.min.js"></script>
 
-        <link href="__PUBLIC__/css/new.css">
+    <link href="__PUBLIC__/css/new.css">
 
-    </head>
-    <script>
-
-        $(function(){
-            $('input:not([autocomplete]),textarea:not([autocomplete]),select:not([autocomplete])').attr('autocomplete', 'off')
+</head>
+<script>
+    $(function () {
+        $('input:not([autocomplete]),textarea:not([autocomplete]),select:not([autocomplete])').attr(
+            'autocomplete', 'off')
         sessionStorage.removeItem("idskey");
         sessionStorage.removeItem("nameskey");
         var innerHeight = window.innerHeight;
-        if (innerHeight < 768){
-        innerHeight = 768;
+        if (innerHeight < 768) {
+            innerHeight = 768;
         }
         $("#page-wrapper").css("min-height", innerHeight);
-        $(window).resize(function(){
-        var innerHeight = window.innerHeight;
-        if (innerHeight < 768){
-        innerHeight = 768;
-        }
-        $("#page-wrapper").css("min-height", innerHeight);
+        $(window).resize(function () {
+            var innerHeight = window.innerHeight;
+            if (innerHeight < 768) {
+                innerHeight = 768;
+            }
+            $("#page-wrapper").css("min-height", innerHeight);
         });
         $(".select2").select2({
-        placeholder: "--请选择--"
-                // allowClear: true
+            placeholder: "--请选择--"
+            // allowClear: true
         });
-        });</script>
-    <!-- <body class="navbar fixed-sidebar"> -->
-    <body class="navbar">
-        <div id="wrapper">
+    });
+</script>
+<!-- <body class="navbar fixed-sidebar"> -->
 
-            <nav class="navbar-default navbar-static-side" role="navigation" style="width: 120px;">
-                <div class="sidebar-collapse">
-                    <?php
+<body class="navbar">
+    <div id="wrapper">
+
+        <nav class="navbar-default navbar-static-side" role="navigation" style="width: 120px;">
+            <div class="sidebar-collapse">
+                <?php
                     $module_name = strtolower(MODULE_NAME);
                     $action_name = strtolower(ACTION_NAME);
                     $t = strtolower($_GET['t']);
@@ -358,743 +454,991 @@
                     }
                     }
                     ?>
-                    <ul class="nav metismenu left-side" id="side-menu" >
-                        <li class="nav-header" style="padding:6px 21px 21px;">
-                            <br>
-                            <?php
+                <ul class="nav metismenu left-side" id="side-menu">
+                    <li class="nav-header" style="padding:6px 21px 21px;">
+                        <br>
+                        <?php
                             $img = M('User')->where('user_id = %d', session('user_id'))->getField('img');
                             $defaultinfo_info = M('Config')->where('name = "defaultinfo"')->find();
                             $defaultinfo = unserialize($defaultinfo_info['value']);
                             ?>
-                            <div class="logo-element" style="margin: -17px -25px;">
-                                <if condition = "$defaultinfo['logo_min_thumb_path']">
-                                    <img class="img-circle" src="{$defaultinfo['logo_min_thumb_path']}" style="width: 38px;height: 38px;margin-right:0px;" alt="{$defaultinfo['name']}">
-                                    <else />
-                                    <img class="img-circle" src="__PUBLIC__/img/logo2.png" style="width: 38px;height: 38px;margin-right:0px;" alt="MXCRM">
-                                </if>
-                            </div>
-                        </li>
-                        <li >
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="首页" <if condition="$module_name eq 'index'"> class="active"</if> href="{:U('index/index')}"><i class="fa fa-home"></i><span class="menu_code">首页</span></a>
-                        </li>
+                        <div class="logo-element" style="margin: -17px -25px;">
+                            <if condition="$defaultinfo['logo_min_thumb_path']">
+                                <img class="img-circle" src="{$defaultinfo['logo_min_thumb_path']}"
+                                    style="width: 38px;height: 38px;margin-right:0px;" alt="{$defaultinfo['name']}">
+                                <else />
+                                <img class="img-circle" src="__PUBLIC__/img/logo2.png"
+                                    style="width: 38px;height: 38px;margin-right:0px;" alt="MXCRM">
+                            </if>
+                        </div>
+                    </li>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="首页" <if
+                            condition="$module_name eq 'index'"> class="active"</if> href="{:U('index/index')}"><i
+                                class="fa fa-home"></i><span class="menu_code">首页</span></a>
+                    </li>
 
-                        <?php if (in_array('customer',$new_module_list)): ?>
-                        <li >
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="客户管理" <if condition="($module_name eq 'customer' && $action_name neq 'analytics') || $module_name eq 'contacts' || $module_name eq 'member'"> class="active"</if> <if condition="checkPerByAction('customer','index')">href="{$customer_url}"<elseif condition ="checkPerByAction('contacts','index')" />href="{:U('contacts/index')}"<elseif condition ="checkPerByAction('leads','index')" />href="{:U('leads/index')}"<else />href="{:U('customer/index','by=me')}"</if> ><i class="fa fa-user"></i><span class="menu_code">客户</span></a>
-                        </li>
-                        <?php endif; ?>
-                        <?php if (in_array('business',$new_module_list)): ?>
-                        <li >
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="项目管理" <if condition="$module_name eq 'business' && $action_name neq 'analytics'"> class="active"</if> href="{:U('business/index')}" ><i class="fa fa-suitcase"></i><span class="menu_code">项目</span></a>
-                        </li>
-                        <?php endif; ?>
+                    <?php if (in_array('customer',$new_module_list)): ?>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="客户管理" <if
+                            condition="($module_name eq 'customer' && $action_name neq 'analytics') || $module_name eq 'contacts' || $module_name eq 'member'">
+                            class="active"</if>
+                            <if condition="checkPerByAction('customer','index')">href="{$customer_url}"
+                                <elseif condition="checkPerByAction('contacts','index')" />href="{:U('contacts/index')}"
+                                <elseif condition="checkPerByAction('leads','index')" />href="{:U('leads/index')}"
+                                <else />href="{:U('customer/index','by=me')}"</if> ><i class="fa fa-user"></i><span
+                                class="menu_code">客户</span>
+                        </a>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (in_array('business',$new_module_list)): ?>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="项目管理" <if
+                            condition="$module_name eq 'business' && $action_name neq 'analytics'"> class="active"</if>
+                            href="{:U('business/index')}" ><i class="fa fa-suitcase"></i><span
+                                class="menu_code">项目</span></a>
+                    </li>
+                    <?php endif; ?>
 
-                        <li>
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="人才管理" <if condition="$module_name eq 'product' && $action_name neq 'category'"> class="active"</if> href="{:U('product/index')}"><i class="fa fa-inbox"></i><span class="menu_code">人才</span></a>
-                        </li>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="人才管理" <if
+                            condition="$module_name eq 'product' && $action_name neq 'category'"> class="active"</if>
+                            href="{:U('product/index')}"><i class="fa fa-inbox"></i><span
+                                class="menu_code">人才</span></a>
+                    </li>
 
-                        <?php if (in_array('contract',$new_module_list)): ?>
-                        <li>
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="合同订单" <if condition="($module_name eq 'contract' && $action_name neq 'analytics' && $action_name neq 'collection' && $action_name neq 'examine') || $module_name eq 'order'"> class="active"</if> <if condition="checkPerByAction('contract','index')">href="{:U('contract/index')}"<elseif condition ="checkPerByAction('order','index')" />href="{:U('order/index')}"</if>><i class="fa fa-file-text"></i><span class="menu_code">合同</span></a>
-                        </li>
-                        <?php endif; ?>
+                    <?php if (in_array('contract',$new_module_list)): ?>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="合同订单" <if
+                            condition="($module_name eq 'contract' && $action_name neq 'analytics' && $action_name neq 'collection' && $action_name neq 'examine') || $module_name eq 'order'">
+                            class="active"</if>
+                            <if condition="checkPerByAction('contract','index')">href="{:U('contract/index')}"
+                                <elseif condition="checkPerByAction('order','index')" />href="{:U('order/index')}"</if>
+                            ><i class="fa fa-file-text"></i><span class="menu_code">合同</span>
+                        </a>
+                    </li>
+                    <?php endif; ?>
 
-                        <li>
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="财务发票" <if condition="($module_name eq 'invoice' || $module_name eq 'finance')"> class="active"</if> href="{:U('invoice/index')}"><i class="fa fa-credit-card"></i><span class="menu_code">财务</span></a>
-                        </li>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="财务发票" <if
+                            condition="($module_name eq 'invoice' || $module_name eq 'finance')"> class="active"</if>
+                            href="{:U('invoice/index')}"><i class="fa fa-credit-card"></i><span
+                                class="menu_code">财务</span></a>
+                    </li>
 
-                        <?php if (in_array('analytics',$new_module_list)): ?>
-                        <li>
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="报表分析" <if condition="$action_name eq 'collection' || $action_name eq 'analytics' || $action_name eq 'record'|| $action_name eq 'projecttrend'|| $action_name eq 'resume'|| $action_name eq 'project'|| $action_name eq 'customer'|| ($action_name eq 'department' && $module_name eq 'leads')|| $action_name eq 'business'|| $action_name eq 'achievement'|| $action_name eq 'weektrend'|| $action_name eq 'monthtrend' || $action_name eq 'yieldrate' || $action_name eq 'departmentrate'"> class="active"</if> <if condition="checkPerByAction('leads','analytics')">href="{:U('leads/analytics','content_id=1')}"<elseif condition = "checkPerByAction('customer','analytics')" />href="{:U('leads/analytics','content_id=1')}"<elseif condition = "checkPerByAction('business','analytics')" />href="{:U('business/analytics','content_id=1')}"<elseif condition = "checkPerByAction('finance','analytics')" />href="{:U('finance/analytics','content_id=1')}"<elseif condition = "checkPerByAction('product','analytics')" />href="{:U('product/analytics','content_id=1')}"<elseif condition = "checkPerByAction('log','analytics')" />href="{:U('log/analytics','content_id=1')}"<else />href="{:U('leads/analytics','content_id=1')}"</if> ><i class="fa fa-area-chart"></i><span class="menu_code">报表</span></a>
-                        </li>
-                        <?php endif; ?>
+                    <?php if (in_array('analytics',$new_module_list)): ?>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="报表分析" <if
+                            condition="$action_name eq 'collection' || $action_name eq 'analytics' || $action_name eq 'record'|| $action_name eq 'projecttrend'|| $action_name eq 'resume'|| $action_name eq 'project'|| $action_name eq 'customer'|| ($action_name eq 'department' && $module_name eq 'leads')|| $action_name eq 'business'|| $action_name eq 'achievement'|| $action_name eq 'weektrend'|| $action_name eq 'monthtrend' || $action_name eq 'yieldrate' || $action_name eq 'departmentrate'">
+                            class="active"</if>
+                            <if condition="checkPerByAction('leads','analytics')">
+                                href="{:U('leads/analytics','content_id=1')}"
+                                <elseif condition="checkPerByAction('customer','analytics')" />
+                                href="{:U('leads/analytics','content_id=1')}"
+                                <elseif condition="checkPerByAction('business','analytics')" />
+                                href="{:U('business/analytics','content_id=1')}"
+                                <elseif condition="checkPerByAction('finance','analytics')" />
+                                href="{:U('finance/analytics','content_id=1')}"
+                                <elseif condition="checkPerByAction('product','analytics')" />
+                                href="{:U('product/analytics','content_id=1')}"
+                                <elseif condition="checkPerByAction('log','analytics')" />
+                                href="{:U('log/analytics','content_id=1')}"
+                                <else />href="{:U('leads/analytics','content_id=1')}"</if> ><i
+                                class="fa fa-area-chart"></i><span class="menu_code">报表</span>
+                        </a>
+                    </li>
+                    <?php endif; ?>
 
-                        <li>
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="职级升降" <if condition="($module_name eq 'integral')"> class="active"</if> href="{:U('integral/index')}"><i class="fa fa-leaf"></i><span class="menu_code">职级</span></a>
-                        </li>
-                        <!--                        				<li>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="职级升降" <if
+                            condition="($module_name eq 'integral')"> class="active"</if>
+                            href="{:U('integral/index')}"><i class="fa fa-leaf"></i><span
+                                class="menu_code">职级</span></a>
+                    </li>
+                    <!--                        				<li>
                                                                                         <a data-toggle="tooltip" data-placement="right" data-original-title="培训管理" <if condition="($module_name eq 'train' || $module_name eq 'teacher')"> class="active"</if> href="{:U('train/index')}"><i class="fa fa-graduation-cap" style="width: 14px;"></i><span class="menu_code">培训</span></a>
                                                                                 </li>-->
-                        <?php if (in_array('log',$new_module_list)): ?>
-                        <li>
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="背景调查" <if condition="($module_name eq 'background' || $module_name eq 'background' )"> class="active"</if> href="{:U('background/index')}"><i class="fa fa-credit-card"></i><span class="menu_code">背调</span></a>
-                        </li>
-                        <?php endif; ?>
-                        <?php if (in_array('log',$new_module_list)): ?>
-                        <li>
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="回款" <if condition="($module_name eq 'return' || $module_name eq 'return' )"> class="active"</if> href="{:U('Return/index')}"><i class="fa fa-credit-card"></i><span class="menu_code">回款</span></a>
-                        </li>
-                        <?php endif; ?>
-                        <?php if (in_array('log',$new_module_list)): ?>
-                        <li>
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="分析模块" <if condition="($module_name eq 'phone' || $module_name eq 'phone' )"> class="active"</if> href="{:U('Phone/index')}"><i class="fa fa-credit-card"></i><span class="menu_code">分析模块</span></a>
-                        </li>
-                        <!--                        <li>
+                    <?php if (in_array('log',$new_module_list)): ?>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="背景调查" <if
+                            condition="($module_name eq 'background' || $module_name eq 'background' )"> class="active"
+                            </if> href="{:U('background/index')}"><i class="fa fa-credit-card"></i><span
+                                class="menu_code">背调</span></a>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (in_array('log',$new_module_list)): ?>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="回款" <if
+                            condition="($module_name eq 'return' || $module_name eq 'return' )"> class="active"</if>
+                            href="{:U('Return/index')}"><i class="fa fa-credit-card"></i><span
+                                class="menu_code">回款</span></a>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (in_array('log',$new_module_list)): ?>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="分析模块" <if
+                            condition="($module_name eq 'phone' || $module_name eq 'phone' )"> class="active"</if>
+                            href="{:U('Phone/index')}"><i class="fa fa-credit-card"></i><span
+                                class="menu_code">分析模块</span></a>
+                    </li>
+                    <!--                        <li>
                                                     <a data-toggle="tooltip" data-placement="right" data-original-title="日程" <if condition="$module_name eq 'log' &&  $action_name neq 'analytics' || ($module_name eq 'examine' && $action_name neq 'analytics') || $module_name eq 'announcement' || ($module_name eq 'knowledge' && $action_name neq 'category') || $module_name eq 'sign' || $module_name eq 'event' || $module_name eq 'task' || ($module_name eq 'kaoqin' && $action_name eq 'index')"> class="active"</if> <if condition="checkPerByAction('event','index')">href="{:U('event/index')}"<elseif condition ="checkPerByAction('examine','index')" />href="{:U('examine/index')}"<elseif condition ="checkPerByAction('knowledge','index')" />href="{:U('knowledge/index')}"<elseif condition ="checkPerByAction('announcement','index')" />href="{:U('announcement/index')}"<elseif condition ="checkPerByAction('sign','index')" />href="{:U('sign/index')}"<elseif condition ="checkPerByAction('event','index')" />href="{:U('event/index')}"<elseif condition ="checkPerByAction('task','index')" />href="{:U('task/index')}"</if>><i class="fa fa-desktop"></i><span class="menu_code">日程</span></a>
                                                 </li>-->
-                        <?php endif; ?>
+                    <?php endif; ?>
 
-                        <?php if (in_array('contacts',$new_module_list)): ?>
-                        <!--                        <li>
+                    <?php if (in_array('contacts',$new_module_list)): ?>
+                    <!--                        <li>
                                                     <a data-toggle="tooltip" data-placement="right" data-original-title="通讯录" <if condition="$module_name eq 'user' && ($action_name eq 'contacts' || $action_name eq 'view')"> class="active"</if> href="{:U('user/contacts')}" ><i class="fa fa-phone-square"><span class="menu_code">通讯录</span></i></a>
                                                 </li>-->
-                        <?php endif; ?>
-                        <?php if (in_array('sendsms',$new_module_list)): ?>
-                        <!--                        <li>
+                    <?php endif; ?>
+                    <?php if (in_array('sendsms',$new_module_list)): ?>
+                    <!--                        <li>
                                                     <a data-toggle="tooltip" data-placement="right" data-original-title="营销" <if condition="$action_name eq 'sendsms' || $action_name eq 'smsrecord' || $action_name eq 'sendemail' || $module_name eq 'email' || $module_name eq 'sms'"> class="active"</if> href="{:U('setting/sendsms')}"><i class="fa fa-envelope"><span class="menu_code">营销</span></i></a>
                                                 </li>-->
-                        <?php endif; ?>
+                    <?php endif; ?>
 
-                        <?php if (in_array('setting',$new_module_list)): ?>
-                        <li>
-                            <a data-toggle="tooltip" data-placement="right" data-original-title="系统设置" <if condition="($module_name eq 'setting' && ($action_name neq 'sendsms' && $action_name neq 'smsrecord' && $action_name neq 'sendemail')) || ($module_name eq 'user' && $action_name neq 'contacts' && $action_name neq 'view') || $action_name eq 'category' || ($module_name eq 'kaoqin' && $action_name neq 'analytics' && $action_name neq 'record' && $action_name neq 'index') || ($module_name eq 'contract' && $action_name eq 'examine')"> class="active"</if> <if condition = "session('?admin')">href="{:U('setting/defaultinfo')}"<elseif condition = "checkPerByAction('user','index')" />href="{:U('user/index')}"<elseif condition = "checkPerByAction('kaoqin','setting')" />href="{:U('kaoqin/setting')}"<else />href="{:U('setting/defaultinfo')}"</if> ><i class="fa fa-cog"></i><span class="menu_code">系统</span></a>
-                        </li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-            </nav>
-            <div id="page-wrapper" class="gray-bg" style="background:#e6e9f0">
-                <div class="row border-bottom white-bg" style="box-shadow: 0px 4px 13px -8px #5A5A5A;z-index: 102;">
-                    <nav class="navbar navbar-default nav-head navbar-static-top" role="navigation" style="margin-bottom: 0">
-                        <?php
+                    <?php if (in_array('setting',$new_module_list)): ?>
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="系统设置" <if
+                            condition="($module_name eq 'setting' && ($action_name neq 'sendsms' && $action_name neq 'smsrecord' && $action_name neq 'sendemail')) || ($module_name eq 'user' && $action_name neq 'contacts' && $action_name neq 'view') || $action_name eq 'category' || ($module_name eq 'kaoqin' && $action_name neq 'analytics' && $action_name neq 'record' && $action_name neq 'index') || ($module_name eq 'contract' && $action_name eq 'examine')">
+                            class="active"</if>
+                            <if condition="session('?admin')">href="{:U('setting/defaultinfo')}"
+                                <elseif condition="checkPerByAction('user','index')" />href="{:U('user/index')}"
+                                <elseif condition="checkPerByAction('kaoqin','setting')" />href="{:U('kaoqin/setting')}"
+                                <else />href="{:U('setting/defaultinfo')}"</if> ><i class="fa fa-cog"></i><span
+                                class="menu_code">系统</span>
+                        </a>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </nav>
+        <div id="page-wrapper" class="gray-bg" style="background:#e6e9f0">
+            <div class="row border-bottom white-bg" style="box-shadow: 0px 4px 13px -8px #5A5A5A;z-index: 102;">
+                <nav class="navbar navbar-default nav-head navbar-static-top" role="navigation"
+                    style="margin-bottom: 0">
+                    <?php
                         $module_name = strtolower(MODULE_NAME);
                         $action_name = strtolower(ACTION_NAME);
                         $t = strtolower($_GET['t']);
                         ?>
-                        <ul class="nav navbar-nav navbar-left navbar-form-custom" style="min-width:60%;">
-                            <?php if ($module_name == 'index'): ?>
-                            <li <if condition = "$module_name eq 'index' && $action_name eq 'index'">class="active"</if> ><a href="{:U('index/index')}"><span class="fa fa-home" style="display:inline"></span>&nbsp;&nbsp;首页</a></li>
-                            <?php elseif($action_name == 'analytics' || $action_name == 'collection' || $action_name == 'city_analytics' || $action_name == 'record'): ?>
-                            <li <if condition = "$action_name == 'analytics' || $action_name == 'city_analytics' || $action_name == 'record'">class="active"</if>><a href="{:U('customer/analytics')}"><span class="fa fa-area-chart" style="display:inline"></span>&nbsp;&nbsp;数据分析</a></li>
-                            <?php elseif ($module_name == 'customer' && $action_name != 'analytics' && $action_name != 'city_analytics' || $module_name == 'contacts' || $module_name == 'member' || $module_name == 'leads') : ?>
-                            <!--<li <if condition = "$module_name eq 'leads' && $_GET['by'] neq 'public'">class="active"</if> ><a href="{:U('leads/index')}"><span class="fa fa fa-child" style="display:inline"></span>&nbsp;&nbsp;线索</a></li>-->
-                            <!--<li <if condition = "$module_name eq 'leads' && $_GET['by'] eq 'public'">class="active"</if> ><a href="{:U('leads/index','by=public')}"><span class="fa fa fa-child" style="display:inline"></span>&nbsp;&nbsp;线索池</a></li>-->
-                            <li <if condition = "$module_name eq 'customer' && $_GET['content'] neq 'resource' && $_GET['content'] neq 'city_analytics'">class="active"</if> ><a href="{$customer_url}"><span class="fa fa-user" style="display:inline"></span>&nbsp;&nbsp;客户</a></li>
-                            <li <if condition = "$_GET['content'] eq 'resource'">class="active"</if>><a href="{:U('customer/index','by=me&content=resource')}"><span class="fa fa-group" style="display:inline"></span>&nbsp;&nbsp;客户公海</a></li>
-                            <li <if condition = "$module_name eq 'contacts'">class="active"</if>><a href="{:U('contacts/index')}"><span class="fa fa-phone-square" style="display:inline"></span>&nbsp;&nbsp;客户联系人</a></li>
-                            <?php elseif($module_name == 'business' && $action_name != 'analytics'): ?>
-                            <li class="active"><a href="{:U('business/index')}"><span class="fa fa-suitcase" style="display:inline"></span>&nbsp;&nbsp;项目管理</a></li>
-                            <?php elseif($module_name == 'product' && $action_name = 'index'): ?>
-                            <li class="active"><a href="{:U('product/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;人才管理</a></li>
-                            <?php elseif($module_name == 'integral' && $action_name = 'index'): ?>
-                            <li <if condition ="$action_name eq 'index' &&$_GET['via'] eq ''">class="active"</if>><a href="{:U('integral/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;专业猎头</a></li>
-                            <li <if condition ="$_GET['via'] eq internet">class="active"</if> > <a href="{:U('integral/internet','via=internet')}"> <span class="fa fa-group" style="display:inline"></span>&nbsp;&nbsp;互联网+</a></li>
-                            <?php elseif($module_name == 'contract' || $module_name == 'order'): ?>
-                            <li <if condition = "$module_name eq 'contract'">class="active"</if>><a href="{:U('contract/index')}"><span class="fa fa-list-alt" style="display:inline"></span>&nbsp;&nbsp;合同</a></li>
-                            <?php elseif($module_name == 'background' || $module_name == 'index'): ?>
-                            <li <if condition = "$action_name eq 'index'||$action_name eq 'add'||$action_name eq 'add_more'||$action_name eq 'edit'">class="active"</if> ><a href="{:U('background/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对内背景调查</a></li>
-                            <li <if condition = "$action_name eq 'index_external'||$action_name eq 'add_external'||$action_name eq 'add_more_external'||$action_name eq 'edit_external'">class="active"</if> ><a href="{:U('background/index_external')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;对外背景调查</a></li>
-                            <?php elseif($module_name == 'return' || $module_name == 'index'): ?>
-                            <li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class="active"</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;回款计划</a></li>
-                            <li <if condition = "$action_name eq 'record_index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class="active"</if> ><a href="{:U('return/record_index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;回款记录</a></li>
-                            <!--<li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class=""</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;开票记录</a></li>-->
-                            <?php
+                    <ul class="nav navbar-nav navbar-left navbar-form-custom" style="min-width:60%;">
+                        <?php if ($module_name == 'index'): ?>
+                        <li <if condition="$module_name eq 'index' && $action_name eq 'index'">class="active"</if> ><a
+                                href="{:U('index/index')}"><span class="fa fa-home"
+                                    style="display:inline"></span>&nbsp;&nbsp;首页</a></li>
+                        <?php elseif($action_name == 'analytics' || $action_name == 'collection' || $action_name == 'city_analytics' || $action_name == 'record'): ?>
+                        <li <if
+                            condition="$action_name == 'analytics' || $action_name == 'city_analytics' || $action_name == 'record'">
+                            class="active"</if>><a href="{:U('customer/analytics')}"><span class="fa fa-area-chart"
+                                    style="display:inline"></span>&nbsp;&nbsp;数据分析</a></li>
+                        <?php elseif ($module_name == 'customer' && $action_name != 'analytics' && $action_name != 'city_analytics' || $module_name == 'contacts' || $module_name == 'member' || $module_name == 'leads') : ?>
+                        <!--<li <if condition = "$module_name eq 'leads' && $_GET['by'] neq 'public'">class="active"</if> ><a href="{:U('leads/index')}"><span class="fa fa fa-child" style="display:inline"></span>&nbsp;&nbsp;线索</a></li>-->
+                        <!--<li <if condition = "$module_name eq 'leads' && $_GET['by'] eq 'public'">class="active"</if> ><a href="{:U('leads/index','by=public')}"><span class="fa fa fa-child" style="display:inline"></span>&nbsp;&nbsp;线索池</a></li>-->
+                        <li <if
+                            condition="$module_name eq 'customer' && $_GET['content'] neq 'resource' && $_GET['content'] neq 'city_analytics'">
+                            class="active"</if> ><a href="{$customer_url}"><span class="fa fa-user"
+                                    style="display:inline"></span>&nbsp;&nbsp;客户</a></li>
+                        <li <if condition="$_GET['content'] eq 'resource'">class="active"</if>><a
+                                href="{:U('customer/index','by=me&content=resource')}"><span class="fa fa-group"
+                                    style="display:inline"></span>&nbsp;&nbsp;客户公海</a></li>
+                        <li <if condition="$module_name eq 'contacts'">class="active"</if>><a
+                                href="{:U('contacts/index')}"><span class="fa fa-phone-square"
+                                    style="display:inline"></span>&nbsp;&nbsp;客户联系人</a></li>
+                        <?php elseif($module_name == 'business' && $action_name != 'analytics'): ?>
+                        <li class="active"><a href="{:U('business/index')}"><span class="fa fa-suitcase"
+                                    style="display:inline"></span>&nbsp;&nbsp;项目管理</a></li>
+                        <?php elseif($module_name == 'product' && $action_name = 'index'): ?>
+                        <li class="active"><a href="{:U('product/index')}"><span class="fa fa-inbox"
+                                    style="display:inline"></span>&nbsp;&nbsp;人才管理</a></li>
+                        <?php elseif($module_name == 'integral' && $action_name = 'index'): ?>
+                        <li <if condition="$action_name eq 'index' &&$_GET['via'] eq ''">class="active"</if>><a
+                                href="{:U('integral/index')}"><span class="fa fa-inbox"
+                                    style="display:inline"></span>&nbsp;&nbsp;专业猎头</a></li>
+                        <li <if condition="$_GET['via'] eq internet">class="active"</if> > <a
+                                href="{:U('integral/internet','via=internet')}"> <span class="fa fa-group"
+                                    style="display:inline"></span>&nbsp;&nbsp;互联网+</a></li>
+                        <?php elseif($module_name == 'contract' || $module_name == 'order'): ?>
+                        <li <if condition="$module_name eq 'contract'">class="active"</if>><a
+                                href="{:U('contract/index')}"><span class="fa fa-list-alt"
+                                    style="display:inline"></span>&nbsp;&nbsp;合同</a></li>
+                        <?php elseif($module_name == 'background' || $module_name == 'index'): ?>
+                        <li <if
+                            condition="$action_name eq 'index'||$action_name eq 'add'||$action_name eq 'add_more'||$action_name eq 'edit'">
+                            class="active"</if> ><a href="{:U('background/index')}"><span class="fa fa-inbox"
+                                    style="display:inline"></span>&nbsp;&nbsp;对内背景调查</a></li>
+                        <li <if
+                            condition="$action_name eq 'index_external'||$action_name eq 'add_external'||$action_name eq 'add_more_external'||$action_name eq 'edit_external'">
+                            class="active"</if> ><a href="{:U('background/index_external')}"><span class="fa fa-inbox"
+                                    style="display:inline"></span>&nbsp;&nbsp;对外背景调查</a></li>
+                        <?php elseif($module_name == 'return' || $module_name == 'index'): ?>
+                        <li <if
+                            condition="$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">
+                            class="active"</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox"
+                                    style="display:inline"></span>&nbsp;&nbsp;回款计划</a></li>
+                        <li <if
+                            condition="$action_name eq 'record_index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">
+                            class="active"</if> ><a href="{:U('return/record_index')}"><span class="fa fa-inbox"
+                                    style="display:inline"></span>&nbsp;&nbsp;回款记录</a></li>
+                        <!--<li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class=""</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;开票记录</a></li>-->
+                        <?php
                             elseif($module_name == 'train' || $module_name == 'teacher'): ?>
-                            <!--                            <li <if condition = "$module_name eq 'finance'">class="active"</if>><a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;课程管理</a></li>
+                        <!--                            <li <if condition = "$module_name eq 'finance'">class="active"</if>><a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;课程管理</a></li>
                                                         <li <if condition = "$module_name eq 'finance'">class="active"</if>><a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;课程管理</a></li>
                                                         <li <if condition = "$module_name eq 'finance'">class="active"</if>><a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;考试管理</a></li>
                                                         <li <if condition = "$module_name eq 'teacher'">class="active"</if>><a href="{:U('teacher/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;教师后台</a></li>-->
-                            <?php elseif($module_name == 'finance' || $module_name == 'invoice'): ?>
-                            <!--<li <if condition = "$module_name eq 'finance' && $t eq 'receivingorder'">class="active"</if>><a href="{:U('finance/index','t=receivingorder')}"><span class="fa fa-money" style="display:inline"></span>&nbsp;&nbsp;回款单</a></li>-->
-                            <!--<li <if condition = "$module_name eq 'finance' && $t eq 'payables'">class="active"</if>><a href="{:U('finance/index','t=payables')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;应付款</a></li>-->
-                            <!--<li <if condition = "$module_name eq 'finance' && $t eq 'paymentorder'">class="active"</if>><a href="{:U('finance/index','t=paymentorder')}"><span class="fa fa-money" style="display:inline"></span>&nbsp;&nbsp;付款单</a></li>-->
-                            <?php
+                        <?php elseif($module_name == 'finance' || $module_name == 'invoice'): ?>
+                        <!--<li <if condition = "$module_name eq 'finance' && $t eq 'receivingorder'">class="active"</if>><a href="{:U('finance/index','t=receivingorder')}"><span class="fa fa-money" style="display:inline"></span>&nbsp;&nbsp;回款单</a></li>-->
+                        <!--<li <if condition = "$module_name eq 'finance' && $t eq 'payables'">class="active"</if>><a href="{:U('finance/index','t=payables')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;应付款</a></li>-->
+                        <!--<li <if condition = "$module_name eq 'finance' && $t eq 'paymentorder'">class="active"</if>><a href="{:U('finance/index','t=paymentorder')}"><span class="fa fa-money" style="display:inline"></span>&nbsp;&nbsp;付款单</a></li>-->
+                        <?php
 
                             if(checkPerByAction('invoice','index')){
                             ?>
-                            <li <if condition = "$module_name eq 'invoice'">class="active"</if>><a href="{:U('invoice/index')}"><span class="fa fa-bookmark" style="display:inline"></span>&nbsp;&nbsp;发票</a></li>
-                            <?php
+                        <li <if condition="$module_name eq 'invoice'">class="active"</if>><a
+                                href="{:U('invoice/index')}"><span class="fa fa-bookmark"
+                                    style="display:inline"></span>&nbsp;&nbsp;发票</a></li>
+                        <?php
                             }
                             ?>
 
-                            <li <if condition = "$module_name eq 'finance'">class="active"</if>>
+                        <li <if condition="$module_name eq 'finance'">class="active"</if>>
                             <!--<a href="{:U('finance/index')}"><span class="fa fa-credit-card" style="display:inline"></span>&nbsp;&nbsp;发票分配明细汇总</a>-->
-                            </li>
-                            <?php elseif($module_name == 'log' || $module_name =='examine' || ($module_name == 'knowledge' && $action_name != 'category') || $module_name == 'announcement' || $module_name == 'sign' || $module_name == 'event' || $module_name == 'task' || ($module_name == 'kaoqin' && $action_name == 'index') ): ?>
-                            <!--<li <if condition = "$module_name eq 'log'">class="active"</if>><a href="{:U('log/index')}"><span class="fa fa-pencil-square" style="display:inline"></span>&nbsp;&nbsp;工作日志</a></li>-->
-                            <!--<li <if condition = "$module_name == 'examine'">class="active"</if>><a href="{:U('examine/index')}"><span class="fa fa-check-square-o" style="display:inline"></span>&nbsp;&nbsp;审批</a></li>-->
-                            <li <if condition = "$module_name eq 'knowledge' && $action_name neq 'category'">class="active"</if>><a href="{:U('knowledge/index')}"><span class="fa fa-book" style="display:inline"></span>&nbsp;&nbsp;知识</a></li>
-                            <li <if condition = "$module_name eq 'announcement'">class="active"</if>><a href="{:U('announcement/index')}"><span class="fa fa-volume-up" style="display:inline"></span>&nbsp;&nbsp;公告</a></li>
-                            <!--<li <if condition = "$module_name eq 'sign'">class="active"</if>><a href="{:U('sign/index')}"><span class="fa fa-map-pin" style="display:inline"></span>&nbsp;&nbsp;定位签到</a></li>-->
-                            <li <if condition = "$module_name eq 'event'">class="active"</if>><a href="{:U('event/index')}"><span class="fa fa-calendar" style="display:inline"></span>&nbsp;&nbsp;日程</a></li>
-                            <li <if condition = "$module_name eq 'task'">class="active"</if>><a href="{:U('task/index')}"><span class="fa fa-tasks" style="display:inline"></span>&nbsp;&nbsp;任务</a></li>
-                            <!--<li <if condition = "$module_name eq 'kaoqin'">class="active"</if>><a href="{:U('kaoqin/index')}"><span class="fa fa-hand-pointer-o" style="display:inline"></span>&nbsp;&nbsp;考勤月历</a></li>-->
-                            <?php elseif(($module_name == 'setting' && ($action_name =='sendsms' || $action_name =='smsrecord' || $action_name =='sendemail'))|| $module_name == 'email' || $module_name == 'sms'): ?>
-                            <li <if condition = "($module_name eq 'setting' && $action_name eq 'sendsms')|| $module_name eq 'sms'">class="active"</if>><a href="{:U('setting/sendsms')}"><span class="fa fa-comments-o" style="display:inline"></span>&nbsp;&nbsp;{:L('SEND_SMS')}</a></li>
-                            <li <if condition = "$module_name eq 'setting' && $action_name eq 'smsrecord'">class="active"</if>><a href="{:U('setting/smsrecord')}"><span class="fa fa-envelope" style="display:inline"></span>&nbsp;&nbsp;{:L('SMS_RECORD')}</a></li>
-                            <li <if condition = "($module_name eq 'setting' && $action_name eq 'sendemail')|| $module_name eq 'email'">class="active"</if>><a href="{:U('setting/sendemail')}"><span class="fa fa-folder" style="display:inline"></span>&nbsp;&nbsp;{:L('SEND_EMAIL')}</a></li>
-                            <?php elseif(($module_name == 'user' && $action_name != 'contacts' && $action_name != 'view') || ($module_name == 'setting' && ($action_name !='sendsms' && $action_name !='smsrecord' && $action_name !='sendemail')) || $action_name == 'category' || ($module_name == 'accountsetting') || ($module_name == 'kaoqin' && $action_name == 'setting') ): ?>
-                            <li <if condition = "$module_name eq 'user' && $action_name eq 'edit' && ($_GET['id'] eq '' || $_GET['id'] eq session('role_id'))">class="active"</if>>
-                            <a href="{:U('user/edit')}"><span class="fa fa-user" style="display:inline"></span>&nbsp;&nbsp;个人中心</a>
-                            </li>
-                            <li <if condition = "$module_name eq 'setting' || ($module_name eq 'user' && $action_name neq 'edit') || $action_name eq 'category' || ($module_name eq 'user' && $action_name eq 'edit' && $_GET['id'] neq session('role_id') && $_GET['id'] neq '') || ($module_name eq 'accountsetting') || ($module_name eq 'kaoqin' && $action_name eq 'setting')">class="active"</if>><a href="{:U('user/index')}"><span class="fa fa-cog" style="display:inline"></span>&nbsp;&nbsp;系统设置</a></li>
-                            <?php elseif($module_name == 'user' && ($action_name == 'contacts' || $action_name == 'view')): ?>
-                            <li <if condition = "$module_name == 'user'">class="active"</if>><a href="{:U('user/contacts')}"><span class="fa fa-phone-square" style="display:inline"></span>&nbsp;&nbsp;通讯录</a></li>
-                            <?php elseif($module_name == 'message'): ?>
-                            <li <if condition = "$module_name == 'message'">class="active"</if>><a href="{:U('message/index')}"><span class="fa fa-bank" style="display:inline"></span>&nbsp;&nbsp;消息中心</a></li>
-                            <?php endif; ?>
-                        </ul>
-                        <ul class="nav navbar-top-links navbar-right" style="margin-right:0px;">
-                            <li class="dropdown" style="display: none">
-                                <!--<a class="dropdown-toggle count-info" id="todo_url"  data-toggle="dropdown" href="#" title="待办事项">-->
-                                <!--<img src="__PUBLIC__/img/remain.png" alt="" /><div class="label label-info" style="background-color: #FA7252;" id="todo_num"></div>-->
-                                <!--</a>-->
-                                <ul class="dropdown-menu dropdown-alerts folder-list m-b-md" style="width:250px;">
-                                    <?php $contract_examine_role_ids = M('ContractExamine')->getField('role_id',true); ?>
-                                    <?php if (checkPerByAction('contract','check') || in_array(session('role_id'),$contract_examine_role_ids)): ?>
-                                    <li style="border-bottom:1px dashed #e7eaec !important;"><a href="{:U('contract/index','contract_checked=1&by=all')}"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;待审核的合同<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_check_contract_num"></span></a></li>
-                                    <?php endif; ?>
-                                    <?php if (checkPerByAction('finance','check')): ?>
-                                    <!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="{:U('finance/index','t=receivingorder&status[value]=0&by=all')}"><i class="fa fa-money"></i>&nbsp;&nbsp;待审核的回款<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_receivables_num"></span></a></li>-->
-                                    <?php endif; ?>
-                                    <?php if (checkPerByAction('examine','index')): ?>
-                                    <!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="{:U('examine/index','by=me_examine&examining=1')}"><i class="fa fa-check-square-o"></i>&nbsp;&nbsp;待处理的审批流<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_examine_num"></span></a></li>-->
-                                    <?php endif; ?>
-                                    <?php if (checkPerByAction('contract','index')): ?>
-                                    <li style="border-bottom:1px dashed #e7eaec !important;"><a href="{:U('contract/index','by=dqcontact')}"><i class="fa fa-user"></i>&nbsp;&nbsp;合同到期提醒<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_dqcontact_num"></span></a></li>
-                                    <?php endif; ?>
+                        </li>
+                        <?php elseif($module_name == 'log' || $module_name =='examine' || ($module_name == 'knowledge' && $action_name != 'category') || $module_name == 'announcement' || $module_name == 'sign' || $module_name == 'event' || $module_name == 'task' || ($module_name == 'kaoqin' && $action_name == 'index') ): ?>
+                        <!--<li <if condition = "$module_name eq 'log'">class="active"</if>><a href="{:U('log/index')}"><span class="fa fa-pencil-square" style="display:inline"></span>&nbsp;&nbsp;工作日志</a></li>-->
+                        <!--<li <if condition = "$module_name == 'examine'">class="active"</if>><a href="{:U('examine/index')}"><span class="fa fa-check-square-o" style="display:inline"></span>&nbsp;&nbsp;审批</a></li>-->
+                        <li <if condition="$module_name eq 'knowledge' && $action_name neq 'category'">class="active"
+                            </if>><a href="{:U('knowledge/index')}"><span class="fa fa-book"
+                                    style="display:inline"></span>&nbsp;&nbsp;知识</a></li>
+                        <li <if condition="$module_name eq 'announcement'">class="active"</if>><a
+                                href="{:U('announcement/index')}"><span class="fa fa-volume-up"
+                                    style="display:inline"></span>&nbsp;&nbsp;公告</a></li>
+                        <!--<li <if condition = "$module_name eq 'sign'">class="active"</if>><a href="{:U('sign/index')}"><span class="fa fa-map-pin" style="display:inline"></span>&nbsp;&nbsp;定位签到</a></li>-->
+                        <li <if condition="$module_name eq 'event'">class="active"</if>><a
+                                href="{:U('event/index')}"><span class="fa fa-calendar"
+                                    style="display:inline"></span>&nbsp;&nbsp;日程</a></li>
+                        <li <if condition="$module_name eq 'task'">class="active"</if>><a
+                                href="{:U('task/index')}"><span class="fa fa-tasks"
+                                    style="display:inline"></span>&nbsp;&nbsp;任务</a></li>
+                        <!--<li <if condition = "$module_name eq 'kaoqin'">class="active"</if>><a href="{:U('kaoqin/index')}"><span class="fa fa-hand-pointer-o" style="display:inline"></span>&nbsp;&nbsp;考勤月历</a></li>-->
+                        <?php elseif(($module_name == 'setting' && ($action_name =='sendsms' || $action_name =='smsrecord' || $action_name =='sendemail'))|| $module_name == 'email' || $module_name == 'sms'): ?>
+                        <li <if
+                            condition="($module_name eq 'setting' && $action_name eq 'sendsms')|| $module_name eq 'sms'">
+                            class="active"</if>><a href="{:U('setting/sendsms')}"><span class="fa fa-comments-o"
+                                    style="display:inline"></span>&nbsp;&nbsp;{:L('SEND_SMS')}</a></li>
+                        <li <if condition="$module_name eq 'setting' && $action_name eq 'smsrecord'">class="active"</if>
+                            ><a href="{:U('setting/smsrecord')}"><span class="fa fa-envelope"
+                                    style="display:inline"></span>&nbsp;&nbsp;{:L('SMS_RECORD')}</a></li>
+                        <li <if
+                            condition="($module_name eq 'setting' && $action_name eq 'sendemail')|| $module_name eq 'email'">
+                            class="active"</if>><a href="{:U('setting/sendemail')}"><span class="fa fa-folder"
+                                    style="display:inline"></span>&nbsp;&nbsp;{:L('SEND_EMAIL')}</a></li>
+                        <?php elseif(($module_name == 'user' && $action_name != 'contacts' && $action_name != 'view') || ($module_name == 'setting' && ($action_name !='sendsms' && $action_name !='smsrecord' && $action_name !='sendemail')) || $action_name == 'category' || ($module_name == 'accountsetting') || ($module_name == 'kaoqin' && $action_name == 'setting') ): ?>
+                        <li <if
+                            condition="$module_name eq 'user' && $action_name eq 'edit' && ($_GET['id'] eq '' || $_GET['id'] eq session('role_id'))">
+                            class="active"</if>>
+                            <a href="{:U('user/edit')}"><span class="fa fa-user"
+                                    style="display:inline"></span>&nbsp;&nbsp;个人中心</a>
+                        </li>
+                        <li <if
+                            condition="$module_name eq 'setting' || ($module_name eq 'user' && $action_name neq 'edit') || $action_name eq 'category' || ($module_name eq 'user' && $action_name eq 'edit' && $_GET['id'] neq session('role_id') && $_GET['id'] neq '') || ($module_name eq 'accountsetting') || ($module_name eq 'kaoqin' && $action_name eq 'setting')">
+                            class="active"</if>><a href="{:U('user/index')}"><span class="fa fa-cog"
+                                    style="display:inline"></span>&nbsp;&nbsp;系统设置</a></li>
+                        <?php elseif($module_name == 'user' && ($action_name == 'contacts' || $action_name == 'view')): ?>
+                        <li <if condition="$module_name == 'user'">class="active"</if>><a
+                                href="{:U('user/contacts')}"><span class="fa fa-phone-square"
+                                    style="display:inline"></span>&nbsp;&nbsp;通讯录</a></li>
+                        <?php elseif($module_name == 'message'): ?>
+                        <li <if condition="$module_name == 'message'">class="active"</if>><a
+                                href="{:U('message/index')}"><span class="fa fa-bank"
+                                    style="display:inline"></span>&nbsp;&nbsp;消息中心</a></li>
+                        <?php endif; ?>
+                    </ul>
+                    <ul class="nav navbar-top-links navbar-right" style="margin-right:0px;">
+                        <li class="dropdown" style="display: none">
+                            <!--<a class="dropdown-toggle count-info" id="todo_url"  data-toggle="dropdown" href="#" title="待办事项">-->
+                            <!--<img src="__PUBLIC__/img/remain.png" alt="" /><div class="label label-info" style="background-color: #FA7252;" id="todo_num"></div>-->
+                            <!--</a>-->
+                            <ul class="dropdown-menu dropdown-alerts folder-list m-b-md" style="width:250px;">
+                                <?php $contract_examine_role_ids = M('ContractExamine')->getField('role_id',true); ?>
+                                <?php if (checkPerByAction('contract','check') || in_array(session('role_id'),$contract_examine_role_ids)): ?>
+                                <li style="border-bottom:1px dashed #e7eaec !important;"><a
+                                        href="{:U('contract/index','contract_checked=1&by=all')}"><i
+                                            class="fa fa-list-alt"></i>&nbsp;&nbsp;待审核的合同<span
+                                            class="label label-info pull-right" style="background-color: #FA7252;"
+                                            id="header_check_contract_num"></span></a></li>
+                                <?php endif; ?>
+                                <?php if (checkPerByAction('finance','check')): ?>
+                                <!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="{:U('finance/index','t=receivingorder&status[value]=0&by=all')}"><i class="fa fa-money"></i>&nbsp;&nbsp;待审核的回款<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_receivables_num"></span></a></li>-->
+                                <?php endif; ?>
+                                <?php if (checkPerByAction('examine','index')): ?>
+                                <!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="{:U('examine/index','by=me_examine&examining=1')}"><i class="fa fa-check-square-o"></i>&nbsp;&nbsp;待处理的审批流<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_examine_num"></span></a></li>-->
+                                <?php endif; ?>
+                                <?php if (checkPerByAction('contract','index')): ?>
+                                <li style="border-bottom:1px dashed #e7eaec !important;"><a
+                                        href="{:U('contract/index','by=dqcontact')}"><i
+                                            class="fa fa-user"></i>&nbsp;&nbsp;合同到期提醒<span
+                                            class="label label-info pull-right" style="background-color: #FA7252;"
+                                            id="header_dqcontact_num"></span></a></li>
+                                <?php endif; ?>
 
-                                    <?php if (checkPerByAction('finance','index_receivables')): ?>
-                                    <!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="{:U('finance/index','t=receivables&r_status=1&by=me')}"><i class="fa fa-money"></i>&nbsp;&nbsp;应收款提醒<span class="label label-info pull-right" style="background-color: #FA7252;" id="receivables_num"></span></a></li>-->
-                                    <?php endif; ?>
-                                    <?php if (checkPerByAction('customer','index')): ?>
-                                    <li style="border-bottom:1px dashed #e7eaec !important;"><a href="{:U('customer/index','by=todaycontact')}"><i class="fa fa-user"></i>&nbsp;&nbsp;今日需跟进客户<span class="label label-info pull-right" style="background-color: #FA7252;" id="header_follow_customer_num"></span></a></li>
-                                    <?php endif; ?>
-                                </ul>
-                            </li>
-                            <li class="dropdown" style="display: none">
-                                <!--						<a class="dropdown-toggle count-info" id="event_url" data-toggle="dropdown" href="#" title="今日日程">
+                                <?php if (checkPerByAction('finance','index_receivables')): ?>
+                                <!--<li style="border-bottom:1px dashed #e7eaec !important;"><a href="{:U('finance/index','t=receivables&r_status=1&by=me')}"><i class="fa fa-money"></i>&nbsp;&nbsp;应收款提醒<span class="label label-info pull-right" style="background-color: #FA7252;" id="receivables_num"></span></a></li>-->
+                                <?php endif; ?>
+                                <?php if (checkPerByAction('customer','index')): ?>
+                                <li style="border-bottom:1px dashed #e7eaec !important;"><a
+                                        href="{:U('customer/index','by=todaycontact')}"><i
+                                            class="fa fa-user"></i>&nbsp;&nbsp;今日需跟进客户<span
+                                            class="label label-info pull-right" style="background-color: #FA7252;"
+                                            id="header_follow_customer_num"></span></a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                        <li class="dropdown" style="display: none">
+                            <!--						<a class="dropdown-toggle count-info" id="event_url" data-toggle="dropdown" href="#" title="今日日程">
                                                                                         <img src="__PUBLIC__/img/event.png" alt="" /><span class="label label-warning" id="event_num"></span>
                                                                                 </a>-->
-                                <ul class="dropdown-menu dropdown-alerts">
-                                    <li class="list-group" role="presentation" id="event_group" style="height:220px;display:none;">
-                                        <div class="full-height-scroll" id="event_list" data-height="220px" data-plugin="slimScroll" style="overflow: hidden; width: auto;">
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="text-center link-block">
-                                            <a href="{:U('event/index')}">
-                                                <strong>查看全部日程</strong>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li class="divider" style="height:0px;"></li>
-                                </ul>
-                            </li>
-                            <!--电话系统接口-->
-                            <li><input placeholder="输入电话号码" type="number" id="telphone" rel="phone" class="form-control checkit" onblur="checkform(this);" />
-                                <input type="hidden" id="testPhone">
-                            </li>
-                            <li>
-                                <a class="dropdown-toggle count-info" id="phone_url" data-toggle="dropdown" href="#" title="呼叫">
-                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-toggle count-info" id="phone-off" data-toggle="dropdown" href="#" title="查看通话记录">
-                                    <span class="glyphicon glyphicon-list-alt"></span>
-                                </a>
-                            </li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle count-info" id="message_url" data-toggle="dropdown" href="#" title="站内信">
-                                    <img src="__PUBLIC__/img/bell.png" alt="" /><span class="label label-primary" id="message_num"></span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-alerts" style="width:365px;">
-                                    <li class="list-group" role="presentation" id="message_group" style="height:220px;display:none;">
-                                        <div class="full-height-scroll" id="message_list" data-height="220px" data-plugin="slimScroll" style="overflow: hidden; width: auto;">
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="text-center link-block">
-                                            <a href="{:U('message/index')}">
-                                                <strong>站内信列表</strong>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li class="divider" style="height:0px;"></li>
-                                </ul>
-                            </li>
-                            <li style="padding-left: 30px;">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding: 2px;">
-                                    <?php
+                            <ul class="dropdown-menu dropdown-alerts">
+                                <li class="list-group" role="presentation" id="event_group"
+                                    style="height:220px;display:none;">
+                                    <div class="full-height-scroll" id="event_list" data-height="220px"
+                                        data-plugin="slimScroll" style="overflow: hidden; width: auto;">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="text-center link-block">
+                                        <a href="{:U('event/index')}">
+                                            <strong>查看全部日程</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="divider" style="height:0px;"></li>
+                            </ul>
+                        </li>
+                        <!--电话系统接口-->
+                        <li><input placeholder="输入电话号码" type="number" id="telphone" rel="phone"
+                                class="form-control checkit" onblur="checkform(this);" />
+                            <input type="hidden" id="testPhone">
+                        </li>
+                        <li>
+                            <a class="dropdown-toggle count-info" id="phone_url" data-toggle="dropdown" href="#"
+                                title="呼叫">
+                                <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-toggle count-info" id="phone-off" data-toggle="dropdown" href="#"
+                                title="查看通话记录">
+                                <span class="glyphicon glyphicon-list-alt"></span>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" id="message_url" data-toggle="dropdown" href="#"
+                                title="站内信">
+                                <img src="__PUBLIC__/img/bell.png" alt="" /><span class="label label-primary"
+                                    id="message_num"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-alerts" style="width:365px;">
+                                <li class="list-group" role="presentation" id="message_group"
+                                    style="height:220px;display:none;">
+                                    <div class="full-height-scroll" id="message_list" data-height="220px"
+                                        data-plugin="slimScroll" style="overflow: hidden; width: auto;">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="text-center link-block">
+                                        <a href="{:U('message/index')}">
+                                            <strong>站内信列表</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="divider" style="height:0px;"></li>
+                            </ul>
+                        </li>
+                        <li style="padding-left: 30px;">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding: 2px;">
+                                <?php
                                     $img = M('User')->where('user_id = %d', session('user_id'))->getField('thumb_path');
                                     ?>
-                                    <if condition = "$img neq ''">
-                                        <img alt="头像" style="height:38px;width:38px" class="img-circle" src="{$img}" />
-                                        <else />
-                                        <img alt="头像" style="height:38px;width:38px" class="img-circle" src="__PUBLIC__/img/avatar_default.png" />
-                                    </if>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{:U('user/edit')}">个人资料</a></li>
-                                    <li><a href="{:U('setting/lockscreen')}">一键锁屏</a></li>
-                                    <li class="divider"></li>
-                                    <li><a class="logout" href="javascript:void(0);">{:L('EXIT')}</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="modal inmodal" id="Profile" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content animated bounceInRight">
+                                <if condition="$img neq ''">
+                                    <img alt="头像" style="height:38px;width:38px" class="img-circle" src="{$img}" />
+                                    <else />
+                                    <img alt="头像" style="height:38px;width:38px" class="img-circle"
+                                        src="__PUBLIC__/img/avatar_default.png" />
+                                </if>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{:U('user/edit')}">个人资料</a></li>
+                                <li><a href="{:U('setting/lockscreen')}">一键锁屏</a></li>
+                                <li class="divider"></li>
+                                <li><a class="logout" href="javascript:void(0);">{:L('EXIT')}</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="modal inmodal" id="Profile" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content animated bounceInRight">
 
-                        </div>
                     </div>
                 </div>
-                <!-- 模态框 -->
-                <div class="modal inmodal fade" id="Modal_login" tabindex="-1"  style=" overflow:auto; border:1px solid #000000;" role="dialog" >
-                    <div class="modal-dialog modal-md" style="width:40%;">
-                        <div class="modal-content" id="login_modal">
+            </div>
+            <!-- 模态框 -->
+            <div class="modal inmodal fade" id="Modal_login" tabindex="-1"
+                style=" overflow:auto; border:1px solid #000000;" role="dialog">
+                <div class="modal-dialog modal-md" style="width:40%;">
+                    <div class="modal-content" id="login_modal">
 
-                        </div>
                     </div>
                 </div>
-                <div class="" style="display:none;" id="dialog-business" title="通话记录详情">
-                    <div class="spiner-example">
-                        <div class="sk-spinner sk-spinner-three-bounce">
-                            <div class="sk-bounce1"></div>
-                            <div class="sk-bounce2"></div>
-                            <div class="sk-bounce3"></div>
-                        </div>
+            </div>
+            <div class="" style="display:none;" id="dialog-business" title="通话记录详情">
+                <div class="spiner-example">
+                    <div class="sk-spinner sk-spinner-three-bounce">
+                        <div class="sk-bounce1"></div>
+                        <div class="sk-bounce2"></div>
+                        <div class="sk-bounce3"></div>
                     </div>
                 </div>
-<script type="text/javascript">
-                    $(document).ready(function () {
-                        $("#phone_url").on("click",function () {
-                            var flag = true;
-                            var tel = $("#telphone").val();
-                            if (tel == '') {
-                                swal("请输入号码","","warning");
-                                flag = false;
+            </div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#phone_url").on("click", function () {
+                        var tel = $("#telphone").val();
+                        if (tel == '') {
+                            swal("请输入号码", "", "warning");
+                        } else {
+                            var _this = this;
+                            let seatNum = "{$zxhNo|default=''}";
+                            if (seatNum) {
+                                switchLine();
                             } else {
+                                $.post(
+                                    "{:U('callcenter/call_out')}", {
+                                        tel,
+                                        channel: 1
+                                    },
+                                    function (data) {
+                                        var obj = $.parseJSON(data);
+                                        if (obj.code) {
+                                            $('.fa-times').remove()
+                                            swal("操作成功！",
+                                                "拨打电话成功,请稍等电话接通！",
+                                                "success");
+                                            //                                     alert_crm(data.message);
+                                        } else {
+                                            $('.fa-times').remove()
+                                            alert_crm(obj.msg +
+                                                ",请联系管理员！");
+                                        }
+                                    }
+                                );
                             }
-                            if(flag){
-                            $.post(
-                              "{:U('callcenter/call_out')}",
-                                {tel : tel},
-                                function (data) {
-                                    var obj = $.parseJSON(data);
-                                    if(obj.code){
-                                    swal("操作成功！", "拨打电话成功,请稍等电话接通！", "success");
-//                                     alert_crm(data.message);
-                                }else{
-                                    alert_crm(obj.msg+",请联系管理员！");
-                                }}
-                            );}
-//"
-                        });
-                        $("#phone-off").on("click",function () {
-                            $('#dialog-business').dialog('open');
-                            $('#dialog-business').load("{:U('user/call_record')}");
 
-                        });
-                        $("#dialog-business").dialog({
-                            autoOpen: false,
-                            modal: true,
-                            width: 800,
-                            height: 400,
-                            close: function () {
-                                $(this).html("");
-                            },
-                            buttons: {
-                                "{:L('CLOSE')}": function () {
-                                    $(this).dialog("close");
-                                }
-                            },
-                            position:["center",100]
-                        });
+                            function switchLine() {
+                                swal({
+                                        title: "请选择线路",
+                                        text: "选择一个电话线路",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#DD6B55",
+                                        confirmButtonText: "品聘",
+                                        cancelButtonText: '融营云',
+                                        closeOnConfirm: false,
+                                        closeOnCancel: false
+                                    },
+                                    function (isConfirm) {
+                                        var channel;
+                                        if (isConfirm) {
+                                            channel = 1;
+                                        } else {
+                                            channel = 2;
+                                        }
+                                        var fineId = $(_this).attr('data-id');
+                                        $.post(
+                                            "{:U('callcenter/call_out')}", {
+                                                tel,
+                                                channel
+                                            },
+                                            function (data) {
+                                                var obj = $.parseJSON(data);
+                                                if (obj.code) {
+                                                    $('.fa-times').remove()
+                                                    swal("操作成功！",
+                                                        "拨打电话成功,请稍等电话接通！",
+                                                        "success");
+                                                    //                                     alert_crm(data.message);
+                                                } else {
+                                                    $('.fa-times').remove()
+                                                    alert_crm(obj.msg +
+                                                        ",请联系管理员！");
+                                                }
+                                            }
+                                        );
+                                    });
+                                $('.cancel').css('backgroundColor', 'rgb(221, 107, 85)').on(
+                                    'mouseenter', ev => {
+                                        $('.cancel').css('backgroundColor', 'rgb(212,103,82)')
+                                    }).on('mouseleave', ev => {
+                                    $('.cancel').css('backgroundColor', 'rgb(221, 107, 85)')
+                                })
+                                $('.sweet-alert').append(
+                                    `<i style='position:absolute;top:10px;right:10px;cursor:pointer;' class='fa fa-times'/>`
+                                    );
+                                $('.fa-times').click(ev => {
+                                    swal("已取消", "您取消了拨打电话！", "error");
+                                    $('.fa-times').remove()
+                                })
+                            }
+                        }
                     });
-                </script>
+                    $("#phone-off").on("click", function () {
+                        $('#dialog-business').dialog('open');
+                        $('#dialog-business').load("{:U('user/call_record')}");
 
-                <script type="text/javascript">
+                    });
+                    $("#dialog-business").dialog({
+                        autoOpen: false,
+                        modal: true,
+                        width: 800,
+                        height: 400,
+                        close: function () {
+                            $(this).html("");
+                        },
+                        buttons: {
+                            "{:L('CLOSE')}": function () {
+                                $(this).dialog("close");
+                            }
+                        },
+                        position: ["center", 100]
+                    });
+                });
+            </script>
 
-                    $(document).on('click', '#authorize', function(){
+            <script type="text/javascript">
+                $(document).on('click', '#authorize', function () {
                     $('#Modal_anthorize').modal('show');
-                    });
-                    $('[data-toggle="tooltip"]').tooltip({html:true});
-                    /*时间插件*/
-                    $('.date').datepicker({
+                });
+                $('[data-toggle="tooltip"]').tooltip({
+                    html: true
+                });
+                /*时间插件*/
+                $('.date').datepicker({
                     format: "yyyy-mm-dd",
-                            todayBtn: "linked",
-                            keyboardNavigation: false,
-                            forceParse: false,
-                            calendarWeeks: true,
-                            autoclose: true
-                    });
-                    $("#dialog-message-send").dialog({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+                $("#dialog-message-send").dialog({
                     autoOpen: false,
-                            modal: true,
-                            width: 800,
-                            maxHeight: 600,
-                            position: ["center", 100]
-                    });
-                    $(function(){
+                    modal: true,
+                    width: 800,
+                    maxHeight: 600,
+                    position: ["center", 100]
+                });
+                $(function () {
                     /*站内信*/
                     message_tips();
                     /*跟进面试通知*/
                     attention();
-//                    login_tips();
-                    $("#header_send_message").click(function(){
-                    $('#dialog-message-send').dialog('open');
-                    $('#dialog-message-send').load('{:U("message/send")}');
+                    //                    login_tips();
+                    $("#header_send_message").click(function () {
+                        $('#dialog-message-send').dialog('open');
+                        $('#dialog-message-send').load('{:U("message/send")}');
                     });
                     /*让复选框默认取消选择*/
                     //$(':checkbox').prop('checked', false);
 
                     /*记录菜单隐藏状态*/
-                    $(".navbar-minimalize").click(function(){
-                    var arr, reg = new RegExp("(^| )mini-navbar=([^;]*)(;|$)");
-                    arr = document.cookie.match(reg);
-                    if (arr){
-                    var nav_status = unescape(arr[2]) == 1 ? 0:1;
-                    } else{
-                    var nav_status = 1;
-                    }
-                    document.cookie = "mini-navbar=" + nav_status;
+                    $(".navbar-minimalize").click(function () {
+                        var arr, reg = new RegExp("(^| )mini-navbar=([^;]*)(;|$)");
+                        arr = document.cookie.match(reg);
+                        if (arr) {
+                            var nav_status = unescape(arr[2]) == 1 ? 0 : 1;
+                        } else {
+                            var nav_status = 1;
+                        }
+                        document.cookie = "mini-navbar=" + nav_status;
                     });
-                    });
-                    function salert(){
-                    var txt = "<foreach name='alert.content' item='v' key='k'><foreach name='v' item='vv' key='kk'>{$vv}</foreach></foreach>";
-                    if (txt != ''){
-                    swal(txt, "", "{$alert['type'][0]}")
-                    }
-                    }
+                });
 
-                    /*退出提示*/
-                    $('.logout').click(function () {
+                function salert() {
+                    var txt =
+                        "<foreach name='alert.content' item='v' key='k'><foreach name='v' item='vv' key='kk'>{$vv}</foreach></foreach>";
+                    if (txt != '') {
+                        swal(txt, "", "{$alert['type'][0]}")
+                    }
+                }
+
+                /*退出提示*/
+                $('.logout').click(function () {
                     swal({
-                    title: "确定退出登录?",
+                            title: "确定退出登录?",
                             type: "warning",
                             showCancelButton: true,
                             confirmButtonColor: "#DD6B55",
                             confirmButtonText: "确定",
                             cancelButtonText: "取消",
                             closeOnConfirm: false
-                    },
-                            function (isConfirm) {
+                        },
+                        function (isConfirm) {
                             if (isConfirm) {
-                            window.location = "{:U('user/logout')}";
+                                window.location = "{:U('user/logout')}";
                             }
-                            }
+                        }
                     );
-                    });
-                    /*提交失败返回前一页*/
-                    var href = "{$error}";
-                    if (href != '' && href != null){
+                });
+                /*提交失败返回前一页*/
+                var href = "{$error}";
+                if (href != '' && href != null) {
                     swal({
-                    title: "添加失败!", type: "error",
+                            title: "添加失败!",
+                            type: "error",
                             confirmButtonColor: "#DD6B55",
                             confirmButtonText: "返回",
                             closeOnConfirm: false
-                    },
-                            function(){
+                        },
+                        function () {
                             location.href = 'javascript:history.back(-1)';
+                        });
+                }
+                var login_show = 0;
+
+                function login_tips() {
+                    $.get("{:U('message/logintips')}", function (data) {
+                        var is_login = data.data['is_login'];
+                        if (is_login == 0 && login_show != 1) {
+                            $.ajax({
+                                type: "GET",
+                                url: "{:U('user/loginajax')}",
+                                async: true,
+                                success: function (data) {
+                                    if (data.status != 2) {
+                                        $("#login_modal").parent().removeClass("modal-lg").addClass(
+                                            "modal-md");
+                                        $url = "{:U('user/loginajax')}";
+                                        $('#Modal_login').modal('show');
+                                        login_show = 1;
+                                        $('#login_modal').load($url);
+                                    } else {
+                                        login_show = 1;
+                                    }
+                                }
                             });
-                    }
-                    var login_show = 0;
-                    function login_tips(){
-                    $.get("{:U('message/logintips')}", function(data){
-                    var is_login = data.data['is_login'];
-                    if (is_login == 0 && login_show != 1){
-                    $.ajax({
-                    type: "GET",
-                            url: "{:U('user/loginajax')}",
-                            async: true,
-                            success: function(data) {
-                            if (data.status != 2){
-                            $("#login_modal").parent().removeClass("modal-lg").addClass("modal-md");
-                            $url = "{:U('user/loginajax')}";
-                            $('#Modal_login').modal('show');
-                            login_show = 1;
-                            $('#login_modal').load($url);
-                            } else{
-                            login_show = 1;
-                            }
-                            }
-                    });
-                    }
+                        }
                     }, 'json')
-                            setTimeout('login_tips()', 20000);
-                    }
+                    setTimeout('login_tips()', 20000);
+                }
 
-                    /*轮询跟进面试*/
-                    function attention() {
-                        $.get(
-                            '{:U("business/notice")}',
-                            {},
-                            function (data) {
+                /*轮询跟进面试*/
+                function attention() {
+                    $.get(
+                        '{:U("business/notice")}', {},
+                        function (data) {
 
-                            },
-                            'json'
-                        );
-                        setTimeout('attention()',60000);
-                    }
-                    
-                    /*轮询*/
-                    var mark_count = 1; //标记第一次弹出
-                    /*初始默认值*/
-                    var msg_num = '0,0';
-                    function message_tips(){
-                    $.get("{:U('message/tips')}", function(data){
-                    var is_lock = data.data['is_lock'];
-                    if (is_lock == 1){
-                    location.href = "{:U('setting/lockscreen')}";
-                    }
-                    //卡片提醒显示与隐藏
-                    var message_html = '';
-                    var new_num = data.data['message'] + ',' + data.data['contract_count'];
-                    //待办事项
-                    $('#header_check_contract_num').html(data.data['check_contract_num']);
-                    $('#header_dqcontact_num').html(data.data['contract_num']);
-                    $('#header_examine_num').html(data.data['examine_num']);
-                    $('#header_receivables_num').html(data.data['receivingorder_num']);
-                    $('#receivables_num').html(data.data['receivables_num']);
-                    $('#header_follow_customer_num').html(data.data['today_customer']);
-                    if (data.data['todo_num']) {
-                    $('#todo_num').html(data.data['todo_num']);
-                    } else {
-                    $('#todo_num').html('');
-                    }
+                        },
+                        'json'
+                    );
+                    setTimeout('attention()', 60000);
+                }
 
-                    //导航提醒实时写入数值
-                    if (data.data['message'] != 0 && data.data['message'] != ''){
-                    $('#message_group').show();
-                    //桌面提醒
-                    if (data.data['data_list']){
-                    $(data.data['data_list']).each(function(k, v){
-                    if (data.data['data_list_count'] < 3) {
-                    animateMessage(v.role_info.thumb_path, v.role_info.full_name, v.content_msubstr);
-                    }
-                    aaa(v.role_info.thumb_path, v.role_info.full_name, v.content, v.url_link);
-                    });
-                    }
-                    $('#message_num').html(data.data['message']);
-                    $('#message_list').html('');
-                    if (data.data['message_num'] != 0 && data.data['message_num'] != ''){
-                    message_html += '<a href="{:U("message/index")}" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
+                /*轮询*/
+                var mark_count = 1; //标记第一次弹出
+                /*初始默认值*/
+                var msg_num = '0,0';
+
+                function message_tips() {
+                    $.get("{:U('message/tips')}", function (data) {
+                        var is_lock = data.data['is_lock'];
+                        if (is_lock == 1) {
+                            location.href = "{:U('setting/lockscreen')}";
+                        }
+                        //卡片提醒显示与隐藏
+                        var message_html = '';
+                        var new_num = data.data['message'] + ',' + data.data['contract_count'];
+                        //待办事项
+                        $('#header_check_contract_num').html(data.data['check_contract_num']);
+                        $('#header_dqcontact_num').html(data.data['contract_num']);
+                        $('#header_examine_num').html(data.data['examine_num']);
+                        $('#header_receivables_num').html(data.data['receivingorder_num']);
+                        $('#receivables_num').html(data.data['receivables_num']);
+                        $('#header_follow_customer_num').html(data.data['today_customer']);
+                        if (data.data['todo_num']) {
+                            $('#todo_num').html(data.data['todo_num']);
+                        } else {
+                            $('#todo_num').html('');
+                        }
+
+                        //导航提醒实时写入数值
+                        if (data.data['message'] != 0 && data.data['message'] != '') {
+                            $('#message_group').show();
+                            //桌面提醒
+                            if (data.data['data_list']) {
+                                $(data.data['data_list']).each(function (k, v) {
+                                    if (data.data['data_list_count'] < 3) {
+                                        animateMessage(v.role_info.thumb_path, v.role_info.full_name, v
+                                            .content_msubstr);
+                                    }
+                                    aaa(v.role_info.thumb_path, v.role_info.full_name, v.content, v
+                                        .url_link);
+                                });
+                            }
+                            $('#message_num').html(data.data['message']);
+                            $('#message_list').html('');
+                            if (data.data['message_num'] != 0 && data.data['message_num'] != '') {
+                                message_html += '<a href="{:U("message/index")}" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
                                     <div style="padding:0 10px;">\
-                                        <img src="__PUBLIC__/img/Messenger.png" title="小助手"> 您有<strong>' + data.data['message_num'] + '</strong>条消息待查看\
-                                        <span class="pull-right text-muted small" style="line-height:30px;">' + data.data['message_time'] + '前</span>\
+                                        <img src="__PUBLIC__/img/Messenger.png" title="小助手"> 您有<strong>' + data.data[
+                                        'message_num'] + '</strong>条消息待查看\
+                                        <span class="pull-right text-muted small" style="line-height:30px;">' + data
+                                    .data['message_time'] + '前</span>\
                                     </div>\
                                 </a>';
-                    }
+                            }
 
-                    if (data.data['message_announcement_count'] != 0 && data.data['message_announcement_count'] != ''){
-                    message_html += '<a href="{:U(\'message/index\',\'by=announcement\')}" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
+                            if (data.data['message_announcement_count'] != 0 && data.data[
+                                    'message_announcement_count'] != '') {
+                                message_html += '<a href="{:U(\'message/index\',\'by=announcement\')}" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;">\
                                     <div style="padding:0 10px;">\
-                                        <img src="__PUBLIC__/img/System.png" title="系统公告"> 您有<strong>' + data.data['message_announcement_count'] + '</strong>条公告信息待查看\
-                                        <span class="pull-right text-muted small" style="line-height:30px;">' + data.data['announcement_time'] + '前</span>\
+                                        <img src="__PUBLIC__/img/System.png" title="系统公告"> 您有<strong>' + data.data[
+                                        'message_announcement_count'] + '</strong>条公告信息待查看\
+                                        <span class="pull-right text-muted small" style="line-height:30px;">' + data
+                                    .data['announcement_time'] + '前</span>\
                                     </div>\
                                 </a>';
-                    }
-                    if (data.data['role_message_list']){
-                    $(data.data['role_message_list']).each(function(k, v){
-                    message_html += '<a href="{:U(\'message/message_view\')}&to_role_id=' + v.role_id + '" title="点击回复" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;" >\
+                            }
+                            if (data.data['role_message_list']) {
+                                $(data.data['role_message_list']).each(function (k, v) {
+                                    message_html +=
+                                        '<a href="{:U(\'message/message_view\')}&to_role_id=' + v
+                                        .role_id + '" title="点击回复" style="width:100%;color:#676a6c;padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;" >\
                                     <div class="dropdown-messages-box" style="padding:0 10px;">\
                                         <div class="pull-left">\
                                             <img alt="image" class="img-circle" src="' + v.thumb_path + '">&nbsp;\
                                         </div>\
                                         <div style="overflow:hidden;">\
-                                            <span>' + v.full_name + '</span><span class="label label-warning pull-right" style="margin-right: 3px;border-radius:50% !important;">' + v.unread_num + '</span><br>\
-                                            <span style="word-wrap: break-word;word-break: normal;float:left;margin-top:10px;width:100%;">' + v.content + '</span><br>\
-                                            <small class="text-muted pull-right" style="margin-top: 5px;">' + v.send_time + '</small>\
+                                            <span>' + v.full_name +
+                                        '</span><span class="label label-warning pull-right" style="margin-right: 3px;border-radius:50% !important;">' +
+                                        v.unread_num +
+                                        '</span><br>\
+                                            <span style="word-wrap: break-word;word-break: normal;float:left;margin-top:10px;width:100%;">' +
+                                        v.content + '</span><br>\
+                                            <small class="text-muted pull-right" style="margin-top: 5px;">' + v
+                                        .send_time + '</small>\
                                         </div>\
                                     </div>\
                                 </a>';
-                    });
-                    }
-                    $('#message_list').append(message_html);
-                    } else{
-                    $('#message_group').hide();
-                    }
-                    //日程提醒
-                    var event_temp = '';
-                    if (data.data['event_list'] != 0 && data.data['event_list'] != ''){
-                    $('#event_group').show();
-                    $('#event_list').html('');
-                    $('#event_num').html(data.data['event_num']);
-                    $.each(data.data['event_list'], function(k, v){
-                    event_temp += '<a href="{:U('event / index')}" title="点击查看" style="padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;width:100%;">\
+                                });
+                            }
+                            $('#message_list').append(message_html);
+                        } else {
+                            $('#message_group').hide();
+                        }
+                        //日程提醒
+                        var event_temp = '';
+                        if (data.data['event_list'] != 0 && data.data['event_list'] != '') {
+                            $('#event_group').show();
+                            $('#event_list').html('');
+                            $('#event_num').html(data.data['event_num']);
+                            $.each(data.data['event_list'], function (k, v) {
+                                event_temp += '<a href="{:U('
+                                event / index ')}" title="点击查看" style="padding:5px !important;border-bottom:1px dashed #ddd;float:left;margin-bottom:5px;width:100%;">\
                                         <div style="overflow:hidden;padding:0 10px;">\
-                                                <span class="pull-left" style="color:' + v.color + ';line-height:26px;"><i class="fa fa-circle"></i>&nbsp;&nbsp;' + v.subject + '</span><br>\
-                                            <small class="text-muted pull-right" style="margin-top: 5px;">' + v.between_date + '</small>\
+                                                <span class="pull-left" style="color:' + v.color +
+                                    ';line-height:26px;"><i class="fa fa-circle"></i>&nbsp;&nbsp;' + v
+                                    .subject + '</span><br>\
+                                            <small class="text-muted pull-right" style="margin-top: 5px;">' + v
+                                    .between_date + '</small>\
                                         </div>\
                                     </a>';
-                    });
-                    $('#event_list').append(event_temp);
-                    } else{
-                    $('#event_group').hide();
-                    }
+                            });
+                            $('#event_list').append(event_temp);
+                        } else {
+                            $('#event_group').hide();
+                        }
                     }, 'json')
-                            setTimeout('message_tips()', 30000);
-                    }
+                    setTimeout('message_tips()', 30000);
+                }
 
-                    /*head 特效*/
-                    $('.nav-head .navbar-left li').mouseover(function(){
+                /*head 特效*/
+                $('.nav-head .navbar-left li').mouseover(function () {
                     $(this).find('a span').css("color", '#ffb173');
-                    });
-                    $('.nav-head .navbar-left li').mouseout(function(){
+                });
+                $('.nav-head .navbar-left li').mouseout(function () {
                     $(this).find('a span').css("color", '#e6e9f2');
-                    });
-                </script>
+                });
+            </script>
 
-                <script type="text/javascript">
-                    function aaa(icon, name, content, url_link){
+            <script type="text/javascript">
+                function aaa(icon, name, content, url_link) {
                     var t = new Date().toLocaleString();
                     var options = {
-                    dir: "ltr",
-                            lang: "utf-8",
-                            icon: icon,
-                            body: content
+                        dir: "ltr",
+                        lang: "utf-8",
+                        icon: icon,
+                        body: content
                     };
-                    if (Notification && Notification.permission === "granted"){
-                    var n = new Notification(name + t, options);
-                    //5秒后自动关闭
-                    n.onshow = function(){
-                    setTimeout(function () {
-                    n.close();
-                    }, 5000)
-                    };
-                    n.onclick = function() {
-                    // alert("You clicked me!");
-                    window.location = url_link;
-                    n.close();
-                    };
-                    n.onclose = function(){
-                    console.log("notification closed!");
-                    };
-                    n.onerror = function() {
-                    console.log("An error accured");
+                    if (Notification && Notification.permission === "granted") {
+                        var n = new Notification(name + t, options);
+                        //5秒后自动关闭
+                        n.onshow = function () {
+                            setTimeout(function () {
+                                n.close();
+                            }, 5000)
+                        };
+                        n.onclick = function () {
+                            // alert("You clicked me!");
+                            window.location = url_link;
+                            n.close();
+                        };
+                        n.onclose = function () {
+                            console.log("notification closed!");
+                        };
+                        n.onerror = function () {
+                            console.log("An error accured");
+                        }
                     }
-                    }
-                    }
+                }
 
-                    function mouseoveriframe(width, zindex, url) {
+                function mouseoveriframe(width, zindex, url) {
                     $("#if" + zindex).remove();
                     var height = $(window).height() - 70;
-                    var iframebox = "<iframe id='if" + zindex + "' src='" + url + "'  scrolling='yes' width='" + width + "' height='" + height + "' style='position: fixed;box-shadow: -5px -5px 10px #bbb;border: 2px solid #eee;z-index: " + zindex + ";right: -" + width + "px;top: 70px;'></iframe>";
-//    var button='<button class="btn btn-xs btn-primary" type="button" style="">关闭</button>';
+                    var iframebox = "<iframe id='if" + zindex + "' src='" + url + "'  scrolling='yes' width='" + width +
+                        "' height='" + height +
+                        "' style='position: fixed;box-shadow: -5px -5px 10px #bbb;border: 2px solid #eee;z-index: " +
+                        zindex + ";right: -" + width + "px;top: 70px;'></iframe>";
+                    //    var button='<button class="btn btn-xs btn-primary" type="button" style="">关闭</button>';
 
                     $('body').append(iframebox);
-//    $("#title-show").append(button);
+                    //    $("#title-show").append(button);
 
                     setTimeout(function () {
-                    $("#if" + zindex).animate({right:"10px"})
+                        $("#if" + zindex).animate({
+                            right: "10px"
+                        })
                     }, 1000)
-                    }
+                }
 
 
-                    // loading通用方法
-                    function getStatus(status, timer, html) {
+                // loading通用方法
+                function getStatus(status, timer, html) {
                     $.ajax({
-                    url:'/index.php?m=background&a=status&status=' + status,
-                            type:'get',
-                            data:status,
-                            success:function (data) {
-                            if (data == 1){
-                            $(".loading").remove();
-                            window.clearInterval(timer);
-                            html.fadeIn();
+                        url: '/index.php?m=background&a=status&status=' + status,
+                        type: 'get',
+                        data: status,
+                        success: function (data) {
+                            if (data == 1) {
+                                $(".loading").remove();
+                                window.clearInterval(timer);
+                                html.fadeIn();
                             }
-                            }
+                        }
                     })
-                    }
-                    $(document).ready(function () {
+                }
+                $(document).ready(function () {
                     function checkTextInput(text, type) {
-                    switch (type){
-                    case 'name':
-                            const name = /[A-Za-z0-9_\-\u4e00-\u9fa5]+/;
-                    return name.test(text);
-                    break;
+                        switch (type) {
+                            case 'name':
+                                const name = /[A-Za-z0-9_\-\u4e00-\u9fa5]+/;
+                                return name.test(text);
+                                break;
+                        }
                     }
-                    }
-                    })
-                            function isNull() {
-                            var i = 0;
-                            $(document).find('.required').each(function () {
-                            if ($(this).css('display') != 'none' && $(this).val() == ''){
+                })
+
+                function isNull() {
+                    var i = 0;
+                    $(document).find('.required').each(function () {
+                        if ($(this).css('display') != 'none' && $(this).val() == '') {
                             i++;
-                            }
-                            })
-                                    return i;
-                            }
-                    function searchtype(data) {
+                        }
+                    })
+                    return i;
+                }
+
+                function searchtype(data) {
                     $('#s-type').attr('value', $(data).val());
-                    var html = '<input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd  &quot;,maxDate:&quot;%y-%M-%d&quot;})" readonly="readonly" />';
+                    var html =
+                        '<input type="text" style="width:160px;height: 32px;" placeholder="请选择时间"  class="form-control short_search " name="search" value="" data-type="all" onFocus="WdatePicker({dateFmt:&quot;yyyy-MM-dd  &quot;,maxDate:&quot;%y-%M-%d&quot;})" readonly="readonly" />';
                     $('.short_search').remove();
-                    switch ($(data).val()){
-                    case 'all':
+                    switch ($(data).val()) {
+                        case 'all':
                             $('#s-type').after(html);
-                    $('.short_search').attr('placeholder', '请输入人才姓名');
-                    $('.short_search').removeAttr('onFocus');
-                    $('.short_search').removeAttr('readonly');
-                    break;
-                    case 'name':
+                            $('.short_search').attr('placeholder', '请输入人才姓名');
+                            $('.short_search').removeAttr('onFocus');
+                            $('.short_search').removeAttr('readonly');
+                            break;
+                        case 'name':
                             $('#s-type').after(html);
-                    $('.short_search').attr('placeholder', '请输入人才姓名');
-                    $('.short_search').removeAttr('onFocus');
-                    $('.short_search').removeAttr('readonly');
-                    break;
-                    case 'time':
+                            $('.short_search').attr('placeholder', '请输入人才姓名');
+                            $('.short_search').removeAttr('onFocus');
+                            $('.short_search').removeAttr('readonly');
+                            break;
+                        case 'time':
                             $('#s-type').after(html);
-                    $('.short_search').attr('placeholder', '请选择日期');
-                    break;
-                    case 'company':
+                            $('.short_search').attr('placeholder', '请选择日期');
+                            break;
+                        case 'company':
                             $('#s-type').after(html);
-                    $('.short_search').attr('placeholder', '请输入公司名称');
-                    $('.short_search').removeAttr('onFocus');
-                    $('.short_search').removeAttr('readonly');
-                    break;
-                    case 'industry':
+                            $('.short_search').attr('placeholder', '请输入公司名称');
+                            $('.short_search').removeAttr('onFocus');
+                            $('.short_search').removeAttr('readonly');
+                            break;
+                        case 'industry':
                             $('#s-type').after(html);
-                    $('.short_search').attr('placeholder', '请输入行业');
-                    $('.short_search').removeAttr('onFocus');
-                    $('.short_search').removeAttr('readonly');
-                    break;
-                    case 'jobs':
+                            $('.short_search').attr('placeholder', '请输入行业');
+                            $('.short_search').removeAttr('onFocus');
+                            $('.short_search').removeAttr('readonly');
+                            break;
+                        case 'jobs':
                             $('#s-type').after(html);
-                    $('.short_search').attr('placeholder', '请输入岗位');
-                    $('.short_search').removeAttr('onFocus');
-                    $('.short_search').removeAttr('readonly');
-                    break;
-                    case 'tocompany':
+                            $('.short_search').attr('placeholder', '请输入岗位');
+                            $('.short_search').removeAttr('onFocus');
+                            $('.short_search').removeAttr('readonly');
+                            break;
+                        case 'tocompany':
                             $('#s-type').after(html);
-                    $('.short_search').attr('placeholder', '请输入公司名称');
-                    $('.short_search').removeAttr('onFocus');
-                    $('.short_search').removeAttr('readonly');
-                    break;
+                            $('.short_search').attr('placeholder', '请输入公司名称');
+                            $('.short_search').removeAttr('onFocus');
+                            $('.short_search').removeAttr('readonly');
+                            break;
                     }
-                    }
-                    function checkValue(data, obj) {
+                }
+
+                function checkValue(data, obj) {
                     let regex;
                     let msg;
-                    switch (data){
-                    case 'idnum':
-                            regex = /^[1-9]\d{5}(19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
-                    msg = '身份证号码有误！';
-                    break;
+                    switch (data) {
+                        case 'idnum':
+                            regex =
+                                /^[1-9]\d{5}(19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+                            msg = '身份证号码有误！';
+                            break;
                     }
                     /*let html ='<label id="'+$(obj).attr("id")+'-error" class="error" for="'+$(obj).attr("id")+'" style="display: inline-block;"><i class="fa fa-times-circle">'+msg+'</i></label>';*/
                     let span = '<span class="spanerror"><i class="fa fa-times-circle"></i>&nbsp;' + msg + '</span>';
                     let text = $(obj).val();
-                    if (text != ''){
-                    if ($(obj).parent().find('label').length > 0){
-                    $(obj).parent().find('span').remove();
+                    if (text != '') {
+                        if ($(obj).parent().find('label').length > 0) {
+                            $(obj).parent().find('span').remove();
+                        }
+                        let result = regex.test(text);
+                        let checkspan = $(obj).parent().find('span');
+                        if (!result) {
+                            if (checkspan.length == 0) {
+                                $(obj).after(span);
+                            }
+                        } else {
+                            $(obj).parent().find('span').remove();
+                        }
+                    } else {
+                        $(obj).parent().find('span').remove();
                     }
-                    let result = regex.test(text);
-                    let checkspan = $(obj).parent().find('span');
-                    if (!result){
-                    if (checkspan.length == 0){
-                    $(obj).after(span);
-                    }
-                    } else{
-                    $(obj).parent().find('span').remove();
-                    }
-                    } else{
-                    $(obj).parent().find('span').remove();
-                    }
-                    }
-                </script>
+                }
+            </script>
