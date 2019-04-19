@@ -2144,9 +2144,9 @@ class LeadsAction extends Action
         $countFields = 'sum(integral) as integral,sum(customer_num) as customerNum,sum(project_num) as projectNum,'
             . 'sum(resume_num) as resumeNum,sum(fine_project_num) as fineNum,sum(interview_num) as interviewNum,sum(bd_num) as bdNum,' .
             'sum(hk_num) as hkNum,sum(present_num) as presentNum,sum(safe_num) as safeNum,sum(enter_num) as enterNum ,' .
-            'sum(offerd_num) as offerdNum,sum(offer_num) as offerNum,sum(interviewt_num) as interviewtNum , sum(callist_num) as callistnum , sum(cc_num) as ccnum';
+            'sum(offerd_num) as offerdNum,sum(offer_num) as offerNum,sum(interviewt_num) as interviewtNum , sum(callist_num) as callistnum , sum(cc_num) as ccnum,sum(callsucc_num) as callsucc_num';
         $list = M('report_intergral')->where($map)->field('id,user_role_id,user_id,user_name,department,department_id,' . $countFields)->group('user_id')->order('integral desc,customerNum desc')->page($p, $pageSize)->select();
-        //增加员工职位字段和顾问英文名字段
+//增加员工职位字段和顾问英文名字段
         foreach ($list as $k => $v) {
             $position_name = D('ReportView')->where(array('role_id' => $v['user_role_id']))->getField('position');
             $second_name = M("User")->where(array('user_id' => intval($v['user_id'])))->getField('second_name');
@@ -2157,7 +2157,7 @@ class LeadsAction extends Action
         if ($isExport) {
             $cellName = [
                 ['user_name', '员工姓名'], ['department', '部门'], ['position_name', '职位名称'], ['second_name', '顾问英文名'],
-                ['integral', '业绩'], ['callistnum', 'callist'], ['ccnum', 'cc备注'], ['hkNum', '回款个数'],
+                ['integral', '业绩'], ['callistnum', 'callist'], ['callsucc_cum', '电话量'],['ccnum', 'cc备注'], ['hkNum', '回款个数'],
                 ['bdNum', '新增BD数'], ['customerNum', '新增客户数'], ['projectNum', '新增项目数'], ['resumeNum', '新增简历数'],
                 ['fineNum', '推荐简历数'], ['interviewNum', '面试人数'], ['interviewtNum', '面试次数'], ['offerNum', 'Offer'],
                 ['offerdNum', '掉Offer数'], ['enterNum', '入职数'], ['safeNum', '过保数']];

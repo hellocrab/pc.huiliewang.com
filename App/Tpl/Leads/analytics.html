@@ -162,6 +162,7 @@ $(function(){
                                         <td style="min-width: 100px;">顾问英文名</td>
                                         <td style="min-width: 80px;">业绩</td>
 										<td style="min-width: 100px;">callist</td>
+                                                                                <td style="min-width: 100px;">电话量</td>
 										<td style="min-width: 100px;">cc备注</td>
 										<!--<td style="min-width: 80px;">提成</td>-->
 										<td style="min-width: 80px;">回款个数</td>
@@ -186,7 +187,8 @@ $(function(){
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;">{$countList[integral]}</td>
                                         <td style="color:#fff;"><if condition="$countList[callistnum] neq 0"><a href="javascript:void(0);" class="c_f callistnum">{$countList[callistnum]}</a><else/>{$countList[callistnum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[ccnum] neq 0"><a href="javascript:void(0);" class="c_f ccnum">{$countList[ccnum]}</a><else/>{$countList[ccnum]}</if></td>
+                                        <td style="color:#fff;"><if condition="$countList[callsucc_cum] neq 0">{$countList[callsucc_cum]}<else/>0</if></td>
+                                                                <td style="color:#fff;"><if condition="$countList[ccnum] neq 0"><a href="javascript:void(0);" class="c_f ccnum">{$countList[ccnum]}</a><else/>{$countList[ccnum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[hkNum] neq 0"><a href="javascript:void(0);" class="c_f hknum">{$countList[hkNum]}</a><else/>{$countList[hkNum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[bdNum] neq 0"><a href="javascript:void(0);" class="c_f bdnum">{$countList[bdNum]}</a><else/>{$countList[bdNum]}</if></td>
                                         <td style="color:#fff;"><if condition="$countList[customerNum] neq 0"><a href="javascript:void(0);" class="c_f customernum">{$countList[customerNum]}</a><else/>{$countList[customerNum]}</if></td>
@@ -217,6 +219,7 @@ $(function(){
                                                 {$vo.integral}
                                             </td>
                                             <td><if condition="$vo[callistnum] neq 0"><a href="javascript:void(0);" class="callistnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo[callistnum]}</a><else/>{$vo[callistnum]}</if></td>
+                                        <td><if condition="$vo[callsucc_cum] neq 0">{$vo[callsucc_cum]}<else/>0</if></td>
                                             <td><if condition="$vo[ccnum] neq 0"><a href="javascript:void(0);" class="ccnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo[ccnum]}</a><else/>{$vo[ccnum]}</if></td>
 											<!--<td>{$vo.get_money}</td>-->
 											<td width="80" nowrap="nowrap"> <if condition="$vo['hkNum'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.hkNum}</a><else/>{$vo.hkNum}</if></td>
