@@ -285,7 +285,7 @@ class CallcenterAction extends Action
             }
             //判断是否存在
             $callInfo = M('phone_record')->where(['sec_id' => $content['CallSid']])->find();
-            if(!$callInfo){
+            if (!$callInfo) {
                 continue;
             }
             $data = [];
@@ -328,8 +328,11 @@ class CallcenterAction extends Action
                     @mkdir($dir, 0755, true);
                 }
                 $localFile = "{$dir}{$data['sec_id']}.{$extension}"; //临时文件存放
-                $res = copy($data['recordUrl'], $localFile);
-                if ($res) {
+                $res = true;
+                if (!file_exists($localFile)) {
+                    $res = copy($data['recordUrl'], $localFile);
+                }
+                if ($res || file_exists($localFile)) {
                     import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
                     $ossFile = "call_record/{$callerNum}/{$data['sec_id']}.{$extension}";
                     $ossClient = new AliOssAction();
@@ -359,7 +362,6 @@ class CallcenterAction extends Action
             'Authorization:' . $auth);
         $data = [
             "Appid" => self::APPID,
-            "Caller" => '80469800000237',
             "MaxId" => 100,
             "CallSid" => $CallSid
         ];
