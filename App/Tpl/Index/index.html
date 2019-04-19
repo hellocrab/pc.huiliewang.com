@@ -446,7 +446,11 @@
                     break
             }
         })
-
+        $('.searchInput input').on('keydown',ev=>{
+            if(ev.keyCode == 13){
+                $('.searchInput i').click();
+            }
+        })
         function getPipeline(type) {
             $.ajax({
                 url: 'Index.php?m=index&a=pipeline',
