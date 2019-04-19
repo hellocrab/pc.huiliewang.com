@@ -2439,7 +2439,7 @@ class UserAction extends Action {
             $p = $p_num;
         }
         //根据本人用户role_id
-        $msg = $phone_record->where(array('role_id'=>session('role_id')))->order('add_time desc')->Page($p.','.$listrows)->select();
+        $msg = $phone_record->where('role_id = %d and call_end_time is not null',session('role_id'))->order('call_end_time desc')->Page($p.','.$listrows)->select();
         $this -> msg = $msg;
         $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
         $Page->parameter = implode('&', $params);
