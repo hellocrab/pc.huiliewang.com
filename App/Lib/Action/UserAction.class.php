@@ -2426,13 +2426,13 @@ class UserAction extends Action {
             $listrows = intval($_GET['listrows']);
             $params[] = "listrows=" . intval($_GET['listrows']);
         }else{
-            $listrows = 10;
-            $params[] = "listrows=10";
+            $listrows = 15;
+            $params[] = "listrows=15";
         }
         $this->listrows = $listrows;
 //        import('@.ORG.Page');// 导入分页类
         import("@.ORG.DialogListPage");//导入分页类
-        $count = $phone_record ->where(array('role_id'=>session('role_id')))->count();
+        $count = $phone_record ->where('role_id = %d and call_end_time is not null',session('role_id'))->count();
         $p_num = $p_num = ceil($count/$listrows);
         $p = isset($_GET['p'])?$_GET['p']:1;
         if($p_num<$p){
