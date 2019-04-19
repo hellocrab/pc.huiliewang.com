@@ -522,6 +522,7 @@ class IndexAction extends Action {
         $fine_project = D("ProjectView");
         $d_business = D('BusinessView');
         $type = $_GET['type'] ? BaseUtils::getStr($_GET['type']) :  '';
+        $type = 'offer';
         switch (trim($type)){
             case 'offer' :
                 $data = $fine_project->where(array('fine_project.status'=>6))->order('fine_project.updatetime desc')->limit(10)->select();
@@ -541,6 +542,9 @@ class IndexAction extends Action {
                     }
                     $data[$k]['user'] = M('user')->where(array('role_id'=>$v['tracker']))->getField('full_name');
                     $data[$k]['jobname'] = $className;
+                    $data[$k]['product_href'] = '/index.php?m=product&a=view&id='.$v['resume_id'];
+                    $data[$k]['business_href'] = '/index.php?m=business&a=view&id='.$v['business_id'];
+                    $data[$k]['customer_href'] = '/index.php?m=customer&a=view&id='.$v['com_id'];
                 }
                 break;
             case 'onjob' :
@@ -561,6 +565,9 @@ class IndexAction extends Action {
                     }
                     $data[$k]['user'] = M('user')->where(array('role_id'=>$v['tracker']))->getField('full_name');
                     $data[$k]['jobname'] = $className;
+                    $data[$k]['product_href'] = '/index.php?m=product&a=view&id='.$v['resume_id'];
+                    $data[$k]['business_href'] = '/index.php?m=business&a=view&id='.$v['business_id'];
+                    $data[$k]['customer_href'] = '/index.php?m=customer&a=view&id='.$v['com_id'];
                 }
                 break;
             default:
@@ -580,12 +587,16 @@ class IndexAction extends Action {
                     $where2['role_id'] = array('in', $roleIds);
                     $data[$k]['owner'] = M('user')->where($where2)->field('full_name,role_id')->select();
                     $data[$k]['updatetime'] = date('Y-m-d H:i');
+                    $data[$k]['business_href'] = '/index.php?m=business&a=view&id='.$v['business_id'];
+                    $data[$k]['customer_href'] = '/index.php?m=customer&a=view&id='.$v['customer_id'];
                     $data[$k]['status'] = '项目进展中';
                 }
                 break;
         }
-        $data = ['succ' => true, 'code' => 200, 'data' => $data];
-        $this->ajaxReturn($data);
+        header('content-type:text/html;charset=utf-8');
+        dump($data);die;
+//        $data = ['succ' => true, 'code' => 200, 'data' => $data];
+//        $this->ajaxReturn($data);
     }
 
     //本周，上周，本月，上月。默认是本周
