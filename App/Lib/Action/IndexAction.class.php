@@ -746,7 +746,9 @@ class IndexAction extends Action {
                 //根据模糊姓名，查出所有role_id
                 $data = M('user')->where(array('full_name'=>array('like','%'.$name.'%')))->getField('role_id',true);
                 //合并$where['role_id'][1],并封装
-                $where['role_id'] = array('in', $where['role_id'][1]);
+                $where['role_id'] = array('in', getSubRoleId());
+                $data = array_intersect($data,$where['role_id'][1]);
+                $where['role_id'] = array('in', $data);
             }
             $action_log = $m_action_log->where($where)->order('create_time desc')->page($p . ',10')->select();
             $count = $m_action_log->where($where)->count();
