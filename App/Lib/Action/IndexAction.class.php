@@ -593,10 +593,8 @@ class IndexAction extends Action {
                 }
                 break;
         }
-        header('content-type:text/html;charset=utf-8');
-        dump($data);die;
-//        $data = ['succ' => true, 'code' => 200, 'data' => $data];
-//        $this->ajaxReturn($data);
+        $data = ['succ' => true, 'code' => 200, 'data' => $data];
+        $this->ajaxReturn($data);
     }
 
     //本周，上周，本月，上月。默认是本周
