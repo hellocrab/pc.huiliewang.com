@@ -338,7 +338,7 @@ class CallcenterAction extends Action
                     $ossClient = new AliOssAction();
                     $ossUrl = $ossClient->upFile($localFile, $ossFile);
                     unlink($localFile);
-                    $data['oss_record_url'] = $ossUrl;
+                    $ossUrl && $data['oss_record_url'] = $ossUrl;
                 }
             }
             $this->record($data['sec_id'], $data);
