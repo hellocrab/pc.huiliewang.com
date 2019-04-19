@@ -492,7 +492,6 @@ class IndexAction extends Action {
     //offer、面试人数、推荐简历数 各栏统计的接口( 参数part & range)
     public function face_part(){
         $part = $_GET['part']; // offer、面试人数、推荐简历数
-        $part = 'offer_num';
         $time_range = $_GET['range'] ? BaseUtils::getStr($_GET['range']) : 'currentweek'; //currentweek、currentmonth、lastweek、lastmonth
         $be = $this->time_range($time_range);
         foreach ($be as $k=>$v){
@@ -501,12 +500,15 @@ class IndexAction extends Action {
         switch ($part){
             case 'offer_num':
                 $data = M('report_intergral')->field('sum(offer_num) as offerNum')->where(array('report_date'=>array('between',$be)))->find();
+                $data = $data['offerNum'];
                 break;
             case 'interview_num':
                 $data = M('report_intergral')->field('sum(interview_num) as interviewNum')->where(array('report_date'=>array('between',$be)))->find();
+                $data = $data['interviewNum'];
                 break;
             case 'fine_project':
                 $data = M('report_intergral')->field('sum(fine_project_num) as fineNum')->where(array('report_date'=>array('between',$be)))->find();
+                $data = $data['fineNum'];
                 break;
         }
         $data = ['succ' => true, 'code' => 200, 'data' => $data];

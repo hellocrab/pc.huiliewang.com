@@ -272,6 +272,10 @@ class CallcenterAction extends Action
         if (!$content) {
             return false;
         }
+        //防止超时
+        set_time_limit(0);
+        ini_set("memory_limit", "1024M");
+
         BaseUtils::addLog("融营云回掉参数 ： {$content}", 'callback_log', '/var/log/rongyinyun/');
         $content = json_decode($content, true);
         $contentList = $content['Table'];
@@ -285,7 +289,7 @@ class CallcenterAction extends Action
             }
             //判断是否存在
             $callInfo = M('phone_record')->where(['sec_id' => $content['CallSid']])->find();
-            if(!$callInfo){
+            if (!$callInfo) {
                 continue;
             }
             $data = [];
@@ -328,14 +332,17 @@ class CallcenterAction extends Action
                     @mkdir($dir, 0755, true);
                 }
                 $localFile = "{$dir}{$data['sec_id']}.{$extension}"; //临时文件存放
-                $res = copy($data['recordUrl'], $localFile);
-                if ($res) {
+                $res = true;
+                if (!file_exists($localFile)) {
+                    $res = copy($data['recordUrl'], $localFile);
+                }
+                if ($res || file_exists($localFile)) {
                     import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
                     $ossFile = "call_record/{$callerNum}/{$data['sec_id']}.{$extension}";
                     $ossClient = new AliOssAction();
                     $ossUrl = $ossClient->upFile($localFile, $ossFile);
                     unlink($localFile);
-                    $data['oss_record_url'] = $ossUrl;
+                    $ossUrl && $data['oss_record_url'] = $ossUrl;
                 }
             }
             $this->record($data['sec_id'], $data);
@@ -359,7 +366,6 @@ class CallcenterAction extends Action
             'Authorization:' . $auth);
         $data = [
             "Appid" => self::APPID,
-            "Caller" => '80469800000237',
             "MaxId" => 100,
             "CallSid" => $CallSid
         ];

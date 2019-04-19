@@ -130,6 +130,15 @@
 
 <!--引入JS-->
 <script type="text/javascript" src="__PUBLIC__/webuploader/webuploader.js"></script>
+<div style="display:none" id="dialog-addCCbz">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
 <ul class="nav nav-tabs" id="left_list">
     <li class="active">
         <a href="#tab0" data-toggle="tab" type="tab0">
@@ -168,7 +177,8 @@
     <!--</li>-->
     <!--</if>-->
     <li class="">
-        <a href="#tab7" data-toggle="tab" type="tab7"><label class="label_n fj_num" style="display: none">8</label>附件</a>
+        <a href="#tab7" data-toggle="tab" type="tab7"><label class="label_n fj_num"
+                style="display: none">8</label>附件</a>
     </li>
 
     <!--  <div class="nav pull-right">
@@ -195,85 +205,151 @@
                             var _this = this;
                             let seatNum = "{$zxhNo|default=''}";
                             let itemId = $(_this).attr('rel');
-                            console.log(seatNum,typeof seatNum);
-                            if(seatNum){
+                            console.log(seatNum, typeof seatNum);
+                            if (seatNum) {
                                 switchLine();
-                            }else{
+                            } else {
                                 $.post(
-                                        "{:U('callcenter/call_out')}", {
-                                            itemId,
-                                            type: 1,
-                                            tel: '',
-                                            channel:1
-                                        },
-                                        function (data) {
-                                            var obj = $.parseJSON(data);
-                                            if (obj.code) {
-                                                $('.fa-times').remove()
-                                                swal("操作成功！",
-                                                    "拨打电话成功,请稍等电话接通！",
-                                                    "success");
-                                                //                                     alert_crm(data.message);
+                                    "{:U('callcenter/call_out')}", {
+                                        itemId,
+                                        type: 1,
+                                        tel: '',
+                                        channel: 1
+                                    },
+                                    function (data) {
+                                        var obj = $.parseJSON(data);
+                                        if (obj.code) {
+                                            $('.fa-times').remove()
+                                            swal("操作成功！",
+                                                "拨打电话成功,请稍等电话接通！",
+                                                "success");
+                                            var id = $(_this).attr("data-id");
+                                            console.log(id)
+                                            var key = $(_this).attr("data-key") ? $(this).attr(
+                                                "data-key") : 0;
+                                            $('#dialog-addCCbz').dialog('open');
+                                            if (key) {
+                                                $('#dialog-addCCbz').load(
+                                                    "/index.php?m=business&a=addcc&id=" + id +
+                                                    "&key=" + key);
                                             } else {
-                                                $('.fa-times').remove()
-                                                alert_crm(obj.msg +
-                                                    ",请联系管理员！");
+                                                $('#dialog-addCCbz').load(
+                                                    "/index.php?m=business&a=addcc&id=" + id);
                                             }
+                                        } else {
+                                            $('.fa-times').remove()
+                                            alert_crm(obj.msg +
+                                                ",请联系管理员！");
                                         }
-                                    );
-                            }
-                            function switchLine(){
-                                swal({
-                                    title: "请选择线路",
-                                    text: "选择一个电话线路",
-                                    type: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#DD6B55",
-                                    confirmButtonText: "品聘",
-                                    cancelButtonText: '融营云',
-                                    closeOnConfirm: false,
-                                    closeOnCancel: false
-                                },
-                                function (isConfirm) {
-                                    var channel;
-                                    if (isConfirm) {
-                                        channel = 1;
-                                    } else {
-                                        channel = 2;
                                     }
-                                    var fineId = $(_this).attr('data-id');
-                                    $.post(
-                                        "{:U('callcenter/call_out')}", {
-                                            itemId,
-                                            fineId,
-                                            type: 1,
-                                            tel: '',
-                                            channel
-                                        },
-                                        function (data) {
-                                            var obj = $.parseJSON(data);
-                                            if (obj.code) {
-                                                $('.fa-times').remove()
-                                                swal("操作成功！",
-                                                    "拨打电话成功,请稍等电话接通！",
-                                                    "success");
-                                                //                                     alert_crm(data.message);
-                                            } else {
-                                                $('.fa-times').remove()
-                                                alert_crm(obj.msg +
-                                                    ",请联系管理员！");
-                                            }
+                                );
+                            }
+
+                            function switchLine() {
+                                swal({
+                                        title: "请选择线路",
+                                        text: "选择一个电话线路",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#DD6B55",
+                                        confirmButtonText: "品聘",
+                                        cancelButtonText: '融营云',
+                                        closeOnConfirm: false,
+                                        closeOnCancel: false
+                                    },
+                                    function (isConfirm) {
+                                        var channel;
+                                        if (isConfirm) {
+                                            channel = 1;
+                                        } else {
+                                            channel = 2;
                                         }
-                                    );
-                                });
-                            $('.cancel').css('backgroundColor','rgb(221, 107, 85)').on('mouseenter',ev=>{
-                                $('.cancel').css('backgroundColor','rgb(212,103,82)')
-                                }).on('mouseleave',ev=>{$('.cancel').css('backgroundColor','rgb(221, 107, 85)')})
-                            $('.sweet-alert').append(`<i style='position:absolute;top:10px;right:10px;cursor:pointer;' class='fa fa-times'/>`);
-                            $('.fa-times').click(ev=>{
-                                swal("已取消", "您取消了拨打电话！", "error");
-                                $('.fa-times').remove()
-                            })
+                                        var fineId = $(_this).attr('data-id');
+                                        $.post(
+                                            "{:U('callcenter/call_out')}", {
+                                                itemId,
+                                                fineId,
+                                                type: 1,
+                                                tel: '',
+                                                channel
+                                            },
+                                            function (data) {
+                                                var obj = $.parseJSON(data);
+                                                if (obj.code) {
+                                                    $('.fa-times').remove()
+                                                    swal("操作成功！",
+                                                        "拨打电话成功,请稍等电话接通！",
+                                                        "success");
+                                                    var id = $(_this).attr("data-id");
+                                                    console.log(id)
+                                                    var key = $(_this).attr("data-key") ? $(this)
+                                                        .attr(
+                                                            "data-key") : 0;
+                                                    $('#dialog-addCCbz').dialog('open');
+                                                    if (key) {
+                                                        $('#dialog-addCCbz').load(
+                                                            "/index.php?m=business&a=addcc&id=" +
+                                                            id +
+                                                            "&key=" + key);
+                                                    } else {
+                                                        $('#dialog-addCCbz').load(
+                                                            "/index.php?m=business&a=addcc&id=" +
+                                                            id);
+                                                    }
+                                                } else {
+                                                    $('.fa-times').remove()
+                                                    alert_crm(obj.msg +
+                                                        ",请联系管理员！");
+                                                }
+                                            }
+                                        );
+                                    });
+                                $('.cancel').css('backgroundColor', 'rgb(221, 107, 85)').on(
+                                    'mouseenter', ev => {
+                                        $('.cancel').css('backgroundColor', 'rgb(212,103,82)')
+                                    }).on('mouseleave', ev => {
+                                    $('.cancel').css('backgroundColor', 'rgb(221, 107, 85)')
+                                })
+                                $('.sweet-alert').append(
+                                    `<i style='position:absolute;top:10px;right:10px;cursor:pointer;' class='fa fa-times'/>`
+                                );
+                                $('.fa-times').click(ev => {
+                                    swal("已取消", "您取消了拨打电话！", "error");
+                                    $('.fa-times').remove()
+                                })
+                            }
+                        });
+
+                        $("#dialog-addCCbz").dialog({
+                            autoOpen: false,
+                            modal: true,
+                            width: 680,
+                            maxHeight: 1000,
+                            position: ["center", 100],
+                            title: "添加CC备注(" + name + ")",
+                            close: function () {
+                                //selectStatus();//更新
+                                $(this).html("");
+                            },
+                            buttons: {
+                                "确定": function () {
+                                    var gjresult = $('#gjresult').val(); //电话结果
+                                    var gjflag = $("#gjflag").val(); //是否继续跟进
+                                    var gjtime = $(".time_se").val(); //跟进时间
+                                    var mbflag = $("#mbflag").val(); //是否目标候选人
+                                    var ccbeizhu = $(".ccbeizhu").val(); //结果备注
+                                    if (gjresult == "") {
+                                        alert_crm("请电话结果！");
+                                        $("#gjresult").focus();
+                                        return false;
+                                    }
+                                    $('#dialog_form1').submit();
+                                    $(this).dialog("close");
+                                },
+                                "取消": function () {
+                                    //selectStatus();//更新
+                                    $(this).dialog("close");
+                                }
                             }
                         });
                         let pro_id = "{:I('id')}";
@@ -331,29 +407,49 @@
                     <ul class="nav nav-tabs" style="background: #f9fafc;height: 70px;">
                         <!--<li class="active"><a class="" href="#tj"  data-toggle="tab" type="tj">智能推荐</a></li>-->
                         <if condition="$business_info['pro_type'] eq '1'">
-                            <li><a class="" href="#st1" data-toggle="tab" type="st1">CallList（{$project['calllist']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st2" data-toggle="tab" type="st2">顾问面试（{$project['adviser']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st3" data-toggle="tab" type="st3">推荐人才（{$project['tj']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st4" data-toggle="tab" type="st4">面试（{$project['interview']|count}）</a></li>
+                            <li><a class="" href="#st1" data-toggle="tab"
+                                    type="st1">CallList（{$project['calllist']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st2" data-toggle="tab"
+                                    type="st2">顾问面试（{$project['adviser']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st3" data-toggle="tab"
+                                    type="st3">推荐人才（{$project['tj']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st4" data-toggle="tab"
+                                    type="st4">面试（{$project['interview']|count}）</a></li>
                             <elseif condition="$business_info['pro_type'] eq '2'" />
-                            <li><a class="" href="#st1" data-toggle="tab" type="st1">CallList（{$project['calllist']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st2" data-toggle="tab" type="st2">顾问面试（{$project['adviser']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st3" data-toggle="tab" type="st3">推荐人才（{$project['tj']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st4" data-toggle="tab" type="st4">面试（{$project['interview']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st5" data-toggle="tab" type="st5">面试通过（{$project['pass']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st6" data-toggle="tab" type="st6">Offer（{$project['offer']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st7" data-toggle="tab" type="st7">入职（{$project['enter']|count}）</a></li>
+                            <li><a class="" href="#st1" data-toggle="tab"
+                                    type="st1">CallList（{$project['calllist']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st2" data-toggle="tab"
+                                    type="st2">顾问面试（{$project['adviser']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st3" data-toggle="tab"
+                                    type="st3">推荐人才（{$project['tj']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st4" data-toggle="tab"
+                                    type="st4">面试（{$project['interview']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st5" data-toggle="tab"
+                                    type="st5">面试通过（{$project['pass']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st6" data-toggle="tab"
+                                    type="st6">Offer（{$project['offer']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st7" data-toggle="tab"
+                                    type="st7">入职（{$project['enter']|count}）</a></li>
                             <elseif condition="$business_info['pro_type'] eq '3'" />
-                            <li><a class="" href="#st1" data-toggle="tab" type="st1">CallList（{$project['calllist']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st2" data-toggle="tab" type="st2">顾问面试（{$project['adviser']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st3" data-toggle="tab" type="st3">推荐人才（{$project['tj']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st4" data-toggle="tab" type="st4">面试（{$project['interview']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st5" data-toggle="tab" type="st5">面试通过（{$project['pass']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st6" data-toggle="tab" type="st6">Offer（{$project['offer']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st7" data-toggle="tab" type="st7">入职（{$project['enter']|count}）</a></li>
-                            <li><a class="btn btn-primarya" href="#st8" data-toggle="tab" type="st8">过保（{$project['safe']|count}）</a></li>
+                            <li><a class="" href="#st1" data-toggle="tab"
+                                    type="st1">CallList（{$project['calllist']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st2" data-toggle="tab"
+                                    type="st2">顾问面试（{$project['adviser']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st3" data-toggle="tab"
+                                    type="st3">推荐人才（{$project['tj']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st4" data-toggle="tab"
+                                    type="st4">面试（{$project['interview']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st5" data-toggle="tab"
+                                    type="st5">面试通过（{$project['pass']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st6" data-toggle="tab"
+                                    type="st6">Offer（{$project['offer']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st7" data-toggle="tab"
+                                    type="st7">入职（{$project['enter']|count}）</a></li>
+                            <li><a class="btn btn-primarya" href="#st8" data-toggle="tab"
+                                    type="st8">过保（{$project['safe']|count}）</a></li>
                             <elseif condition="$business_info['pro_type'] eq '4'" />
-                            <li><a class="" href="#st1" data-toggle="tab" type="st1">推荐简历（{$project['calllist']|count}）</a></li>
+                            <li><a class="" href="#st1" data-toggle="tab"
+                                    type="st1">推荐简历（{$project['calllist']|count}）</a></li>
                         </if>
                     </ul>
                 </div>
@@ -365,14 +461,17 @@
                                 <input type="hidden" class="select_arr" value="">
                                 <ul class="breadcrum pull-left">
                                     <li>已选中&nbsp;<span class="icheck_num"></span>&nbsp;项</li>
-                                    <li><a class="add_customer" href="javascript:void(0)" rel="addcc"><i class="fa fa-users"></i>&nbsp;加入CallList</a></li>
-                                    <li class="last_li" style="bottom: 10px;"><big><a class="fa fa-times pull-right back-show" id="back-show"></a></big></li>
+                                    <li><a class="add_customer" href="javascript:void(0)" rel="addcc"><i
+                                                class="fa fa-users"></i>&nbsp;加入CallList</a></li>
+                                    <li class="last_li" style="bottom: 10px;"><big><a
+                                                class="fa fa-times pull-right back-show" id="back-show"></a></big></li>
                                 </ul>
                             </div>
                         </div>
                         <table class="table select-table">
                             <tr class="tabTh" style="background-color:#f9fafc;">
-                                <td width="30px" style="border-left: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">
+                                <td width="30px"
+                                    style="border-left: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">
                                     <div class="checkbox checkbox-primary">
                                         <input name="checkall" class="check_list" type="checkbox">
                                         <label></label>
@@ -385,7 +484,8 @@
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">性别</td>
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">年薪</td>
                                 <!-- <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td> -->
-                                <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">
+                                <td
+                                    style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">
                                     最近操作时间</td>
                             </tr>
                             <tbody>
@@ -407,7 +507,8 @@
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">年薪</td>
                                 <!-- <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">联系方式</td> -->
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">跟进人</td>
-                                <td style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">
+                                <td
+                                    style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">
                                     最近操作时间</td>
                             </tr>
                             <tbody>
@@ -417,7 +518,9 @@
                                     <tr>
                                         <td style="text-align:center;padding:14px;color:#666;">
                                             <a href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
-                                            <a class="dropdown-toggle count-info call_out" id="phone_url" rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-toggle="dropdown" href="#" title="呼叫">
+                                            <a class="dropdown-toggle count-info call_out" id="phone_url"
+                                                rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-toggle="dropdown"
+                                                href="#" title="呼叫">
                                                 <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                             </a>
                                         </td>
@@ -426,7 +529,8 @@
                                         <if condition="$business_info['pro_type'] eq '4'">
                                             <if condition="$vo['hjl_status'] eq 0">
                                                 <td style="text-align:right;padding:14px;color:#666;">
-                                                    <input type="button" class="btn btn-primary btn-sm upresumes" value="推荐 >" style="width: 80px;" data-id="{$vo['id']}"/></td>
+                                                    <input type="button" class="btn btn-primary btn-sm upresumes"
+                                                        value="推荐 >" style="width: 80px;" data-id="{$vo['id']}" /></td>
                                                 <elseif condition="$vo['hjl_status'] eq 1" />
                                                 <td style="text-align:right;padding:14px;color:#666;">已推荐</td>
                                                 <elseif condition="$vo['hjl_status'] eq 2" />
@@ -434,7 +538,8 @@
                                             </if>
                                             <else />
                                             <td style="text-align:right;padding:14px;color:#666;">
-                                                <input type="button" class="btn btn-primary btn-sm slidebar-nav" value="CallList >" style="width: 80px;" data-id="{$vo['id']}"/>
+                                                <input type="button" class="btn btn-primary btn-sm slidebar-nav"
+                                                    value="CallList >" style="width: 80px;" data-id="{$vo['id']}" />
                                             </td>
                                         </if>
 
@@ -2116,6 +2221,7 @@
             setTimeout("mapInit(" + y + "," + x + "," + vals + ")", 1000);
         })
     });
+
     function mapInit(x, y, mapID) {
         var map = new BMap.Map(mapID);
         var point = new BMap.Point(y, x);
@@ -2193,6 +2299,7 @@
             }
         }
     });
+
     function url_jump(maodian) {
         $('#maodian').val(maodian);
         var customer_id = "{$customer_id}";
