@@ -522,7 +522,6 @@ class IndexAction extends Action {
         $fine_project = D("ProjectView");
         $d_business = D('BusinessView');
         $type = $_GET['type'] ? BaseUtils::getStr($_GET['type']) :  '';
-        $type = 'offer';
         switch (trim($type)){
             case 'offer' :
                 $data = $fine_project->where(array('fine_project.status'=>6))->order('fine_project.updatetime desc')->limit(10)->select();
