@@ -272,6 +272,10 @@ class CallcenterAction extends Action
         if (!$content) {
             return false;
         }
+        //防止超时
+        set_time_limit(0);
+        ini_set("memory_limit", "1024M");
+
         BaseUtils::addLog("融营云回掉参数 ： {$content}", 'callback_log', '/var/log/rongyinyun/');
         $content = json_decode($content, true);
         $contentList = $content['Table'];
