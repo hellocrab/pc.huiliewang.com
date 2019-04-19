@@ -2417,4 +2417,35 @@ class UserAction extends Action {
         $mq = new \RabbitMq\RabbitMqBase();
         return $mq->deadMessage(['user_ids' => $userIds, 'time' => $deleteTime, 'ttl' => $delayTime * 1000], $delayTime * 1000);
     }
+
+    //获取本人通话记录
+    public function call_record(){
+        $phone_record = M('phone_record');
+        //分页
+        if($_GET['listrows']){
+            $listrows = intval($_GET['listrows']);
+            $params[] = "listrows=" . intval($_GET['listrows']);
+        }else{
+            $listrows = 10;
+            $params[] = "listrows=10";
+        }
+        $this->listrows = $listrows;
+//        import('@.ORG.Page');// 导入分页类
+        import("@.ORG.DialogListPage");//导入分页类
+        $count = $phone_record ->where(array('role_id'=>session('role_id')))->count();
+        $p_num = $p_num = ceil($count/$listrows);
+        $p = isset($_GET['p'])?$_GET['p']:1;
+        if($p_num<$p){
+            $p = $p_num;
+        }
+        //根据本人用户role_id
+        $msg = $phone_record->where(array('role_id'=>session('role_id')))->order('add_time desc')->Page($p.','.$listrows)->select();
+        $this -> msg = $msg;
+        $Page = new Page($count,$listrows);// 实例化分页类 传入总记录数和每页显示的记录数
+        $Page->parameter = implode('&', $params);
+        $show = $Page->show();// 显示分页栏
+        $this->assign('page',$show);// 赋值分页输出
+        $this->alert;
+        $this->display();
+    }
 }

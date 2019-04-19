@@ -6,6 +6,8 @@
     #datas tr{cursor : pointer;}
 </style>
 <p>&nbsp;</p>
+<form id="form" action="" >
+<div>
 <empty name="msg">
     <div style="clear:both">
         <include file="Public:nodata" />
@@ -14,8 +16,9 @@
     <table class="table table-hover">
         <thead>
         <tr style="background-color:#F5F5F6;">
+            <th>员工姓名</th>
+            <th>主席号码</th>
             <th>客户号码</th>
-            <th>呼入呼出类型</th>
             <th>开始时间</th>
             <th>结束时间</th>
             <th>通话时长</th>
@@ -31,17 +34,33 @@
         <tbody id="datas">
         <volist name="msg" id="vo">
             <tr style="cursor:pointer;">
-                <td>{$vo.Destination_Number}</td>
-                <td><if condition="$vo['Context'] eq '0'">呼出<else />呼入</if></td>
-                <td>{$vo.Start_Stamp}</td>
-                <td>{$vo.End_Stamp}</td>
-                <td>{$vo.Billsec} s</td>
+                <td>{$vo.user_name}</td>
+                <td>{$vo.setingNbr}</td>
+                <td>{$vo.calleeNum}</td>
+                <td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+                <td>{$vo.call_end_time}</td>
+                <td>{$vo.duration} s</td>
                 <!--<td>{$vo.RecordUrl}</td>-->
             </tr>
         </volist>
         </tbody>
     </table>
 </empty>
+</div>
+</form>
 <script type="text/javascript">
-
+    $('#go_page').change(function(){
+        var sel = $(this).val();
+        $('#dialog-business').load(sel,function(){
+            changeCondition();
+        });
+        return false;
+    });
+    $(function(){
+        $('#footers a').click(function(){
+            var rel = $(this).attr('href');
+            $('#dialog-business').load(rel);
+            return false;
+        });
+    });
 </script>
