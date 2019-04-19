@@ -492,7 +492,6 @@ class IndexAction extends Action {
     //offer、面试人数、推荐简历数 各栏统计的接口( 参数part & range)
     public function face_part(){
         $part = $_GET['part']; // offer、面试人数、推荐简历数
-        $part = 'offer_num';
         $time_range = $_GET['range'] ? BaseUtils::getStr($_GET['range']) : 'currentweek'; //currentweek、currentmonth、lastweek、lastmonth
         $be = $this->time_range($time_range);
         foreach ($be as $k=>$v){
