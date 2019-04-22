@@ -483,7 +483,7 @@ class IndexAction extends Action {
             $be[$k] = date('Y-m-d',$v);
         }
 //        M('user')->select();
-        $data = M('report_intergral')->field('sum(offer_num) as offerNum,sum(interview_num) as interviewNum,sum(fine_project_num) as fineNum')->where(array('report_date'=>array('between',$be)))->find();
+        $data = M('report_intergral')->field('sum(offer_num) as offerNum,sum(interview_num) as interviewNum,sum(fine_project_num) as fineNum,sum(integral) as integral,sum(enter_num) as enterNum')->where(array('report_date'=>array('between',$be)))->find();
         $this->datasum = $data;
         $this->alert = parseAlert();
         $this->display();
@@ -491,7 +491,7 @@ class IndexAction extends Action {
 
     //offer、面试人数、推荐简历数 各栏统计的接口( 参数part & range)
     public function face_part(){
-        $part = $_GET['part']; // offer、面试人数、推荐简历数
+        $part = $_GET['part']; // offer、面试人数、推荐简历数、业绩、入职
         $time_range = $_GET['range'] ? BaseUtils::getStr($_GET['range']) : 'currentweek'; //currentweek、currentmonth、lastweek、lastmonth
         $be = $this->time_range($time_range);
         foreach ($be as $k=>$v){
@@ -510,6 +510,14 @@ class IndexAction extends Action {
                 $data = M('report_intergral')->field('sum(fine_project_num) as fineNum')->where(array('report_date'=>array('between',$be)))->find();
                 $data = $data['fineNum'];
                 break;
+            case 'integral':
+                $data = M('report_intergral')->field('sum(integral) as integral')->where(array('report_date'=>array('between',$be)))->find();
+                $data = $data['integral'];
+                break;
+            case 'enter':
+                $data = M('report_intergral')->field('sum(enter_num) as enterNum')->where(array('report_date'=>array('between',$be)))->find();
+                $data = $data['enterNum'];
+                break;
         }
         $data = ['succ' => true, 'code' => 200, 'data' => $data];
         $this->ajaxReturn($data);
@@ -517,7 +525,6 @@ class IndexAction extends Action {
 
     //首页项目统计接口( 参数)
     public function pipeline(){
-
         include APP_PATH . "Common/job.cache.php";
         $d_v_business = D('BusinessTopView');
         $fine_project = D("ProjectView");
