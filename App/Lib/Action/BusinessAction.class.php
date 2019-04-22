@@ -1462,7 +1462,8 @@ class BusinessAction extends Action
     {
         $project = D("ProjectView")->where("fine_project.id=%d", I("id"))->find();
 
-        $project['tj_role_name']= $project['tj_role_id'] > 0 ? M('user')->where(['role_id'=>$project['tj_role_id']])->getField('full_name') : $project['tracker_name'];
+        $project['tj_role_name'] = $project['tj_role_id'] > 0 ? M('user')->where(['role_id'=>$project['tj_role_id']])->getField('full_name') : $project['tracker_name'];
+        $project['pass_role_name'] = $project['pass_role_id'] > 0 ? M('user')->where(['role_id'=>$project['pass_role_id']])->getField('full_name') : $project['tracker_name'];
 
         $business = M("business")->where("business_id=%d", $project['project_id'])->field("pro_type")->find();
         //@edit by yanghao 2018-11-26 修改交易模式交易节点
@@ -1699,6 +1700,7 @@ class BusinessAction extends Action
                 $arr['status'] = 5;
                 $arr['passtime'] = time();
                 $arr['updatetime'] = time();
+                $arr['pass_role_id'] = session("user_id");
 //                $data['operator'] = session("user_id");
 //                $data['addtime'] = time();
 //                $arr['pass_log'] = serialize($data);
