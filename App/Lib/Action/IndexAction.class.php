@@ -517,6 +517,7 @@ class IndexAction extends Action {
 
     //首页项目统计接口( 参数)
     public function pipeline(){
+
         include APP_PATH . "Common/job.cache.php";
         $d_v_business = D('BusinessTopView');
         $fine_project = D("ProjectView");
