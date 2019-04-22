@@ -593,7 +593,7 @@ class IndexAction extends Action {
                     $roleIds = explode(',', $v['owner_role_id']);
                     $where2['role_id'] = array('in', $roleIds);
                     $data[$k]['owner'] = M('user')->where($where2)->field('full_name,role_id')->select();
-                    $data[$k]['updatetime'] = date('Y-m-d H:i');
+                    $data[$k]['updatetime'] = date('Y-m-d H:i',$v['update_time']);
                     $data[$k]['business_href'] = '/index.php?m=business&a=view&id='.$v['business_id'];
                     $data[$k]['customer_href'] = '/index.php?m=customer&a=view&id='.$v['customer_id'];
                     $data[$k]['status'] = '项目进展中';
