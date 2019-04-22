@@ -40,15 +40,19 @@ class InvoiceAction extends Action{
 	 * @return
 	 */
 	public function index(){
-        $this->applyNum = M("invoice")->where("type='%s'","apply")->count();
-        $this->examineNum = M("invoice")->where("type='%s'","examine")->count();
-        $this->billingNum = M("invoice")->where("type='%s'","billing")->count();
-        $this->moneyNum = M("invoice")->where("type='%s'","money")->count();
-        $this->distributionNum = M("invoice")->where("type='%s'","distribution")->count();
-        $this->grantNum = M("invoice")->where("type='%s'","grant")->count();
-        $this->returnNum = M("invoice")->where("type='%s'","return")->count();
-        $this->refundNum = M("invoice")->where("type='%s'","refund")->count();
-        $this->refuseNum = M("invoice")->where("type='%s'","refuse")->count();
+        $where = [];
+	    if($this->_permissionRes){
+            $where['create_role_id'] = array('in',$this->_permissionRes);
+        }
+        $this->applyNum = M("invoice")->where("type='%s'","apply")->where($where)->count();
+        $this->examineNum = M("invoice")->where("type='%s'","examine")->where($where)->count();
+        $this->billingNum = M("invoice")->where("type='%s'","billing")->where($where)->count();
+        $this->moneyNum = M("invoice")->where("type='%s'","money")->where($where)->count();
+        $this->distributionNum = M("invoice")->where("type='%s'","distribution")->where($where)->count();
+        $this->grantNum = M("invoice")->where("type='%s'","grant")->where($where)->count();
+        $this->returnNum = M("invoice")->where("type='%s'","return")->where($where)->count();
+        $this->refundNum = M("invoice")->where("type='%s'","refund")->where($where)->count();
+        $this->refuseNum = M("invoice")->where("type='%s'","refuse")->where($where)->count();
 
 //        $param = $_GET;
 //        unset($param['m']);
@@ -60,7 +64,7 @@ class InvoiceAction extends Action{
         $this->type = $type;
         $d_invoice = D('InvoiceView');
         $order = 'create_time desc';
-        $where = array();
+//        $where = array();
         $p = intval($_GET['p']) ? intval($_GET['p']) : 1;
         $m_customer = M('Customer');
         $m_contract = M('Contract');
