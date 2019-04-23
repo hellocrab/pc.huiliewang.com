@@ -2355,13 +2355,19 @@ class BusinessAction extends Action
     {
         $d_business = D('BusinessTopView');
 //		$where['business.is_end'] = array('gt',0);
-
-        $where['owner_role_id'] = array('in', $this->_permissionRes);
+        $this->_permissionRes = getPerByAction(MODULE_NAME, 'index');
+//        $where['owner_role_id'] = array('in', $this->_permissionRes);
         $where['is_deleted'] = 0;
         if ($_GET['customer_id']) {
             $where['customer_id'] = intval($_GET['customer_id']);
         }
 
+        $where['_string'] = "creator_role_id = ".session('role_id')." OR joiner  = ".session('role_id').
+            " OR FIND_IN_SET(".session('role_id').",owner_role_id) OR FIND_IN_SET(".session('role_id').",parter) ";
+        if($this->_permissionRes){
+            $allRoles = implode(',',$this->_permissionRes);
+            $where['_string'] .= " OR creator_role_id in ({$allRoles})";
+        }
         if ($_REQUEST["field"]) {
             $field = trim($_REQUEST['field']);
             $search = empty($_REQUEST['search']) ? '' : trim($_REQUEST['search']);
