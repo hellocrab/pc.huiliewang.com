@@ -508,6 +508,7 @@
                                         <th>更新时间</th>
                                     </tr>`
                                 res.data.map(val => {
+                                    console.log(val.updatetime);
                                     val.updatetime = val.updatetime ? getTime(val.updatetime) :
                                         '';
                                     val.birthday = val.birthday ? getTime(val.birthday) : '';
@@ -622,7 +623,7 @@
         $('.range').click(ev => {
             let part = ev.target.dataset.part;
             $('.sec3[part=' + part + ']').css('height', '72px');
-            $('sec3 span').unbind();
+            $('.sec3 span').unbind();
             $('.sec3[part=' + part + '] span').click(e => {
                 let con = $(e.target).html().trim();
                 let aug = new String();
@@ -658,21 +659,21 @@
             <img src="__PUBLIC__/img/paid.png" alt="图片加载失败">
             <div class="sec1">
                 <span>已到款</span>
-                <span class='range' data-part='paid'>本周</span>
+                <span class='range' data-part='integral'>本周</span>
             </div>
-            <span class="showNum" part='paid'>0</span>
+            <span class="showNum" part='integral'>{$datasum['integral']}</span>
             <div class='sec2'>
                 <span>本年</span>
                 <i class='fa fa-caret-down'></i>
             </div>
-            <div class='sec3' part='paid'>
+            <div class='sec3' part='integral'>
                 <span>本周</span>
                 <span>本月</span>
                 <span>上周</span>
                 <span>上月</span>
             </div>
         </div>
-        <div>
+        <!-- <div>
             <img src="__PUBLIC__/img/staffNum.png" alt="">
             <div class="sec1">
                 <span>应收款</span>
@@ -689,19 +690,19 @@
                 <span>上周</span>
                 <span>上月</span>
             </div>
-        </div>
+        </div> -->
         <div>
             <img src="__PUBLIC__/img/bill.png" alt="">
             <div class="sec1">
-                <span>上班人数</span>
-                <span class='range' data-part='workerNum'>本周</span>
+                <span>入职人数</span>
+                <span class='range' data-part='enter'>本周</span>
             </div>
-            <span class="showNum" part='workerNum'>0</span>
+            <span class="showNum" part='enter'>{$datasum['enterNum']}</span>
             <div class='sec2'>
                 <span>本年</span>
                 <i class='fa fa-caret-down'></i>
             </div>
-            <div class='sec3' part='workerNum'>
+            <div class='sec3' part='enter'>
                 <span>本周</span>
                 <span>本月</span>
                 <span>上周</span>
@@ -761,6 +762,11 @@
                 <span>上周</span>
                 <span>上月</span>
             </div>
+        </div>
+        <div class='moreBlock'>
+            <span>
+                更多功能正在开发，敬请期待...
+            </span>
         </div>
     </div>
     <div class="pipeline">
