@@ -43,6 +43,8 @@ class InvoiceAction extends Action{
         $where = [];
 	    if($this->_permissionRes){
             $where['create_role_id'] = array('in',$this->_permissionRes);
+        }else{
+            $where['create_role_id'] = session('role_id');
         }
         $this->applyNum = M("invoice")->where("type='%s'","apply")->where($where)->count();
         $this->examineNum = M("invoice")->where("type='%s'","examine")->where($where)->count();
