@@ -767,7 +767,7 @@ class IndexAction extends Action {
                 $data = array_intersect($data,$where['role_id'][1]);
                 $where['role_id'] = array('in', $data);
             }
-            $action_log = $m_action_log->where($where)->order('create_time desc')->page($p . ',10')->select();
+            $action_log = $m_action_log->where($where)->order('create_time desc')->page($p . ',300')->select();
             $count = $m_action_log->where($where)->count();
             import("@.ORG.Page");
             $Page = new Page($count, 5);
