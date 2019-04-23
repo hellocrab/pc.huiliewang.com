@@ -714,7 +714,7 @@ class IndexAction extends Action {
                 case 'task' :
                     $where['module_name'] = array('eq', 'task');
                     break;
-                case 'business' :
+                case 'Business' :
                     $where['module_name'] = array('eq', 'business');
                     break;
                 case 'crm' :
