@@ -63,6 +63,7 @@ abstract class Action {
         if(session('role_id')){
             $zxhNo = M('user')->where(['role_id'=>session('role_id')])->getField('ryy_tel');
         }
+//        echo '请各位顾问大大稍安勿躁，慧猎君在自我学习中.';exit;
         $this->assign("zxhNo", $zxhNo);
     }
 

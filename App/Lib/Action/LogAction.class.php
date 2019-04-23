@@ -360,31 +360,36 @@ class LogAction extends Action{
     //沟通日志添加
     public function resume_project(){
         $d_business = D('BusinessTopView');
-        if(session('?admin')){
-            $owner_role_id = getSubRoleId(true, 1);
-        }else{
-            $owner_role_id = getSubRoleId();
-        }
-        if( $this->_permissionRes && is_array($this->_permissionRes)) {
-            $below_ids_str = implode(',',$this->_permissionRes);
-            $where['_string'] = "business.creator_role_id in (".$below_ids_str.") OR business.joiner in (".$below_ids_str.")";
-            foreach ($this->_permissionRes as $childRoleId){
-                if($childRoleId <= 0){
-                    continue;
-                }
-                $where['_string'] .= "OR FIND_IN_SET({$childRoleId},business.owner_role_id) OR FIND_IN_SET({$childRoleId},business.parter)";
-            }
-            $where['_logic'] = 'OR';
-            $map['_complex'] = $where;
-            $map['is_deleted'] = 0;
-        } else {
-            //我全部项目
-            $where['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
-            $where['_logic'] = 'OR';
-            $map['_complex'] = $where;
-            $map['is_deleted'] = 0;
-        }
+//        if(session('?admin')){
+//            $owner_role_id = getSubRoleId(true, 1);
+//        }else{
+//            $owner_role_id = getSubRoleId();
+//        }
+//        if( $this->_permissionRes && is_array($this->_permissionRes)) {
+//            $below_ids_str = implode(',',$this->_permissionRes);
+//            $where['_string'] = "business.creator_role_id in (".$below_ids_str.") OR business.joiner in (".$below_ids_str.")";
+//            foreach ($this->_permissionRes as $childRoleId){
+//                if($childRoleId <= 0){
+//                    continue;
+//                }
+//                $where['_string'] .= "OR FIND_IN_SET({$childRoleId},business.owner_role_id) OR FIND_IN_SET({$childRoleId},business.parter)";
+//            }
+//            $where['_logic'] = 'OR';
+//            $map['_complex'] = $where;
+//            $map['is_deleted'] = 0;
+//        } else {
+//            //我全部项目
+//            $where['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
+//            $where['_logic'] = 'OR';
+//            $map['_complex'] = $where;
+//            $map['is_deleted'] = 0;
+//        }
 
+        //我全部项目
+        $where['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
+        $where['_logic'] = 'OR';
+        $map['_complex'] = $where;
+        $map['is_deleted'] = 0;
         $project = $d_business->order('business.create_time desc')->where($map)->limit(1000)->select();
         foreach ($project as $pro) {
             $_customer_ids[] = $pro['customer_id'];
