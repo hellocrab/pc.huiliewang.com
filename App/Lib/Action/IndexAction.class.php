@@ -499,24 +499,24 @@ class IndexAction extends Action {
         }
         switch ($part){
             case 'offer_num':
-                $data = M('report_intergral')->field('sum(offer_num) as offerNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->find();
-                $data = $data['offerNum'];
+                $data = M('report_intergral')->field('sum(offer_num) as offerNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->group('user_id')->find();
+                $data = empty($data['offerNum']) ? 0 : $data['offerNum'];
                 break;
             case 'interview_num':
                 $data = M('report_intergral')->field('sum(interview_num) as interviewNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->find();
-                $data = $data['interviewNum'];
+                $data = empty($data['interviewNum']) ? 0 : $data['interviewNum'];
                 break;
             case 'fine_project':
                 $data = M('report_intergral')->field('sum(fine_project_num) as fineNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->find();
-                $data = $data['fineNum'];
+                $data = empty($data['fineNum']) ? 0 : $data['fineNum'];
                 break;
             case 'integral':
                 $data = M('report_intergral')->field('sum(integral) as integral')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->find();
-                $data = $data['integral'];
+                $data = empty($data['integral']) ? 0 : $data['integral'];
                 break;
             case 'enter':
                 $data = M('report_intergral')->field('sum(enter_num) as enterNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->find();
-                $data = $data['enterNum'];
+                $data = empty($data['enterNum']) ? 0 : $data['enterNum'];
                 break;
         }
         $data = ['succ' => true, 'code' => 200, 'data' => $data];
@@ -527,12 +527,13 @@ class IndexAction extends Action {
     public function pipeline(){
         include APP_PATH . "Common/job.cache.php";
         $d_v_business = D('BusinessTopView');
-        $fine_project = D("ProjectView");
+        $fine_project = D("FineOfferView");
+        $fine_project_enter = D('FineEnterView');
         $d_business = D('BusinessView');
         $type = $_GET['type'] ? BaseUtils::getStr($_GET['type']) :  '';
         switch (trim($type)){
             case 'offer' :
-                $data = $fine_project->where(array('fine_project.status'=>6,'tracker'=>array('in', getSubRoleId())))->order('fine_project.updatetime desc')->limit(10)->select();
+                $data = $fine_project->where(array('creator_role_id'=>array('in', getSubRoleId())))->order('fine_project.updatetime desc')->limit(10)->select();
                 foreach ($data as $k=>$v){
                     $da = M('resume')->field('name,birthday,telephone,email')->where(array('eid'=>$v['resume_id']))->find();
                     $data[$k]['name'] = $da['name'];
@@ -540,7 +541,8 @@ class IndexAction extends Action {
                     $data[$k]['telephone'] = $da['telephone'];
                     $data[$k]['email']= $da['email'];
                     $data[$k]['status'] = '签订offer';
-                    $jobclass = $d_business->where(array('business.business_id' => $v['business_id']))->getField('jobclass');
+                    $business = $d_business->where(array('business.business_id' => $v['project_id']))->find();
+                    $jobclass = $business['jobclass'];
                     if($jobclass){
                         $className = '';
                         foreach (explode(',',$jobclass) as $classId){
@@ -549,13 +551,16 @@ class IndexAction extends Action {
                     }
                     $data[$k]['user'] = M('user')->where(array('role_id'=>$v['tracker']))->getField('full_name');
                     $data[$k]['jobname'] = $className;
+                    $data[$k]['business_name'] = $business['name'];
+                    $data[$k]['customer_name'] = $business['customer_name'];
+                    $data[$k]['updatetime'] = strtotime($v['offertime']);
                     $data[$k]['product_href'] = '/index.php?m=product&a=view&id='.$v['resume_id'];
-                    $data[$k]['business_href'] = '/index.php?m=business&a=view&id='.$v['business_id'];
+                    $data[$k]['business_href'] = '/index.php?m=business&a=view&id='.$v['project_id'];
                     $data[$k]['customer_href'] = '/index.php?m=customer&a=view&id='.$v['com_id'];
                 }
                 break;
             case 'onjob' :
-                $data = $fine_project->where(array('fine_project.status'=>6,'tracker'=>array('in', getSubRoleId())))->order('fine_project.updatetime desc')->limit(10)->select();
+                $data = $fine_project_enter->where(array('creator_role_id'=>array('in', getSubRoleId())))->order('fine_project.updatetime desc')->limit(10)->select();
                 foreach ($data as $k=>$v){
                     $da = M('resume')->field('name,birthday,telephone,email')->where(array('eid'=>$v['resume_id']))->find();
                     $data[$k]['name'] = $da['name'];
@@ -563,7 +568,8 @@ class IndexAction extends Action {
                     $data[$k]['telephone'] = $da['telephone'];
                     $data[$k]['email']= $da['email'];
                     $data[$k]['status'] = '签订offer';
-                    $jobclass = $d_business->where(array('business.business_id' => $v['business_id']))->getField('jobclass');
+                    $business = $d_business->where(array('business.business_id' => $v['project_id']))->find();
+                    $jobclass = $business['jobclass'];
                     if($jobclass){
                         $className = '';
                         foreach (explode(',',$jobclass) as $classId){
@@ -572,8 +578,11 @@ class IndexAction extends Action {
                     }
                     $data[$k]['user'] = M('user')->where(array('role_id'=>$v['tracker']))->getField('full_name');
                     $data[$k]['jobname'] = $className;
+                    $data[$k]['business_name'] = $business['name'];
+                    $data[$k]['customer_name'] = $business['customer_name'];
+                    $data[$k]['updatetime'] = strtotime($v['entertime']);
                     $data[$k]['product_href'] = '/index.php?m=product&a=view&id='.$v['resume_id'];
-                    $data[$k]['business_href'] = '/index.php?m=business&a=view&id='.$v['business_id'];
+                    $data[$k]['business_href'] = '/index.php?m=business&a=view&id='.$v['project_id'];
                     $data[$k]['customer_href'] = '/index.php?m=customer&a=view&id='.$v['com_id'];
                 }
                 break;
