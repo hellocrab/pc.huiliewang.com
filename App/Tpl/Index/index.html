@@ -496,6 +496,7 @@
                                 break
                             default:
                                 $('.pipeline table').removeClass().addClass('oth');
+                                let temp_ = type== 'offer'?'签订时间':'入职时间'
                                 temp = `<tr>
                                         <th>项目名称</th>
                                         <th>姓名</th>
@@ -505,7 +506,7 @@
                                         <th>邮箱</th>
                                         <th>生日</th>
                                         <th>用户</th>
-                                        <th>更新时间</th>
+                                        <th>${temp_}</th>
                                     </tr>`
                                 res.data.map(val => {
                                     console.log(val.updatetime);
