@@ -111,6 +111,20 @@ class CallcenterAction extends Action
             $sourceTel = session('tel');
         }
 
+        //日志记录
+        $channelName = [1 => '品聘', '2' => '融营云'];
+        $typeName = [1 => '人才', 2 => '客户联系人'];
+        $userName = session('full_name');
+        $log = [
+            'role_id' => session('role_id'),
+            'module_name' => strtolower(MODULE_NAME),
+            'action_name' => strtolower(ACTION_NAME),
+            'action_id' => $fineId,
+            'param_name' => "user_name = {$userName} , channel = $channel , type = {$type} , tel = {$tel} , fine_id = {$fineId}",
+            'content' => " 顾问：{$userName} 选择通道：" . $channelName[$channel] . " 拨打了来源：{$typeName[$type]} 的电话 : {$tel}， fine_id 为: {$fineId}"
+        ];
+        M('action_log')->add($log);
+
         if ($channel == 1) {
             //品聘坐席外呼
             $this->pinPingCall($sourceTel, $tel);
