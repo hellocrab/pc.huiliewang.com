@@ -533,7 +533,7 @@ class IndexAction extends Action {
         $type = $_GET['type'] ? BaseUtils::getStr($_GET['type']) :  '';
         switch (trim($type)){
             case 'offer' :
-                $data = $fine_project->where(array('creator_role_id'=>array('in', getSubRoleId())))->order('fine_project.updatetime desc')->limit(10)->select();
+                $data = $fine_project->where(array('role_id'=>array('in', getSubRoleId())))->order('fine_project_offer.offertime desc')->limit(10)->select();
                 foreach ($data as $k=>$v){
                     $da = M('resume')->field('name,birthday,telephone,email')->where(array('eid'=>$v['resume_id']))->find();
                     $data[$k]['name'] = $da['name'];
@@ -560,7 +560,7 @@ class IndexAction extends Action {
                 }
                 break;
             case 'onjob' :
-                $data = $fine_project_enter->where(array('creator_role_id'=>array('in', getSubRoleId())))->order('fine_project.updatetime desc')->limit(10)->select();
+                $data = $fine_project_enter->where(array('role_id'=>array('in', getSubRoleId())))->order('fine_project_enter.entertime desc')->limit(10)->select();
                 foreach ($data as $k=>$v){
                     $da = M('resume')->field('name,birthday,telephone,email')->where(array('eid'=>$v['resume_id']))->find();
                     $data[$k]['name'] = $da['name'];
@@ -714,7 +714,7 @@ class IndexAction extends Action {
                 case 'task' :
                     $where['module_name'] = array('eq', 'task');
                     break;
-                case 'business' :
+                case 'Business' :
                     $where['module_name'] = array('eq', 'business');
                     break;
                 case 'crm' :
@@ -767,7 +767,7 @@ class IndexAction extends Action {
                 $data = array_intersect($data,$where['role_id'][1]);
                 $where['role_id'] = array('in', $data);
             }
-            $action_log = $m_action_log->where($where)->order('create_time desc')->page($p . ',10')->select();
+            $action_log = $m_action_log->where($where)->order('create_time desc')->page($p . ',300')->select();
             $count = $m_action_log->where($where)->count();
             import("@.ORG.Page");
             $Page = new Page($count, 5);
