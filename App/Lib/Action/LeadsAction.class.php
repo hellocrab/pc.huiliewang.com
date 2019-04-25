@@ -1968,7 +1968,11 @@ class LeadsAction extends Action
 //        $where['fine_project.status'] = array('egt', 8);
         $where['fine_project_safe.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $projectSafeModel = new ProjectStepViewModel('fine_project_safe');
-        $this->list = $projectSafeModel->where($where)->select();
+        $list = $projectSafeModel->where($where)->select();
+        foreach ($list as $k => $v){
+            $list[$k]['entertime'] = M('fine_project_enter')->where(array('fine_id'=>$v['fine_id']))->getField('entertime');
+        }
+        $this->list = $list;
         $this->display();
     }
 
