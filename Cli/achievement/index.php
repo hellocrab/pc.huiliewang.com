@@ -115,18 +115,19 @@ foreach ($userList as $userInfo) {
         $dateStartInt = $nextDayInt; //时间+1天
 
         if($mode == 1){
-            $dataList[] = $data;
+//            $dataList[] = $data;
+            saveData($data, $conn ,1, []);
         } else {
             saveData($data, $conn ,2,$where); //更新
         }
     }
     
-    if (!$dataList && empty($dataList)) {
-        continue;
-    }
-    if (!saveData($dataList, $conn ,1, [])) {
-        echo "{$userName} data save error" . PHP_EOL;
-    }
+//    if (!$dataList && empty($dataList)) {
+//        continue;
+//    }
+//    if (!saveData($dataList, $conn ,1, [])) {
+//        echo "{$userName} data save error" . PHP_EOL;
+//    }
     echo "{$userName} SUCCESS" . PHP_EOL;
 }
 echo "all USER data SUCCESS" . PHP_EOL;
@@ -160,7 +161,7 @@ function saveData($data, $conn, $mode,$where = []) {
         $connMake = new sqlMaker($conn, array('tableName' => $table));
         $res = false;
         if ($mode == 1) {
-            $sql = $connMake->insertRows($data);
+            $sql = $connMake->insertRow($data);
             $res = $conn->exec($sql);
         } elseif($mode == 2) {
             $sql = $connMake->updateRow(['data' => $data,'where' => $where]);
