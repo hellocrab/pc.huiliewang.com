@@ -29,22 +29,30 @@
         <table class="table table-hover dilog" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
             <tbody style="display: block;overflow-y: scroll">
             <tr class="tabTh tabThFixed" style="width: 100%;">
-                <td  style="padding-left: 15px;text-align: left;">员工姓名</td>
-                <td>部门</td>
-                <td>候选人</td>
+                <td style="padding-left: 15px;text-align: left;">候选人</td>
                 <td>项目名称</td>
                 <td>所属客户</td>
+                <td>入职时间</td>
+                <td>试用期日期</td>
+                <td>过保日期</td>
+                <td>备注</td>
+                <td>操作时间</td>
+                <td>推荐顾问</td>
             </tr>
             </tbody>
             <tbody class="mainTbody">
                 <volist name="list" id="vo">
                     <tr>
                         <!--<td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.tracker_name}</a></td>-->
-                        <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap">{$vo.tracker_name}</td>
-                        <td style="min-width: 100px;">{$vo.department_name}</td>
-                        <td style="min-width: 80px;"><a href="{:U('product/view','id='.$vo['eid'])}" target="_blank">{$vo.name}</a></td>
+                        <td style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="{:U('product/view','id='.$vo['eid'])}" target="_blank">{$vo.name}</a></td>
                         <td style="min-width: 80px;"><a href="{:U('business/view','id='.$vo['business_id'])}" target="_blank">{$vo.business_name}</a></td>
                         <td style="min-width: 80px;"><a href="{:U('customer/view', 'id='.$vo['customer_id'])}" target="_blank">{$vo.customer_name}</a></td>
+                        <td style="min-width: 80px;">{$vo.entertime}</td>
+                        <td style="min-width: 80px;">{$vo.trialtime}</td>
+                        <td style="min-width: 80px;">{$vo.safetime}</td>
+                        <td style="min-width: 80px;">{$vo.remarks}</td>
+                        <td style="min-width: 80px;">{$vo.addtime|date='Y-m-d',###}</td>
+                        <td style="min-width: 80px;">{$vo.tracker_name}</td>
                     </tr>
                 </volist>
             </tbody>
