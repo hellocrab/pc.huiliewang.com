@@ -282,7 +282,8 @@
                                                         "success");
                                                     var id = $(_this).attr("data-id");
                                                     console.log(id)
-                                                    var key = $(_this).attr("data-key") ? $(this)
+                                                    var key = $(_this).attr("data-key") ? $(
+                                                            this)
                                                         .attr(
                                                             "data-key") : 0;
                                                     $('#dialog-addCCbz').dialog('open');
@@ -634,6 +635,11 @@
                                             <!--</td>-->
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
+                                                <a class="dropdown-toggle count-info call_out" id="phone_url"
+                                                    rel="{$vo['contacts_id']}" data-toggle="dropdown" href="#"
+                                                    title="呼叫">
+                                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                </a>
                                             </td>
                                             <td style="text-align:right;padding:14px;color:#666;"><input type="button"
                                                     class="btn btn-primary btn-sm slidebar-nav" value="顾问面试 >"
@@ -735,6 +741,11 @@
                                             <!--</td>-->
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
+                                                <a class="dropdown-toggle count-info call_out" id="phone_url"
+                                                    rel="{$vo['contacts_id']}" data-toggle="dropdown" href="#"
+                                                    title="呼叫">
+                                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                </a>
                                             </td>
                                             <td style="text-align:right;padding:14px;color:#666;"><input type="button"
                                                     class="btn btn-primary btn-sm slidebar-nav" value="推荐人才 >"
@@ -794,6 +805,11 @@
                                         <tr>
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
+                                                <a class="dropdown-toggle count-info call_out" id="phone_url"
+                                                    rel="{$vo['contacts_id']}" data-toggle="dropdown" href="#"
+                                                    title="呼叫">
+                                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                </a>
                                             </td>
                                             <td style="text-align:right;padding:14px;color:#666;"><input type="button"
                                                     class="btn btn-primary btn-sm slidebar-nav" value="客户面试 >"
@@ -852,6 +868,11 @@
                                         <tr>
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
+                                                <a class="dropdown-toggle count-info call_out" id="phone_url"
+                                                    rel="{$vo['contacts_id']}" data-toggle="dropdown" href="#"
+                                                    title="呼叫">
+                                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                </a>
                                             </td>
                                             <td style="text-align:right;padding:14px;color:#666;"><input type="button"
                                                     class="btn btn-primary btn-sm slidebar-nav" value="面试通过 >"
@@ -909,6 +930,11 @@
                                         <tr>
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
+                                                <a class="dropdown-toggle count-info call_out" id="phone_url"
+                                                    rel="{$vo['contacts_id']}" data-toggle="dropdown" href="#"
+                                                    title="呼叫">
+                                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                </a>
                                             </td>
                                             <td style="text-align:right;padding:14px;color:#666;"><input type="button"
                                                     class="btn btn-primary btn-sm slidebar-nav" value="Offer >"
@@ -968,6 +994,11 @@
                                         <tr>
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
+                                                <a class="dropdown-toggle count-info call_out" id="phone_url"
+                                                    rel="{$vo['contacts_id']}" data-toggle="dropdown" href="#"
+                                                    title="呼叫">
+                                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                </a>
                                             </td>
                                             <td style="text-align:right;padding:14px;color:#666;"><input type="button"
                                                     class="btn btn-primary btn-sm slidebar-nav" value="入职 >"
@@ -1028,6 +1059,11 @@
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}"><span class=""
                                                         style="{$mail_contacts_id == $vo['contacts_id'] ? '':'display:none'}">{$vo['name']}</span></a>
+                                                <a class="dropdown-toggle count-info call_out" id="phone_url"
+                                                    rel="{$vo['contacts_id']}" data-toggle="dropdown" href="#"
+                                                    title="呼叫">
+                                                    <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                                </a>
                                             </td>
                                             <td style="text-align:right;padding:14px;color:#666;"><input type="button"
                                                     class="btn btn-primary btn-sm slidebar-nav" value="过保 >"
