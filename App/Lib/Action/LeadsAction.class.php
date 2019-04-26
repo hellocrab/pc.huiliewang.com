@@ -1720,7 +1720,16 @@ class LeadsAction extends Action
         ($role_id <= 0 && $roleIds) && $where['invoice.create_role_id'] = ['in', $roleIds];
 
         $where['invoice.update_time'] = array(array('lt', $end_time), array('egt', $start_time), 'and');
-        $this->list = D("InvoiceView")->where($where)->order('create_time desc')->select();
+        $list = D("InvoiceView")->where($where)->order('create_time desc')->select();
+        foreach ($list as $k => $v){
+            $da = M('resume')->where(array('eid'=>$v['resume_id']))->find();
+            $list[$k]['current_company'] = $da['curCompany'];
+            $list[$k]['current_department'] = $da['curDepartment'];
+            $list[$k]['current_job'] = $da['curPosition'];
+            $list[$k]['sex'] = $da['sex'];
+            $list[$k]['edu'] = $da['edu'];
+        }
+        $this->list = $list;
         $this->display();
     }
 
@@ -1883,7 +1892,6 @@ class LeadsAction extends Action
     /*
      * 到场人数
      */
-
     public function dialogpresent() {
         $start_time = I("start_date");
         $end_time = I("end_date");
