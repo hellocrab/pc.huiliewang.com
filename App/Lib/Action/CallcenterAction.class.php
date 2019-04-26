@@ -131,7 +131,7 @@ class CallcenterAction extends Action
             $msg = $this->pinPingCall($sourceTel, $tel);
             $isSuccess = $msg['meta']['success'];
             if (!$isSuccess) {
-                exit(json_encode(['code' => $msg['meta']['success'] ? 1 : 0, 'msg' => $msg['meta']['message']]));
+                exit(json_encode(['code' => 0, 'msg' => $msg['meta']['message']]));
             }
             //成功
             $callsId = $msg['data'];
@@ -148,13 +148,13 @@ class CallcenterAction extends Action
             $uuid = $this->startWork($timestamp, $sourceTel);
             if ($uuid != 200) {
                 //融营云服务暂时不可用
-                exit(json_encode(['code' => $uuid == 200 ? 1 : 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
+                exit(json_encode(['code' => 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
             }
             $callStatus = $this->rongYinYunCall($timestamp, $tel, $sourceTel);
             if ($callStatus['statuscode'] == 200) {
                 $callsId = $callStatus['data'];
                 $this->record($callsId, ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel], $channel);
-                echo json_encode(['code' => $callStatus['statuscode'] == 200 ? 1 : 0, 'msg' => '拨打成功']);
+                echo json_encode(['code' => 1, 'msg' => '拨打成功']);
             }
             $this->offWork($timestamp, $sourceTel);
         }
