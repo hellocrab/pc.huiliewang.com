@@ -718,7 +718,7 @@ class IndexAction extends Action {
                     $where['module_name'] = array('eq', 'business');
                     break;
                 case 'crm' :
-                    $where['module_name'] = array('not in', 'log,examine,sign');
+                    $where['module_name'] = array('not in', 'log,examine,sign,callcenter');
                     break;
             }
 

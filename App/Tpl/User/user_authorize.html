@@ -332,6 +332,12 @@
 						<!--</span>-->
 						<span style="width:25%; float:left;">
 							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['invoice/index'])">checked="checked"</if> name="per[]" value="invoice/index"/>发票审核
+							<select style="width:auto;<if condition="!isset($owned_permission['invoice/index'])">display:none;</if>"  name="invoice[index]">
+								<option <if condition="$owned_permission['invoice/index'] == 1">selected="selected"</if> value="1">{:L('PERMISSION_SUB')}</option>
+							<option <if condition="$owned_permission['invoice/index'] == 2">selected="selected"</if> value="2">{:L('PERMISSION_EVERYONE')}</option>
+							<option <if condition="$owned_permission['invoice/index'] == 3">selected="selected"</if> value="3">{:L('PERMISSION_SELF')}</option>
+							<option <if condition="$owned_permission['invoice/index'] == 4">selected="selected"</if> value="4">{:L('PERMISSION_DEPARTMENT')}</option>
+							</select>
 						</span>
 
 					</div>

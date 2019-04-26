@@ -1669,10 +1669,11 @@ class BusinessAction extends Action
                 $data['target'] = $_POST['target'];
                 $data['fine_id'] = $id;
                 $data['role_id'] = session("role_id");
-                $data['addtime'] = time();
+
                 if ($_POST['key']) {
                     $result = M("fine_project_cc")->where("id=%d", $_POST['key'])->save($data);
                 } else {
+                    $data['addtime'] = time();
                     $result = M("fine_project_cc")->add($data);
                 }
 
@@ -1779,7 +1780,7 @@ class BusinessAction extends Action
         if ($this->isPost()) {
             unset($_POST['id']);
             unset($_POST['xxtime']);
-            $_POST['addtime'] = time();
+
             $_POST['fine_id'] = $id;
             $_POST['role_id'] = session('role_id');
 //                var_dump($_POST);exit();
@@ -1788,6 +1789,7 @@ class BusinessAction extends Action
             if ($_POST['key']) {
                 $result = M("fine_project_adviser")->where("id=%d", $_POST['key'])->save($_POST);
             } else {
+                $_POST['addtime'] = time();
                 M("fine_project_adviser")->add($_POST);
                 $arr['status'] = 2;
                 $result = M("fine_project")->where("id=%d", $id)->save($arr);
@@ -1829,7 +1831,7 @@ class BusinessAction extends Action
 //                $project[$field] = unserialize($project[$field]);
             $arr['status'] = $project['status'];
             $arr['fine_id'] = $project['id'];
-            $arr['addtime'] = time();
+
             $arr['beizhu'] = $_POST['beizhu'];
             $arr['timeend'] = $_POST['timeend'];
             $arr['role_id'] = session('role_id');
@@ -1837,6 +1839,7 @@ class BusinessAction extends Action
             if ($_POST['key']) {
                 $result = M("fine_project_bz")->where("id=%d", $_POST['key'])->save($arr);
             } else {
+                $arr['addtime'] = time();
                 $result = M("fine_project_bz")->add($arr);
             }
 
@@ -1865,13 +1868,14 @@ class BusinessAction extends Action
         }
         $this->assign("project", $project);
         if ($this->isPost()) {
-            $_POST['addtime'] = time();
+
             $_POST['role_id'] = session('role_id');
             $_POST['status'] = $project['status'];
             $_POST['fine_id'] = $id;
             if ($_POST['key']) {
                 M("fine_project_bhs")->where("id=%d", $_POST['key'])->save($_POST);
             } else {
+                $_POST['addtime'] = time();
                 M("fine_project_bhs")->add($_POST);
                 $arr["stop"] = 1;
                 $result = M("fine_project")->where("id=%d", $id)->save($arr);
@@ -1902,13 +1906,14 @@ class BusinessAction extends Action
         if ($this->isPost()) {
             unset($_POST['id']);
             unset($_POST['id']);
-            $_POST['addtime'] = time();
+
             $_POST['role_id'] = session('role_id');
             $_POST['fine_id'] = $id;
 
             if ($_POST['key']) {
                 $result = M("fine_project_adviserbz")->where("id=%d", $_POST['key'])->save($_POST);
             } else {
+                $_POST['addtime'] = time();
                 $result = M("fine_project_adviserbz")->add($_POST);
             }
 
@@ -1958,7 +1963,6 @@ class BusinessAction extends Action
         if ($this->isPost()) {
             unset($_POST['id']);
             $_POST['role_id'] = session("role_id");
-            $_POST['addtime'] = time();
             $_POST['fine_id'] = $id;
 
             $interview = M("fine_project_interview")->order('addtime desc')->getField("interview");
@@ -1970,6 +1974,7 @@ class BusinessAction extends Action
             if ($_POST['key']) {
                 $result = M("fine_project_interview")->where("id=%d", $_POST['key'])->save($_POST);
             } else {
+                $_POST['addtime'] = time();
                 $_POST['interview'] = $project['interview_times'] + 1;
                 $result = M("fine_project_interview")->add($_POST);
             }
@@ -2144,10 +2149,11 @@ class BusinessAction extends Action
             unset($_POST['id']);
             $_POST['role_id'] = session("role_id");
             $_POST['fine_id'] = $id;
-            $_POST['addtime'] = time();
+
             if ($_POST['key']) {
                 $result = M("fine_project_offer")->where("id=%d", $_POST['key'])->save($_POST);
             } else {
+                $_POST['addtime'] = time();
                 $result = M("fine_project_offer")->add($_POST);
                 $arr['status'] = 6;
                 M("fine_project")->where("id=%d", $id)->save($arr);
@@ -2178,11 +2184,12 @@ class BusinessAction extends Action
         if ($this->isPost()) {
             unset($_POST['id']);
             $_POST['fine_id'] = $id;
-            $_POST['addtime'] = time();
+
             $_POST['role_id'] = session('role_id');
             if ($_POST['key']) {
                 $result = M("fine_project_enter")->where("id=%d", $_POST['key'])->save($_POST);
             } else {
+                $_POST['addtime'] = time();
                 $result = M("fine_project_enter")->add($_POST);
             }
 
@@ -2209,9 +2216,10 @@ class BusinessAction extends Action
         !$projectInfo && $this->ajaxReturn(1, '参数错误', 0);
         //过保操作
         $where = ['fine_id' => $projectId];
-        $data = ['fine_id' => $projectId, 'create_role_id' => session('role_id'), 'addtime' => time()];
+        $data = ['fine_id' => $projectId, 'create_role_id' => session('role_id')];
         $safeObj = M('FineProjectSafe');
         if (!$safeObj->where($where)->find()) {
+            $data['addtime'] = time();
             $res = $safeObj->add($data);
         } else {
             $res = $safeObj->where($where)->save($data);
