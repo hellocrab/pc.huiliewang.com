@@ -1673,7 +1673,7 @@
                                pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$project['addtime']); ?></span>
-                        <a href="#" class="mal10">{$vo.tracker_name|default=$project['tracker_name']}</a>
+                        <a href="#" class="mal10">{$project['tracker_name']|default=''}</a>
                     </div>
                     <div class="hangr" style="margin-top: 20px;">
                         <table>
