@@ -335,7 +335,6 @@ class CallcenterAction extends Action
 
             $data['oss_record_url'] = '';
             if ($data['recordUrl']) {
-                $data['recordUrl'] = str_replace('https', 'http', $data['recordUrl']);
                 $callerNum = $recordInfo['setingNbr'];
                 $data['oss_record_url'] = $this->fileToOss($data['recordUrl'], $sessionId, $callerNum, 1);
             }
@@ -395,7 +394,7 @@ class CallcenterAction extends Action
             $data['oss_record_url'] = '';
             if ($data['recordUrl']) {
                 $callerNum = $content['Caller_Id_Number'];
-                $this->fileToOss($data['recordUrl'], $data['sec_id'], $callerNum);
+                $data['oss_record_url'] = $this->fileToOss($data['recordUrl'], $data['sec_id'], $callerNum);
             }
             M('phone_record')->where($where)->save($data);
         }
