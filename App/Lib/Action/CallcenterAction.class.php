@@ -128,7 +128,16 @@ class CallcenterAction extends Action
 
         if ($channel == 1) {
             //品聘坐席外呼
-            $this->pinPingCall($sourceTel, $tel);
+            $msg = $this->pinPingCall($sourceTel, $tel);
+            $isSuccess = $msg['meta']['success'];
+            if (!$isSuccess) {
+                exit(json_encode(['code' => 0, 'msg' => $msg['meta']['message']]));
+            }
+            //成功
+            $callsId = $msg['data'];
+            $this->record($callsId, ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel], $channel);
+            exit(json_encode(['code' => 1, 'msg' => '拨打成功']));
+
         } elseif ($channel == 2) {
             //融营云坐席外呼
             $sourceTel = M('user')->where(['role_id' => session('role_id')])->getField('ryy_tel');
@@ -139,13 +148,13 @@ class CallcenterAction extends Action
             $uuid = $this->startWork($timestamp, $sourceTel);
             if ($uuid != 200) {
                 //融营云服务暂时不可用
-                exit(json_encode(['code' => $uuid == 200 ? 1 : 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
+                exit(json_encode(['code' => 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
             }
             $callStatus = $this->rongYinYunCall($timestamp, $tel, $sourceTel);
             if ($callStatus['statuscode'] == 200) {
                 $callsId = $callStatus['data'];
-                $this->record($callsId, ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel]);
-                echo json_encode(['code' => $callStatus['statuscode'] == 200 ? 1 : 0, 'msg' => '拨打成功']);
+                $this->record($callsId, ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel], $channel);
+                echo json_encode(['code' => 1, 'msg' => '拨打成功']);
             }
             $this->offWork($timestamp, $sourceTel);
         }
@@ -202,8 +211,8 @@ class CallcenterAction extends Action
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $msg = curl_exec($ch);
-        $msg = json_decode($msg);
-        echo json_encode(['code' => $msg->meta->success ? 1 : 0, 'msg' => $msg->meta->message]);
+        $msg = json_decode($msg, true);
+        return $msg;
     }
 
     /**
@@ -243,10 +252,11 @@ class CallcenterAction extends Action
     /**
      * @desc  通话记录添加/维护
      * @param $callsId
+     * @param $channel [1 => '品聘', '2' => '融营云'];
      * @param array $data
      * @return bool|mixed
      */
-    private function record($callsId, $data = []) {
+    private function record($callsId, $data = [], $channel) {
         if (!$callsId || !$data) {
             return false;
         }
@@ -260,30 +270,20 @@ class CallcenterAction extends Action
             $settingNbr = $data['setingNbr'];
             $dataUser = [
                 'role_id' => session('role_id'), 'sec_id' => $callsId, 'setingNbr' => $settingNbr, 'add_time' => time(), 'sessionId' => $callsId,
-                'user_name' => session('full_name'), 'department_id' => session('department_id'), 'user_id' => session('user_id'), 'callerNum' => $settingNbr
+                'user_name' => session('full_name'), 'department_id' => session('department_id'), 'user_id' => session('user_id'), 'callerNum' => $settingNbr, 'channel' => $channel
             ];
             $data = array_merge($dataUser, $data);
             return $recordObj->add($data);
         }
-        //更新通话记录
-        return $recordObj->where(['sec_id' => $callsId])->save($data);
+        return false;
     }
 
     /**
      * @desc 通话回掉地址
-     * Caller_Id_Number String 必填 坐席号码
-     * Destination_Number String 必填 客户号码
-     * Context String 必填 呼入呼出类型 0 呼出 1 呼入
-     * Start_Stamp DateTime 必填 开始时间
-     * End_Stamp DateTime 必填 结束时间
-     * Billsec Int 必填 通话时长
-     * RecordUrl String 可填 录音地址
-     * CallSid String 必填 通话唯一标识
      * @return bool|mixed
      */
     public function call_back() {
         $content = file_get_contents('php://input');
-//        $content = file_get_contents('./str.json');
         if (!$content) {
             return false;
         }
@@ -291,8 +291,64 @@ class CallcenterAction extends Action
         set_time_limit(0);
         ini_set("memory_limit", "1024M");
 
-        BaseUtils::addLog("融营云回掉参数 ： {$content}", 'callback_log', '/var/log/rongyinyun/');
         $content = json_decode($content, true);
+        if (isset($content['Table']) && $content['Table']) {
+            BaseUtils::addLog("融营云回掉参数 ： {$content}", 'callback_log', '/var/log/rongyinyun/');
+            return $this->rongYinYunCallBack($content);
+        }
+        //品聘回掉
+        BaseUtils::addLog("品聘回掉参数 ： {$content}", 'callback_log', '/var/log/pinping/');
+        return $this->pinPingCallBack($content);
+    }
+
+    /**
+     * @desc 品聘回调处理
+     * @param $contents
+     * @return bool
+     */
+    public function pinPingCallBack($contents) {
+        if (!$contents) {
+            return false;
+        }
+        foreach ($contents as $content) {
+            $sessionId = $content['sessionId'];
+            if (!$sessionId) {
+                continue;
+            }
+            $where = ['sec_id' => $sessionId, 'channel' => 1];
+            $recordInfo = M('phone_record')->where($where)->find();
+            if (!$recordInfo) {
+                continue;
+            }
+            $data = [];
+            $data['sec_id'] = $sessionId;
+            $data['sessionId'] = $sessionId;
+            $data['direction'] = $content['direction'] ? $content['direction'] : 0;
+            $data['call_end_time'] = $content['callEndTime'] ? $content['callEndTime'] : '';
+            $data['fwdAnswerTime'] = $content['fwdAnswerTime'] ? $content['fwdAnswerTime'] : '';
+            $data['callOutAnswerTime'] = $content['callOutAnswerTime'] ? $content['callOutAnswerTime'] : '';
+            $data['recordFlag'] = $content['recordFlag'] ? $content['recordFlag'] : 0;
+            $data['recordUrl'] = $content['recordFileDownloadUrl'] ? $content['recordFileDownloadUrl'] : '';
+            $data['duration'] = $content['duration'] ? $content['duration'] : 0;
+            $data['callmin'] = $content['callmin'] ? $content['callmin'] : 0;
+            $data['callback_time'] = time(); // 回掉时间记录
+
+            $data['oss_record_url'] = '';
+            if ($data['recordUrl']) {
+                $callerNum = $recordInfo['setingNbr'];
+                $data['oss_record_url'] = $this->fileToOss($data['recordUrl'], $sessionId, $callerNum, 1);
+            }
+            M('phone_record')->where($where)->save($data);
+        }
+        return true;
+    }
+
+    /**
+     * @desc 荣营云回掉处理
+     * @param $content
+     * @return bool
+     */
+    public function rongYinYunCallBack($content) {
         $contentList = $content['Table'];
         if (!$contentList || empty($contentList)) {
             return false;
@@ -303,7 +359,8 @@ class CallcenterAction extends Action
                 continue;
             }
             //判断是否存在
-            $callInfo = M('phone_record')->where(['sec_id' => $content['CallSid']])->find();
+            $where = ['sec_id' => $content['CallSid'], 'channel' => 2];
+            $callInfo = M('phone_record')->where($where)->find();
             if (!$callInfo) {
                 continue;
             }
@@ -314,10 +371,8 @@ class CallcenterAction extends Action
                 preg_match("/\((\d{10}).*\)/", $content['End_Stamp'], $matchEnd);
                 $endTime = $matchEnd[1];
                 if ($endTime) {
-//                    $endTime += 8 * 3600;
                     $data['call_end_time'] = date('Y-m-d H:i:s', $endTime);
                 }
-
             }
             //通话开始时间
             $data['callOutAnswerTime'] = '';
@@ -325,7 +380,6 @@ class CallcenterAction extends Action
                 preg_match("/\((\d{10}).*\)/", $content['Start_Stamp'], $match);
                 $startTime = $match[1];
                 if ($startTime) {
-//                    $startTime += 8 * 3600;
                     $data['callOutAnswerTime'] = date('Y-m-d H:i:s', $startTime);
                 }
             }
@@ -335,36 +389,55 @@ class CallcenterAction extends Action
             $data['recordFlag'] = $content['RecordUrl'] ? 1 : 0; // 录音地址
             $data['direction'] = $content['Context']; // 呼入呼出类型
             $data['callback_time'] = time(); // 回掉时间记录
-            $callerNum = $content['Caller_Id_Number'];
 
             //录音地址处理
             $data['oss_record_url'] = '';
             if ($data['recordUrl']) {
-                $pathInfo = pathinfo($data['recordUrl']);
-                $extension = $pathInfo['extension'];
-                $dir = "./Uploads/temp/";
-                if (!is_dir($dir)) {
-                    @mkdir($dir, 0755, true);
-                }
-                $localFile = "{$dir}{$data['sec_id']}.{$extension}"; //临时文件存放
-                $res = true;
-                if (!file_exists($localFile)) {
-                    $res = copy($data['recordUrl'], $localFile);
-                }
-                if ($res || file_exists($localFile)) {
-                    import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
-                    $ossFile = "call_record/{$callerNum}/{$data['sec_id']}.{$extension}";
-                    $ossClient = new AliOssAction();
-                    $ossUrl = $ossClient->upFile($localFile, $ossFile);
-                    unlink($localFile);
-                    $ossUrl && $data['oss_record_url'] = $ossUrl;
-                }
+                $callerNum = $content['Caller_Id_Number'];
+                $data['oss_record_url'] = $this->fileToOss($data['recordUrl'], $data['sec_id'], $callerNum);
             }
-            $this->record($data['sec_id'], $data);
+            M('phone_record')->where($where)->save($data);
         }
-
+        return true;
     }
 
+    /**
+     * @desc 录音文件上传OSS
+     * @param $recordUrl
+     * @param $sessionId
+     * @param $callerNum
+     * @param $channel
+     * @return string
+     */
+    static function fileToOss($recordUrl, $sessionId, $callerNum, $channel = 2) {
+        $pathInfo = $recordUrl;
+        $extension = $pathInfo['extension'];
+        $extension = strtolower($extension);
+        if (!in_array($extension, ['wav', 'mp3', 'amr', 'wma'])) {
+            $extension = 'wav';
+        }
+
+        $dir = "./Uploads/temp_{$channel}/";
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0755, true);
+        }
+        $localFile = "{$dir}{$sessionId}.{$extension}"; //临时文件存放
+        $res = true;
+
+        if (!file_exists($localFile)) {
+            $recordUrl = str_replace('https', 'http', $recordUrl);
+            $res = copy($recordUrl, $localFile);
+        }
+        $ossUrl = '';
+        if ($res || file_exists($localFile)) {
+            import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
+            $ossFile = "call_record_{$channel}/{$callerNum}/{$sessionId}.{$extension}";
+            $ossClient = new AliOssAction();
+            $ossUrl = $ossClient->upFile($localFile, $ossFile);
+            unlink($localFile);
+        }
+        return $ossUrl;
+    }
 
     /**
      * @desc  获取通话账单

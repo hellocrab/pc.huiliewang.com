@@ -30,6 +30,11 @@
             <tbody style="display: block;overflow-y: scroll">
             <tr class="tabTh tabThFixed" style="width: 100%;">
                 <td style="padding-left: 15px;text-align: left;">候选人</td>
+                <td>所在公司</td>
+                <td>部门</td>
+                <td>担任职位</td>
+                <td>性别</td>
+                <td>学历</td>
                 <td>项目名称</td>
                 <td>所属客户</td>
                 <td>入职时间</td>
@@ -42,6 +47,11 @@
                 <tr>
                     <!--<td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.tracker_name}</a></td>-->
                     <td style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="{:U('product/view','id='.$vo['eid'])}" target="_blank">{$vo.name}</a></td>
+                    <td>{$vo.current_company}</td>
+                    <td>{$vo.current_department}</td>
+                    <td>{$vo.current_job}</td>
+                    <td><if condition="$vo.sex eq 1">男<else/>女</if></td>
+                    <td>{$vo.edu}</td>
                     <td style="min-width: 80px;"><a href="{:U('business/view','id='.$vo['business_id'])}" target="_blank">{$vo.business_name}</a></td>
                     <td style="min-width: 80px;"><a href="{:U('customer/view', 'id='.$vo['customer_id'])}" target="_blank">{$vo.customer_name}</a></td>
                     <td style="min-width: 80px;">{$vo.entertime}</td>

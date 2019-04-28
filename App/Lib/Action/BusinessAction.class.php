@@ -1429,6 +1429,28 @@ class BusinessAction extends Action
      * offer
      */
 
+    public function project_pass($fine_id)
+    {
+        $where['fine_id'] = $fine_id;
+        $where['status'] = 5;
+        $project['pass_remark'] = M("fine_project_bz")->where($where)->select();
+        $project['remove_remark'] = M("fine_project_bhs")->where($where)->select();
+
+        foreach ($project as $key => $list) {
+            foreach ($list as $k => $li) {
+                if( ($key == 'pass_remark' || $key == 'remove_remark') && isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
+                $data[$li['addtime']][$key] = $li;
+            }
+        }
+        krsort($data);
+        return $data;
+    }
+    /*
+     * offer
+     */
+
     public function project_enter($fine_id)
     {
         $where['fine_id'] = $fine_id;
@@ -1489,6 +1511,7 @@ class BusinessAction extends Action
         $project['interview'] = $this->project_interview(I("id"));
         $project['offer'] = $this->project_offer(I("id"));
         $project['enter'] = $this->project_enter(I("id"));
+        $project['pass'] = $this->project_pass(I("id"));
 //        var_dump($project['interview']);exit();
 //        $project = $this->fine_project($project);
 //        var_dump($project['tj']);exit();
@@ -1977,12 +2000,14 @@ class BusinessAction extends Action
                 $_POST['addtime'] = time();
                 $_POST['interview'] = $project['interview_times'] + 1;
                 $result = M("fine_project_interview")->add($_POST);
+                M("fine_project")->where("id=%d", $id)->setInc('interview_times');
             }
 
             if ($result) {
-                $arr['status'] = 4;
-                $result = M("fine_project")->where("id=%d", $id)->save($arr);
-                $result = M("fine_project")->where("id=%d", $id)->setInc('interview_times');
+                $data['status'] = 4;
+                $data['updatetime'] = time();
+                M("fine_project")->where("id=%d", $id)->save($data);
+                alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
             }
 
 //                var_dump($_POST);exit();
@@ -1997,11 +2022,6 @@ class BusinessAction extends Action
 //                $arr['status'] = "interview";
 //                $result = M("fine_project")->where("id=%d",$id)->save($arr);
 //                $result = M("fine_project")->where("id=%d",$id)->setInc('interview_times');
-            if ($result) {
-                $data['updatetime'] = time();
-                M("fine_project")->where("id=%d", $id)->save($data);
-                alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
-            }
         }
 //            $project = $this->fine_project($project);
         $this->assign("project", $project);
@@ -2025,11 +2045,16 @@ class BusinessAction extends Action
                 $arr['stop'] = 1;
                 M("fine_project")->where("id=%d", $id)->save($arr);
             }
-            $_POST['addtime'] = time();
+
             $_POST['fine_id'] = $id;
             $_POST['role_id'] = session('role_id');
+            if(I('key') > 0){
+                $result = M("fine_project_tj")->where(['id'=>I('key')])->save($_POST);
+            }else{
+                $_POST['addtime'] = time();
+                $result = M("fine_project_tj")->add($_POST);
+            }
 
-            $result = M("fine_project_tj")->add($_POST);
             if ($result) {
                 $data['updatetime'] = time();
                 M("fine_project")->where("id=%d", $id)->save($data);
