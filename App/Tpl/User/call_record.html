@@ -448,6 +448,7 @@
                 <td>{$vo.duration} s</td>
                 <td style="width: 20%;">
                     <if condition="$vo.recordFlag eq 1">
+                        <if condition="$vo.oss_record_url neq ''">
                             <audio preload="auto" controls>
                                 <source src="{$vo.oss_record_url}" />
                             </audio>
@@ -455,6 +456,7 @@
                             <audio preload="auto" controls>
                                 <source src="{$vo.recordUrl}" />
                             </audio>
+                        </if>
                     </if>
                 </td>
                 <!--<td>{$vo.RecordUrl}</td>-->
