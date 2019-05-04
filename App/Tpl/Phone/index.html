@@ -473,17 +473,36 @@
                         <form id="" class="form-group" method="get" style="margin-bottom: 0px;">
                             <input type="hidden" name="m" value="phone" />
                             <input type="hidden" name="a" value="index" />
+                            <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
+                                <div class="input-group">
+                                    <select class="form-control input-sm select2" style="min-width:165px;max-width: 165px;height: 0px;display:none;" name="department" id="department" onchange="changeRole()">
+                                        <option class="all" value="all">{:L('ALL')}</option>
+                                        <volist name="departmentList" id="vo">
+                                            <option value="{$vo.department_id}" <if condition="$_GET['department'] eq $vo['department_id']">selected</if>>{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
+                                <div class="input-group">
+                                    <select class="form-control input-sm select2" style="min-width:165px;max-width: 165px;height: 0px;display:none;" name="role" id="role" onchange="changeCondition()">
+                                        <option class="all" value="all">{:L('ALL')}</option>
+                                        <volist name="roleList" id="vo">
+                                            <option value="{$vo.role_id}" <if condition="$_GET['role'] eq $vo['role_id']">selected</if>>{$vo.role_name}-{$vo.user_name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-inline">
-                                坐席号码:<input type="number" class="form-control" name="caller" onblur="checkphone(this);"/>
-                                被叫号码:<input type="number" class="form-control" name="callee" onblur="checkphone(this);"/>
-                                方向:<select name="context">
-                                    <option value="0" selected="selected">呼出</option>
-                                    <option value="1">呼入</option>
-                                </select>
-                                通话时长:<select name="by"><option value="0">小于</option><option selected="selected" value="1">大于</option></select>
-                                <input class="form-control" type="number" name="billsecond" placeholder="秒"/>
-                                &nbsp;&nbsp;呼叫时间:<input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" name="start_time" id="start_time" value="" type="text">
-                                至<input class="form-control Wdate" input-type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" name="end_time" id="end_time" value="" type="text"/>
+                                <!--                                坐席号码:<input type="number" class="form-control" name="caller" onblur="checkphone(this);"/>
+                                                                被叫号码:<input type="number" class="form-control" name="callee" onblur="checkphone(this);"/>
+                                                                通话时长:<select name="by"><option value="0">小于</option><option selected="selected" value="1">大于</option></select>-->
+                                <!--<input class="form-control" type="number" name="billsecond" placeholder="秒"/>-->
+                                &nbsp;&nbsp;呼叫时间:
+                                <input class="form-control Wdate"  nput_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" name="start_time" id="start_time" value="{$start_time}" type="text"/>
+                                至
+                                <input class="form-control Wdate" input-type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" name="end_time" id="end_time" value="{$end_time}" type="text"/>
+
                                 <div class="nav pull-right" style="margin-right: 20px;">
                                     <button type="submit" id="analytics_search" class="btn btn-primary">{:L('SEARCH')}</button>
                                 </div>
@@ -496,9 +515,9 @@
                             <div id="table_div" class="nicescroll" style="left:0px;top:0px;">
                                 <table class="table table-hover table-striped table-bordered" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
                                     <tr class="tabTh">
-                                        <!--<td style="min-width:100px;">id</td>-->
-                                        <td style="min-width:100px;">方向</td>
-                                        <td style="min-width:100px;">顾问</td>
+                                        <td style="min-width:50px;">线路</td>
+                                        <td style="min-width:50px;">方向</td>
+                                        <td style="min-width:50px;">顾问</td>
                                         <!--<td style="min-width:100px;">部门</td>-->
                                         <!--<td style="min-width: 100px;">主叫联系人</td>-->
                                         <td style="min-width: 100px;">主叫号码</td>
@@ -520,9 +539,9 @@
                                     <tbody>
                                     <volist name="list" id="vo">
                                         <tr class="tabTh">
-                                            <!--<td style="min-width:20px;">{$vo.id}</td>-->
-                                            <td  style="min-width:100px;"><if condition="$vo.direction eq '0'">呼出<else />呼入</if></td>
-                                        <td style="min-width: 100px;">{$vo.user_name}</td>
+                                        <td style="min-width:50px;"><if condition="$vo.channel eq '2'">融营云<else />品聘</if></td>
+                                        <td  style="min-width:50px;"><if condition="$vo.direction eq '0'">呼出<else />呼入</if></td>
+                                        <td style="min-width: 50px;">{$vo.user_name}</td>
                                         <!--<td style="min-width: 100px;">{$vo.department}</td>-->
                                         <!--<td style="min-width: 100px;">主叫联系人</td>-->
                                         <td style="min-width: 100px;">{$vo.callerNum}</td>
@@ -536,15 +555,15 @@
                                         <td style="min-width: 250px;">
                                         <if condition="$vo.recordFlag eq 1">
                                             <if condition="$vo.oss_record_url neq ''">
-                                            <a href="{$vo.oss_record_url}">下载</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <audio preload="auto" controls>
-                                                <source src="{$vo.oss_record_url}" />
-                                            </audio>
-                                            <else/>
-                                            <a href="{$vo.recordUrl}">下载</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <audio preload="auto" controls>
-                                                <source src="{$vo.recordUrl}" />
-                                            </audio>
+                                                <a href="{$vo.oss_record_url}">下载</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <audio preload="auto" controls>
+                                                    <source src="{$vo.oss_record_url}" />
+                                                </audio>
+                                                <else/>
+                                                <a href="{$vo.recordUrl}">下载</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <audio preload="auto" controls>
+                                                    <source src="{$vo.recordUrl}" />
+                                                </audio>
                                             </if>
                                             <else/>
                                             <font color="red">无录音记录</font>
@@ -562,6 +581,12 @@
                                 </table>
                             </div>
                             <div id="tfoot_div" class="clearfix">
+                                <div class="clearfix" id="tfoot_page">
+                                    <if condition="$fields_search || $_GET['field']">
+                                        <span class="pull-left" style="margin-left:25px;margin-top:10px;">本次搜索结果<span style="color:#F8AC59"> {$count} </span>条数据<a href="{:U('phone/index')}" class="btn" style="background:#fff;border:1px solid #ccc;margin-left:10px;color:#999;" id="clearnumber">清除搜索条件</a></span>
+                                    </if>
+                                    {$page}<include file="Public:listrows" />
+                                </div>
                             </div>
                         </div>
                         <div id="source_content" class="hidden">

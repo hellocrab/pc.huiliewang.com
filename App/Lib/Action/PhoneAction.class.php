@@ -26,6 +26,8 @@ class PhoneAction extends Action {
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
         $start_time = $_GET['start_time'] ? BaseUtils::getStr($_GET['start_time'], 'string') : date('Y-m-d H:i:s', time() - 24 * 86400);
         $end_time = $_GET['end_time'] ? BaseUtils::getStr($_GET['end_time'], 'string') : date('Y-m-d H:i:s', time());
+        $role = isset($_GET['role']) ? BaseUtils::getStr($_GET['role'], 'string') : '';
+        $pageSize = isset($_GET['listrows']) ? intval($_GET['listrows']) : 15;
 
         //去掉品聘通话记录接口 editor by yanghao 20190504
         $field = "id,"
@@ -47,15 +49,22 @@ class PhoneAction extends Action {
                 . "channel";
 
         $where = [];
-        $where['starTime'] = $start_time;
-        $where['endTime'] = $end_time;
-        if ($this->_permissionRes) {
-            $allRoles = implode(',', $this->_permissionRes);
-            $ownerWhere['_string'] .= "  role_id in ({$allRoles}) and duration>0 ";//加入通话判断
+        $start_Time = strtotime($start_time);
+        $end_Time = strtotime($end_time);
+
+        if (!isset($_GET['role']) || $role == 'all') {
+            if ($this->_permissionRes) {
+                $allRoles = implode(',', $this->_permissionRes);
+                $ownerWhere['_string'] .= "  role_id in ({$allRoles}) and duration>0 and add_time > {$start_Time} and add_time < {$end_Time}"; //加入通话判断
+            }
+        } else {
+            $ownerWhere['_string'] .= "  role_id in ({$role}) and duration>0 and add_time > {$start_Time} and add_time < {$end_Time}";
         }
+        
         $where['_complex'] = $ownerWhere;
         $where['_logic'] = 'AND';
         $order = "id desc";
+
 
         //页数
         if ($_GET['listrows']) {
@@ -66,7 +75,7 @@ class PhoneAction extends Action {
             $params[] = "listrows=" . $listrows;
         }
         $count = M('phone_record')->where($where)->order($order)->count();
-        
+
         $p_num = ceil($count / $listrows);
         if ($p_num < $p) {
             $p = $p_num;
@@ -75,9 +84,38 @@ class PhoneAction extends Action {
         $Page = new Page($count, $listrows);
         $this->assign('page', $Page->show());
 
-        $list =  M('phone_record')->where($where)->field($field)->page($p . ',' . $listrows)->select();
-        $this->assign('list',$list);
-        
+        $list = M('phone_record')->where($where)->field($field)->page($p . ',' . $listrows)->order($order)->select();
+//        var_dump(M('phone_record')->getLastSql());
+//        exit;
+
+
+        //读取部门与人员列表
+        $url = getCheckUrlByAction('Leads', 'analytics');
+        $below_ids = getPerByAction('Leads', 'analytics');
+        $per_type = M('Permission')->where('position_id = %d and url = "%s"', session('position_id'), $url)->getField('type');
+        if ($per_type == 2 || session('?admin')) {
+            $departmentList = M('roleDepartment')->select();
+        } else {
+            $ids = getSubDepartmentBrId();
+            if ($ids) {
+                $departmentList = M('roleDepartment')->where(['department_id' => ['in', $ids]])->select();
+            } else {
+                $departmentList = M('roleDepartment')->where('department_id =%d', session('department_id'))->select();
+            }
+        }
+
+        $roleList = array();
+        foreach ($below_ids as $roleId) {
+            $roleList[$roleId] = getUserByRoleId($roleId);
+        }
+
+
+        $this->assign("listrows", $pageSize);
+        $this->assign('start_time', $start_time);
+        $this->assign('end_time', $end_time);
+        $this->assign('departmentList', $departmentList);
+        $this->assign('roleList', $roleList);
+        $this->assign('list', $list);
         $this->display();
     }
 
