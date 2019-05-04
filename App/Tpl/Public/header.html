@@ -576,10 +576,10 @@
                     <?php endif; ?>
                     <?php if (in_array('log',$new_module_list)): ?>
                     <li>
-                        <a data-toggle="tooltip" data-placement="right" data-original-title="分析模块" <if
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="通话" <if
                             condition="($module_name eq 'phone' || $module_name eq 'phone' )"> class="active"</if>
                             href="{:U('Phone/index')}"><i class="fa fa-credit-card"></i><span
-                                class="menu_code">分析模块</span></a>
+                                class="menu_code">通话</span></a>
                     </li>
                     <!--                        <li>
                                                     <a data-toggle="tooltip" data-placement="right" data-original-title="日程" <if condition="$module_name eq 'log' &&  $action_name neq 'analytics' || ($module_name eq 'examine' && $action_name neq 'analytics') || $module_name eq 'announcement' || ($module_name eq 'knowledge' && $action_name neq 'category') || $module_name eq 'sign' || $module_name eq 'event' || $module_name eq 'task' || ($module_name eq 'kaoqin' && $action_name eq 'index')"> class="active"</if> <if condition="checkPerByAction('event','index')">href="{:U('event/index')}"<elseif condition ="checkPerByAction('examine','index')" />href="{:U('examine/index')}"<elseif condition ="checkPerByAction('knowledge','index')" />href="{:U('knowledge/index')}"<elseif condition ="checkPerByAction('announcement','index')" />href="{:U('announcement/index')}"<elseif condition ="checkPerByAction('sign','index')" />href="{:U('sign/index')}"<elseif condition ="checkPerByAction('event','index')" />href="{:U('event/index')}"<elseif condition ="checkPerByAction('task','index')" />href="{:U('task/index')}"</if>><i class="fa fa-desktop"></i><span class="menu_code">日程</span></a>

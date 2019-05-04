@@ -27,6 +27,7 @@ class PhoneAction extends Action {
         $start_time = $_GET['start_time'] ? BaseUtils::getStr($_GET['start_time'], 'string') : date('Y-m-d H:i:s', time() - 24 * 86400);
         $end_time = $_GET['end_time'] ? BaseUtils::getStr($_GET['end_time'], 'string') : date('Y-m-d H:i:s', time());
         $role = isset($_GET['role']) ? BaseUtils::getStr($_GET['role'], 'string') : '';
+        $department = isset($_GET['department']) ? BaseUtils::getStr($_GET['department'], 'string') : '';
         $pageSize = isset($_GET['listrows']) ? intval($_GET['listrows']) : 15;
 
         //去掉品聘通话记录接口 editor by yanghao 20190504
@@ -59,6 +60,10 @@ class PhoneAction extends Action {
             }
         } else {
             $ownerWhere['_string'] .= "  role_id in ({$role}) and duration>0 and add_time > {$start_Time} and add_time < {$end_Time}";
+        }
+        
+        if(isset($_GET['department']) && $department !== 'all'){
+            $where['department_id'] = $department;
         }
         
         $where['_complex'] = $ownerWhere;
