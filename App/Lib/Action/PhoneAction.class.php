@@ -1,126 +1,84 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2019-02-18
  * Time: 09:07
  */
+class PhoneAction extends Action {
 
-class PhoneAction extends Action
-{
-    public function _initialize(){
-        $title="分析模块";
-        $this->assign("title",$title);
+    public function _initialize() {
+        $title = "通话记录";
+        $this->assign("title", $title);
+
+//        $action = array(
+//            'permission' => array('listDialog'),
+//            'allow' => array('validate', 'check', 'revert', 'getsalesfunnel', 'getcurrentstatus', 'choose', 'return_choose', 'product_view', 'advance_search', 'addduibi', 'view_ajax', 'getbusinessstatus', 'view_slide', 'view_ajax', 'project_adviser', 'project_cc', 'project_tj', 'project_interview', 'project_offer', 'project_enter', 'remove', 'msbz', 'khms', 'tjfk', 'fapiao', 'offer', 'ruzhi', 'safe', 'listajax', 'addcc', 'addgwms', 'addgw', 'addbz', 'remove', 'msbz', 'edit_project', 'invoiceReCheck')
+//        );
+//        B('Authenticate', $action);
+        $this->_permissionRes = getPerByAction('Leads', 'analytics');
     }
 
-    function getsig($timestamp){
-        $authtoken = "0000000067f7f651016812bd9fb200b2"; // 账户授权令牌
-        $account = "nanfangxinhua";  // 企业账户
-        $sig = strtoupper(md5($authtoken .":". $account .":".$timestamp));
-        return $sig;
-    }
-
-    function getauth($timestamp){
-        $authtoken ="0000000067f7f651016812bd9fb200b2";// APPID
-        $datatoken = "19edad3f987b2db5e5037e259b9d8871";// appToken
-        $auth = base64_encode($authtoken .":". $timestamp .":". $datatoken);
-        return $auth;
-    }
-
-
-
-    //通话记录融通
-    public function index(){
+    //通话记录
+    public function index() {
         //过滤查询条件
-//        $where =  array();
-//        $caller = $_GET['caller'] ? BaseUtils::getStr($_GET['caller'],'string') : '';
-//        $callee = $_GET['callee'] ? BaseUtils::getStr($_GET['callee'],'string') : '' ;
-//        $context = $_GET['context'] ? BaseUtils::getStr($_GET['context'],'int') : '' ;
-//        $by  =   BaseUtils::getStr($_GET['by'],'string') == '0' ? '<' : '>';
-//        $billsecond = $_GET['billsecond'] ? BaseUtils::getStr($_GET['billsecond'],'int') : '' ;
-        $start_time = $_GET['start_time'] ? BaseUtils::getStr($_GET['start_time'],'string'): date('Y-m-d H:i:s',time()-24* 86400);
-        $end_time = $_GET['end_time'] ? BaseUtils::getStr($_GET['end_time'],'string'): date('Y-m-d H:i:s', time() );
+        $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
+        $start_time = $_GET['start_time'] ? BaseUtils::getStr($_GET['start_time'], 'string') : date('Y-m-d H:i:s', time() - 24 * 86400);
+        $end_time = $_GET['end_time'] ? BaseUtils::getStr($_GET['end_time'], 'string') : date('Y-m-d H:i:s', time());
 
-        $params = [];
-        $params['start_time'] = $start_time;
-        $params['end_time'] = $end_time;
-        
-        $this->ppRecord($params);
-        
-    }
-    
-    
-    
-    /**
-     * 品聘通话记录获取
-     */
-    public function ppRecord($params){
-        //显示通话记录
-        $maxId = 0;
-        $_maxId = M('phone_record_catch')->field('maxId')->where(['status' => 0])->find();
-        if($_maxId){
-            
+        //去掉品聘通话记录接口 editor by yanghao 20190504
+        $field = "id,"
+                . "fine_id,"
+                . "user_name,"
+                . "department,"
+                . "setingNbr,"
+                . "direction,"
+                . "callerNum,"
+                . "calleeNum,"
+                . "call_end_time,"
+                . "fwdAnswerTime,"
+                . "callOutAnswerTime,"
+                . "recordFlag,"
+                . "recordUrl,"
+                . "oss_record_url,"
+                . "duration,"
+                . "callmin,"
+                . "channel";
+
+        $where = [];
+        $where['starTime'] = $start_time;
+        $where['endTime'] = $end_time;
+        if ($this->_permissionRes) {
+            $allRoles = implode(',', $this->_permissionRes);
+            $ownerWhere['_string'] .= "  role_id in ({$allRoles}) and duration>0 ";//加入通话判断
         }
+        $where['_complex'] = $ownerWhere;
+        $where['_logic'] = 'AND';
+        $order = "id desc";
+
+        //页数
+        if ($_GET['listrows']) {
+            $listrows = intval($_GET['listrows']);
+            $params[] = "listrows=" . intval($_GET['listrows']);
+        } else {
+            $listrows = 15;
+            $params[] = "listrows=" . $listrows;
+        }
+        $count = M('phone_record')->where($where)->order($order)->count();
         
-        $data = [];
-        $data['maxId'] = 0;
-        $data['starTime'] = $params['start_time'];
-        $data['endTime'] = $params['end_time'];
-        $data['userData'] = '7be4a9ce-8ea2-4c74-b822-f4472194621d';
-        $data = json_encode($data);
-        $auth = 'NjJXOUptSHVlUWdoUExKbXJMVS1leUoxYzJWeVNXUWlPaUkxTlozSTZiMGgzaEl2T1lHaGUxbjFiNGZjSFM2RnBRc1BpbmdQaW5nQDEx';// base64_encode($data);
-        $url = "http://211.152.35.81:8766/call/record/voice";
-        $header = array('Content-Type:' . 'application/json;charset=utf-8',
-            'Accept:' . 'application/json',
-            'Authorization:'.$auth);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $msg = curl_exec($ch);
-        $result = json_decode($msg, true);
-//        var_dump($result['data'][0]);exit;
-        $this->assign('msg',$result['data']);
+        $p_num = ceil($count / $listrows);
+        if ($p_num < $p) {
+            $p = $p_num;
+        }
+        import("@.ORG.Page");
+        $Page = new Page($count, $listrows);
+        $this->assign('page', $Page->show());
+
+        $list =  M('phone_record')->where($where)->field($field)->page($p . ',' . $listrows)->select();
+        $this->assign('list',$list);
+        
         $this->display();
     }
-
-
-    /*
-     * 融营云记录获取
-     */
-    private function ryyRecord()
-    {
-        //显示通话记录
-        $timestamp= date('YmdHis');
-        $sig = $this->getsig($timestamp);
-        $auth = $this->getauth($timestamp);
-        $url = "http://47.96.62.197:8090/query/callReCord/v1?Sig=".$sig;
-        $header = array('Content-Type:' . 'application/json;charset=utf-8',
-            'Accept:' . 'application/json',
-            'Authorization:'.$auth);
-        $data = ["CompanyName"=>"nanfangxinhua",
-            "MaxId"=>100,
-            "BeginTime"=>"",
-            "EndTime"=>"",
-            "CallSid"=>"",
-            "Caller"=>"",
-            "Callee"=>""
-        ];
-        $data = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $msg = curl_exec($ch);
-        $result = json_decode($msg, true);
-        $this->assign('msg',$result[data]);
-        $this->display();
-    }
-    
-    
 
 }
