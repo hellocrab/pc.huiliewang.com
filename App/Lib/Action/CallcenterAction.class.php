@@ -294,11 +294,11 @@ class CallcenterAction extends Action
 
         $content = json_decode($contentOri, true);
         if (isset($content['Table']) && $content['Table']) {
-            BaseUtils::addLog("融营云回掉参数 ：  " . var_export($content, true), 'callback_log', '/var/log/rongyinyun/');
+            BaseUtils::addLog("融营云回掉参数 ：$contentOri ", 'callback_log', '/var/log/rongyinyun/');
             return $this->rongYinYunCallBack($content);
         }
         //品聘回掉
-        BaseUtils::addLog("品聘回掉参数 ： " . var_export($content, true) . "  原始数据：{$contentOri}", 'callback_log', '/var/log/pinping/');
+        BaseUtils::addLog("品聘回掉参数 ：{$contentOri}", 'callback_log', '/var/log/pinping/');
         return $this->pinPingCallBack($content);
     }
 
