@@ -304,43 +304,42 @@ class CallcenterAction extends Action
 
     /**
      * @desc 品聘回调处理
-     * @param $contents
+     * @param $content
      * @return bool
      */
-    public function pinPingCallBack($contents) {
-        if (!$contents) {
+    public function pinPingCallBack($content) {
+        if (!$content) {
             return 'fail';
         }
-        foreach ($contents as $content) {
-            $sessionId = $content['sessionId'];
-            if (!$sessionId) {
-                continue;
-            }
-            $where = ['sec_id' => $sessionId, 'channel' => 1];
-            $recordInfo = M('phone_record')->where($where)->find();
-            if (!$recordInfo) {
-                continue;
-            }
-            $data = [];
-            $data['sec_id'] = $sessionId;
-            $data['sessionId'] = $sessionId;
-            $data['direction'] = $content['direction'] ? $content['direction'] : 0;
-            $data['call_end_time'] = $content['callEndTime'] ? $content['callEndTime'] : '';
-            $data['fwdAnswerTime'] = $content['fwdAnswerTime'] ? $content['fwdAnswerTime'] : '';
-            $data['callOutAnswerTime'] = $content['callOutAnswerTime'] ? $content['callOutAnswerTime'] : '';
-            $data['recordFlag'] = $content['recordFlag'] ? $content['recordFlag'] : 0;
-            $data['recordUrl'] = $content['recordFileDownloadUrl'] ? $content['recordFileDownloadUrl'] : '';
-            $data['duration'] = $content['duration'] ? $content['duration'] : 0;
-            $data['callmin'] = $content['callmin'] ? $content['callmin'] : 0;
-            $data['callback_time'] = time(); // 回掉时间记录
-
-            $data['oss_record_url'] = '';
-            if ($data['recordUrl']) {
-                $callerNum = $recordInfo['setingNbr'];
-                $data['oss_record_url'] = $this->fileToOss($data['recordUrl'], $sessionId, $callerNum, 1);
-            }
-            M('phone_record')->where($where)->save($data);
+        //数据处理
+        $sessionId = $content['sessionId'];
+        if (!$sessionId) {
+            return 'fail';
         }
+        $where = ['sec_id' => $sessionId, 'channel' => 1];
+        $recordInfo = M('phone_record')->where($where)->find();
+        if (!$recordInfo) {
+            return 'fail';
+        }
+        $data = [];
+        $data['sec_id'] = $sessionId;
+        $data['sessionId'] = $sessionId;
+        $data['direction'] = $content['direction'] ? $content['direction'] : 0;
+        $data['call_end_time'] = $content['callEndTime'] ? $content['callEndTime'] : '';
+        $data['fwdAnswerTime'] = $content['fwdAnswerTime'] ? $content['fwdAnswerTime'] : '';
+        $data['callOutAnswerTime'] = $content['callOutAnswerTime'] ? $content['callOutAnswerTime'] : '';
+        $data['recordFlag'] = $content['recordFlag'] ? $content['recordFlag'] : 0;
+        $data['recordUrl'] = $content['recordFileDownloadUrl'] ? $content['recordFileDownloadUrl'] : '';
+        $data['duration'] = $content['duration'] ? $content['duration'] : 0;
+        $data['callmin'] = $content['callmin'] ? $content['callmin'] : 0;
+        $data['callback_time'] = time(); // 回掉时间记录
+
+        $data['oss_record_url'] = '';
+        if ($data['recordUrl']) {
+            $callerNum = $recordInfo['setingNbr'];
+            $data['oss_record_url'] = $this->fileToOss($data['recordUrl'], $sessionId, $callerNum, 1);
+        }
+        M('phone_record')->where($where)->save($data);
         return 'success';
     }
 
