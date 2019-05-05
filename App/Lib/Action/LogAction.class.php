@@ -436,16 +436,20 @@ class LogAction extends Action{
                     }
                 }
             }else{
+                $resume_name = '';
                 foreach ($resume_id as $v){
                     $data['resume_id'] = $v;
                     $data['project_id'] = $_POST['project'];
                     $isset = M("fine_project")->where($data)->select();
                     if($isset){
-                        $resume_name =M('resume')->where(array('eid'=>$v))->getField('name');
-                        $eorr['info'] = "人选".$resume_name."已存在此项目中";
-                        $this->ajaxReturn($eorr,'人选《'.$resume_name.'》已存在此项目中',2);
-                        return;
+                        $resume_namee = M('resume')->where(array('eid'=>$v))->getField('name');
+                        $resume_name .= "《".$resume_namee."》";
                     }
+                }
+                if(!empty($resume_name)){
+                    $eorr['info'] = "人选".$resume_name."已存在此项目中";
+                    $this->ajaxReturn($eorr,'人选'.$resume_name.'已存在此项目中',2);
+                    return;
                 }
                 $count = 0;
                 foreach ($resume_id as $v){
