@@ -126,6 +126,7 @@ class CallcenterAction extends Action
         ];
         M('action_log')->add($log);
 
+        $phoneRecordData = ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel, 'source' => $type, 'item_id' => $itemId];
         if ($channel == 1) {
             //品聘坐席外呼
             $msg = $this->pinPingCall($sourceTel, $tel);
@@ -135,7 +136,7 @@ class CallcenterAction extends Action
             }
             //成功
             $callsId = $msg['data'];
-            $this->record($callsId, ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel], $channel);
+            $this->record($callsId, $phoneRecordData, $channel);
             exit(json_encode(['code' => 1, 'msg' => '拨打成功']));
 
         } elseif ($channel == 2) {
@@ -153,7 +154,7 @@ class CallcenterAction extends Action
             $callStatus = $this->rongYinYunCall($timestamp, $tel, $sourceTel);
             if ($callStatus['statuscode'] == 200) {
                 $callsId = $callStatus['data'];
-                $this->record($callsId, ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel], $channel);
+                $this->record($callsId, $phoneRecordData, $channel);
                 echo json_encode(['code' => 1, 'msg' => '拨打成功']);
             }
             $this->offWork($timestamp, $sourceTel);
@@ -283,21 +284,21 @@ class CallcenterAction extends Action
      * @return bool|mixed
      */
     public function call_back() {
-        $content = file_get_contents('php://input');
-        if (!$content) {
+        $contentOri = file_get_contents('php://input');
+        if (!$contentOri) {
             return false;
         }
         //防止超时
         set_time_limit(0);
         ini_set("memory_limit", "1024M");
 
-        $content = json_decode($content, true);
+        $content = json_decode($contentOri, true);
         if (isset($content['Table']) && $content['Table']) {
-            BaseUtils::addLog("融营云回掉参数 ： {$content}", 'callback_log', '/var/log/rongyinyun/');
+            BaseUtils::addLog("融营云回掉参数 ：  " . var_export($content, true), 'callback_log', '/var/log/rongyinyun/');
             return $this->rongYinYunCallBack($content);
         }
         //品聘回掉
-        BaseUtils::addLog("品聘回掉参数 ： {$content}", 'callback_log', '/var/log/pinping/');
+        BaseUtils::addLog("品聘回掉参数 ： " . var_export($content, true) . "  原始数据：{$contentOri}", 'callback_log', '/var/log/pinping/');
         return $this->pinPingCallBack($content);
     }
 
@@ -308,7 +309,7 @@ class CallcenterAction extends Action
      */
     public function pinPingCallBack($contents) {
         if (!$contents) {
-            return false;
+            return 'fail';
         }
         foreach ($contents as $content) {
             $sessionId = $content['sessionId'];
@@ -340,7 +341,7 @@ class CallcenterAction extends Action
             }
             M('phone_record')->where($where)->save($data);
         }
-        return true;
+        return 'success';
     }
 
     /**
