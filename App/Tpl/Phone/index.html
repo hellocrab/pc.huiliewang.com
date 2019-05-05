@@ -436,26 +436,26 @@
     }
 </style>
 <script>
-    $(function(){
+    $(function () {
         var scroll_width = 10;
-        $("#table_div").height(window.innerHeight-$("#table_div").offset().top-$("#tfoot_div").height()-20);
-        $(window).resize(function(){
-            $("#table_div").height(window.innerHeight-$("#table_div").offset().top-$("#tfoot_div").height()-20);
-            $("#oDivL_tab_Test3").height($("#table_div").height()-scroll_width-1).width($("#oTableLH_tab_Test3").width());
-            $("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width()-scroll_width);
+        $("#table_div").height(window.innerHeight - $("#table_div").offset().top - $("#tfoot_div").height() - 20);
+        $(window).resize(function () {
+            $("#table_div").height(window.innerHeight - $("#table_div").offset().top - $("#tfoot_div").height() - 20);
+            $("#oDivL_tab_Test3").height($("#table_div").height() - scroll_width - 1).width($("#oTableLH_tab_Test3").width());
+            $("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width() - scroll_width);
         });
         $(".nicescroll").niceScroll({
-            cursorcolor: "#999",//#CC0071 光标颜色
+            cursorcolor: "#999", //#CC0071 光标颜色
             cursoropacitymax: 0.4, //改变不透明度非常光标处于活动状态（scrollabar“可见”状态），范围从1到0
             touchbehavior: false, //使光标拖动滚动像在台式电脑触摸设备
-            cursorwidth: scroll_width+"px", //像素光标的宽度
+            cursorwidth: scroll_width + "px", //像素光标的宽度
             cursorborder: "0", //     游标边框css定义
-            cursorborderradius: "3px",//以像素为光标边界半径
+            cursorborderradius: "3px", //以像素为光标边界半径
             autohidemode: false, //是否隐藏滚动条
-            zindex:100,
-            background:"#F3F3F5",//滚动条背景色
+            zindex: 100,
+            background: "#F3F3F5", //滚动条背景色
         });
-        $("#tab_Test3").FrozenTable(1,0,1);
+        $("#tab_Test3").FrozenTable(1, 0, 1);
         $("#oDivL_tab_Test3").height($("#table_div").height()).width($("#oTableLH_tab_Test3").width());
         $("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width());
     })
@@ -473,17 +473,36 @@
                         <form id="" class="form-group" method="get" style="margin-bottom: 0px;">
                             <input type="hidden" name="m" value="phone" />
                             <input type="hidden" name="a" value="index" />
+                            <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
+                                <div class="input-group">
+                                    <select class="form-control input-sm select2" style="min-width:165px;max-width: 165px;height: 0px;display:none;" name="department" id="department" onchange="changeRole()">
+                                        <option class="all" value="all">{:L('ALL')}</option>
+                                        <volist name="departmentList" id="vo">
+                                            <option value="{$vo.department_id}" <if condition="$_GET['department'] eq $vo['department_id']">selected</if>>{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
+                                <div class="input-group">
+                                    <select class="form-control input-sm select2" style="min-width:165px;max-width: 165px;height: 0px;display:none;" name="role" id="role" onchange="changeCondition()">
+                                        <option class="all" value="all">{:L('ALL')}</option>
+                                        <volist name="roleList" id="vo">
+                                            <option value="{$vo.role_id}" <if condition="$_GET['role'] eq $vo['role_id']">selected</if>>{$vo.role_name}-{$vo.user_name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-inline">
-                                坐席号码:<input type="number" class="form-control" name="caller" onblur="checkphone(this);"/>
-                                被叫号码:<input type="number" class="form-control" name="callee" onblur="checkphone(this);"/>
-                                方向:<select name="context">
-                                <option value="0" selected="selected">呼出</option>
-                                <option value="1">呼入</option>
-                            </select>
-                                通话时长:<select name="by"><option value="0">小于</option><option selected="selected" value="1">大于</option></select>
-                                <input class="form-control" type="number" name="billsecond" placeholder="秒"/>
-                                &nbsp;&nbsp;呼叫时间:<input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" name="start_time" id="start_time" value="" type="text">
-                                至<input class="form-control Wdate" input-type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" name="end_time" id="end_time" value="" type="text"/>
+                                <!--                                坐席号码:<input type="number" class="form-control" name="caller" onblur="checkphone(this);"/>
+                                                                被叫号码:<input type="number" class="form-control" name="callee" onblur="checkphone(this);"/>
+                                                                通话时长:<select name="by"><option value="0">小于</option><option selected="selected" value="1">大于</option></select>-->
+                                <!--<input class="form-control" type="number" name="billsecond" placeholder="秒"/>-->
+                                &nbsp;&nbsp;呼叫时间:
+                                <input class="form-control Wdate"  nput_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" name="start_time" id="start_time" value="{$start_time}" type="text"/>
+                                至
+                                <input class="form-control Wdate" input-type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" name="end_time" id="end_time" value="{$end_time}" type="text"/>
+
                                 <div class="nav pull-right" style="margin-right: 20px;">
                                     <button type="submit" id="analytics_search" class="btn btn-primary">{:L('SEARCH')}</button>
                                 </div>
@@ -496,61 +515,78 @@
                             <div id="table_div" class="nicescroll" style="left:0px;top:0px;">
                                 <table class="table table-hover table-striped table-bordered" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
                                     <tr class="tabTh">
-                                        <td style="min-width:100px;">id</td>
-                                        <td style="min-width:100px;">方向</td>
-                                        <td style="min-width: 100px;">主叫联系人</td>
+                                        <td style="min-width:50px;">线路</td>
+                                        <td style="min-width:50px;">方向</td>
+                                        <td style="min-width:50px;">顾问</td>
+                                        <!--<td style="min-width:100px;">部门</td>-->
+                                        <!--<td style="min-width: 100px;">主叫联系人</td>-->
                                         <td style="min-width: 100px;">主叫号码</td>
                                         <td style="min-width: 80px;">被叫号码</td>
                                         <!--<td style="min-width: 80px;">外显</td>-->
                                         <!--<td style="min-width: 80px;">被叫联系人</td>-->
                                         <td style="min-width: 80px;">呼叫时间</td>
                                         <td style="min-width: 80px;">通话结束时间</td>
-                                        <td style="min-width: 80px;">消费分钟</td>
-                                        <td style="min-width: 80px;">跟踪记录</td>
+                                        <td style="min-width: 80px;">通话秒数</td>
+                                        <!--<td style="min-width: 80px;">跟踪记录</td>-->
                                         <td style="min-width: 250px;">录音</td>
-<!--                                        <td style="min-width: 80px;">挂断原因</td>
-                                        <td style="min-width: 80px;">按键</td>
-                                        <td style="min-width: 80px;">区域</td>
-                                        <td style="min-width: 80px;">评价</td>
-                                        <td style="min-width: 80px;">质检</td>
-                                        <td style="min-width: 80px;">经过路由</td>-->
+                                        <!--                                        <td style="min-width: 80px;">挂断原因</td>
+                                                                                <td style="min-width: 80px;">按键</td>
+                                                                                <td style="min-width: 80px;">区域</td>
+                                                                                <td style="min-width: 80px;">评价</td>
+                                                                                <td style="min-width: 80px;">质检</td>
+                                                                                <td style="min-width: 80px;">经过路由</td>-->
                                     </tr>
                                     <tbody>
-                                    <volist name="msg" id="vo">
+                                    <volist name="list" id="vo">
                                         <tr class="tabTh">
-                                            <td style="min-width:100px;">{$vo.id}</td>
-                                            <td  style="min-width:100px;"><if condition="$vo.direction eq '0'">呼出<else />呼入</if></td>
-                                            <td style="min-width: 100px;">主叫联系人</td>
-                                            <td style="min-width: 100px;">{$vo.callerNum}</td>
-                                            <td style="min-width: 80px;">{$vo.calleeNum}</td>
-                                            <!--<td style="min-width: 80px;">外显</td>-->
-                                            <!--<td style="min-width: 80px;">被叫联系人</td>-->
-                                            <td style="min-width: 80px;">{$vo.callOutAnswerTime}</td>
-                                            <td style="min-width: 80px;">{$vo.callEndTime}</td>
-                                            <td style="min-width: 80px;">{$vo.callmin}</td>
-                                            <td style="min-width: 80px;">跟踪记录</td>
-                                            <td style="min-width: 250px;">
-                                                <if condition="$vo.recordFlag eq 1">
-                                                    <a href="{$vo.recordFileDownloadUrl}">下载</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <audio preload="auto" controls>
-                                                        <source src="{$vo.recordFileDownloadUrl}" />
-                                                    </audio>
-                                                    <else/>
-                                                    <font color="red">无录音记录</font>
-                                                </if>
-                                            </td>
-<!--                                            <td style="min-width: 80px;">挂断原因</td>
-                                            <td style="min-width: 80px;">按键</td>
-                                            <td style="min-width: 80px;">区域</td>
-                                            <td style="min-width: 80px;">评价</td>
-                                            <td style="min-width: 80px;">质检</td>
-                                            <td style="min-width: 80px;">经过路由</td>-->
+                                        <td style="min-width:50px;"><if condition="$vo.channel eq '2'">融营云<else />品聘</if></td>
+                                        <td  style="min-width:50px;"><if condition="$vo.direction eq '0'">呼出<else />呼入</if></td>
+                                        <td style="min-width: 50px;">{$vo.user_name}</td>
+                                        <!--<td style="min-width: 100px;">{$vo.department}</td>-->
+                                        <!--<td style="min-width: 100px;">主叫联系人</td>-->
+                                        <td style="min-width: 100px;">{$vo.callerNum}</td>
+                                        <td style="min-width: 80px;">{$vo.calleeNum}</td>
+                                        <!--<td style="min-width: 80px;">外显</td>-->
+                                        <!--<td style="min-width: 80px;">被叫联系人</td>-->
+                                        <td style="min-width: 80px;">{$vo.callOutAnswerTime}</td>
+                                        <td style="min-width: 80px;">{$vo.call_end_time}</td>
+                                        <td style="min-width: 80px;">{$vo.duration}</td>
+                                        <!--<td style="min-width: 80px;">跟踪记录</td>-->
+                                        <td style="min-width: 250px;">
+                                        <if condition="$vo.recordFlag eq 1">
+                                            <if condition="$vo.oss_record_url neq ''">
+                                                <a href="{$vo.oss_record_url}">下载</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <audio preload="auto" controls>
+                                                    <source src="{$vo.oss_record_url}" />
+                                                </audio>
+                                                <else/>
+                                                <a href="{$vo.recordUrl}">下载</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <audio preload="auto" controls>
+                                                    <source src="{$vo.recordUrl}" />
+                                                </audio>
+                                            </if>
+                                            <else/>
+                                            <font color="red">无录音记录</font>
+                                        </if>
+                                        </td>
+                                        <!--                                            <td style="min-width: 80px;">挂断原因</td>
+                                                                                    <td style="min-width: 80px;">按键</td>
+                                                                                    <td style="min-width: 80px;">区域</td>
+                                                                                    <td style="min-width: 80px;">评价</td>
+                                                                                    <td style="min-width: 80px;">质检</td>
+                                                                                    <td style="min-width: 80px;">经过路由</td>-->
                                         </tr>
                                     </volist>
                                     </tbody>
                                 </table>
                             </div>
                             <div id="tfoot_div" class="clearfix">
+                                <div class="clearfix" id="tfoot_page">
+                                    <if condition="$fields_search || $_GET['field']">
+                                        <span class="pull-left" style="margin-left:25px;margin-top:10px;">本次搜索结果<span style="color:#F8AC59"> {$count} </span>条数据<a href="{:U('phone/index')}" class="btn" style="background:#fff;border:1px solid #ccc;margin-left:10px;color:#999;" id="clearnumber">清除搜索条件</a></span>
+                                    </if>
+                                    {$page}<include file="Public:listrows" />
+                                </div>
                             </div>
                         </div>
                         <div id="source_content" class="hidden">
@@ -581,80 +617,80 @@
 </div>
 
 <script type="text/javascript">
-    //时间插件
-    $('#reservation').daterangepicker({
-        startDate: '{$start_date}',
-        endDate: '{$end_date}',
-        //minDate: '01/01/2012',    //最小时间
-        maxDate : moment(), //最大时间
-        showDropdowns : true,
-        showWeekNumbers : false, //是否显示第几周
-        // timePicker : true, //是否显示小时和分钟
-        // timePickerIncrement : 60, //时间的增量，单位为分钟
-        timePicker12Hour : false, //是否使用12小时制来显示时间
-        ranges : {
-            //'最近1小时': [moment().subtract('hours',1), moment()],
-            '今日': [moment().startOf('day'), moment()],
-            '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
-            '上月': [moment().subtract('days', '{$daterange[0][start_day]}'), moment().subtract('days', '{$daterange[0][end_day]}')],
-            '本月': [moment().subtract('days', '{$daterange[1][start_day]}'), moment()],
-            '上季度': [moment().subtract('days', '{$daterange[2][start_day]}'), moment().subtract('days', '{$daterange[2][end_day]}')],
-            '本季度': [moment().subtract('days', '{$daterange[3][start_day]}'), moment()],
-            '上一年': [moment().subtract('days', '{$daterange[4][start_day]}'), moment().subtract('days', '{$daterange[4][end_day]}')],
-            '本年': [moment().subtract('days', '{$daterange[5][start_day]}'), moment()],
-            // '最近7日': [moment().subtract('days', 6), moment()],
-            // '最近30日': [moment().subtract('days', 29), moment()]
-        },
-        opens : 'right', //日期选择框的弹出位置
-        buttonClasses : [ 'btn btn-default' ],
-        applyClass : 'btn-small btn-primary blue',
-        cancelClass : 'btn-small',
-        separator : ' to ',
-        locale : {
-            applyLabel : '确定',
-            cancelLabel : '取消',
-            fromLabel : '起始时间',
-            toLabel : '结束时间',
-            customRangeLabel : '自定义',
-            daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
-            monthNames: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
-            firstDay : 1 ,
-            format : 'YYYY-MM-DD', //控件中from和to 显示的日期格式
-        },
-        "alwaysShowCalendars": true,
-        function(start, end, label) {
-            //回调
-            $('#reservation').val(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD HH:mm:ss'));
-            // console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
-        }
-    });
+                                    //时间插件
+                                    $('#reservation').daterangepicker({
+                                        startDate: '{$start_date}',
+                                        endDate: '{$end_date}',
+                                        //minDate: '01/01/2012',    //最小时间
+                                        maxDate: moment(), //最大时间
+                                        showDropdowns: true,
+                                        showWeekNumbers: false, //是否显示第几周
+                                        // timePicker : true, //是否显示小时和分钟
+                                        // timePickerIncrement : 60, //时间的增量，单位为分钟
+                                        timePicker12Hour: false, //是否使用12小时制来显示时间
+                                        ranges: {
+                                            //'最近1小时': [moment().subtract('hours',1), moment()],
+                                            '今日': [moment().startOf('day'), moment()],
+                                            '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                                            '上月': [moment().subtract('days', '{$daterange[0][start_day]}'), moment().subtract('days', '{$daterange[0][end_day]}')],
+                                            '本月': [moment().subtract('days', '{$daterange[1][start_day]}'), moment()],
+                                            '上季度': [moment().subtract('days', '{$daterange[2][start_day]}'), moment().subtract('days', '{$daterange[2][end_day]}')],
+                                            '本季度': [moment().subtract('days', '{$daterange[3][start_day]}'), moment()],
+                                            '上一年': [moment().subtract('days', '{$daterange[4][start_day]}'), moment().subtract('days', '{$daterange[4][end_day]}')],
+                                            '本年': [moment().subtract('days', '{$daterange[5][start_day]}'), moment()],
+                                            // '最近7日': [moment().subtract('days', 6), moment()],
+                                            // '最近30日': [moment().subtract('days', 29), moment()]
+                                        },
+                                        opens: 'right', //日期选择框的弹出位置
+                                        buttonClasses: ['btn btn-default'],
+                                        applyClass: 'btn-small btn-primary blue',
+                                        cancelClass: 'btn-small',
+                                        separator: ' to ',
+                                        locale: {
+                                            applyLabel: '确定',
+                                            cancelLabel: '取消',
+                                            fromLabel: '起始时间',
+                                            toLabel: '结束时间',
+                                            customRangeLabel: '自定义',
+                                            daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                                            monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                                            firstDay: 1,
+                                            format: 'YYYY-MM-DD', //控件中from和to 显示的日期格式
+                                        },
+                                        "alwaysShowCalendars": true,
+                                        function(start, end, label) {
+                                            //回调
+                                            $('#reservation').val(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD HH:mm:ss'));
+                                            // console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+                                        }
+                                    });
 
-    
-    //校验=手机号格式
-    function checkphone(obj) {
-        var flag = false;
-        var myreg = /^(0|86|17951)?1[0-9]{10}$/;
-        if( obj.value != '' && !myreg.test(obj.value)){
-            flag = true ;
-            swal('手机格式有误',"","warning");
-        }
-        if(flag)
-            $('#analytics_search').attr('disabled',true);
-        else
-            $('#analytics_search').attr('disabled',false);
-    }
+
+                                    //校验=手机号格式
+                                    function checkphone(obj) {
+                                        var flag = false;
+                                        var myreg = /^(0|86|17951)?1[0-9]{10}$/;
+                                        if (obj.value != '' && !myreg.test(obj.value)) {
+                                            flag = true;
+                                            swal('手机格式有误', "", "warning");
+                                        }
+                                        if (flag)
+                                            $('#analytics_search').attr('disabled', true);
+                                        else
+                                            $('#analytics_search').attr('disabled', false);
+                                    }
 
 </script>
 <include file="Public:footer" />
 <script src="__PUBLIC__/js/audio/audioplayer.js"></script>
 <script>
-    $( 'audio' ).audioPlayer(
-        {
-            classPrefix: 'audioplayer',
-            strPlay: 'Play',
-            strPause: 'Pause',
-            strVolume: 'Volume'
-        });
+                                    $('audio').audioPlayer(
+                                            {
+                                                classPrefix: 'audioplayer',
+                                                strPlay: 'Play',
+                                                strPause: 'Pause',
+                                                strVolume: 'Volume'
+                                            });
 </script>
 
 <style>

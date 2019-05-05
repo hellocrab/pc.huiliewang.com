@@ -516,7 +516,7 @@
                                pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$project['addtime']); ?></span>
-                        <a href="#" class="mal10">{$vo.tracker_name|default=$project['tracker_name']}</a>
+                        <a href="#" class="mal10">{$project['tracker_name']|default=''}</a>
                     </div>
                     <div class="hangr" style="margin-top: 20px;">
                         <table>
@@ -1121,38 +1121,79 @@
             </div>
 
             <div class="tab-pane fade in  listjilu <if condition='$project[status] eq pass'>active</if>" id="log4">
-                <if condition="$project['stop']">
-                    <volist name="project['remove_remark']" id="volist">
-                        <div class="listitem">
-                            <div class="hangr">
+
+                    <volist name="project['pass']" id="volist">
+                        <volist name="volist" id="vo">
+                            <!--pass_remark-->
+                            <if condition="$key eq 'remove_remark'">
+                                <div class="listitem">
+                                    <div class="hangr">
                                         <span class="icoedit">
                                         <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
                                                type="image/svg+xml"
                                                pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
-                                <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
-                            </div>
-                            <div class="hangr" style="margin-top: 20px;">
-                                <img src="{$project['thumb_path']}" class="imgtou">
-                                <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
-                                <label style="margin-left: 15px;">将人选设为不合适</label>
-                                <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
-                                    <span class="fa fa-angle-down"></span>
-                                    <div class="btn btn-default ico_xiugai remove"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
-                                </div>
+                                        <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
+                                    </div>
+                                    <div class="hangr" style="margin-top: 20px;">
+                                        <img src="{$project['thumb_path']}" class="imgtou">
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
+                                        <label style="margin-left: 15px;">将人选设为不合适</label>
+                                        <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
+                                            <span class="fa fa-angle-down"></span>
+                                            <div class="btn btn-default ico_xiugai remove"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                        </div>
 
-                                <table>
-                                    <tr height="24px">
-                                        <td align="right" style="font-size: 12px;color: #999999;">不合适原因：</td>
-                                        <td style="font-size: 12px;color: #666666;">
-                                            {$vo['reason']}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
+                                        <table>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">不合适原因：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['reason']}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </if>
+                            <if condition="$key eq 'pass_remark'">
+                                <div class="listitem">
+                                    <div class="hangr">
+                                <span class="icoedit">
+                                <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                       type="image/svg+xml"
+                                       pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                </span>
+                                        <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
+                                    </div>
+                                    <div class="hangr" style="margin-top: 20px;">
+                                        <img src="{$project['thumb_path']}" class="imgtou">
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
+                                        <label style="margin-left: 15px;">添加了备注</label>
+                                        <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
+                                            <span class="fa fa-angle-down"></span>
+                                            <div class="btn btn-default ico_xiugai addbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                        </div>
+
+                                        <table>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">备注内容：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['beizhu']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">截止时间：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['timeend']}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </if>
+                        </volist>
                     </volist>
-                </if>
+
                 <div class="listitem">
                     <div class="hangr">
                         <span class="icoedit">
@@ -1632,7 +1673,7 @@
                                pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$project['addtime']); ?></span>
-                        <a href="#" class="mal10">{$vo.tracker_name|default=$project['tracker_name']}</a>
+                        <a href="#" class="mal10">{$project['tracker_name']|default=''}</a>
                     </div>
                     <div class="hangr" style="margin-top: 20px;">
                         <table>
