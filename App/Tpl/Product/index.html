@@ -171,6 +171,9 @@
                             <li>
                                 <span><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></span>
                             </li>
+                            <li>
+                                <span><a href="javascript:void(0);" class="link enterCallist"><i class="fa fa-download"></i>&nbsp;加入Callist</a></span>
+                            </li>
                             <li class="last_li"><big><a class="fa fa-times pull-right" id="back-show"></a></big></li>
                         </ul>
                     </div>
@@ -968,6 +971,19 @@
                 }
             }
         })
+
+        //人才多选加入CallList
+        $(".enterCallist").click(function () {
+            $('#dialog-log').dialog('open');
+            id_array =new Array();//保存resume_id
+            $(".check_list:checked").each(function () {
+                id_array.push($(this).val());
+            });
+            $('#dialog-log').load('{:U("log/resume_project","r=RCustomerLog&module=customer&id=")}'+id_array );
+            $.fn.modal.Constructor.prototype.enforceFocus = function () {};
+
+
+        });
 
         $("#dosearch").click(function () {
             result = checkSearchForm();

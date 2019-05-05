@@ -356,7 +356,6 @@ class LogAction extends Action{
 		}
 	}
 
-
     //沟通日志添加
     public function resume_project(){
         $d_business = D('BusinessTopView');
@@ -405,7 +404,9 @@ class LogAction extends Action{
         
 //        $project = M("business")->order('create_time desc')->limit(20)->select();
         $resume = M("resume");
+        if(count(explode(',',$_GET['id'])) == 1)
         $user = $resume->where("eid=%d", $_GET['id'])->select();
+        $this->assign('resume_id',$_GET['id']);
         $this->assign('project', $project);
         $this->assign('user', $user[0]);
         $this->assign('business_id', isset($_GET['business_id']) ? $_GET['business_id'] : 0);
@@ -414,25 +415,54 @@ class LogAction extends Action{
 
     public function add_fine_project(){
         if($this->isPost()){
-            $data['resume_id'] = $_POST['resume_id'];
-            $data['project_id'] = $_POST['project'];
-            $customer_id = M("business")->where("business_id=%d",$data['project_id'])->field("customer_id")->find();
+            $resume_id = explode(',',$_POST['resume_id']);
+            if(count($resume_id) == 1){
+                $data['resume_id'] = $_POST['resume_id'];
+                $data['project_id'] = $_POST['project'];
+                $customer_id = M("business")->where("business_id=%d",$data['project_id'])->field("customer_id")->find();
 
-
-
-            $isset = M("fine_project")->where($data)->select();
-            if($isset){
-                $eorr['info'] = "该人选已存在此项目中";
-                $this->ajaxReturn($eorr,'该人选已存在此项目中',2);
-            }else{
-                $data['com_id'] = $customer_id['customer_id'];
-                $data['status'] = 1;
-                $data['tracker'] = session("role_id");
-                $data['addtime'] = time();
-                $id = M("fine_project")->add($data);
-                if($id){
-                    $this->ajaxReturn(['id'=>$id,'project_id'=>$data['project_id']],'',1);
+                $isset = M("fine_project")->where($data)->select();
+                if($isset){
+                    $eorr['info'] = "该人选已存在此项目中";
+                    $this->ajaxReturn($eorr,'该人选已存在此项目中',2);
+                }else{
+                    $data['com_id'] = $customer_id['customer_id'];
+                    $data['status'] = 1;
+                    $data['tracker'] = session("role_id");
+                    $data['addtime'] = time();
+                    $id = M("fine_project")->add($data);
+                    if($id){
+                        $this->ajaxReturn(['id'=>$id,'project_id'=>$data['project_id']],'',1);
+                    }
                 }
+            }else{
+                foreach ($resume_id as $v){
+                    $data['resume_id'] = $v;
+                    $data['project_id'] = $_POST['project'];
+                    $isset = M("fine_project")->where($data)->select();
+                    if($isset){
+                        $resume_name =M('resume')->where(array('eid'=>$v))->getField('name');
+                        $eorr['info'] = "人选".$resume_name."已存在此项目中";
+                        $this->ajaxReturn($eorr,'人选《'.$resume_name.'》已存在此项目中',2);
+                        return;
+                    }
+                }
+                $count = 0;
+                foreach ($resume_id as $v){
+                    $data['resume_id'] = $v;
+                    $data['project_id'] = $_POST['project'];
+                    $customer_id = M("business")->where("business_id=%d",$data['project_id'])->field("customer_id")->find();
+                    $data['com_id'] = $customer_id['customer_id'];
+                    $data['status'] = 1;
+                    $data['tracker'] = session("role_id");
+                    $data['addtime'] = time();
+                    $id = M("fine_project")->add($data);
+                    if($id){
+                        $count ++;
+                    }
+                }
+                if($count == count($resume_id))
+                    $this->ajaxReturn(['id'=>$id,'project_id'=>$data['project_id']],'',1);
             }
 
         }

@@ -9,15 +9,17 @@
 		<input type='hidden' name="id" id="dialog_module_id" rel="{$module_name}" value="{$model_id}"/>
 		<input type="hidden" name="r" value="{$r}" />
 
-
-			<tr >
-				<td class="tdleft">候选人名称：</td>
-				<td>
-					{$user['name']}
-					<input type="hidden" name="resume_id" value="{$user['eid']}" />
-				</td>
-
-			</tr>
+			<if condition="$user neq ''">
+				<tr >
+					<td class="tdleft">候选人名称：</td>
+					<td>
+						{$user['name']}
+						<input type="hidden" name="resume_id" value="{$user['eid']}" />
+					</td>
+				</tr>
+				<else/>
+				<input type="hidden" name="resume_id" value="{$resume_id}">
+			</if>
 		<tr>
 			<td class="tdleft">添加项目：</td>
 			<td>
