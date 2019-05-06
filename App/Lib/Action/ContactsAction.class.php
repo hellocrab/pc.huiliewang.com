@@ -75,7 +75,6 @@ class ContactsAction extends Action {
 					break;
 				}
 			}
-
 			if ($contacts->create()) {
 				$contacts->create_time = time();
 				$contacts->update_time = time();
@@ -217,10 +216,12 @@ class ContactsAction extends Action {
 					}else{
 						alert('error', L('NOT NULL',array(L('CUSTOMER'))), $_SERVER['HTTP_REFERER']);
 					}
-					$a = $m_contacts->where('contacts_id= %d',$contacts['contacts_id'])->save();
-					$contacts_field = M('Fields')->where('model = "%s" and is_main = 0','contacts')->find();
+					$a = $m_contacts->where('contacts_id= %d',$_POST['contacts_id'])->save();
+//					header('content-type:text/html;charset=utf-8');
+//					dump(M()->getLastSql());die;
+					$contacts_field = M('Fields')->where('model = "%s" and is_main = 1','contacts')->find();
 					if($contacts_field){
-						$b = $m_contacts_data->where('contacts_id= %d', $contacts['contacts_id'])->save();
+						$b = $m_contacts_data->where('contacts_id= %d', $_POST['contacts_id'])->save();
 					}else{
 						$b = 0;
 					}
@@ -242,6 +243,15 @@ class ContactsAction extends Action {
 				$this->error($m_contacts->getError(), U('contacts/edit')."&id=".$_POST['contacts_id']);
 			}
 		}else{
+            $address_array = explode(chr(10), $contacts['contacts_address']);
+            $state = $address_array[0];
+            $city = $address_array[1];
+            $area = $address_array[2];
+            $street = $address_array[3];
+            $contacts['state'] = $state;
+            $contacts['city'] = $city;
+            $contacts['area'] = $area;
+            $contacts['street'] =$street;
 			$this->contacts = $contacts;
 			$this->refer_url = $_SERVER['HTTP_REFERER'];
 			$this->alert = parseAlert();
