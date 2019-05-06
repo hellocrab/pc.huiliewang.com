@@ -299,7 +299,8 @@ class CallcenterAction extends Action
         }
         //品聘回掉
         BaseUtils::addLog("品聘回掉参数 ：{$contentOri}", 'callback_log', '/var/log/pinping/');
-        return $this->pinPingCallBack($content);
+        $res = $this->pinPingCallBack($content);
+        echo $res;
     }
 
     /**
@@ -324,7 +325,7 @@ class CallcenterAction extends Action
                 break;
             }
         }
-        return $return;
+        echo $return;
     }
 
     /**
