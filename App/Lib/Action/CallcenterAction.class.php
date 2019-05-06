@@ -303,6 +303,31 @@ class CallcenterAction extends Action
     }
 
     /**
+     * @desc 品评批量回调接口
+     * @return bool|string
+     */
+    public function call_back_batch() {
+        $contentOri = file_get_contents('php://input');
+        if (!$contentOri) {
+            return false;
+        }
+        //防止超时
+        set_time_limit(0);
+        ini_set("memory_limit", "1024M");
+        $contents = json_decode($contentOri, true);
+        //品聘回掉
+        BaseUtils::addLog("品聘批量回掉参数 ：{$contentOri}", 'callback_batch_log', '/var/log/pinping/');
+        $return = 'success';
+        foreach ($contents as $content) {
+            if ('fail' == $this->pinPingCallBack($content)) {
+                $return = 'fail';
+                break;
+            }
+        }
+        return $return;
+    }
+
+    /**
      * @desc 品聘回调处理
      * @param $content
      * @return bool
@@ -319,7 +344,10 @@ class CallcenterAction extends Action
         $where = ['sec_id' => $sessionId, 'channel' => 1];
         $recordInfo = M('phone_record')->where($where)->find();
         if (!$recordInfo) {
-            return 'fail';
+            return 'success';
+        }
+        if ($recordInfo['oss_record_url']) {
+            return 'success';
         }
         $data = [];
         $data['sec_id'] = $sessionId;
@@ -339,8 +367,8 @@ class CallcenterAction extends Action
             $callerNum = $recordInfo['setingNbr'];
             $data['oss_record_url'] = $this->fileToOss($data['recordUrl'], $sessionId, $callerNum, 1);
         }
-        M('phone_record')->where($where)->save($data);
-        return 'success';
+        $res = M('phone_record')->where($where)->save($data);
+        return $res === false ? 'fail' : 'success';
     }
 
     /**
@@ -421,20 +449,26 @@ class CallcenterAction extends Action
         if (!is_dir($dir)) {
             @mkdir($dir, 0755, true);
         }
-        $localFile = "{$dir}{$sessionId}.{$extension}"; //临时文件存放
-        $res = true;
 
-        if (!file_exists($localFile)) {
-            $recordUrl = str_replace('https', 'http', $recordUrl);
-            $res = copy($recordUrl, $localFile);
-        }
+        import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
+        $ossClient = new AliOssAction();
+        $ossFile = "call_record_{$channel}/{$callerNum}/{$sessionId}.{$extension}";
         $ossUrl = '';
-        if ($res || file_exists($localFile)) {
-            import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
-            $ossFile = "call_record_{$channel}/{$callerNum}/{$sessionId}.{$extension}";
-            $ossClient = new AliOssAction();
-            $ossUrl = $ossClient->upFile($localFile, $ossFile);
-            unlink($localFile);
+        //看有没有上传过OSS
+        if (AliOssAction::checkFile($ossFile)) {
+            $ossUrl = "http://pc-huiliewang.oss-cn-hangzhou.aliyuncs.com/" . $ossFile;
+        } else {
+            //下载到本地然后上传
+            $localFile = "{$dir}{$sessionId}.{$extension}"; //临时文件存放
+            $res = true;
+            if (!file_exists($localFile)) {
+                $recordUrl = str_replace('https', 'http', $recordUrl);
+                $res = copy($recordUrl, $localFile);
+            }
+            if ($res || file_exists($localFile)) {
+                $ossUrl = $ossClient->upFile($localFile, $ossFile);
+                unlink($localFile);
+            }
         }
         return $ossUrl;
     }
