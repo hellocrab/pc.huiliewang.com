@@ -34,10 +34,6 @@ $(function(){
 	$(window).resize(function(){
 		$(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
 	})
-	/*form表单验证*/
-	$("#form").validate({
-		
-	});
 })
 </script>
 <div class="wrapper wrapper-content animated fadeIn col-md-6">
@@ -58,7 +54,90 @@ $(function(){
 						</div>
 					</div>
 					<div class="col-md-11 add_body_form">
-						<volist name="field_list['main']" id="vo" key="key"><!-- 主要字段 -->
+						<!--自写HTML 5/05-->
+						<div class="form-group">
+							<label class="col-md-4 control-label">所属客户：</label>
+							<div class="col-md-6">
+								<div class="form-inline"><input type="hidden" name="customer_id" id="customer_id" value="{$contacts['customer_id']}"/><input  class="form-control pull-left required" style="width:100%" type="text" name="customer_name" id="customer_name" value="{$contacts['customer_name']}"> <a target="_blank" class="btn btn-primary btn-sm pull-right" style="width:65px;display:none;" href="/index.php?m=customer&a=add">新建客户</a></div>									</div>
+							<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+						</div><!-- 主要字段 -->
+						<div class="form-group">
+							<label class="col-md-4 control-label">姓名：</label>
+							<div class="col-md-6">
+								<input class="form-control required"  type="text" id="name" name="name"  value="{$contacts['name']}" placeholder="" /><span id="nameTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+							<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+						</div><!-- 主要字段 -->
+						<div class="form-group">
+							<label class="col-md-4 control-label">职位：</label>
+							<div class="col-md-6">
+								<input class="form-control "  type="text" id="post" name="post"  value="{$contacts['post']}" placeholder="" /><span id="postTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+							<div class="col-md-2"></div>
+						</div><!-- 主要字段 -->
+						<div class="form-group">
+							<label class="col-md-4 control-label">手机：</label>
+							<div class="col-md-6">
+								<input class="form-control" type="mobile" id="telephone" name="telephone"  value="{$contacts['telephone']}" /><span id="telephoneTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+							<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+						</div><!-- 主要字段 -->
+						<div class="form-group">
+							<label class="col-md-4 control-label">座机：</label>
+							<div class="col-md-6">
+								<input class="form-control"  type="text" id="crm_ljgmqr" name="crm_ljgmqr"  value="{$contacts['crm_ljgmqr']}" placeholder="" /><span id="crm_ljgmqrTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+							<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+						</div><!-- 主要字段 -->
+						<div class="form-group">
+							<label class="col-md-4 control-label">QQ：</label>
+							<div class="col-md-6">
+								<input class="form-control "  type="text" id="qq_no" name="qq_no"  value="{$contacts['qq_no']}" placeholder="" /><span id="qq_noTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+							<div class="col-md-2"></div>
+						</div><!-- 主要字段 -->
+						<div class="form-group">
+							<label class="col-md-4 control-label">性别：</label>
+							<div class="col-md-6">
+								<select class="form-control " id="crm_zswstr" name="crm_zswstr">
+									<option value=''>--请选择--</option>
+									<option value='男' <if condition="$contacts['crm_zswstr'] eq '男'">selected="selected"</if>>男</option>
+									<option value='女' <if condition="$contacts['crm_zswstr'] eq '女'">selected="selected"</if>>女</option>
+								</select><span id="crm_zswstrTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+							<div class="col-md-2"></div>
+						</div><!-- 主要字段 -->
+						<div class="form-group">
+							<label class="col-md-4 control-label">邮箱：</label>
+							<div class="col-md-6">
+								<input class="form-control " type="email" id="email" name="email"  value="{$contacts['email']}" /><span id="emailTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+							<div class="col-md-2"></div>
+						</div><!-- 主要字段 -->
+						<div class="form-group">
+							<label class="col-md-4 control-label">地址：</label>
+							<div class="col-md-8">
+								<script type="text/javascript">
+                                    $(function(){
+                                        new PCAS("contacts_address['state']","contacts_address['city']","contacts_address['area']","{$contacts['state']}","{$contacts['city']}","{$contacts['area']}");
+                                    });
+								</script><select class="form-control " input_type="address" name="contacts_address['state']" style="width:32%;float:left;" ></select>
+								<select class="form-control " input_type="address" name="contacts_address['city']" style="width:32%;float:left;margin-left:1%;"></select>
+								<select class="form-control " id="city_area" input_type="address" name="contacts_address['area']" style="width:32%;float:left;margin-left:1%;"></select>
+								<input class="form-control" input_type="address" type="text" name="contacts_address['street']" placeholder="街道信息" class="input-large" value="{$contacts['street']}" style="float:left;margin-top:5px;">										</div>															</div><!-- 主要字段 -->
+						<div class="form-group">
+							<label class="col-md-4 control-label">微信：</label>
+							<div class="col-md-6">
+								<input class="form-control "  type="text" id="wetchat" name="wetchat"  value="{$contacts['wetchat']}" placeholder="" /><span id="wetchatTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+							<div class="col-md-2"></div>
+						</div><!-- 主要字段 -->
+						<div class="form-group">
+							<label class="col-md-4 control-label">邮编：</label>
+							<div class="col-md-6">
+								<input class="form-control "  type="text" id="zip_code" name="zip_code"  value="{$contacts['zip_code']}" placeholder="" /><span id="zip_codeTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+							<div class="col-md-2"></div>
+						</div><!-- 主要字段 -->
+						<div class="form-group">
+							<label class="col-md-4 control-label">备注：</label>
+							<div class="col-md-6">
+								<textarea rows="5" class="form-control" id="description" name="description" >{$contacts['description']}</textarea><span id="descriptionTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+							<div class="col-md-2"></div>
+						</div>
+						<!---------------->
+					<volist name="field_list['mainn']" id="vo" key="key"><!-- 主要字段 -->
 							<div class="form-group">
 								<label class="col-md-4 control-label">{$vo.name}：</label>
 								<if condition="$vo['form_type'] == 'address'">
@@ -123,7 +202,7 @@ $(function(){
 	<div id="tfoot_div" class="clearfix">
 		<div class="clearfix" id="tfoot_page">
 			<div class="ibox-content" style="border-top: 0px;">
-				<div class="col-sm-offset-2" style="text-align:center;margin-left:0px;"><button type="submit" class="btn btn-primary">保存</button></div>
+				<div class="col-sm-offset-2" style="text-align:center;margin-left:0px;"><button type="submit" id="save_submit" class="btn btn-primary">保存</button></div>
 			</div>
 		</div>
 	</div>
@@ -180,7 +259,25 @@ $(function(){
 			$('#dialog-customer-list').load('{:U("customer/listDialog")}');
 		}
 	);
-	
+});
+$(document).ready(function(){
+    $('#save_submit').prop('disabled',false);
+    /*form表单验证*/
+    //edited by GUOQINGSONG On 05/06
+    $("#form").validate({
+        submitHandler:function(form){
+            if($('#telephone').val() == '' && $('#crm_ljgmqr').val() == ''){
+                alert_crm('请填写手机或座机任一项');
+                $("#telephone").css("border","1px dotted #cc5965");
+                $("#crm_ljgmqr").css("border","1px dotted #cc5965");
+            }else{
+                $('#save_submit').click(function(){
+                    $('#save_submit').prop('disabled',true);
+                });
+                form.submit();
+            }
+        }
+    });
 });
 
 </script>
