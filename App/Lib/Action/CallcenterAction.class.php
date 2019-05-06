@@ -320,7 +320,7 @@ class CallcenterAction extends Action
         BaseUtils::addLog("品聘批量回掉参数 ：{$contentOri}", 'callback_batch_log', '/var/log/pinping/');
         $return = 'success';
         foreach ($contents as $content) {
-            if ('fail' == $this->pinPingCallBack($content)) {
+            if ('fail' == $this->pinPingCallBack($content,1)) {
                 $return = 'fail';
                 break;
             }
@@ -331,9 +331,10 @@ class CallcenterAction extends Action
     /**
      * @desc 品聘回调处理
      * @param $content
+     * @param $batch
      * @return bool
      */
-    public function pinPingCallBack($content) {
+    public function pinPingCallBack($content,$batch = 0) {
         if (!$content) {
             return 'fail';
         }
@@ -364,7 +365,7 @@ class CallcenterAction extends Action
         $data['callback_time'] = time(); // 回掉时间记录
 
         $data['oss_record_url'] = '';
-        if ($data['recordUrl']) {
+        if ($data['recordUrl'] && $batch == 0) {
             $callerNum = $recordInfo['setingNbr'];
             $data['oss_record_url'] = $this->fileToOss($data['recordUrl'], $sessionId, $callerNum, 1);
         }
