@@ -12,7 +12,14 @@ class IndexAction extends Action {
         $this->_permissionRes = getPerByAction(MODULE_NAME, ACTION_NAME);
     }
 
+    //获取部门名称
+    public function getDepartmentName(){
+        $name = D('DepartmentRoleView')->where(array('role_id'=>session('role_id')))->getField('name');
+        return $name;
+    }
+
     public function index() {
+        $d_name = $this->getDepartmentName();
         $title = "首页";
         $this->assign("title", $title);
         //手机访问跳转
@@ -96,7 +103,7 @@ class IndexAction extends Action {
             }
         } else {
             //条件为选中部门下,我的下属员工的role_id
-            if (!session('?admin')) {
+            if (!session('?admin')|| $_SESSION['name'] == 'lishuxia') {
                 $where['role_id'] = array('in', getSubRoleId());
             }
         }
@@ -339,7 +346,7 @@ class IndexAction extends Action {
 
         //查询今日数据(首页简报)，默认为自己和下属的数据
         $briefing_role_ids = array();
-        if (session('?admin')) {
+        if (session('?admin') || $_SESSION['name'] == 'lishuxia') {
             $briefing_role_ids = getSubRoleId(true, 1);
         } else {
             $briefing_role_ids = getSubRoleId();
@@ -412,11 +419,19 @@ class IndexAction extends Action {
             $self_contact_count[] = $m_contract->where(array('creator_role_id'=>session('role_id'),'is_deleted' => 0 , 'create_time' =>  $v)) ->count();
             $self_business_count[] = $m_business->where(array('creator_role_id'=>session('role_id'),'is_deleted' => 0 , 'create_time' =>  $v)) ->count();
 
-            //部门数据获取
-            $dep_customer_count[] = $m_customer->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
-            $dep_contacts_count[] = $m_contacts->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
-            $dep_business_count[] = $m_business->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
-            $dep_contact_count[] = $m_contract->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+            //运营部部分人类似admin权限
+            if(($d_name == '运营部') || ($d_name == '景升学院')){
+                $dep_customer_count[] = $m_customer->where(array('creator_role_id' => array('in', getSubRoleId(true,1)), 'is_deleted' => 0, 'create_time' => $v))->count();
+                $dep_contacts_count[] = $m_contacts->where(array('creator_role_id' => array('in', getSubRoleId(true,1)), 'is_deleted' => 0, 'create_time' => $v))->count();
+                $dep_business_count[] = $m_business->where(array('creator_role_id' => array('in', getSubRoleId(true,1)), 'is_deleted' => 0, 'create_time' => $v))->count();
+                $dep_contact_count[] = $m_contract->where(array('creator_role_id' => array('in', getSubRoleId(true,1)), 'is_deleted' => 0, 'create_time' => $v))->count();
+            }else{
+                //部门数据获取
+                $dep_customer_count[] = $m_customer->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+                $dep_contacts_count[] = $m_contacts->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+                $dep_business_count[] = $m_business->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+                $dep_contact_count[] = $m_contract->where(array('creator_role_id' => array('in', $subRoleId_Arr), 'is_deleted' => 0, 'create_time' => $v))->count();
+            }
 
         }
         /**个人首页数据*/
@@ -483,14 +498,29 @@ class IndexAction extends Action {
             $be[$k] = date('Y-m-d',$v);
         }
 //        M('user')->select();
-        $data = M('report_intergral')->field('sum(offer_num) as offerNum,sum(interview_num) as interviewNum,sum(fine_project_num) as fineNum,sum(integral) as integral,sum(enter_num) as enterNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->find();
+        if(($d_name == '运营部') || ($d_name == '景升学院'))
+            $data = M('report_intergral')->field('sum(offer_num) as offerNum,sum(interview_num) as interviewNum,sum(fine_project_num) as fineNum,sum(integral) as integral,sum(enter_num) as enterNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId(true,1))))->find();
+        else
+            $data = M('report_intergral')->field('sum(offer_num) as offerNum,sum(interview_num) as interviewNum,sum(fine_project_num) as fineNum,sum(integral) as integral,sum(enter_num) as enterNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', $briefing_role_ids)))->find();
         $this->datasum = $data;
         $this->alert = parseAlert();
         $this->display();
     }
 
+    //给运营部三人权限按姓名
+    public  function getSub($name){
+        $d_name = $this->getDepartmentName();
+        $sub_role = array();
+        if(session('?admin') || $name =='lishuxia' || $d_name == '景升学院' || $d_name == '运营部')
+            $sub_role = getSubRoleId(true, 1);
+        else
+            $sub_role = getSubRoleId();
+        return $sub_role;
+    }
+
     //offer、面试人数、推荐简历数 各栏统计的接口( 参数part & range)
     public function face_part(){
+        $sub_role = $this->getSub($_SESSION['name']);
         $part = $_GET['part']; // offer、面试人数、推荐简历数、业绩、入职
         $time_range = $_GET['range'] ? BaseUtils::getStr($_GET['range']) : 'currentweek'; //currentweek、currentmonth、lastweek、lastmonth
         $be = $this->time_range($time_range);
@@ -499,23 +529,23 @@ class IndexAction extends Action {
         }
         switch ($part){
             case 'offer_num':
-                $data = M('report_intergral')->field('sum(offer_num) as offerNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->group('user_id')->find();
+                $data = M('report_intergral')->field('sum(offer_num) as offerNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', $sub_role)))->group('user_id')->find();
                 $data = empty($data['offerNum']) ? 0 : $data['offerNum'];
                 break;
             case 'interview_num':
-                $data = M('report_intergral')->field('sum(interview_num) as interviewNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->find();
+                $data = M('report_intergral')->field('sum(interview_num) as interviewNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', $sub_role)))->find();
                 $data = empty($data['interviewNum']) ? 0 : $data['interviewNum'];
                 break;
             case 'fine_project':
-                $data = M('report_intergral')->field('sum(fine_project_num) as fineNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->find();
+                $data = M('report_intergral')->field('sum(fine_project_num) as fineNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', $sub_role)))->find();
                 $data = empty($data['fineNum']) ? 0 : $data['fineNum'];
                 break;
             case 'integral':
-                $data = M('report_intergral')->field('sum(integral) as integral')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->find();
+                $data = M('report_intergral')->field('sum(integral) as integral')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', $sub_role)))->find();
                 $data = empty($data['integral']) ? 0 : $data['integral'];
                 break;
             case 'enter':
-                $data = M('report_intergral')->field('sum(enter_num) as enterNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', getSubRoleId())))->find();
+                $data = M('report_intergral')->field('sum(enter_num) as enterNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', $sub_role)))->find();
                 $data = empty($data['enterNum']) ? 0 : $data['enterNum'];
                 break;
         }
@@ -525,6 +555,7 @@ class IndexAction extends Action {
 
     //首页项目统计接口( 参数)
     public function pipeline(){
+        $sub_role = $this->getSub($_SESSION['name']);
         include APP_PATH . "Common/job.cache.php";
         $d_v_business = D('BusinessTopView');
         $fine_project = D("FineOfferView");
@@ -533,7 +564,7 @@ class IndexAction extends Action {
         $type = $_GET['type'] ? BaseUtils::getStr($_GET['type']) :  '';
         switch (trim($type)){
             case 'offer' :
-                $data = $fine_project->where(array('role_id'=>array('in', getSubRoleId())))->order('fine_project_offer.offertime desc')->limit(10)->select();
+                $data = $fine_project->where(array('role_id'=>array('in', $sub_role)))->order('fine_project_offer.offertime desc')->limit(10)->select();
                 foreach ($data as $k=>$v){
                     $da = M('resume')->field('name,birthday,telephone,email')->where(array('eid'=>$v['resume_id']))->find();
                     $data[$k]['name'] = $da['name'];
@@ -560,7 +591,7 @@ class IndexAction extends Action {
                 }
                 break;
             case 'onjob' :
-                $data = $fine_project_enter->where(array('role_id'=>array('in', getSubRoleId())))->order('fine_project_enter.entertime desc')->limit(10)->select();
+                $data = $fine_project_enter->where(array('role_id'=>array('in', $sub_role)))->order('fine_project_enter.entertime desc')->limit(10)->select();
                 foreach ($data as $k=>$v){
                     $da = M('resume')->field('name,birthday,telephone,email')->where(array('eid'=>$v['resume_id']))->find();
                     $data[$k]['name'] = $da['name'];
@@ -587,7 +618,7 @@ class IndexAction extends Action {
                 }
                 break;
             default:
-                $data = $d_v_business->where(array('status_id'=>1,'creator_role_id'=>array('in', getSubRoleId())))-> order('update_time desc')-> limit(10)->select();
+                $data = $d_v_business->where(array('status_id'=>1,'creator_role_id'=>array('in', $sub_role)))-> order('update_time desc')-> limit(10)->select();
                 include APP_PATH . "Common/city.cache.php";
                 foreach ($data as $k=>$v){
                     $data[$k]['customer'] = M('customer')->where(array('customer_id'=>$v['customer_id']))->getField('name');
@@ -674,6 +705,7 @@ class IndexAction extends Action {
     //动态数据加载
     public function dynamic_data() {
         if ($this->isAjax()) {
+            $d_name = $this->getDepartmentName();
             //动态信息
             $m_action_log = M('actionLog');
             $m_comment = M('comment');
@@ -736,11 +768,12 @@ class IndexAction extends Action {
                 }
             } else {
                 //条件为选中部门下,我的下属员工的role_id
-                if (!session('?admin')) {
+                if (($d_name=='运营部')||($d_name == '景升学院')||session('?admin')) {
+                    $where['role_id'] = array('in', getSubRoleId(true,1));
+                }else{
                     $where['role_id'] = array('in', getSubRoleId());
                 }
             }
-
             if ($_REQUEST["field"]) {
                 $field = trim($_REQUEST['field']);
                 $search = empty($_REQUEST['search']) ? '' : trim($_REQUEST['search']);
@@ -763,7 +796,10 @@ class IndexAction extends Action {
                 //根据模糊姓名，查出所有role_id
                 $data = M('user')->where(array('full_name'=>array('like','%'.$name.'%')))->getField('role_id',true);
                 //合并$where['role_id'][1],并封装
-                $where['role_id'] = array('in', getSubRoleId());
+                if(($d_name=='运营部')||($d_name == '景升学院')||session('?admin'))
+                    $where['role_id'] = array('in', getSubRoleId(true,1));
+                else
+                    $where['role_id'] = array('in', getSubRoleId());
                 $data = array_intersect($data,$where['role_id'][1]);
                 $where['role_id'] = array('in', $data);
             }
