@@ -126,6 +126,7 @@ class CallcenterAction extends Action
         ];
         M('action_log')->add($log);
 
+        $phoneRecordData = ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel, 'source' => $type, 'item_id' => $itemId];
         if ($channel == 1) {
             //品聘坐席外呼
             $msg = $this->pinPingCall($sourceTel, $tel);
@@ -135,7 +136,7 @@ class CallcenterAction extends Action
             }
             //成功
             $callsId = $msg['data'];
-            $this->record($callsId, ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel], $channel);
+            $this->record($callsId, $phoneRecordData, $channel);
             exit(json_encode(['code' => 1, 'msg' => '拨打成功']));
 
         } elseif ($channel == 2) {
@@ -153,7 +154,7 @@ class CallcenterAction extends Action
             $callStatus = $this->rongYinYunCall($timestamp, $tel, $sourceTel);
             if ($callStatus['statuscode'] == 200) {
                 $callsId = $callStatus['data'];
-                $this->record($callsId, ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel], $channel);
+                $this->record($callsId, $phoneRecordData, $channel);
                 echo json_encode(['code' => 1, 'msg' => '拨打成功']);
             }
             $this->offWork($timestamp, $sourceTel);
@@ -283,64 +284,92 @@ class CallcenterAction extends Action
      * @return bool|mixed
      */
     public function call_back() {
-        $content = file_get_contents('php://input');
-        if (!$content) {
+        $contentOri = file_get_contents('php://input');
+        if (!$contentOri) {
             return false;
         }
         //防止超时
         set_time_limit(0);
         ini_set("memory_limit", "1024M");
 
-        $content = json_decode($content, true);
+        $content = json_decode($contentOri, true);
         if (isset($content['Table']) && $content['Table']) {
-            BaseUtils::addLog("融营云回掉参数 ： {$content}", 'callback_log', '/var/log/rongyinyun/');
+            BaseUtils::addLog("融营云回掉参数 ：$contentOri ", 'callback_log', '/var/log/rongyinyun/');
             return $this->rongYinYunCallBack($content);
         }
         //品聘回掉
-        BaseUtils::addLog("品聘回掉参数 ： {$content}", 'callback_log', '/var/log/pinping/');
-        return $this->pinPingCallBack($content);
+        BaseUtils::addLog("品聘回掉参数 ：{$contentOri}", 'callback_log', '/var/log/pinping/');
+        $res = $this->pinPingCallBack($content);
+        echo $res;
+    }
+
+    /**
+     * @desc 品评批量回调接口
+     * @return bool|string
+     */
+    public function call_back_batch() {
+        $contentOri = file_get_contents('php://input');
+        if (!$contentOri) {
+            exit('fail');
+        }
+        //防止超时
+        set_time_limit(0);
+        ini_set("memory_limit", "1024M");
+        $contents = json_decode($contentOri, true);
+        //品聘回掉
+        BaseUtils::addLog("品聘批量回掉参数 ：{$contentOri}", 'callback_batch_log', '/var/log/pinping/');
+        $return = 'success';
+        foreach ($contents as $content) {
+            if ('fail' == $this->pinPingCallBack($content)) {
+                $return = 'fail';
+                break;
+            }
+        }
+        echo $return;
     }
 
     /**
      * @desc 品聘回调处理
-     * @param $contents
+     * @param $content
      * @return bool
      */
-    public function pinPingCallBack($contents) {
-        if (!$contents) {
-            return false;
+    public function pinPingCallBack($content) {
+        if (!$content) {
+            return 'fail';
         }
-        foreach ($contents as $content) {
-            $sessionId = $content['sessionId'];
-            if (!$sessionId) {
-                continue;
-            }
-            $where = ['sec_id' => $sessionId, 'channel' => 1];
-            $recordInfo = M('phone_record')->where($where)->find();
-            if (!$recordInfo) {
-                continue;
-            }
-            $data = [];
-            $data['sec_id'] = $sessionId;
-            $data['sessionId'] = $sessionId;
-            $data['direction'] = $content['direction'] ? $content['direction'] : 0;
-            $data['call_end_time'] = $content['callEndTime'] ? $content['callEndTime'] : '';
-            $data['fwdAnswerTime'] = $content['fwdAnswerTime'] ? $content['fwdAnswerTime'] : '';
-            $data['callOutAnswerTime'] = $content['callOutAnswerTime'] ? $content['callOutAnswerTime'] : '';
-            $data['recordFlag'] = $content['recordFlag'] ? $content['recordFlag'] : 0;
-            $data['recordUrl'] = $content['recordFileDownloadUrl'] ? $content['recordFileDownloadUrl'] : '';
-            $data['duration'] = $content['duration'] ? $content['duration'] : 0;
-            $data['callmin'] = $content['callmin'] ? $content['callmin'] : 0;
-            $data['callback_time'] = time(); // 回掉时间记录
+        //数据处理
+        $sessionId = $content['sessionId'];
+        if (!$sessionId) {
+            return 'fail';
+        }
+        $where = ['sec_id' => $sessionId, 'channel' => 1];
+        $recordInfo = M('phone_record')->where($where)->find();
+        if (!$recordInfo) {
+            return 'success';
+        }
+        if ($recordInfo['oss_record_url']) {
+            return 'success';
+        }
+        $data = [];
+        $data['sec_id'] = $sessionId;
+        $data['sessionId'] = $sessionId;
+        $data['direction'] = $content['direction'] ? $content['direction'] : 0;
+        $data['call_end_time'] = $content['callEndTime'] ? $content['callEndTime'] : '';
+        $data['fwdAnswerTime'] = $content['fwdAnswerTime'] ? $content['fwdAnswerTime'] : '';
+        $data['callOutAnswerTime'] = $content['callOutAnswerTime'] ? $content['callOutAnswerTime'] : '';
+        $data['recordFlag'] = $content['recordFlag'] ? $content['recordFlag'] : 0;
+        $data['recordUrl'] = $content['recordFileDownloadUrl'] ? $content['recordFileDownloadUrl'] : '';
+        $data['duration'] = $content['duration'] ? $content['duration'] : 0;
+        $data['callmin'] = $content['callmin'] ? $content['callmin'] : 0;
+        $data['callback_time'] = time(); // 回掉时间记录
 
-            $data['oss_record_url'] = '';
-            if ($data['recordUrl']) {
-                $callerNum = $recordInfo['setingNbr'];
-                $data['oss_record_url'] = $this->fileToOss($data['recordUrl'], $sessionId, $callerNum, 1);
-            }
-            M('phone_record')->where($where)->save($data);
+        $data['oss_record_url'] = '';
+        if ($data['recordUrl']) {
+            $callerNum = $recordInfo['setingNbr'];
+            $data['oss_record_url'] = $this->fileToOss($data['recordUrl'], $sessionId, $callerNum, 1);
         }
-        return true;
+        $res = M('phone_record')->where($where)->save($data);
+        return $res === false ? 'fail' : 'success';
     }
 
     /**
@@ -421,20 +450,26 @@ class CallcenterAction extends Action
         if (!is_dir($dir)) {
             @mkdir($dir, 0755, true);
         }
-        $localFile = "{$dir}{$sessionId}.{$extension}"; //临时文件存放
-        $res = true;
 
-        if (!file_exists($localFile)) {
-            $recordUrl = str_replace('https', 'http', $recordUrl);
-            $res = copy($recordUrl, $localFile);
-        }
+        import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
+        $ossClient = new AliOssAction();
+        $ossFile = "call_record_{$channel}/{$callerNum}/{$sessionId}.{$extension}";
         $ossUrl = '';
-        if ($res || file_exists($localFile)) {
-            import("AliOss", dirname(realpath(APP_PATH)) . '/vendor/oss/', '.php');
-            $ossFile = "call_record_{$channel}/{$callerNum}/{$sessionId}.{$extension}";
-            $ossClient = new AliOssAction();
-            $ossUrl = $ossClient->upFile($localFile, $ossFile);
-            unlink($localFile);
+        //看有没有上传过OSS
+        if (AliOssAction::checkFile($ossFile)) {
+            $ossUrl = "http://pc-huiliewang.oss-cn-hangzhou.aliyuncs.com/" . $ossFile;
+        } else {
+            //下载到本地然后上传
+            $localFile = "{$dir}{$sessionId}.{$extension}"; //临时文件存放
+            $res = true;
+            if (!file_exists($localFile)) {
+                $recordUrl = str_replace('https', 'http', $recordUrl);
+                $res = copy($recordUrl, $localFile);
+            }
+            if ($res || file_exists($localFile)) {
+                $ossUrl = $ossClient->upFile($localFile, $ossFile);
+                unlink($localFile);
+            }
         }
         return $ossUrl;
     }

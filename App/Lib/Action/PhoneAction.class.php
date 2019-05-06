@@ -6,7 +6,8 @@
  * Date: 2019-02-18
  * Time: 09:07
  */
-class PhoneAction extends Action {
+class PhoneAction extends Action
+{
 
     public function _initialize() {
         $title = "通话记录";
@@ -32,22 +33,24 @@ class PhoneAction extends Action {
 
         //去掉品聘通话记录接口 editor by yanghao 20190504
         $field = "id,"
-                . "fine_id,"
-                . "user_name,"
-                . "department,"
-                . "setingNbr,"
-                . "direction,"
-                . "callerNum,"
-                . "calleeNum,"
-                . "call_end_time,"
-                . "fwdAnswerTime,"
-                . "callOutAnswerTime,"
-                . "recordFlag,"
-                . "recordUrl,"
-                . "oss_record_url,"
-                . "duration,"
-                . "callmin,"
-                . "channel";
+            . "fine_id,"
+            . "user_name,"
+            . "department,"
+            . "setingNbr,"
+            . "direction,"
+            . "callerNum,"
+            . "calleeNum,"
+            . "call_end_time,"
+            . "fwdAnswerTime,"
+            . "callOutAnswerTime,"
+            . "recordFlag,"
+            . "recordUrl,"
+            . "oss_record_url,"
+            . "duration,"
+            . "callmin,"
+            . "source,"
+            . "item_id,"
+            . "channel";
 
         $where = [];
         $start_Time = strtotime($start_time);
@@ -61,11 +64,11 @@ class PhoneAction extends Action {
         } else {
             $ownerWhere['_string'] .= "  role_id in ({$role}) and duration>0 and add_time > {$start_Time} and add_time < {$end_Time}";
         }
-        
+
         if(isset($_GET['department']) && $department !== 'all'){
             $where['department_id'] = $department;
         }
-        
+
         $where['_complex'] = $ownerWhere;
         $where['_logic'] = 'AND';
         $order = "id desc";
@@ -92,6 +95,28 @@ class PhoneAction extends Action {
         $list = M('phone_record')->where($where)->field($field)->page($p . ',' . $listrows)->order($order)->select();
 //        var_dump(M('phone_record')->getLastSql());
 //        exit;
+        foreach ($list as &$info) {
+            $info['item_name'] = '';
+            $fineId = $info['fine_id'];
+            $itemId = $info['item_id'];
+            $source = $info['source'];
+            if (!$itemId) {
+                continue;
+            }
+            if ($source == 1) {
+                $resumeName = M('resume')->where(['eid' => $itemId])->getField('name');
+                $info['item_name'] = "简历：<a href= " .U('product/view',['id'=>$itemId]) . ">{$resumeName}</a> ";
+                if ($fineId > 0) {
+                    $project_id = M('fine_project')->where(['id' => $fineId])->getField('project_id');
+                    $businessName = M('business')->where(['business_id' => $project_id])->getField('name');
+                    $info['item_name'] .= "<br/><br/>项目：<a href= " . U('business/view',['id'=>$project_id]) .">{$businessName}</a>";
+                }
+            }
+            if ($source == 2) { //客户
+                $contactsName = M('contacts')->where(['contacts_id' => $itemId])->getField('name');
+                $info['item_name'] = "客户联系人：<a href=" .U('contacts/view',['id' => $itemId]) . ">{$contactsName}</a> ";
+            }
+        }
 
 
         //读取部门与人员列表

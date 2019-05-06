@@ -200,7 +200,7 @@ function callSuccNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $sql = "select count(*) as counts from (select count(pr.fine_id) from mx_phone_record as pr
             left join mx_fine_project_cc as fpc on pr.fine_id=fpc.fine_id
-            where pr.role_id={$userRoleId} AND pr.duration>30 and  pr.add_time >= {$dateStartInt} and pr.add_time <= {$nextDayInt} and  fpc.addtime >= {$dateStartInt} and fpc.addtime <= {$nextDayInt}
+            where pr.role_id={$userRoleId} AND pr.duration>30 and  pr.add_time >= {$dateStartInt} and pr.add_time <= {$nextDayInt} and  fpc.addtime >= {$dateStartInt} and fpc.addtime <= {$nextDayInt} AND pr.fine_id > 0 
             GROUP BY pr.fine_id
             ORDER BY fpc.id desc) as num";
 

@@ -527,7 +527,7 @@
                                         <td style="min-width: 80px;">呼叫时间</td>
                                         <td style="min-width: 80px;">通话结束时间</td>
                                         <td style="min-width: 80px;">通话秒数</td>
-                                        <!--<td style="min-width: 80px;">跟踪记录</td>-->
+                                        <td style="min-width: 80px;">电话来源</td>
                                         <td style="min-width: 250px;">录音</td>
                                         <!--                                        <td style="min-width: 80px;">挂断原因</td>
                                                                                 <td style="min-width: 80px;">按键</td>
@@ -551,6 +551,9 @@
                                         <td style="min-width: 80px;">{$vo.callOutAnswerTime}</td>
                                         <td style="min-width: 80px;">{$vo.call_end_time}</td>
                                         <td style="min-width: 80px;">{$vo.duration}</td>
+                                        <td style="min-width: 80px;">
+                                            {$vo.item_name}
+                                        </td>
                                         <!--<td style="min-width: 80px;">跟踪记录</td>-->
                                         <td style="min-width: 250px;">
                                         <if condition="$vo.recordFlag eq 1">
@@ -733,3 +736,26 @@
     }
 
 </style>
+<script>
+
+    function changeRole(){
+        department_id = $("#department option:selected").val();
+        $.ajax({
+            type:'get',
+            url:'index.php?m=user&a=getrolebydepartment&department_id='+department_id,
+            async:true,
+            success:function(data){
+                options = '<option value="all">{:L('All')}</option>';
+                if(data.data != null){
+                    $.each(data.data, function(k, v){
+                        options += '<option value="'+v.role_id+'">'+v.role_name+"-"+v.user_name+'</option>';
+                    });
+                }
+                $("#role").html(options);
+            <if condition="$_GET['role']">
+                    $("#role option[value='{$Think.get.role}']").prop("selected", true);
+            </if>
+            },
+            dataType:'json'});
+    }
+</script>
