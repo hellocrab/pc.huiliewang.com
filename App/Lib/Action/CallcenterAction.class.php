@@ -310,7 +310,7 @@ class CallcenterAction extends Action
     public function call_back_batch() {
         $contentOri = file_get_contents('php://input');
         if (!$contentOri) {
-            return false;
+            exit('fail');
         }
         //防止超时
         set_time_limit(0);
