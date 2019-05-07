@@ -32,9 +32,12 @@ $extension = 'wav';
 $connMake = new sqlMaker($conn, array('tableName' => $table));
 
 $timeStart = time();
+if (!$list) {
+    exit('no data to up');
+}
 foreach ($list as $info) {
     $id = $info['id'];
-    if($info['oss_record_url']){
+    if ($info['oss_record_url']) {
         continue;
     }
     $recordUrl = $info['recordUrl'];
@@ -57,7 +60,7 @@ foreach ($list as $info) {
         continue;
     }
 
-    $where = ['eq'=>['id' => $id]];
+    $where = ['eq' => ['id' => $id]];
     $sqlUp = $connMake->updateRow(['data' => ['oss_record_url' => $ossUrl], 'where' => $where]);
     $resUp = $conn->exec($sqlUp);
     if ($resUp) {
