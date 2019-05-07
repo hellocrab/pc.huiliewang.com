@@ -44,6 +44,10 @@ foreach ($list as $info) {
     if ($info['oss_record_url']) {
         continue;
     }
+    //重复检查
+    if(checkExit($conn,$id) <= 0){
+        continue;
+    }
     $recordUrl = $info['recordUrl'];
     $callerNum = $info['setingNbr'];
     $sessionId = $info['sec_id'];
@@ -77,6 +81,24 @@ foreach ($list as $info) {
 echo "all SUCCESS" . PHP_EOL;
 echo "all time: " . (time() - $timeStart) . ' s';
 
+/**
+ * @desc 重复检查
+ * @param $conn
+ * @param $id
+ * @return int
+ */
+function checkExit($conn, $id) {
+    $tableProject = 'mx_phone_record';
+    $sql = "SELECT count(*) as counts FROM {$tableProject} where id = {$id} and oss_record_url = '' ";
+
+    $query = $conn->query($sql);
+    if ($query) {
+        $info = $query->fetch(PDO::FETCH_ASSOC);
+        return $info['counts'] > 0 ? $info['counts'] : 0;
+    } else {
+        return 0;
+    }
+}
 
 /**
  * @desc oss上传
