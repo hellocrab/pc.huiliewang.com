@@ -529,7 +529,7 @@ class IndexAction extends Action {
         }
         switch ($part){
             case 'offer_num':
-                $data = M('report_intergral')->field('sum(offer_num) as offerNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', $sub_role)))->group('user_id')->find();
+                $data = M('report_intergral')->field('sum(offer_num) as offerNum')->where(array('report_date'=>array('between',$be),'user_role_id'=>array('in', $sub_role)))->find();
                 $data = empty($data['offerNum']) ? 0 : $data['offerNum'];
                 break;
             case 'interview_num':
