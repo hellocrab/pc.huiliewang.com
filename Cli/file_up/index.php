@@ -15,17 +15,21 @@ include realpath(__DIR__ . '/../../vendor/oss/AliOss.php');
 
 
 $limitNo = isset($argv[1]) ? ($argv[1]) : 10;
-$channel = isset($argv[2]) ? ($argv[2]) : 1; // 1：品评 2：融云云
-$env = isset($argv[3]) ? ($argv[3]) : 'product'; //数据库
+$page = isset($argv[2]) ? ($argv[2]) : 1;
+$channel = isset($argv[3]) ? ($argv[3]) : 1; // 1：品评 2：融云云
+$env = 'product'; //数据库
+
 $localDir = realpath(__DIR__ . "/../../Uploads/temp_{$channel}/");
 if (!is_dir($localDir)) {
     @mkdir($localDir, 0755, true);
 }
 
+$startNo = ($page - 1) * $limitNo;
+
 $table = 'mx_phone_record';
 $conn = dbconn($env); //数据库连接
 //用户列表
-$sql = "SELECT * from {$table} where channel = {$channel} and recordFlag = 1 and oss_record_url = '' and recordUrl is not null order by id limit {$limitNo}";
+$sql = "SELECT * from {$table} where channel = {$channel} and recordFlag = 1 and oss_record_url = '' and recordUrl is not null order by id limit {$startNo} , {$limitNo}";
 $query = $conn->query($sql);
 $list = $query->fetchAll(PDO::FETCH_ASSOC);
 $extension = 'wav';
