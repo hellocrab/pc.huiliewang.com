@@ -322,7 +322,6 @@ class CallcenterAction extends Action
         foreach ($contents as $content) {
             if ('fail' == $this->pinPingCallBack($content,1)) {
                 $return = 'fail';
-                break;
             }
         }
         echo $return;
