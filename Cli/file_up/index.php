@@ -58,7 +58,7 @@ foreach ($list as $info) {
     $ossUrl = '';
     if ($res || file_exists($localFile)) {
         $ossUrl = upFile($localFile, $ossFile);
-        unlink($localFile);
+        $ossUrl && unlink($localFile);
     }
     if (!$ossUrl) {
         continue;
