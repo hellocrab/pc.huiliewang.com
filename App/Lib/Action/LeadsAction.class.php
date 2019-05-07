@@ -1860,7 +1860,7 @@ class LeadsAction extends Action
         ($role_id <= 0 && $roleIds) && $where['fine_project_interview.role_id'] = ['in', $roleIds];
         $where['fine_project.status'] = array('egt', 4);
         $where['fine_project_interview.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $projectSafeModel = new ProjectStepViewModel('fine_project_interview');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_interview','fine_project_interview.role_id');
         $list = $projectSafeModel->where($where)->order('timestart desc')->select();
         $newList = [];
         foreach ($list as $info) {
@@ -1884,7 +1884,7 @@ class LeadsAction extends Action
         ($role_id <= 0 && $roleIds) && $where['fine_project_interview.role_id'] = ['in', $roleIds];
         $where['fine_project.interview_times'] = array('egt', 1);
         $where['fine_project_interview.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $projectSafeModel = new ProjectStepViewModel('fine_project_interview');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_interview','fine_project_interview.role_id');
         $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
@@ -1920,7 +1920,7 @@ class LeadsAction extends Action
         $where['fine_project_offer.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
 //        $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
-        $projectSafeModel = new ProjectStepViewModel('fine_project_offer');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_offer','fine_project_offer.role_id');
         $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
@@ -1937,7 +1937,7 @@ class LeadsAction extends Action
         $where['fine_project_bhs.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
 //        $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
-        $projectSafeModel = new ProjectStepViewModel('fine_project_bhs');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_bhs','fine_project_bhs.role_id');
         $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
@@ -1957,7 +1957,7 @@ class LeadsAction extends Action
         $where['fine_project_enter.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
 //        $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
-        $projectSafeModel = new ProjectStepViewModel('fine_project_enter');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_enter','fine_project_enter.role_id');
         $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
