@@ -34,6 +34,9 @@ $connMake = new sqlMaker($conn, array('tableName' => $table));
 $timeStart = time();
 foreach ($list as $info) {
     $id = $info['id'];
+    if($info['oss_record_url']){
+        continue;
+    }
     $recordUrl = $info['recordUrl'];
     $callerNum = $info['setingNbr'];
     $sessionId = $info['sec_id'];
