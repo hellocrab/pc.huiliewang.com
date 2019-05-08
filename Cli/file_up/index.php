@@ -16,7 +16,7 @@ include realpath(__DIR__ . '/../../vendor/oss/AliOss.php');
 
 $limitNo = isset($argv[1]) ? ($argv[1]) : 10;
 $page = isset($argv[2]) ? ($argv[2]) : 1;
-$channel = isset($argv[3]) ? ($argv[3]) : 1; // 1：品评 2：融云云
+$channel = 1; // 1：品评 2：融云云
 $env = 'product'; //数据库
 
 $localDir = realpath(__DIR__ . "/../../Uploads/temp_{$channel}/");
