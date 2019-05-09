@@ -33,6 +33,7 @@ class ReturnAction extends Action
         $d_v_business = D('BusinessView');
         if(count($test)){
         $map['business_id'] = ['not in',$test];
+        $map['pro_type'] = ['in',[2,3]];
         }
         $business = $d_v_business->where($map)->select();
         $this->assign('business',$business);
@@ -161,14 +162,21 @@ class ReturnAction extends Action
         }
 
         $test1 = M("payment_plan")->field('business_id')->select();
-        foreach ($test1 as $k => $v){
-            $test[]=intval($v['business_id']);
+        foreach ($test1 as $k => $v) {
+            $test[] = intval($v['business_id']);
         }
-        if(count($test))
-            $business_all = $d_v_business->where(['business_id'=>['not in',$test]])->select();
-        else
-            $business_all = $d_v_business->select();
 
+        $where['_string'] = "business.creator_role_id = " . session('role_id') . " OR business.joiner  = " . session('role_id') . " OR FIND_IN_SET(" . session('role_id') . ",business.owner_role_id) OR FIND_IN_SET(" . session('role_id') . ",business.parter)";
+        $where['_logic'] = 'OR';
+        $map['_complex'] = $where;
+        $map['is_deleted'] = 0;
+        $d_v_business = D('BusinessView');
+        if (count($test)) {
+            $map['business_id'] = ['not in', $test];
+            $map['pro_type'] = ['in', [2, 3]];
+        }
+        $business_all = $d_v_business->where($map)->select();
+        
         $user = M("user") -> select();
         //已回款金额、状态、付款方式、回款时间计算
         $plan['money_backed'] = 0;
