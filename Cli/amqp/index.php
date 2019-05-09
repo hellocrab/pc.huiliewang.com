@@ -131,6 +131,7 @@ class consumeUser
 
 //消息消费
 $consumeUser = new consumeUser();
-$mq = new \RabbitMq\RabbitMqBase();
+$config = ['host' => 'localhost', 'port' => 5672, 'user' => 'guest', 'pass' => 'guest', 'vhost' => '/'];
+$mq = new \RabbitMq\RabbitMqBase($config, 'oss_exchange_', 'oss_queue_');
 $mq->setCallBack([$consumeUser, 'dealData']);
-$mq->deadReceive();
+$mq->receiveMess();
