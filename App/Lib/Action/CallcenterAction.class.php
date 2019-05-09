@@ -528,7 +528,7 @@ class CallcenterAction extends Action
         require_once $vendorPath . '/autoload.php';
         require_once $vendorPath . '/php-amqplib/RabbitMqBase.php';
         $config = ['host' => '47.106.49.109', 'port' => 5672, 'user' => 'test', 'pass' => 'test', 'vhost' => '/'];
-        $mq = new \RabbitMq\RabbitMqBase($config, 'oss_exchange', 'oss_queue');
+        $mq = new \RabbitMq\RabbitMqBase($config, 'oss_exchange_', 'oss_queue_');
         $data = ['sessionId' => $sessionId, 'callerNum' => $callerNum, 'ossUrl' => $ossFile];
         return $mq->sentMess($data);
     }
