@@ -14,326 +14,532 @@
 <script type="text/javascript" src="__PUBLIC__/js/table-export/jspdf/libs/base64.js"></script>
 <!--jQuery导出插件-->
 <style>
-	body{
-		overflow-y: hidden;
-	}
-    .role{
+    body {
+        overflow-y: hidden;
+    }
+
+    .role {
         color: #444;
-    line-height: 30px;
-    padding-top: 0;
-    padding-bottom: 0;
-    padding-left: 8px;
-    width: 100%;
-    border: 1px solid #d8e3ef;
-    cursor: pointer;
+        line-height: 30px;
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-left: 8px;
+        width: 100%;
+        border: 1px solid #d8e3ef;
+        cursor: pointer;
     }
-    .role:hover{
+
+    .role:hover {
         outline-style: solid;
-outline-color: #5897fb;
-outline-width: 1px;
+        outline-color: #5897fb;
+        outline-width: 1px;
     }
-    .chooseBox{
+
+    .chooseBox {
         width: 100%;
         height: 200px;
         overflow-y: scroll;
         box-sizing: border-box;
         border: 1px #ccc solid;
         box-shadow: 2px 2px 5px rgba(0, 0, 0, .2);
-        border-top:none;
+        border-top: none;
         display: none;
         position: absolute;
         z-index: 100;
         background: #fff;
     }
-    .chooseBox span{
+
+    .chooseBox span {
         display: block;
         padding: 5px 6px;
         font-size: 13px;
         margin: 1px 0;
     }
-    .chooseBox span:hover{
+
+    .chooseBox span:hover {
         color: #fff;
         background: #5897fb;
     }
-    .chooseBox .choosed{
+
+    .chooseBox .choosed {
         color: #fff;
         background: #5897fb;
     }
-    .role{
-        overflow : hidden;
-text-overflow: ellipsis;
-display: -webkit-box;
--webkit-line-clamp: 2;
--webkit-box-orient: vertical;
-height: 32px;
+
+    .role {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        height: 32px;
     }
-    table tr td{min-width: 50px;text-align: center;}
-    table tr {height: 50px;}
-    #oDivL_tab_Test3{background-color: #fff;z-index: inherit !important;}
-    .table{max-width: none;}
-    .tabTh{background-color: #fff;}
-    .ibox-span{
+
+    table tr td {
+        min-width: 50px;
+        text-align: center;
+    }
+
+    table tr {
+        height: 50px;
+    }
+
+    #oDivL_tab_Test3 {
+        background-color: #fff;
+        z-index: inherit !important;
+    }
+
+    .table {
+        max-width: none;
+    }
+
+    .tabTh {
+        background-color: #fff;
+    }
+
+    .ibox-span {
         float: left;
         line-height: 30px;
     }
-    .form-horizontal .form-group{margin-left:0px;margin-right:0px;}
-    .subnum td{
-        color: #ffffff !important;
+
+    .form-horizontal .form-group {
+        margin-left: 0px;
+        margin-right: 0px;
     }
 
+    .subnum td {
+        color: #ffffff !important;
+    }
 </style>
 <script>
-$(function(){
-    $('.chooseBox span').click(ev=>{
-        if($(ev.target).hasClass('choosed')){
-            $(ev.target).removeClass('choosed');
-            let temp = (document.querySelector('#role').value+'').split(',');
-            let str = $('.role').html().trim().split(',');
-            temp.map((val,index)=>{
-                if(val == $(ev.target)[0].id)temp.splice(index,1);
-            })
-            str.map((val,index)=>{
-                if(val == $(ev.target).html().trim())str.splice(index,1);
-            })
-            temp = temp.join(',');
-            if(str.length==0)str.push('全部');
-            str = str.join(',');
-            if(temp.substr(0,1) == ',')temp = temp.substr(1);
-            document.querySelector('#role').value = temp;
-            $('.role').html(str);
+    function choose(ev) {
+        $('.chooseBox').css('display', 'block')
+    }
+    $(function () {
+        let choStr = '{$roleList_checked}';
+        let choObj = JSON.parse(choStr);
+        if (typeof choObj == 'object') {
+            let roleIdArr = [];
+            let roleNameArr = [];
+            for (let key in choObj) {
+                $('.chooseBox #' + choObj[key].role_id).addClass('choosed');
+                roleIdArr.push(choObj[key].role_id);
+                roleNameArr.push(choObj[key].role_name+'-'+choObj[key].user_name);
+            }
+            $('.role').html(roleNameArr.join(','));
+            $('#role').val(roleIdArr.join(','))
         }
-        else{
-            $(ev.target).addClass('choosed');
-            let temp = (document.querySelector('#role').value+'').split(',');
-            let str = $('.role').html().trim().split(',');
-            temp.push($(ev.target)[0].id);
-            str.push($(ev.target).html().trim())
-            temp = temp.join(',');
-            str = str.join(',')
-            if(temp.substr(0,1) == ',')temp = temp.substr(1);
-            if(str.substr(0,2) == '全部')str = str.substr(3);
-            document.querySelector('#role').value = temp;
-            $('.role').html(str);
-        }
+        $('.chooseBox span').click(ev => {
+            if ($(ev.target).hasClass('choosed')) {
+                $(ev.target).removeClass('choosed');
+                let temp = (document.querySelector('#role').value + '').split(',');
+                let str = $('.role').html().trim().split(',');
+                temp.map((val, index) => {
+                    if (val == $(ev.target)[0].id) temp.splice(index, 1);
+                })
+                str.map((val, index) => {
+                    if (val == $(ev.target).html().trim()) str.splice(index, 1);
+                })
+                temp = temp.join(',');
+                if (str.length == 0) str.push('全部');
+                str = str.join(',');
+                if (temp.substr(0, 1) == ',') temp = temp.substr(1);
+                document.querySelector('#role').value = temp;
+                $('.role').html(str);
+            } else {
+                $(ev.target).addClass('choosed');
+                let temp = (document.querySelector('#role').value + '').split(',');
+                let str = $('.role').html().trim().split(',');
+                temp.push($(ev.target)[0].id);
+                str.push($(ev.target).html().trim())
+                temp = temp.join(',');
+                str = str.join(',')
+                if (temp.substr(0, 1) == ',') temp = temp.substr(1);
+                if (str.substr(0, 2) == '全部') str = str.substr(3);
+                document.querySelector('#role').value = temp;
+                $('.role').html(str);
+            }
+        })
+        $('.chooseBox').on('mouseleave', ev => {
+            $('.chooseBox').css('display', 'none')
+        })
+        $('.chooseBox').on('mouseenter', ev => {
+            $('.chooseBox').css('display', 'block')
+        })
+        $('.role').on('mouseleave', ev => {
+            $('.chooseBox').css('display', 'none')
+        })
+        var scroll_width = 10;
+        $("#table_div").height(window.innerHeight - $("#table_div").offset().top - $("#tfoot_div").height() -
+            20);
+        $(window).resize(function () {
+            $("#table_div").height(window.innerHeight - $("#table_div").offset().top - $("#tfoot_div")
+                .height() - 20);
+            $("#oDivL_tab_Test3").height($("#table_div").height() - scroll_width - 1).width($(
+                "#oTableLH_tab_Test3").width());
+            $("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div")
+            .width() - scroll_width);
+        });
+        $(".nicescroll").niceScroll({
+            cursorcolor: "#999", //#CC0071 光标颜色
+            cursoropacitymax: 0.4, //改变不透明度非常光标处于活动状态（scrollabar“可见”状态），范围从1到0
+            touchbehavior: false, //使光标拖动滚动像在台式电脑触摸设备
+            cursorwidth: scroll_width + "px", //像素光标的宽度
+            cursorborder: "0", //     游标边框css定义
+            cursorborderradius: "3px", //以像素为光标边界半径
+            autohidemode: false, //是否隐藏滚动条
+            zindex: 100,
+            background: "#F3F3F5", //滚动条背景色
+        });
+        $("#tab_Test3").FrozenTable(2, 0, 1);
+        $("#oDivL_tab_Test3").height($("#table_div").height()).width($("#oTableLH_tab_Test3").width());
+        $("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width());
     })
-    $('.chooseBox').on('mouseleave',ev=>{$('.chooseBox').css('display','none')})
-    $('.chooseBox').on('mouseenter',ev=>{$('.chooseBox').css('display','block')})
-    $('.role').on('mouseleave',ev=>{$('.chooseBox').css('display','none')})
-    var scroll_width = 10;
-    $("#table_div").height(window.innerHeight-$("#table_div").offset().top-$("#tfoot_div").height()-20);
-    $(window).resize(function(){
-        $("#table_div").height(window.innerHeight-$("#table_div").offset().top-$("#tfoot_div").height()-20);
-        $("#oDivL_tab_Test3").height($("#table_div").height()-scroll_width-1).width($("#oTableLH_tab_Test3").width());
-        $("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width()-scroll_width);
-    });
-    $(".nicescroll").niceScroll({
-        cursorcolor: "#999",//#CC0071 光标颜色
-        cursoropacitymax: 0.4, //改变不透明度非常光标处于活动状态（scrollabar“可见”状态），范围从1到0
-        touchbehavior: false, //使光标拖动滚动像在台式电脑触摸设备
-        cursorwidth: scroll_width+"px", //像素光标的宽度
-        cursorborder: "0", //     游标边框css定义
-        cursorborderradius: "3px",//以像素为光标边界半径
-        autohidemode: false, //是否隐藏滚动条
-        zindex:100,
-        background:"#F3F3F5",//滚动条背景色
-    });
-    $("#tab_Test3").FrozenTable(2,0,1);
-    $("#oDivL_tab_Test3").height($("#table_div").height()).width($("#oTableLH_tab_Test3").width());
-    $("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width());
-})
-
 </script>
 <div class="wrapper wrapper-content ">
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="ibox float-e-margins">
-				<include file="Public:analytics_left" />
-				<input type="hidden" id="content_id" value="{$content_id}">
-				<div class="col-lg-10">
-					<div class="ibox-content" style="padding-bottom:10px;border-bottom:none;">
-						<include file="Public:alert" />
-						<form id="" class="form-group" method="get" style="margin-bottom: 0px;">
-							<input type="hidden" name="m" value="leads" />
-							<input type="hidden" name="a" value="analytics" />
-							<div class="row" style="height: 45px;">
-								<div class="col-lg-4">
-									<div class="pull-left" >
-										<span style="font-size: 18px;color: #000;">
-											员工业绩分析
-										</span>
-									</div>
-								</div>
-								<div class="col-lg-8">
-									<div class="pull-right">
-
-										<div class="pull-right" style="margin-left: 15px;line-height: 40px;">
-											<span class="fa fa-download" style="color:#75899D;"></span>
-											<a style="color: #75899D;" id="btnExport">导出</a>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-12">
-									<ul class="nav pull-left" style="margin:2px 0 0 0;">
-										<li>
-											<div class="input-group">
-												<input type="text" name="between_date" id="reservation" class="form-control" style="width:300px;" />
-												<i class="glyphicon glyphicon-calendar fa fa-calendar" style="position: absolute;bottom: 10px;right: 24px;top: auto;cursor: pointer;"></i>
-											</div>
-										</li>
-									</ul>
-									<div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
-										<div class="input-group">
-											<select class="form-control input-sm select2" style="min-width:165px;max-width: 165px;height: 0px;display:none;" name="department" id="department" onchange="changeRole()">
-												<option class="all" value="all">{:L('ALL')}</option>
-												<volist name="departmentList" id="vo">
-													<option value="{$vo.department_id}" <if condition="$_GET['department'] eq $vo['department_id']">selected</if>>{$vo.name}</option>
-												</volist>
-											</select>
-										</div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <include file="Public:analytics_left" />
+                <input type="hidden" id="content_id" value="{$content_id}">
+                <div class="col-lg-10">
+                    <div class="ibox-content" style="padding-bottom:10px;border-bottom:none;">
+                        <include file="Public:alert" />
+                        <form id="" class="form-group" method="get" style="margin-bottom: 0px;">
+                            <input type="hidden" name="m" value="leads" />
+                            <input type="hidden" name="a" value="analytics" />
+                            <div class="row" style="height: 45px;">
+                                <div class="col-lg-4">
+                                    <div class="pull-left">
+                                        <span style="font-size: 18px;color: #000;">
+                                            员工业绩分析
+                                        </span>
                                     </div>
-									<div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
-										<div class="input-group" style="width:100%">
-											<!-- <select class="form-control input-sm select2" style="min-width:165px;max-width: 165px;height: 0px;display:none;" name="role" id="role" onchange="changeCondition()">
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="pull-right">
+
+                                        <div class="pull-right" style="margin-left: 15px;line-height: 40px;">
+                                            <span class="fa fa-download" style="color:#75899D;"></span>
+                                            <a style="color: #75899D;" id="btnExport">导出</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <ul class="nav pull-left" style="margin:2px 0 0 0;">
+                                        <li>
+                                            <div class="input-group">
+                                                <input type="text" name="between_date" id="reservation"
+                                                    class="form-control" style="width:300px;" />
+                                                <i class="glyphicon glyphicon-calendar fa fa-calendar"
+                                                    style="position: absolute;bottom: 10px;right: 24px;top: auto;cursor: pointer;"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
+                                        <div class="input-group">
+                                            <select class="form-control input-sm select2"
+                                                style="min-width:165px;max-width: 165px;height: 0px;display:none;"
+                                                name="department" id="department" onchange="changeRole()">
+                                                <option class="all" value="all">{:L('ALL')}</option>
+                                                <volist name="departmentList" id="vo">
+                                                    <option value="{$vo.department_id}" <if
+                                                        condition="$_GET['department'] eq $vo['department_id']">selected
+                                                        </if>>{$vo.name}</option>
+                                                </volist>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
+                                        <div class="input-group" style="width:100%">
+                                            <!-- <select class="form-control input-sm select2" style="min-width:165px;max-width: 165px;height: 0px;display:none;" name="role" id="role" onchange="changeCondition()">
 												<option class="all" value="all">{:L('ALL')}</option>
 												<volist name="roleList" id="vo">
 													<option value="{$vo.role_id}" <if condition="$_GET['role'] eq $vo['role_id']">selected</if>>{$vo.role_name}-{$vo.user_name}</option>
 												</volist>
                                             </select> -->
-                                            <input type="text" readonly id='role' value="" style="display: none" name='role'/>
+                                            <input type="text" readonly id='role' value="" style="display: none"
+                                                name='role' />
                                             <div class="role" onclick="choose()">全部</div>
                                             <div class="chooseBox">
-												<volist name="roleList" id="vo">
-													<span id="{$vo.role_id}" <if condition="$_GET['role'] eq $vo['role_id']">selected</if>>{$vo.role_name}-{$vo.user_name}</span>
-												</volist>
+                                                <volist name="roleList" id="vo">
+                                                    <span id="{$vo.role_id}" <if
+                                                        condition="$_GET['role'] eq $vo['role_id']">selected</if>
+                                                        >{$vo.role_name}-{$vo.user_name}</span>
+                                                </volist>
                                             </div>
-										</div>
-									</div>
-									<div class="pull-left" style="margin-left: 20px;">
-										<button type="submit" id="analytics_search" class="btn btn-primary">{:L('SEARCH')}</button>
+                                        </div>
                                     </div>
-                                    <span style="dispaly:inline-block;line-height:30px;float:right">最后更新时间：{$lastTime}</span>
-								</div>
-							</div>
-						</form>
-					</div>
+                                    <div class="pull-left" style="margin-left: 20px;">
+                                        <button type="submit" id="analytics_search"
+                                            class="btn btn-primary">{:L('SEARCH')}</button>
+                                    </div>
+                                    <span
+                                        style="dispaly:inline-block;line-height:30px;float:right">最后更新时间：{$lastTime}</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
 
-					<div class="ibox-content" id="right_height" style="border-top: none;padding-top: 0px;">
-						<div id="report_content" class="th_content" style="position:relative;">
-							<div id="table_div" class="nicescroll" style="left:0px;top:0px;">
-								<table class="table table-hover table-striped table_thead_fixed table-bordered" id="tab_Test3" style="background:#fff;margin-bottom:0px;">
+                    <div class="ibox-content" id="right_height" style="border-top: none;padding-top: 0px;">
+                        <div id="report_content" class="th_content" style="position:relative;">
+                            <div id="table_div" class="nicescroll" style="left:0px;top:0px;">
+                                <table class="table table-hover table-striped table_thead_fixed table-bordered"
+                                    id="tab_Test3" style="background:#fff;margin-bottom:0px;">
                                     <tr class="tabTh">
-										<td  style="min-width:170px;padding-left: 15px;text-align: left;" nowrap="nowrap">员工姓名</td>
-										<!--<td style="min-width: 100px;">时间</td>-->
-										<td style="min-width: 100px;">部门</td>
-										<td style="min-width: 100px;">职位名称</td>
+                                        <td style="min-width:170px;padding-left: 15px;text-align: left;"
+                                            nowrap="nowrap">员工姓名</td>
+                                        <!--<td style="min-width: 100px;">时间</td>-->
+                                        <td style="min-width: 100px;">部门</td>
+                                        <td style="min-width: 100px;">职位名称</td>
                                         <td style="min-width: 100px;">顾问英文名</td>
                                         <td style="min-width: 80px;">业绩</td>
-										<td style="min-width: 100px;">callist</td>
-                                                                                <td style="min-width: 100px;">cc备注</td>
-                                                                                <td style="min-width: 100px;">有效CC</td>
-										<!--<td style="min-width: 80px;">提成</td>-->
-										<td style="min-width: 80px;">回款个数</td>
-										<td style="min-width: 80px;">新增BD数</td>
-										<td style="min-width: 80px;">新增客户数</td>
-										<td style="min-width: 80px;">新增项目数</td>
-										<td style="min-width: 80px;">新增简历数</td>
-										<td style="min-width: 80px;">推荐简历数</td>
-										<td style="min-width: 80px;">面试人数</td>
-										<td style="min-width: 80px;">面试次数</td>
-										<!--<td style="min-width: 80px;">到场数</td>-->
-										<td style="min-width: 80px;">Offer</td>
-										<td style="min-width: 80px;">掉Offer数</td>
-										<td style="min-width: 80px;">入职数</td>
-										<td style="min-width: 80px;">过保数</td>
-									</tr>
-                                    <tr class="totalnum" style="background: #70B4E8;color: #fff !important;font-size: 13px;">
+                                        <td style="min-width: 100px;">callist</td>
+                                        <td style="min-width: 100px;">cc备注</td>
+                                        <td style="min-width: 100px;">有效CC</td>
+                                        <!--<td style="min-width: 80px;">提成</td>-->
+                                        <td style="min-width: 80px;">回款个数</td>
+                                        <td style="min-width: 80px;">新增BD数</td>
+                                        <td style="min-width: 80px;">新增客户数</td>
+                                        <td style="min-width: 80px;">新增项目数</td>
+                                        <td style="min-width: 80px;">新增简历数</td>
+                                        <td style="min-width: 80px;">推荐简历数</td>
+                                        <td style="min-width: 80px;">面试人数</td>
+                                        <td style="min-width: 80px;">面试次数</td>
+                                        <!--<td style="min-width: 80px;">到场数</td>-->
+                                        <td style="min-width: 80px;">Offer</td>
+                                        <td style="min-width: 80px;">掉Offer数</td>
+                                        <td style="min-width: 80px;">入职数</td>
+                                        <td style="min-width: 80px;">过保数</td>
+                                    </tr>
+                                    <tr class="totalnum"
+                                        style="background: #70B4E8;color: #fff !important;font-size: 13px;">
                                         <td style="color:#fff;">{:L('TOTAL')}</td>
                                         <!--<td style="color:#fff;">&nbsp;</td>-->
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;"></td>
                                         <td style="color:#fff;">{$countList[integral]}</td>
-                                        <td style="color:#fff;"><if condition="$countList[callistnum] neq 0"><a href="javascript:void(0);" class="c_f callistnum">{$countList[callistnum]}</a><else/>{$countList[callistnum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[ccnum] neq 0"><a href="javascript:void(0);" class="c_f ccnum">{$countList[ccnum]}</a><else/>{$countList[ccnum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[callsucc_num] neq 0">{$countList[callsucc_num]}<else/>0</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[hkNum] neq 0"><a href="javascript:void(0);" class="c_f hknum">{$countList[hkNum]}</a><else/>{$countList[hkNum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[bdNum] neq 0"><a href="javascript:void(0);" class="c_f bdnum">{$countList[bdNum]}</a><else/>{$countList[bdNum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[customerNum] neq 0"><a href="javascript:void(0);" class="c_f customernum">{$countList[customerNum]}</a><else/>{$countList[customerNum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[projectNum] neq 0"><a href="javascript:void(0);" class="c_f projectnum">{$countList[projectNum]}</a><else/>{$countList[projectNum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[resumeNum] neq 0"><a href="javascript:void(0);" class="c_f resumenum">{$countList[resumeNum]}</a><else/>{$countList[resumeNum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[fineNum] neq 0"><a href="javascript:void(0);" class="c_f finenum">{$countList[fineNum]}</a><else/>{$countList[fineNum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[interviewNum] neq 0"><a href="javascript:void(0);" class="c_f interviewnum">{$countList[interviewNum]}</a><else/>{$countList[interviewNum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[interviewtNum] neq 0"><a href="javascript:void(0);" class="c_f interviewtnum">{$countList[interviewtNum]}</a><else/>{$countList[interviewtNum]}</if></td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[callistnum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f callistnum">{$countList[callistnum]}</a>
+                                                <else />{$countList[callistnum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[ccnum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f ccnum">{$countList[ccnum]}</a>
+                                                <else />{$countList[ccnum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[callsucc_num] neq 0">{$countList[callsucc_num]}
+                                                <else />0</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[hkNum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f hknum">{$countList[hkNum]}</a>
+                                                <else />{$countList[hkNum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[bdNum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f bdnum">{$countList[bdNum]}</a>
+                                                <else />{$countList[bdNum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[customerNum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f customernum">{$countList[customerNum]}</a>
+                                                <else />{$countList[customerNum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[projectNum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f projectnum">{$countList[projectNum]}</a>
+                                                <else />{$countList[projectNum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[resumeNum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f resumenum">{$countList[resumeNum]}</a>
+                                                <else />{$countList[resumeNum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[fineNum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f finenum">{$countList[fineNum]}</a>
+                                                <else />{$countList[fineNum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[interviewNum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f interviewnum">{$countList[interviewNum]}</a>
+                                                <else />{$countList[interviewNum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[interviewtNum] neq 0"><a
+                                                    href="javascript:void(0);"
+                                                    class="c_f interviewtnum">{$countList[interviewtNum]}</a>
+                                                <else />{$countList[interviewtNum]}</if>
+                                        </td>
                                         <!--<td style="color:#fff;"><if condition="$countList[presentNum] neq 0"><a href="javascript:void(0);" class="c_f presentnum">{$countList[presentNum]}</a><else/>{$countList[presentNum]}</if></td>-->
-                                        <td style="color:#fff;"><if condition="$countList[offerNum] neq 0"><a href="javascript:void(0);" class="c_f offernum">{$countList[offerNum]}</a><else/>{$countList[offerNum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[offerdNum] neq 0"><a href="javascript:void(0);" class="c_f offerdnum">{$countList[offerdNum]}</a><else/>{$countList[offerdNum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[enterNum] neq 0"><a href="javascript:void(0);" class="c_f enternum">{$countList[enterNum]}</a><else/>{$countList[enterNum]}</if></td>
-                                        <td style="color:#fff;"><if condition="$countList[safeNum] neq 0"><a href="javascript:void(0);" class="c_f safenum">{$countList[safeNum]}</a><else/>{$countList[safeNum]}</if></td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[offerNum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f offernum">{$countList[offerNum]}</a>
+                                                <else />{$countList[offerNum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[offerdNum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f offerdnum">{$countList[offerdNum]}</a>
+                                                <else />{$countList[offerdNum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[enterNum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f enternum">{$countList[enterNum]}</a>
+                                                <else />{$countList[enterNum]}</if>
+                                        </td>
+                                        <td style="color:#fff;">
+                                            <if condition="$countList[safeNum] neq 0"><a href="javascript:void(0);"
+                                                    class="c_f safenum">{$countList[safeNum]}</a>
+                                                <else />{$countList[safeNum]}</if>
+                                        </td>
                                     </tr>
                                     <tbody>
                                         <volist name="list" id="vo">
-										<tr>
-											<td>
-												<a  class="role_info" rel="{$vo.user_role_id}" href="javascript:void(0)">{$vo.user_name}</a>
-											</td>
-											<!--<td>{$vo.report_date|default=''}</td>-->
-											<td>
-												{$vo.department}
-											</td>
-                                            <td>{$vo.position_name}</td>
-                                            <td>{$vo.second_name}</td>
-                                            <td>
-                                                {$vo.integral}
-                                            </td>
-                                            <td><if condition="$vo[callistnum] neq 0"><a href="javascript:void(0);" class="callistnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo[callistnum]}</a><else/>{$vo[callistnum]}</if></td>
-                                       <td><if condition="$vo[ccnum] neq 0"><a href="javascript:void(0);" class="ccnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo[ccnum]}</a><else/>{$vo[ccnum]}</if></td>
-					
-                                        <td><if condition="$vo[callsucc_num] neq 0">{$vo[callsucc_num]}<else/>0</if></td>
-                                            						<!--<td>{$vo.get_money}</td>-->
-											<td width="80" nowrap="nowrap"> <if condition="$vo['hkNum'] neq 0"><a href="javascript:void(0);" class="hknum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.hkNum}</a><else/>{$vo.hkNum}</if></td>
-											<td width="80" nowrap="nowrap"> <if condition="$vo['bdNum'] neq 0"><a href="javascript:void(0);" class="bdnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.bdNum}</a><else/>{$vo['bdNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['customerNum'] neq 0"><a href="javascript:void(0);" class="customernum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.customerNum}</a><else/>{$vo['customerNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['projectNum'] neq 0"><a href="javascript:void(0);" class="projectnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.projectNum}</a><else/>{$vo['projectNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['resumeNum'] neq 0"><a href="javascript:void(0);" class="resumenum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.resumeNum}</a><else/>{$vo['resumeNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['fineNum'] neq 0"><a href="javascript:void(0);" class="finenum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.fineNum}</a><else/>{$vo['fineNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewNum'] neq 0"><a href="javascript:void(0);" class="interviewnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.interviewNum}</a><else/>{$vo['interviewNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['interviewtNum'] neq 0"><a href="javascript:void(0);" class="interviewtnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.interviewtNum}</a><else/>{$vo['interviewtNum']}</if></td>
-                                            <!--<td width="80" nowrap="nowrap"> <if condition="$vo['presentNum'] neq 0"><a href="javascript:void(0);" class="presentnum" data-id="{$vo.user_role_id}">{$vo.presentNum}</a><else/>{$vo['presentNum']}</if></td>-->
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerNum'] neq 0"><a href="javascript:void(0);" class="offernum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.offerNum}</a><else/>{$vo['offerNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['offerdNum'] neq 0"><a href="javascript:void(0);" class="offerdnum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.offerdNum}</a><else/>{$vo['offerdNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['enterNum'] neq 0"><a href="javascript:void(0);" class="enternum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.enterNum}</a><else/>{$vo['enterNum']}</if></td>
-                                            <td width="80" nowrap="nowrap"> <if condition="$vo['safeNum'] neq 0"><a href="javascript:void(0);" class="safenum" data-id="{$vo.user_role_id}" rel="{$ishow}">{$vo.safeNum}</a><else/>{$vo['safeNum']}</if></td>
-										</tr>
-										</volist>
-									</tbody>
-								</table>
+                                            <tr>
+                                                <td>
+                                                    <a class="role_info" rel="{$vo.user_role_id}"
+                                                        href="javascript:void(0)">{$vo.user_name}</a>
+                                                </td>
+                                                <!--<td>{$vo.report_date|default=''}</td>-->
+                                                <td>
+                                                    {$vo.department}
+                                                </td>
+                                                <td>{$vo.position_name}</td>
+                                                <td>{$vo.second_name}</td>
+                                                <td>
+                                                    {$vo.integral}
+                                                </td>
+                                                <td>
+                                                    <if condition="$vo[callistnum] neq 0"><a href="javascript:void(0);"
+                                                            class="callistnum" data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo[callistnum]}</a>
+                                                        <else />{$vo[callistnum]}</if>
+                                                </td>
+                                                <td>
+                                                    <if condition="$vo[ccnum] neq 0"><a href="javascript:void(0);"
+                                                            class="ccnum" data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo[ccnum]}</a>
+                                                        <else />{$vo[ccnum]}</if>
+                                                </td>
+
+                                                <td>
+                                                    <if condition="$vo[callsucc_num] neq 0">{$vo[callsucc_num]}
+                                                        <else />0</if>
+                                                </td>
+                                                <!--<td>{$vo.get_money}</td>-->
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['hkNum'] neq 0"><a href="javascript:void(0);"
+                                                            class="hknum" data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.hkNum}</a>
+                                                        <else />{$vo.hkNum}</if>
+                                                </td>
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['bdNum'] neq 0"><a href="javascript:void(0);"
+                                                            class="bdnum" data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.bdNum}</a>
+                                                        <else />{$vo['bdNum']}</if>
+                                                </td>
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['customerNum'] neq 0"><a
+                                                            href="javascript:void(0);" class="customernum"
+                                                            data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.customerNum}</a>
+                                                        <else />{$vo['customerNum']}</if>
+                                                </td>
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['projectNum'] neq 0"><a
+                                                            href="javascript:void(0);" class="projectnum"
+                                                            data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.projectNum}</a>
+                                                        <else />{$vo['projectNum']}</if>
+                                                </td>
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['resumeNum'] neq 0"><a href="javascript:void(0);"
+                                                            class="resumenum" data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.resumeNum}</a>
+                                                        <else />{$vo['resumeNum']}</if>
+                                                </td>
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['fineNum'] neq 0"><a href="javascript:void(0);"
+                                                            class="finenum" data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.fineNum}</a>
+                                                        <else />{$vo['fineNum']}</if>
+                                                </td>
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['interviewNum'] neq 0"><a
+                                                            href="javascript:void(0);" class="interviewnum"
+                                                            data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.interviewNum}</a>
+                                                        <else />{$vo['interviewNum']}</if>
+                                                </td>
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['interviewtNum'] neq 0"><a
+                                                            href="javascript:void(0);" class="interviewtnum"
+                                                            data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.interviewtNum}</a>
+                                                        <else />{$vo['interviewtNum']}</if>
+                                                </td>
+                                                <!--<td width="80" nowrap="nowrap"> <if condition="$vo['presentNum'] neq 0"><a href="javascript:void(0);" class="presentnum" data-id="{$vo.user_role_id}">{$vo.presentNum}</a><else/>{$vo['presentNum']}</if></td>-->
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['offerNum'] neq 0"><a href="javascript:void(0);"
+                                                            class="offernum" data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.offerNum}</a>
+                                                        <else />{$vo['offerNum']}</if>
+                                                </td>
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['offerdNum'] neq 0"><a href="javascript:void(0);"
+                                                            class="offerdnum" data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.offerdNum}</a>
+                                                        <else />{$vo['offerdNum']}</if>
+                                                </td>
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['enterNum'] neq 0"><a href="javascript:void(0);"
+                                                            class="enternum" data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.enterNum}</a>
+                                                        <else />{$vo['enterNum']}</if>
+                                                </td>
+                                                <td width="80" nowrap="nowrap">
+                                                    <if condition="$vo['safeNum'] neq 0"><a href="javascript:void(0);"
+                                                            class="safenum" data-id="{$vo.user_role_id}"
+                                                            rel="{$ishow}">{$vo.safeNum}</a>
+                                                        <else />{$vo['safeNum']}</if>
+                                                </td>
+                                            </tr>
+                                        </volist>
+                                    </tbody>
+                                </table>
                                 <empty name="list">
-                                <include file="Public:nodata" />
+                                    <include file="Public:nodata" />
                                 </empty>
-							</div>
-							<div id="tfoot_div" class="clearfix">
+                            </div>
+                            <div id="tfoot_div" class="clearfix">
                                 <div class="clearfix" id="tfoot_page">
-                                    {$page}<include file="Public:listrows" />
+                                    {$page}
+                                    <include file="Public:listrows" />
                                 </div>
-							</div>
-						</div>
-						<div id="source_content" class="hidden">
-							<div id="an_chart" class="">
-								<div id="canvas_resource" style="min-width: 500px; height: 500px;margin: 0 auto"></div>
-							</div>
-						</div>
-						<div class="clearfix"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                            </div>
+                        </div>
+                        <div id="source_content" class="hidden">
+                            <div id="an_chart" class="">
+                                <div id="canvas_resource" style="min-width: 500px; height: 500px;margin: 0 auto"></div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="" style="display:none;" id="dialog-import" title="{:L('IMPORT_DATA')}">
-	<div class="spiner-example">
+    <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
             <div class="sk-bounce1"></div>
             <div class="sk-bounce2"></div>
@@ -342,7 +548,7 @@ $(function(){
     </div>
 </div>
 <div class="" style="display:none;" id="dialog-role-info" title="员工信息">
-	<div class="spiner-example">
+    <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
             <div class="sk-bounce1"></div>
             <div class="sk-bounce2"></div>
@@ -488,10 +694,10 @@ $(function(){
 <script type="text/javascript">
     $(function () {
 
-        $(".role_info").click(function(){
+        $(".role_info").click(function () {
             var role_id = $(this).attr('rel');
             $('#dialog-role-info').dialog('open');
-            $('#dialog-role-info').load('{:U("user/dialoginfo","id=")}'+role_id);
+            $('#dialog-role-info').load('{:U("user/dialoginfo","id=")}' + role_id);
         });
 
         $("#dialog-role-info").dialog({
@@ -499,7 +705,7 @@ $(function(){
             modal: true,
             width: 600,
             maxHeight: 550,
-            position: ["center",100]
+            position: ["center", 100]
         });
 
         //
@@ -517,45 +723,49 @@ $(function(){
         startDate: '{$start_date}',
         endDate: '{$end_date}',
         //minDate: '01/01/2012',    //最小时间
-        maxDate : moment(), //最大时间
-        showDropdowns : true,
-        showWeekNumbers : false, //是否显示第几周
+        maxDate: moment(), //最大时间
+        showDropdowns: true,
+        showWeekNumbers: false, //是否显示第几周
         // timePicker : true, //是否显示小时和分钟
         // timePickerIncrement : 60, //时间的增量，单位为分钟
-        timePicker12Hour : false, //是否使用12小时制来显示时间
-        ranges : {
+        timePicker12Hour: false, //是否使用12小时制来显示时间
+        ranges: {
             //'最近1小时': [moment().subtract('hours',1), moment()],
             '今日': [moment().startOf('day'), moment()],
             '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
-            '上月': [moment().subtract('days', '{$daterange[0][start_day]}'), moment().subtract('days', '{$daterange[0][end_day]}')],
+            '上月': [moment().subtract('days', '{$daterange[0][start_day]}'), moment().subtract('days',
+                '{$daterange[0][end_day]}')],
             '本月': [moment().subtract('days', '{$daterange[1][start_day]}'), moment()],
-            '上季度': [moment().subtract('days', '{$daterange[2][start_day]}'), moment().subtract('days', '{$daterange[2][end_day]}')],
+            '上季度': [moment().subtract('days', '{$daterange[2][start_day]}'), moment().subtract('days',
+                '{$daterange[2][end_day]}')],
             '本季度': [moment().subtract('days', '{$daterange[3][start_day]}'), moment()],
-            '上一年': [moment().subtract('days', '{$daterange[4][start_day]}'), moment().subtract('days', '{$daterange[4][end_day]}')],
+            '上一年': [moment().subtract('days', '{$daterange[4][start_day]}'), moment().subtract('days',
+                '{$daterange[4][end_day]}')],
             '本年': [moment().subtract('days', '{$daterange[5][start_day]}'), moment()],
             // '最近7日': [moment().subtract('days', 6), moment()],
             // '最近30日': [moment().subtract('days', 29), moment()]
         },
-        opens : 'right', //日期选择框的弹出位置
-        buttonClasses : [ 'btn btn-default' ],
-        applyClass : 'btn-small btn-primary blue',
-        cancelClass : 'btn-small',
-        separator : ' to ',
-        locale : {
-            applyLabel : '确定',
-            cancelLabel : '取消',
-            fromLabel : '起始时间',
-            toLabel : '结束时间',
-            customRangeLabel : '自定义',
-            daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
-            monthNames: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
-            firstDay : 1 ,
-            format : 'YYYY-MM-DD', //控件中from和to 显示的日期格式
+        opens: 'right', //日期选择框的弹出位置
+        buttonClasses: ['btn btn-default'],
+        applyClass: 'btn-small btn-primary blue',
+        cancelClass: 'btn-small',
+        separator: ' to ',
+        locale: {
+            applyLabel: '确定',
+            cancelLabel: '取消',
+            fromLabel: '起始时间',
+            toLabel: '结束时间',
+            customRangeLabel: '自定义',
+            daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+            monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            firstDay: 1,
+            format: 'YYYY-MM-DD', //控件中from和to 显示的日期格式
         },
         "alwaysShowCalendars": true,
-        function(start, end, label) {
+        function (start, end, label) {
             //回调
-            $('#reservation').val(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD HH:mm:ss'));
+            $('#reservation').val(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format(
+                'YYYY-MM-DD HH:mm:ss'));
             // console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
         }
     });
@@ -565,7 +775,7 @@ $(function(){
         modal: true,
         width: 1000,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -573,21 +783,29 @@ $(function(){
         }
     });
 
-	$(".hknum").click(function () {
-	    var id = $(this).attr("data-id");
+    $(".hknum").click(function () {
+        var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-hknum").dialog('option',{title:'回款个数('+num+')'}).dialog('open');
-        $("#dialog-hknum").load('{:U("leads/dialoghk",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-hknum").dialog('option', {
+            title: '回款个数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-hknum").load(
+            '{:U("leads/dialoghk",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' + id +
+            "&roleIds={$roleIds}");
     })
     //callistnum
     $(".callistnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
         // if($(this).attr("rel") == '')
-            $("#dialog-callistnum").dialog('option',{title:'callist数('+num+')'}).dialog('open');
+        $("#dialog-callistnum").dialog('option', {
+            title: 'callist数(' + num + ')'
+        }).dialog('open');
         // else
         //     $("#dialog-callistnum").dialog('option',{title:'callist数('+$(this).attr("rel")+')'}).dialog('open');
-        $("#dialog-callistnum").load('{:U("leads/dialogcallist",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-callistnum").load(
+            '{:U("leads/dialogcallist",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' + id +
+            "&roleIds={$roleIds}");
     })
 
     $("#dialog-callistnum").dialog({
@@ -595,7 +813,7 @@ $(function(){
         modal: true,
         width: 1500,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -603,15 +821,19 @@ $(function(){
         }
     });
 
-	//cc备注
+    //cc备注
     $(".ccnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
         // if($(this).attr("rel") == '')
-        $("#dialog-ccnum").dialog('option',{title:'cc备注('+num+')'}).dialog('open');
+        $("#dialog-ccnum").dialog('option', {
+            title: 'cc备注(' + num + ')'
+        }).dialog('open');
         // else
         //     $("#dialog-ccnum").dialog('option',{title:'cc备注('+$(this).attr("rel")+')'}).dialog('open');
-        $("#dialog-ccnum").load('{:U("leads/dialogcc",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-ccnum").load(
+            '{:U("leads/dialogcc",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' + id +
+            "&roleIds={$roleIds}");
     })
 
     $("#dialog-ccnum").dialog({
@@ -619,7 +841,7 @@ $(function(){
         modal: true,
         width: 1500,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -630,8 +852,12 @@ $(function(){
     $(".bdnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-bdnum").dialog('option',{title:'新增BD数('+num+')'}).dialog('open');
-        $("#dialog-bdnum").load('{:U("leads/dialogbd",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-bdnum").dialog('option', {
+            title: '新增BD数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-bdnum").load(
+            '{:U("leads/dialogbd",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' + id +
+            "&roleIds={$roleIds}");
     })
 
     $("#dialog-bdnum").dialog({
@@ -639,25 +865,29 @@ $(function(){
         modal: true,
         width: 1500,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
             }
         }
     });
-	$(".customernum").click(function () {
+    $(".customernum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-customernum").dialog('option',{title:'新增客户数('+num+')'}).dialog('open');
-        $("#dialog-customernum").load('{:U("leads/dialogcustomer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-customernum").dialog('option', {
+            title: '新增客户数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-customernum").load(
+            '{:U("leads/dialogcustomer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' + id +
+            "&roleIds={$roleIds}");
     })
     $("#dialog-customernum").dialog({
         autoOpen: false,
         modal: true,
         width: 1300,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -668,15 +898,19 @@ $(function(){
     $(".projectnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-projectnum").dialog('option',{title:'新增项目数('+num+')'}).dialog('open');
-        $("#dialog-projectnum").load('{:U("leads/dialogprojectnum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-projectnum").dialog('option', {
+            title: '新增项目数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-projectnum").load(
+            '{:U("leads/dialogprojectnum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' +
+            id + "&roleIds={$roleIds}");
     })
     $("#dialog-projectnum").dialog({
         autoOpen: false,
         modal: true,
         width: 1300,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -684,54 +918,66 @@ $(function(){
         }
     });
 
-	$(".resumenum").click(function () {
+    $(".resumenum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-resumenum").dialog('option',{title:'新增简历数('+num+')'}).dialog('open');
-        $("#dialog-resumenum").load('{:U("leads/dialogresumenum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-resumenum").dialog('option', {
+            title: '新增简历数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-resumenum").load(
+            '{:U("leads/dialogresumenum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' +
+            id + "&roleIds={$roleIds}");
     })
     $("#dialog-resumenum").dialog({
         autoOpen: false,
         modal: true,
         width: 1300,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
             }
         }
     });
-	$(".finenum").click(function () {
+    $(".finenum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-finenum").dialog('option',{title:'推荐简历数('+num+')'}).dialog('open');
-        $("#dialog-finenum").load('{:U("leads/dialogfinenum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-finenum").dialog('option', {
+            title: '推荐简历数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-finenum").load(
+            '{:U("leads/dialogfinenum",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' + id +
+            "&roleIds={$roleIds}");
     })
     $("#dialog-finenum").dialog({
         autoOpen: false,
         modal: true,
         width: 1300,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
             }
         }
     });
-	$(".interviewnum").click(function () {
+    $(".interviewnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-interview").dialog('option',{title:'面试人数('+num+')'}).dialog('open');
-        $("#dialog-interview").load('{:U("leads/dialoginterview",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-interview").dialog('option', {
+            title: '面试人数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-interview").load(
+            '{:U("leads/dialoginterview",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' +
+            id + "&roleIds={$roleIds}");
     })
     $("#dialog-interview").dialog({
         autoOpen: false,
         modal: true,
         width: 1300,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -741,15 +987,19 @@ $(function(){
     $(".interviewtnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-interviewt").dialog('option',{title:'面试次数('+num+')'}).dialog('open');
-        $("#dialog-interviewt").load('{:U("leads/dialoginterviewt",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-interviewt").dialog('option', {
+            title: '面试次数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-interviewt").load(
+            '{:U("leads/dialoginterviewt",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' +
+            id + "&roleIds={$roleIds}");
     })
     $("#dialog-interviewt").dialog({
         autoOpen: false,
         modal: true,
         width: 1300,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -758,16 +1008,20 @@ $(function(){
     });
     $(".presentnum").click(function () {
         var id = $(this).attr("data-id");
-        var num =  $(this).text();
-        $("#dialog-present").dialog('option',{title:'到场数('+num+')'}).dialog('open');
-        $("#dialog-present").load('{:U("leads/dialogpresent",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
+        var num = $(this).text();
+        $("#dialog-present").dialog('option', {
+            title: '到场数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-present").load(
+            '{:U("leads/dialogpresent",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' + id +
+            "&roleIds={$roleIds}");
     })
     $("#dialog-present").dialog({
         autoOpen: false,
         modal: true,
         width: 1300,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -777,15 +1031,19 @@ $(function(){
     $(".offernum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-offer").dialog('option',{title:'offer数('+num+')'}).dialog('open');
-        $("#dialog-offer").load('{:U("leads/dialogoffer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
+        $("#dialog-offer").dialog('option', {
+            title: 'offer数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-offer").load(
+            '{:U("leads/dialogoffer",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' + id +
+            "&roleIds={$roleIds}");
     });
     $("#dialog-offer").dialog({
         autoOpen: false,
         modal: true,
         width: 1300,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -795,15 +1053,19 @@ $(function(){
     $(".offerdnum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-offerd").dialog('option',{title:'掉offer数('+num+')'}).dialog('open');
-        $("#dialog-offerd").load('{:U("leads/dialogofferd",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id+"&roleIds={$roleIds}");
+        $("#dialog-offerd").dialog('option', {
+            title: '掉offer数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-offerd").load(
+            '{:U("leads/dialogofferd",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' + id +
+            "&roleIds={$roleIds}");
     })
     $("#dialog-offerd").dialog({
         autoOpen: false,
         modal: true,
         width: 1300,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -813,15 +1075,19 @@ $(function(){
     $(".enternum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-enter").dialog('option',{title:'入职数('+num+')'}).dialog('open');
-        $("#dialog-enter").load('{:U("leads/dialogenter",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-enter").dialog('option', {
+            title: '入职数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-enter").load(
+            '{:U("leads/dialogenter",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' + id +
+            "&roleIds={$roleIds}");
     })
     $("#dialog-enter").dialog({
         autoOpen: false,
         modal: true,
         width: 1300,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -831,15 +1097,19 @@ $(function(){
     $(".safenum").click(function () {
         var id = $(this).attr("data-id");
         var num = $(this).text();
-        $("#dialog-safe").dialog('option',{title:'过保数('+num+')'}).dialog('open');
-        $("#dialog-safe").load('{:U("leads/dialogsafe",array("start_date"=>$start_time,"end_date"=>$end_time))}&id='+id +"&roleIds={$roleIds}");
+        $("#dialog-safe").dialog('option', {
+            title: '过保数(' + num + ')'
+        }).dialog('open');
+        $("#dialog-safe").load(
+            '{:U("leads/dialogsafe",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' + id +
+            "&roleIds={$roleIds}");
     })
     $("#dialog-safe").dialog({
         autoOpen: false,
         modal: true,
         width: 1300,
         maxHeight: 700,
-        position: ["center",100],
+        position: ["center", 100],
         buttons: {
             "确定": function () {
                 $(this).dialog("close");
@@ -847,105 +1117,106 @@ $(function(){
         }
     });
 
-	$(function () {
-		var chart1;
-		$(document).ready(function () {
-			$('#canvas_resource').highcharts({
-				chart1: {
-					plotBackgroundColor: null,
-					plotBorderWidth: null,
-					plotShadow: false
-				},
-				title: {
-					text: "{:L('STATISTICAL_SOURCE', array($field['source'],$total_report['add_count']))}"
-				},
-				tooltip: {
-					pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>',
-					percentageDecimals: 1
-				},
-				plotOptions: {
-					pie: {
-						allowPointSelect: true,
-						cursor: 'pointer',
-						dataLabels: {
-							enabled: false
-						},
-						showInLegend: true
-					}
-				},
-				series: [{
-					type: 'pie',
-					name: "{$field['source']}占比",
-					data: [
-						{$source_count}
-					]
-				}]
-			});
-		});
-	});
+    $(function () {
+        var chart1;
+        $(document).ready(function () {
+            $('#canvas_resource').highcharts({
+                chart1: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: "{:L('STATISTICAL_SOURCE', array($field['source'],$total_report['add_count']))}"
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>',
+                    percentageDecimals: 1
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: "{$field['source']}占比",
+                    data: [{
+                        $source_count
+                    }]
+                }]
+            });
+        });
+    });
 
-	$(function(){
-		$("#show_report").click(function(){
-			$(this).addClass('active').parent().siblings().find('a').removeClass('active');
-			$("#report_content").removeClass('hidden').siblings().addClass('hidden');
-		});
-		$("#show_source").click(function(){
-			$(this).addClass('active').parent().siblings().find('a').removeClass('active');
-			$("#source_content").removeClass('hidden').siblings().addClass('hidden');
-		});
-	});
+    $(function () {
+        $("#show_report").click(function () {
+            $(this).addClass('active').parent().siblings().find('a').removeClass('active');
+            $("#report_content").removeClass('hidden').siblings().addClass('hidden');
+        });
+        $("#show_source").click(function () {
+            $(this).addClass('active').parent().siblings().find('a').removeClass('active');
+            $("#source_content").removeClass('hidden').siblings().addClass('hidden');
+        });
+    });
 
-	function changeRole(){
-		department_id = $("#department option:selected").val();
-		$.ajax({
-			type:'get',
-			url:'index.php?m=user&a=getrolebydepartment&department_id='+department_id,
-			async:true,
-			success:function(data){
-				options = '';
-				if(data.data != null){
-					$.each(data.data, function(k, v){
-                        options += '<span id="'+v.role_id+'">'+v.role_name+"-"+v.user_name+'</span>';
-					});
+    function changeRole() {
+        department_id = $("#department option:selected").val();
+        $.ajax({
+            type: 'get',
+            url: 'index.php?m=user&a=getrolebydepartment&department_id=' + department_id,
+            async: true,
+            success: function (data) {
+                options = '';
+                if (data.data != null) {
+                    $.each(data.data, function (k, v) {
+                        options += '<span id="' + v.role_id + '">' + v.role_name + "-" + v
+                            .user_name + '</span>';
+                    });
                 }
                 $('.role').html('全部');
                 $('#role').val('')
-				$(".checkBox").html(options);
-			},
-			dataType:'json'});
-	}
-    function choose(ev){
-        $('.chooseBox').css('display','block')
+                $(".checkBox").html(options);
+            },
+            dataType: 'json'
+        });
     }
-	$("#user_type").click(function(){
-		var user_type = $(this).is(':checked');
-		var between_date = $('#reservation').val();
-		if(user_type == true){
-			window.location.href = "{:U('leads/analytics','content_id=1'.'&between_date=')}"+between_date;
-		}else{
-			window.location.href = "{:U('leads/analytics','&content_id=1'.'&between_date=')}"+between_date+'&user_type=1';
-		}
-	});
+    $("#user_type").click(function () {
+        var user_type = $(this).is(':checked');
+        var between_date = $('#reservation').val();
+        if (user_type == true) {
+            window.location.href = "{:U('leads/analytics','content_id=1'.'&between_date=')}" + between_date;
+        } else {
+            window.location.href = "{:U('leads/analytics','&content_id=1'.'&between_date=')}" + between_date +
+                '&user_type=1';
+        }
+    });
 
-	<if condition="$_GET['department'] and $_GET['department'] neq 'all'">
-	// $("#department option[value='{$Think.get.department}']").prop("selected", true);
-    // changeRole();
-	</if>
+    <
+    if condition = "$_GET['department'] and $_GET['department'] neq 'all'" >
+        // $("#department option[value='{$Think.get.department}']").prop("selected", true);
+        // changeRole();
+        <
+        /if>
 </script>
 <include file="Public:footer" />
 <style>
-    table tbody tr{
+    table tbody tr {
         cursor: inherit;
     }
-    
 </style>
 <script>
-
     $('#btnExport').click(function () {
         var between_date = $('#reservation').val();
         var department_id = $("#department option:selected").val();
         var role = $("#role").val();
-        var url = '{:U("leads/analytics")}&isExport=1&role='+role+'&between_date='+between_date+'&department='+department_id;
-         window.location.href = url;
+        var url = '{:U("leads/analytics")}&isExport=1&role=' + role + '&between_date=' + between_date +
+            '&department=' + department_id;
+        window.location.href = url;
     });
 </script>
