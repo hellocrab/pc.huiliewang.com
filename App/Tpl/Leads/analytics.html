@@ -908,7 +908,7 @@ $(function(){
                         options += '<span id="'+v.role_id+'">'+v.role_name+"-"+v.user_name+'</span>';
 					});
                 }
-                $('.role').empty();
+                $('.role').html('全部');
                 $('#role').val('')
 				$(".checkBox").html(options);
 			},
@@ -931,9 +931,6 @@ $(function(){
 	// $("#department option[value='{$Think.get.department}']").prop("selected", true);
     // changeRole();
 	</if>
-	<if condition="$_GET['department'] eq 'all'">
-    $("#role option[value='{$Think.get.role}']").prop("selected", true);
-	</if>
 </script>
 <include file="Public:footer" />
 <style>
@@ -947,7 +944,7 @@ $(function(){
     $('#btnExport').click(function () {
         var between_date = $('#reservation').val();
         var department_id = $("#department option:selected").val();
-        var role = $("#role option:selected").val();
+        var role = $("#role").val();
         var url = '{:U("leads/analytics")}&isExport=1&role='+role+'&between_date='+between_date+'&department='+department_id;
          window.location.href = url;
     });
