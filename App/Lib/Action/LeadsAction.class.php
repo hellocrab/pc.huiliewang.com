@@ -2246,7 +2246,10 @@ class LeadsAction extends Action
         $role_ids = [];
         $role_id_array = [];
         if (intval($_GET['role'])) {
-            $role_ids = array(intval($_GET['role']));
+//            edit by  guoqingsong 05/09
+//            $role_ids = array(intval($_GET['role']));
+            $ids = BaseUtils::getStr($_GET['role']);
+            $role_ids = explode(',',$ids);
         } else {
             if (intval($_GET['department'])) {
                 $department_id = intval($_GET['department']);
@@ -2312,10 +2315,15 @@ class LeadsAction extends Action
         $this->assign('departmentList', $departmentList);
 
         $roleList = array();
+        $roleList_checked = array();
         foreach ($below_ids as $roleId) {
             $roleList[$roleId] = getUserByRoleId($roleId);
         }
+        foreach ($role_ids as $roleId){
+            $roleList_checked[$roleId] = getUserByRoleId($roleId);
+        }
         $this->roleList = $roleList;
+        $this->roleList_checked = $roleList_checked;
         $this->roleIds = implode(',', $role_id_array);
         $dateRange = $this->timeplug();
         $this->daterange = $dateRange;
