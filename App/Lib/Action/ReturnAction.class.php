@@ -10,6 +10,12 @@ class ReturnAction extends Action
     public function _initialize(){
         $title="回款";
         $this->assign("title",$title);
+        $action = array(
+			'permission'=>array('wxadd','resume_project','add_fine_project'),
+			'allow'=>array('add', 'delete', 'anly','notepad','getnotepad','mycommont','commentshow','myreply','replyalldel','replydel','viewajax','commun_list')
+		);
+		B('Authenticate', $action);
+		$this->_permissionRes = getPerByAction(MODULE_NAME, ACTION_NAME);
     }
     //展示合同
     public function add_new(){
@@ -20,11 +26,15 @@ class ReturnAction extends Action
         foreach ($test1 as $k => $v){
             $test[]=intval($v['business_id']);
         }
+         $where['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
+        $where['_logic'] = 'OR';
+        $map['_complex'] = $where;
+        $map['is_deleted'] = 0;
         $d_v_business = D('BusinessView');
-        if(count($test))
-            $business = $d_v_business->where(['business_id'=>['not in',$test]])->select();
-        else
-            $business = $d_v_business->select();
+        if(count($test)){
+        $map['business_id'] = ['not in',$test];
+        }
+        $business = $d_v_business->where($map)->select();
         $this->assign('business',$business);
         $this->display();
     }
