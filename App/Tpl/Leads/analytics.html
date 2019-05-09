@@ -201,7 +201,7 @@ $(function(){
 													<option value="{$vo.role_id}" <if condition="$_GET['role'] eq $vo['role_id']">selected</if>>{$vo.role_name}-{$vo.user_name}</option>
 												</volist>
                                             </select> -->
-                                            <input type="text" readonly id='role' value="" style="display: none"/>
+                                            <input type="text" readonly id='role' value="" style="display: none" name='role/>
                                             <div class="role" onclick="choose()">全部</div>
                                             <div class="chooseBox">
 												<volist name="roleList" id="vo">
