@@ -320,7 +320,7 @@ class CallcenterAction extends Action
         BaseUtils::addLog("品聘批量回掉参数 ：{$contentOri}", 'callback_batch_log', '/var/log/pinping/');
         $return = 'success';
         foreach ($contents as $content) {
-            if ('fail' == $this->pinPingCallBack($content,1)) {
+            if ('fail' == $this->pinPingCallBack($content, 1)) {
                 $return = 'fail';
             }
         }
@@ -333,7 +333,7 @@ class CallcenterAction extends Action
      * @param $batch
      * @return bool
      */
-    public function pinPingCallBack($content,$batch = 0) {
+    public function pinPingCallBack($content, $batch = 0) {
         if (!$content) {
             return 'fail';
         }
@@ -364,9 +364,12 @@ class CallcenterAction extends Action
         $data['callback_time'] = time(); // 回掉时间记录
 
         $data['oss_record_url'] = '';
+        $callerNum = $recordInfo['setingNbr'];
         if ($data['recordUrl'] && $batch == 0) {
-            $callerNum = $recordInfo['setingNbr'];
             $data['oss_record_url'] = $this->fileToOss($data['recordUrl'], $sessionId, $callerNum, 1);
+        } else {
+            //发送到队列，队列处理
+            $this->fileToQueue($callerNum, $sessionId);
         }
         $res = M('phone_record')->where($where)->save($data);
         return $res === false ? 'fail' : 'success';
@@ -508,6 +511,26 @@ class CallcenterAction extends Action
         $msg = curl_exec($ch);
         $result = json_decode($msg, true);
         return $result;
+    }
+
+
+    /**
+     * @录音信息加入队列处理
+     * @param $id
+     * @param $callerNum
+     * @param $sessionId
+     * @return bool
+     */
+    private function fileToQueue($callerNum, $sessionId) {
+        $ossFile = "call_record_1/{$callerNum}/{$sessionId}.wav";
+        //加入消息队列处理数据
+        $vendorPath = realpath(__DIR__ . '/../../../vendor/');
+        require_once $vendorPath . '/autoload.php';
+        require_once $vendorPath . '/php-amqplib/RabbitMqBase.php';
+        $config = ['host' => 'localhost', 'port' => 5672, 'user' => 'guest', 'pass' => 'guest', 'vhost' => '/'];
+        $mq = new \RabbitMq\RabbitMqBase($config, 'oss_exchange', 'oss_queue');
+        $data = ['sessionId' => $sessionId, 'callerNum' => $callerNum, 'ossUrl' => $ossFile];
+        return $mq->deadMessage($data, 3);
     }
 
 }

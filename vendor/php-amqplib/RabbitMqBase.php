@@ -18,7 +18,7 @@ use  PhpAmqpLib\Wire\AMQPTable;
 class RabbitMqBase
 {
     /**
-     * @desc ³õÊ¼Á´½ÓÅäÖÃ
+     * @desc åˆå§‹é“¾æŽ¥é…ç½®
      * @var array
      */
     protected $config = [
@@ -26,60 +26,60 @@ class RabbitMqBase
     ];
 
     /**
-     * @desc ½»»»Â·ÓÉ
+     * @desc äº¤æ¢è·¯ç”±
      * @var string
      */
     protected $exchange = 'exchange021';
     /**
-     * @desc ¶ÓÁÐÃû³Æ
+     * @desc é˜Ÿåˆ—åç§°
      * @var string
      */
     protected $queueName = 'queue021';
     /**
-     * @desc ÊÇ·ñ³Ö¾Ã»¯
+     * @desc æ˜¯å¦æŒä¹…åŒ–
      * @var bool
      */
     private static $isDurable = true;
     /**
-     * @desc µ±Ç°Á¬½Ó
+     * @desc å½“å‰è¿žæŽ¥
      * @var AMQPStreamConnection
      */
     protected $connection;
     /**
-     * @desc µ±Ç°½»»»»ú
+     * @desc å½“å‰äº¤æ¢æœº
      * @var \PhpAmqpLib\Channel\AMQPChannel
      */
     protected $channel;
     /**
-     * @desc »Øµôº¯Êý
+     * @desc å›žæŽ‰å‡½æ•°
      * @var mixed
      */
     private static $callBack;
     /**
-     * ½»»»»úÀàÐÍ
+     * äº¤æ¢æœºç±»åž‹
      * @var string
      */
     private static $type = 'direct';
     /**
-     * ´íÎóÐÅÏ¢
+     * é”™è¯¯ä¿¡æ¯
      * @var string
      */
     protected $errorMessage = '';
 
 
     /**
-     *  ÅäÖÃ³õÊ¼»¯Á´½Ó
+     *  é…ç½®åˆå§‹åŒ–é“¾æŽ¥
      * RabbitMqBase constructor.
-     * @param array $config Á¬½ÓÅäÖÃÊý×é
-     * @param string $exchangeName ½»»»½øÃû×Ö
-     * @param string $queueName ¶ÓÁÐÃû×Ö
+     * @param array $config è¿žæŽ¥é…ç½®æ•°ç»„
+     * @param string $exchangeName äº¤æ¢è¿›åå­—
+     * @param string $queueName é˜Ÿåˆ—åå­—
      */
     public function __construct($config = [], $exchangeName = '', $queueName = '') {
-        //Á´½ÓÅäÖÃÉèÖÃ
+        //é“¾æŽ¥é…ç½®è®¾ç½®
         isset($config['host']) && $this->config['host'] = $config['host'];
         isset($config['port']) && $this->config['port'] = $config['port'];
         isset($config['user']) && $this->config['user'] = $config['user'];
-        isset($config['pass']) && $this->config['pass'] = $config['password'];
+        isset($config['pass']) && $this->config['pass'] = $config['pass'];
         isset($config['vhost']) && $this->config['vhost'] = $config['vhost'];
         $queueName && $this->queueName = $queueName;
         $exchangeName && $this->exchange = $exchangeName;
@@ -97,7 +97,7 @@ class RabbitMqBase
             return false;
         }
         if (!$this->connection->isConnected()) {
-            $this->errorMessage = 'Á´½ÓÒì³£';
+            $this->errorMessage = 'é“¾æŽ¥å¼‚å¸¸';
             return false;
         }
         $this->channel = $this->connection->channel();
@@ -105,7 +105,7 @@ class RabbitMqBase
 
 
     /**
-     * @desc ÉèÖÃÏûÏ¢»Øµôº¯Êý
+     * @desc è®¾ç½®æ¶ˆæ¯å›žæŽ‰å‡½æ•°
      * @param $callBack
      */
     public function setCallBack($callBack) {
@@ -113,7 +113,7 @@ class RabbitMqBase
     }
 
     /**
-     * ¹Ø±ÕÁ¬½Ó
+     * å…³é—­è¿žæŽ¥
      * @return bool
      */
     private function close() {
@@ -123,11 +123,11 @@ class RabbitMqBase
     }
 
     /**
-     * @desc ÈÕÖ¾¼ÇÂ¼
-     * @param $message ÏûÏ¢
-     * @param string $status ×´Ì¬
-     * @param string $type ÀàÐÍ¡¾ÓÃ»§¶ÓÁÐ/¡¿
-     * @param string $model Ä£Ê½ ¡¾·¢ËÍ/½ÓÊÕ¡¿
+     * @desc æ—¥å¿—è®°å½•
+     * @param $message æ¶ˆæ¯
+     * @param string $status çŠ¶æ€
+     * @param string $type ç±»åž‹ã€ç”¨æˆ·é˜Ÿåˆ—/ã€‘
+     * @param string $model æ¨¡å¼ ã€å‘é€/æŽ¥æ”¶ã€‘
      * @return bool|int|void
      */
     private function log($message, $status = 'SUCCESS', $model = 'send', $type = 'user') {
@@ -148,23 +148,23 @@ class RabbitMqBase
     }
 
     /**
-     * @desc ·¢²¼ÏûÏ¢[ÑÓ³ÙÏûÏ¢]
+     * @desc å‘å¸ƒæ¶ˆæ¯[å»¶è¿Ÿæ¶ˆæ¯]
      * @param array $mess
      * @param int $expiration
      * @return bool
      */
     public function deadMessage($mess = [], $expiration = 3000) {
         if (!$mess) {
-            $this->errorMessage = 'ÏûÏ¢Îª¿Õ';
+            $this->errorMessage = 'æ¶ˆæ¯ä¸ºç©º';
             return false;
         }
         try {
-            //ÉùÃ÷Á½¸ö¶ÓÁÐ,¸øcache·¢ËÍ  Ê¹Æä¹ýÆÚÈ»ºó¶¨Ïòµ½ÁíÒ»¸ö
+            //å£°æ˜Žä¸¤ä¸ªé˜Ÿåˆ—,ç»™cacheå‘é€  ä½¿å…¶è¿‡æœŸç„¶åŽå®šå‘åˆ°å¦ä¸€ä¸ª
             $this->channel->exchange_declare("delay_{$this->exchange}", self::$type, false, false, false);
             $this->channel->exchange_declare("cache_{$this->exchange}", self::$type, false, false, false);
-            //ÉèÖÃ¶ÓÁÐµÄ¹ýÆÚÊ±¼ä
+            //è®¾ç½®é˜Ÿåˆ—çš„è¿‡æœŸæ—¶é—´
             $tale = new AMQPTable();
-            // ±íÊ¾¹ýÆÚºóÓÉÄÄ¸öexchange´¦Àí
+            // è¡¨ç¤ºè¿‡æœŸåŽç”±å“ªä¸ªexchangeå¤„ç†
             $tale->set('x-dead-letter-exchange', "delay_{$this->exchange}");
             $tale->set('x-dead-letter-routing-key', "delay_{$this->exchange}_key");
 //        $tale->set('x-message-ttl', intval($ttl));
@@ -175,7 +175,7 @@ class RabbitMqBase
             $this->channel->queue_declare("delay_{$this->queueName}", false, self::$isDurable, false, false, false);
             $this->channel->queue_bind("delay_{$this->queueName}", "delay_{$this->exchange}", "delay_{$this->exchange}_key");
 
-            //ÏûÏ¢
+            //æ¶ˆæ¯
             if (!empty($mess) && is_array($mess)) {
                 $mess = json_encode($mess);
             }
@@ -183,7 +183,7 @@ class RabbitMqBase
                 'expiration' => intval($expiration),
                 'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT
             ]);
-            //¼ÓÈë¶ÓÁÐ
+            //åŠ å…¥é˜Ÿåˆ—
             $this->channel->basic_publish($msg, "cache_{$this->exchange}", "cache_{$this->exchange}_key");
         } catch (\Exception $e) {
             $this->log($mess, 'ERROR: ' . $e->getMessage());
@@ -191,13 +191,13 @@ class RabbitMqBase
             return false;
         }
         $this->close();
-        //¼ÇÂ¼ÈÕÖ¾
+        //è®°å½•æ—¥å¿—
         $this->log($mess);
         return true;
     }
 
     /**
-     * @desc  ÏûÏ¢½ÓÊÕ
+     * @desc  æ¶ˆæ¯æŽ¥æ”¶
      * @throws \ErrorException
      */
     public function deadReceive() {
@@ -210,12 +210,12 @@ class RabbitMqBase
 
             echo ' [*] Waiting for message. To exit press CTRL+C ' . PHP_EOL;
 
-            //Ö»ÓÐconsumerÒÑ¾­´¦Àí²¢È·ÈÏÁËÉÏÒ»ÌõmessageÊ±queue²Å·ÖÅÉÐÂµÄmessage¸øËü
+            //åªæœ‰consumerå·²ç»å¤„ç†å¹¶ç¡®è®¤äº†ä¸Šä¸€æ¡messageæ—¶queueæ‰åˆ†æ´¾æ–°çš„messageç»™å®ƒ
             $this->channel->basic_qos(null, 1, null);
             $this->channel->basic_consume("delay_{$this->queueName}", '', false, false, false, false, self::$callBack);
         } catch (\Exception $e) {
             $this->errorMessage = $e->getMessage();
-            $this->log('½ÓÊÕÊý¾ÝÊ§°Ü', 'ERROR: ' . $e->getMessage(), 'receive');
+            $this->log('æŽ¥æ”¶æ•°æ®å¤±è´¥', 'ERROR: ' . $e->getMessage(), 'receive');
             return;
         }
         while (count($this->channel->callbacks)) {
