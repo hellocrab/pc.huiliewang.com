@@ -530,7 +530,7 @@ class CallcenterAction extends Action
         $config = ['host' => '47.106.49.109', 'port' => 5672, 'user' => 'test', 'pass' => 'test', 'vhost' => '/'];
         $mq = new \RabbitMq\RabbitMqBase($config, 'oss_exchange', 'oss_queue');
         $data = ['sessionId' => $sessionId, 'callerNum' => $callerNum, 'ossUrl' => $ossFile];
-        return $mq->deadMessage($data, 3);
+        return $mq->sentMess($data);
     }
 
 }
