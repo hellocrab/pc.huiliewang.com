@@ -17,6 +17,56 @@
 	body{
 		overflow-y: hidden;
 	}
+    .role{
+        color: #444;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 8px;
+    width: 100%;
+    border: 1px solid #d8e3ef;
+    cursor: pointer;
+    }
+    .role:hover{
+        outline-style: solid;
+outline-color: #5897fb;
+outline-width: 1px;
+    }
+    .chooseBox{
+        width: 100%;
+        height: 200px;
+        overflow-y: scroll;
+        box-sizing: border-box;
+        border: 1px #ccc solid;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, .2);
+        border-top:none;
+        display: none;
+        position: absolute;
+        z-index: 100;
+        background: #fff;
+    }
+    .chooseBox span{
+        display: block;
+        padding: 5px 6px;
+        font-size: 13px;
+        margin: 1px 0;
+    }
+    .chooseBox span:hover{
+        color: #fff;
+        background: #5897fb;
+    }
+    .chooseBox .choosed{
+        color: #fff;
+        background: #5897fb;
+    }
+    .role{
+        overflow : hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+-webkit-box-orient: vertical;
+height: 32px;
+    }
     table tr td{min-width: 50px;text-align: center;}
     table tr {height: 50px;}
     #oDivL_tab_Test3{background-color: #fff;z-index: inherit !important;}
@@ -34,29 +84,41 @@
 </style>
 <script>
 $(function(){
-//    var scroll_width = 7;
-//	$("#table_div").height(window.innerHeight-$("#table_div").offset().top-$("#tfoot_div").height()-30);
-//	$(window).resize(function(){
-//		$("#table_div").height(window.innerHeight-$("#table_div").offset().top-$("#tfoot_div").height()-30);
-//		$("#oDivL_tab_Test3").height($("#table_div").height()).width($("#oTableLH_tab_Test3").width());
-//		$("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width());
-//	});
-//
-//	$(".nicescroll").niceScroll({
-//		cursorcolor: "#999",//#CC0071 光标颜色
-//	    cursoropacitymax: 0.4, //改变不透明度非常光标处于活动状态（scrollabar“可见”状态），范围从1到0
-//	    touchbehavior: false, //使光标拖动滚动像在台式电脑触摸设备
-//	    cursorwidth: scroll_width+"px", //像素光标的宽度
-//	    cursorborder: "0", //     游标边框css定义
-//	    cursorborderradius: "3px",//以像素为光标边界半径
-//	    autohidemode: false, //是否隐藏滚动条
-//	    zindex:100,
-//	    background:"#F3F3F5",//滚动条背景色
-//	});
-//	$("#tab_Test3").FrozenTable(1,0,1);
-//	$("#oDivL_tab_Test3").height($("#table_div").height()).width($("#oTableLH_tab_Test3").width());
-//	$("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width());
-
+    $('.chooseBox span').click(ev=>{
+        if($(ev.target).hasClass('choosed')){
+            $(ev.target).removeClass('choosed');
+            let temp = (document.querySelector('#role').value+'').split(',');
+            let str = $('.role').html().trim().split(',');
+            temp.map((val,index)=>{
+                if(val == $(ev.target)[0].id)temp.splice(index,1);
+            })
+            str.map((val,index)=>{
+                if(val == $(ev.target).html().trim())str.splice(index,1);
+            })
+            temp = temp.join(',');
+            if(str.length==0)str.push('全部');
+            str = str.join(',');
+            if(temp.substr(0,1) == ',')temp = temp.substr(1);
+            document.querySelector('#role').value = temp;
+            $('.role').html(str);
+        }
+        else{
+            $(ev.target).addClass('choosed');
+            let temp = (document.querySelector('#role').value+'').split(',');
+            let str = $('.role').html().trim().split(',');
+            temp.push($(ev.target)[0].id);
+            str.push($(ev.target).html().trim())
+            temp = temp.join(',');
+            str = str.join(',')
+            if(temp.substr(0,1) == ',')temp = temp.substr(1);
+            if(str.substr(0,2) == '全部')str = str.substr(3);
+            document.querySelector('#role').value = temp;
+            $('.role').html(str);
+        }
+    })
+    $('.chooseBox').on('mouseleave',ev=>{$('.chooseBox').css('display','none')})
+    $('.chooseBox').on('mouseenter',ev=>{$('.chooseBox').css('display','block')})
+    $('.role').on('mouseleave',ev=>{$('.chooseBox').css('display','none')})
     var scroll_width = 10;
     $("#table_div").height(window.innerHeight-$("#table_div").offset().top-$("#tfoot_div").height()-20);
     $(window).resize(function(){
@@ -132,13 +194,20 @@ $(function(){
 										</div>
                                     </div>
 									<div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
-										<div class="input-group">
-											<select class="form-control input-sm select2" style="min-width:165px;max-width: 165px;height: 0px;display:none;" name="role" id="role" onchange="changeCondition()">
+										<div class="input-group" style="width:100%">
+											<!-- <select class="form-control input-sm select2" style="min-width:165px;max-width: 165px;height: 0px;display:none;" name="role" id="role" onchange="changeCondition()">
 												<option class="all" value="all">{:L('ALL')}</option>
 												<volist name="roleList" id="vo">
 													<option value="{$vo.role_id}" <if condition="$_GET['role'] eq $vo['role_id']">selected</if>>{$vo.role_name}-{$vo.user_name}</option>
 												</volist>
-											</select>
+                                            </select> -->
+                                            <input type="text" readonly id='role' value="" style="display: none"/>
+                                            <div class="role" onclick="choose()">全部</div>
+                                            <div class="chooseBox">
+												<volist name="roleList" id="vo">
+													<span id="{$vo.role_id}" <if condition="$_GET['role'] eq $vo['role_id']">selected</if>>{$vo.role_name}-{$vo.user_name}</span>
+												</volist>
+                                            </div>
 										</div>
 									</div>
 									<div class="pull-left" style="margin-left: 20px;">
@@ -833,20 +902,21 @@ $(function(){
 			url:'index.php?m=user&a=getrolebydepartment&department_id='+department_id,
 			async:true,
 			success:function(data){
-				options = '<option value="all">{:L('All')}</option>';
+				options = '';
 				if(data.data != null){
 					$.each(data.data, function(k, v){
-                        options += '<option value="'+v.role_id+'">'+v.role_name+"-"+v.user_name+'</option>';
+                        options += '<span id="'+v.role_id+'">'+v.role_name+"-"+v.user_name+'</span>';
 					});
-				}
-				$("#role").html(options);
-				<if condition="$_GET['role']">
-				$("#role option[value='{$Think.get.role}']").prop("selected", true);
-				</if>
+                }
+                $('.role').empty();
+                $('#role').val('')
+				$(".checkBox").html(options);
 			},
 			dataType:'json'});
 	}
-
+    function choose(ev){
+        $('.chooseBox').css('display','block')
+    }
 	$("#user_type").click(function(){
 		var user_type = $(this).is(':checked');
 		var between_date = $('#reservation').val();
@@ -860,11 +930,9 @@ $(function(){
 	<if condition="$_GET['department'] and $_GET['department'] neq 'all'">
 	// $("#department option[value='{$Think.get.department}']").prop("selected", true);
     // changeRole();
-    456487
 	</if>
 	<if condition="$_GET['department'] eq 'all'">
     $("#role option[value='{$Think.get.role}']").prop("selected", true);
-    789456
 	</if>
 </script>
 <include file="Public:footer" />
@@ -872,6 +940,7 @@ $(function(){
     table tbody tr{
         cursor: inherit;
     }
+    
 </style>
 <script>
 
