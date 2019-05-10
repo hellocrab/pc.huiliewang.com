@@ -115,22 +115,7 @@
     function choose(ev) {
         $('.chooseBox').css('display', 'block')
     }
-    $(function () {
-        let choStr = '{$roleList_checked}';
-        let choObj = JSON.parse(choStr);
-        if (typeof choObj == 'object') {
-            let roleIdArr = [];
-            let roleNameArr = [];
-            for (let key in choObj) {
-                $('.chooseBox #' + choObj[key].role_id).addClass('choosed');
-                roleIdArr.push(choObj[key].role_id);
-                roleNameArr.push(choObj[key].role_name+'-'+choObj[key].user_name);
-            }
-            if(roleNameArr.length!=0){
-                $('.role').html(roleNameArr.join(','));
-            $('#role').val(roleIdArr.join(','))
-            }
-        }
+    function bindClick(){
         $('.chooseBox span').click(ev => {
             if ($(ev.target).hasClass('choosed')) {
                 $(ev.target).removeClass('choosed');
@@ -162,6 +147,24 @@
                 $('.role').html(str);
             }
         })
+    }
+    $(function () {
+        let choStr = '{$roleList_checked}';
+        let choObj = JSON.parse(choStr);
+        if (typeof choObj == 'object') {
+            let roleIdArr = [];
+            let roleNameArr = [];
+            for (let key in choObj) {
+                $('.chooseBox #' + choObj[key].role_id).addClass('choosed');
+                roleIdArr.push(choObj[key].role_id);
+                roleNameArr.push(choObj[key].role_name+'-'+choObj[key].user_name);
+            }
+            if(roleNameArr.length!=0){
+                $('.role').html(roleNameArr.join(','));
+                $('#role').val(roleIdArr.join(','))
+            }
+        }
+        bindClick()
         $('.chooseBox').on('mouseleave', ev => {
             $('.chooseBox').css('display', 'none')
         })
@@ -1183,6 +1186,7 @@
                 $('#role').val('');
                 $(".chooseBox").empty();
                 $(".chooseBox").html(options);
+                bindClick();
             },
             dataType: 'json'
         });
