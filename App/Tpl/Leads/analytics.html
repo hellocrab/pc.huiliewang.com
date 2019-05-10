@@ -126,8 +126,10 @@
                 roleIdArr.push(choObj[key].role_id);
                 roleNameArr.push(choObj[key].role_name+'-'+choObj[key].user_name);
             }
-            $('.role').html(roleNameArr.join(','));
+            if(roleNameArr.length!=0){
+                $('.role').html(roleNameArr.join(','));
             $('#role').val(roleIdArr.join(','))
+            }
         }
         $('.chooseBox span').click(ev => {
             if ($(ev.target).hasClass('choosed')) {
@@ -1146,9 +1148,7 @@
                 series: [{
                     type: 'pie',
                     name: "{$field['source']}占比",
-                    data: [{
-                        $source_count
-                    }]
+                    data: [{$source_count}]
                 }]
             });
         });
@@ -1180,8 +1180,9 @@
                     });
                 }
                 $('.role').html('全部');
-                $('#role').val('')
-                $(".checkBox").html(options);
+                $('#role').val('');
+                $(".chooseBox").empty();
+                $(".chooseBox").html(options);
             },
             dataType: 'json'
         });
@@ -1197,12 +1198,10 @@
         }
     });
 
-    <
-    if condition = "$_GET['department'] and $_GET['department'] neq 'all'" >
+    <if condition = "$_GET['department'] and $_GET['department'] neq 'all'" >
         // $("#department option[value='{$Think.get.department}']").prop("selected", true);
         // changeRole();
-        <
-        /if>
+        </if>
 </script>
 <include file="Public:footer" />
 <style>
