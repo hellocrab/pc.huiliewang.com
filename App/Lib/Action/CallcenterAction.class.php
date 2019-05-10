@@ -527,10 +527,10 @@ class CallcenterAction extends Action
         $vendorPath = realpath(__DIR__ . '/../../../vendor/');
         require_once $vendorPath . '/autoload.php';
         require_once $vendorPath . '/php-amqplib/RabbitMqBase.php';
-        $config = ['host' => '47.106.49.109', 'port' => 5672, 'user' => 'test', 'pass' => 'test', 'vhost' => '/'];
+        $config = ['host' => '172.18.69.145', 'port' => 5672, 'user' => 'test', 'pass' => 'test', 'vhost' => '/'];
         $mq = new \RabbitMq\RabbitMqBase($config, 'oss_exchange', 'oss_queue');
         $data = ['sessionId' => $sessionId, 'callerNum' => $callerNum, 'ossUrl' => $ossFile];
-        return $mq->deadMessage($data, 3);
+        return $mq->sentMess($data);
     }
 
 }

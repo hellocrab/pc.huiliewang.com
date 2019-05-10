@@ -14,6 +14,7 @@ date_default_timezone_set('PRC');
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use  PhpAmqpLib\Wire\AMQPTable;
+use think\Exception;
 
 class RabbitMqBase
 {
@@ -213,6 +214,61 @@ class RabbitMqBase
             //只有consumer已经处理并确认了上一条message时queue才分派新的message给它
             $this->channel->basic_qos(null, 1, null);
             $this->channel->basic_consume("delay_{$this->queueName}", '', false, false, false, false, self::$callBack);
+        } catch (\Exception $e) {
+            $this->errorMessage = $e->getMessage();
+            $this->log('接收数据失败', 'ERROR: ' . $e->getMessage(), 'receive');
+            return;
+        }
+        while (count($this->channel->callbacks)) {
+            $this->channel->wait();
+        }
+        $this->close();
+
+    }
+
+    /**
+     * @desc 普通消息发送
+     * @param $mess
+     * @return bool
+     */
+    public function sentMess($mess) {
+        if (!$mess) {
+            $this->errorMessage = '消息为空';
+            return false;
+        }
+        try {
+            $this->channel->queue_declare($this->queueName, false, true, false, false);
+            $this->channel->exchange_declare($this->exchange, self::$type, false, false, false);
+            $this->channel->queue_bind($this->queueName, $this->exchange);
+            //消息
+            if (!empty($mess) && is_array($mess)) {
+                $mess = json_encode($mess);
+            }
+            $messageBody = $mess;
+            $message = new AMQPMessage($messageBody, array('content_type' => 'text/plain', 'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT));
+            $this->channel->basic_publish($message, $this->exchange);
+        } catch (\Exception $e) {
+            $this->log($mess, 'ERROR: ' . $e->getMessage());
+            $this->errorMessage = $e->getMessage();
+            return false;
+        }
+        $this->close();
+        //记录日志
+        $this->log($mess);
+        return true;
+    }
+
+    /**
+     * @desc 普通消息接受
+     * @throws \ErrorException
+     */
+    public function receiveMess() {
+        try {
+            $this->channel->queue_declare($this->queueName, false, true, false, false);
+            $this->channel->exchange_declare($this->exchange, self::$type, false, false, false);
+            $this->channel->queue_bind($this->queueName, $this->exchange);
+            $this->channel->basic_qos(null, 1, null);
+            $this->channel->basic_consume($this->queueName, '', false, false, false, false, self::$callBack);
         } catch (\Exception $e) {
             $this->errorMessage = $e->getMessage();
             $this->log('接收数据失败', 'ERROR: ' . $e->getMessage(), 'receive');
