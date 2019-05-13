@@ -170,7 +170,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">手机：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required mobile" type="text" id="telphone" name="telephone" value="{$resume.telephone}">
+                                        <input class="form-control mobile" type="text" id="telphone" name="telephone" value="{$resume.telephone}">
                                         <span id="sketchTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -188,45 +188,45 @@
                                             <label for="sex">女</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-2"></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">所在城市：</label>
                                     <div class="col-md-6">
                                         <input data-selector="dqs" data-option="1" class="text" type="text" placeholder="选择目前所在地区" id="dqs" name="location" data-ui="LocalDataUIB" style="display: none;width:100%;height:40px;"/>
                                     </div>
-                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-1"></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">意向城市：</label>
                                     <div class="col-md-6">
                                         <input data-selector="wantdqs" class="text" type="text" placeholder="选择期望工作城市" id="wantdqs" name="intentCity" data-ui="LocalDataUIB" style="display: none;width: 100%;" />
                                     </div>
-                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-1"></div>
                                 </div>
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">行业：</label>
                                     <div class="col-md-6">
-                                        <input  data-selector="industrys" class="text required" type="text" placeholder="请选择行业" id="industrys" name="industry" data-ui="LocalDataUID" style="display: none;width:100%;height:40px;" aria-required="true" rell="行业"  value="{$resume.industry}"  />
+                                        <input  data-selector="industrys" class="text" type="text" placeholder="请选择行业" id="industrys" name="industry" data-ui="LocalDataUID" style="display: none;width:100%;height:40px;" aria-required="true" rell="行业"  value="{$resume.industry}"  />
                                     </div>
-                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-1"></div>
 
                                 </div>
 
                                 <div  class="form-group">
                                     <label class="col-md-3 control-label">职能：</label>
                                     <div class="col-md-6">
-                                        <input data-selector="jobtitles" class="text required" type="text" placeholder="请选择职能"  id="jobtitles" name="job_class" data-ui="LocalDataUID" style="display: none;width:100%;height:40px;" aria-required="true" required  value="{$resume.job_class}"/>
+                                        <input data-selector="jobtitles" class="text" type="text" placeholder="请选择职能"  id="jobtitles" name="job_class" data-ui="LocalDataUID" style="display: none;width:100%;height:40px;" aria-required="true" required  value="{$resume.job_class}"/>
                                     </div>
-                                    <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-1"></div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">出生年月：</label>
                                     <div class="col-sm-6">
-                                        <input class="form-control text-center required timerinput" id="birday" data-color="birday" type="text"  onFocus="WdatePicker({dateFmt:'yyyy-MM', maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;height: 32px;text-align: left;" >
+                                        <input class="form-control text-center timerinput" id="birday" data-color="birday" type="text"  onFocus="WdatePicker({dateFmt:'yyyy-MM', maxDate:'2038-01-01'})" readonly="readonly" name="birthday" style="width: 100%;height: 32px;text-align: left;" >
                                     </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-2"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">邮箱：</label>
@@ -239,7 +239,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">学历：</label>
                                     <div class="col-md-6">
-                                        <select class="form-control required" id="education" name="edu" aria-required="true">
+                                        <select class="form-control" id="education" name="edu" aria-required="true">
                                             <option value="高中">高中</option>
                                             <option value="中专">中专</option>
                                             <option value="大专">大专</option>
@@ -251,7 +251,7 @@
                                         </select>
                                         <span style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-2"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">开始工作时间：</label>
@@ -263,18 +263,17 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">目前公司：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" data-color="ccompany" type="text" id="ccompany" name="curCompany" value="{$resume.curCompany}">
-                                        <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
+                                        <input class="form-control " data-color="ccompany" type="text" id="ccompany" name="curCompany" value="{$resume.curCompany}">
                                     </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-2"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">目前职位：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control required" data-color="cposition" type="text" id="cposition" name="curPosition" value="{$resume.curPosition}">
+                                        <input class="form-control" data-color="cposition" type="text" id="cposition" name="curPosition" value="{$resume.curPosition}">
                                         <span id="" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
-                                    <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                    <div class="col-md-2"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">目前年薪：</label>
@@ -731,6 +730,7 @@
                     var wantdqs= $("#wantdqs").val();
                     // var telephone=$("#telphone").val();
                     var telephone=$("input[name=telephone]").val();
+                    var email = $('#email').val();
                     //添加出生年月、目前公司、目前职位的判断
                     var birday = $('#birday').val();
                     var ccompany = $('#ccompany').val();
@@ -742,54 +742,63 @@
                     $("input[data-selector=dqs]").val(dqs);
                     $("input[data-selector=wantdqs]").val(wantdqs);
 
-                    if(industrys){
-                        $("span[data-name=industry]").find("input").css("border","1px solid #d8e3ef");
+                    //手机或者邮箱
+                    if(!telephone && !email){
+                        alert_crm('请填写电话或邮箱任一项!');
+                        $("input[name=telephone]").css("border","1px solid #d8e3ef");
+                        $('#email').css("border","1px solid #d8e3ef");
+                    }else{
+                        flag = true;
                     }
-                    if(jobtitles){
-                        $("span[data-name=job_class]").find("input").css("border","1px solid #d8e3ef");
-                    }
-                    if(dqs){
-                        $("span[data-name=location]").find("input").css("border","1px solid #d8e3ef");
-                    }
-                    if(wantdqs){
-                        $("span[data-name=intentCity]").find("input").css("border","1px solid #d8e3ef");
-                    }
-                    if(industrys=="" || industrys==null){
-                        alert_crm("请填写行业信息！");
-                        $("span[data-name=industry]").find("input").css("border","1px dotted #cc5965");
-                        return;
-                    }
-                    if(jobtitles=="" || jobtitles==null){
-                        alert_crm("请填写职能信息！");
-                        $("span[data-name=job_class]").find("input").css("border","1px dotted #cc5965");
-                        return;
-                    }
-                    if(dqs=="" || dqs==null){
-                        alert_crm("请填写所在城市信息！");
-                        $("span[data-name=location]").find("input").css("border","1px dotted #cc5965");
-                        return;
-                    }
-                    if(wantdqs=="" || wantdqs==null){
-                        alert_crm("请选择意向城市！");
-                        $("span[data-name=intentCity]").find("input").css("border","1px dotted #cc5965");
-                        return;
-                    }
+                    // if(industrys){
+                    //     $("span[data-name=industry]").find("input").css("border","1px solid #d8e3ef");
+                    // }
+                    // if(jobtitles){
+                    //     $("span[data-name=job_class]").find("input").css("border","1px solid #d8e3ef");
+                    // }
+                    // if(dqs){
+                    //     $("span[data-name=location]").find("input").css("border","1px solid #d8e3ef");
+                    // }
+                    // if(wantdqs){
+                    //     $("span[data-name=intentCity]").find("input").css("border","1px solid #d8e3ef");
+                    // }
+                    // if(industrys=="" || industrys==null){
+                    //     alert_crm("请填写行业信息！");
+                    //     $("span[data-name=industry]").find("input").css("border","1px dotted #cc5965");
+                    //     return;
+                    // }
+                    // if(jobtitles=="" || jobtitles==null){
+                    //     alert_crm("请填写职能信息！");
+                    //     $("span[data-name=job_class]").find("input").css("border","1px dotted #cc5965");
+                    //     return;
+                    // }
+                    // if(dqs=="" || dqs==null){
+                    //     alert_crm("请填写所在城市信息！");
+                    //     $("span[data-name=location]").find("input").css("border","1px dotted #cc5965");
+                    //     return;
+                    // }
+                    // if(wantdqs=="" || wantdqs==null){
+                    //     alert_crm("请选择意向城市！");
+                    //     $("span[data-name=intentCity]").find("input").css("border","1px dotted #cc5965");
+                    //     return;
+                    // }
                     //添加出生年月、目前公司、目前职位的判断
-                    if(birday=="" || birday==null){
-                        alert_crm("请填写行业信息！");
-                        $("span[data-name=birday]").find("input").css("border","1px dotted #cc5965");
-                        return;
-                    }
-                    if(ccompany=="" || ccompany==null){
-                        alert_crm("请填写行业信息！");
-                        $("span[data-name=ccompany]").find("input").css("border","1px dotted #cc5965");
-                        return;
-                    }
-                    if(cposition=="" || cposition==null){
-                        alert_crm("请填写行业信息！");
-                        $("span[data-name=cposition]").find("input").css("border","1px dotted #cc5965");
-                        return;
-                    }
+                    // if(birday=="" || birday==null){
+                    //     alert_crm("请填写行业信息！");
+                    //     $("span[data-name=birday]").find("input").css("border","1px dotted #cc5965");
+                    //     return;
+                    // }
+                    // if(ccompany=="" || ccompany==null){
+                    //     alert_crm("请填写行业信息！");
+                    //     $("span[data-name=ccompany]").find("input").css("border","1px dotted #cc5965");
+                    //     return;
+                    // }
+                    // if(cposition=="" || cposition==null){
+                    //     alert_crm("请填写行业信息！");
+                    //     $("span[data-name=cposition]").find("input").css("border","1px dotted #cc5965");
+                    //     return;
+                    // }
+                    if(telephone)
                     $.ajax({
                         url:"/index.php?m=product&a=check_tel",
                         type:"post",
@@ -811,7 +820,7 @@
                         }
                     });
 
-                    if(dqs && jobtitles && industrys && wantdqs && flag && birday && ccompany && cposition){
+                    if(flag){
                         form.submit();
                     }
 
