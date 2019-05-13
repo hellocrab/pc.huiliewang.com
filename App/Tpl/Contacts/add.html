@@ -82,7 +82,7 @@ $(function(){
 							<label class="col-md-4 control-label">职位：</label>
 							<div class="col-md-6">
 								<input class="form-control "  type="text" id="post" name="post"  value="" placeholder="" /><span id="postTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
-							<div class="col-md-2"></div>
+							<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
 						</div><!-- 主要字段 -->
 						<div class="form-group">
 							<label class="col-md-4 control-label">手机：</label>
@@ -252,6 +252,9 @@ $(document).ready(function(){
                 alert_crm('请填写手机或座机任一项');
                 $("#telephone").css("border","1px dotted #cc5965");
                 $("#crm_ljgmqr").css("border","1px dotted #cc5965");
+			}else if($('#post').val() == ""){
+			    alert_crm('请填写职位!');
+			    $('#post').css("border","1px dotted #cc5965");
 			}else{
 				$('#save_submit').click(function(){
 					$('#save_submit').prop('disabled',true);
