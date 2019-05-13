@@ -197,8 +197,8 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">维护人：</label>
                                             <div class="col-md-6">
-                                                <input type="hidden" name="joiner" id="user_id" value="" />
-                                                <input class="form-control required" aria-required="true" placeholder="请点击选择"  type="text" name="joiner_name" id="user_name" value="" readonly="true" style="cursor:pointer;" title="请点击选择"/>
+                                                <input type="hidden" name="joiner" id="user_id" value="{$Think.session.role_id}" />
+                                                <input class="form-control required" aria-required="true" placeholder="请点击选择"  type="text" name="joiner_name" id="user_name" value="{$Think.session.name}" readonly="true" style="cursor:pointer;" title="请点击选择"/>
                                             </div>
                                             <div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
                                         </div>
