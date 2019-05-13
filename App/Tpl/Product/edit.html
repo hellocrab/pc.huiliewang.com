@@ -351,8 +351,8 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-2 control-label">时间<span class="text-danger"></span></label>
                                                         <div class="col-sm-9">
-                                                            <input class="form-control text-center timerinput required" id="workyearFrom" type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;"><span>-&gt;</span>
-                                                            <input class="form-control text-center timerinput required" id="workyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})"  readonly="readonly" name="workExp[endtime][]" style="height: 32px;">
+                                                            <input class="form-control text-center timerinput " id="workyearFrom" type="text" placeholder="年-月"   onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="workExp[starttime][]" style="height: 32px;"><span>-&gt;</span>
+                                                            <input class="form-control text-center timerinput " id="workyearEnd" type="text" placeholder="年-月"    onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})"  readonly="readonly" name="workExp[endtime][]" style="height: 32px;">
                                                             <div class="checkbox checkbox-info checkbox-inline" style="vertical-align: baseline;">
                                                                 <input type="checkbox">
                                                                 <label>目前在职<span class="text-danger"></span></label>
@@ -419,7 +419,7 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-2 control-label">学校名称<span class="text-danger"></span></label>
                                                         <div class="col-sm-9">
-                                                            <input class="form-control required" type="text" name="eduExp[schoolName][]" id="schoolName" value="{$vo.schoolName}">
+                                                            <input class="form-control" type="text" name="eduExp[schoolName][]" id="schoolName" value="{$vo.schoolName}">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -427,7 +427,7 @@
                                                         <div class="col-sm-3">
                                                             <input class="form-control " type="text" id="majorName" name="eduExp[majorName][]" value="{$vo.majorName}">
                                                         </div>
-                                                        <label class="col-sm-2 control-label">学历<span class="text-danger">*</span></label>
+                                                        <label class="col-sm-2 control-label">学历<span class="text-danger"></span></label>
                                                         <div class="col-md-3">
                                                             <select class="form-control " id="degree" name="eduExp[degree][]" aria-required="true" data-value="{$vo.degree}">
                                                                 <option value="专科">专科</option>
@@ -472,8 +472,8 @@
                                                         <div class="form-group">
                                                             <label class="col-sm-2 control-label">时间<span class="text-danger"></span></label>
                                                             <div class="col-sm-10">
-                                                                <input class="form-control text-center timerinput required" id="projectyearFrom" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[starttime][]" <if condition="$vo.starttime neq '0'">value="{$vo.starttime|date="Y-m",###}"</if>><span>-&gt;</span>
-                                                                <input class="form-control text-center timerinput required" id="projectyearEnd" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[endtime][]" <if condition="$vo.starttime neq '0'"> value="{$vo.endtime|date="Y-m",###}"</if>>
+                                                                <input class="form-control text-center timerinput " id="projectyearFrom" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[starttime][]" <if condition="$vo.starttime neq '0'">value="{$vo.starttime|date="Y-m",###}"</if>><span>-&gt;</span>
+                                                                <input class="form-control text-center timerinput " id="projectyearEnd" type="text" placeholder="年-月" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'2038-01-01'})" readonly="readonly" name="projectExp[endtime][]" <if condition="$vo.starttime neq '0'"> value="{$vo.endtime|date="Y-m",###}"</if>>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">

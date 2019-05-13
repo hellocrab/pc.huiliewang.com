@@ -58,7 +58,7 @@ function expadd(exp) {
             '<div class="form-group" >\n' +
             '<label class="col-sm-2 control-label">学校名称<span class="text-danger"></span></label>\n' +
             '<div class="col-sm-9">\n' +
-            '<input class="form-control " type="text" name="eduExp[schoolName][]">\n' +
+            '<input class="form-control" type="text" name="eduExp[schoolName][]">\n' +
             '</div>\n' +
             '</div>\n' +
             '<div class="form-group">\n' +
