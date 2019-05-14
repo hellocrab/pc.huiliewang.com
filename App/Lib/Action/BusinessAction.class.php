@@ -2174,7 +2174,8 @@ class BusinessAction extends Action
             unset($_POST['id']);
             $_POST['role_id'] = session("role_id");
             $_POST['fine_id'] = $id;
-
+            //凑合文件id
+            $_POST['file_id'] = implode(',',$_POST['file']);
             if ($_POST['key']) {
                 $result = M("fine_project_offer")->where("id=%d", $_POST['key'])->save($_POST);
             } else {
@@ -2209,7 +2210,7 @@ class BusinessAction extends Action
         if ($this->isPost()) {
             unset($_POST['id']);
             $_POST['fine_id'] = $id;
-
+            $_POST['file_id'] =implode(',',$_POST['file']);
             $_POST['role_id'] = session('role_id');
             if ($_POST['key']) {
                 $result = M("fine_project_enter")->where("id=%d", $_POST['key'])->save($_POST);

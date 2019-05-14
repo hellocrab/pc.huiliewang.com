@@ -59,7 +59,7 @@
                <td style="text-align: right;"><label style="color: red;">*</label>预计收入:</td>
                <td style="padding-left: 20px;">
                    <div>
-                       <input type="text" class="form-control " name="income"  placeholder="元" maxlength="3"  value="{$list['income']}">
+                       <input type="text" class="form-control " name="income"  placeholder="元" maxlength="500"  value="{$list['income']}">
                    </div>
                </td>
            </tr>
@@ -91,7 +91,12 @@
                <td style="text-align: right;"><label style="color: red;">*</label>上传offer附件:</td>
                <td style="padding-left: 20px;">
                    <div>
-
+                       <input type="button" class="btn btn-primary addfile" name="submit_file" value="+上传offer附件"><br>
+                       <div class="file_list"></div>
+                       <div id="filecontent" class="hide">
+                           <span class="tishiinfo"><img src="/Public/img/addFile.png"><span class="fujian">附件</span></span>
+                           <span id="addfilediv">本次共添加了<span id="file_num"></span>文件,总大小<span id="file_size"></span>KB&nbsp;<a href="javascript:;" style="color: #5a8ee2;" onclick="delall();">全部删除</a></span>
+                       </div>
                    </div>
                </td>
            </tr>
@@ -142,8 +147,119 @@
             $(this).css("border","1px solid #d8e3ef");
         })
 
+        $(".addfile").click(function(){
+            $('#dialog-file').dialog('open');
+            $('#dialog-file').load('{:U("file/addlogfile")}');
+        });
+
+        $("#dialog-file").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 800,
+            maxHeight: 400,
+            position: ["center",100],
+            buttons: {
+                "确定": function () {
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:'{:U("file/getfiles")}',
+                        data:$('#uploadForm').serialize(),
+                        async: false,
+                        success: function(data) {
+                            var result = data.data.file_list;
+                            $('#filecontent').removeAttr('class');
+                            var temp = '';
+                            if(result){
+                                $.each(result,function(k,v){
+                                    temp += '<div class="showfile" id="del_'+v.file_id+'"><input type="hidden" name="file[]" value="'+v.file_id+'"/><img src="__PUBLIC__/productImg/'+v.pic+'">&nbsp;<span style="color:#646464;">'+v.name+'&nbsp;(&nbsp;'+v.size+'KB&nbsp;)</span>&nbsp;&nbsp;<a href="javascript:;" rel="'+v.file_id+'" onclick="del_file(this);"><img src="__PUBLIC__/img/delfile.png"/></a></div>';
+                                });
+                                $('#addfilediv').before(temp);
+                                var old_file_num = Number($('#file_num').html());
+                                var old_file_size = Number($('#file_size').html());
+                                var new_file_num = old_file_num+data.data.file_num;
+                                var new_file_size = old_file_size+data.data.file_size;
+                                $('#file_num').html(new_file_num);
+                                $('#file_size').html(new_file_size);
+                            }
+
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "取消": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
     })
 
+    //全部删除 函数
+    function delall(){
+        swal({
+                title: "您确定要删除附件信息吗？",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "删除",
+                cancelButtonText: "取消",
+                closeOnConfirm: false
+            },
+            function(isConfirm){
+                if (isConfirm) {
+                    $('.showfile').each(function(){
+                        var id = $(this).find('input[type="hidden"]').val();
+                        del_obj(id);
+                    });
+                }else{
+                    return false;
+                }
+            });
+    }
 
-
+    //删除 函数
+    function del_obj(id){
+        var module = 'contract';
+        $.post("{:U('file/filedel')}",{file_id:id,module:module},function(data){
+                if(data.status == 1){
+                    $('#del_'+id).remove();
+                    swal("删除成功！", "你的文件被删除了", "success");
+                    if($('.showfile').length > 0){
+                        return true;
+                    }else{
+                        $('#filecontent').addClass('hide');
+                    }
+                }else{
+                    swal({
+                        title: "提示",
+                        text: data.info,
+                        type: "error"
+                    });
+                }
+            },"json"
+        );
+    }
+    //删除
+    function del_file(obj){
+        var id = $(obj).attr('rel');
+        swal({
+                title: "您确定要删除附件信息吗？",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "删除",
+                cancelButtonText: "取消",
+                closeOnConfirm: false
+            },
+            function(isConfirm){
+                if (isConfirm) {
+                    del_obj(id);
+                }else{
+                    return false;
+                }
+            });
+    }
 </script>
