@@ -213,7 +213,7 @@
                                     <label class="col-md-3 control-label">手机：</label>
                                     <div class="col-md-6">
                                         <!--<label style="display: inline-block;height: 32px;line-height: 32px;">{$resume.telephone}</label>-->
-                                        <input class="form-control mobile" type="text" id="telephone" name="telephone" value="{$resume.telephone}">
+                                        <input class="form-control mobile" type="text" id="telephone1" name="telephone" value="{$resume.telephone}">
                                         <span id="sketchTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
                                     <div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -685,12 +685,12 @@
                     $("input[data-selector=wantdqs]").val(wantdqs);
 
 
-                    var telephone = $('#telephone').val();
+                    var telephone = $('#telephone1').val();
                     var email = $('#email').val();
                     //手机或者邮箱
                     if(!telephone && !email){
-                        $("#telephone").css("border","1px solid #d8e3ef");
-                        $('#email').css("border","1px solid #d8e3ef");
+                        $("#telephone1").css("border","1px solid #ee0000");
+                        $('#email').css("border","1px solid #ee0000");
                         alert_crm('请填写电话或邮箱任一项!');
                     }else{
                         flag = true;

@@ -39,6 +39,7 @@
                 <td>所属客户</td>
                 <td>年薪</td>
                 <td>offer签订日期</td>
+                <td>预计入职时间</td>
                 <td>预计离职时间</td>
                 <td>备注</td>
                 <td>操作时间</td>
@@ -59,6 +60,7 @@
                     <td style="min-width: 80px;"><a href="{:U('customer/view', 'id='.$vo['customer_id'])}" target="_blank">{$vo.customer_name}</a></td>
                     <td style="min-width: 80px;">{$vo.YearSalary}</td>
                     <td style="min-width: 80px;">{$vo.offertime}</td>
+                    <td style="min-width: 80px;">{$vo.entertime}</td>
                     <td style="min-width: 80px;">{$vo.leavetime}</td>
                     <td style="min-width: 80px;">{$vo.remarks}</td>
                     <td style="min-width: 80px;">{$vo.addtime|date='Y-m-d ',###}</td>

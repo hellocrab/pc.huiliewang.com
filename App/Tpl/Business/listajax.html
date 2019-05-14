@@ -2067,7 +2067,21 @@
             "确定": function () {
                 var YearSalary=$("input[name=YearSalary]").val();
                 var offertime=$("input[name=offertime]").val();
+                var income=$('input[name=income]').val();
+                var timeenter = $('input[name=entertime]').val();
+                var reg = /^\d{1,3}\.\d{2}$/;
+                var flag = YearSalary.match(reg);
                 if(YearSalary==""){
+                    $("input[name=YearSalary]").css("border","1px dotted #cc5965");
+                    return false;
+                }
+                if(flag){
+                    if(YearSalary>500){
+                    alert_crm("数值范围请在0~500之间,且保留两位小数");
+                    $("input[name=YearSalary]").css("border","1px dotted #cc5965");
+                    return false;}
+                }else{
+                    alert_crm("数值范围请在0~500之间,且保留两位小数");
                     $("input[name=YearSalary]").css("border","1px dotted #cc5965");
                     return false;
                 }
@@ -2075,8 +2089,16 @@
                     $("input[name=offertime]").css("border","1px dotted #cc5965");
                     return false;
                 }
-                $('#status_form6').submit();
-                $(this).dialog("close");
+                if(income==""){
+                    $('input[name=income]').css("border","1px dotted #cc5965");
+                    return false;
+                }
+                if(timeenter==""){
+                    $('input[name=entertime]').css("border","1px dotted #cc5965");
+                    return false;
+                }
+                // $('#status_form6').submit();
+                // $(this).dialog("close");
             },
             "取消": function () {
                 //selectStatus();//更新

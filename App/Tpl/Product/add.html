@@ -170,7 +170,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">手机：</label>
                                     <div class="col-md-6">
-                                        <input class="form-control mobile" type="text" id="telphone" name="telephone" value="{$resume.telephone}">
+                                        <input class="form-control mobile" type="text" id="telphonee" name="telephone" value="{$resume.telephone}">
                                         <span id="sketchTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>
                                     </div>
                                     <div class="col-md-1"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
@@ -745,8 +745,8 @@
                     //手机或者邮箱
                     if(!telephone && !email){
                         alert_crm('请填写电话或邮箱任一项!');
-                        $("input[name=telephone]").css("border","1px solid #d8e3ef");
-                        $('#email').css("border","1px solid #d8e3ef");
+                        $("#telphonee").css("border","1px solid #ee0000");
+                        $('#email').css("border","1px solid #ee0000");
                     }else{
                         flag = true;
                     }

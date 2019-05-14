@@ -40,7 +40,10 @@
            <tr height="50">
                <td style="text-align: right;"><label style="color: red;">*</label>年薪:</td>
                <td style="padding-left: 20px;">
-                   <input type="text" class="form-control timerinput" name="YearSalary" value="{$list['YearSalary']}"  id="YearSalary"  placeholder="元" maxlength="200">
+                    <input type="number" class="form-control " name="YearSalary" value="{$list['YearSalary']}" placeholder="数值在0~500之间,且保留两位小数" id="YearSalary"  maxlength="6">
+               </td>
+               <td style="text-align: left;">
+                   <label>万</label>
                </td>
            </tr>
            <tr  height="50">
@@ -48,15 +51,24 @@
                <td style="padding-left: 20px;">
                    <div>
                        <input type="hidden" class="xxtime" value="" name="xxtime">
-                       <input type="text" readonly="readonly" class="form-control timerinput"  name="offertime"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm', minDate:&quot;#F{$dp.$D('timestart')}&quot;,maxDate:'2038-01-01'})"  placeholder="请选择面试时间" value="{$list['offertime']}" >
+                       <input type="text" readonly="readonly" class="form-control timerinput"  name="offertime"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm', minDate:&quot;#F{$dp.$D('timestart')}&quot;,maxDate:'2038-01-01'})"  placeholder="请选择时间" value="{$list['offertime']}" >
                    </div>
                </td>
            </tr>
            <tr  height="50">
-               <td style="text-align: right;">预计收入:</td>
+               <td style="text-align: right;"><label style="color: red;">*</label>预计收入:</td>
                <td style="padding-left: 20px;">
                    <div>
-                       <input type="text" class="form-control timerinput" name="income"  placeholder="元" maxlength="200"  value="{$list['income']}">
+                       <input type="text" class="form-control " name="income"  placeholder="元" maxlength="3"  value="{$list['income']}">
+                   </div>
+               </td>
+           </tr>
+           <tr  height="50">
+               <td style="text-align: right;"><label style="color: red;">*</label>预计入职时间:</td>
+               <td style="padding-left: 20px;">
+                   <div>
+                       <input type="hidden" class="xxtime" value="" name="xxtime">
+                       <input type="text" readonly="readonly" class="form-control timerinput"  id="timeenter" name="entertime"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm', minDate:&quot;#F{$dp.$D('timestart')}&quot;,maxDate:'2038-01-01'})"  placeholder="请选择时间" value="{$list['leavetime']}" >
                    </div>
                </td>
            </tr>
@@ -65,7 +77,7 @@
                <td style="padding-left: 20px;">
                    <div>
                        <input type="hidden" class="xxtime" value="" name="xxtime">
-                       <input type="text" readonly="readonly" class="form-control timerinput"  id="timestart" name="leavetime"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm', minDate:&quot;#F{$dp.$D('timestart')}&quot;,maxDate:'2038-01-01'})"  placeholder="请选择面试时间" value="{$list['leavetime']}" >
+                       <input type="text" readonly="readonly" class="form-control timerinput"  id="timestart" name="leavetime"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm', minDate:&quot;#F{$dp.$D('timestart')}&quot;,maxDate:'2038-01-01'})"  placeholder="请选择时间" value="{$list['leavetime']}" >
                    </div>
                </td>
            </tr>
@@ -75,7 +87,14 @@
                    <textarea col="3" row="5" name="remarks" class="ccbeizhu" placeholder="请填写备注（最多不超过1000字）" maxlength="1000" style="margin-top: 10px;"> {$list['remarks']}</textarea>
                </td>
            </tr>
+           <tr>
+               <td style="text-align: right;"><label style="color: red;">*</label>上传offer附件:</td>
+               <td style="padding-left: 20px;">
+                   <div>
 
+                   </div>
+               </td>
+           </tr>
 
        </table>
     </div>
