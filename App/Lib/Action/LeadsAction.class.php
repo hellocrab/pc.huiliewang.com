@@ -2250,11 +2250,22 @@ class LeadsAction extends Action
 //            $role_ids = array(intval($_GET['role']));
             $ids = BaseUtils::getStr($_GET['role']);
             $role_ids = explode(',',$ids);
-        } else {
+            unset($below_ids);
+            $below_ids =[];
             if (intval($_GET['department'])) {
                 $department_id = intval($_GET['department']);
                 foreach (getRoleByDepartmentId($department_id, true) as $k => $v) {
+                    $below_ids[] = $v['role_id'];
+                }
+            }
+        } else {
+            if (intval($_GET['department'])) {
+                unset($below_ids);
+                $below_ids =[];
+                $department_id = intval($_GET['department']);
+                foreach (getRoleByDepartmentId($department_id, true) as $k => $v) {
                     $role_ids[] = $v['role_id'];
+                    $below_ids[] = $v['role_id'];
                 }
             } else {
                 $role_id_array = $below_ids;
