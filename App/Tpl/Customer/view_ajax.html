@@ -86,9 +86,9 @@
 	        <!--<a href="#tab8" data-toggle="tab" type="tab8">操作记录</a>-->
 	    <!--</li>-->
 	<!--</if>-->
-    <!--<li class="">-->
-        <!--<a href="#tab7" data-toggle="tab" type="tab7">附件</a>-->
-    <!--</li>-->
+    <li class="">
+        <a href="#tab7" data-toggle="tab" type="tab7">附件</a>
+    </li>
 
    <!--  <div class="nav pull-right">
         <if condition = "$is_business_code eq 1">
@@ -930,7 +930,7 @@
 							{$vo.size}KB
 						</td>
 						<td>
-							<notempty name="vo.owner.user_name"><a class="role_info" rel="{$vo['owner']['role_id']}" href="javascript:void(0)">{$vo.owner.user_name}</a></notempty>
+							<notempty name="vo.owner.full_name"><a class="role_info" rel="{$vo['owner']['role_id']}" href="javascript:void(0)">{$vo.owner.full_name}</a></notempty>
 						</td>
 						<td>
 							<notempty name="vo.create_date">{$vo.create_date|date="Y-m-d H:i",###}</notempty>

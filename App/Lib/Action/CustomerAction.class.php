@@ -2275,6 +2275,12 @@ class CustomerAction extends Action {
         }
         $this->contract_list = $contract_list;
 
+        $file = M('RCustomerFile')->where("customer_id=%d", I('id'))->getField('file_id',true);
+        $file_info = M('file')->where(array('file_id'=>array('in',$file)))->select();
+        foreach ($file_info as $k=>$v){
+            $file_info[$k]['owner'] = M('User')->where(array('role_id'=>$v['role_id']))->find();
+        }
+        $this->file_info = $file_info;
 
         $this->alert = parseAlert();
         $this->display();
