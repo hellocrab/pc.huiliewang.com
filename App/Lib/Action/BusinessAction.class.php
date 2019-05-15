@@ -1400,6 +1400,10 @@ class BusinessAction extends Action
     {
         $where['fine_id'] = $fine_id;
         $project['offer_content'] = M("fine_project_offer")->where($where)->select();
+        foreach ($project['offer_content'] as $k => $v){
+            $file_ids = $v['file_id'];
+            $project['offer_content'][$k]['file'] = M('file')->where(array('file_id'=>array('in',explode(',', $file_ids))))->select();
+        }
 //        var_dump($project['offer_content']);exit();
         $where['status'] = 6;
         $project['offer_remark'] = M("fine_project_bz")->where($where)->select();
@@ -1455,6 +1459,10 @@ class BusinessAction extends Action
     {
         $where['fine_id'] = $fine_id;
         $project['enter_content'] = M("fine_project_enter")->where($where)->select();
+        foreach ($project['enter_content'] as $k => $v){
+            $file_ids = $v['file_id'];
+            $project['enter_content'][$k]['file'] = M('file')->where(array('file_id'=>array('in',explode(',', $file_ids))))->select();
+        }
 //        var_dump($project['offer_content']);exit();
         $where['status'] = 7;
         $project['enter_remark'] = M("fine_project_bz")->where($where)->select();
