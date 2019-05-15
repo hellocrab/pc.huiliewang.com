@@ -424,8 +424,10 @@
                 // });
 				var industry = $("input[name=industry]").val();
 				var area = $("#city_area").val();
+				var flag = 0;
                 if($('.ftw').html() != '') flag = 1;
                 if($('.te').html() != '') flag = 2;
+                alert(flag);return;
                 var introduce = $('#introduce').val();
                 var name = $('#con_name').val();
 				var tel = $('#con_telphone').val();
@@ -440,10 +442,10 @@
                     alert_crm("请填写所属行业！");
                     return;
                 }
-                if(!area || area == null){
-                    alert_crm("请填写公司地址！");
-                    return;
-                }
+                // if(!area || area == null){
+                //     alert_crm("请填写公司地址！");
+                //     return;
+                // }
                 if(dqs=="" || dqs==null){
                     alert_crm("请填写所在城市信息！");
                     return;
