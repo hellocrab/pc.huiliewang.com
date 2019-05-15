@@ -2177,6 +2177,14 @@ class BusinessAction extends Action
         $this->assign("project", $project);
         if (I("key")) {
             $this->list = M("fine_project_offer")->where("id=%d", I("key"))->find();
+            $data = $this->getFile($id,'FineProjectOffer');
+            $temp = '';
+            foreach ($data['file_list'] as $k => $v){
+                $temp .= '<div class="showfile" id="del_'.$v['file_id'].'"><input type="hidden" name="file[]" value="'.$v['file_id'].'"/><img src="__PUBLIC__/productImg/'.$v['pic'].'">&nbsp;<span style="color:#646464;">'.$v['name'].'&nbsp;(&nbsp;'.$v['size'].'KB&nbsp;)</span>&nbsp;&nbsp;<a href="javascript:;" rel="'.$v['file_id'].'" onclick="del_file(this);"><img src="__PUBLIC__/img/delfile.png"/></a></div>';
+            }
+            $this->assign('temp',$temp);
+            $this->assign('file_num',$data['file_num']);
+            $this->assign('file_size',$data['file_size']);
         }
         if ($this->isPost()) {
             unset($_POST['id']);
@@ -2205,6 +2213,23 @@ class BusinessAction extends Action
         $this->display();
     }
 
+    public function getFile($fid,$db){
+        $file_id = M($db)->where("fine_id=%d", $fid)->getField('file_id');
+        $where['file_id'] = array('in',explode(',',$file_id));
+        $file_list = M('File')->where($where)->select();
+        $file_size_count = M('File')->where($where)->sum('size');
+        $file_num = 0;
+        $file_size = '';
+        foreach ($file_list as $key => $value) {
+            $file_list[$key]['size'] = ceil($value['size']/1024);
+            $file_list[$key]['pic'] = show_picture($value['name']);
+        }
+        $data['file_list'] = $file_list;
+        $data['file_num'] = sizeof($file_list);
+        $data['file_size'] = ceil($file_size_count/1024);
+        return $data;
+    }
+
     //推荐反馈
     public function ruzhi()
     {
@@ -2212,6 +2237,14 @@ class BusinessAction extends Action
         $project = D("ProjectView")->where("id=%d", $id)->field("project_id,status,resume_id,name")->find();
         if (I("key")) {
             $this->list = M("fine_project_enter")->where("id=%d", I("key"))->find();
+            $data = $this->getFile($id,'FineProjectEnter');
+            $temp = '';
+            foreach ($data['file_list'] as $k => $v){
+                $temp .= '<div class="showfile" id="del_'.$v['file_id'].'"><input type="hidden" name="file[]" value="'.$v['file_id'].'"/><img src="__PUBLIC__/productImg/'.$v['pic'].'">&nbsp;<span style="color:#646464;">'.$v['name'].'&nbsp;(&nbsp;'.$v['size'].'KB&nbsp;)</span>&nbsp;&nbsp;<a href="javascript:;" rel="'.$v['file_id'].'" onclick="del_file(this);"><img src="__PUBLIC__/img/delfile.png"/></a></div>';
+            }
+            $this->assign('temp',$temp);
+            $this->assign('file_num',$data['file_num']);
+            $this->assign('file_size',$data['file_size']);
         }
 //            $project = $this->fine_project($project);
         $this->assign("project", $project);

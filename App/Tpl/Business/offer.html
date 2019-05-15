@@ -93,9 +93,9 @@
                    <div>
                        <input type="button" class="btn btn-primary addfile" name="submit_file" value="+上传offer附件"><br>
                        <div class="file_list"></div>
-                       <div id="filecontent" class="hide">
+                       <div id="filecontent" <if condition="$temp eq ''">class="hide"</if>>
                            <span class="tishiinfo"><img src="/Public/img/addFile.png"><span class="fujian">附件</span></span>
-                           <span id="addfilediv">本次共添加了<span id="file_num"></span>文件,总大小<span id="file_size"></span>KB&nbsp;<a href="javascript:;" style="color: #5a8ee2;" onclick="delall();">全部删除</a></span>
+                           <span id="addfilediv">{$temp}本次共添加了<span id="file_num">{$file_num}</span>文件,总大小<span id="file_size">{$file_size}</span>KB&nbsp;<a href="javascript:;" style="color: #5a8ee2;" onclick="delall();">全部删除</a></span>
                        </div>
                    </div>
                </td>
