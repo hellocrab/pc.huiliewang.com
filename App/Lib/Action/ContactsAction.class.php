@@ -1110,4 +1110,66 @@ class ContactsAction extends Action {
         }
         $this->ajaxReturn($return);
     }
+
+    /**
+     * @desc 客户信息补充
+     * 该顾问完善信息时，如果不具备修改联系人权限则新建联系人，
+     * 新建完成后将该客户的主联系人替换为新建联系人，
+     * 如果原主联系人有联系方式则保留在联系人列表，未有联系方式则删除。
+     */
+    public function complete() {
+        $customerId = BaseUtils::getStr(I('customerId', 0), 'int');
+        $userRoleId = BaseUtils::getStr(I('userRoleId', session('role_id')), 'int');
+        $contactsId = BaseUtils::getStr(I('contacts_id', 0), 'int');
+        if (!$customerId | !$userRoleId) {
+            $this->error('参数错误');
+        }
+        //客户信息
+        $customerInfo = M('customer')->where(['customer_id' => $customerId])->find();
+        $userInfo = M('user')->where(['role_id' => $userRoleId])->find();
+        if (!$customerInfo) {
+            $this->error('客户数据错误');
+        }
+        if (!$userInfo) {
+            $this->error('用户信息不存在');
+        }
+        if (!$this->isPost()) {
+            $customerContactsId = $customerInfo['contacts_id'];
+            $contactInfo = M('contacts')->where(['contacts_id' => $customerContactsId, 'is_deleted' => 0, 'creator_role_id' => $userRoleId])->find();
+            $this->assign('customerInfo', $customerInfo);
+            $this->assign('userRoleId', $userRoleId);
+            $this->assign('contacts', $contactInfo);
+            $this->display();
+        } else {
+            //未有联系方式则删除
+            $contactsIdList = M('RContactsCustomer')->where(['customer_id' => $customerId])->select();
+            $contactsModel = M('contacts');
+            foreach ($contactsIdList as $info) {
+                $cId = $info['contacts_id'];
+                $cInfo = $contactsModel->where(['contacts_id' => $cId])->find();
+                if (!$cInfo['telephone']) {
+                    $contactsModel->where(['contacts_id' => $cId])->save(['is_deleted' => 1, 'is_deleted' => time(), 'delete_role_id' => $userRoleId]);
+                }
+            }
+            $data = $_POST;
+            $data['crm_zswstr'] && $data['sex'] = $data['crm_zswstr'];
+            //维护客户信息
+            if ($contactsId) {
+                $res = $contactsModel->where(['contacts_id' => $contactsId])->save($data);
+            } else {
+                $res = $contactsModel->add($data);
+                $contactsId = $contactsModel->getLastInsID();
+                //客户联系人关联表
+                $contactsId && M('RContactsCustomer')->add(['contacts_id' => $contactsId, 'customer_id' => $customerId]);
+                //ContactsData
+                $contactsId && M('ContactsData')->add(['contacts_id' => $contactsId]);
+            }
+            if ($res === false) {
+                $this->error('修改失败' . M('contacts')->getError());
+            }
+            //日志记录
+            actionLog($contactsId);
+            $this->error('修改成功');
+        }
+    }
 }
