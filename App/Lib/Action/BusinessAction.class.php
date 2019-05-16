@@ -1488,13 +1488,44 @@ class BusinessAction extends Action
         return $data;
     }
 
+    /*
+     * sage
+     */
+
+    public function project_safe($fine_id){
+        $where['fine_id'] = $fine_id;
+        $project['safe_content'] = M('fine_project_safe')->where($where)->select();
+        $where['status'] = 8;
+        $project['safe_remark'] = M("fine_project_bz")->where($where)->select();
+        $project['remove_remark'] = M("fine_project_bhs")->where($where)->select();
+        $map['fine_id'] = $fine_id;
+        $map['project_stage'] = 7;
+        $project['invoice'] = M("invoice")->where($where)->select();
+        foreach ($project as $key => $list) {
+            foreach ($list as $k => $li) {
+                if(($key == 'safe_content' || $key == 'safe_remark' || $key == 'remove_remark') && isset($li['role_id'])){
+                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                }
+
+                if ($key == "invoice") {
+                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
+                    $data[$li['create_time']][$key] = $li;
+                } else {
+                    $data[$li['addtime']][$key] = $li;
+                }
+            }
+        }
+        krsort($data);
+        return $data;
+    }
+
     public function listajax()
     {
         $project = D("ProjectView")->where("fine_project.id=%d", I("id"))->find();
 
         $project['tj_role_name'] = $project['tj_role_id'] > 0 ? M('user')->where(['role_id'=>$project['tj_role_id']])->getField('full_name') : $project['tracker_name'];
         $project['pass_role_name'] = $project['pass_role_id'] > 0 ? M('user')->where(['role_id'=>$project['pass_role_id']])->getField('full_name') : $project['tracker_name'];
-
+//        dump($project);die;
         $business = M("business")->where("business_id=%d", $project['project_id'])->field("pro_type")->find();
         //@edit by yanghao 2018-11-26 修改交易模式交易节点
         $this->pro_type = $business['pro_type'];
@@ -1502,8 +1533,8 @@ class BusinessAction extends Action
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3);
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试");
         } elseif ($this->pro_type == "2") {//入职快
-            $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3, "pass" => 4, "offer" => 5, "enter" => 6);
-            $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职");
+            $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3, "pass" => 4, "offer" => 5, "enter" => 6, "safe" => 7);
+            $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职","过保");
         } elseif ($this->pro_type == "3") {//专业猎头
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3, "pass" => 4, "offer" => 5, "enter" => 6, "safe" => 7);
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职", "过保");
@@ -1519,7 +1550,9 @@ class BusinessAction extends Action
         $project['interview'] = $this->project_interview(I("id"));
         $project['offer'] = $this->project_offer(I("id"));
         $project['enter'] = $this->project_enter(I("id"));
+        $project['safe'] = $this->project_safe(I('id'));
         $project['pass'] = $this->project_pass(I("id"));
+//        dump($project);die;
 //        var_dump($project['interview']);exit();
 //        $project = $this->fine_project($project);
 //        var_dump($project['tj']);exit();
@@ -1850,7 +1883,6 @@ class BusinessAction extends Action
         $id = I("id");
 
         $project = M("fine_project")->where("id=%d", $id)->find();
-
         if (I('key')) {
             $list = M("fine_project_bz")->where("id=%d", I('key'))->find();
             $this->assign("project", $list);
