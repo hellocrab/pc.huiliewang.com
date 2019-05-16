@@ -1689,9 +1689,47 @@
             </div>
 
             <div class="tab-pane fade in  listjilu <if condition='$project[status] eq safe'>active</if>" id="log7">
-                <if condition="$project['stop']">
-                    <volist name="project['remove_remark']" id="volist">
-                        <div class="listitem">
+                <if condition="$project['safe']">
+                    <volist name="project['safe']" id="volist">
+                        <volist name="volist" id="vo">
+                            <if condition="$key eq 'safe_remark'">
+                                <div class="listitem">
+                                    <div class="hangr">
+                                        <span class="icoedit">
+                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                               type="image/svg+xml"
+                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
+                                        <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
+                                    </div>
+                                    <div class="hangr" style="margin-top: 20px;">
+                                        <img src="{$project['thumb_path']}" class="imgtou">
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
+                                        <label style="margin-left: 15px;">添加了备注</label>
+                                        <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
+                                            <span class="fa fa-angle-down"></span>
+                                            <div class="btn btn-default ico_xiugai addbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                        </div>
+
+                                        <table>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">备注内容：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['beizhu']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">截止时间：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['timeend']}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </if>
+                            <if condition="$key eq 'remove_remark'">
+                            <div class="listitem">
                             <div class="hangr">
                                         <span class="icoedit">
                                         <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
@@ -1719,9 +1757,83 @@
                                 </table>
                             </div>
                         </div>
+                        </if>
+                            <if condition="$key eq 'invoice'">
+                                <div class="listitem">
+                                    <div class="hangr">
+                                    <span class="icoedit">
+                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                           type="image/svg+xml"
+                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                    </span>
+                                        <span><?php echo date('Y-m-d H:i',$vo['create_time']); ?></span>
+                                    </div>
+                                    <div class="hangr" style="margin-top: 20px;">
+                                        <img src="{$project['thumb_path']}" class="imgtou">
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
+                                        <label style="margin-left: 15px;">添加了开票</label>
+                                        <!--<div  class="pull-right icohover" style="position: relative;margin-right: 20px;">-->
+                                        <!--<span class="fa fa-angle-down"></span>-->
+                                        <!--<div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$key}">修改</div>-->
+                                        <!--</div>-->
+
+                                        <table>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">发票编号：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['name']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">费用类型：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['cost_type']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">发票类型：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['billing_type']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">发票抬头：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['invoice_header']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">税号：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['number']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">内容：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['content']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">金额：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['price']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">备注：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['description']}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </if>
+                        </volist>
                     </volist>
                 </if>
-                <div class="listitem">
+                <div class="listitem" >
                     <div class="hangr">
                         <span class="icoedit">
                         <embed src="/Public/img/svg/rili.svg" width="100%" height="100%"
@@ -1729,12 +1841,12 @@
                                pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$project['addtime']); ?></span>
-                        <a href="#" class="mal10">{$project['tracker_name']|default=''}</a>
+                        <a href="#" class="mal10">{$project['tj_role_name']}</a>
                     </div>
                     <div class="hangr" style="margin-top: 20px;">
                         <table>
                             <tr height="24px">
-                                <td style="font-size: 12px;color: #999999;">将候选人加入CallList：</td>
+                                <td style="font-size: 12px;color: #999999;">将候选人进行过保：</td>
                             </tr>
                             <tr height="24px">
                                 <td style="font-size: 12px;color: #666666;">{$project['job_name']}</td>
