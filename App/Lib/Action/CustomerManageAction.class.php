@@ -87,7 +87,7 @@ class CustomerManageAction extends Action
 
         //条件处理
         $where = [];
-        $selectFields = ['is_manual', 'is_black', 'is_perfection', 'rank', 'pro_type', 'is_manual']; //筛选字段
+        $selectFields = ['is_manual', 'is_black', 'is_perfection', 'rank', 'pro_type', 'is_manual', 'birth_month']; //筛选字段
         foreach ($params as $fields => $value) {
             if (in_array($fields, $selectFields)) {
                 $value = BaseUtils::getStr($value);

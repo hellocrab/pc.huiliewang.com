@@ -1,0 +1,230 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PUBLIC__/js/PCASClass.js" ></script>
+<style type="text/css">
+	.add_title{
+		padding-bottom:10px;
+		height: 60px;
+		margin-bottom:15px;
+	}
+	.add_title>span{
+		border-bottom: 2px solid #1ab394;
+		font-size: 24px;
+	}
+	.add_body >div >.full-height-scroll{
+		border-right:1px dotted #ccc
+	}
+	.add_body_title{
+		margin:20px auto 20px auto;
+		padding-left: 25px;
+	}
+	.add_body_form{
+		padding-left: 38px;
+	}
+	.add_body_form>form>.form-group{
+		margin-bottom: 25px;
+	}
+	body{overflow-y:hidden;}
+	.form-control{
+		float:left;
+	}
+</style>
+<script>
+	$(function(){
+		$(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+		$(window).resize(function(){
+			$(".add_body").height(window.innerHeight-$("#add_body").offset().top-$("#tfoot_div").height()-40);
+		})
+	})
+</script>
+<div class="wrapper wrapper-content animated fadeIn col-md-6">
+	<include file="Public:alert" />
+	<form class="form-horizontal" action="{:U('contacts/complete')}" method="post" id="form" role="form">
+		<input type="hidden" name="contacts_id" id="contacts_id" value="{$contacts.contacts_id|default='0'}"/>
+		<input type="hidden" name="refer_url" value="{$refer_url|default=''}"/>
+		<input type="hidden" name="userRoleId" value="{$userRoleId|default=''}"/>
+		<input type="hidden" name="customerId" value="{$customerInfo['customer_id']|default='0'}"/>
+		<div class="ibox-content add_body" id="add_body">
+			<div class="row">
+				<div class="full-height-scroll">
+					<div class="row" >
+						<div class="col-md-12 add_body_title">
+							<div class="all-inline">
+								<span class="sq-tag"></span>
+								<div class="text-tag">
+									<span>{:L('BASIC_INFO')}</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-11 add_body_form">
+							<!--自写HTML 5/05-->
+							<div class="form-group">
+								<label class="col-md-4 control-label">所属客户：</label>
+								<div class="col-md-6">
+									<div class="form-inline"><input type="hidden" name="customer_id" id="customer_id" value="{$customerInfo['customer_id']}"/><input  class="form-control pull-left required" style="width:100%" type="text" name="customer_name" id="customer_name" value="{$customerInfo['name']}"> <a target="_blank" class="btn btn-primary btn-sm pull-right" style="width:65px;display:none;" href="/index.php?m=customer&a=add">新建客户</a></div>									</div>
+								<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+							</div><!-- 主要字段 -->
+							<div class="form-group">
+								<label class="col-md-4 control-label">姓名：</label>
+								<div class="col-md-6">
+									<input class="form-control required"  type="text" id="name" name="name"  value="{$contacts['name']}" placeholder="" /><span id="nameTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+								<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+							</div><!-- 主要字段 -->
+							<div class="form-group">
+								<label class="col-md-4 control-label">职位：</label>
+								<div class="col-md-6">
+									<input class="form-control "  type="text" id="post" name="post"  value="{$contacts['post']}" placeholder="" /><span id="postTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+								<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+							</div><!-- 主要字段 -->
+							<div class="form-group">
+								<label class="col-md-4 control-label">手机：</label>
+								<div class="col-md-6">
+									<input class="form-control" type="mobile" id="telephone" name="telephone"  value="{$contacts['telephone']}" /><span id="telephoneTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+								<div class="col-md-2"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+							</div><!-- 主要字段 -->
+
+							<div class="form-group">
+								<label class="col-md-4 control-label">性别：</label>
+								<div class="col-md-6">
+									<select class="form-control " id="crm_zswstr" name="crm_zswstr">
+										<option value=''>--请选择--</option>
+										<option value='男' <if condition="$contacts['crm_zswstr'] eq '男'">selected="selected"</if>>男</option>
+										<option value='女' <if condition="$contacts['crm_zswstr'] eq '女'">selected="selected"</if>>女</option>
+									</select><span id="crm_zswstrTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+								<div class="col-md-2"></div>
+							</div><!-- 主要字段 -->
+							<div class="form-group">
+								<label class="col-md-4 control-label">生日：</label>
+								<div class="col-md-6">
+									<input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt:'MM-dd'})" name="birthday" id="birthday" type="text" value="{$contacts['birthday']|default=''}" autocomplete="off">
+								</div>
+								<div class="col-md-2"><span id="birthdayTip" style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
+							</div><!-- 主要字段 -->
+							<div class="form-group">
+								<label class="col-md-4 control-label">邮箱：</label>
+								<div class="col-md-6">
+									<input class="form-control " type="email" id="email" name="email"  value="{$contacts['email']}" /><span id="emailTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+								<div class="col-md-2"></div>
+							</div><!-- 主要字段 -->
+							<div class="form-group">
+								<label class="col-md-4 control-label">座机：</label>
+								<div class="col-md-6">
+									<input class="form-control"  type="text" id="crm_ljgmqr" name="crm_ljgmqr"  value="{$contacts['crm_ljgmqr']}" placeholder="" /><span id="crm_ljgmqrTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+								<div class="col-md-2"></div>
+							</div><!-- 主要字段 -->
+							<div class="form-group">
+								<label class="col-md-4 control-label">QQ：</label>
+								<div class="col-md-6">
+									<input class="form-control "  type="text" id="qq_no" name="qq_no"  value="{$contacts['qq_no']}" placeholder="" /><span id="qq_noTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+								<div class="col-md-2"></div>
+							</div><!-- 主要字段 -->
+							<div class="form-group">
+								<label class="col-md-4 control-label">地址：</label>
+								<div class="col-md-8">
+									<input class="form-control" input_type="address" type="text" name="contacts_address" placeholder="地址信息" class="input-large" value="{$contacts_address}" style="float:left;margin-top:5px;">
+								</div>															</div><!-- 主要字段 -->
+							<div class="form-group">
+								<label class="col-md-4 control-label">微信：</label>
+								<div class="col-md-6">
+									<input class="form-control "  type="text" id="wetchat" name="wetchat"  value="{$contacts['wetchat']}" placeholder="" /><span id="wetchatTip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>									</div>
+								<div class="col-md-2"></div>
+							</div><!-- 主要字段 -->
+						</div>
+						<div class="col-md-1 pull-right">
+							<!-- <div style="height: 100%; border-right: 1px dashed gray;">&nbsp;sadf</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="tfoot_div" class="clearfix">
+			<div class="clearfix" id="tfoot_page">
+				<div class="ibox-content" style="border-top: 0px;">
+					<div class="col-sm-offset-2" style="text-align:center;margin-left:0px;"><button type="submit" id="save_submit" class="btn btn-primary">保存</button></div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div id="dialog-customer-list" title="{:L('SELECT_THE_CONTACT_BELONGS_TO_THE_CUSTOMER')}">
+	<div class="spiner-example">
+		<div class="sk-spinner sk-spinner-three-bounce">
+			<div class="sk-bounce1"></div>
+			<div class="sk-bounce2"></div>
+			<div class="sk-bounce3"></div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$("[data-type='nummber']").keyup(function(){
+		if(isNaN($(this).val())){
+			$(this).val($(this).val().replace(/\D/g,''))
+		}
+	});
+	if ("{:C('isMobile')}" == "1") {
+		width=$('.container').width() * 0.9;
+	} else {
+		width=800;
+	}
+	$("#dialog-customer-list").dialog({
+		autoOpen: false,
+		modal: true,
+		width: width,
+		maxHeight: 450,
+		buttons: {
+			"{:L('AFFIRM')}": function () {
+				var item = $('input:radio[name="customer"]:checked').val();
+				var name = $('input:radio[name="customer"]:checked').parent().next().html();
+				if(item){
+					$('#customer_name').val(name);
+					$('#customer_id').val(item);
+				}
+				$(this).dialog("close");
+			},
+			"{:L('CANCEL')}": function () {
+				$(this).dialog("close");
+			}
+		},
+		position: ["center", 100]
+	});
+
+	$(function(){
+		$("#customer_name").click(
+				function(){
+					$('#dialog-customer-list').dialog('open');
+					$('#dialog-customer-list').load('{:U("customer/listDialog")}');
+				}
+		);
+	});
+	$(document).ready(function(){
+		$('#save_submit').prop('disabled',false);
+		/*form表单验证*/
+		//edited by GUOQINGSONG On 05/06
+		$("#form").validate({
+			submitHandler:function(form){
+				if($('#telephone').val() == '' && $('#crm_ljgmqr').val() == ''){
+					alert_crm('请填写手机或座机任一项');
+					$("#telephone").css("border","1px dotted #cc5965");
+					$("#crm_ljgmqr").css("border","1px dotted #cc5965");
+				}else if($('#post').val() == ""){
+					alert_crm('请填写职位!');
+					$('#post').css("border","1px dotted #cc5965");
+				}else if($('#crm_zswstr').val() == ""){
+					alert_crm('请选择性别!');
+					$('#crm_zswstr').css("border","1px dotted #cc5965");
+				}else if($('#birthday').val() == ""){
+					alert_crm('请填写生日信息!');
+					$('#birthday').css("border","1px dotted #cc5965");
+				}else{
+					$('#save_submit').click(function(){
+						$('#save_submit').prop('disabled',true);
+					});
+					form.submit();
+				}
+			}
+		});
+	});
+
+</script>
+<include file="Public:footer" />
