@@ -2448,4 +2448,66 @@ class UserAction extends Action {
         $this->alert;
         $this->display();
     }
+
+    /**
+     * @desc 获取上级用户信息
+     */
+    public function getReceiver() {
+        $positionId = session('position_id');
+        $parentPositionId = M('position')->where(['position_id' => $positionId])->getField('parent_id');
+        $parentInfo = M('role')
+            ->field("mx_user.role_id as receiver_id,mx_user.full_name as receiver")
+            ->join('mx_user  ON mx_user.role_id = mx_role.role_id')
+            ->where(['mx_user.status' => 1, 'mx_role.position_id' => $parentPositionId])
+            ->order('mx_user.role_id asc')
+            ->find();
+        $parentInfo = $parentInfo ? $parentInfo : [];
+        $return = ['success' => 1, 'code' => 200, 'info' => $parentInfo];
+        $this->ajaxReturn($return);
+    }
+
+    /**
+     * @desc 离职转交
+     */
+    public function transfer() {
+        $roleId = session('role_id');
+        $parentId = I('receiver_id', 0);
+        $transferModel = M('user_transfer');
+        $info = $transferModel->where(['role_id' => $roleId])->find();
+
+        if ($parentId <= 0) {
+            $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '参数错误']);
+        }
+        if ($info && $info['receive_time'] > 0) {
+            $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '您的转交已被接收，不需要重复提交了']);
+        }
+        if ($info && $info['receive_time'] == 0) {
+            $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '您已经提交过转交了']);
+        }
+
+        //转交
+        $userList = M('user')->where(['role_id' => ['in', "{$roleId},{$parentId}"]])->getField('role_id,full_name', true);
+        $userName = $userList[$roleId];
+        $parentName = $userList[$parentId];
+
+        $departmentId = session('department_id');
+        $parentDepartmentId = M('role_department')->where(['department_id' => $departmentId])->getField('parent_id');
+        $departmentList = M('role_department')->where(['department_id' => ['in', "{$departmentId},{$parentDepartmentId}"]])->getField('department_id,name', true);
+        $departmentName = $departmentList[$departmentId];
+        $departmentNameP = $departmentList[$parentDepartmentId];
+        $data = [
+            'role_id' => $roleId,
+            'user_name' => $userName,
+            'parent_department_id' => $parentDepartmentId,
+            'parent_department' => $departmentNameP,
+            'department_id' => $departmentId,
+            'department' => $departmentName,
+            'phone' => M('user')->where(['role_id' => $roleId])->getField('telephone'),
+            'receiver' => $parentName,
+            'receiver_id' => $parentId,
+            'add_time' => time(),
+        ];
+        $res = M('user_transfer')->add($data);
+        $res ? $this->ajaxReturn(['success' => 1, 'code' => 200, 'info' => '提交成功']) : $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '系统发生错误']);
+    }
 }
