@@ -2472,10 +2472,15 @@ class UserAction extends Action {
     public function myTransfer() {
         $roleId = session('role_id');
         $transferModel = M('user_transfer');
-        $info = $transferModel->where(['role_id' => $roleId])->find();
+        $info = $transferModel->where(['role_id' => $roleId])->field('role_id,receiver_id,user_name,receiver,status')->find();
+        if($info){
+            $info['customer_count'] = M('customer')->where(['creator_role_id' => $info['role_id']])->count();
+            $info['resume_count'] = M('resume')->where(['creator_role_id' => $info['role_id']])->count();
+            $info['project_count'] = M('business')->where(['creator_role_id' => $info['role_id'], 'status' => ['in', '1,2']])->count();
+            $info['project_list'] = [];
+        }
         $return = ['success' => 1, 'code' => 200, 'info' => $info ? $info : []];
         $this->ajaxReturn($return);
-
     }
 
     /**
@@ -2491,7 +2496,7 @@ class UserAction extends Action {
             $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '参数错误']);
         }
         if ($info && $info['receive_time'] > 0) {
-            $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '您的转交已被接收，不需要重复提交了']);
+            $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '您的转交已被处理，不需要重复提交了']);
         }
         if ($info && $info['receive_time'] == 0) {
             $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '您已经提交过转交了']);
@@ -2535,8 +2540,21 @@ class UserAction extends Action {
     }
 
     /**
-     * @desc 转交接受
+     * @desc 转交接受/拒绝
      */
-    public function receiveTransfer(){
+    public function receiveTransfer() {
+        $transferId = I('transfer_id', 0);
+        $status = I('status', 0); //1：接收 2：拒绝
+        $userId = session('role_id', 0);
+        if (!$transferId || !$userId || !$status) {
+            $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '参数错误']);
+        }
+        $transferModel = M('user_transfer')->where(['id' => $transferId, 'receiver_id' => $userId]);
+        if (!$transferModel->find()) {
+            $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '没有找到转交记录']);
+        }
+        $data = ['status' => $status, 'receive_time' => time()];
+        $res = $transferModel->save($data);
+        $res !== false ? $this->ajaxReturn(['success' => 1, 'code' => 200, 'info' => '处理成功']) : $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '系统发生错误']);
     }
 }
