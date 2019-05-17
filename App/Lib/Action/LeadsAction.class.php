@@ -2335,6 +2335,9 @@ class LeadsAction extends Action
             $roleList_checked[$roleId] = getUserByRoleId($roleId);
         }
         $this->roleList = $roleList;
+        foreach ($roleList_checked as $k=>$v){
+            unset($roleList_checked[$k]['dashboard']);
+        }
         $this->roleList_checked = json_encode($roleList_checked);
         $this->roleIds = implode(',', $role_id_array);
         $dateRange = $this->timeplug();
