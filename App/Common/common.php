@@ -596,19 +596,23 @@ function getSubDepartmentBrId($departmentId = 0) {
     if ($departmentId <= 0) {
         $departmentId = session('department_id');
     }
-    $departmentIds = $departmentId;
+    static $list = [];
+    array_push($list,$departmentId);
+//    $departmentIds = $departmentId;
     $sons = M('roleDepartment')->where('parent_id =%d', $departmentId)->select();
     foreach ($sons as $sonDep) {
         $id = $sonDep['department_id'];
-        $departmentIds .= ','.$id;
-        if(M('roleDepartment')->where('parent_id =%d', $id)->find()){
+//        $departmentIds .= ','.$id;
+        array_push($list,$id);
+        if(!$sonInfo = M('roleDepartment')->where('parent_id =%d', $id)->find()){
             continue;
         }
         if($id <= 0){
             continue;
         }
-        getSubDepartmentBrId($id);
+        getSubDepartmentBrId($sonInfo['department_id']);
     }
+    $departmentIds = implode(',',$list);
     return $departmentIds;
 
 }
@@ -623,8 +627,8 @@ function getRolesByDepart($departId, $sub = false) {
     if (!$departId) {
         return false;
     }
-    $cashKey = "{$departId}_sons{$sub}";
-    if ($return = S($cashKey)) {
+    $cashKey = "{$departId}_sons{$sub}12311232";
+    if ($return = S($cashKey) || 1==2) {
         return $return;
     }
     $where = [];
@@ -632,6 +636,7 @@ function getRolesByDepart($departId, $sub = false) {
         $where['position.department_id'] = $departId;
     } else {
         $departs = getSubDepartmentBrId($departId);
+        print_r($departs);die;
         $where['position.department_id'] = ['in', $departs];
     }
     $roles = D('RoleView')->where($where)->select();
