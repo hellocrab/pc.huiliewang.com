@@ -234,21 +234,21 @@
 							<div class="col-md-6">
 								<input class="form-control " data-selector="con_name" type="text" id="con_name" name="con_contacts[name]"  value="" placeholder="" />
 								<span id="con_contacts[name]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2 ftw ftww all"></div>
+							<div class="col-md-2 ftw ftww all"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
 							</div>
 							<div class="form-group">
 							<label class="col-md-4 control-label">职位：</label>
 							<div class="col-md-6">
 								<input class="form-control "  type="text" id="con_post" data-selector="con_post" name="con_contacts[post]"  value="" placeholder="" />
 								<span id="con_contacts[post]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2 ftww all"></div>
+							<div class="col-md-2 ftww ftw all"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
 							</div>
 							<div class="form-group">
 							<label class="col-md-4 control-label">手机：</label>
 							<div class="col-md-6">
 								<input class="form-control " data-selector="con_telphone" type="mobile" id="con_telphone" name="con_contacts[telephone]"  value="" />
 								<span id="con_contacts[telephone]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>											</div>
-							<div class="col-md-2 ftw ftww all"></div>
+							<div class="col-md-2 ftw ftww all"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-4 control-label">座机：</label>
@@ -257,7 +257,7 @@
 									<span id="con_contacts[phone]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>-->
 								<input class="form-control "  type="text" data-selector="con_crm_ljgmqr" id="con_crm_ljgmqr" name="con_contacts[crm_ljgmqr]"  value="" placeholder="" />
 								<span id="con_contacts[crm_ljgmqr]Tip" style="float: left;line-height: 32px;margin-left: 5%;color:red;"></span>										</div>
-								<div class="col-md-2 ftw ftww all"></div>
+								<div class="col-md-2 ftw ftww all"><span style="color: red;line-height: 32px;margin-left: 10px;">*</span></div>
 							</div>
 							<div class="form-group">
 							<label class="col-md-4 control-label">QQ：</label>
@@ -410,15 +410,17 @@
 
     //客户来源 变换时
     function outline_change(obj){
-        if( (obj.value.search('猎聘') != -1) || (obj.value.search('猎萝卜') != -1)){
-            $('.all').html('');
-            $('.ftw').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
-        }else if(obj.value.search('线下')!=-1){
-            $('.all').html('');
-            $('.ftww').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
-		}else {
-            $('.all').html('');
-        };
+        // if( (obj.value.search('猎聘') != -1) || (obj.value.search('猎萝卜') != -1)){
+        //     $('.all').html('');
+        //     $('.ftw').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
+        // }else if(obj.value.search('线下')!=-1){
+        //     $('.all').html('');
+        //     $('.ftww').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
+        // }else {
+        //     $('.all').html('');
+        // };
+        $('.all').html('');
+        $('.ftw').html('<span style="color: red;line-height: 32px;margin-left: 10px;">*</span>');
     }
 
     $(document).ready(function(){
@@ -461,6 +463,11 @@
                             alert_crm("请填写姓名！");
                             $("input[data-selector=con_name]").css("border","1px dotted #cc5965");
                             return;
+						}
+						if( pos == ''  || pos == null){
+							alert_crm("请填写职位！");
+							$("input[data-selector=con_post]").css("border","1px dotted #cc5965");
+							return;
 						}
                         if( (tel == '' || tel == null)&&(phone =='' || phone == null ) ){
                             alert_crm("请填写手机或座机！");

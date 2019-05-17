@@ -1290,7 +1290,11 @@ class BusinessAction extends Action
     public function project_cc($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step']  = array('elt',1);//加入阶段标识
         $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $where['status'] = 1;
         $project['calllist_remark'] = M("fine_project_bz")->where($where)->select();
         $project['remove_remark'] = M("fine_project_bhs")->where($where)->select();
@@ -1317,6 +1321,11 @@ class BusinessAction extends Action
     public function project_adviser($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '2';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['adviser_content'] = M("fine_project_adviser")->where($where)->select();
         $project['adviser_more'] = M("fine_project_adviserbz")->where($where)->select();
         $where['status'] = 2;
@@ -1342,6 +1351,11 @@ class BusinessAction extends Action
     public function project_tj($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '3';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['tj_more'] = M("fine_project_tj")->where($where)->select();
         $where['status'] = 3;
         $project['tj_remark'] = M("fine_project_bz")->where($where)->select();
@@ -1366,6 +1380,11 @@ class BusinessAction extends Action
     public function project_interview($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '4';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['interview_content'] = M("fine_project_interview")->where($where)->select();
         $where['status'] = 4;
         $project['interview_remark'] = M("fine_project_bz")->where($where)->select();
@@ -1399,6 +1418,11 @@ class BusinessAction extends Action
     public function project_offer($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '6';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['offer_content'] = M("fine_project_offer")->where($where)->select();
         foreach ($project['offer_content'] as $k => $v){
             $file_ids = $v['file_id'];
@@ -1436,6 +1460,11 @@ class BusinessAction extends Action
     public function project_pass($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '5';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $where['status'] = 5;
         $project['pass_remark'] = M("fine_project_bz")->where($where)->select();
         $project['remove_remark'] = M("fine_project_bhs")->where($where)->select();
@@ -1458,6 +1487,11 @@ class BusinessAction extends Action
     public function project_enter($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '7';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['enter_content'] = M("fine_project_enter")->where($where)->select();
         foreach ($project['enter_content'] as $k => $v){
             $file_ids = $v['file_id'];
@@ -1494,6 +1528,11 @@ class BusinessAction extends Action
 
     public function project_safe($fine_id){
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '8';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['safe_content'] = M('fine_project_safe')->where($where)->select();
         $where['status'] = 8;
         $project['safe_remark'] = M("fine_project_bz")->where($where)->select();
@@ -1730,6 +1769,7 @@ class BusinessAction extends Action
                 $data['marital'] = ($_POST['marital']) ?  intval($_POST['marital']) : null;
                 $data['native'] = $_POST['native'];
                 $data['plans'] = $_POST['plans'];
+                $data['step'] = $_POST['step'];
 //                $data['remark'] = $_POST['remark'];
                 $data['target'] = $_POST['target'];
                 $data['fine_id'] = $id;
@@ -1746,6 +1786,7 @@ class BusinessAction extends Action
                 $map['ccgj'] = $_POST['gj'];
                 $map['target'] = $_POST['target'];
                 $map['updatetime'] = time();
+                $map['tracker'] = session('role_id'); //默认tracker为操作人
                 M("fine_project")->where("id=%d", $id)->save($map);
                 if ($result) {
                     alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
@@ -1755,6 +1796,7 @@ class BusinessAction extends Action
                 $arr['tjaddtime'] = time();
                 $arr['updatetime'] = time();
                 $arr['tj_role_id'] = session('role_id');
+                $arr['tracker'] = session('role_id');//默认tracker为操作人
 //                $data['operator'] = session("user_id");
 //                $data['addtime'] = time();
 //                $arr['tj_log'] = serialize($data);
@@ -1766,7 +1808,8 @@ class BusinessAction extends Action
                 $arr['status'] = 5;
                 $arr['passtime'] = time();
                 $arr['updatetime'] = time();
-                $arr['pass_role_id'] = session("user_id");
+                $arr['pass_role_id'] = session("role_id");
+                $arr['tracker'] = session('role_id');//默认tracker为操作人
 //                $data['operator'] = session("user_id");
 //                $data['addtime'] = time();
 //                $arr['pass_log'] = serialize($data);
@@ -1778,6 +1821,7 @@ class BusinessAction extends Action
                 $arr['stop'] = 0;
                 $arr['remove_remark'] = "";
                 $arr['updatetime'] = time();
+                $arr['tracker'] = session('role_id');//默认tracker为操作人
                 M("fine_project_bhs")->where("fine_id=%d", $id)->delete();
                 $result = M("fine_project")->where("id=%d", $id)->save($arr);
                 if ($result) {
@@ -1857,6 +1901,7 @@ class BusinessAction extends Action
                 $_POST['addtime'] = time();
                 M("fine_project_adviser")->add($_POST);
                 $arr['status'] = 2;
+                $arr['tracker'] = session('role_id');//默认tracker为操作人
                 $result = M("fine_project")->where("id=%d", $id)->save($arr);
             }
 
@@ -2047,6 +2092,7 @@ class BusinessAction extends Action
             if ($result) {
                 $data['status'] = 4;
                 $data['updatetime'] = time();
+                $data['tracker'] = session('role_id');//默认tracker为操作人
                 M("fine_project")->where("id=%d", $id)->save($data);
                 alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
             }
@@ -2231,6 +2277,7 @@ class BusinessAction extends Action
                 $_POST['addtime'] = time();
                 $result = M("fine_project_offer")->add($_POST);
                 $arr['status'] = 6;
+                $arr['tracker'] = session('role_id');
                 M("fine_project")->where("id=%d", $id)->save($arr);
             }
 
@@ -2296,6 +2343,7 @@ class BusinessAction extends Action
             if ($result) {
                 $arr['status'] = 7;
                 $arr['updatetime'] = time();
+                $arr['tracker'] = session('role_id');//跟进人tracker默认为操作人
                 M("fine_project")->where("id=%d", $id)->save($arr);
                 alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
             }
@@ -2325,7 +2373,7 @@ class BusinessAction extends Action
             $res = $safeObj->where($where)->save($data);
         }
         if ($res) {
-            M("fine_project")->where("id=%d", $projectId)->save(['status' => 8, 'updatetime' => time()]);
+            M("fine_project")->where("id=%d", $projectId)->save(['status' => 8, 'updatetime' => time(),'tracker'=>session('role_id')]);
             $this->ajaxReturn(1, '操作成功', 1);
         }
         $this->ajaxReturn(1, '系统错误', 0);
