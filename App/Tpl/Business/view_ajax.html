@@ -1063,7 +1063,7 @@
                                                     href="{:U('product/view','id='.$vo['resume_id'])}"><span class=""
                                                         style="{$mail_contacts_id == $vo['contacts_id'] ? '':'display:none'}">{$vo['name']}</span></a>
                                                 <a class="dropdown-toggle count-info call_out" id="phone_url"
-                                                    rel="{$vo['resume_id']}" data-toggle="dropdown" href="#"
+                                                    rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-step="8" data-toggle="dropdown" href="#"
                                                     title="呼叫">
                                                     <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                                 </a>
