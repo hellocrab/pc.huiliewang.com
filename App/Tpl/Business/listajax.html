@@ -366,7 +366,7 @@
                                         <label style="margin-left: 15px;">添加了CC备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
-                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-step="1"  data-key="{$vo['id']}">修改</div>
                                         </div>
 
                                         <table>
@@ -599,7 +599,7 @@
                                         <label style="margin-left: 15px;">添加了CC备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
-                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-step="2"  data-key="{$vo['id']}">修改</div>
                                         </div>
 
                                         <table>
@@ -950,7 +950,7 @@
                                         <label style="margin-left: 15px;">添加了CC备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
-                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-step="3"  data-key="{$vo['id']}">修改</div>
                                         </div>
 
                                         <table>
@@ -1256,7 +1256,7 @@
                                         <label style="margin-left: 15px;">添加了CC备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
-                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-step="4"  data-key="{$vo['id']}">修改</div>
                                         </div>
 
                                         <table>
@@ -1563,7 +1563,7 @@
                                         <label style="margin-left: 15px;">添加了CC备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
-                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-step="5"  data-key="{$vo['id']}">修改</div>
                                         </div>
 
                                         <table>
@@ -1925,7 +1925,7 @@
                                         <label style="margin-left: 15px;">添加了CC备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
-                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-step="6"  data-key="{$vo['id']}">修改</div>
                                         </div>
 
                                         <table>
@@ -2242,7 +2242,7 @@
                                         <label style="margin-left: 15px;">添加了CC备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
-                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-step="7"  data-key="{$vo['id']}">修改</div>
                                         </div>
 
                                         <table>
@@ -2488,7 +2488,7 @@
                                         <label style="margin-left: 15px;">添加了CC备注</label>
                                         <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
                                             <span class="fa fa-angle-down"></span>
-                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                            <div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-step="8"  data-key="{$vo['id']}">修改</div>
                                         </div>
 
                                         <table>
@@ -3265,11 +3265,12 @@
         $(".addCCbz").on("click",function (){
             var id=$(this).attr("data-id");
             var key=$(this).attr("data-key")?$(this).attr("data-key"):0;
+            var step=$(this).attr("data-step")?$(this).attr("data-step"):1;
             $('#dialog-addCCbz').dialog('open');
             if(key){
-                $('#dialog-addCCbz').load("/index.php?m=business&a=addcc&id="+id+"&key="+key);
+                $('#dialog-addCCbz').load("/index.php?m=business&a=addcc&id="+id+"&key="+key+"&step="+step);
             }else{
-                $('#dialog-addCCbz').load("/index.php?m=business&a=addcc&id="+id);
+                $('#dialog-addCCbz').load("/index.php?m=business&a=addcc&id="+id+"&step="+step);
             }
         });
 

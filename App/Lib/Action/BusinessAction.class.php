@@ -1322,10 +1322,15 @@ class BusinessAction extends Action
     {
         $where['fine_id'] = $fine_id;
         //查询CC记录
-        $where['step'] = '2';//加入阶段标识
+        $where['step'] = '2'; //加入阶段标识
         $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        foreach ($project['cc_remark'] as $k => $li) {
+            if (isset($li['role_id'])) {
+                $project['cc_remark'][$k]['cc_user'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
+            }
+        }
         unset($where['step']);
-        
+
         $project['adviser_content'] = M("fine_project_adviser")->where($where)->select();
         $project['adviser_more'] = M("fine_project_adviserbz")->where($where)->select();
         $where['status'] = 2;
@@ -1354,6 +1359,11 @@ class BusinessAction extends Action
         //查询CC记录
         $where['step'] = '3';//加入阶段标识
         $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        foreach ($project['cc_remark'] as $k => $li) {
+            if (isset($li['role_id'])) {
+                $project['cc_remark'][$k]['cc_user'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
+            }
+        }
         unset($where['step']);
         
         $project['tj_more'] = M("fine_project_tj")->where($where)->select();
@@ -1383,6 +1393,11 @@ class BusinessAction extends Action
         //查询CC记录
         $where['step'] = '4';//加入阶段标识
         $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        foreach ($project['cc_remark'] as $k => $li) {
+            if (isset($li['role_id'])) {
+                $project['cc_remark'][$k]['cc_user'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
+            }
+        }
         unset($where['step']);
         
         $project['interview_content'] = M("fine_project_interview")->where($where)->select();
@@ -1421,6 +1436,11 @@ class BusinessAction extends Action
         //查询CC记录
         $where['step'] = '6';//加入阶段标识
         $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        foreach ($project['cc_remark'] as $k => $li) {
+            if (isset($li['role_id'])) {
+                $project['cc_remark'][$k]['cc_user'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
+            }
+        }
         unset($where['step']);
         
         $project['offer_content'] = M("fine_project_offer")->where($where)->select();
@@ -1463,6 +1483,11 @@ class BusinessAction extends Action
         //查询CC记录
         $where['step'] = '5';//加入阶段标识
         $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        foreach ($project['cc_remark'] as $k => $li) {
+            if (isset($li['role_id'])) {
+                $project['cc_remark'][$k]['cc_user'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
+            }
+        }
         unset($where['step']);
         
         $where['status'] = 5;
@@ -1490,6 +1515,11 @@ class BusinessAction extends Action
         //查询CC记录
         $where['step'] = '7';//加入阶段标识
         $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        foreach ($project['cc_remark'] as $k => $li) {
+            if (isset($li['role_id'])) {
+                $project['cc_remark'][$k]['cc_user'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
+            }
+        }
         unset($where['step']);
         
         $project['enter_content'] = M("fine_project_enter")->where($where)->select();
@@ -1531,6 +1561,11 @@ class BusinessAction extends Action
         //查询CC记录
         $where['step'] = '8';//加入阶段标识
         $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        foreach ($project['cc_remark'] as $k => $li) {
+            if (isset($li['role_id'])) {
+                $project['cc_remark'][$k]['cc_user'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
+            }
+        }
         unset($where['step']);
         
         $project['safe_content'] = M('fine_project_safe')->where($where)->select();
