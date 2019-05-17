@@ -613,35 +613,74 @@ function getSubDepartmentBrId($departmentId = 0) {
 
 }
 
-//通过部门id获取该部门员工  $sub=false为下属范围  $sub=true为部门所有人
-function getRoleByDepartmentId($department_id, $sub = false) {
-    $id_array = array($department_id);
-    $departments = M('roleDepartment')->select();
-    $where['position.department_id'] = $department_id;
-    if (!$sub)
-        $where['role.role_id'] = array('in', getSubRoleId());
-    $roleList = D('RoleView')->where($where)->select();
-    foreach ($departments AS $value) {
-        if ($department_id == $value['parent_id']) {
-            $id_array[] = $value['department_id'];
-            $role_list = getRoleByDepartmentId($value['department_id']);
-            if (!$roleList) {
-                $roleList = $role_list;
-            }
-            if (!empty($role_list)) {
-                $roleList = array_merge($roleList, $role_list);
-            }
-        }
+/**
+ * @desc 获取部门员工信息
+ * @param $departId
+ * @param bool $sub
+ * @return array|bool|mixed
+ */
+function getRolesByDepart($departId, $sub = false) {
+    if (!$departId) {
+        return false;
     }
-    $result = array();
-    for ($i = 0; $i < count($roleList); $i++) {
-        $source = $roleList[$i];
-        if (array_search($source, $roleList) == $i && $source <> "") {
-            $result[] = $source;
-        }
+    $cashKey = "{$departId}_sons{$sub}";
+    if ($return = S($cashKey)) {
+        return $return;
     }
+    $where = [];
+    if (!$sub) {
+        $where['position.department_id'] = $departId;
+    } else {
+        $departs = getSubDepartmentBrId($departId);
+        $where['position.department_id'] = ['in', $departs];
+    }
+    $roles = D('RoleView')->where($where)->select();
+    if ($roles) {
+        S($cashKey, $roles, 600);
+    }
+    return $roles;
+}
+
+/**
+ * @desc通过部门id获取该部门员工
+ * @param $departmentId
+ * @param bool $sub $sub=false为下属范围 $sub=true为部门所有人
+ * @return array|mixed
+ */
+function getRoleByDepartmentId($departmentId, $sub = false) {
+    $roleList = getRolesByDepart($departmentId,$sub);
     return $roleList;
 }
+
+////通过部门id获取该部门员工  $sub=false为下属范围  $sub=true为部门所有人
+//function getRoleByDepartmentId($department_id, $sub = false) {
+//    $id_array = array($department_id);
+//    $departments = M('roleDepartment')->select();
+//    $where['position.department_id'] = $department_id;
+//    if (!$sub)
+//        $where['role.role_id'] = array('in', getSubRoleId());
+//    $roleList = D('RoleView')->where($where)->select();
+//    foreach ($departments AS $value) {
+//        if ($department_id == $value['parent_id']) {
+//            $id_array[] = $value['department_id'];
+//            $role_list = getRoleByDepartmentId($value['department_id']);
+//            if (!$roleList) {
+//                $roleList = $role_list;
+//            }
+//            if (!empty($role_list)) {
+//                $roleList = array_merge($roleList, $role_list);
+//            }
+//        }
+//    }
+//    $result = array();
+//    for ($i = 0; $i < count($roleList); $i++) {
+//        $source = $roleList[$i];
+//        if (array_search($source, $roleList) == $i && $source <> "") {
+//            $result[] = $source;
+//        }
+//    }
+//    return $roleList;
+//}
 
 /**
  * Warning提示信息

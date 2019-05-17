@@ -19,7 +19,7 @@ class LeadsAction extends Action
         $this->assign("title", $title);
         $action = array(
             'permission' => array(),
-            'allow' => array('transform', 'checkinfo', 'changecontent', 'getaddchartbyroleid', 'getownchartbyroleid', 'check', 'receive', 'fenpei', 'batchreceive', 'assigndialog', 'batchassign', 'revert', 'validate', 'remove', 'excelimportdownload', 'getcurrentstatus', 'excelimportact', 'change_customer', 'field_save', 'analyticsCount', 'analytics', 'dialoghk', 'dialogbd', 'dialogcustomer', 'dialogprojectnum', 'dialogresumenum', 'dialogfinenum', 'dialoginterview', 'dialoginterviewt', 'dialogpresent', 'dialogoffer', 'dialogofferd', 'dialogenter', 'dialogsafe','exportExcel','dialogcallist','dialogcc')
+            'allow' => array('transform', 'checkinfo', 'changecontent', 'getaddchartbyroleid', 'getownchartbyroleid', 'check', 'receive', 'fenpei', 'batchreceive', 'assigndialog', 'batchassign', 'revert', 'validate', 'remove', 'excelimportdownload', 'getcurrentstatus', 'excelimportact', 'change_customer', 'field_save', 'analyticsCount', 'analytics', 'dialoghk', 'dialogbd', 'dialogcustomer', 'dialogprojectnum', 'dialogresumenum', 'dialogfinenum', 'dialoginterview', 'dialoginterviewt', 'dialogpresent', 'dialogoffer', 'dialogofferd', 'dialogenter', 'dialogsafe', 'exportExcel', 'dialogcallist', 'dialogcc')
         );
         B('Authenticate', $action);
         $this->_permissionRes = getPerByAction(MODULE_NAME, ACTION_NAME);
@@ -1700,7 +1700,7 @@ class LeadsAction extends Action
                 }
                 $list[$k]['job_class'] = implode(",", $arr);
             }
-            $list[$k]['business_name'] = M('business')->where(array('business_id'=>$v['project_id']))->getField('name');
+            $list[$k]['business_name'] = M('business')->where(array('business_id' => $v['project_id']))->getField('name');
         }
         $this->assign('list', $list);
         $this->display();
@@ -1721,8 +1721,8 @@ class LeadsAction extends Action
 
         $where['invoice.update_time'] = array(array('lt', $end_time), array('egt', $start_time), 'and');
         $list = D("InvoiceView")->where($where)->order('create_time desc')->select();
-        foreach ($list as $k => $v){
-            $da = M('resume')->where(array('eid'=>$v['resume_id']))->find();
+        foreach ($list as $k => $v) {
+            $da = M('resume')->where(array('eid' => $v['resume_id']))->find();
             $list[$k]['current_company'] = $da['curCompany'];
             $list[$k]['current_department'] = $da['curDepartment'];
             $list[$k]['current_job'] = $da['curPosition'];
@@ -1860,11 +1860,11 @@ class LeadsAction extends Action
         ($role_id <= 0 && $roleIds) && $where['fine_project_interview.role_id'] = ['in', $roleIds];
         $where['fine_project.status'] = array('egt', 4);
         $where['fine_project_interview.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $projectSafeModel = new ProjectStepViewModel('fine_project_interview','fine_project_interview.role_id');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_interview', 'fine_project_interview.role_id');
         $list = $projectSafeModel->where($where)->order('timestart desc')->select();
         $newList = [];
         foreach ($list as $info) {
-            $info['beizhu'] = M('fine_project_bz')->where(['fine_id'=>$info['fine_id'],'status'=>3])->order('id desc')->getField('beizhu');
+            $info['beizhu'] = M('fine_project_bz')->where(['fine_id' => $info['fine_id'], 'status' => 3])->order('id desc')->getField('beizhu');
             $newList[$info['resume_id']] = $info;
         }
         $this->list = $newList;
@@ -1884,7 +1884,7 @@ class LeadsAction extends Action
         ($role_id <= 0 && $roleIds) && $where['fine_project_interview.role_id'] = ['in', $roleIds];
         $where['fine_project.interview_times'] = array('egt', 1);
         $where['fine_project_interview.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $projectSafeModel = new ProjectStepViewModel('fine_project_interview','fine_project_interview.role_id');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_interview', 'fine_project_interview.role_id');
         $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
@@ -1920,7 +1920,7 @@ class LeadsAction extends Action
         $where['fine_project_offer.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
 //        $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
-        $projectSafeModel = new ProjectStepViewModel('fine_project_offer','fine_project_offer.role_id');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_offer', 'fine_project_offer.role_id');
         $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
@@ -1937,7 +1937,7 @@ class LeadsAction extends Action
         $where['fine_project_bhs.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
 //        $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
-        $projectSafeModel = new ProjectStepViewModel('fine_project_bhs','fine_project_bhs.role_id');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_bhs', 'fine_project_bhs.role_id');
         $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
@@ -1957,7 +1957,7 @@ class LeadsAction extends Action
         $where['fine_project_enter.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
 //        $this->list = D("ProjectView")->where($where)->select();
 //        $this->list =  D("ResumeView")->where($where)->select();
-        $projectSafeModel = new ProjectStepViewModel('fine_project_enter','fine_project_enter.role_id');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_enter', 'fine_project_enter.role_id');
         $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
@@ -1977,8 +1977,8 @@ class LeadsAction extends Action
         $where['fine_project_safe.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
         $projectSafeModel = new ProjectStepViewModel('fine_project_safe');
         $list = $projectSafeModel->where($where)->select();
-        foreach ($list as $k => $v){
-            $list[$k]['entertime'] = M('fine_project_enter')->where(array('fine_id'=>$v['fine_id']))->getField('entertime');
+        foreach ($list as $k => $v) {
+            $list[$k]['entertime'] = M('fine_project_enter')->where(array('fine_id' => $v['fine_id']))->getField('entertime');
         }
         $this->list = $list;
         $this->display();
@@ -2149,7 +2149,7 @@ class LeadsAction extends Action
      * @param $pageSize
      */
     private function analyticsNum($map, $p, $pageSize, $isExport = 0) {
-        if($isExport){
+        if ($isExport) {
             $p = 1;
             $pageSize = 1000; //导出条数300条
         }
@@ -2169,7 +2169,7 @@ class LeadsAction extends Action
         if ($isExport) {
             $cellName = [
                 ['user_name', '员工姓名'], ['department', '部门'], ['position_name', '职位名称'], ['second_name', '顾问英文名'],
-                ['integral', '业绩'], ['callistnum', 'callist'], ['callsucc_cum', '电话量'],['ccnum', 'cc备注'], ['hkNum', '回款个数'],
+                ['integral', '业绩'], ['callistnum', 'callist'], ['callsucc_cum', '电话量'], ['ccnum', 'cc备注'], ['hkNum', '回款个数'],
                 ['bdNum', '新增BD数'], ['customerNum', '新增客户数'], ['projectNum', '新增项目数'], ['resumeNum', '新增简历数'],
                 ['fineNum', '推荐简历数'], ['interviewNum', '面试人数'], ['interviewtNum', '面试次数'], ['offerNum', 'Offer'],
                 ['offerdNum', '掉Offer数'], ['enterNum', '入职数'], ['safeNum', '过保数']];
@@ -2208,7 +2208,7 @@ class LeadsAction extends Action
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $expTitle . '  Export time:' . date('Y-m-d H:i:s'));
             $objPHPExcel->getActiveSheet()->getStyle('A1:' . $cellName[$cellNum - 1] . '1')->getFont()->setBold(true); //字体加粗
             $objPHPExcel->getActiveSheet()->getStyle('A1:' . $cellName[$cellNum - 1] . '1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $size = [80, 80, 80, 80, 20, 20, 20, 20 ,80, 20, 20, 20, 20 ,80, 20, 20, 20, 20, 20, 20];
+            $size = [80, 80, 80, 80, 20, 20, 20, 20, 80, 20, 20, 20, 20, 80, 20, 20, 20, 20, 20, 20];
             for ($i = 0; $i < $cellNum; $i++) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i] . '2', $expCellName[$i][1]);
                 $objActSheet->getColumnDimension($cellName[$i])->setAutoSize(true);
@@ -2224,7 +2224,7 @@ class LeadsAction extends Action
             // Miscellaneous glyphs, UTF-8
             for ($i = 0; $i < $dataNum; $i++) {
                 for ($j = 0; $j < $cellNum; $j++) {
-                    $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j] . ($i + 4),$expTableData[$i][$expCellName[$j][0]]);
+                    $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j] . ($i + 4), $expTableData[$i][$expCellName[$j][0]]);
                 }
             }
             header('pragma:public');
@@ -2245,25 +2245,26 @@ class LeadsAction extends Action
         //是否仅查询销售岗
         $role_ids = [];
         $role_id_array = [];
+        $department_id = intval($_GET['department']);
         if (intval($_GET['role'])) {
 //            edit by  guoqingsong 05/09
 //            $role_ids = array(intval($_GET['role']));
             $ids = BaseUtils::getStr($_GET['role']);
             $role_ids = explode(',',$ids);
             unset($below_ids);
-            $below_ids =[];
-            if (intval($_GET['department'])) {
-                $department_id = intval($_GET['department']);
-                foreach (getRoleByDepartmentId($department_id, true) as $k => $v) {
+            $below_ids = [];
+            if ($department_id) {
+                $allRoles = getRolesByDepart($department_id, true);
+                foreach ($allRoles as $v) {
                     $below_ids[] = $v['role_id'];
                 }
             }
         } else {
-            if (intval($_GET['department'])) {
+            if ($department_id) {
                 unset($below_ids);
-                $below_ids =[];
-                $department_id = intval($_GET['department']);
-                foreach (getRoleByDepartmentId($department_id, true) as $k => $v) {
+                $below_ids = [];
+                $allRoles = getRolesByDepart($department_id, true);
+                foreach ($allRoles as $v) {
                     $role_ids[] = $v['role_id'];
                     $below_ids[] = $v['role_id'];
                 }
@@ -2300,8 +2301,7 @@ class LeadsAction extends Action
         // _guo_03/26  $map一行与上面块调换位置(同一天显示数量不准确)
         $map = ['report_date' => [['egt', $this->start_date], ['elt', $this->end_date]]];
         $map['user_role_id'] = $role_id_array ? ['in', $role_id_array] : session('role_id');
-        $count = M('report_intergral')->where($map)->group('user_id')->select();
-        $count = count($count);
+        $count = M('report_intergral')->where($map)->group('user_id')->count();
         $isExport = isset($_GET['isExport']) ? intval($_GET['isExport']) : 0;
         $this->analyticsNum($map, $p, $pageSize, $isExport);
         import('@.ORG.Page'); // 导入分页类
