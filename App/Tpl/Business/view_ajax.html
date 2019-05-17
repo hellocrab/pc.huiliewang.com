@@ -224,6 +224,7 @@
                                                 "拨打电话成功,请稍等电话接通！",
                                                 "success");
                                             var id = $(_this).attr("data-id");
+                                            var step = $(_this).attr("data-step");
                                             console.log(id)
                                             var key = $(_this).attr("data-key") ? $(this).attr(
                                                 "data-key") : 0;
@@ -231,10 +232,10 @@
                                             if (key) {
                                                 $('#dialog-addCCbz').load(
                                                     "/index.php?m=business&a=addcc&id=" + id +
-                                                    "&key=" + key);
+                                                    "&key=" + key + "&step=" + step);
                                             } else {
                                                 $('#dialog-addCCbz').load(
-                                                    "/index.php?m=business&a=addcc&id=" + id);
+                                                    "/index.php?m=business&a=addcc&id=" + id + "&step=" + step);
                                             }
                                         } else {
                                             $('.fa-times').remove()
@@ -281,6 +282,7 @@
                                                         "拨打电话成功,请稍等电话接通！",
                                                         "success");
                                                     var id = $(_this).attr("data-id");
+                                                    var step = $(_this).attr("data-step");
                                                     console.log(id)
                                                     var key = $(_this).attr("data-key") ? $(
                                                             this)
@@ -291,11 +293,11 @@
                                                         $('#dialog-addCCbz').load(
                                                             "/index.php?m=business&a=addcc&id=" +
                                                             id +
-                                                            "&key=" + key);
+                                                            "&key=" + key + "&step=" + step);
                                                     } else {
                                                         $('#dialog-addCCbz').load(
                                                             "/index.php?m=business&a=addcc&id=" +
-                                                            id);
+                                                            id + "&step=" + step);
                                                     }
                                                 } else {
                                                     $('.fa-times').remove()
@@ -523,7 +525,7 @@
                                         <td style="text-align:center;padding:14px;color:#666;">
                                             <a href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
                                             <a class="dropdown-toggle count-info call_out" id="phone_url"
-                                                rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-toggle="dropdown"
+                                                rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-step="1" data-toggle="dropdown"
                                                 href="#" title="呼叫">
                                                 <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                             </a>
@@ -638,7 +640,7 @@
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
                                                 <a class="dropdown-toggle count-info call_out" id="phone_url"
-                                                    rel="{$vo['resume_id']}" data-toggle="dropdown" href="#"
+                                                    rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-step="2" data-toggle="dropdown" href="#"
                                                     title="呼叫">
                                                     <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                                 </a>
@@ -744,7 +746,7 @@
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
                                                 <a class="dropdown-toggle count-info call_out" id="phone_url"
-                                                    rel="{$vo['resume_id']}" data-toggle="dropdown" href="#"
+                                                    rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-step="3" data-toggle="dropdown" href="#"
                                                     title="呼叫">
                                                     <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                                 </a>
@@ -808,7 +810,7 @@
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
                                                 <a class="dropdown-toggle count-info call_out" id="phone_url"
-                                                    rel="{$vo['resume_id']}" data-toggle="dropdown" href="#"
+                                                    rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-step="4" data-toggle="dropdown" href="#"
                                                     title="呼叫">
                                                     <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                                 </a>
@@ -871,7 +873,7 @@
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
                                                 <a class="dropdown-toggle count-info call_out" id="phone_url"
-                                                    rel="{$vo['resume_id']}" data-toggle="dropdown" href="#"
+                                                    rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-step="5" data-toggle="dropdown" href="#"
                                                     title="呼叫">
                                                     <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                                 </a>
@@ -933,7 +935,7 @@
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
                                                 <a class="dropdown-toggle count-info call_out" id="phone_url"
-                                                    rel="{$vo['resume_id']}" data-toggle="dropdown" href="#"
+                                                    rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-step="6" data-toggle="dropdown" href="#"
                                                     title="呼叫">
                                                     <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                                 </a>
@@ -997,7 +999,7 @@
                                             <td style="text-align:center;padding:14px;color:#666;"><a
                                                     href="{:U('product/view','id='.$vo['resume_id'])}">{$vo['name']}</a>
                                                 <a class="dropdown-toggle count-info call_out" id="phone_url"
-                                                    rel="{$vo['resume_id']}" data-toggle="dropdown" href="#"
+                                                    rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-step="7" data-toggle="dropdown" href="#"
                                                     title="呼叫">
                                                     <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                                 </a>
@@ -1062,7 +1064,7 @@
                                                     href="{:U('product/view','id='.$vo['resume_id'])}"><span class=""
                                                         style="{$mail_contacts_id == $vo['contacts_id'] ? '':'display:none'}">{$vo['name']}</span></a>
                                                 <a class="dropdown-toggle count-info call_out" id="phone_url"
-                                                    rel="{$vo['contacts_id']}" data-toggle="dropdown" href="#"
+                                                    rel="{$vo['contacts_id']}" data-id="{$vo['id']}" data-step="8" data-toggle="dropdown" href="#"
                                                     title="呼叫">
                                                     <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                                 </a>
@@ -1609,7 +1611,7 @@
                                                 style="{$mail_contacts_id == $vo['contacts_id'] ? '':'display:none'}">{$vo['name']}</span>
                                         </a>
                                         <a class="dropdown-toggle count-info call_out" id="phone_url"
-                                            rel="{$vo['contacts_id']}" data-toggle="dropdown" href="#" title="呼叫">
+                                            rel="{$vo['contacts_id']}"  data-id="{$vo['id']}" data-toggle="dropdown" href="#" title="呼叫">
                                             <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
                                         </a>
                                     </td>

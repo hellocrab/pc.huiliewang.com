@@ -1290,7 +1290,11 @@ class BusinessAction extends Action
     public function project_cc($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step']  = array('elt',1);//加入阶段标识
         $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $where['status'] = 1;
         $project['calllist_remark'] = M("fine_project_bz")->where($where)->select();
         $project['remove_remark'] = M("fine_project_bhs")->where($where)->select();
@@ -1317,6 +1321,11 @@ class BusinessAction extends Action
     public function project_adviser($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '2';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['adviser_content'] = M("fine_project_adviser")->where($where)->select();
         $project['adviser_more'] = M("fine_project_adviserbz")->where($where)->select();
         $where['status'] = 2;
@@ -1342,6 +1351,11 @@ class BusinessAction extends Action
     public function project_tj($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '3';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['tj_more'] = M("fine_project_tj")->where($where)->select();
         $where['status'] = 3;
         $project['tj_remark'] = M("fine_project_bz")->where($where)->select();
@@ -1366,6 +1380,11 @@ class BusinessAction extends Action
     public function project_interview($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '4';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['interview_content'] = M("fine_project_interview")->where($where)->select();
         $where['status'] = 4;
         $project['interview_remark'] = M("fine_project_bz")->where($where)->select();
@@ -1399,6 +1418,11 @@ class BusinessAction extends Action
     public function project_offer($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '6';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['offer_content'] = M("fine_project_offer")->where($where)->select();
         foreach ($project['offer_content'] as $k => $v){
             $file_ids = $v['file_id'];
@@ -1436,6 +1460,11 @@ class BusinessAction extends Action
     public function project_pass($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '5';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $where['status'] = 5;
         $project['pass_remark'] = M("fine_project_bz")->where($where)->select();
         $project['remove_remark'] = M("fine_project_bhs")->where($where)->select();
@@ -1458,6 +1487,11 @@ class BusinessAction extends Action
     public function project_enter($fine_id)
     {
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '7';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['enter_content'] = M("fine_project_enter")->where($where)->select();
         foreach ($project['enter_content'] as $k => $v){
             $file_ids = $v['file_id'];
@@ -1494,6 +1528,11 @@ class BusinessAction extends Action
 
     public function project_safe($fine_id){
         $where['fine_id'] = $fine_id;
+        //查询CC记录
+        $where['step'] = '8';//加入阶段标识
+        $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
+        unset($where['step']);
+        
         $project['safe_content'] = M('fine_project_safe')->where($where)->select();
         $where['status'] = 8;
         $project['safe_remark'] = M("fine_project_bz")->where($where)->select();
@@ -1730,6 +1769,7 @@ class BusinessAction extends Action
                 $data['marital'] = ($_POST['marital']) ?  intval($_POST['marital']) : null;
                 $data['native'] = $_POST['native'];
                 $data['plans'] = $_POST['plans'];
+                $data['step'] = $_POST['step'];
 //                $data['remark'] = $_POST['remark'];
                 $data['target'] = $_POST['target'];
                 $data['fine_id'] = $id;
