@@ -2467,6 +2467,18 @@ class UserAction extends Action {
     }
 
     /**
+     * @desc 我的离职转交
+     */
+    public function myTransfer() {
+        $roleId = session('role_id');
+        $transferModel = M('user_transfer');
+        $info = $transferModel->where(['role_id' => $roleId])->find();
+        $return = ['success' => 1, 'code' => 200, 'info' => $info ? $info : []];
+        $this->ajaxReturn($return);
+
+    }
+
+    /**
      * @desc 离职转交
      */
     public function transfer() {
@@ -2508,6 +2520,23 @@ class UserAction extends Action {
             'add_time' => time(),
         ];
         $res = M('user_transfer')->add($data);
+        //通知上级处理转交
+        $dataMessage = [
+            'to_role_id' => $parentId,
+            'from_role_id' => $roleId,
+            'content' => "{$userName} 的离职数据已经转交，请接收",
+            'send_time' => time(),
+            'deadline' => strtotime(date('Y-m-d') . " 23:59:59"),
+            'type' => 3,
+            'params' => json_encode(['user_id' => $roleId, 'parentId' => $parentId]),
+        ];
+        M('message')->add($dataMessage);
         $res ? $this->ajaxReturn(['success' => 1, 'code' => 200, 'info' => '提交成功']) : $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '系统发生错误']);
+    }
+
+    /**
+     * @desc 转交接受
+     */
+    public function receiveTransfer(){
     }
 }

@@ -1730,6 +1730,7 @@ class BusinessAction extends Action
                 $data['marital'] = ($_POST['marital']) ?  intval($_POST['marital']) : null;
                 $data['native'] = $_POST['native'];
                 $data['plans'] = $_POST['plans'];
+//                $data['remark'] = $_POST['remark'];
                 $data['target'] = $_POST['target'];
                 $data['fine_id'] = $id;
                 $data['role_id'] = session("role_id");

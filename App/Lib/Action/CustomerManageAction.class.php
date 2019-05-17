@@ -30,6 +30,20 @@ class CustomerManageAction extends Action
     }
 
     /**
+     * @desc 客户回访
+     */
+    public function index() {
+        $this->display();
+    }
+
+    /**
+     * @desc 客户分级
+     */
+    public function rankList() {
+        $this->display();
+    }
+
+    /**
      * @desc 消息返回
      * @param array $info
      * @param int $code
