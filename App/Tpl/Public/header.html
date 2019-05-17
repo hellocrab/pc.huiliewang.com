@@ -576,6 +576,14 @@
                     <?php endif; ?>
                     <?php if (in_array('log',$new_module_list)): ?>
                     <li>
+                        <a data-toggle="tooltip" data-placement="right" data-original-title="回访" <if
+                            condition="($module_name eq 'customer_manage' || $module_name eq 'customer_manage' )"> class="active"</if>
+                        href="{:U('CustomerManage/rankList')}"><i class="fa fa-credit-card"></i><span
+                            class="menu_code">回访</span></a>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (in_array('log',$new_module_list)): ?>
+                    <li>
                         <a data-toggle="tooltip" data-placement="right" data-original-title="通话" <if
                             condition="($module_name eq 'phone' || $module_name eq 'phone' )"> class="active"</if>
                             href="{:U('Phone/index')}"><i class="fa fa-credit-card"></i><span
