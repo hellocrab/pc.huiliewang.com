@@ -2301,7 +2301,8 @@ class LeadsAction extends Action
         // _guo_03/26  $map一行与上面块调换位置(同一天显示数量不准确)
         $map = ['report_date' => [['egt', $this->start_date], ['elt', $this->end_date]]];
         $map['user_role_id'] = $role_id_array ? ['in', $role_id_array] : session('role_id');
-        $count = M('report_intergral')->where($map)->group('user_id')->count();
+        $count = M('report_intergral')->where($map)->group('user_id')->select();
+        $count = count($count);
         $isExport = isset($_GET['isExport']) ? intval($_GET['isExport']) : 0;
         $this->analyticsNum($map, $p, $pageSize, $isExport);
         import('@.ORG.Page'); // 导入分页类
@@ -2330,7 +2331,7 @@ class LeadsAction extends Action
         foreach ($below_ids as $roleId) {
             $roleList[$roleId] = getUserByRoleId($roleId);
         }
-        foreach ($role_ids as $roleId){
+        foreach ($role_ids as $roleId) {
             $roleList_checked[$roleId] = getUserByRoleId($roleId);
         }
         $this->roleList = $roleList;
