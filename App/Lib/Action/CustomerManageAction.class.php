@@ -80,8 +80,20 @@ class CustomerManageAction extends Action
      * @desc  分级标准设置
      */
     public function rank_update() {
-        $data = $_REQUEST;
-        $res = M('customer_rank_config')->save($data);
+        $list = $_REQUEST;
+        $res = false;
+        foreach ($list as $info) {
+            $data = [];
+            $id = $info['id'];
+            if (!$id) {
+                continue;
+            }
+            $info['max_condition'] && $data['max_condition'] = $info['max_condition'];
+            $info['min_condition'] && $data['min_condition'] = $info['min_condition'];
+            if ($data) {
+                $res = M('customer_rank_config')->where(['id' => $id])->save($data);
+            }
+        }
         if (!$res) {
             $this->response('操作失败', 500, false);
         }

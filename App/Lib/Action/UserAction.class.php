@@ -2562,6 +2562,7 @@ class UserAction extends Action {
 
     /**
      * @desc 转交接受/拒绝
+     * @todo 转交数据给上级【客户，简历，项目】
      */
     public function receiveTransfer() {
         $transferId = I('transfer_id', 0);
@@ -2576,6 +2577,9 @@ class UserAction extends Action {
         }
         $data = ['status' => $status, 'receive_time' => time()];
         $res = $transferModel->save($data);
+
+        //更改项目、简历、客户创建人
+
         $res !== false ? $this->ajaxReturn(['success' => 1, 'code' => 200, 'info' => '处理成功']) : $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '系统发生错误']);
     }
 }
