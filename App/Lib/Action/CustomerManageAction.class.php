@@ -37,9 +37,9 @@ class CustomerManageAction extends Action
     }
 
     /**
-     * @desc 客户分级
+     * @desc 客户回访
      */
-    public function rankList() {
+    public function visit() {
         $this->display();
     }
 
