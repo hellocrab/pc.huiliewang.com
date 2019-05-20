@@ -1302,6 +1302,7 @@ class ProductAction extends Action {
         $this->log_list = $business_logs;
 
         $this->process = array("calllist" => "CallList", "adviser" => "顾问面试", "tj" => "简历推荐", "interview" => "客户面试", "pass" => "面试通过", "offer" => "Offer", "enter" => "入职", "safe" => "过保");
+        $this->processList = array("calllist" => 1, "adviser" => 2, "tj" => 3, "interview" => 4, "pass" => 5, "offer" => 6, "enter" => 7, "safe" => 8);
         //参与项目
         $this->project = D("ProjectView")->where("fine_project.resume_id=%d", $eid)->select();
 //        header('content-type:text/html;charset=utf-8');

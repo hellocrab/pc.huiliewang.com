@@ -19,7 +19,7 @@ class CustomerManageAction extends Action
      * */
     public function _initialize() {
 
-        $title = "报表管理";
+        $title = "客户回访";
         $this->assign("title", $title);
         $action = array(
             'permission' => array(),
@@ -37,9 +37,9 @@ class CustomerManageAction extends Action
     }
 
     /**
-     * @desc 客户分级
+     * @desc 客户回访
      */
-    public function rankList() {
+    public function visit() {
         $this->display();
     }
 
@@ -80,8 +80,21 @@ class CustomerManageAction extends Action
      * @desc  分级标准设置
      */
     public function rank_update() {
-        $data = $_REQUEST;
-        $res = M('customer_rank_config')->save($data);
+        $list = $_REQUEST;
+        $res = false;
+        foreach ($list as $info) {
+            $data = [];
+            $id = $info['id'];
+            if (!$id) {
+                continue;
+            }
+            $info['max_condition'] && $data['max_condition'] = $info['max_condition'];
+            $info['min_condition'] && $data['min_condition'] = $info['min_condition'];
+            if ($data) {
+                $data['up_time'] = time();
+                $res = M('customer_rank_config')->where(['id' => $id])->save($data);
+            }
+        }
         if (!$res) {
             $this->response('操作失败', 500, false);
         }
