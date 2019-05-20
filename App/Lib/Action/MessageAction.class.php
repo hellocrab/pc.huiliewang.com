@@ -22,6 +22,7 @@ class MessageAction extends Action
         $r_where['to_role_id'] = session('role_id');
         $r_where['message.status'] = array('neq', 1);
         $r_where['from_role_id'] = 0;
+        $r_where['message.type'] = 0;
         $by = $_GET['by'] ? trim($_GET['by']) : 'index';
 
         if ($by == 'index') {
@@ -188,6 +189,7 @@ class MessageAction extends Action
             $r_where['to_role_id'] = session('role_id');
             $r_where['message.status'] = array('neq', 1);
             $r_where['from_role_id'] = 0;
+            $r_where['message.type'] = 0;
             $by = $_GET['by'] ? trim($_GET['by']) : 'index';
 
             if ($by == 'index') {
