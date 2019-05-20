@@ -2449,6 +2449,8 @@ class UserAction extends Action {
         $this->display();
     }
 
+
+
     /**
      * @desc 获取上级用户信息
      */
@@ -2469,18 +2471,37 @@ class UserAction extends Action {
     /**
      * @desc 我的离职转交
      */
-    public function myTransfer() {
-        $roleId = session('role_id');
+    public function transferDetail() {
+        $roleId = I('role_id', 0);
         $transferModel = M('user_transfer');
         $info = $transferModel->where(['role_id' => $roleId])->field('role_id,receiver_id,user_name,receiver,status')->find();
-        if($info){
+        if ($info) {
             $info['customer_count'] = M('customer')->where(['creator_role_id' => $info['role_id']])->count();
             $info['resume_count'] = M('resume')->where(['creator_role_id' => $info['role_id']])->count();
-            $info['project_count'] = M('business')->where(['creator_role_id' => $info['role_id'], 'status' => ['in', '1,2']])->count();
-            $info['project_list'] = [];
+            $info['project_list'] = $this->getUserBusiness(['creator_role_id' => $info['role_id'], 'status' => ['in', '1,2']]);
+            $info['project_count'] = count($info['project_list']);
         }
         $return = ['success' => 1, 'code' => 200, 'info' => $info ? $info : []];
         $this->ajaxReturn($return);
+    }
+
+    /**
+     * @desc  获取项目信息
+     * @param array $where
+     * @return array|mixed
+     */
+    private function getUserBusiness($where = []) {
+        $proTypes = [1 => '面试快', 2 => '入职快', 3 => '专业猎头'];
+        $projectStatus = C('PROJECT_STATUS');
+        $list = M('business')->field('business_id,name,pro_type,customer_id,create_time')->where($where)->select();
+        foreach ($list as &$info) {
+            $info['customer_name'] = M('customer')->where(['customer_id' => $info['customer_id']])->getField('name');
+            $info['pro_type'] = isset($proTypes[$info['pro_type']]) ? $proTypes[$info['pro_type']] : $info['pro_type'];
+            $info['create_time'] = date('Y-m-d H:i:s', $info['create_time']);
+            $statusId = M('fine_project')->where(['project_id' => $info['business_id'], 'stop' => 0])->order('status desc')->limit(1)->getField('status');
+            $info['status'] = $projectStatus[$statusId];
+        }
+        return $list;
     }
 
     /**
