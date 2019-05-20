@@ -19,7 +19,7 @@ class CustomerManageAction extends Action
      * */
     public function _initialize() {
 
-        $title = "报表管理";
+        $title = "客户回访";
         $this->assign("title", $title);
         $action = array(
             'permission' => array(),
@@ -91,6 +91,7 @@ class CustomerManageAction extends Action
             $info['max_condition'] && $data['max_condition'] = $info['max_condition'];
             $info['min_condition'] && $data['min_condition'] = $info['min_condition'];
             if ($data) {
+                $data['up_time'] = time();
                 $res = M('customer_rank_config')->where(['id' => $id])->save($data);
             }
         }
