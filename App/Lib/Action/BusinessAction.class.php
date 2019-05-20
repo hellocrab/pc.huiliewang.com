@@ -1785,46 +1785,51 @@ class BusinessAction extends Action
     {
         header("Content-type: text/html; charset=utf-8");
         if ($this->isPOST()) {
-            $id = $_POST['id'];
+            $id = I('id') ? BaseUtils::getStr(I('id')) : 0;
+            $rt = I('rt')? BaseUtils::getStr(I('rt')) : '';
+            $ref = I('ref')? BaseUtils::getStr(I('ref')) : '';
             $project = M("fine_project")->where("id=%d", $id)->field("project_id,status")->find();
 
             if ($_POST['kind'] == "calllist") {
-                $data['call_result'] = $_POST['call_result'];
-                $data['gj'] = $_POST['gj'];
-                $data['gjtime'] = $_POST['gjtime'];
-                $data['target'] = $_POST['target'];
-                $data['remarks'] = $_POST['remarks'] ? $_POST['remarks']:'';
-                $data['age'] = $_POST['age'];
-                $data['onwork'] = $_POST['onwork'] ?  intval($_POST['onwork']) : null;
-                $data['company_position'] = $_POST['company_position'];
-                $data['current_receive'] = $_POST['current_receive'];
-                $data['exp_receive'] = $_POST['exp_receive'];
-                $data['off_reason'] = $_POST['off_reason'];
-                $data['chance'] = $_POST['chance'];
-                $data['marital'] = ($_POST['marital']) ?  intval($_POST['marital']) : null;
-                $data['native'] = $_POST['native'];
-                $data['plans'] = $_POST['plans'];
-                $data['step'] = $_POST['step'];
-//                $data['remark'] = $_POST['remark'];
-                $data['target'] = $_POST['target'];
+                $data['call_result'] = I('call_result') ? BaseUtils::getStr(I('call_result')) : '';
+                $data['gj'] = I('gj') ? BaseUtils::getStr(I('gj')): '' ;
+                $data['gjtime'] = I('gjtime') ? BaseUtils::getStr(I('gjtime')):'';
+                $data['target'] = I('target') ? BaseUtils::getStr(I('target')) : '';
+                $data['remarks'] = I('remarks') ? BaseUtils::getStr(I('remarks')) :'';
+                $data['age'] = I('age') ? BaseUtils::getStr(I('age')): '' ;
+                $data['onwork'] = I('onwork') ? intval(BaseUtils::getStr(I('onwork'))) : null;
+                $data['company_position'] = I('company_position') ? BaseUtils::getStr(I('company_position')) : '' ;
+                $data['current_receive'] = I('current_receive') ? BaseUtils::getStr(I('current_receive')) : '';
+                $data['exp_receive'] = I('exp_receive') ? BaseUtils::getStr(I('exp_receive')) : '';
+                $data['off_reason'] = I('off_reason') ? BaseUtils::getStr(I('off_reason')) : '';
+                $data['chance'] = I('chance') ? BaseUtils::getStr(I('chance')) : '';
+                $data['marital'] = I('marital') ? intval(BaseUtils::getStr(I('marital'))) : null ;
+                $data['native'] = I('native') ? BaseUtils::getStr(I('native')) : '';
+                $data['plans'] = I('plans') ? BaseUtils::getStr(I('plans')) : '';
+                $data['step'] = I('step') ? BaseUtils::getStr(I('step')) : '';
+                $data['target'] = I('target') ? BaseUtils::getStr(I('target')): '' ;
                 $data['fine_id'] = $id;
                 $data['role_id'] = session("role_id");
 
-                if ($_POST['key']) {
-                    $result = M("fine_project_cc")->where("id=%d", $_POST['key'])->save($data);
+                if (I('key')) {
+                    $result = M("fine_project_cc")->where("id=%d", BaseUtils::getStr(I('key')))->save($data);
                 } else {
                     $data['addtime'] = time();
                     $result = M("fine_project_cc")->add($data);
                 }
 
-                $map['call_result'] = $_POST['call_result'];
-                $map['ccgj'] = $_POST['gj'];
-                $map['target'] = $_POST['target'];
+                $map['call_result'] = I('call_result') ? BaseUtils::getStr(I('call_result')): '' ;
+                $map['ccgj'] = I('gj') ? BaseUtils::getStr(I('gj')): '' ;
+                $map['target'] = I('target') ? BaseUtils::getStr(I('target')): '' ;
                 $map['updatetime'] = time();
                 $map['tracker'] = session('role_id'); //默认tracker为操作人
                 M("fine_project")->where("id=%d", $id)->save($map);
                 if ($result) {
-                    alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                    if($rt == 'resume'){
+                        alert('success', '添加CC备注成功！', U("product/view", "id=" . $ref));
+                    } else {
+                        alert('success', '添加CC备注成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                    }
                 }
             } elseif ($_POST['kind'] == "tj") {
                 $arr['status'] = 3;
