@@ -2472,7 +2472,7 @@ class UserAction extends Action {
      * @desc 我的离职转交
      */
     public function transferDetail() {
-        $roleId = I('role_id', 0);
+        $roleId = I('role_id', session('role_id'));
         $transferModel = M('user_transfer');
         $info = $transferModel->where(['role_id' => $roleId])->field('role_id,receiver_id,user_name,receiver,status')->find();
         if ($info) {
