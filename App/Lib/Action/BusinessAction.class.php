@@ -593,8 +593,56 @@ class BusinessAction extends Action
                 }
                 $list[$k]['address'] = implode(",", $arr);
             }
+            if($list[$k]['industry']){
+                $arr = array();
+                $address = explode(",", $list[$k]['industry']);
+                foreach ($address as $li) {
+                    $arr[] = $industry_name[$li];
+                }
+                $list[$k]['industry'] = implode(",", $arr);
+            }
+            if($list[$k]['jobclass']){
+                $arr = array();
+                $address = explode(",", $list[$k]['jobclass']);
+                foreach ($address as $li) {
+                    $arr[] = $job_name[$li];
+                }
+                $list[$k]['jobclass'] = implode(",", $arr);
+            }
+            //最近项目阶段
+            $temp = M('fine_project')->where(array('project_id'=>$v['business_id']))->order('addtime desc')->select();
+            $list[$k]['zj'] =  $temp[0]['status'];
+            switch ($temp[0]['status']){
+                case '1': $list[$k]['zj'] = 'callList';break;
+                case '2':$list[$k]['zj'] = '顾问面试';break;
+                case '3':$list[$k]['zj'] = '推荐人才';break;
+                case '4':$list[$k]['zj']  = '面试';break;
+                case '5':$list[$k]['zj'] = '面试通过';break;
+                case '6':$list[$k]['zj'] = 'offer';break;
+                case '7':$list[$k]['zj'] = '入职';break;
+                case '8':$list[$k]['zj'] = '过保';break;
+                default:$list[$k]['zj'] = '无';break;
+            }
+            //最后项目阶段
+            $list[$k]['zh'] = M('fine_project')->where(array('project_id'=>$v['business_id']))->max('status',true);
+            switch ($list[$k]['zh']){
+                case '1': $list[$k]['zh'] = 'callList';break;
+                case '2':$list[$k]['zh'] = '顾问面试';break;
+                case '3':$list[$k]['zh'] = '推荐人才';break;
+                case '4':$list[$k]['zh']  = '面试';break;
+                case '5':$list[$k]['zh'] = '面试通过';break;
+                case '6':$list[$k]['zh'] = 'offer';break;
+                case '7':$list[$k]['zh'] = '入职';break;
+                case '8':$list[$k]['zh'] = '过保';break;
+                default:$list[$k]['zh'] = '无';break;
+            }
+            if($list[$k]['pro_type'] == 4 && !empty($temp)){
+                $list[$k]['zj'] = '推荐';
+                $list[$k]['zh'] = '推荐';
+            }
         }
 
+//        header('content-type:text/html;charset=utf-8;');
         //商机状态分类
         $this->status_type_list = M('BusinessType')->select();
         $status_type_id = $_GET['status_type_id'] ? intval($_GET['status_type_id']) : 1;

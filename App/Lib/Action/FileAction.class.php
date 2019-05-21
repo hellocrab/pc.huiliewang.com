@@ -205,7 +205,7 @@ class FileAction extends Action{
 			if (isset($_FILES['file']['size']) && $_FILES['file']['size'] != null) {
 				import('@.ORG.UploadFile');
 				$upload = new UploadFile();
-				$upload->maxSize = 20000000;
+				$upload->maxSize = 3145728;
 				$dirname = UPLOAD_PATH . date('Ym', time()).'/'.date('d', time()).'/';
 				$defaultinfo = $m_config->where('name = "defaultinfo"')->find();
 				$value = unserialize($defaultinfo['value']);
