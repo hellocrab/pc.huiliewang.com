@@ -1,0 +1,74 @@
+select{
+    padding-left: 10px;
+    padding-right: 35px;
+    height: 31px;
+    border-radius: 6px;
+    color: #999;
+    /*去掉默认的下拉三角*/
+    appearance:none;  
+    -moz-appearance:none;  
+    -webkit-appearance:none;
+    outline: none !important;
+    margin-right: 23px;
+    /*添加下拉三角图标*/
+   background: url("../../img/customerManage/8_03.png") no-repeat right center transparent;
+}
+.top{
+    background: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #999;
+}
+.top>div:nth-child(2){
+    display: flex;
+    align-items: center;
+}
+.top>div>span{
+    font-weight: 600;
+}
+.top input{
+    padding-left: 10px;
+    width: 190px;
+    height: 30px;
+    margin-left: 20px;
+}
+.top>div>div:nth-child(3){
+    display: flex;
+    line-height: 33px;
+    align-items: center;
+    justify-content: center;
+    width:109px;
+    color: #fff;
+height:33px;
+background:rgba(61,107,180,1);
+border-radius:6px;
+margin-left: 20px;
+}
+.sec{
+    background: #fff;
+    margin-top: 20px;
+}
+table{
+    width: 100%;
+}
+tr{
+    width: 100%;
+}
+tr:nth-child(1),tr:nth-child(2n-1){
+    background: #f9f9f9;
+}
+td,th{  
+    padding: 10px 20px;
+    white-space: nowrap;
+    border-bottom: 1px solid #edeff0;
+}
+table select{
+    height: 20px;
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 25px;
+    margin-right: 0;
+   background: url("../../img/customerManage/8_04.png") no-repeat right center transparent;
+}
