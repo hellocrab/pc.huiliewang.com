@@ -43,6 +43,12 @@ class CustomerManageAction extends Action
         $this->display();
     }
 
+    private function authCheck() {
+        if (!$this->_permissionRes) {
+            $this->response('您没有权限操作', 500, false);
+        }
+    }
+
     /**
      * @desc 消息返回
      * @param array $info
@@ -80,7 +86,8 @@ class CustomerManageAction extends Action
      * @desc  分级标准设置
      */
     public function rank_update() {
-        $list = $_REQUEST;
+        $this->authCheck();
+        $list = BaseUtils::getStr($_REQUEST);
         $res = false;
         foreach ($list as $info) {
             $data = [];
@@ -105,6 +112,7 @@ class CustomerManageAction extends Action
      * @desc  客户分级列表
      */
     public function customers() {
+        $this->authCheck();
         $params = $_REQUEST;
         $page = I('page', 1);
         $pageSize = I('page_size', 15);
@@ -156,6 +164,7 @@ class CustomerManageAction extends Action
      * 【级别设置、拉黑操作】
      */
     public function edit() {
+        $this->authCheck();
         $customerId = BaseUtils::getStr(I('customer_id', 0), 'int'); //客户ID
         $proType = BaseUtils::getStr(I('pro_type', 0), 'int'); //项目类型
         $rankName = BaseUtils::getStr(I('rank', '')); //等级名称
@@ -194,5 +203,94 @@ class CustomerManageAction extends Action
             'rank' => ['A' => 'A级', 'B' => 'B级', 'C' => 'C级']
         ];
         $this->response($data);
+    }
+
+
+    /**
+     * @desc 客户回访条件配置
+     */
+    public function visitConfig() {
+        $rankModel = M('customer_visit_config')->field('id,name,min_condition,unit,times,pro_type')->order('sort asc');
+        $list = $rankModel->select();
+        $return = [];
+
+        foreach ($list as $info) {
+            $type = $info['pro_type'];
+            $conditionName = '金额';
+            $type == 2 && $conditionName = '入职';
+            if ($type == 3) {
+                $conditionName = '签单';
+                $info['times'] > 0 && $conditionName = "入职";
+            }
+            $info['condition_name'] = $conditionName;
+            $typeName = $this->pro_type[$type];
+            if (!$return[$type]) {
+                $return[$type] = ['id' => $type, 'name' => $typeName, 'sons' => [$info]];
+            } else {
+                array_push($return[$type]['sons'], $info);
+            }
+        }
+        $return = array_values($return);
+        $this->response($return);
+    }
+
+    /**
+     * @desc 回访条件更改
+     */
+    public function visitConfigUp() {
+        $list = BaseUtils::getStr($_REQUEST);
+        $res = false;
+        foreach ($list as $info) {
+            $data = [];
+            $id = $info['id'];
+            if (!$id) {
+                continue;
+            }
+            $info['times'] && $data['times'] = $info['times'];
+            $info['min_condition'] && $data['min_condition'] = $info['min_condition'];
+            if ($data) {
+                $data['up_time'] = time();
+                $res = M('customer_visit_config')->where(['id' => $id])->save($data);
+            }
+        }
+        if (!$res) {
+            $this->response('操作失败', 500, false);
+        }
+        $this->response('操作成功');
+    }
+
+    /**
+     * @desc 待回访客户
+     */
+    public function waitVisit() {
+
+    }
+
+    /**
+     * @desc 已经回访的客户
+     */
+    public function visited() {
+
+    }
+
+    /**
+     * @desc 统计
+     */
+    public function logs() {
+
+    }
+
+    /**
+     * @desc 客户详情内页
+     */
+    public function customerInfo() {
+
+    }
+
+    /**
+     * @desc 回访备注
+     */
+    public function visitRemark() {
+
     }
 }
