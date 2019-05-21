@@ -593,8 +593,56 @@ class BusinessAction extends Action
                 }
                 $list[$k]['address'] = implode(",", $arr);
             }
+            if($list[$k]['industry']){
+                $arr = array();
+                $address = explode(",", $list[$k]['industry']);
+                foreach ($address as $li) {
+                    $arr[] = $industry_name[$li];
+                }
+                $list[$k]['industry'] = implode(",", $arr);
+            }
+            if($list[$k]['jobclass']){
+                $arr = array();
+                $address = explode(",", $list[$k]['jobclass']);
+                foreach ($address as $li) {
+                    $arr[] = $job_name[$li];
+                }
+                $list[$k]['jobclass'] = implode(",", $arr);
+            }
+            //最近项目阶段
+            $temp = M('fine_project')->where(array('project_id'=>$v['business_id']))->order('addtime desc')->select();
+            $list[$k]['zj'] =  $temp[0]['status'];
+            switch ($temp[0]['status']){
+                case '1': $list[$k]['zj'] = 'callList';break;
+                case '2':$list[$k]['zj'] = '顾问面试';break;
+                case '3':$list[$k]['zj'] = '推荐人才';break;
+                case '4':$list[$k]['zj']  = '面试';break;
+                case '5':$list[$k]['zj'] = '面试通过';break;
+                case '6':$list[$k]['zj'] = 'offer';break;
+                case '7':$list[$k]['zj'] = '入职';break;
+                case '8':$list[$k]['zj'] = '过保';break;
+                default:$list[$k]['zj'] = '无';break;
+            }
+            //最后项目阶段
+            $list[$k]['zh'] = M('fine_project')->where(array('project_id'=>$v['business_id']))->max('status',true);
+            switch ($list[$k]['zh']){
+                case '1': $list[$k]['zh'] = 'callList';break;
+                case '2':$list[$k]['zh'] = '顾问面试';break;
+                case '3':$list[$k]['zh'] = '推荐人才';break;
+                case '4':$list[$k]['zh']  = '面试';break;
+                case '5':$list[$k]['zh'] = '面试通过';break;
+                case '6':$list[$k]['zh'] = 'offer';break;
+                case '7':$list[$k]['zh'] = '入职';break;
+                case '8':$list[$k]['zh'] = '过保';break;
+                default:$list[$k]['zh'] = '无';break;
+            }
+            if($list[$k]['pro_type'] == 4 && !empty($temp)){
+                $list[$k]['zj'] = '推荐';
+                $list[$k]['zh'] = '推荐';
+            }
         }
 
+//        header('content-type:text/html;charset=utf-8;');
         //商机状态分类
         $this->status_type_list = M('BusinessType')->select();
         $status_type_id = $_GET['status_type_id'] ? intval($_GET['status_type_id']) : 1;
@@ -1785,46 +1833,51 @@ class BusinessAction extends Action
     {
         header("Content-type: text/html; charset=utf-8");
         if ($this->isPOST()) {
-            $id = $_POST['id'];
+            $id = I('id') ? BaseUtils::getStr(I('id')) : 0;
+            $rt = I('rt')? BaseUtils::getStr(I('rt')) : '';
+            $ref = I('ref')? BaseUtils::getStr(I('ref')) : '';
             $project = M("fine_project")->where("id=%d", $id)->field("project_id,status")->find();
 
             if ($_POST['kind'] == "calllist") {
-                $data['call_result'] = $_POST['call_result'];
-                $data['gj'] = $_POST['gj'];
-                $data['gjtime'] = $_POST['gjtime'];
-                $data['target'] = $_POST['target'];
-                $data['remarks'] = $_POST['remarks'] ? $_POST['remarks']:'';
-                $data['age'] = $_POST['age'];
-                $data['onwork'] = $_POST['onwork'] ?  intval($_POST['onwork']) : null;
-                $data['company_position'] = $_POST['company_position'];
-                $data['current_receive'] = $_POST['current_receive'];
-                $data['exp_receive'] = $_POST['exp_receive'];
-                $data['off_reason'] = $_POST['off_reason'];
-                $data['chance'] = $_POST['chance'];
-                $data['marital'] = ($_POST['marital']) ?  intval($_POST['marital']) : null;
-                $data['native'] = $_POST['native'];
-                $data['plans'] = $_POST['plans'];
-                $data['step'] = $_POST['step'];
-//                $data['remark'] = $_POST['remark'];
-                $data['target'] = $_POST['target'];
+                $data['call_result'] = I('call_result') ? BaseUtils::getStr(I('call_result')) : '';
+                $data['gj'] = I('gj') ? BaseUtils::getStr(I('gj')): '' ;
+                $data['gjtime'] = I('gjtime') ? BaseUtils::getStr(I('gjtime')):'';
+                $data['target'] = I('target') ? BaseUtils::getStr(I('target')) : '';
+                $data['remarks'] = I('remarks') ? BaseUtils::getStr(I('remarks')) :'';
+                $data['age'] = I('age') ? BaseUtils::getStr(I('age')): '' ;
+                $data['onwork'] = I('onwork') ? intval(BaseUtils::getStr(I('onwork'))) : null;
+                $data['company_position'] = I('company_position') ? BaseUtils::getStr(I('company_position')) : '' ;
+                $data['current_receive'] = I('current_receive') ? BaseUtils::getStr(I('current_receive')) : '';
+                $data['exp_receive'] = I('exp_receive') ? BaseUtils::getStr(I('exp_receive')) : '';
+                $data['off_reason'] = I('off_reason') ? BaseUtils::getStr(I('off_reason')) : '';
+                $data['chance'] = I('chance') ? BaseUtils::getStr(I('chance')) : '';
+                $data['marital'] = I('marital') ? intval(BaseUtils::getStr(I('marital'))) : null ;
+                $data['native'] = I('native') ? BaseUtils::getStr(I('native')) : '';
+                $data['plans'] = I('plans') ? BaseUtils::getStr(I('plans')) : '';
+                $data['step'] = I('step') ? BaseUtils::getStr(I('step')) : '';
+                $data['target'] = I('target') ? BaseUtils::getStr(I('target')): '' ;
                 $data['fine_id'] = $id;
                 $data['role_id'] = session("role_id");
 
-                if ($_POST['key']) {
-                    $result = M("fine_project_cc")->where("id=%d", $_POST['key'])->save($data);
+                if (I('key')) {
+                    $result = M("fine_project_cc")->where("id=%d", BaseUtils::getStr(I('key')))->save($data);
                 } else {
                     $data['addtime'] = time();
                     $result = M("fine_project_cc")->add($data);
                 }
 
-                $map['call_result'] = $_POST['call_result'];
-                $map['ccgj'] = $_POST['gj'];
-                $map['target'] = $_POST['target'];
+                $map['call_result'] = I('call_result') ? BaseUtils::getStr(I('call_result')): '' ;
+                $map['ccgj'] = I('gj') ? BaseUtils::getStr(I('gj')): '' ;
+                $map['target'] = I('target') ? BaseUtils::getStr(I('target')): '' ;
                 $map['updatetime'] = time();
                 $map['tracker'] = session('role_id'); //默认tracker为操作人
                 M("fine_project")->where("id=%d", $id)->save($map);
                 if ($result) {
-                    alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                    if($rt == 'resume'){
+                        alert('success', '添加CC备注成功！', U("product/view", "id=" . $ref));
+                    } else {
+                        alert('success', '添加CC备注成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                    }
                 }
             } elseif ($_POST['kind'] == "tj") {
                 $arr['status'] = 3;
