@@ -235,6 +235,8 @@
                                     <td>推荐进度</td>
                                     <td>项目负责人</td>
                                     <td>项目成员</td>
+                                    <td>最近项目阶段</td>
+                                    <td>最后项目阶段</td>
                                     <td>
                                     <if condition="$_GET['desc_order'] == 'create_time'">
                                         <a href="{:U('business/index','asc_order=create_time&'.$parameter)}" title="点击按时间正序排列">
@@ -339,7 +341,7 @@
                                                 </td>
                                             </if>
                                         </volist>
-                                        <td class="project-completion" style="position: relative;">
+                                        <td class="project-completion" style="position: relative;>
                                         <if condition="$vo['status_id'] eq '99'">
                                             <span class="label label-success jinzhan_status cur">{$businessStatusList[$vo['status_id']]|default=''}</span>
                                             <elseif condition="$vo['status_id'] eq '1'"/>
@@ -379,6 +381,8 @@
                                         </volist>
                                         </td>
                                         <td>{$vo.parter_name}</td>
+                                        <td>{$vo.zj}</td>
+                                        <td>{$vo.zh}</td>
                                         <td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>
                                         </tr>
                                     </volist>
