@@ -43,6 +43,9 @@ class CustomerManageAction extends Action
         $this->display();
     }
 
+    /**
+     * @desc 操作权限检测
+     */
     private function authCheck() {
         if (!$this->_permissionRes) {
             $this->response('您没有权限操作', 500, false);
