@@ -127,6 +127,9 @@ class CustomerManageAction extends Action
         $where = [];
         $selectFields = ['is_manual', 'is_black', 'is_perfection', 'rank', 'pro_type', 'is_manual', 'birth_month']; //筛选字段
         foreach ($params as $fields => $value) {
+            if('' == $value){
+                continue;
+            }
             if (in_array($fields, $selectFields)) {
                 $value = BaseUtils::getStr($value);
                 $where[$fields] = $value;
