@@ -660,7 +660,7 @@
                                             <volist name="project" id="vo">
                                                 <tr>
                                                     <td style="text-align:center;padding:14px;color:#666;border-right: none;" colspan="2">
-                                                        <input type="button" class="btn btn-primary btn-sm slidebar-nav" value="{$process[$vo['status']]} >" style="width: 80px;" data-id="{$vo['id']}">
+                                                        <input type="button" class="btn btn-primary btn-sm slidebar-nav" value="{$process[$vo['status']]} >" style="width: 80px;" data-rt="resume" data-id="{$vo['id']}">
                                                         <a class="dropdown-toggle count-info call_out" id="phone_url"
                                                             rel="{$vo['resume_id']}" data-id="{$vo['id']}" data-step="{$processList[$vo['status']]}" data-toggle="dropdown"
                                                             href="#" title="呼叫">
@@ -1325,13 +1325,19 @@
                                                                 $(document).on('click', '.slidebar-nav', function () {
 
                                                                     var customer_id = $(this).attr('data-id');
+                                                                    var rt = $(this).attr('data-rt');
                                                                     clearTimeout(timer);
                                                                     timer = setTimeout(function () {
 
                                                                         if ($("#right-sidebar-log").css('right') != '0px') {
                                                                             $("#right-sidebar-log").animate({right: '0px'}, 600);
                                                                         }
-                                                                        $('#sidebar-container').load("/index.php?m=business&a=listajax&id=" + customer_id);
+                                                                        if(rt){
+                                                                           $('#sidebar-container').load("/index.php?m=business&a=listajax&id=" + customer_id + "&rt=" + rt+"&ref={$resume[eid]}"); 
+                                                                        }else{
+                                                                            $('#sidebar-container').load("/index.php?m=business&a=listajax&id=" + customer_id); 
+                                                                        }
+                                                                        
                                                                     }, 1000);
                                                                 });
 
