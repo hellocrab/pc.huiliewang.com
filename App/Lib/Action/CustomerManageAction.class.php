@@ -171,10 +171,11 @@ class CustomerManageAction extends Action
             $info['role_name'] = M('user')->where(['user_id' => $info['role_id']])->getField('full_name');
             !$info['role_name'] && $info['role_name'] = '';
             $money_list = M('customer_rank_list')->where(['customer_id'=>$info['customer_id']])->field('rank_name,integral,pro_type')->select();
-            foreach ($money_list as &$moneys){
-                $moneys['pro_type'] = $this->pro_type[$moneys['pro_type']];
+            $data = [];
+            foreach ($money_list as $moneys){
+                $data[$moneys['pro_type']] = $moneys['integral'];
             }
-            $info['money_list'] = $money_list ? $money_list : [];
+            $info['money_list'] = $data ? $data : [];
         }
         if (!$list) {
             $list = [];
