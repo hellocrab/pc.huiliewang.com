@@ -413,6 +413,18 @@ class BusinessAction extends Action
             $where['pro_type'] = $_GET['pro_type'];
             $params[] = 'pro_type=' . $_GET['pro_type'];
         }
+        //公司名
+        if($_GET['customer_name']){
+            $customer = BaseUtils::getStr($_GET['customer_name']);
+            $arr1 = M('Customer')->where(array('name'=>array('like','%'.$customer.'%')))->field('customer_id')->select();
+            $where['customer_id'] = array('in',$arr1);
+        }
+        if($_GET['owner']){
+            $owner = BaseUtils::getStr($_GET['owner']);
+            $arr2 = M('Customer')->where(array('name'=>array('like','%'.$owner.'%')))->field('customer_id')->select();
+            $where['owner_role_id'] = array('in',$arr2);
+        }
+
         //商机状态分组
         if ($_GET['status_type_id']) {
             $where['status_type_id'] = intval($_GET['status_type_id']);
@@ -474,10 +486,76 @@ class BusinessAction extends Action
             $where['_complex'] = $ownerWhere;
             $where['_logic'] = 'OR';
         }
+        //
+        if(isset($where['_complex']['_string'])){
+            $where['_complex']['_string'] = '('.$where['_complex']['_string'].')';
+        }
+        if($_GET['ownerr']){
+            $ownerr = BaseUtils::getStr($_GET['ownerr']);
+            $da_owner = M('User')->where(array('full_name'=>array('like','%'.$ownerr.'%')))->field('role_id')->select();
+            $ownerSql = '';
+            $ownerMap = [];
+            if(!empty($da_owner)){
+                foreach ($da_owner as $v){
+                    $ownerSql .= " FIND_IN_SET('{$v['role_id']}',business.owner_role_id) or";
+                    $ownerMap['_string'] .=" FIND_IN_SET('{$v['role_id']}',business.owner_role_id) or";
+                }
+                $ownerMap['_string'] = "(" . rtrim($ownerMap['_string'],'or'). ")";
+                $ownerSql = "(" . rtrim($ownerSql,'or'). ")";
+                if(isset($where['_complex']['_string'])){
+                    $where['_complex']['_string'] .="  and {$ownerSql}";
+                }else{
+                    $where['_complex'] = $ownerMap;
+                    $where['_logic'] = 'OR';
+                }
+            }
+        }
+        if($_GET['industry']){
+            $industrySql  = '';
+            $industryMap = [];
+            $industry = BaseUtils::getStr($_GET['industry']);
+            $arr3 = explode(',',$industry);
+            foreach ($arr3 as $v){
+                $industrySql  .= " FIND_IN_SET({$v},business.industry) or";
+                $industryMap['_string']  .= " FIND_IN_SET({$v},business.industry) or";
+            }
+            $industryMap['_string'] = "(" . rtrim($industryMap['_string'],'or'). ")";
+            $industrySql = "(" . rtrim($industrySql,'or'). ")";
+            if(isset($where['_complex']['_string'])){
+                $where['_complex']['_string'] .="  and {$industrySql}";
+            }else{
+                $where['_complex'] = $industryMap;
+                $where['_logic'] = 'OR';
+            }
+
+        }
+
+        if($_GET['address']){
+            $addressMap  =  [];
+            $addressStr = "";
+            $address = BaseUtils::getStr($_GET['address']);
+            $arr4 = explode(',',$address);
+            foreach ($arr4 as $v){
+                $addressMap['_string'] .= "  FIND_IN_SET('{$v}',business.address) OR";
+                $addressStr .= "  FIND_IN_SET('{$v}',business.address) OR";
+            }
+            $addressMap["_string"] = "(" . rtrim($addressMap['_string'],'OR'). ")";
+            $addressStr = "(" . rtrim($addressStr,'OR'). ")";
+
+            if(isset($where['_complex']['_string'])){
+                $where['_complex']['_string'] .="  and {$addressStr}";
+            }else{
+                $where['_complex'] = $addressMap;
+                $where['_logic'] = 'OR';
+            }
+        }
 
         $where['_logic'] = 'AND';
+//        dump($where);
         unset($where['business.owner_role_id']);
         $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
+//        dump($list);
+//        print_r(M()->getLastSql());die;
         $count = $d_v_business->where($where)->order($order)->count();
         $p_num = ceil($count / $listrows);
         if ($p_num < $p) {
