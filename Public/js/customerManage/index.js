@@ -1,6 +1,8 @@
 var current_page = 1;
 var order_file = 0;
-
+var con_id = '';
+var con_proid = '';
+var con_rank = '';
 function getData() {
     $.ajax({
         url: '/index.php?m=customer_manage&a=customers',
@@ -39,9 +41,9 @@ function getData() {
                         <td>${val.role_name}</td>
                         <td>${val.add_time}</td>
                         <td>
-                            ${val.is_black==0?'否':'是<img class="blackNote" index="'+index+'" src="Public/img/customerManage/8_17.png">'}
+                            ${val.is_black==0?'否':'&nbsp;&nbsp;&nbsp;&nbsp;是<img class="blackNote" corn="'+index+','+val.note+'" src="Public/img/customerManage/8_17.png">'}
                         </td>
-                        <td><img src='Public/img/customerManage/8_11.png'/></td>
+                        <td><img src='Public/img/customerManage/8_11.png' corn='${index},${val.is_black}' class='mean'/></td>
                     </tr>`
                 })
                 $('table tbody').empty();
@@ -82,6 +84,73 @@ function getData() {
                     })
                     $('.showDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(4)`).offset().top - 62 + 'px')
                     $('.showDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(4)`).offset().left - 20 + 'px')
+                })
+                $('.blackNote').on('mouseenter', ev => {
+                    $('.blackDetail').remove();
+                    let arr = ev.target.attributes[1].nodeValue.split(',');
+                    let temp = `<div class='blackDetail'>
+                        ${arr[1]}
+                    </div>`
+                    $(`body`).append(temp)
+                    $('.blackDetail').on('mouseleave', ev => {
+                        $('.blackDetail').remove()
+                    })
+                    $('.blackDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(12)`).offset().top - 62 + 'px')
+                    $('.blackDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(12)`).offset().left - 0 + 'px')
+                })
+                $('.mean').click(ev => {
+                    $('.meanDetail').remove();
+                    let arr = ev.target.attributes[1].nodeValue.split(',');
+                    let temp = `<div class='meanDetail'>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;手动分级</span>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;${arr[1]==0?'加入':'移除'}黑名单</span>
+                    </div>`
+                    $(`body`).append(temp)
+                    $('.meanDetail').on('mouseleave', ev => {
+                        $('.meanDetail').remove()
+                    })
+                    $('.meanDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().top - 42 + 'px')
+                    $('.meanDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().left +15 + 'px')
+                    $('.meanDetail span:nth-child(2)').click(ev=>{
+                        $(document).bind('mousewheel', function (event, delta) {
+                            return false;
+                        });
+                        con_id = res.info.list[arr[0]].customer_id;
+                        con_proid = res.info.list[arr[0]].pro_type=='面试快'?'1':res.info.list[arr[0]].pro_type=='入职快'?'2':'3';
+                        con_rank = res.info.list[arr[0]].rank_id;
+                        console.log($('.meanDetail span:nth-child(2)').html().trim())
+                        if($('.meanDetail span:nth-child(2)').html().trim().substr(24,2) == '加入'){
+                            $('.black_dialog').css('display', 'block');
+                        }else{
+                            swal({
+                                title:'黑名单操作',
+                                text:'将该客户移除黑名单',
+                                type:"warning",
+                                showCancelButton:true,
+                                confirmButtonText: "确定"
+                            },function (isConfirm) {
+                                if(isConfirm){
+                                    $.ajax({
+                                        url: '/index.php?m=customer_manage&a=edit',
+                                        type: 'post',
+                                        data: {
+                                            customer_id:con_id,
+                                            pro_type:con_proid,
+                                            rank_name:con_rank,
+                                            is_black:0,
+                                            note:''
+                                        },
+                                        success(res) {
+                                            if (res.code == 200) {
+                                                swal("", "操作成功", "success");
+                                                getData();
+                                            }
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    })
                 })
             }
         }
@@ -148,22 +217,22 @@ $('.setting').click(ev => {
     });
     $('.set_dialog').css('display', 'block');
 })
-$('.set_dialog').click(ev => {
-    $('.set_dialog').css('display', 'none');
+$('.dialog').click(ev => {
+    $('.dialog').css('display', 'none');
     $(document).unbind('mousewheel');
 })
 $('.dialogBox').click(ev => {
     window.event ? window.event.cancelBubble = true : e.stopPropagation();
 })
 $('.dialogHead img').click(ev => {
-    $('.set_dialog').css('display', 'none');
+    $('.dialog').css('display', 'none');
     $(document).unbind('mousewheel');
 })
 $('.cannal').click(ev => {
-    $('.set_dialog').css('display', 'none');
+    $('.dialog').css('display', 'none');
     $(document).unbind('mousewheel');
 })
-$(".submit").click(ev => {
+$(".set_dialog .submit").click(ev => {
     if (!$('.chu').val() || !$('.mia').val() || !$('.mib1').val() || !$('.mib2').val() || !$('.mic1').val() || !$('.mic2').val() || !$('.rua').val() || !$('.rub1').val() || !$('.rub2').val() || !$('.ruc1').val() || !$('.ruc2').val() || !$('.zha').val() || !$('.zhb1').val() || !$('.zhb2').val() || !$('.zhc1').val() || !$('.zhc2').val()) {
         swal("", "请填写完整", "error");
     } else {
@@ -189,12 +258,12 @@ $(".submit").click(ev => {
                     max_condition: 0
                 }, {
                     id: 5,
-                    min_condition: $('.mib1').val(),
-                    max_condition: $('.mib2').val()
+                    min_condition: $('.rub1').val(),
+                    max_condition: $('.rub2').val()
                 }, {
                     id: 6,
-                    min_condition: $('.mic1').val(),
-                    max_condition: $('.mic2').val()
+                    min_condition: $('.ruc1').val(),
+                    max_condition: $('.ruc2').val()
                 }, {
                     id: 7,
                     min_condition: $('.zha').val(),
@@ -218,6 +287,31 @@ $(".submit").click(ev => {
                     swal("", "操作成功", "success");
                     $('.set_dialog').css('display', 'none');
                     $(document).unbind('mousewheel');
+                }
+            }
+        })
+    }
+})
+$(".black_dialog .submit").click(ev => {
+    if (!$('.mp').val() ) {
+        swal("", "请填写完整", "error");
+    } else {
+        $.ajax({
+            url: '/index.php?m=customer_manage&a=edit',
+            type: 'post',
+            data: {
+                customer_id:con_id,
+                pro_type:con_proid,
+                rank_name:con_rank,
+                is_black:1,
+                note:$('.mp').val()
+            },
+            success(res) {
+                if (res.code == 200) {
+                    swal("", "操作成功", "success");
+                    $('.dialog').css('display', 'none');
+                    $(document).unbind('mousewheel');
+                    getData()
                 }
             }
         })
