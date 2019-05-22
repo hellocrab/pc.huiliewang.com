@@ -125,23 +125,30 @@ class CustomerManageAction extends Action
 
         //条件处理
         $where = [];
-        $selectFields = ['is_manual', 'is_black', 'is_perfection', 'rank', 'pro_type', 'is_manual', 'birth_month']; //筛选字段
+        $selectFields = ['is_manual', 'is_black', 'rank_name', 'is_perfection', 'name', 'pro_type', 'is_manual', 'birth_month']; //筛选字段
         foreach ($params as $fields => $value) {
-            if('' == $value){
+            if ('' == $value) {
                 continue;
             }
             if (in_array($fields, $selectFields)) {
                 $value = BaseUtils::getStr($value);
+                //客户信息是否完善
+                if($fields == 'is_perfection'){
+                    $value && $where['customer_name'] = ['neq', ''];
+                    !$value && $where['customer_name'] = '';
+                    continue;
+                }
+                //名字模糊查询
+                if($fields == 'name' && $value){
+                    $map = [];
+                    $map['customer_name'] = ['like', "%{$name}%"];
+                    $map['contact_name'] = ['like', "%{$name}%"];
+                    $map['_logic'] = 'OR';
+                    $where['_complex'] = $map;
+                    continue;
+                }
                 $where[$fields] = $value;
             }
-        }
-        //名字查询
-        if ($name) {
-            $map = [];
-            $map['customer_name'] = ['like', "%{$name}%"];
-            $map['contact_name'] = ['like', "%{$name}%"];
-            $map['_logic'] = 'OR';
-            $where['_complex'] = $map;
         }
         //排序处理
         $model = M('customer_rank')->where($where);
@@ -162,7 +169,7 @@ class CustomerManageAction extends Action
             $info['up_time'] = date('Y-m-d', $info['up_time']);
             $info['role_name'] = M('user')->where(['user_id' => $info['role_id']])->getField('full_name');
         }
-        $this->response($list);
+        $this->response($list ? $list : []);
     }
 
     /**
