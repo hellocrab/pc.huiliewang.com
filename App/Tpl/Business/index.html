@@ -132,6 +132,16 @@
         $("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width() - scroll_width).css({'zIndex': 9});
     })
 </script>
+<script>
+    $(function () {
+        $('#reset').on('click',function () {
+            $('.re').val('');
+        })
+        $('#cs').on('click',function () {
+            $('#business_search').submit();
+        })
+    });
+</script>
 <div class="wrapper wrapper-content">
     <input type="hidden" class="actions" value="<?php echo ACTION_NAME;?>"/>
     <include file="Public:alert" />
@@ -202,6 +212,25 @@
                                     </div>
                                     &nbsp;&nbsp;<!--<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
                                 </li>
+                            </ul>
+                            <ul class="breadcrum pull-right" style="margin-bottom: 0px">
+                                <div class="form-group">
+                                    <input data-selector="industrys" class="text re" type="text" placeholder="请选择行业"  name="industry" data-ui="LocalDataUID" data-option="10"  style="display: none;height:40px;text-align: center;" rell="行业"  value="{$_GET['industry']}"  />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control re" name="business_name" placeholder="项目名" value="">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control re" name="customer_name" placeholder="公司名" value="">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control re" name="ownerr" placeholder="项目负责人" value="{$_GET['ownerr']}">
+                                </div>
+                                <div class="form-group">
+                                    <input data-selector="wantdqs" class="text re" type="text" placeholder="点击选择城市" name="address" data-option="10" data-ui="LocalDataUIB" value="{$_GET['address']}" style="display: none;height:40px;" aria-required="true" />
+                                </div>
+                                <button type="button" class="btn btn-default btn-search" id="cs">查询</button>
+                                <button type="button" class="btn btn-default" id="reset">重置</button>
                             </ul>
                         </form>
                     </div>
