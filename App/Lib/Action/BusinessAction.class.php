@@ -486,10 +486,10 @@ class BusinessAction extends Action
             $where['_complex'] = $ownerWhere;
             $where['_logic'] = 'OR';
         }
-        //
         if(isset($where['_complex']['_string'])){
             $where['_complex']['_string'] = '('.$where['_complex']['_string'].')';
         }
+
         if($_GET['ownerr']){
             $ownerr = BaseUtils::getStr($_GET['ownerr']);
             $da_owner = M('User')->where(array('full_name'=>array('like','%'.$ownerr.'%')))->field('role_id')->select();
@@ -516,8 +516,8 @@ class BusinessAction extends Action
             $industry = BaseUtils::getStr($_GET['industry']);
             $arr3 = explode(',',$industry);
             foreach ($arr3 as $v){
-                $industrySql  .= " FIND_IN_SET({$v},business.industry) or";
-                $industryMap['_string']  .= " FIND_IN_SET({$v},business.industry) or";
+                $industrySql  .= " FIND_IN_SET('{$v}',business.industry) or";
+                $industryMap['_string']  .= " FIND_IN_SET('{$v}',business.industry) or";
             }
             $industryMap['_string'] = "(" . rtrim($industryMap['_string'],'or'). ")";
             $industrySql = "(" . rtrim($industrySql,'or'). ")";
