@@ -21,13 +21,12 @@ class BusinessAction extends Action
      * @allow 登录用户可访问
      * @other 其他根据系统设置
      * */
-    public function _initialize()
-    {
+    public function _initialize() {
         $title = "项目管理";
         $this->assign("title", $title);
         $action = array(
             'permission' => array('listDialog'),
-            'allow' => array('validate', 'check', 'revert', 'getsalesfunnel', 'getcurrentstatus', 'choose', 'return_choose', 'product_view', 'advance_search', 'addduibi', 'view_ajax', 'getbusinessstatus', 'view_slide', 'view_ajax', 'project_adviser', 'project_cc', 'project_tj', 'project_interview', 'project_offer', 'project_enter', 'remove', 'msbz', 'khms', 'tjfk', 'fapiao', 'offer', 'ruzhi', 'safe', 'listajax', 'addcc', 'addgwms', 'addgw', 'addbz', 'remove', 'msbz', 'edit_project','invoiceReCheck')
+            'allow' => array('validate', 'check', 'revert', 'getsalesfunnel', 'getcurrentstatus', 'choose', 'return_choose', 'product_view', 'advance_search', 'addduibi', 'view_ajax', 'getbusinessstatus', 'view_slide', 'view_ajax', 'project_adviser', 'project_cc', 'project_tj', 'project_interview', 'project_offer', 'project_enter', 'remove', 'msbz', 'khms', 'tjfk', 'fapiao', 'offer', 'ruzhi', 'safe', 'listajax', 'addcc', 'addgwms', 'addgw', 'addbz', 'remove', 'msbz', 'edit_project', 'invoiceReCheck')
         );
         B('Authenticate', $action);
 
@@ -38,17 +37,17 @@ class BusinessAction extends Action
      *  Ajax检测客户名称
      *
      * */
-    public function check(){
+    public function check() {
         $where = [];
         if ($_REQUEST['business_id']) {
             $where['business_id'] = array('neq', $_REQUEST['business_id']);
         }
         $name = $_POST['name'];
-        $name && $where['name'] = ['like',"%{$name}%"];
+        $name && $where['name'] = ['like', "%{$name}%"];
         $m_business = M('Business');
-        $search_array =  $m_business->where($where)->getField('name', true);
+        $search_array = $m_business->where($where)->getField('name', true);
 
-        foreach ($search_array as &$info){
+        foreach ($search_array as &$info) {
             $info = str_replace("$name", "<span style='color:red;'>$name</span>", $info);
         }
         if (empty($search_array)) {
@@ -57,12 +56,12 @@ class BusinessAction extends Action
             $this->ajaxReturn($search_array, L('CUSTOMER_IS_CREATED'), 1);
         }
     }
+
     /**
      * Ajax检测商机名称
      *
      * */
-    public function checkback()
-    {
+    public function checkback() {
         if ($_REQUEST['business_id']) {
             $where['business_id'] = array('neq', $_REQUEST['business_id']);
         }
@@ -109,8 +108,7 @@ class BusinessAction extends Action
      * 商机列表页（默认页面）
      *
      * */
-    public function index()
-    {
+    public function index() {
 
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
@@ -414,15 +412,15 @@ class BusinessAction extends Action
             $params[] = 'pro_type=' . $_GET['pro_type'];
         }
         //公司名
-        if($_GET['customer_name']){
+        if ($_GET['customer_name']) {
             $customer = BaseUtils::getStr($_GET['customer_name']);
-            $arr1 = M('Customer')->where(array('name'=>array('like','%'.$customer.'%')))->field('customer_id')->select();
-            $where['customer_id'] = array('in',$arr1);
+            $arr1 = M('Customer')->where(array('name' => array('like', '%' . $customer . '%')))->field('customer_id')->select();
+            $where['customer_id'] = array('in', $arr1);
         }
-        if($_GET['owner']){
+        if ($_GET['owner']) {
             $owner = BaseUtils::getStr($_GET['owner']);
-            $arr2 = M('Customer')->where(array('name'=>array('like','%'.$owner.'%')))->field('customer_id')->select();
-            $where['owner_role_id'] = array('in',$arr2);
+            $arr2 = M('Customer')->where(array('name' => array('like', '%' . $owner . '%')))->field('customer_id')->select();
+            $where['owner_role_id'] = array('in', $arr2);
         }
 
         //商机状态分组
@@ -458,11 +456,11 @@ class BusinessAction extends Action
         import("@.ORG.Page");
 
         //我全部项目 1、我创建的 2、分配给我的 3、项目成员是我的 4、维护人是我的 5、分享给我的
-        if( $by == 'all'){
+        if ($by == 'all') {
             //自己全部
-            $ownerWhere['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter) ";
-            if($this->_permissionRes){
-                $allRoles = implode(',',$this->_permissionRes);
+            $ownerWhere['_string'] = "business.creator_role_id = " . session('role_id') . " OR business.joiner  = " . session('role_id') . " OR FIND_IN_SET(" . session('role_id') . ",business.owner_role_id) OR FIND_IN_SET(" . session('role_id') . ",business.parter) ";
+            if ($this->_permissionRes) {
+                $allRoles = implode(',', $this->_permissionRes);
                 $ownerWhere['_string'] .= " OR business.creator_role_id in ({$allRoles})";
             }
             $where['_complex'] = $ownerWhere;
@@ -470,15 +468,15 @@ class BusinessAction extends Action
         }
 
         //我的项目  自己创建的项目
-        if($by == 'me'){
+        if ($by == 'me') {
         }
 
         //下属项目不包阔自己的 1、下属创建的 2、分配给下属的 3、项目成员是下属的 4、维护人是下属的 5、分享给下属的
-        if($by == 'sub' && $below_ids){
-            $below_ids_str = implode(',',$below_ids);
-            $ownerWhere['_string'] = "business.creator_role_id in (".$below_ids_str.") OR business.joiner in (".$below_ids_str.")";
-            foreach ($below_ids as $childRoleId){
-                if($childRoleId <= 0){
+        if ($by == 'sub' && $below_ids) {
+            $below_ids_str = implode(',', $below_ids);
+            $ownerWhere['_string'] = "business.creator_role_id in (" . $below_ids_str . ") OR business.joiner in (" . $below_ids_str . ")";
+            foreach ($below_ids as $childRoleId) {
+                if ($childRoleId <= 0) {
                     continue;
                 }
                 $ownerWhere['_string'] .= "OR FIND_IN_SET({$childRoleId},business.owner_role_id) OR FIND_IN_SET({$childRoleId},business.parter)";
@@ -487,64 +485,64 @@ class BusinessAction extends Action
             $where['_logic'] = 'OR';
         }
         //
-        if(isset($where['_complex']['_string'])){
-            $where['_complex']['_string'] = '('.$where['_complex']['_string'].')';
+        if (isset($where['_complex']['_string'])) {
+            $where['_complex']['_string'] = '(' . $where['_complex']['_string'] . ')';
         }
-        if($_GET['ownerr']){
+        if ($_GET['ownerr']) {
             $ownerr = BaseUtils::getStr($_GET['ownerr']);
-            $da_owner = M('User')->where(array('full_name'=>array('like','%'.$ownerr.'%')))->field('role_id')->select();
+            $da_owner = M('User')->where(array('full_name' => array('like', '%' . $ownerr . '%')))->field('role_id')->select();
             $ownerSql = '';
             $ownerMap = [];
-            if(!empty($da_owner)){
-                foreach ($da_owner as $v){
+            if (!empty($da_owner)) {
+                foreach ($da_owner as $v) {
                     $ownerSql .= " FIND_IN_SET('{$v['role_id']}',business.owner_role_id) or";
-                    $ownerMap['_string'] .=" FIND_IN_SET('{$v['role_id']}',business.owner_role_id) or";
+                    $ownerMap['_string'] .= " FIND_IN_SET('{$v['role_id']}',business.owner_role_id) or";
                 }
-                $ownerMap['_string'] = "(" . rtrim($ownerMap['_string'],'or'). ")";
-                $ownerSql = "(" . rtrim($ownerSql,'or'). ")";
-                if(isset($where['_complex']['_string'])){
-                    $where['_complex']['_string'] .="  and {$ownerSql}";
-                }else{
+                $ownerMap['_string'] = "(" . rtrim($ownerMap['_string'], 'or') . ")";
+                $ownerSql = "(" . rtrim($ownerSql, 'or') . ")";
+                if (isset($where['_complex']['_string'])) {
+                    $where['_complex']['_string'] .= "  and {$ownerSql}";
+                } else {
                     $where['_complex'] = $ownerMap;
                     $where['_logic'] = 'OR';
                 }
             }
         }
-        if($_GET['industry']){
-            $industrySql  = '';
+        if ($_GET['industry']) {
+            $industrySql = '';
             $industryMap = [];
             $industry = BaseUtils::getStr($_GET['industry']);
-            $arr3 = explode(',',$industry);
-            foreach ($arr3 as $v){
-                $industrySql  .= " FIND_IN_SET({$v},business.industry) or";
-                $industryMap['_string']  .= " FIND_IN_SET({$v},business.industry) or";
+            $arr3 = explode(',', $industry);
+            foreach ($arr3 as $v) {
+                $industrySql .= " FIND_IN_SET({$v},business.industry) or";
+                $industryMap['_string'] .= " FIND_IN_SET({$v},business.industry) or";
             }
-            $industryMap['_string'] = "(" . rtrim($industryMap['_string'],'or'). ")";
-            $industrySql = "(" . rtrim($industrySql,'or'). ")";
-            if(isset($where['_complex']['_string'])){
-                $where['_complex']['_string'] .="  and {$industrySql}";
-            }else{
+            $industryMap['_string'] = "(" . rtrim($industryMap['_string'], 'or') . ")";
+            $industrySql = "(" . rtrim($industrySql, 'or') . ")";
+            if (isset($where['_complex']['_string'])) {
+                $where['_complex']['_string'] .= "  and {$industrySql}";
+            } else {
                 $where['_complex'] = $industryMap;
                 $where['_logic'] = 'OR';
             }
 
         }
 
-        if($_GET['address']){
-            $addressMap  =  [];
+        if ($_GET['address']) {
+            $addressMap = [];
             $addressStr = "";
             $address = BaseUtils::getStr($_GET['address']);
-            $arr4 = explode(',',$address);
-            foreach ($arr4 as $v){
+            $arr4 = explode(',', $address);
+            foreach ($arr4 as $v) {
                 $addressMap['_string'] .= "  FIND_IN_SET('{$v}',business.address) OR";
                 $addressStr .= "  FIND_IN_SET('{$v}',business.address) OR";
             }
-            $addressMap["_string"] = "(" . rtrim($addressMap['_string'],'OR'). ")";
-            $addressStr = "(" . rtrim($addressStr,'OR'). ")";
+            $addressMap["_string"] = "(" . rtrim($addressMap['_string'], 'OR') . ")";
+            $addressStr = "(" . rtrim($addressStr, 'OR') . ")";
 
-            if(isset($where['_complex']['_string'])){
-                $where['_complex']['_string'] .="  and {$addressStr}";
-            }else{
+            if (isset($where['_complex']['_string'])) {
+                $where['_complex']['_string'] .= "  and {$addressStr}";
+            } else {
                 $where['_complex'] = $addressMap;
                 $where['_logic'] = 'OR';
             }
@@ -671,7 +669,7 @@ class BusinessAction extends Action
                 }
                 $list[$k]['address'] = implode(",", $arr);
             }
-            if($list[$k]['industry']){
+            if ($list[$k]['industry']) {
                 $arr = array();
                 $address = explode(",", $list[$k]['industry']);
                 foreach ($address as $li) {
@@ -679,7 +677,7 @@ class BusinessAction extends Action
                 }
                 $list[$k]['industry'] = implode(",", $arr);
             }
-            if($list[$k]['jobclass']){
+            if ($list[$k]['jobclass']) {
                 $arr = array();
                 $address = explode(",", $list[$k]['jobclass']);
                 foreach ($address as $li) {
@@ -688,33 +686,69 @@ class BusinessAction extends Action
                 $list[$k]['jobclass'] = implode(",", $arr);
             }
             //最近项目阶段
-            $temp = M('fine_project')->where(array('project_id'=>$v['business_id']))->order('addtime desc')->select();
-            $list[$k]['zj'] =  $temp[0]['status'];
-            switch ($temp[0]['status']){
-                case '1': $list[$k]['zj'] = 'callList';break;
-                case '2':$list[$k]['zj'] = '顾问面试';break;
-                case '3':$list[$k]['zj'] = '推荐人才';break;
-                case '4':$list[$k]['zj']  = '面试';break;
-                case '5':$list[$k]['zj'] = '面试通过';break;
-                case '6':$list[$k]['zj'] = 'offer';break;
-                case '7':$list[$k]['zj'] = '入职';break;
-                case '8':$list[$k]['zj'] = '过保';break;
-                default:$list[$k]['zj'] = '无';break;
+            $temp = M('fine_project')->where(array('project_id' => $v['business_id']))->order('addtime desc')->select();
+            $list[$k]['zj'] = $temp[0]['status'];
+            switch ($temp[0]['status']) {
+                case '1':
+                    $list[$k]['zj'] = 'callList';
+                    break;
+                case '2':
+                    $list[$k]['zj'] = '顾问面试';
+                    break;
+                case '3':
+                    $list[$k]['zj'] = '推荐人才';
+                    break;
+                case '4':
+                    $list[$k]['zj'] = '面试';
+                    break;
+                case '5':
+                    $list[$k]['zj'] = '面试通过';
+                    break;
+                case '6':
+                    $list[$k]['zj'] = 'offer';
+                    break;
+                case '7':
+                    $list[$k]['zj'] = '入职';
+                    break;
+                case '8':
+                    $list[$k]['zj'] = '过保';
+                    break;
+                default:
+                    $list[$k]['zj'] = '无';
+                    break;
             }
             //最后项目阶段
-            $list[$k]['zh'] = M('fine_project')->where(array('project_id'=>$v['business_id']))->max('status',true);
-            switch ($list[$k]['zh']){
-                case '1': $list[$k]['zh'] = 'callList';break;
-                case '2':$list[$k]['zh'] = '顾问面试';break;
-                case '3':$list[$k]['zh'] = '推荐人才';break;
-                case '4':$list[$k]['zh']  = '面试';break;
-                case '5':$list[$k]['zh'] = '面试通过';break;
-                case '6':$list[$k]['zh'] = 'offer';break;
-                case '7':$list[$k]['zh'] = '入职';break;
-                case '8':$list[$k]['zh'] = '过保';break;
-                default:$list[$k]['zh'] = '无';break;
+            $list[$k]['zh'] = M('fine_project')->where(array('project_id' => $v['business_id']))->max('status', true);
+            switch ($list[$k]['zh']) {
+                case '1':
+                    $list[$k]['zh'] = 'callList';
+                    break;
+                case '2':
+                    $list[$k]['zh'] = '顾问面试';
+                    break;
+                case '3':
+                    $list[$k]['zh'] = '推荐人才';
+                    break;
+                case '4':
+                    $list[$k]['zh'] = '面试';
+                    break;
+                case '5':
+                    $list[$k]['zh'] = '面试通过';
+                    break;
+                case '6':
+                    $list[$k]['zh'] = 'offer';
+                    break;
+                case '7':
+                    $list[$k]['zh'] = '入职';
+                    break;
+                case '8':
+                    $list[$k]['zh'] = '过保';
+                    break;
+                default:
+                    $list[$k]['zh'] = '无';
+                    break;
             }
-            if($list[$k]['pro_type'] == 4 && !empty($temp)){
+            if ($list[$k]['pro_type'] == 4 && !empty($temp)) {
                 $list[$k]['zj'] = '推荐';
                 $list[$k]['zh'] = '推荐';
             }
@@ -727,7 +761,7 @@ class BusinessAction extends Action
         //商机状态
 //        $status_list = $m_business_status->where(array('type_id' => $status_type_id))->order('order_id asc')->select();
 //        $this->status_list = $status_list;
-        $this->businessStatusList = $m_business_status->where(array('type_id' => $status_type_id))->order('order_id asc')->cache(true)->getField('status_id,name',true);
+        $this->businessStatusList = $m_business_status->where(array('type_id' => $status_type_id))->order('order_id asc')->cache(true)->getField('status_id,name', true);
 //        print_r($this->businessStatusList);die;
         //自定义字段
         $field_array = getIndexFields('business');
@@ -751,8 +785,7 @@ class BusinessAction extends Action
      * 添加商机
      *
      * */
-    public function add()
-    {
+    public function add() {
         $m_config = M('Config');
         $m_business = D('Business');
         $m_business_data = D('BusinessData');
@@ -928,8 +961,7 @@ class BusinessAction extends Action
      * 修改商机
      *
      * */
-    public function edit()
-    {
+    public function edit() {
         if ($this->isPost()) {
             $business_id = $_POST['business_id'] ? intval($_POST['business_id']) : '';
         } else {
@@ -1097,8 +1129,7 @@ class BusinessAction extends Action
     }
 
     //商机详情
-    public function view()
-    {
+    public function view() {
         $business_id = $_GET['id'] ? intval($_GET['id']) : '';
         if (!$business_id) {
             alert('error', '参数错误！', U('business/index'));
@@ -1120,36 +1151,36 @@ class BusinessAction extends Action
 
         //判断权限
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
-        $owner_role_ids = explode(',',($business_info['owner_role_id']));
+        $owner_role_ids = explode(',', ($business_info['owner_role_id']));
         $useRoleId = session('role_id'); //joiner
         $parterRoleIds = explode(',', $business_info['parter']);
-        $createUserRoleId =  $business_info['creator_role_id'];
+        $createUserRoleId = $business_info['creator_role_id'];
         //是否是自己的项目全部项之一
-        if(!$business_info){
+        if (!$business_info) {
             alert('error', '项目不存在！', $_SERVER['HTTP_REFERER']);
         }
-        if(!$this->_permissionRes){
+        if (!$this->_permissionRes) {
             alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
         }
-        if (!in_array($useRoleId,$owner_role_ids) && !in_array($useRoleId,$parterRoleIds ) && $useRoleId !=$business_info['joiner'] && $useRoleId != $createUserRoleId) {
+        if (!in_array($useRoleId, $owner_role_ids) && !in_array($useRoleId, $parterRoleIds) && $useRoleId != $business_info['joiner'] && $useRoleId != $createUserRoleId) {
 
-            $isAccess = in_array($createUserRoleId,$this->_permissionRes);
-            if((!$below_ids || !is_array($below_ids)) && !$isAccess){
+            $isAccess = in_array($createUserRoleId, $this->_permissionRes);
+            if ((!$below_ids || !is_array($below_ids)) && !$isAccess) {
                 //没有下属或者没有查看
                 alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
             }
             $isAllow = false;
             //是否是其中下属的全部项之一
-            foreach ($below_ids as $sonRoleId){
-                if($sonRoleId == $createUserRoleId || $sonRoleId == $business_info['joiner'] || in_array($sonRoleId,$parterRoleIds) || in_array($sonRoleId,$owner_role_ids)){
-                    $isAllow = true   ;
+            foreach ($below_ids as $sonRoleId) {
+                if ($sonRoleId == $createUserRoleId || $sonRoleId == $business_info['joiner'] || in_array($sonRoleId, $parterRoleIds) || in_array($sonRoleId, $owner_role_ids)) {
+                    $isAllow = true;
                     break;
                 }
             }
-            if(!$isAllow && $isAccess){
+            if (!$isAllow && $isAccess) {
                 $isAllow = true;
             }
-            !$isAllow &&  alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+            !$isAllow && alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
         }
 
 
@@ -1181,9 +1212,9 @@ class BusinessAction extends Action
         $contacts_info = $m_contacts->where(array('contacts_id' => $business_info['contacts_id']))->field('name,telephone')->find();
         $business_info['customer_info'] = $customer_info;
         $business_info['contacts_info'] = $contacts_info;
-        if(($business_info['contacts_id'] <=0 || !$business_info['contacts_name']) && $business_info['customer_id'] >=0) {
-            $business_info['contacts_id'] = M('r_contacts_customer')->where(['customer_id'=>$business_info['customer_id']])->order('contacts_id desc')->getField('contacts_id');
-            $business_info['contacts_name'] = M('contacts')->where(['contacts_id'=>$business_info['contacts_id']])->getField('name');
+        if (($business_info['contacts_id'] <= 0 || !$business_info['contacts_name']) && $business_info['customer_id'] >= 0) {
+            $business_info['contacts_id'] = M('r_contacts_customer')->where(['customer_id' => $business_info['customer_id']])->order('contacts_id desc')->getField('contacts_id');
+            $business_info['contacts_name'] = M('contacts')->where(['contacts_id' => $business_info['contacts_id']])->getField('name');
         }
         //商机状态
         $business_info['status_order_id'] = $m_business_status->where(array('status_id' => $business_info['status_id'], 'type_id' => $business_info['status_type_id']))->getField('order_id');
@@ -1199,8 +1230,7 @@ class BusinessAction extends Action
     }
 
     //商机详情
-    public function view_slide()
-    {
+    public function view_slide() {
         $business_id = $_GET['id'] ? intval($_GET['id']) : '';
         if (!$business_id) {
             alert('error', '参数错误！', U('business/index'));
@@ -1242,8 +1272,7 @@ class BusinessAction extends Action
     }
 
     //商机详情加载
-    public function view_ajax()
-    {
+    public function view_ajax() {
         include APP_PATH . "Common/job.cache.php";
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
@@ -1284,17 +1313,17 @@ class BusinessAction extends Action
         $d_business = D('BusinessView');
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
         $jobclass = $business_info['jobclass'];
-        if($jobclass){
+        if ($jobclass) {
             $className = '';
-            foreach (explode(',',$jobclass) as $classId){
-                 $className .= $job_name[$classId] .'  ';
+            foreach (explode(',', $jobclass) as $classId) {
+                $className .= $job_name[$classId] . '  ';
             }
         }
         $industry = $business_info['industry'];
-        if($industry){
+        if ($industry) {
             $industryName = '';
-            foreach (explode(',',$industry) as $classId){
-                $industryName .= $industry_name[$classId] .'  ';
+            foreach (explode(',', $industry) as $classId) {
+                $industryName .= $industry_name[$classId] . '  ';
             }
         }
 
@@ -1413,24 +1442,23 @@ class BusinessAction extends Action
      * 项目cc备注
      */
 
-    public function project_cc($fine_id)
-    {
+    public function project_cc($fine_id) {
         $where['fine_id'] = $fine_id;
         //查询CC记录
-        $where['step']  = array('elt',1);//加入阶段标识
+        $where['step'] = array('elt', 1);//加入阶段标识
         $project['cc_remark'] = M("fine_project_cc")->where($where)->select();
         unset($where['step']);
-        
+
         $where['status'] = 1;
         $project['calllist_remark'] = M("fine_project_bz")->where($where)->select();
         $project['remove_remark'] = M("fine_project_bhs")->where($where)->select();
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
-                if($key == 'cc_remark' && isset($li['role_id'])){
-                    $li['cc_user'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                if ($key == 'cc_remark' && isset($li['role_id'])) {
+                    $li['cc_user'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
                 }
-                if(($key == 'calllist_remark' || $key == 'remove_remark') && isset($li['role_id'])){
-                $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                if (($key == 'calllist_remark' || $key == 'remove_remark') && isset($li['role_id'])) {
+                    $li['tracker_name'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
                 }
 
                 $data[$li['addtime']][$key] = $li;
@@ -1444,8 +1472,7 @@ class BusinessAction extends Action
      * 项目顾问面试
      */
 
-    public function project_adviser($fine_id)
-    {
+    public function project_adviser($fine_id) {
         $where['fine_id'] = $fine_id;
         //查询CC记录
         $where['step'] = '2'; //加入阶段标识
@@ -1465,8 +1492,8 @@ class BusinessAction extends Action
         foreach ($project as $key => $list) {
 
             foreach ($list as $k => $li) {
-                if(($key == 'adviser_content' || $key == 'adviser_more' || $key == 'adviser_remark' || $key == 'remove_remark')&& isset($li['role_id'])){
-                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                if (($key == 'adviser_content' || $key == 'adviser_more' || $key == 'adviser_remark' || $key == 'remove_remark') && isset($li['role_id'])) {
+                    $li['tracker_name'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
                 }
                 $data[$li['addtime']][$key] = $li;
             }
@@ -1479,8 +1506,7 @@ class BusinessAction extends Action
      * 推荐面试
      */
 
-    public function project_tj($fine_id)
-    {
+    public function project_tj($fine_id) {
         $where['fine_id'] = $fine_id;
         //查询CC记录
         $where['step'] = '3';//加入阶段标识
@@ -1491,7 +1517,7 @@ class BusinessAction extends Action
             }
         }
         unset($where['step']);
-        
+
         $project['tj_more'] = M("fine_project_tj")->where($where)->select();
         $where['status'] = 3;
         $project['tj_remark'] = M("fine_project_bz")->where($where)->select();
@@ -1499,8 +1525,8 @@ class BusinessAction extends Action
         foreach ($project as $key => $list) {
 
             foreach ($list as $k => $li) {
-                if(($key == 'tj_more' || $key == 'tj_remark' || $key == 'remove_remark') && isset($li['role_id'])){
-                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                if (($key == 'tj_more' || $key == 'tj_remark' || $key == 'remove_remark') && isset($li['role_id'])) {
+                    $li['tracker_name'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
                 }
                 $data[$li['addtime']][$key] = $li;
             }
@@ -1513,8 +1539,7 @@ class BusinessAction extends Action
      * 客户面试
      */
 
-    public function project_interview($fine_id)
-    {
+    public function project_interview($fine_id) {
         $where['fine_id'] = $fine_id;
         //查询CC记录
         $where['step'] = '4';//加入阶段标识
@@ -1525,7 +1550,7 @@ class BusinessAction extends Action
             }
         }
         unset($where['step']);
-        
+
         $project['interview_content'] = M("fine_project_interview")->where($where)->select();
         $where['status'] = 4;
         $project['interview_remark'] = M("fine_project_bz")->where($where)->select();
@@ -1536,12 +1561,12 @@ class BusinessAction extends Action
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
 
-                if(($key == 'interview_content' || $key == 'interview_remark' || $key == 'remove_remark') && isset($li['role_id'])){
-                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                if (($key == 'interview_content' || $key == 'interview_remark' || $key == 'remove_remark') && isset($li['role_id'])) {
+                    $li['tracker_name'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
                 }
 
                 if ($key == "invoice") {
-                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
+                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id' => $li['create_role_id']])->getField('full_name');
                     $data[$li['create_time']][$key] = $li;
                 } else {
                     $data[$li['addtime']][$key] = $li;
@@ -1556,8 +1581,7 @@ class BusinessAction extends Action
      * offer
      */
 
-    public function project_offer($fine_id)
-    {
+    public function project_offer($fine_id) {
         $where['fine_id'] = $fine_id;
         //查询CC记录
         $where['step'] = '6';//加入阶段标识
@@ -1568,11 +1592,11 @@ class BusinessAction extends Action
             }
         }
         unset($where['step']);
-        
+
         $project['offer_content'] = M("fine_project_offer")->where($where)->select();
-        foreach ($project['offer_content'] as $k => $v){
+        foreach ($project['offer_content'] as $k => $v) {
             $file_ids = $v['file_id'];
-            $project['offer_content'][$k]['file'] = M('file')->where(array('file_id'=>array('in',explode(',', $file_ids))))->select();
+            $project['offer_content'][$k]['file'] = $this->fileShow($file_ids);
         }
 //        var_dump($project['offer_content']);exit();
         $where['status'] = 6;
@@ -1583,12 +1607,12 @@ class BusinessAction extends Action
         $project['invoice'] = M("invoice")->where($where)->select();
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
-                if(($key == 'offer_content' || $key == 'remove_remark' || $key == 'offer_remark') && isset($li['role_id'])){
-                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                if (($key == 'offer_content' || $key == 'remove_remark' || $key == 'offer_remark') && isset($li['role_id'])) {
+                    $li['tracker_name'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
                 }
 
                 if ($key == "invoice") {
-                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
+                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id' => $li['create_role_id']])->getField('full_name');
                     $data[$li['create_time']][$key] = $li;
                 } else {
                     $data[$li['addtime']][$key] = $li;
@@ -1603,8 +1627,7 @@ class BusinessAction extends Action
      * offer
      */
 
-    public function project_pass($fine_id)
-    {
+    public function project_pass($fine_id) {
         $where['fine_id'] = $fine_id;
         //查询CC记录
         $where['step'] = '5';//加入阶段标识
@@ -1615,15 +1638,15 @@ class BusinessAction extends Action
             }
         }
         unset($where['step']);
-        
+
         $where['status'] = 5;
         $project['pass_remark'] = M("fine_project_bz")->where($where)->select();
         $project['remove_remark'] = M("fine_project_bhs")->where($where)->select();
 
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
-                if( ($key == 'pass_remark' || $key == 'remove_remark') && isset($li['role_id'])){
-                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                if (($key == 'pass_remark' || $key == 'remove_remark') && isset($li['role_id'])) {
+                    $li['tracker_name'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
                 }
                 $data[$li['addtime']][$key] = $li;
             }
@@ -1631,12 +1654,45 @@ class BusinessAction extends Action
         krsort($data);
         return $data;
     }
+
+    /**
+     * @desc  附件html
+     * @param $file_ids
+     * @return string
+     */
+    private function fileShow($file_ids) {
+        $lists = M('file')->where(array('file_id' => array('in', explode(',', $file_ids))))->select();
+        $html = "";
+        foreach ($lists as $info) {
+            $user_name = $info['owner']['user_name'];
+            $time = date('Y-m-d H:i', $info['create_date']);
+            $isPng = in_array(getExtension($info['name']), imgFormat());
+            $html .= "<tr height=\"24px\">";
+            if ($isPng) {
+                $html .= "<td><a class=\"litebox_file\" href=\"{$info['file_path']}\" data-litebox-group=\"group-{$info['contract_id']}\" title=\"点击查看大图\"> {$info['name']}</a></td>";
+            } else {
+                $html .= "<td><a href=\"javascript:;\" file=\"{$info['file_path']}\" filename=\"{$info['name']}\" onclick=\"filedown(this);\"></a> {$info['name']}</a></td>";
+            }
+            if (C('ismobile') != 1) {
+                $html .= "
+                     <td style='margin-left: 20px !important;'> {$user_name}  {$time}
+                     <td class=\"tdleft\">
+                        <a href=\"javascript:void(0);\" rel=\"{$info['file_id']}\" class=\"del_file\">删除</a>
+                        <a href=\"javascript:;\" file=\"{$info['file_path']}\" filename=\"{$info['name']}\" onclick=\"filedown(this);\">下载</a>
+                    </td>
+                    ";
+            }
+            $html .= "</tr>";
+        }
+        return $html;
+
+    }
+
     /*
      * offer
      */
 
-    public function project_enter($fine_id)
-    {
+    public function project_enter($fine_id) {
         $where['fine_id'] = $fine_id;
         //查询CC记录
         $where['step'] = '7';//加入阶段标识
@@ -1647,11 +1703,11 @@ class BusinessAction extends Action
             }
         }
         unset($where['step']);
-        
+
         $project['enter_content'] = M("fine_project_enter")->where($where)->select();
-        foreach ($project['enter_content'] as $k => $v){
+        foreach ($project['enter_content'] as $k => $v) {
             $file_ids = $v['file_id'];
-            $project['enter_content'][$k]['file'] = M('file')->where(array('file_id'=>array('in',explode(',', $file_ids))))->select();
+            $project['enter_content'][$k]['file'] = $this->fileShow($file_ids);
         }
 //        var_dump($project['offer_content']);exit();
         $where['status'] = 7;
@@ -1662,12 +1718,12 @@ class BusinessAction extends Action
         $project['invoice'] = M("invoice")->where($where)->select();
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
-                if(($key == 'enter_content' || $key == 'enter_remark' || $key == 'remove_remark') && isset($li['role_id'])){
-                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                if (($key == 'enter_content' || $key == 'enter_remark' || $key == 'remove_remark') && isset($li['role_id'])) {
+                    $li['tracker_name'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
                 }
 
                 if ($key == "invoice") {
-                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
+                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id' => $li['create_role_id']])->getField('full_name');
                     $data[$li['create_time']][$key] = $li;
                 } else {
                     $data[$li['addtime']][$key] = $li;
@@ -1682,7 +1738,7 @@ class BusinessAction extends Action
      * sage
      */
 
-    public function project_safe($fine_id){
+    public function project_safe($fine_id) {
         $where['fine_id'] = $fine_id;
         //查询CC记录
         $where['step'] = '8';//加入阶段标识
@@ -1693,7 +1749,7 @@ class BusinessAction extends Action
             }
         }
         unset($where['step']);
-        
+
         $project['safe_content'] = M('fine_project_safe')->where($where)->select();
         $where['status'] = 8;
         $project['safe_remark'] = M("fine_project_bz")->where($where)->select();
@@ -1703,12 +1759,12 @@ class BusinessAction extends Action
         $project['invoice'] = M("invoice")->where($where)->select();
         foreach ($project as $key => $list) {
             foreach ($list as $k => $li) {
-                if(($key == 'safe_content' || $key == 'safe_remark' || $key == 'remove_remark') && isset($li['role_id'])){
-                    $li['tracker_name'] = M('User')->where(['role_id'=>$li['role_id']])->getField('full_name');
+                if (($key == 'safe_content' || $key == 'safe_remark' || $key == 'remove_remark') && isset($li['role_id'])) {
+                    $li['tracker_name'] = M('User')->where(['role_id' => $li['role_id']])->getField('full_name');
                 }
 
                 if ($key == "invoice") {
-                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id'=>$li['create_role_id']])->getField('full_name');
+                    $li['create_role_id'] && $li['tracker_name'] = M('User')->where(['role_id' => $li['create_role_id']])->getField('full_name');
                     $data[$li['create_time']][$key] = $li;
                 } else {
                     $data[$li['addtime']][$key] = $li;
@@ -1719,12 +1775,11 @@ class BusinessAction extends Action
         return $data;
     }
 
-    public function listajax()
-    {
+    public function listajax() {
         $project = D("ProjectView")->where("fine_project.id=%d", I("id"))->find();
 
-        $project['tj_role_name'] = $project['tj_role_id'] > 0 ? M('user')->where(['role_id'=>$project['tj_role_id']])->getField('full_name') : $project['tracker_name'];
-        $project['pass_role_name'] = $project['pass_role_id'] > 0 ? M('user')->where(['role_id'=>$project['pass_role_id']])->getField('full_name') : $project['tracker_name'];
+        $project['tj_role_name'] = $project['tj_role_id'] > 0 ? M('user')->where(['role_id' => $project['tj_role_id']])->getField('full_name') : $project['tracker_name'];
+        $project['pass_role_name'] = $project['pass_role_id'] > 0 ? M('user')->where(['role_id' => $project['pass_role_id']])->getField('full_name') : $project['tracker_name'];
 //        dump($project);die;
         $business = M("business")->where("business_id=%d", $project['project_id'])->field("pro_type")->find();
         //@edit by yanghao 2018-11-26 修改交易模式交易节点
@@ -1734,7 +1789,7 @@ class BusinessAction extends Action
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试");
         } elseif ($this->pro_type == "2") {//入职快
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3, "pass" => 4, "offer" => 5, "enter" => 6, "safe" => 7);
-            $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职","过保");
+            $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职", "过保");
         } elseif ($this->pro_type == "3") {//专业猎头
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3, "pass" => 4, "offer" => 5, "enter" => 6, "safe" => 7);
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职", "过保");
@@ -1758,19 +1813,18 @@ class BusinessAction extends Action
 //        var_dump($project['tj']);exit();
 //        echo $project['project_id'];exit();
 //        $job = M("business")->field("name")->where("business_id=%d",$project['project_id'])->find();
-        if(I('rt')){
+        if (I('rt')) {
             $this->assign('rt', BaseUtils::getStr(I('rt')));
             $this->assign('ref', BaseUtils::getStr(I('ref')));
         }
-        $end = M('fine_project_interview')->where(['fine_id'=>I("id")])->order('id desc')->getField('end');
+        $end = M('fine_project_interview')->where(['fine_id' => I("id")])->order('id desc')->getField('end');
         $this->assign("isEndInterview", $end);
         $this->assign("project", $project);
         $this->assign('pro_type', $this->pro_type);
         $this->display();
     }
 
-    public function fine_project($li)
-    {
+    public function fine_project($li) {
         $job = M('Business')->field('name')->where('business_id = %d', $li['project_id'])->find();
 
 //        $resume = M($this->get_hash_table("resume",$li['resume_id']),'huilie_','connection')->field("id,name,sex,current_company,current_job,telphone,hope_salary")->find();
@@ -1840,8 +1894,7 @@ class BusinessAction extends Action
      * 时间数据转换
      */
 
-    public function timeArr($data)
-    {
+    public function timeArr($data) {
 
         $arr = "";
 
@@ -1883,8 +1936,7 @@ class BusinessAction extends Action
      * 将二维数组转换为一维数组
      */
 
-    public function merge_log($arr)
-    {
+    public function merge_log($arr) {
         $data = array();
         foreach ($arr as $key => $list) {
 
@@ -1896,8 +1948,7 @@ class BusinessAction extends Action
         return $data;
     }
 
-    public function getMoreProject($project)
-    {
+    public function getMoreProject($project) {
         $arr = array();
         foreach ($project as $key => $list) {
             $arr[$key] = array();
@@ -1911,33 +1962,32 @@ class BusinessAction extends Action
         return $arr;
     }
 
-    public function edit_project()
-    {
+    public function edit_project() {
         header("Content-type: text/html; charset=utf-8");
         if ($this->isPOST()) {
             $id = I('id') ? BaseUtils::getStr(I('id')) : 0;
-            $rt = I('rt')? BaseUtils::getStr(I('rt')) : '';
-            $ref = I('ref')? BaseUtils::getStr(I('ref')) : '';
+            $rt = I('rt') ? BaseUtils::getStr(I('rt')) : '';
+            $ref = I('ref') ? BaseUtils::getStr(I('ref')) : '';
             $project = M("fine_project")->where("id=%d", $id)->field("project_id,status")->find();
 
             if ($_POST['kind'] == "calllist") {
                 $data['call_result'] = I('call_result') ? BaseUtils::getStr(I('call_result')) : '';
-                $data['gj'] = I('gj') ? BaseUtils::getStr(I('gj')): '' ;
-                $data['gjtime'] = I('gjtime') ? BaseUtils::getStr(I('gjtime')):'';
+                $data['gj'] = I('gj') ? BaseUtils::getStr(I('gj')) : '';
+                $data['gjtime'] = I('gjtime') ? BaseUtils::getStr(I('gjtime')) : '';
                 $data['target'] = I('target') ? BaseUtils::getStr(I('target')) : '';
-                $data['remarks'] = I('remarks') ? BaseUtils::getStr(I('remarks')) :'';
-                $data['age'] = I('age') ? BaseUtils::getStr(I('age')): '' ;
+                $data['remarks'] = I('remarks') ? BaseUtils::getStr(I('remarks')) : '';
+                $data['age'] = I('age') ? BaseUtils::getStr(I('age')) : '';
                 $data['onwork'] = I('onwork') ? intval(BaseUtils::getStr(I('onwork'))) : null;
-                $data['company_position'] = I('company_position') ? BaseUtils::getStr(I('company_position')) : '' ;
+                $data['company_position'] = I('company_position') ? BaseUtils::getStr(I('company_position')) : '';
                 $data['current_receive'] = I('current_receive') ? BaseUtils::getStr(I('current_receive')) : '';
                 $data['exp_receive'] = I('exp_receive') ? BaseUtils::getStr(I('exp_receive')) : '';
                 $data['off_reason'] = I('off_reason') ? BaseUtils::getStr(I('off_reason')) : '';
                 $data['chance'] = I('chance') ? BaseUtils::getStr(I('chance')) : '';
-                $data['marital'] = I('marital') ? intval(BaseUtils::getStr(I('marital'))) : null ;
+                $data['marital'] = I('marital') ? intval(BaseUtils::getStr(I('marital'))) : null;
                 $data['native'] = I('native') ? BaseUtils::getStr(I('native')) : '';
                 $data['plans'] = I('plans') ? BaseUtils::getStr(I('plans')) : '';
                 $data['step'] = I('step') ? BaseUtils::getStr(I('step')) : '';
-                $data['target'] = I('target') ? BaseUtils::getStr(I('target')): '' ;
+                $data['target'] = I('target') ? BaseUtils::getStr(I('target')) : '';
                 $data['fine_id'] = $id;
                 $data['role_id'] = session("role_id");
 
@@ -1948,8 +1998,8 @@ class BusinessAction extends Action
                     $result = M("fine_project_cc")->add($data);
                 }
 
-                $map['call_result'] = I('call_result') ? BaseUtils::getStr(I('call_result')): '' ;
-                $map['ccgj'] = I('gj') ? BaseUtils::getStr(I('gj')): '' ;
+                $map['call_result'] = I('call_result') ? BaseUtils::getStr(I('call_result')) : '';
+                $map['ccgj'] = I('gj') ? BaseUtils::getStr(I('gj')) : '';
                 $map['target'] = I('target') ? BaseUtils::getStr(I('target')) : '';
                 $map['updatetime'] = time();
                 $map['tracker'] = session('role_id'); //默认tracker为操作人
@@ -1957,7 +2007,7 @@ class BusinessAction extends Action
                 if ($result) {
                     if ($rt == 'resume') {
                         alert('success', '添加CC备注成功！', U("product/view", "id=" . $ref) . "#tab4");
-                        
+
                     } else {
                         alert('success', '添加CC备注成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
                     }
@@ -2006,8 +2056,7 @@ class BusinessAction extends Action
      * 项目位置
      */
 
-    public function project_st($data)
-    {
+    public function project_st($data) {
         if ($data == "1") {
             $str = "st1";
         } elseif ($data == "2") {
@@ -2029,8 +2078,7 @@ class BusinessAction extends Action
     }
 
     //CC备注弹框页面
-    public function addcc()
-    {
+    public function addcc() {
         if (I("key")) {
             $project = M("fine_project_cc")->where("id=%d", I("key"))->find();
 
@@ -2041,8 +2089,7 @@ class BusinessAction extends Action
     }
 
     //推荐顾问面试
-    public function addgwms()
-    {
+    public function addgwms() {
         $id = I("id");
         $key = I("key");
 
@@ -2095,16 +2142,14 @@ class BusinessAction extends Action
         $this->display();
     }
 
-    public function addgw()
-    {
+    public function addgw() {
         $user = M("user")->field("user_id,name,img")->select();
         $this->assign("user", $user);
         $this->display();
     }
 
     //推荐顾问面试
-    public function addbz()
-    {
+    public function addbz() {
         $id = I("id");
 
         $project = M("fine_project")->where("id=%d", $id)->find();
@@ -2150,8 +2195,7 @@ class BusinessAction extends Action
     }
 
     //不合适设置
-    public function remove()
-    {
+    public function remove() {
         $id = I("id");
         $project = M("fine_project")->where("id=%d", $id)->field("project_id,resume_id,status")->find();
 //            $project = $this->fine_project($project);
@@ -2187,8 +2231,7 @@ class BusinessAction extends Action
     }
 
     //顾问面试备注
-    public function msbz()
-    {
+    public function msbz() {
         $id = I("id");
         $project = M("fine_project")->where("id=%d", $id)->field("project_id,status")->find();
 
@@ -2231,28 +2274,27 @@ class BusinessAction extends Action
     }
 
     //面试二次通知
-    function notice(){
+    function notice() {
         $role_id = intval(session('role_id'));
-        $where['role_id'] = array( 'eq' , $role_id);
-        $where['gjtime'] = array('neq','');
-        $where['noticed'] = array('neq' ,1);
+        $where['role_id'] = array('eq', $role_id);
+        $where['gjtime'] = array('neq', '');
+        $where['noticed'] = array('neq', 1);
 //        $data = M('fine_project_cc')->where($where)->select();
         $data = D('FineProjectCcResume')->where($where)->select();
-        foreach ($data as $k => $v){
+        foreach ($data as $k => $v) {
             $gjtime = strtotime($v['gjtime']);
             $now = time();
-            if(($now - $gjtime) >= 0 && 60 >=($now - $gjtime)){
-                $url = U('business/view','id='.$v['project_id']);
-                sendMessage($role_id,'&nbsp;&nbsp;温馨提醒：候选人《<a href="'.$url.'" title="点击查看">'.$v['name'].'</a>》<font style="color:green;">需进行跟进沟通</font>！',1);
+            if (($now - $gjtime) >= 0 && 60 >= ($now - $gjtime)) {
+                $url = U('business/view', 'id=' . $v['project_id']);
+                sendMessage($role_id, '&nbsp;&nbsp;温馨提醒：候选人《<a href="' . $url . '" title="点击查看">' . $v['name'] . '</a>》<font style="color:green;">需进行跟进沟通</font>！', 1);
                 //标记已提醒过一次
-                M('fine_project_cc')->where(array('id'=>$v['id']))->setField(array('noticed'=>1));
+                M('fine_project_cc')->where(array('id' => $v['id']))->setField(array('noticed' => 1));
             }
         }
     }
 
     //客户面试
-    public function khms()
-    {
+    public function khms() {
         $id = I("id");
         $project = D("ProjectView")->where("id=%d", $id)->find();
 
@@ -2311,8 +2353,7 @@ class BusinessAction extends Action
     }
 
     //推荐反馈
-    public function tjfk()
-    {
+    public function tjfk() {
         $id = I("id");
 
         $project = M("fine_project")->where("id=%d", $id)->field("project_id,status,resume_id")->find();
@@ -2357,8 +2398,7 @@ class BusinessAction extends Action
     }
 
     //项目发票
-    public function fapiao()
-    {
+    public function fapiao() {
         $id = I("id");
         $project = M("fine_project")->where("id=%d", $id)->field("project_id,resume_id,id,status,com_id")->find();
 
@@ -2408,8 +2448,7 @@ class BusinessAction extends Action
         $this->display();
     }
 
-    public function invoiceReCheck()
-    {
+    public function invoiceReCheck() {
         $invoice_id = BaseUtils::getStr($_GET['id']);
         $m_invoice = M('Invoice');
         $m_fineProject = M('fine_project');
@@ -2449,13 +2488,12 @@ class BusinessAction extends Action
         $fineProjectInfo = $m_fineProject->where(['id' => $invoiceInfo['fine_id']])->field('ispresent')->find();
         $this->assign("info", $invoiceInfo);
         $this->assign("pro_type", $invoiceInfo['project_type']);
-        $this->assign("ispresent" , $fineProjectInfo['ispresent']);
+        $this->assign("ispresent", $fineProjectInfo['ispresent']);
         $this->display();
     }
 
     //推荐反馈
-    public function offer()
-    {
+    public function offer() {
         $id = I("id");
 
         $project = D("ProjectView")->where("id=%d", $id)->find();
@@ -2463,21 +2501,21 @@ class BusinessAction extends Action
         $this->assign("project", $project);
         if (I("key")) {
             $this->list = M("fine_project_offer")->where("id=%d", I("key"))->find();
-            $data = $this->getFile($id,'FineProjectOffer');
+            $data = $this->getFile($id, 'FineProjectOffer');
             $temp = '';
-            foreach ($data['file_list'] as $k => $v){
-                $temp .= '<div class="showfile" id="del_'.$v['file_id'].'"><input type="hidden" name="file[]" value="'.$v['file_id'].'"/><img src="__PUBLIC__/productImg/'.$v['pic'].'">&nbsp;<span style="color:#646464;">'.$v['name'].'&nbsp;(&nbsp;'.$v['size'].'KB&nbsp;)</span>&nbsp;&nbsp;<a href="javascript:;" rel="'.$v['file_id'].'" onclick="del_file(this);"><img src="__PUBLIC__/img/delfile.png"/></a></div>';
+            foreach ($data['file_list'] as $k => $v) {
+                $temp .= '<div class="showfile" id="del_' . $v['file_id'] . '"><input type="hidden" name="file[]" value="' . $v['file_id'] . '"/><img src="__PUBLIC__/productImg/' . $v['pic'] . '">&nbsp;<span style="color:#646464;">' . $v['name'] . '&nbsp;(&nbsp;' . $v['size'] . 'KB&nbsp;)</span>&nbsp;&nbsp;<a href="javascript:;" rel="' . $v['file_id'] . '" onclick="del_file(this);"><img src="__PUBLIC__/img/delfile.png"/></a></div>';
             }
-            $this->assign('temp',$temp);
-            $this->assign('file_num',$data['file_num']);
-            $this->assign('file_size',$data['file_size']);
+            $this->assign('temp', $temp);
+            $this->assign('file_num', $data['file_num']);
+            $this->assign('file_size', $data['file_size']);
         }
         if ($this->isPost()) {
             unset($_POST['id']);
             $_POST['role_id'] = session("role_id");
             $_POST['fine_id'] = $id;
             //凑合文件id
-            $_POST['file_id'] = implode(',',$_POST['file']);
+            $_POST['file_id'] = implode(',', $_POST['file']);
             if ($_POST['key']) {
                 $result = M("fine_project_offer")->where("id=%d", $_POST['key'])->save($_POST);
             } else {
@@ -2508,45 +2546,44 @@ class BusinessAction extends Action
         $this->display();
     }
 
-    public function getFile($fid,$db){
+    public function getFile($fid, $db) {
         $file_id = M($db)->where("fine_id=%d", $fid)->getField('file_id');
-        $where['file_id'] = array('in',explode(',',$file_id));
+        $where['file_id'] = array('in', explode(',', $file_id));
         $file_list = M('File')->where($where)->select();
         $file_size_count = M('File')->where($where)->sum('size');
         $file_num = 0;
         $file_size = '';
         foreach ($file_list as $key => $value) {
-            $file_list[$key]['size'] = ceil($value['size']/1024);
+            $file_list[$key]['size'] = ceil($value['size'] / 1024);
             $file_list[$key]['pic'] = show_picture($value['name']);
         }
         $data['file_list'] = $file_list;
         $data['file_num'] = sizeof($file_list);
-        $data['file_size'] = ceil($file_size_count/1024);
+        $data['file_size'] = ceil($file_size_count / 1024);
         return $data;
     }
 
     //推荐反馈
-    public function ruzhi()
-    {
+    public function ruzhi() {
         $id = I("id");
         $project = D("ProjectView")->where("id=%d", $id)->field("project_id,status,resume_id,name")->find();
         if (I("key")) {
             $this->list = M("fine_project_enter")->where("id=%d", I("key"))->find();
-            $data = $this->getFile($id,'FineProjectEnter');
+            $data = $this->getFile($id, 'FineProjectEnter');
             $temp = '';
-            foreach ($data['file_list'] as $k => $v){
-                $temp .= '<div class="showfile" id="del_'.$v['file_id'].'"><input type="hidden" name="file[]" value="'.$v['file_id'].'"/><img src="__PUBLIC__/productImg/'.$v['pic'].'">&nbsp;<span style="color:#646464;">'.$v['name'].'&nbsp;(&nbsp;'.$v['size'].'KB&nbsp;)</span>&nbsp;&nbsp;<a href="javascript:;" rel="'.$v['file_id'].'" onclick="del_file(this);"><img src="__PUBLIC__/img/delfile.png"/></a></div>';
+            foreach ($data['file_list'] as $k => $v) {
+                $temp .= '<div class="showfile" id="del_' . $v['file_id'] . '"><input type="hidden" name="file[]" value="' . $v['file_id'] . '"/><img src="__PUBLIC__/productImg/' . $v['pic'] . '">&nbsp;<span style="color:#646464;">' . $v['name'] . '&nbsp;(&nbsp;' . $v['size'] . 'KB&nbsp;)</span>&nbsp;&nbsp;<a href="javascript:;" rel="' . $v['file_id'] . '" onclick="del_file(this);"><img src="__PUBLIC__/img/delfile.png"/></a></div>';
             }
-            $this->assign('temp',$temp);
-            $this->assign('file_num',$data['file_num']);
-            $this->assign('file_size',$data['file_size']);
+            $this->assign('temp', $temp);
+            $this->assign('file_num', $data['file_num']);
+            $this->assign('file_size', $data['file_size']);
         }
 //            $project = $this->fine_project($project);
         $this->assign("project", $project);
         if ($this->isPost()) {
             unset($_POST['id']);
             $_POST['fine_id'] = $id;
-            $_POST['file_id'] =implode(',',$_POST['file']);
+            $_POST['file_id'] = implode(',', $_POST['file']);
             $_POST['role_id'] = session('role_id');
             if ($_POST['key']) {
                 $result = M("fine_project_enter")->where("id=%d", $_POST['key'])->save($_POST);
@@ -2573,8 +2610,7 @@ class BusinessAction extends Action
     /**
      * @desc 过保操作
      */
-    public function safe()
-    {
+    public function safe() {
         header("Content-type: text/html; charset=utf-8");
         $projectId = I('id', 0);
         !$projectId && $this->ajaxReturn(1, '参数错误', 0);
@@ -2592,22 +2628,20 @@ class BusinessAction extends Action
             $res = $safeObj->where($where)->save($data);
         }
         if ($res) {
-            M("fine_project")->where("id=%d", $projectId)->save(['status' => 8, 'updatetime' => time(),'tracker'=>session('role_id')]);
+            M("fine_project")->where("id=%d", $projectId)->save(['status' => 8, 'updatetime' => time(), 'tracker' => session('role_id')]);
             $this->ajaxReturn(1, '操作成功', 1);
         }
         $this->ajaxReturn(1, '系统错误', 0);
     }
 
     //费用变更
-    public function changefy()
-    {
+    public function changefy() {
 
 
         $this->display();
     }
 
-    public function view_ajax_beifen()
-    {
+    public function view_ajax_beifen() {
         $where['project_id'] = $_POST['id'];
         $where['status'] = "calllist";
         $users = M("fine_project")->where($where)->select();
@@ -2616,8 +2650,7 @@ class BusinessAction extends Action
     }
 
     //客户列表产品详情
-    public function product_view()
-    {
+    public function product_view() {
         $business_id = $this->_get('id', 'intval');
         $m_business = M('Business');
         $m_product = M('Product');
@@ -2640,8 +2673,7 @@ class BusinessAction extends Action
      * 删除商机
      *
      * */
-    public function delete()
-    {
+    public function delete() {
         $m_business = M('Business');
         $m_contract = M('Contract');
         $m_log = M('Log');
@@ -2726,8 +2758,7 @@ class BusinessAction extends Action
         }
     }
 
-    public function listDialog()
-    {
+    public function listDialog() {
         $d_business = D('BusinessTopView');
 //		$where['business.is_end'] = array('gt',0);
         $this->_permissionRes = getPerByAction(MODULE_NAME, 'index');
@@ -2737,10 +2768,10 @@ class BusinessAction extends Action
             $where['customer_id'] = intval($_GET['customer_id']);
         }
 
-        $where['_string'] = "creator_role_id = ".session('role_id')." OR joiner  = ".session('role_id').
-            " OR FIND_IN_SET(".session('role_id').",owner_role_id) OR FIND_IN_SET(".session('role_id').",parter) ";
-        if($this->_permissionRes){
-            $allRoles = implode(',',$this->_permissionRes);
+        $where['_string'] = "creator_role_id = " . session('role_id') . " OR joiner  = " . session('role_id') .
+            " OR FIND_IN_SET(" . session('role_id') . ",owner_role_id) OR FIND_IN_SET(" . session('role_id') . ",parter) ";
+        if ($this->_permissionRes) {
+            $allRoles = implode(',', $this->_permissionRes);
             $where['_string'] .= " OR creator_role_id in ({$allRoles})";
         }
         if ($_REQUEST["field"]) {
@@ -2859,8 +2890,7 @@ class BusinessAction extends Action
      * 商机推进
      *
      * */
-    public function advance()
-    {
+    public function advance() {
         if ($this->isPost()) {
 
             $business_id = $_REQUEST['business_id'] ? intval($_REQUEST['business_id']) : 0;
@@ -2945,8 +2975,7 @@ class BusinessAction extends Action
      * 商机统计
      *
      * */
-    public function analytics()
-    {
+    public function analytics() {
         $m_business = M('Business');
         $m_contract = M('Contract');
         $content_id = $_GET['content_id'] ? intval($_GET['content_id']) : 1;
@@ -3422,8 +3451,7 @@ class BusinessAction extends Action
     /**
      * 首页销售漏斗统计
      * */
-    public function getSalesFunnel()
-    {
+    public function getSalesFunnel() {
         $dashboard = M('user')->where('user_id = %d', session('user_id'))->getField('dashboard');
         $widget = unserialize($dashboard);
         $id = intval($_GET['id']);
@@ -3453,8 +3481,7 @@ class BusinessAction extends Action
     }
 
     //销售漏斗对比
-    public function addduibi()
-    {
+    public function addduibi() {
         if ($_GET['dbname']) {
             $dbname = explode(',', $_GET['dbname']);
         }
@@ -3472,8 +3499,7 @@ class BusinessAction extends Action
     }
 
     //商机统计高级搜索
-    public function advance_search()
-    {
+    public function advance_search() {
         $module_name = trim($_GET['module_name']);
         $action_name = trim($_GET['action_name']);
         $idArray = getPerByAction($module_name, $action_name, false);
@@ -3502,8 +3528,7 @@ class BusinessAction extends Action
      * @author
      * @return
      */
-    public function getbusinessStatus()
-    {
+    public function getbusinessStatus() {
         $type_id = $_GET['type_id'] ? intval($_GET['type_id']) : 0;
         if (!$type_id) {
             $this->ajaxReturn('', '参数错误！', 0);
@@ -3515,8 +3540,7 @@ class BusinessAction extends Action
     /**
      * 分配或共享
      */
-    public function setBusinessOwner()
-    {
+    public function setBusinessOwner() {
         if ($this->isPost()) {
             $msg = I('post.');
             $business = M('Business');
@@ -3525,7 +3549,7 @@ class BusinessAction extends Action
             $map = [];
             $roleId = $msg['role_id'];
             $type = '0';
-            if ($ownerRoleId['owner_role_id']){
+            if ($ownerRoleId['owner_role_id']) {
                 $ownerRoleId = explode(',', $ownerRoleId['owner_role_id']);
                 $map = $ownerRoleId;
                 foreach ($ownerRoleId as $k => $v) {
@@ -3549,8 +3573,7 @@ class BusinessAction extends Action
     /**
      * 分配列表及搜索功能
      */
-    public function BusinessOwner()
-    {
+    public function BusinessOwner() {
         $listrows = isset($_GET['listrows']) ? intval($_GET['listrows']) : 15;
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
         $roleDepartment = M('RoleDepartment');
@@ -3580,11 +3603,11 @@ class BusinessAction extends Action
                 }
             }
             if ($roleIds == null && $where['department_id'] == null) {
-                $where['full_name'] = array('like','%'.$where['full_name'].'%');
+                $where['full_name'] = array('like', '%' . $where['full_name'] . '%');
                 $roleIds = $m_user->where($where)->field('role_id')->select();
             } else {
                 if ($where['full_name'] != '' || $where['telephone'] != '') {
-                    $where['full_name'] = array('like','%'.$where['full_name'].'%');
+                    $where['full_name'] = array('like', '%' . $where['full_name'] . '%');
                     $roleIdsWhere = $m_user->where($where)->field('role_id')->select();
                     $roleIdsDepartment = $roleIds;
                     unset($roleIds);
@@ -3641,9 +3664,9 @@ class BusinessAction extends Action
             $Page = new Page($count, $listrows); // 实例化分页类 传入总记录数和每页显示的记录数
             $show = $Page->show(); // 分页显示输出
             //渲染输入内容
-            $this->assign('full_name',$_GET['name']);
-            $this->assign('tel',$_GET['tel']);
-            $this->assign('department_id',$_GET['department_id']);
+            $this->assign('full_name', $_GET['name']);
+            $this->assign('tel', $_GET['tel']);
+            $this->assign('department_id', $_GET['department_id']);
             $this->assign('page', $show); // 赋值分页输出
             $this->assign("listrows", $listrows);
             $this->assign('data', $data);
@@ -3651,8 +3674,7 @@ class BusinessAction extends Action
         }
     }
 
-    public function upResume()
-    {
+    public function upResume() {
         if (!$_POST['calllistid']) {
             return json_encode(['code' => 403, 'message' => '缺少callid']);
         }
