@@ -492,12 +492,24 @@ class Rank
     }
 
     /**
-     * 数据库连接
+     * @desc 数据库连接
+     * @param string $env
      * @return PDO
      */
-    private function dbConn() {
+    private function dbConn($env = 'test') {
 
-        $conf = [
+        // 数据库链接 配置
+        $productConf = array(
+            'product' => 'mysql',
+            'api' => 'pdo',
+            'host' => '172.18.69.141',
+            'port' => 3306,
+            'dbname' => 'pinping',
+            'username' => 'root',
+            'password' => 'bffebfb01900fe3af8a8633d3b0b7be2',
+            'charset' => 'utf8',
+        );
+        $testConf = [
             'product' => 'mysql',
             'api' => 'pdo',
             'host' => '192.168.0.250',
@@ -507,6 +519,11 @@ class Rank
             'password' => '123456',
             'charset' => 'utf8',
         ];
+        if ($env == 'test') {
+            $conf = $testConf;
+        } else {
+            $conf = $productConf;
+        }
         $dsn = "mysql:host={$conf['host']};port={$conf['port']};dbname={$conf['dbname']}";
         $conn = new \PDO($dsn, $conf['username'], $conf['password']);
         if (isset($conf['charset']) && !empty($conf['charset'])) {
