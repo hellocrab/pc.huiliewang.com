@@ -1087,7 +1087,7 @@ class MessageAction extends Action
         $where = ['type' => ['in', '1,2']];
         $type && $where['type'] = $type;
         $day && $where['deadline'] = ['gt', strtotime($day)];
-
+        $where['to_role_id'] = session('role_id');
         $startNo = ($page - 1) * $pageSize;
         $list = M('message')->where($where)->order('deadline asc')->limit($startNo, $pageSize)->select();
         $nextDay = strtotime(date('Y-m-d')) + 3600 * 24;

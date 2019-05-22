@@ -6,21 +6,20 @@
 <link href="__PUBLIC__/style/css/dialog.css" rel="stylesheet">
 
 <form class="form-horizontal" id="remove_form" action="{:U('business/remove')}" method="post">
-    <input type="hidden" name="id" value="{:I('id')}">
-    <input type="hidden" name="key" value="{:I('key')}">
-<div class="full-height">
-    <div class="content">
-       <table class="beizhu">
+    <include file="Business:hidden" />
+    <div class="full-height">
+        <div class="content">
+            <table class="beizhu">
 
-           <tr>
-               <td style="text-align: left;width: 100px;"><label style="color: red;">*</label>不合适原因:</td>
-               <td style="padding-left: 20px;">
-                   <textarea col="3" row="8" class="ccbeizhu" id="reason" name="reason" placeholder="最多不超过1000字" maxlength="1000">{$list['reason']}</textarea>
-               </td>
-           </tr>
-       </table>
+                <tr>
+                    <td style="text-align: left;width: 100px;"><label style="color: red;">*</label>不合适原因:</td>
+                    <td style="padding-left: 20px;">
+                        <textarea col="3" row="8" class="ccbeizhu" id="reason" name="reason" placeholder="最多不超过1000字" maxlength="1000">{$list['reason']}</textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-</div>
 </form>
 
 
@@ -30,17 +29,17 @@
 
     $(function () {
         $(".result_select input").click(function () {
-            var result=$(this).attr("rel");
+            var result = $(this).attr("rel");
             $(".result_select input").removeClass("staactive");
             $(this).addClass("staactive");
             $(".result").val(result);
         })
 
         $("input[name=gj]").click(function () {
-            var gjflag=$(this).val();
-            if(gjflag=="1" || gjflag==1){
+            var gjflag = $(this).val();
+            if (gjflag == "1" || gjflag == 1) {
                 $(".time_se").show();
-            }else{
+            } else {
                 $(".time_se").hide();
                 $(".time_se").val("");
             }
@@ -48,7 +47,7 @@
         })
 
         $("input[name=mubiao]").click(function () {
-            var mbflag=$(this).val();
+            var mbflag = $(this).val();
             $("#mbflag").val(mbflag);
         })
     })

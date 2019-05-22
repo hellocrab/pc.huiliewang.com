@@ -11,11 +11,8 @@
 <link href="__PUBLIC__/style/css/dialog.css" rel="stylesheet">
 
 <form class="form-horizontal" id="dialog_form1" action="{:U('business/edit_project')}" method="post">
-    <input type="hidden" name="id" value="{:I('id')}">
-    <input type="hidden" name="key" value="{:I('key')}">
+    <include file="Business:hidden" />
     <input type="hidden" name="step" value="{:I('step')}">
-    <input type="hidden" name="rt" value="{:I('rt')}">
-    <input type="hidden" name="ref" value="{:I('ref')}">
     <input type="hidden" name="kind" value="calllist">
 <div class="full-height">
     <div class="content">
