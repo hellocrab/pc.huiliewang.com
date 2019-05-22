@@ -10,18 +10,17 @@
     }
 </style>
 <form class="form-horizontal" id="addbz_form" action="{:U('business/addbz')}" method="post">
-    <input type="hidden" name="id" value="{:I('id')}">
-    <input type="hidden" name="key" value="{:I('key')}">
-<div class="full-height">
-    <div class="content">
-        <textarea col="3" row="5" class="tjbeizhu" name="beizhu" id="beizhu" placeholder="请填写备注（500字以内）" maxlength="500">{$project['beizhu']}</textarea>
-        <input type="text" readonly="readonly" style="display: block;" class="time_se form-control timerinput"  id="timeend" name="timeend"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm', minDate:&quot;#F{$dp.$D('timeend')}&quot;,maxDate:'2038-01-01'})"  placeholder="截至时间" value="{$project['timeend']}">
-        <!--发送通知给：-->
-        <!--<input type="checkbox" name="allmsg" class="allmsg">职位组所有人-->
-        <!--<br>-->
-        <!--<input type="checkbox" name="one" class="one">张勇-->
+<include file="Business:hidden" />
+    <div class="full-height">
+        <div class="content">
+            <textarea col="3" row="5" class="tjbeizhu" name="beizhu" id="beizhu" placeholder="请填写备注（500字以内）" maxlength="500">{$project['beizhu']}</textarea>
+            <input type="text" readonly="readonly" style="display: block;" class="time_se form-control timerinput"  id="timeend" name="timeend"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm', minDate: & quot; #F{$dp.$D('timeend')} & quot; , maxDate:'2038-01-01'})"  placeholder="截至时间" value="{$project['timeend']}">
+            <!--发送通知给：-->
+            <!--<input type="checkbox" name="allmsg" class="allmsg">职位组所有人-->
+            <!--<br>-->
+            <!--<input type="checkbox" name="one" class="one">张勇-->
+        </div>
     </div>
-</div>
 </form>
 
 

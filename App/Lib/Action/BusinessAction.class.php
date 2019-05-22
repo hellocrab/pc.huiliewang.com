@@ -1680,6 +1680,10 @@ class BusinessAction extends Action
 //        var_dump($project['tj']);exit();
 //        echo $project['project_id'];exit();
 //        $job = M("business")->field("name")->where("business_id=%d",$project['project_id'])->find();
+        if(I('rt')){
+            $this->assign('rt', BaseUtils::getStr(I('rt')));
+            $this->assign('ref', BaseUtils::getStr(I('ref')));
+        }
         $end = M('fine_project_interview')->where(['fine_id'=>I("id")])->order('id desc')->getField('end');
         $this->assign("isEndInterview", $end);
         $this->assign("project", $project);
@@ -1868,13 +1872,14 @@ class BusinessAction extends Action
 
                 $map['call_result'] = I('call_result') ? BaseUtils::getStr(I('call_result')): '' ;
                 $map['ccgj'] = I('gj') ? BaseUtils::getStr(I('gj')): '' ;
-                $map['target'] = I('target') ? BaseUtils::getStr(I('target')): '' ;
+                $map['target'] = I('target') ? BaseUtils::getStr(I('target')) : '';
                 $map['updatetime'] = time();
                 $map['tracker'] = session('role_id'); //默认tracker为操作人
                 M("fine_project")->where("id=%d", $id)->save($map);
                 if ($result) {
-                    if($rt == 'resume'){
-                        alert('success', '添加CC备注成功！', U("product/view", "id=" . $ref));
+                    if ($rt == 'resume') {
+                        alert('success', '添加CC备注成功！', U("product/view", "id=" . $ref) . "#tab4");
+                        
                     } else {
                         alert('success', '添加CC备注成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
                     }
@@ -1996,9 +2001,17 @@ class BusinessAction extends Action
             if ($result) {
                 $data['updatetime'] = time();
                 M("fine_project")->where("id=%d", $id)->save($data);
-                alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                if (I('rt')) {
+                    alert('success', '项目状态推进成功！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                }
             } else {
-                alert('error', '项目状态推进失败！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                if (I('rt')) {
+                    alert('error', '项目状态推进失败！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('error', '项目状态推进失败！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                }
             }
         }
         $this->display();
@@ -2048,7 +2061,11 @@ class BusinessAction extends Action
             if ($result) {
                 $data['updatetime'] = time();
                 M("fine_project")->where("id=%d", $id)->save($data);
-                alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                if (I('rt')) {
+                    alert('success', '项目状态推进成功！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                }
             }
         }
         $this->display();
@@ -2081,7 +2098,11 @@ class BusinessAction extends Action
             if ($result) {
                 $data['updatetime'] = time();
                 M("fine_project")->where("id=%d", $id)->save($data);
-                alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                if (I('rt')) {
+                    alert('success', '项目状态推进成功！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                }
             }
         }
         $this->display();
@@ -2121,7 +2142,11 @@ class BusinessAction extends Action
                 $data['updatetime'] = time();
                 $data['adgj'] = $_POST['gj'];
                 M("fine_project")->where("id=%d", $id)->save($data);
-                alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                if (I('rt')) {
+                    alert('success', '项目状态推进成功！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                }
             }
         }
         $this->display();
@@ -2180,9 +2205,13 @@ class BusinessAction extends Action
             if ($result) {
                 $data['status'] = 4;
                 $data['updatetime'] = time();
-                $data['tracker'] = session('role_id');//默认tracker为操作人
+                $data['tracker'] = session('role_id'); //默认tracker为操作人
                 M("fine_project")->where("id=%d", $id)->save($data);
-                alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                if (I('rt')) {
+                    alert('success', '项目状态推进成功！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                }
             }
 
 //                var_dump($_POST);exit();
@@ -2223,9 +2252,9 @@ class BusinessAction extends Action
 
             $_POST['fine_id'] = $id;
             $_POST['role_id'] = session('role_id');
-            if(I('key') > 0){
-                $result = M("fine_project_tj")->where(['id'=>I('key')])->save($_POST);
-            }else{
+            if (I('key') > 0) {
+                $result = M("fine_project_tj")->where(['id' => I('key')])->save($_POST);
+            } else {
                 $_POST['addtime'] = time();
                 $result = M("fine_project_tj")->add($_POST);
             }
@@ -2233,9 +2262,17 @@ class BusinessAction extends Action
             if ($result) {
                 $data['updatetime'] = time();
                 M("fine_project")->where("id=%d", $id)->save($data);
-                alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                if (I('rt')) {
+                    alert('success', '项目状态推进成功！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                }
             } else {
-                alert('success', '项目状态推进失败！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                if (I('rt')) {
+                    alert('error', '项目状态推进失败！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('error', '项目状态推进失败！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                }
             }
         }
         $this->display();
@@ -2280,7 +2317,11 @@ class BusinessAction extends Action
             if ($result) {
                 $data['updatetime'] = time();
                 M("fine_project")->where("id=%d", $id)->save($data);
-                alert('success', '开票成功！', U("business/view", "id=" . $project['project_id']));
+                if (I('rt')) {
+                    alert('error', '开票成功！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('success', '开票成功！', U("business/view", "id=" . $project['project_id']));
+                }
             } else {
                 $this->error('添加失败，请重试！');
             }
@@ -2373,9 +2414,17 @@ class BusinessAction extends Action
             if ($result) {
                 $data['updatetime'] = time();
                 M("fine_project")->where("id=%d", $id)->save($data);
-                alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                if (I('rt')) {
+                    alert('success', '项目状态推进成功！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                }
             } else {
-                alert('success', '项目状态推进失败！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                if (I('rt')) {
+                    alert('error', '项目状态推进失败！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('error', '项目状态推进失败！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                }
             }
         }
         $this->display();
@@ -2431,9 +2480,13 @@ class BusinessAction extends Action
             if ($result) {
                 $arr['status'] = 7;
                 $arr['updatetime'] = time();
-                $arr['tracker'] = session('role_id');//跟进人tracker默认为操作人
+                $arr['tracker'] = session('role_id'); //跟进人tracker默认为操作人
                 M("fine_project")->where("id=%d", $id)->save($arr);
-                alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                if (I('rt')) {
+                    alert('success', '项目状态推进成功！', U("product/view", "id=" . I('ref')) . "#tab4");
+                } else {
+                    alert('success', '项目状态推进成功！', U("business/view", "id=" . $project['project_id']) . "#" . $this->project_st($project['status']));
+                }
             }
         }
         $this->display();
