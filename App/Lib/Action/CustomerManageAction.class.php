@@ -92,7 +92,6 @@ class CustomerManageAction extends Action
     public function rank_update() {
         $this->authCheck();
         $list = BaseUtils::getStr($_REQUEST['data']);
-        $list = json_decode($list,true);
         $res = false;
         foreach ($list as $info) {
             $data = [];
@@ -104,6 +103,7 @@ class CustomerManageAction extends Action
             $info['min_condition'] && $data['min_condition'] = $info['min_condition'];
             if ($data) {
                 $data['up_time'] = time();
+
                 $res = M('customer_rank_config')->where(['id' => $id])->save($data);
             }
         }
