@@ -10,6 +10,7 @@ class CustomerManageAction extends Action
 {
     protected $_permissionRes = '';
     protected $pro_type = [0 => '初始条件', 1 => '面试快', 2 => '入职快', 3 => '专业猎头'];
+    protected $rank_name = ['A' => 'A级', 'B' => 'B级', 'C' => 'C级'];
 
     /**
      * 用于判断权限
@@ -181,17 +182,29 @@ class CustomerManageAction extends Action
         $this->authCheck();
         $customerId = BaseUtils::getStr(I('customer_id', 0), 'int'); //客户ID
         $proType = BaseUtils::getStr(I('pro_type', 0), 'int'); //项目类型
-        $rankName = BaseUtils::getStr(I('rank', '')); //等级名称
+        $rankName = BaseUtils::getStr(I('rank_name', '')); //等级名称
         $isBlack = BaseUtils::getStr(I('is_black', 0), 'int'); //是否加入黑名单
         $note = BaseUtils::getStr(I('note', '')); //备注信息
 
         if ($customerId <= 0) {
             $this->response('参数：customer_id 必填', 500, false);
         }
+        $info = M('customer_rank')->where(['customer_id' => $customerId])->find();
+        if (!$info) {
+            $this->response('客户不存在分级信息', 500, false);
+        }
         $data = [];
-        $proType && $data['pro_type'] = $proType;
-        $rankName && $data['rank_name'] = $rankName;
-        $note && $data['note'] = $rankName;
+        //项目类型修改
+        if ($proType && $this->pro_type[$proType]) {
+            $data['pro_type'] = $proType;
+        }
+        //客户等级手工修改
+        if ($rankName && $this->rank_name[$rankName]) {
+            $data['rank_name'] = $rankName;
+        }
+        //备注信息
+        $note && $data['note'] = $note;
+        //黑名单
         if (isset($_REQUEST['is_black'])) {
             $data['is_black'] = $isBlack;
         }
@@ -214,7 +227,7 @@ class CustomerManageAction extends Action
         unset($proType[0]);
         $data = [
             'pro_type' => $proType,
-            'rank' => ['A' => 'A级', 'B' => 'B级', 'C' => 'C级']
+            'rank' => $this->rank_name,
         ];
         $this->response($data);
     }
