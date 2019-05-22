@@ -171,7 +171,10 @@ class CustomerManageAction extends Action
             $info['role_name'] = M('user')->where(['user_id' => $info['role_id']])->getField('full_name');
             !$info['role_name'] && $info['role_name'] = '';
         }
-        $this->response($list ? $list : []);
+        !$list && $list = [];
+        $list['current_page'] = $page;
+        $list['counts'] = $model->count();
+        $this->response($list);
     }
 
     /**
