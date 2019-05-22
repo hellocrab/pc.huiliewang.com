@@ -133,13 +133,13 @@ class CustomerManageAction extends Action
             if (in_array($fields, $selectFields)) {
                 $value = BaseUtils::getStr($value);
                 //客户信息是否完善
-                if($fields == 'is_perfection'){
+                if ($fields == 'is_perfection') {
                     $value && $where['customer_name'] = ['neq', ''];
                     !$value && $where['customer_name'] = '';
                     continue;
                 }
                 //名字模糊查询
-                if($fields == 'name' && $value){
+                if ($fields == 'name' && $value) {
                     $map = [];
                     $map['customer_name'] = ['like', "%{$name}%"];
                     $map['contact_name'] = ['like', "%{$name}%"];
@@ -168,6 +168,7 @@ class CustomerManageAction extends Action
             $info['add_time'] = date('Y-m-d', $info['add_time']);
             $info['up_time'] = date('Y-m-d', $info['up_time']);
             $info['role_name'] = M('user')->where(['user_id' => $info['role_id']])->getField('full_name');
+            !$info['role_name'] && $info['role_name'] = '';
         }
         $this->response($list ? $list : []);
     }
