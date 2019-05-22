@@ -176,7 +176,7 @@
         <div class="row">
             <table class="table stepnav" style="margin-left: 20px;width: calc(100% - 20px);">
                 <tr class="process_line">
-                    <for start="0" end="$pro_count" k="k">
+                <for start="0" end="$pro_count" k="k">
 
                     <if condition="$i eq ($pro_count-1)">
                         <if condition="$i eq $process[$project['status']]">
@@ -186,12 +186,12 @@
                             <else />
                             <td><a class="steprno"></a></td>
                         </if>
-                    <else />
+                        <else />
                         <if condition="$i eq $process[$project['status']]">
                             <td><a href="#log{$i}"  data-toggle="tab" class="stepr lastac currentstep"></a></td>
-                        <elseif condition="$i lt $process[$project['status']]" />
+                            <elseif condition="$i lt $process[$project['status']]" />
                             <td><a href="#log{$i}"  data-toggle="tab" class="stepr activs"></a></td>
-                        <else />
+                            <else />
                             <td><a  class="stepr"></a></td>
                         </if>
                     </if>
@@ -201,13 +201,13 @@
                     <!--<td><span class="stepr"></span></td>-->
                     <!--<td><span class="stepr"></span></td>-->
                     <!--<td><span class="stepr"></span></td>-->
-                    </for>
-                    <!--<td><span class="steprno"></span></td>-->
+                </for>
+                <!--<td><span class="steprno"></span></td>-->
                 </tr>
                 <tr>
-                    <volist name="process_name" id="vo">
-                        <td>{$vo}</td>
-                    </volist>
+                <volist name="process_name" id="vo">
+                    <td>{$vo}</td>
+                </volist>
 
                 </tr>
             </table>
@@ -218,98 +218,98 @@
                 <input type="button" value="重启流程" class="btn btn-default restart" data-id="{$project['id']}">
                 <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
             </div>
-        <else />
-        <!--CallList-->
-        <if condition="$project['status'] eq calllist">
-        <div class="row baccc">
-            <input type="button" value="CC备注" class="btn btn-default addCCbz" data-id="{$project['id']}">
-            <input type="button" value="推荐给顾问面试" class="btn btn-default tjgwms"  data-id="{$project['id']}">
-            <input type="button" value="推荐人才给客户" class="btn btn-default tjkehu"  data-id="{$project['id']}">
-            <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
-            <input type="button" value="不合适" class="btn btn-default remove"  data-id="{$project['id']}">
-        </div>
-        </if>
-        <!--顾问面试-->
-        <if condition="($project['status'] eq adviser) and $project['adviser_more']">
-            <div class="row baccc">
-                <input type="button" value="推荐人才给客户" class="btn btn-default tjkehu">
-                <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
-                <input type="button" value="不合适" class="btn btn-default remove"  data-id="{$project['id']}">
-            </div>
-        <elseif  condition="($project['status'] eq adviser) and empty($project['adviser_more'])"/>
-            <div class="row baccc">
-                <input type="button" value="顾问面试备注" class="btn btn-default msbz" data-id="{$project['id']}">
-                <input type="button" value="推荐人才给客户" class="btn btn-default tjkehu">
-                <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
-                <input type="button" value="不合适" class="btn btn-default remove"  data-id="{$project['id']}">
-            </div>
-        </if>
-        <!--简历推荐-->
-        <if condition="$project['status'] eq tj">
-        <div class="row baccc">
-            <input type="button" value="客户面试" class="btn btn-default khms" data-id="{$project['id']}">
-            <input type="button" value="添加推荐反馈" class="btn btn-default tjfk"  data-id="{$project['id']}">
-            <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
-            <input type="button" value="不合适" class="btn btn-default remove"  data-id="{$project['id']}">
-        </div>
-        </if>
-        <!--客户面试-->
-        <if condition="$project['status'] eq interview">
-        <div class="row baccc">
-            <eq name="isEndInterview" value="0">
-            <input type="button" value="客户面试" class="btn btn-default khms"  data-id="{$project['id']}">
-                <else />
-                <!--<input type="button" value="客户面试" class="btn btn-default khms"  data-id="{$project['id']}">-->
-            </eq>
-            <input type="button" value="开票" class="btn btn-default fapiao"   data-id="{$project['id']}">
+            <else />
+            <!--CallList-->
+            <if condition="$project['status'] eq calllist">
+                <div class="row baccc">
+                    <input type="button" value="CC备注" class="btn btn-default addCCbz" data-id="{$project['id']}">
+                    <input type="button" value="推荐给顾问面试" class="btn btn-default tjgwms"  data-id="{$project['id']}">
+                    <input type="button" value="推荐人才给客户" class="btn btn-default tjkehu"  data-id="{$project['id']}">
+                    <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
+                    <input type="button" value="不合适" class="btn btn-default remove"  data-id="{$project['id']}">
+                </div>
+            </if>
+            <!--顾问面试-->
+            <if condition="($project['status'] eq adviser) and $project['adviser_more']">
+                <div class="row baccc">
+                    <input type="button" value="推荐人才给客户" class="btn btn-default tjkehu">
+                    <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
+                    <input type="button" value="不合适" class="btn btn-default remove"  data-id="{$project['id']}">
+                </div>
+                <elseif  condition="($project['status'] eq adviser) and empty($project['adviser_more'])"/>
+                <div class="row baccc">
+                    <input type="button" value="顾问面试备注" class="btn btn-default msbz" data-id="{$project['id']}">
+                    <input type="button" value="推荐人才给客户" class="btn btn-default tjkehu">
+                    <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
+                    <input type="button" value="不合适" class="btn btn-default remove"  data-id="{$project['id']}">
+                </div>
+            </if>
+            <!--简历推荐-->
+            <if condition="$project['status'] eq tj">
+                <div class="row baccc">
+                    <input type="button" value="客户面试" class="btn btn-default khms" data-id="{$project['id']}">
+                    <input type="button" value="添加推荐反馈" class="btn btn-default tjfk"  data-id="{$project['id']}">
+                    <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
+                    <input type="button" value="不合适" class="btn btn-default remove"  data-id="{$project['id']}">
+                </div>
+            </if>
+            <!--客户面试-->
+            <if condition="$project['status'] eq interview">
+                <div class="row baccc">
+                    <eq name="isEndInterview" value="0">
+                    <input type="button" value="客户面试" class="btn btn-default khms"  data-id="{$project['id']}">
+                    <else />
+                    <!--<input type="button" value="客户面试" class="btn btn-default khms"  data-id="{$project['id']}">-->
+                    </eq>
+                    <input type="button" value="开票" class="btn btn-default fapiao"   data-id="{$project['id']}">
 
-                <switch name="pro_type">
+                    <switch name="pro_type">
                     <case value="2|3">
                         <input type="button" value="面试通过" class="btn btn-default mstg"   data-id="{$project['id']}">
                         <input type="button" value="不合适" class="btn btn-default remove"   data-id="{$project['id']}">
                     </case>
                     <default />
-                </switch>
-            <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
+                    </switch>
+                    <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
 
-        </div>
-        </if>
-        <!--面试通过-->
-        <if condition="$project['status'] eq pass">
-        <div class="row baccc">
-            <input type="button" value="Offer" class="btn btn-default offer"   data-id="{$project['id']}">
-            <input type="button" value="淘汰" class="btn btn-default remove"   data-id="{$project['id']}">
-            <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
-        </div>
-        </if>
-        <!--Offer-->
-        <if condition="$project['status'] eq offer">
-        <div class="row baccc">
-            <input type="button" value="入职" class="btn btn-default ruzhi"   data-id="{$project['id']}">
-            <input type="button" value="Offer掉" class="btn btn-default remove"   data-id="{$project['id']}">
-            <input type="button" value="开票" class="btn btn-default fapiao"   data-id="{$project['id']}">
-            <input type="button" value="添加备注" class="btn btn-default addbz" data-id="{$project['id']}">
-        </div>
-        </if>
-        <!--入职-->
+                </div>
+            </if>
+            <!--面试通过-->
+            <if condition="$project['status'] eq pass">
+                <div class="row baccc">
+                    <input type="button" value="Offer" class="btn btn-default offer"   data-id="{$project['id']}">
+                    <input type="button" value="淘汰" class="btn btn-default remove"   data-id="{$project['id']}">
+                    <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
+                </div>
+            </if>
+            <!--Offer-->
+            <if condition="$project['status'] eq offer">
+                <div class="row baccc">
+                    <input type="button" value="入职" class="btn btn-default ruzhi"   data-id="{$project['id']}">
+                    <input type="button" value="Offer掉" class="btn btn-default remove"   data-id="{$project['id']}">
+                    <input type="button" value="开票" class="btn btn-default fapiao"   data-id="{$project['id']}">
+                    <input type="button" value="添加备注" class="btn btn-default addbz" data-id="{$project['id']}">
+                </div>
+            </if>
+            <!--入职-->
 
-        <if condition="$project['status'] eq enter">
-        <div class="row baccc">
-            <input type="button" value="淘汰" class="btn btn-default remove"  data-id="{$project['id']}">
-            <input type="button" value="过保" class="btn btn-default safe"  data-id="{$project['id']}">
-            <input type="button" value="开票" class="btn btn-default fapiao"  data-id="{$project['id']}">
-            <input type="button" value="费用变更" class="btn btn-default changefy"  data-id="{$project['id']}">
-            <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
-        </div>
-        </if>
-        <!--过保-->
-        <if condition="$project['status'] eq safe">
-        <div class="row baccc">
-            <input type="button" value="淘汰" class="btn btn-default remove"  data-id="{$project['id']}">
-            <input type="button" value="开票" class="btn btn-default fapiao"  data-id="{$project['id']}">
-            <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
-        </div>
-        </if>
+            <if condition="$project['status'] eq enter">
+                <div class="row baccc">
+                    <input type="button" value="淘汰" class="btn btn-default remove"  data-id="{$project['id']}">
+                    <input type="button" value="过保" class="btn btn-default safe"  data-id="{$project['id']}">
+                    <input type="button" value="开票" class="btn btn-default fapiao"  data-id="{$project['id']}">
+                    <input type="button" value="费用变更" class="btn btn-default changefy"  data-id="{$project['id']}">
+                    <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
+                </div>
+            </if>
+            <!--过保-->
+            <if condition="$project['status'] eq safe">
+                <div class="row baccc">
+                    <input type="button" value="淘汰" class="btn btn-default remove"  data-id="{$project['id']}">
+                    <input type="button" value="开票" class="btn btn-default fapiao"  data-id="{$project['id']}">
+                    <input type="button" value="添加备注" class="btn btn-default addbz"  data-id="{$project['id']}">
+                </div>
+            </if>
 
         </if>
 
@@ -321,11 +321,11 @@
                             <if condition="$key eq 'remove_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
@@ -356,11 +356,11 @@
                             <if condition="$key eq 'calllist_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
@@ -393,9 +393,9 @@
                 <div class="listitem">
                     <div class="hangr">
                         <span class="icoedit">
-                        <embed src="/Public/img/svg/rili.svg" width="100%" height="100%"
-                               type="image/svg+xml"
-                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                            <embed src="/Public/img/svg/rili.svg" width="100%" height="100%"
+                                   type="image/svg+xml"
+                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$project['addtime']); ?></span>
                         <a href="#" class="mal10">{$project['tracker_name']|default=''}</a>
@@ -406,7 +406,7 @@
                                 <td style="font-size: 12px;color: #999999;">将候选人加入CallList</td>
                             </tr>
                             <!--<tr height="24px">-->
-                                <!--<td style="font-size: 12px;color: #666666;">{$project['job_name']}</td>-->
+                            <!--<td style="font-size: 12px;color: #666666;">{$project['job_name']}</td>-->
                             <!--</tr>-->
                         </table>
                     </div>
@@ -419,45 +419,45 @@
                         <volist name="volist" id="vo">
                             <if condition="$key eq 'adviser_content'">
                                 <div class="listitem">
-                                        <div class="hangr">
+                                    <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
-                                            <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
-                                        </div>
-                                        <div class="hangr" style="margin-top: 20px;">
-                                            <img src="{$project['thumb_path']}" class="imgtou">
-                                            <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
-                                            <label style="margin-left: 15px;">推荐了顾问面试</label>
-                                            <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
-                                                <span class="fa fa-angle-down"></span>
-                                                <div class="btn btn-default ico_xiugai tjgwms"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
-                                            </div>
-
-                                            <table>
-                                                <tr height="24px">
-                                                    <td align="right" style="font-size: 12px;color: #999999;">候选人空闲时间：</td>
-                                                    <td style="font-size: 12px;color: #666666;">
-                                                        <if condition="$vo['kjtime']">
-                                                            {$vo['kjtime']}
-                                                        <else/>
-                                                            {$vo['timestart']}--{$vo['timeend']}
-                                                        </if>
-                                                    </td>
-                                                </tr>
-                                                <tr height="24px">
-                                                    <td align="right" style="font-size: 12px;color: #999999;">备注：</td>
-                                                    <td style="font-size: 12px;color: #666666;">
-                                                        {$vo['tjbeizhu']}
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
+                                        <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
+                                    <div class="hangr" style="margin-top: 20px;">
+                                        <img src="{$project['thumb_path']}" class="imgtou">
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
+                                        <label style="margin-left: 15px;">推荐了顾问面试</label>
+                                        <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
+                                            <span class="fa fa-angle-down"></span>
+                                            <div class="btn btn-default ico_xiugai tjgwms"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                        </div>
+
+                                        <table>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">候选人空闲时间：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                            <if condition="$vo['kjtime']">
+                                                {$vo['kjtime']}
+                                                <else/>
+                                                {$vo['timestart']}--{$vo['timeend']}
+                                            </if>
+                                            </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">备注：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['tjbeizhu']}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
                             </if>
-                            
+
                             <if condition="$key eq 'cc_remark' and $vo.step eq '2'">
                                 <include file="Business:cc_show" />
                             </if>
@@ -466,9 +466,9 @@
                                 <div class="listitem">
                                     <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
@@ -503,9 +503,9 @@
                                 <div class="listitem">
                                     <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
@@ -582,11 +582,11 @@
                             <if condition="$key eq 'remove_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
@@ -624,9 +624,9 @@
                                 <div class="listitem">
                                     <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
@@ -643,22 +643,22 @@
                                             <tr height="24px">
                                                 <td align="right" style="font-size: 12px;color: #999999;">状态：</td>
                                                 <td style="font-size: 12px;color: #666666;">
-                                                    <if condition="$vo['gj']">
-                                                        通过
-                                                        <else/>
-                                                        不合适
-                                                    </if>
-                                                </td>
+                                            <if condition="$vo['gj']">
+                                                通过
+                                                <else/>
+                                                不合适
+                                            </if>
+                                            </td>
                                             </tr>
                                             <if condition="$vo['gj'] eq 0">
                                                 <if condition="$vo['bhs']">
-                                                <tr height="24px">
-                                                    <td align="right" style="font-size: 12px;color: #999999;">不合适原因(客户淘汰)：</td>
-                                                    <td style="font-size: 12px;color: #666666;">
-                                                        {$vo['status_type']}
-                                                    </td>
-                                                </tr>
-                                                <else/>
+                                                    <tr height="24px">
+                                                        <td align="right" style="font-size: 12px;color: #999999;">不合适原因(客户淘汰)：</td>
+                                                        <td style="font-size: 12px;color: #666666;">
+                                                            {$vo['status_type']}
+                                                        </td>
+                                                    </tr>
+                                                    <else/>
                                                     <tr height="24px">
                                                         <td align="right" style="font-size: 12px;color: #999999;">不合适原因(候选人放弃)：</td>
                                                         <td style="font-size: 12px;color: #666666;">
@@ -688,14 +688,14 @@
                             <if condition="$key eq 'cc_remark' and $vo.step eq '3'">
                                 <include file="Business:cc_show" />
                             </if>
-                            
+
                             <if condition="$key eq 'tj_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
@@ -728,11 +728,11 @@
                             <if condition="$key eq 'remove_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
@@ -760,27 +760,27 @@
                 </if>
                 <if condition="$project['tj_log']">
                     <div class="listitem">
-                            <div class="hangr">
-                                        <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                        </span>
-                                <span><?php echo date('Y-m-d H:i',$project['tj_log']['addtime']); ?></span>
-                            </div>
-                            <div class="hangr" style="margin-top: 20px;">
-                                <img src="{$project['thumb_path']}" class="imgtou">
-                                <span style="margin-left: 10px;">{$project['tj_role_name']}</span>
-                                <label style="margin-left: 15px;">将候选人进行简历推荐</label>
-                            </div>
+                        <div class="hangr">
+                            <span class="icoedit">
+                                <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                       type="image/svg+xml"
+                                       pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                            </span>
+                            <span><?php echo date('Y-m-d H:i',$project['tj_log']['addtime']); ?></span>
                         </div>
+                        <div class="hangr" style="margin-top: 20px;">
+                            <img src="{$project['thumb_path']}" class="imgtou">
+                            <span style="margin-left: 10px;">{$project['tj_role_name']}</span>
+                            <label style="margin-left: 15px;">将候选人进行简历推荐</label>
+                        </div>
+                    </div>
                 </if>
                 <div class="listitem">
                     <div class="hangr">
                         <span class="icoedit">
-                        <embed src="/Public/img/svg/rili.svg" width="100%" height="100%"
-                               type="image/svg+xml"
-                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                            <embed src="/Public/img/svg/rili.svg" width="100%" height="100%"
+                                   type="image/svg+xml"
+                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$project['tjaddtime']); ?></span>
                         <a href="#" class="mal10">{$project['tj_role_name']}</a>
@@ -803,13 +803,13 @@
                 <if condition="$project['interview']">
                     <volist name="project['interview']" id="volist">
                         <volist name="volist" id="vo">
-                         <if condition="$key eq 'interview_content'">
+                            <if condition="$key eq 'interview_content'">
                                 <div class="listitem">
                                     <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
@@ -870,51 +870,51 @@
                             <if condition="$key eq 'cc_remark' and $vo.step eq '4'">
                                 <include file="Business:cc_show" />
                             </if>
-                            
-                         <if condition="$key eq 'interview_remark'">
-                            <div class="listitem">
-                                <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
-                                    <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
-                                </div>
-                                <div class="hangr" style="margin-top: 20px;">
-                                    <img src="{$project['thumb_path']}" class="imgtou">
-                                    <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
-                                    <label style="margin-left: 15px;">添加了备注</label>
-                                    <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
-                                        <span class="fa fa-angle-down"></span>
-                                        <div class="btn btn-default ico_xiugai addbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
-                                    </div>
 
-                                    <table>
-                                        <tr height="24px">
-                                            <td align="right" style="font-size: 12px;color: #999999;">备注内容：</td>
-                                            <td style="font-size: 12px;color: #666666;">
-                                                {$vo['beizhu']}
-                                            </td>
-                                        </tr>
-                                        <tr height="24px">
-                                            <td align="right" style="font-size: 12px;color: #999999;">截止时间：</td>
-                                            <td style="font-size: 12px;color: #666666;">
-                                                {$vo['timeend']}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </if>
-                         <if condition="$key eq 'invoice'">
+                            <if condition="$key eq 'interview_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
+                                        <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
+                                    </div>
+                                    <div class="hangr" style="margin-top: 20px;">
+                                        <img src="{$project['thumb_path']}" class="imgtou">
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
+                                        <label style="margin-left: 15px;">添加了备注</label>
+                                        <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
+                                            <span class="fa fa-angle-down"></span>
+                                            <div class="btn btn-default ico_xiugai addbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                        </div>
+
+                                        <table>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">备注内容：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['beizhu']}
+                                                </td>
+                                            </tr>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">截止时间：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['timeend']}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </if>
+                            <if condition="$key eq 'invoice'">
+                                <div class="listitem">
+                                    <div class="hangr">
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['create_time']); ?></span>
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
@@ -922,8 +922,8 @@
                                         <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了开票</label>
                                         <!--<div  class="pull-right icohover" style="position: relative;margin-right: 20px;">-->
-                                            <!--<span class="fa fa-angle-down"></span>-->
-                                            <!--<div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$key}">修改</div>-->
+                                        <!--<span class="fa fa-angle-down"></span>-->
+                                        <!--<div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$key}">修改</div>-->
                                         <!--</div>-->
 
                                         <table>
@@ -979,14 +979,14 @@
                                     </div>
                                 </div>
                             </if>
-                         <if condition="$key eq 'remove_remark'">
+                            <if condition="$key eq 'remove_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
@@ -1016,90 +1016,90 @@
 
             <div class="tab-pane fade in  listjilu <if condition='$project[status] eq pass'>active</if>" id="log4">
 
-                    <volist name="project['pass']" id="volist">
-                        <volist name="volist" id="vo">
-                            <!--pass_remark-->
-                            <if condition="$key eq 'remove_remark'">
-                                <div class="listitem">
-                                    <div class="hangr">
-                                        <span class="icoedit">
+                <volist name="project['pass']" id="volist">
+                    <volist name="volist" id="vo">
+                        <!--pass_remark-->
+                        <if condition="$key eq 'remove_remark'">
+                            <div class="listitem">
+                                <div class="hangr">
+                                    <span class="icoedit">
                                         <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
                                                type="image/svg+xml"
                                                pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                        </span>
-                                        <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
-                                    </div>
-                                    <div class="hangr" style="margin-top: 20px;">
-                                        <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
-                                        <label style="margin-left: 15px;">将人选设为不合适</label>
-                                        <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
-                                            <span class="fa fa-angle-down"></span>
-                                            <div class="btn btn-default ico_xiugai remove"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
-                                        </div>
-
-                                        <table>
-                                            <tr height="24px">
-                                                <td align="right" style="font-size: 12px;color: #999999;">不合适原因：</td>
-                                                <td style="font-size: 12px;color: #666666;">
-                                                    {$vo['reason']}
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
+                                    </span>
+                                    <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                 </div>
-                            </if>
-                            
-                            <if condition="$key eq 'cc_remark' and $vo.step eq '5'">
-                                <include file="Business:cc_show" />
-                            </if>
-                            
-                            
-                            <if condition="$key eq 'pass_remark'">
-                                <div class="listitem">
-                                    <div class="hangr">
-                                <span class="icoedit">
-                                <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                       type="image/svg+xml"
-                                       pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                </span>
-                                        <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
+                                <div class="hangr" style="margin-top: 20px;">
+                                    <img src="{$project['thumb_path']}" class="imgtou">
+                                    <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
+                                    <label style="margin-left: 15px;">将人选设为不合适</label>
+                                    <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
+                                        <span class="fa fa-angle-down"></span>
+                                        <div class="btn btn-default ico_xiugai remove"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
                                     </div>
-                                    <div class="hangr" style="margin-top: 20px;">
-                                        <img src="{$project['thumb_path']}" class="imgtou">
-                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
-                                        <label style="margin-left: 15px;">添加了备注</label>
-                                        <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
-                                            <span class="fa fa-angle-down"></span>
-                                            <div class="btn btn-default ico_xiugai addbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
-                                        </div>
 
-                                        <table>
-                                            <tr height="24px">
-                                                <td align="right" style="font-size: 12px;color: #999999;">备注内容：</td>
-                                                <td style="font-size: 12px;color: #666666;">
-                                                    {$vo['beizhu']}
-                                                </td>
-                                            </tr>
-                                            <tr height="24px">
-                                                <td align="right" style="font-size: 12px;color: #999999;">截止时间：</td>
-                                                <td style="font-size: 12px;color: #666666;">
-                                                    {$vo['timeend']}
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
+                                    <table>
+                                        <tr height="24px">
+                                            <td align="right" style="font-size: 12px;color: #999999;">不合适原因：</td>
+                                            <td style="font-size: 12px;color: #666666;">
+                                                {$vo['reason']}
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
-                            </if>
-                        </volist>
+                            </div>
+                        </if>
+
+                        <if condition="$key eq 'cc_remark' and $vo.step eq '5'">
+                            <include file="Business:cc_show" />
+                        </if>
+
+
+                        <if condition="$key eq 'pass_remark'">
+                            <div class="listitem">
+                                <div class="hangr">
+                                    <span class="icoedit">
+                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                               type="image/svg+xml"
+                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                    </span>
+                                    <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
+                                </div>
+                                <div class="hangr" style="margin-top: 20px;">
+                                    <img src="{$project['thumb_path']}" class="imgtou">
+                                    <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
+                                    <label style="margin-left: 15px;">添加了备注</label>
+                                    <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
+                                        <span class="fa fa-angle-down"></span>
+                                        <div class="btn btn-default ico_xiugai addbz"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                    </div>
+
+                                    <table>
+                                        <tr height="24px">
+                                            <td align="right" style="font-size: 12px;color: #999999;">备注内容：</td>
+                                            <td style="font-size: 12px;color: #666666;">
+                                                {$vo['beizhu']}
+                                            </td>
+                                        </tr>
+                                        <tr height="24px">
+                                            <td align="right" style="font-size: 12px;color: #999999;">截止时间：</td>
+                                            <td style="font-size: 12px;color: #666666;">
+                                                {$vo['timeend']}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </if>
                     </volist>
+                </volist>
 
                 <div class="listitem">
                     <div class="hangr">
                         <span class="icoedit">
-                        <embed src="/Public/img/svg/rili.svg" width="100%" height="100%"
-                               type="image/svg+xml"
-                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                            <embed src="/Public/img/svg/rili.svg" width="100%" height="100%"
+                                   type="image/svg+xml"
+                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$project['passtime']); ?></span>
                         <a href="#" class="mal10">{$vo.tracker_name|default=$project['pass_role_name']}</a>
@@ -1126,9 +1126,9 @@
                                 <div class="listitem">
                                     <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
@@ -1190,26 +1190,26 @@
                                             <tr height="24px">
                                                 <td align="left" style="font-size: 12px;color: #999999;">offer附件：</td>
                                                 <td align="left">
-                                                    <volist name="vo.file" id="vvo">
-                                                        <tr>
-                                                            <td>&nbsp;&nbsp;
-                                                                <a <if condition="in_array(getExtension($vvo['name']),imgFormat())">class="litebox_file" href="{$vvo['file_path']}" data-litebox-group="group-{$info['contract_id']}" title="点击查看大图"<else/>href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);"</if>>{$vvo.name}</a>
-                                                            </td>
-                                                            <if condition="C('ismobile') neq 1">
-                                                                <td>
-                                                                    <notempty name="vvo.owner.user_name">{$vvo.owner.user_name}</notempty>
-                                                                </td>
-                                                                <td>
-                                                                    <notempty name="vvo.create_date">{$vvo.create_date|date="Y-m-d H:i",###}</notempty>
-                                                                </td>
-                                                                <td class="tdleft">
-                                                                    <a href="javascript:void(0);" rel="{$vvo['file_id']}" class="del_file">{:L('DELETE')}</a>
-                                                                    <a href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);">下载</a>
-                                                                </td>
-                                                            </if>
-                                                        </tr>
-                                                    </volist>
-                                                </td>
+                                            <volist name="vo.file" id="vvo">
+                                                <tr>
+                                                    <td>&nbsp;&nbsp;
+                                                        <a <if condition="in_array(getExtension($vvo['name']),imgFormat())">class="litebox_file" href="{$vvo['file_path']}" data-litebox-group="group-{$info['contract_id']}" title="点击查看大图"<else/>href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);"</if>>{$vvo.name}</a>
+                                                    </td>
+                                                <if condition="C('ismobile') neq 1">
+                                                    <td>
+                                                    <notempty name="vvo.owner.user_name">{$vvo.owner.user_name}</notempty>
+                                                    </td>
+                                                    <td>
+                                                    <notempty name="vvo.create_date">{$vvo.create_date|date="Y-m-d H:i",###}</notempty>
+                                                    </td>
+                                                    <td class="tdleft">
+                                                        <a href="javascript:void(0);" rel="{$vvo['file_id']}" class="del_file">{:L('DELETE')}</a>
+                                                        <a href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);">下载</a>
+                                                    </td>
+                                                </if>
+                                                </tr>
+                                            </volist>
+                                            </td>
                                             </tr>
                                         </table>
                                     </div>
@@ -1218,11 +1218,11 @@
                             <if condition="$key eq 'invoice'">
                                 <div class="listitem">
                                     <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['create_time']); ?></span>
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
@@ -1230,8 +1230,8 @@
                                         <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了开票</label>
                                         <!--<div  class="pull-right icohover" style="position: relative;margin-right: 20px;">-->
-                                            <!--<span class="fa fa-angle-down"></span>-->
-                                            <!--<div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$key}">修改</div>-->
+                                        <!--<span class="fa fa-angle-down"></span>-->
+                                        <!--<div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$key}">修改</div>-->
                                         <!--</div>-->
 
                                         <table>
@@ -1287,18 +1287,18 @@
                                     </div>
                                 </div>
                             </if>
-                            
+
                             <if condition="$key eq 'cc_remark' and $vo.step eq '6'">
                                 <include file="Business:cc_show" />
                             </if>
-                            
+
                             <if condition="$key eq 'offer_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
@@ -1332,11 +1332,11 @@
                             <if condition="$key eq 'remove_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
@@ -1373,9 +1373,9 @@
                                 <div class="listitem">
                                     <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
@@ -1425,27 +1425,27 @@
                                             <tr height="24px">
                                                 <td align="left" style="font-size: 12px;color: #999999;">offer附件：</td>
                                                 <td align="left">
-                                                    <volist name="vo.file" id="vvo">
-                                                        <tr>
-                                                            <td>&nbsp;&nbsp;
-                                                                <a <if condition="in_array(getExtension($vvo['name']),imgFormat())">class="litebox_file" href="{$vvo['file_path']}" data-litebox-group="group-{$info['contract_id']}" title="点击查看大图"<else/>href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);"</if>>{$vvo.name}</a>
-                                                            </td>
-                                                            <if condition="C('ismobile') neq 1">
-                                                                <td>
-                                                                    <notempty name="vvo.owner.user_name">{$vvo.owner.user_name}</notempty>
-                                                                </td>
-                                                                <td>
-                                                                    <notempty name="vvo.create_date">{$vvo.create_date|date="Y-m-d H:i",###}</notempty>
-                                                                </td>
-                                                                <td class="tdleft">
-                                                                    <a href="javascript:void(0);" rel="{$vvo['file_id']}" class="del_file">{:L('DELETE')}</a>
-                                                                    <a href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);">下载</a>
-                                                                </td>
-                                                            </if>
-                                                        </tr>
-                                                    </volist>
-                                                </td>
+                                            <volist name="vo.file" id="vvo">
+                                                <tr>
+                                                    <td>&nbsp;&nbsp;
+                                                        <a <if condition="in_array(getExtension($vvo['name']),imgFormat())">class="litebox_file" href="{$vvo['file_path']}" data-litebox-group="group-{$info['contract_id']}" title="点击查看大图"<else/>href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);"</if>>{$vvo.name}</a>
+                                                    </td>
+                                                <if condition="C('ismobile') neq 1">
+                                                    <td>
+                                                    <notempty name="vvo.owner.user_name">{$vvo.owner.user_name}</notempty>
+                                                    </td>
+                                                    <td>
+                                                    <notempty name="vvo.create_date">{$vvo.create_date|date="Y-m-d H:i",###}</notempty>
+                                                    </td>
+                                                    <td class="tdleft">
+                                                        <a href="javascript:void(0);" rel="{$vvo['file_id']}" class="del_file">{:L('DELETE')}</a>
+                                                        <a href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);">下载</a>
+                                                    </td>
+                                                </if>
                                                 </tr>
+                                            </volist>
+                                            </td>
+                                            </tr>
                                         </table>
                                     </div>
                                 </div>
@@ -1453,11 +1453,11 @@
                             <if condition="$key eq 'remove_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
@@ -1480,18 +1480,18 @@
                                     </div>
                                 </div>
                             </if>
-                            
+
                             <if condition="$key eq 'cc_remark' and $vo.step eq '7'">
                                 <include file="Business:cc_show" />
                             </if>
-                            
+
                             <if condition="$key eq 'enter_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
@@ -1524,11 +1524,11 @@
                             <if condition="$key eq 'invoice'">
                                 <div class="listitem">
                                     <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['create_time']); ?></span>
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
@@ -1536,8 +1536,8 @@
                                         <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
                                         <label style="margin-left: 15px;">添加了开票</label>
                                         <!--<div  class="pull-right icohover" style="position: relative;margin-right: 20px;">-->
-                                            <!--<span class="fa fa-angle-down"></span>-->
-                                            <!--<div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$key}">修改</div>-->
+                                        <!--<span class="fa fa-angle-down"></span>-->
+                                        <!--<div class="btn btn-default ico_xiugai addCCbz"  data-id="{$project['id']}" data-key="{$key}">修改</div>-->
                                         <!--</div>-->
 
                                         <table>
@@ -1602,19 +1602,19 @@
                 <if condition="$project['safe']">
                     <volist name="project['safe']" id="volist">
                         <volist name="volist" id="vo">
-                            
+
                             <if condition="$key eq 'cc_remark' and $vo.step eq '8'">
                                 <include file="Business:cc_show" />
                             </if>
-                            
-                            
+
+
                             <if condition="$key eq 'safe_remark'">
                                 <div class="listitem">
                                     <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                                     </div>
@@ -1645,43 +1645,43 @@
                                 </div>
                             </if>
                             <if condition="$key eq 'remove_remark'">
-                            <div class="listitem">
-                            <div class="hangr">
+                                <div class="listitem">
+                                    <div class="hangr">
                                         <span class="icoedit">
-                                        <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                               type="image/svg+xml"
-                                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                                         </span>
-                                <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
-                            </div>
-                            <div class="hangr" style="margin-top: 20px;">
-                                <img src="{$project['thumb_path']}" class="imgtou">
-                                <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
-                                <label style="margin-left: 15px;">将人选设为不合适</label>
-                                <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
-                                    <span class="fa fa-angle-down"></span>
-                                    <div class="btn btn-default ico_xiugai remove"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
-                                </div>
+                                        <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
+                                    </div>
+                                    <div class="hangr" style="margin-top: 20px;">
+                                        <img src="{$project['thumb_path']}" class="imgtou">
+                                        <span style="margin-left: 10px;">{$vo.tracker_name|default=$project['tracker_name']}</span>
+                                        <label style="margin-left: 15px;">将人选设为不合适</label>
+                                        <div  class="pull-right icohover" style="position: relative;margin-right: 20px;">
+                                            <span class="fa fa-angle-down"></span>
+                                            <div class="btn btn-default ico_xiugai remove"  data-id="{$project['id']}" data-key="{$vo['id']}">修改</div>
+                                        </div>
 
-                                <table>
-                                    <tr height="24px">
-                                        <td align="right" style="font-size: 12px;color: #999999;">不合适原因：</td>
-                                        <td style="font-size: 12px;color: #666666;">
-                                            {$vo['reason']}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        </if>
+                                        <table>
+                                            <tr height="24px">
+                                                <td align="right" style="font-size: 12px;color: #999999;">不合适原因：</td>
+                                                <td style="font-size: 12px;color: #666666;">
+                                                    {$vo['reason']}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </if>
                             <if condition="$key eq 'invoice'">
                                 <div class="listitem">
                                     <div class="hangr">
-                                    <span class="icoedit">
-                                    <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
-                                           type="image/svg+xml"
-                                           pluginspage="http://www.adobe.com/svg/viewer/install/" />
-                                    </span>
+                                        <span class="icoedit">
+                                            <embed src="/Public/img/svg/edit_green.svg" width="100%" height="100%"
+                                                   type="image/svg+xml"
+                                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                        </span>
                                         <span><?php echo date('Y-m-d H:i',$vo['create_time']); ?></span>
                                     </div>
                                     <div class="hangr" style="margin-top: 20px;">
@@ -1752,9 +1752,9 @@
                 <div class="listitem" >
                     <div class="hangr">
                         <span class="icoedit">
-                        <embed src="/Public/img/svg/rili.svg" width="100%" height="100%"
-                               type="image/svg+xml"
-                               pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                            <embed src="/Public/img/svg/rili.svg" width="100%" height="100%"
+                                   type="image/svg+xml"
+                                   pluginspage="http://www.adobe.com/svg/viewer/install/" />
                         </span>
                         <span><?php echo date('Y-m-d H:i',$vo['addtime']); ?></span>
                         <a href="#" class="mal10">{$project['tj_role_name']}</a>
@@ -1772,7 +1772,7 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 </div>
 
 <div style="display:none" id="dialog-addCCbz">
@@ -1880,37 +1880,37 @@
 <script>
 
     //下载 方法
-    function filedown(obj){
+    function filedown(obj) {
         var file_path = $(obj).attr('file');
         var file_name = $(obj).attr('filename');
-        if(file_path && file_name){
-            var url = "index.php?m=file&a=filedownload"+"&file_path="+file_path+"&file_name="+file_name;
+        if (file_path && file_name) {
+            var url = "index.php?m=file&a=filedownload" + "&file_path=" + file_path + "&file_name=" + file_name;
             window.location.href = url;
-        }else{
+        } else {
             alert_crm('该文件不存在，请选择其他文件！');
         }
     }
 
-    var name=$(".tjname").html();
+    var name = $(".tjname").html();
     $("#dialog-addCCbz").dialog({
         autoOpen: false,
-         modal: true,
+        modal: true,
         width: 680,
         maxHeight: 1000,
-        position: ["center",100],
-        title:"添加CC备注("+name+")",
-        close:function(){
+        position: ["center", 100],
+        title: "添加CC备注(" + name + ")",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
         buttons: {
             "确定": function () {
                 var gjresult = $('#gjresult').val();//电话结果
-                var gjflag=$("#gjflag").val();//是否继续跟进
-                var gjtime=$(".time_se").val();//跟进时间
-                var mbflag=$("#mbflag").val();//是否目标候选人
-                var ccbeizhu=$(".ccbeizhu").val();//结果备注
-                if(gjresult == ""){
+                var gjflag = $("#gjflag").val();//是否继续跟进
+                var gjtime = $(".time_se").val();//跟进时间
+                var mbflag = $("#mbflag").val();//是否目标候选人
+                var ccbeizhu = $(".ccbeizhu").val();//结果备注
+                if (gjresult == "") {
                     alert_crm("请电话结果！");
                     $("#gjresult").focus();
                     return false;
@@ -1927,22 +1927,22 @@
 
     $("#dialog-gwms").dialog({
         autoOpen: false,
-         modal: true,
+        modal: true,
         width: 580,
         maxHeight: 450,
-        position: ["center",100],
-        title:"推荐给顾问面试",
-        close:function(){
+        position: ["center", 100],
+        title: "推荐给顾问面试",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
         buttons: {
             "确定": function () {
-                var msren=$(".msren").val();//面试顾问
-                var kjtime=$("#kjtime").val();//快捷面试时间
-                var xxtime=$("#timestart").val()+","+$("#timeend").val();//详细跟进时间
-                var tjbeizhu=$(".tjbeizhu").val();//推荐备注
-                if(msren=="" || msren==null){
+                var msren = $(".msren").val();//面试顾问
+                var kjtime = $("#kjtime").val();//快捷面试时间
+                var xxtime = $("#timestart").val() + "," + $("#timeend").val();//详细跟进时间
+                var tjbeizhu = $(".tjbeizhu").val();//推荐备注
+                if (msren == "" || msren == null) {
                     alert_crm("请选择面试顾问！");
                     return false;
                 }
@@ -1962,16 +1962,16 @@
         modal: true,
         width: 580,
         maxHeight: 700,
-        position: ["center",100],
-        title:"添加备注",
-        close:function(){
+        position: ["center", 100],
+        title: "添加备注",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
         buttons: {
             "确定": function () {
-                var beizhu=$("#beizhu").val();//备注内容
-                if(beizhu==""){
+                var beizhu = $("#beizhu").val();//备注内容
+                if (beizhu == "") {
                     alert_crm("请填写备注！");
                     return false;
                 }
@@ -1990,16 +1990,16 @@
         modal: true,
         width: 580,
         maxHeight: 580,
-        position: ["center",100],
-        title:"不合适",
-        close:function(){
+        position: ["center", 100],
+        title: "不合适",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
         buttons: {
             "确定": function () {
-                var reason=$("#reason").val();//不合适原因
-                if(reason==""){
+                var reason = $("#reason").val();//不合适原因
+                if (reason == "") {
                     alert_crm("请写明不合适原因！");
                     return false;
                 }
@@ -2018,16 +2018,16 @@
 //        modal: true,
         width: 780,
         maxHeight: 580,
-        position: ["center",100],
-        title:"顾问面试备注",
-        close:function(){
+        position: ["center", 100],
+        title: "顾问面试备注",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
         buttons: {
             "确定": function () {
-                var mstype=$("#mstype").val();
-                if(mstype==""){
+                var mstype = $("#mstype").val();
+                if (mstype == "") {
                     alert_crm("请选择类型！");
                     return;
                 }
@@ -2045,21 +2045,21 @@
         modal: true,
         width: 580,
         maxHeight: 580,
-        position: ["center",100],
-        title:"客户面试",
-        close:function(){
+        position: ["center", 100],
+        title: "客户面试",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
         buttons: {
             "确定": function () {
-                var timestart=$("#timestart").val();//不合适原因
-                if(timestart==""){
+                var timestart = $("#timestart").val();//不合适原因
+                if (timestart == "") {
 //                    alert_crm("请选择面试时间！");
-                    $("input[name=timestart]").css("border","1px dotted #cc5965");
+                    $("input[name=timestart]").css("border", "1px dotted #cc5965");
                     return false;
-                }else{
-                    $("input[name=timestart]").css("border","1px solid #d8e3ef");
+                } else {
+                    $("input[name=timestart]").css("border", "1px solid #d8e3ef");
                 }
                 $('#status_form3').submit();
                 $(this).dialog("close");
@@ -2076,16 +2076,16 @@
         modal: true,
         width: 580,
         maxHeight: 580,
-        position: ["center",100],
-        title:"添加推荐反馈",
-        close:function(){
+        position: ["center", 100],
+        title: "添加推荐反馈",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
         buttons: {
             "确定": function () {
-                var guest_feedback=$("textarea[name=guest_feedback]").val();
-                if(guest_feedback==""){
+                var guest_feedback = $("textarea[name=guest_feedback]").val();
+                if (guest_feedback == "") {
                     alert_crm("请填写候选人反馈信息！");
                     return false;
                 }
@@ -2104,33 +2104,33 @@
         modal: true,
         width: 580,
         maxHeight: 580,
-        position: ["center",100],
-        title:"发票",
-        close:function(){
+        position: ["center", 100],
+        title: "发票",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
         buttons: {
             "确定": function () {
-                var billing_type=$("select[name=billing_type] option:selected").text();
-                var invoice_header=$("input[name=invoice_header]").val();
-                var content=$("input[name=content]").val();
-                var price=$("input[name=price]").val();
-                var description=$("textarea[name=description]").val();
-                if(billing_type==""){
-                    $("select[name=billing_type]").css("border","1px dotted #cc5965");
+                var billing_type = $("select[name=billing_type] option:selected").text();
+                var invoice_header = $("input[name=invoice_header]").val();
+                var content = $("input[name=content]").val();
+                var price = $("input[name=price]").val();
+                var description = $("textarea[name=description]").val();
+                if (billing_type == "") {
+                    $("select[name=billing_type]").css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(invoice_header==""){
-                    $("input[name=invoice_header]").css("border","1px dotted #cc5965");
+                if (invoice_header == "") {
+                    $("input[name=invoice_header]").css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(content==""){
-                    $("input[name=content]").css("border","1px dotted #cc5965");
+                if (content == "") {
+                    $("input[name=content]").css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(price==""){
-                    $("input[name=price]").css("border","1px dotted #cc5965");
+                if (price == "") {
+                    $("input[name=price]").css("border", "1px dotted #cc5965");
                     return false;
                 }
                 if (description == "") {
@@ -2152,49 +2152,50 @@
         modal: true,
         width: 580,
         maxHeight: 580,
-        position: ["center",100],
-        title:"Offer",
-        close:function(){
+        position: ["center", 100],
+        title: "Offer",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
         buttons: {
             "确定": function () {
-                var YearSalary=$("input[name=YearSalary]").val();
-                var offertime=$("input[name=offertime]").val();
-                var income=$('input[name=income]').val();
+                var YearSalary = $("input[name=YearSalary]").val();
+                var offertime = $("input[name=offertime]").val();
+                var income = $('input[name=income]').val();
                 var timeenter = $('input[name=entertime]').val();
                 var file = $('#filecontent').attr('class');
                 var reg = /^\d{1,3}(\.\d{2})?$/;
                 var flag = YearSalary.match(reg);
-                if(YearSalary==""){
-                    $("input[name=YearSalary]").css("border","1px dotted #cc5965");
+                if (YearSalary == "") {
+                    $("input[name=YearSalary]").css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(flag){
-                    if(YearSalary>500){
+                if (flag) {
+                    if (YearSalary > 500) {
+                        alert_crm("数值范围请在0~500之间,且保留两位小数");
+                        $("input[name=YearSalary]").css("border", "1px dotted #cc5965");
+                        return false;
+                    }
+                } else {
                     alert_crm("数值范围请在0~500之间,且保留两位小数");
-                    $("input[name=YearSalary]").css("border","1px dotted #cc5965");
-                    return false;}
-                }else{
-                    alert_crm("数值范围请在0~500之间,且保留两位小数");
-                    $("input[name=YearSalary]").css("border","1px dotted #cc5965");
+                    $("input[name=YearSalary]").css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(offertime==""){
-                    $("input[name=offertime]").css("border","1px dotted #cc5965");
+                if (offertime == "") {
+                    $("input[name=offertime]").css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(income==""){
-                    $('input[name=income]').css("border","1px dotted #cc5965");
+                if (income == "") {
+                    $('input[name=income]').css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(timeenter==""){
-                    $('input[name=entertime]').css("border","1px dotted #cc5965");
+                if (timeenter == "") {
+                    $('input[name=entertime]').css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(file=="hide"){
-                    $('.addfile').parent().css("border","1px dotted #cc5965");
+                if (file == "hide") {
+                    $('.addfile').parent().css("border", "1px dotted #cc5965");
                     return false;
                 }
                 $('#status_form6').submit();
@@ -2211,27 +2212,27 @@
         modal: true,
         width: 580,
         maxHeight: 580,
-        position: ["center",100],
-        title:"入职",
-        close:function(){
+        position: ["center", 100],
+        title: "入职",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
         buttons: {
             "确定": function () {
-                var timestart=$("input[name=entertime]").val();
-                var safetime=$("input[name=safetime]").val();
+                var timestart = $("input[name=entertime]").val();
+                var safetime = $("input[name=safetime]").val();
                 var file = $('#filecontent').attr('class');
-                if(timestart==""){
-                    $("input[name=entertime]").css("border","1px dotted #cc5965");
+                if (timestart == "") {
+                    $("input[name=entertime]").css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(safetime==""){
-                    $("input[name=safetime]").css("border","1px dotted #cc5965");
+                if (safetime == "") {
+                    $("input[name=safetime]").css("border", "1px dotted #cc5965");
                     return false;
                 }
-                if(file=="hide"){
-                    $('#file_ruzhi').css("border","1px dotted #cc5965");
+                if (file == "hide") {
+                    $('#file_ruzhi').css("border", "1px dotted #cc5965");
                     return false;
                 }
                 $('#status_form7').submit();
@@ -2248,9 +2249,9 @@
         modal: true,
         width: 580,
         maxHeight: 580,
-        position: ["center",100],
-        title:"费用变更",
-        close:function(){
+        position: ["center", 100],
+        title: "费用变更",
+        close: function () {
             //selectStatus();//更新
             $(this).html("");
         },
@@ -2268,227 +2269,234 @@
 
 
     $(function () {
+        //添加跳转标识
+        var return_tag = "{$rt}";
+        if (return_tag) {
+            var url = "&rt=" + return_tag + "&ref={$ref}";
+        } else {
+            var url = "";
+        }
 
         //添加CC备注
-        $(".addCCbz").on("click",function (){
-            var id=$(this).attr("data-id");
-            var key=$(this).attr("data-key")?$(this).attr("data-key"):0;
-            var step=$(this).attr("data-step")?$(this).attr("data-step"):1;
+        $(".addCCbz").on("click", function () {
+            var id = $(this).attr("data-id");
+            var key = $(this).attr("data-key") ? $(this).attr("data-key") : 0;
+            var step = $(this).attr("data-step") ? $(this).attr("data-step") : 1;
             $('#dialog-addCCbz').dialog('open');
-            if(key){
-                $('#dialog-addCCbz').load("/index.php?m=business&a=addcc&id="+id+"&key="+key+"&step="+step);
-            }else{
-                $('#dialog-addCCbz').load("/index.php?m=business&a=addcc&id="+id+"&step="+step);
+            if (key) {
+                $('#dialog-addCCbz').load("/index.php?m=business&a=addcc&id=" + id + "&key=" + key + "&step=" + step + url);
+            } else {
+                $('#dialog-addCCbz').load("/index.php?m=business&a=addcc&id=" + id + "&step=" + step + url);
             }
         });
 
         //推荐顾问面试
-        $(".tjgwms").on("click",function () {
+        $(".tjgwms").on("click", function () {
             $('#dialog-gwms').dialog("open");
-            var id=$(this).attr("data-id");
-            var key=$(this).attr("data-key")?$(this).attr("data-key"):0;
-            $('#dialog-gwms').load("/index.php?m=business&a=addgwms&id="+id+"&key="+key);
+            var id = $(this).attr("data-id");
+            var key = $(this).attr("data-key") ? $(this).attr("data-key") : 0;
+            $('#dialog-gwms').load("/index.php?m=business&a=addgwms&id=" + id + "&key=" + key + url);
         });
         //过保操作
-        $(".safe").on("click",function () {
+        $(".safe").on("click", function () {
             swal({
-                    title: "确定要过保操作吗？",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "确定",
-                    closeOnConfirm: false
-                },
-                function(){
-                    $.ajax({
-                        type:"post",
-                        url:"{:U('business/safe')}",
-                        data:{
-                            kind:"safe",
-                            id:"{$project['id']}"
-                        },
-                        success:function (data) {
-                            if(data.status == 1){
-                                swal("温馨提示！", "过保操作成功！", "success");
-                            }else {
-                                swal("温馨提示！", "过保操作失败", "error");
+                title: "确定要过保操作吗？",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定",
+                closeOnConfirm: false
+            },
+                    function () {
+                        $.ajax({
+                            type: "post",
+                            url: "{:U('business/safe')}",
+                            data: {
+                                kind: "safe",
+                                id: "{$project['id']}"
+                            },
+                            success: function (data) {
+                                if (data.status == 1) {
+                                    swal("温馨提示！", "过保操作成功！", "success");
+                                } else {
+                                    swal("温馨提示！", "过保操作失败", "error");
+                                }
+                                location.reload();
+                                // swal("温馨提示！", "项目状态推进成功！", "success");
+                                // location.reload();
+                            },
+                        })
+                    });
+        });
+
+        //推荐人才给客户
+        $(".tjkehu").click(function () {
+            swal({
+                title: "确定推荐该人才给客户吗？",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定",
+                closeOnConfirm: false
+            },
+                    function () {
+                        $.ajax({
+                            type: "post",
+                            url: "{:U('business/edit_project')}",
+                            data: {
+                                kind: "tj",
+                                id: "{$project['id']}"
+                            },
+                            success: function (data) {
+                                swal("温馨提示！", "项目状态推进成功！", "success");
+                                location.reload();
+//                            console.log(data);
+//                            window.href=href;
+                            },
+                            error: function () {
+
                             }
-                            location.reload();
-                            // swal("温馨提示！", "项目状态推进成功！", "success");
-                            // location.reload();
-                        },
-                    })
-                });
+                        })
+                    });
         });
 
         //推荐人才给客户
-        $(".tjkehu").click(function(){
+        $(".restart").click(function () {
             swal({
-                    title: "确定推荐该人才给客户吗？",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "确定",
-                    closeOnConfirm: false
-                },
-                function(){
-                    $.ajax({
-                        type:"post",
-                        url:"{:U('business/edit_project')}",
-                        data:{
-                            kind:"tj",
-                            id:"{$project['id']}"
-                        },
-                        success:function (data) {
-                            swal("温馨提示！", "项目状态推进成功！", "success");
-                            location.reload();
+                title: "确定重新启动该流程吗？",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定",
+                closeOnConfirm: false
+            },
+                    function () {
+                        $.ajax({
+                            type: "post",
+                            url: "{:U('business/edit_project')}",
+                            data: {
+                                kind: "restart",
+                                id: "{$project['id']}"
+                            },
+                            success: function (data) {
+                                swal("温馨提示！", "项目状态推进成功！", "success");
+                                location.reload();
 //                            console.log(data);
 //                            window.href=href;
-                        },
-                        error:function () {
+                            },
+                            error: function () {
 
-                        }
-                    })
-                });
-        });
-
-        //推荐人才给客户
-        $(".restart").click(function(){
-            swal({
-                    title: "确定重新启动该流程吗？",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "确定",
-                    closeOnConfirm: false
-                },
-                function(){
-                    $.ajax({
-                        type:"post",
-                        url:"{:U('business/edit_project')}",
-                        data:{
-                            kind:"restart",
-                            id:"{$project['id']}"
-                        },
-                        success:function (data) {
-                            swal("温馨提示！", "项目状态推进成功！", "success");
-                            location.reload();
-//                            console.log(data);
-//                            window.href=href;
-                        },
-                        error:function () {
-
-                        }
-                    })
-                });
+                            }
+                        })
+                    });
         });
 
         //添加备注
-        $(".addbz").on("click",function () {
+        $(".addbz").on("click", function () {
             var id = $(this).attr("data-id");
-            var key = $(this).attr("data-key")?$(this).attr("data-key"):0;
+            var key = $(this).attr("data-key") ? $(this).attr("data-key") : 0;
             $('#dialog-addbz').dialog("open");
-            $('#dialog-addbz').load("index.php?m=business&a=addbz&id="+id+"&key="+key);
+            $('#dialog-addbz').load("index.php?m=business&a=addbz&id=" + id + "&key=" + key + url);
         })
 
         //不合适
-        $(".remove").on("click",function () {
+        $(".remove").on("click", function () {
             var id = $(this).attr("data-id");
-            var key = $(this).attr("data-key")?$(this).attr("data-key"):0;
+            var key = $(this).attr("data-key") ? $(this).attr("data-key") : 0;
             $('#dialog-remove').dialog("open");
-            $('#dialog-remove').load("index.php?m=business&a=remove&id="+id+"&key="+key);
+            $('#dialog-remove').load("index.php?m=business&a=remove&id=" + id + "&key=" + key + url);
         })
 
         //顾问面试备注
-        $(".msbz").on("click",function () {
+        $(".msbz").on("click", function () {
             var id = $(this).attr("data-id");
-            var key = $(this).attr("data-key")?$(this).attr("data-key"):0;
+            var key = $(this).attr("data-key") ? $(this).attr("data-key") : 0;
             $('#dialog-msbz').dialog("open");
-            $('#dialog-msbz').load("/index.php?m=business&a=msbz&id="+id+"&key="+key);
+            $('#dialog-msbz').load("/index.php?m=business&a=msbz&id=" + id + "&key=" + key + url);
         })
 
         //客户面试
-        $(".khms").on("click",function () {
+        $(".khms").on("click", function () {
             var id = $(this).attr("data-id");
-            var key = $(this).attr("data-key")?$(this).attr("data-key"):0;
+            var key = $(this).attr("data-key") ? $(this).attr("data-key") : 0;
             $('#dialog-khms').dialog("open");
-            $('#dialog-khms').load("index.php?m=business&a=khms&id="+id+"&key="+key);
+            $('#dialog-khms').load("index.php?m=business&a=khms&id=" + id + "&key=" + key + url);
         })
 
         //推荐反馈
-        $(".tjfk").on("click",function () {
+        $(".tjfk").on("click", function () {
             var id = $(this).attr("data-id");
-            var key = $(this).attr("data-key")?$(this).attr("data-key"):0;
+            var key = $(this).attr("data-key") ? $(this).attr("data-key") : 0;
             $('#dialog-tjfk').dialog("open");
-            $('#dialog-tjfk').load("index.php?m=business&a=tjfk&id="+id+"&key="+key);
+            $('#dialog-tjfk').load("index.php?m=business&a=tjfk&id=" + id + "&key=" + key + url);
         })
 
         //面试通过
-        $(".mstg").click(function(){
+        $(".mstg").click(function () {
             var id = $(this).attr("data-id");
             swal({
-                    title: "确定该候选人通过面试了吗？",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "确定",
-                    closeOnConfirm: false
-                },
-                function(){
-                    $.ajax({
-                        type:"post",
-                        url:"{:U('business/edit_project')}",
-                        data:{
-                            kind:"pass",
-                            id:id
-                        },
-                        success:function (data) {
-                            swal("温馨提示！", "项目状态推进成功！", "success");
-                            location.reload();
-                        },
-                        error:function () {
+                title: "确定该候选人通过面试了吗？",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定",
+                closeOnConfirm: false
+            },
+                    function () {
+                        $.ajax({
+                            type: "post",
+                            url: "{:U('business/edit_project')}",
+                            data: {
+                                kind: "pass",
+                                id: id
+                            },
+                            success: function (data) {
+                                swal("温馨提示！", "项目状态推进成功！", "success");
+                                location.reload();
+                            },
+                            error: function () {
 
-                        }
-                    })
-                });
+                            }
+                        })
+                    });
         });
 
         //开发票
-        $(".fapiao").on("click",function () {
+        $(".fapiao").on("click", function () {
             var id = $(this).attr("data-id");
             $('#dialog-fapiao').dialog("open");
-            $('#dialog-fapiao').load("index.php?m=business&a=fapiao&id="+id);
+            $('#dialog-fapiao').load("index.php?m=business&a=fapiao&id=" + id + url);
         })
 
         //offer
-        $(".offer").on("click",function () {
+        $(".offer").on("click", function () {
             var id = $(this).attr("data-id");
-            var key = $(this).attr("data-key")?$(this).attr("data-key"):0;
+            var key = $(this).attr("data-key") ? $(this).attr("data-key") : 0;
             $('#dialog-offer').dialog("open");
-            $('#dialog-offer').load("/index.php?m=business&a=offer&id="+id+"&key="+key);
+            $('#dialog-offer').load("/index.php?m=business&a=offer&id=" + id + "&key=" + key + url);
         })
         //入职
-        $(".ruzhi").on("click",function () {
+        $(".ruzhi").on("click", function () {
             var id = $(this).attr("data-id");
-            var key = $(this).attr("data-key")?$(this).attr("data-key"):0;
+            var key = $(this).attr("data-key") ? $(this).attr("data-key") : 0;
             $('#dialog-ruzhi').dialog("open");
-            $('#dialog-ruzhi').load("index.php?m=business&a=ruzhi&id="+id+"&key="+key);
+            $('#dialog-ruzhi').load("index.php?m=business&a=ruzhi&id=" + id + "&key=" + key + url);
         })
         //费用变更
-        $(".changefy").on("click",function () {
+        $(".changefy").on("click", function () {
             var id = $(this).attr("data-id");
-            var key = $(this).attr("data-key")?$(this).attr("data-key"):0;
+            var key = $(this).attr("data-key") ? $(this).attr("data-key") : 0;
             $('#dialog-changefy').dialog("open");
-            $('#dialog-changefy').load("index.php?m=business&a=changefy&id="+id+"&key="+key);
+            $('#dialog-changefy').load("index.php?m=business&a=changefy&id=" + id + "&key=" + key + url);
         })
 
         $('.activs').click(function () {
             $('.activs').removeClass("currentstep");
-            if($(this).attr("href")=="#log3"){
-                $(".baccc").css("display","block");
-                $(".ruzhi,.remove,.addbz,.changefy").css("display","none");
-            }else{
-                $(".baccc").css("display","none");
+            if ($(this).attr("href") == "#log3") {
+                $(".baccc").css("display", "block");
+                $(".ruzhi,.remove,.addbz,.changefy").css("display", "none");
+            } else {
+                $(".baccc").css("display", "none");
             }
 
             $(this).addClass("currentstep");
@@ -2496,8 +2504,8 @@
 
         $(".lastac").click(function () {
             $('.activs').removeClass("currentstep");
-            $(".baccc").css("display","block");
-            $(".ruzhi,.remove,.addbz,.changefy").css("display","inline-block");
+            $(".baccc").css("display", "block");
+            $(".ruzhi,.remove,.addbz,.changefy").css("display", "inline-block");
             $(this).addClass("currentstep");
         })
 
