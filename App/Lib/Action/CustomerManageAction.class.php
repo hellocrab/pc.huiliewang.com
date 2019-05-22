@@ -176,6 +176,11 @@ class CustomerManageAction extends Action
         } else {
             $list['current_page'] = $page;
             $list['counts'] = $model->count();
+            import('@.ORG.Page'); // 导入分页类
+            $page = new Page($list['counts'], $pageSize);
+            $show = $page->show(); // 分页显示输出
+            $list['page'] = $show;
+            $list['listrows'] = $pageSize;
         }
 
         $this->response($list);
