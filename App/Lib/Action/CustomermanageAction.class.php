@@ -106,11 +106,13 @@ class CustomermanageAction extends Action
             if (!$id) {
                 continue;
             }
+            if ($info['max_condition'] && $info['min_condition'] && ($info['min_condition'] >= $info['max_condition'])) {
+                $this->response('最小值不能大于等于最大值', 500, false);
+            }
             $info['max_condition'] && $data['max_condition'] = $info['max_condition'];
             $info['min_condition'] && $data['min_condition'] = $info['min_condition'];
             if ($data) {
                 $data['up_time'] = time();
-
                 $res = M('customer_rank_config')->where(['id' => $id])->save($data);
             }
         }
@@ -178,7 +180,7 @@ class CustomermanageAction extends Action
         //分页
         $startNo = ($page - 1) * $pageSize;
         $list = $model->limit($startNo, $pageSize)->select();
-        $counts =  M('customer_rank')->where($where)->count();
+        $counts = M('customer_rank')->where($where)->count();
 
         foreach ($list as &$info) {
             include APP_PATH . "Common/city.cache.php";
