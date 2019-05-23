@@ -45,7 +45,7 @@ select {
     line-height: 33px;
     align-items: center;
     justify-content: center;
-    width: 109px;
+    padding: 0 15px;
     color: #fff;
     height: 33px;
     background: rgba(61, 107, 180, 1);

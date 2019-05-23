@@ -32,7 +32,7 @@ function getData() {
                         <td>${val.customer_name}</td>
                         <td>${val.rank_name}</td>
                         <td>
-                            ${val.money}&nbsp;&nbsp;
+                            ${val.money}${val.pro_type=='入职快'?'('+val.enter_num+'人)':''}&nbsp;&nbsp;
                             <img src='Public/img/customerManage/8_15.png' class='moneyDetail' 
                             reco='${index},${val.money_list["1"]?val.money_list["1"]:0},${val.money_list["2"]?val.money_list["2"]:0},${val.money_list["3"]?val.money_list["3"]:0}'>
                         </td>
@@ -77,9 +77,9 @@ function getData() {
                     $('.showDetail').remove();
                     let arr = ev.target.attributes[2].nodeValue.split(',');
                     let temp = `<div class='showDetail'>
-                        <span>面试快&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${arr[1]}<span>
-                        <span>入职快&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${arr[2]}<span>
-                        <span>专业猎头&nbsp;&nbsp;${arr[3]}<span>
+                        <span>面试快&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${arr[1]}<span>
+                        <span>入职快-${res.info.list[arr[0]].enter_num}人&nbsp;&nbsp;${arr[2]}<span>
+                        <span>专业猎头&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${arr[3]}<span>
                     </div>`
                     $(`body`).append(temp)
                     $('.showDetail').on('mouseleave', ev => {
@@ -101,12 +101,12 @@ function getData() {
                     $('.blackDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(12)`).offset().top - 62 + 'px')
                     $('.blackDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(12)`).offset().left - 0 + 'px')
                 })
-                $('.mean').click(ev => {
+                $('.mean').mouseenter(ev => {
                     $('.meanDetail').remove();
                     let arr = ev.target.attributes[1].nodeValue.split(',');
                     let temp = `<div class='meanDetail'>
-                        <span>&nbsp;&nbsp;&nbsp;&nbsp;手动分级</span>
-                        <span>&nbsp;&nbsp;&nbsp;&nbsp;${arr[1]==0?'加入':'移除'}黑名单</span>
+                        <span>&nbsp;&nbsp;${res.info.list[arr[0]].is_manual==1?'取消':''}手动分级</span>
+                        <span>&nbsp;&nbsp;${arr[1]==0?'加入':'移除'}黑名单</span>
                     </div>`
                     $(`body`).append(temp)
                     $('.meanDetail').on('mouseleave', ev => {
@@ -118,7 +118,8 @@ function getData() {
                         con_id = res.info.list[arr[0]].customer_id;
                         con_proid = res.info.list[arr[0]].pro_type == '面试快' ? '1' : res.info.list[arr[0]].pro_type == '入职快' ? '2' : '3';
                         con_rank = res.info.list[arr[0]].rank_id;
-                        if ($('.meanDetail span:nth-child(2)').html().trim().substr(24, 2) == '加入') {
+                        if (res.info.list[arr[0]].is_black==0) {
+                            $('.mo').html(`真的要将客户${res.info.list[arr[0]].customer_name}加入黑名单吗？`)
                             $('.black_dialog').css('display', 'block');
                             $(document).bind('mousewheel', function (event, delta) {
                                 return false;
@@ -363,14 +364,13 @@ $(".black_dialog .submit").click(ev => {
     }
 })
 $(".rank_dialog .submit").click(ev => {
-    
         $.ajax({
             url: '/index.php?m=customermanage&a=edit',
             type: 'post',
             data: {
                 customer_id: con_id,
-                pro_type: con_proid,
-                rank_name: $('.custRank input[checked]').val(),
+                pro_type: $('.diaSel').val(),
+                rank_name: $(':radio[name="diaRa"]:checked').val(),
                 is_black: con_black,
                 note: con_note,
                 is_manual:1
