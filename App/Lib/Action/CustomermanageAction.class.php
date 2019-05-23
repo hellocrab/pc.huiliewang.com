@@ -6,7 +6,7 @@
  *+++++++++++++++++++++++++++++++++++++++++++++++++++
  */
 
-class CustomerManageAction extends Action
+class CustomermanageAction extends Action
 {
     protected $_permissionRes = '';
     protected $pro_type = [0 => '初始条件', 1 => '面试快', 2 => '入职快', 3 => '专业猎头'];
