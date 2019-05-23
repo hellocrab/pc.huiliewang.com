@@ -71,7 +71,7 @@
                     <td></td>-->
                     <td>{$vo.tracker_name}</td>
                     <td><a href="{:U('customer/view', 'id='.$vo['com_id'])}" target="_blank">{$vo.customer_name}</a></td>
-                    <td>{$vo.beizhu|default=''}</td>
+                    <td>{$vo.description|default=''}</td>
                     <td>{$vo.addtime|date='Y-m-d H:i',###}</td>
                 </tr>
             </volist>
