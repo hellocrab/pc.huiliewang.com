@@ -149,6 +149,12 @@ class CustomermanageAction extends Action
                     $where['_complex'] = $map;
                     continue;
                 }
+                //生日筛选
+                if ($fields == "birth_month") {
+                    $moth = intval($value);
+                    $moth = strlen($moth) == 1 ? "0{$moth}" : $moth;
+                    $where[$fields] = $moth;
+                }
                 $where[$fields] = $value;
             }
         }
@@ -171,9 +177,9 @@ class CustomermanageAction extends Action
             $info['up_time'] = date('Y-m-d', $info['up_time']);
             $info['role_name'] = M('user')->where(['user_id' => $info['role_id']])->getField('full_name');
             !$info['role_name'] && $info['role_name'] = '';
-            $money_list = M('customer_rank_list')->where(['customer_id'=>$info['customer_id']])->field('rank_name,integral,pro_type')->select();
+            $money_list = M('customer_rank_list')->where(['customer_id' => $info['customer_id']])->field('rank_name,integral,pro_type')->select();
             $data = [];
-            foreach ($money_list as $moneys){
+            foreach ($money_list as $moneys) {
                 $data[$moneys['pro_type']] = $moneys['integral'];
             }
             $info['money_list'] = $data ? $data : [];
@@ -189,7 +195,7 @@ class CustomermanageAction extends Action
             $show = $pageObj->show(); // 分页显示输出
         }
 
-        $this->response(['list' => $list, 'current_page' => $page, 'counts' =>$counts, 'page' => $show, 'listrows' => $pageSize]);
+        $this->response(['list' => $list, 'current_page' => $page, 'counts' => $counts, 'page' => $show, 'listrows' => $pageSize]);
     }
 
     /**
@@ -200,7 +206,7 @@ class CustomermanageAction extends Action
         $this->authCheck();
         $customerId = BaseUtils::getStr(I('customer_id', 0), 'int'); //客户ID
         $proType = BaseUtils::getStr(I('pro_type', 0), 'int'); //项目类型
-        $rankName = BaseUtils::getStr(I('rank_name', '')); //等级名称
+        $rankName = strtoupper(BaseUtils::getStr(I('rank_name', ''))); //等级名称
         $isBlack = BaseUtils::getStr(I('is_black', 0), 'int'); //是否加入黑名单
         $isManual = BaseUtils::getStr(I('is_manual', ''), 'int'); //是否加入黑名单
         $note = BaseUtils::getStr(I('note', '')); //备注信息
@@ -224,13 +230,13 @@ class CustomermanageAction extends Action
             $data['is_manual'] = 1;
         }
         //手工分级修改
-        if(isset($_REQUEST['is_manual']) && $isManual == 0){
+        if (isset($_REQUEST['is_manual']) && $isManual == 0) {
             $data['is_manual'] = 0;
         }
         //备注信息
         $note && $data['note'] = $note;
         //黑名单
-        if (isset($_REQUEST['is_black'])) {
+        if (isset($_REQUEST['is_black']) && $isBlack != '') {
             $data['is_black'] = $isBlack;
         }
         if (!$data) {
