@@ -202,6 +202,7 @@ class CustomermanageAction extends Action
         $proType = BaseUtils::getStr(I('pro_type', 0), 'int'); //项目类型
         $rankName = BaseUtils::getStr(I('rank_name', '')); //等级名称
         $isBlack = BaseUtils::getStr(I('is_black', 0), 'int'); //是否加入黑名单
+        $isManual = BaseUtils::getStr(I('is_manual', ''), 'int'); //是否加入黑名单
         $note = BaseUtils::getStr(I('note', '')); //备注信息
 
         if ($customerId <= 0) {
@@ -215,6 +216,7 @@ class CustomermanageAction extends Action
         //项目类型修改
         if ($proType && $this->pro_type[$proType]) {
             $data['pro_type'] = $proType;
+            $data['is_manual'] = 1;
         }
         //客户等级手工修改
         if ($rankName && $this->rank_name[$rankName]) {
@@ -222,7 +224,7 @@ class CustomermanageAction extends Action
             $data['is_manual'] = 1;
         }
         //手工分级修改
-        if(isset($_REQUEST['rank_name']) && $rankName == ""){
+        if(isset($_REQUEST['is_manual']) && $isManual == 0){
             $data['is_manual'] = 0;
         }
         //备注信息
