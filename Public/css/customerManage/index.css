@@ -213,6 +213,35 @@ table select {
     background: #fff;
     margin: 190px auto 0;
 }
+.rank_dialog .dialogBox{
+    width: 490px;
+    height: 453px;
+    background: #fff;
+    margin: 190px auto 0;
+}
+.rank_dialog p{
+    display: block;
+    padding-left: 38px;
+    margin-bottom: 20px;
+}
+.rank_dialog .custType{
+    margin-bottom: 60px;
+}
+.rank_dialog .custRank{
+    margin-bottom: 90px;
+}
+.rank_dialog span{
+    display: inline-block;
+    color:rgba(102,102,102,1);
+    margin-right: 36px;
+}
+.rank_dialog label{
+    margin-right: 15px;
+    color:rgba(102,102,102,1);
+    font-weight: normal;
+    font-size: 13px;
+    margin-left: 5px;
+}
 .dialogHead {
     text-align: right;
     padding: 15px;
