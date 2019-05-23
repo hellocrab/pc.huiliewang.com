@@ -219,6 +219,11 @@ class CustomermanageAction extends Action
         //客户等级手工修改
         if ($rankName && $this->rank_name[$rankName]) {
             $data['rank_name'] = $rankName;
+            $data['is_manual'] = 1;
+        }
+        //手工分级修改
+        if(isset($_REQUEST['rank_name']) && $rankName == ""){
+            $data['is_manual'] = 0;
         }
         //备注信息
         $note && $data['note'] = $note;
@@ -283,7 +288,7 @@ class CustomermanageAction extends Action
      * @desc 回访条件更改
      */
     public function visitConfigUp() {
-        $list = BaseUtils::getStr($_REQUEST);
+        $list = BaseUtils::getStr($_REQUEST['data']);
         $res = false;
         foreach ($list as $info) {
             $data = [];
