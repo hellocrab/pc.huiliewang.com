@@ -113,7 +113,7 @@ function getData() {
                         $('.meanDetail').remove()
                     })
                     $('.meanDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().top - 42 + 'px')
-                    $('.meanDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().left + 15 + 'px')
+                    $('.meanDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().left + 30 + 'px')
                     $('.meanDetail span:nth-child(2)').click(ev => {
                         con_id = res.info.list[arr[0]].customer_id;
                         con_proid = res.info.list[arr[0]].pro_type == '面试快' ? '1' : res.info.list[arr[0]].pro_type == '入职快' ? '2' : '3';
