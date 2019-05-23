@@ -231,12 +231,12 @@ class CustomermanageAction extends Action
         }
         $data = [];
         //项目类型修改
-        if ($proType && $this->pro_type[$proType]) {
+        if ($proType && $this->pro_type[$proType] && $info['pro_type'] != $proType) {
             $data['pro_type'] = $proType;
             $data['is_manual'] = 1;
         }
         //客户等级手工修改
-        if ($rankName && $this->rank_name[$rankName]) {
+        if ($rankName && $this->rank_name[$rankName] && $info['rank_name'] != $rankName) {
             $data['rank_name'] = $rankName;
             $data['is_manual'] = 1;
         }
@@ -247,7 +247,7 @@ class CustomermanageAction extends Action
         //备注信息
         $note && $data['note'] = $note;
         //黑名单
-        if (isset($_REQUEST['is_black']) && $isBlack != '') {
+        if (isset($_REQUEST['is_black']) && $isBlack !== '') {
             $data['is_black'] = $isBlack;
         }
         if (!$data) {
