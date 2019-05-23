@@ -34,6 +34,10 @@ class CustomermanageAction extends Action
      * @desc 客户回访
      */
     public function index() {
+        $this->_permissionRes = getPerByAction(MODULE_NAME, 'customers');
+        if (!$this->_permissionRes) {
+            $this->error('您没有权限操作', 'index');
+        }
         $this->display();
     }
 
@@ -41,6 +45,9 @@ class CustomermanageAction extends Action
      * @desc 客户回访
      */
     public function visit() {
+        if (!$this->_permissionRes) {
+            $this->error('您没有权限操作');
+        }
         $this->display();
     }
 
@@ -158,14 +165,22 @@ class CustomermanageAction extends Action
                 $where[$fields] = $value;
             }
         }
+        //查询权限
+        if ($this->_permissionRes) {
+            $where['role_id'] = ['in', $this->_permissionRes];
+        }
+
         //排序处理
         $model = M('customer_rank')->where($where);
         if (in_array($order, ['money'])) {
             $model = $model->order("{$order} {$asc}");
         }
+
         //分页
         $startNo = ($page - 1) * $pageSize;
         $list = $model->limit($startNo, $pageSize)->select();
+        $counts =  M('customer_rank')->where($where)->count();
+
         foreach ($list as &$info) {
             include APP_PATH . "Common/city.cache.php";
             include APP_PATH . "Common/industry.cache.php";
@@ -189,10 +204,7 @@ class CustomermanageAction extends Action
         if (!$list) {
             $list = [];
             $counts = 0;
-        } else {
-            $counts = $model->count();
         }
-
         $this->response(['list' => $list, 'current_page' => $page, 'counts' => $counts, 'listrows' => $pageSize]);
     }
 
