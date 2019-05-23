@@ -5,7 +5,7 @@ var con_proid = '';
 var con_rank = '';
 function getData() {
     $.ajax({
-        url: '/index.php?m=customer_manage&a=customers',
+        url: '/index.php?m=customermanage&a=customers',
         data: {
             page: current_page,
             page_size: $('#pageSize').val(),
@@ -131,7 +131,7 @@ function getData() {
                             },function (isConfirm) {
                                 if(isConfirm){
                                     $.ajax({
-                                        url: '/index.php?m=customer_manage&a=edit',
+                                        url: '/index.php?m=customermanage&a=edit',
                                         type: 'post',
                                         data: {
                                             customer_id:con_id,
@@ -159,7 +159,7 @@ function getData() {
 
 function getRank() {
     $.ajax({
-        url: '/index.php?m=customer_manage&a=rank',
+        url: '/index.php?m=customermanage&a=rank',
         success(res) {
             if (res.code == 200) {
                 res.info.map(val => {
@@ -237,7 +237,7 @@ $(".set_dialog .submit").click(ev => {
         swal("", "请填写完整", "error");
     } else {
         $.ajax({
-            url: '/index.php?m=customer_manage&a=rank_update',
+            url: '/index.php?m=customermanage&a=rank_update',
             type: 'post',
             data: {
                 data: [{
@@ -297,7 +297,7 @@ $(".black_dialog .submit").click(ev => {
         swal("", "请填写完整", "error");
     } else {
         $.ajax({
-            url: '/index.php?m=customer_manage&a=edit',
+            url: '/index.php?m=customermanage&a=edit',
             type: 'post',
             data: {
                 customer_id:con_id,
