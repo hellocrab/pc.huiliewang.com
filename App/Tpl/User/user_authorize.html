@@ -207,20 +207,23 @@
 						</span>
 						<h4 style="padding-top: 10px;clear:both;">客户回访</h4>
 						<span style="width:25%; float:left;">
-							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['CustomerManage/customers'])">checked="checked"</if> name="per[]" value="CustomerManage/customers"/>分级列表&nbsp;
-							<select style="width:auto;<if condition="!isset($owned_permission['CustomerManage/index'])">display:none;</if>"  name="CustomerManage[index]">
-								<option <if condition="$owned_permission['contacts/index'] == 1">selected="selected"</if> value="1">{:L('PERMISSION_SUB')}</option>
-								<option <if condition="$owned_permission['contacts/index'] == 2">selected="selected"</if> value="2">{:L('PERMISSION_EVERYONE')}</option>
-								<option <if condition="$owned_permission['contacts/index'] == 3">selected="selected"</if> value="3">{:L('PERMISSION_SELF')}</option>
-								<option <if condition="$owned_permission['contacts/index'] == 4">selected="selected"</if> value="4">{:L('PERMISSION_DEPARTMENT')}</option>
+							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['customermanage/customers'])">checked="checked"</if> name="per[]" value="customermanage/customers"/>分级列表&nbsp;
+							<select style="width:auto;<if condition="!isset($owned_permission['customermanage/customers'])">display:none;</if>"  name="customermanage[customers]">
+								<option <if condition="$owned_permission['customermanage/customers'] == 1">selected="selected"</if> value="1">{:L('PERMISSION_SUB')}</option>
+								<option <if condition="$owned_permission['customermanage/customers'] == 2">selected="selected"</if> value="2">{:L('PERMISSION_EVERYONE')}</option>
+								<option <if condition="$owned_permission['customermanage/customers'] == 3">selected="selected"</if> value="3">{:L('PERMISSION_SELF')}</option>
+								<option <if condition="$owned_permission['customermanage/customers'] == 4">selected="selected"</if> value="4">{:L('PERMISSION_DEPARTMENT')}</option>
 							</select>
 						</span>
 
 						<span style="width:25%; float:left;">
-							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['CustomerManage/rank_update'])">checked="checked"</if> name="per[]" value="CustomerManage/rank_update"/>分级标准设置&nbsp;
+							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['customermanage/rank_update'])">checked="checked"</if> name="per[]" value="customermanage/rank_update"/>分级标准设置&nbsp;
 						</span>
 						<span style="width:25%; float:left;">
-							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['CustomerManage/edit'])">checked="checked"</if> name="per[]" value="CustomerManage/edit"/>手动分级/拉黑处理&nbsp;
+							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['customermanage/edit'])">checked="checked"</if> name="per[]" value="customermanage/edit"/>手动分级/拉黑处理&nbsp;
+						</span>
+						<span style="width:25%; float:left;">
+							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['customermanage/visit'])">checked="checked"</if> name="per[]" value="customermanage/visit"/>客户回访列表&nbsp;
 						</span>
 						<!-- <h4 style="padding-top: 10px;clear:both;">客户关怀</h4>
 						<span style="width:25%; float:left;">
