@@ -182,20 +182,18 @@ class CustomermanageAction extends Action
             foreach ($money_list as $moneys) {
                 $data[$moneys['pro_type']] = $moneys['integral'];
             }
+            $enterNum = M('customer_rank_list')->where(['customer_id' => $info['customer_id'], 'pro_type' => 2])->getField('enter_num');
+            $info['enter_num'] = intval($enterNum);
             $info['money_list'] = $data ? $data : [];
         }
         if (!$list) {
             $list = [];
             $counts = 0;
-            $show = '';
         } else {
-            import('@.ORG.Page'); // 导入分页类
             $counts = $model->count();
-            $pageObj = new Page($counts, $pageSize);
-            $show = $pageObj->show(); // 分页显示输出
         }
 
-        $this->response(['list' => $list, 'current_page' => $page, 'counts' => $counts, 'page' => $show, 'listrows' => $pageSize]);
+        $this->response(['list' => $list, 'current_page' => $page, 'counts' => $counts, 'listrows' => $pageSize]);
     }
 
     /**
