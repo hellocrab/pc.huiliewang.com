@@ -43,7 +43,7 @@ class MessageAction extends Action
             $r_where['read_time'] = 0;
             $new_num = $m_r_message->where($r_where)->count();
             //系统消息标记为已读
-            $m_message->where(array('to_role_id' => session('role_id'), 'from_role_id' => 0, 'read_time' => 0))->setField('read_time', time());
+            $m_message->where(array('to_role_id' => session('role_id'), 'from_role_id' => 0, 'read_time' => 0, 'type' => 0))->setField('read_time', time());
         } else if ($by == 'announcement') {
             if (checkPerByAction('announcement', 'index')) {
                 //公告
@@ -144,6 +144,7 @@ class MessageAction extends Action
                     $n_where['read_time'] = 0;
                     $n_where['to_role_id'] = session('role_id');
                     $n_where['from_role_id'] = $v;
+                    $n_where['type'] = 0;
                     $n_where['status'] = array('neq', 2);
                     $user_list[$k]['noread_count'] = $m_message->where($n_where)->count();
                 }
@@ -429,7 +430,7 @@ class MessageAction extends Action
         $message_num = 0;//系统站内信数量
         //桌面提醒
         $data_list = array();
-        $data_list_message = $m_message->where(array('to_role_id' => session('role_id'), 'read_time' => 0, 'status' => array('neq', 1)))->select();
+        $data_list_message = $m_message->where(array('to_role_id' => session('role_id'), 'read_time' => 0, 'status' => array('neq', 1), 'type' => 0))->select();
 
         $defaultinfo_info = M('Config')->where('name = "defaultinfo"')->find();
         $defaultinfo = unserialize($defaultinfo_info['value']);
@@ -476,7 +477,7 @@ class MessageAction extends Action
 
         //员工站内信
         $m_user = M('User');
-        $from_role_ids = $m_message->where(array('to_role_id' => session('role_id'), 'read_time' => 0, 'status' => array('neq', 1), 'from_role_id' => array('neq', '')))->group('from_role_id')->order('message_id desc')->getField('from_role_id', true);
+        $from_role_ids = $m_message->where(array( 'type' => 0, 'to_role_id' => session('role_id'), 'read_time' => 0, 'status' => array('neq', 1), 'from_role_id' => array('neq', '')))->group('from_role_id')->order('message_id desc')->getField('from_role_id', true);
 
         foreach ($from_role_ids as $k => $v) {
             $user_info = $m_user->where('role_id = %d', $v)->field('full_name,role_id,thumb_path')->find();
@@ -490,7 +491,7 @@ class MessageAction extends Action
                 $role_message_list[$k]['content'] = '附件信息';
             }
             //查询未读数
-            $role_message_list[$k]['unread_num'] = $m_message->where(array('from_role_id' => $v, 'to_role_id' => session('role_id'), 'read_time' => array('eq', '')))->count();
+            $role_message_list[$k]['unread_num'] = $m_message->where(array( 'type' => 0, 'from_role_id' => $v, 'to_role_id' => session('role_id'), 'read_time' => array('eq', '')))->count();
         }
         $new_num['role_message_list'] = $role_message_list ? $role_message_list : array();
 
@@ -709,6 +710,7 @@ class MessageAction extends Action
         $where['to_role_id'] = session('role_id');
         $where['send_time'] = array('egt', $request_time);
         $where['read_time'] = 0;
+        $where['type'] = 0;
         $message_content = $m_message->where($where)->select();
         $to_role_info = $m_user->where('role_id = %d', $to_role_id)->field('name,img,thumb_path,full_name')->find();
         //$from_role_info = $m_user->where('role_id = %d',session('role_id'))->field('name.img')->find();

@@ -34,6 +34,10 @@ class CustomermanageAction extends Action
      * @desc 客户回访
      */
     public function index() {
+        $this->_permissionRes = getPerByAction(MODULE_NAME, 'customers');
+        if (!$this->_permissionRes) {
+            $this->error('您没有权限操作', 'index');
+        }
         $this->display();
     }
 
@@ -41,6 +45,9 @@ class CustomermanageAction extends Action
      * @desc 客户回访
      */
     public function visit() {
+        if (!$this->_permissionRes) {
+            $this->error('您没有权限操作');
+        }
         $this->display();
     }
 
@@ -99,11 +106,13 @@ class CustomermanageAction extends Action
             if (!$id) {
                 continue;
             }
+            if ($info['max_condition'] && $info['min_condition'] && ($info['min_condition'] >= $info['max_condition'])) {
+                $this->response('最小值不能大于等于最大值', 500, false);
+            }
             $info['max_condition'] && $data['max_condition'] = $info['max_condition'];
             $info['min_condition'] && $data['min_condition'] = $info['min_condition'];
             if ($data) {
                 $data['up_time'] = time();
-
                 $res = M('customer_rank_config')->where(['id' => $id])->save($data);
             }
         }
@@ -153,19 +162,26 @@ class CustomermanageAction extends Action
                 if ($fields == "birth_month") {
                     $moth = intval($value);
                     $moth = strlen($moth) == 1 ? "0{$moth}" : $moth;
-                    $where[$fields] = $moth;
+                    $value = $moth;
                 }
                 $where[$fields] = $value;
             }
+        }
+        //查询权限
+        if ($this->_permissionRes) {
+            $where['role_id'] = ['in', $this->_permissionRes];
         }
         //排序处理
         $model = M('customer_rank')->where($where);
         if (in_array($order, ['money'])) {
             $model = $model->order("{$order} {$asc}");
         }
+
         //分页
         $startNo = ($page - 1) * $pageSize;
         $list = $model->limit($startNo, $pageSize)->select();
+        $counts = M('customer_rank')->where($where)->count();
+
         foreach ($list as &$info) {
             include APP_PATH . "Common/city.cache.php";
             include APP_PATH . "Common/industry.cache.php";
@@ -189,10 +205,7 @@ class CustomermanageAction extends Action
         if (!$list) {
             $list = [];
             $counts = 0;
-        } else {
-            $counts = $model->count();
         }
-
         $this->response(['list' => $list, 'current_page' => $page, 'counts' => $counts, 'listrows' => $pageSize]);
     }
 
@@ -218,12 +231,12 @@ class CustomermanageAction extends Action
         }
         $data = [];
         //项目类型修改
-        if ($proType && $this->pro_type[$proType]) {
+        if ($proType && $this->pro_type[$proType] && $info['pro_type'] != $proType) {
             $data['pro_type'] = $proType;
             $data['is_manual'] = 1;
         }
         //客户等级手工修改
-        if ($rankName && $this->rank_name[$rankName]) {
+        if ($rankName && $this->rank_name[$rankName] && $info['rank_name'] != $rankName) {
             $data['rank_name'] = $rankName;
             $data['is_manual'] = 1;
         }
@@ -234,7 +247,7 @@ class CustomermanageAction extends Action
         //备注信息
         $note && $data['note'] = $note;
         //黑名单
-        if (isset($_REQUEST['is_black']) && $isBlack != '') {
+        if (isset($_REQUEST['is_black']) && $isBlack !== '') {
             $data['is_black'] = $isBlack;
         }
         if (!$data) {
