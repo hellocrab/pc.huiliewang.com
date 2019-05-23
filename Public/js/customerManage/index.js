@@ -94,7 +94,7 @@ function getData() {
                     let temp = `<div class='blackDetail'>
                         ${arr[1]}
                     </div>`
-                    $(`body`).append(temp)
+                    $(`body`).append(temp);
                     $('.blackDetail').on('mouseleave', ev => {
                         $('.blackDetail').remove()
                     })
@@ -104,16 +104,25 @@ function getData() {
                 $('.mean').mouseenter(ev => {
                     $('.meanDetail').remove();
                     let arr = ev.target.attributes[1].nodeValue.split(',');
-                    let temp = `<div class='meanDetail'>
-                        <span>&nbsp;&nbsp;${res.info.list[arr[0]].is_manual==1?'取消':''}手动分级</span>
+                    let temp = '';
+                    if(res.info.list[arr[0]].is_manual==1){
+                        temp = `<div class='meanDetail andcan'>
+                        <span>&nbsp;&nbsp;手动分级</span>
+                        <span>&nbsp;&nbsp;${arr[1]==0?'加入':'移除'}黑名单</span>
+                        <span>&nbsp;&nbsp;取消手动分级</span>
+                    </div>`
+                    }else{
+                        temp = `<div class='meanDetail'>
+                        <span>&nbsp;&nbsp;手动分级</span>
                         <span>&nbsp;&nbsp;${arr[1]==0?'加入':'移除'}黑名单</span>
                     </div>`
+                    }
                     $(`body`).append(temp)
                     $('.meanDetail').on('mouseleave', ev => {
                         $('.meanDetail').remove()
                     })
-                    $('.meanDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().top - 42 + 'px')
-                    $('.meanDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().left + 15 + 'px')
+                    $('.meanDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().top - (res.info.list[arr[0]].is_manual==1?62:42) + 'px')
+                    $('.meanDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().left + 30 + 'px')
                     $('.meanDetail span:nth-child(2)').click(ev => {
                         con_id = res.info.list[arr[0]].customer_id;
                         con_proid = res.info.list[arr[0]].pro_type == '面试快' ? '1' : res.info.list[arr[0]].pro_type == '入职快' ? '2' : '3';
@@ -160,13 +169,18 @@ function getData() {
                         con_rank = res.info.list[arr[0]].rank_id;
                         is_black = res.info.list[arr[0]].is_black;
                         con_note = res.info.list[arr[0]].note;
-                        if (res.info.list[arr[0]].is_manual==0) {
                             $('.custName').html(`<span>客户名称</span>${res.info.list[arr[0]].customer_name}`);
                             $('.rank_dialog').css('display', 'block');
                             $(document).bind('mousewheel', function (event, delta) {
                                 return false;
                             });
-                        } else {
+                    })
+                    $('.meanDetail span:nth-child(3)').click(ev => {
+                        con_id = res.info.list[arr[0]].customer_id;
+                        con_proid = res.info.list[arr[0]].pro_type == '面试快' ? '1' : res.info.list[arr[0]].pro_type == '入职快' ? '2' : '3';
+                        con_rank = res.info.list[arr[0]].rank_id;
+                        is_black = res.info.list[arr[0]].is_black;
+                        con_note = res.info.list[arr[0]].note;
                             swal({
                                 title: '取消自动分级',
                                 text: '取消后将会在次日0:00进行自动分级',
@@ -195,7 +209,6 @@ function getData() {
                                     })
                                 }
                             });
-                        }
                     })
                 })
             }
