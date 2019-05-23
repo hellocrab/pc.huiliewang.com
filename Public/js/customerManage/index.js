@@ -5,6 +5,7 @@ var con_proid = '';
 var con_rank = '';
 var con_black = '';
 var con_note = '';
+
 function getData() {
     $.ajax({
         url: '/index.php?m=customermanage&a=customers',
@@ -112,35 +113,34 @@ function getData() {
                         $('.meanDetail').remove()
                     })
                     $('.meanDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().top - 42 + 'px')
-                    $('.meanDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().left +15 + 'px')
-                    $('.meanDetail span:nth-child(2)').click(ev=>{
+                    $('.meanDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().left + 15 + 'px')
+                    $('.meanDetail span:nth-child(2)').click(ev => {
                         con_id = res.info.list[arr[0]].customer_id;
-                        con_proid = res.info.list[arr[0]].pro_type=='面试快'?'1':res.info.list[arr[0]].pro_type=='入职快'?'2':'3';
+                        con_proid = res.info.list[arr[0]].pro_type == '面试快' ? '1' : res.info.list[arr[0]].pro_type == '入职快' ? '2' : '3';
                         con_rank = res.info.list[arr[0]].rank_id;
-                        console.log($('.meanDetail span:nth-child(2)').html().trim())
-                        if($('.meanDetail span:nth-child(2)').html().trim().substr(24,2) == '加入'){
+                        if ($('.meanDetail span:nth-child(2)').html().trim().substr(24, 2) == '加入') {
                             $('.black_dialog').css('display', 'block');
                             $(document).bind('mousewheel', function (event, delta) {
                                 return false;
                             });
-                        }else{
+                        } else {
                             swal({
-                                title:'黑名单操作',
-                                text:'将该客户移除黑名单',
-                                type:"warning",
-                                showCancelButton:true,
+                                title: '黑名单操作',
+                                text: '将该客户移除黑名单',
+                                type: "warning",
+                                showCancelButton: true,
                                 confirmButtonText: "确定"
-                            },function (isConfirm) {
-                                if(isConfirm){
+                            }, function (isConfirm) {
+                                if (isConfirm) {
                                     $.ajax({
                                         url: '/index.php?m=customermanage&a=edit',
                                         type: 'post',
                                         data: {
-                                            customer_id:con_id,
-                                            pro_type:con_proid,
-                                            rank_name:con_rank,
-                                            is_black:0,
-                                            note:''
+                                            customer_id: con_id,
+                                            pro_type: con_proid,
+                                            rank_name: con_rank,
+                                            is_black: 0,
+                                            note: ''
                                         },
                                         success(res) {
                                             if (res.code == 200) {
@@ -153,36 +153,37 @@ function getData() {
                             });
                         }
                     })
-                    $('.meanDetail span:nth-child(1)').click(ev=>{
+                    $('.meanDetail span:nth-child(1)').click(ev => {
                         con_id = res.info.list[arr[0]].customer_id;
-                        con_proid = res.info.list[arr[0]].pro_type=='面试快'?'1':res.info.list[arr[0]].pro_type=='入职快'?'2':'3';
+                        con_proid = res.info.list[arr[0]].pro_type == '面试快' ? '1' : res.info.list[arr[0]].pro_type == '入职快' ? '2' : '3';
                         con_rank = res.info.list[arr[0]].rank_id;
                         is_black = res.info.list[arr[0]].is_black;
                         con_note = res.info.list[arr[0]].note;
-                        if($('.meanDetail span:nth-child(1)').html().trim().substr(24,2) == '手动'){
+                        if (res.info.list[arr[0]].is_manual==0) {
                             $('.custName').html(`<span>客户名称</span>${res.info.list[arr[0]].customer_name}`);
                             $('.rank_dialog').css('display', 'block');
                             $(document).bind('mousewheel', function (event, delta) {
                                 return false;
                             });
-                        }else{
+                        } else {
                             swal({
-                                title:'取消自动分级',
-                                text:'取消后将会在次日0:00进行自动分级',
-                                type:"warning",
-                                showCancelButton:true,
+                                title: '取消自动分级',
+                                text: '取消后将会在次日0:00进行自动分级',
+                                type: "warning",
+                                showCancelButton: true,
                                 confirmButtonText: "确定"
-                            },function (isConfirm) {
-                                if(isConfirm){
+                            }, function (isConfirm) {
+                                if (isConfirm) {
                                     $.ajax({
-                                        url: '/index.php?m=customer_manage&a=edit',
+                                        url: '/index.php?m=customermanage&a=edit',
                                         type: 'post',
                                         data: {
-                                            customer_id:con_id,
-                                            pro_type:con_proid,
-                                            rank_name:'',
-                                            is_black:is_black,
-                                            note:con_note
+                                            customer_id: con_id,
+                                            pro_type: con_proid,
+                                            rank_name: '',
+                                            is_black: is_black,
+                                            note: con_note,
+                                            is_manual:0
                                         },
                                         success(res) {
                                             if (res.code == 200) {
@@ -337,18 +338,18 @@ $(".set_dialog .submit").click(ev => {
     }
 })
 $(".black_dialog .submit").click(ev => {
-    if (!$('.mp').val() ) {
+    if (!$('.mp').val()) {
         swal("", "请填写完整", "error");
     } else {
         $.ajax({
             url: '/index.php?m=customermanage&a=edit',
             type: 'post',
             data: {
-                customer_id:con_id,
-                pro_type:con_proid,
-                rank_name:con_rank,
-                is_black:1,
-                note:$('.mp').val()
+                customer_id: con_id,
+                pro_type: con_proid,
+                rank_name: con_rank,
+                is_black: 1,
+                note: $('.mp').val()
             },
             success(res) {
                 if (res.code == 200) {
@@ -361,19 +362,18 @@ $(".black_dialog .submit").click(ev => {
         })
     }
 })
-$(".black_dialog .submit").click(ev => {
-    if (!$('.mp').val() ) {
-        swal("", "请填写完整", "error");
-    } else {
+$(".rank_dialog .submit").click(ev => {
+    
         $.ajax({
-            url: '/index.php?m=customer_manage&a=edit',
+            url: '/index.php?m=customermanage&a=edit',
             type: 'post',
             data: {
-                customer_id:con_id,
-                pro_type:con_proid,
-                rank_name:$('.custRank input[checked]').val(),
-                is_black:con_black,
-                note:con_note
+                customer_id: con_id,
+                pro_type: con_proid,
+                rank_name: $('.custRank input[checked]').val(),
+                is_black: con_black,
+                note: con_note,
+                is_manual:1
             },
             success(res) {
                 if (res.code == 200) {
@@ -384,5 +384,4 @@ $(".black_dialog .submit").click(ev => {
                 }
             }
         })
-    }
 })
