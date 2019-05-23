@@ -169,7 +169,6 @@ class CustomermanageAction extends Action
         if ($this->_permissionRes) {
             $where['role_id'] = ['in', $this->_permissionRes];
         }
-
         //排序处理
         $model = M('customer_rank')->where($where);
         if (in_array($order, ['money'])) {
