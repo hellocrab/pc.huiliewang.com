@@ -160,7 +160,7 @@ class CustomermanageAction extends Action
                 if ($fields == "birth_month") {
                     $moth = intval($value);
                     $moth = strlen($moth) == 1 ? "0{$moth}" : $moth;
-                    $where[$fields] = $moth;
+                    $value = $moth;
                 }
                 $where[$fields] = $value;
             }
