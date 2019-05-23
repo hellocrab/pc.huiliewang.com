@@ -90,7 +90,7 @@ foreach ($userList as $userInfo) {
         $interviewNum = interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         $data['interview_num'] = isset($interviewNum['countPerson']) ? $interviewNum['countPerson'] : 0;
         //8、面试次数
-        $data['interviewt_num'] = isset($interviewNum['interviewNum']) ? $interviewNum['interviewNum'] : 0;
+        $data['interviewt_num'] = isset($interviewNum['countInterview']) ? $interviewNum['countInterview'] : 0;
         //9、offer统计
         $data['offer_num'] = offerNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
 
