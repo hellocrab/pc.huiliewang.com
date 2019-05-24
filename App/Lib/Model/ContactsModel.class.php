@@ -99,4 +99,34 @@
 				
 			}
         }
+
+        /**
+         * @desc 添加编辑联系人 维护客户分级联系人
+         * @param $contactId
+         * @param int $customerId
+         * @return bool|void
+         */
+        public static function completeInfo($contactId, $customerId = 0) {
+            //未有联系方式则删除
+            $userRoleId = session('role_id');
+            $rankInfo = M('customer_rank')->where(['customer_id' => $customerId])->find();
+            if (!$rankInfo || $rankInfo['role_id'] != $userRoleId) {
+                return;
+            }
+            $contactInfo = M('contacts')->where(['contacts_id'=>$contactId])->find();
+            if(!$contactInfo){
+                return;
+            }
+            $contactsIdList = M('RContactsCustomer')->where(['customer_id' => $customerId])->select();
+            $contactsModel = M('contacts');
+            foreach ($contactsIdList as $info) {
+                $cId = $info['contacts_id'];
+                $cInfo = $contactsModel->where(['contacts_id' => $cId])->find();
+                if (!$cInfo['telephone']) {
+                    $contactsModel->where(['contacts_id' => $cId])->save(['is_deleted' => 1, 'is_deleted' => time(), 'delete_role_id' => $userRoleId]);
+                }
+            }
+            M('customer')->where(['customer_id' => $customerId])->save(['contacts_id' => $contactId]);
+            return true;
+        }
     }
