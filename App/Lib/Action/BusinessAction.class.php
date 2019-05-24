@@ -987,7 +987,21 @@ class BusinessAction extends Action
 
         //判断权限
         $below_ids = getPerByAction('business', 'edit');
-        if ($business_info && !in_array($business_info['owner_role_id'], $below_ids)) {
+        $auth = false;
+        if($business_info['creator_role_id'] == session('role_id')){
+            $auth = true;
+        }
+        $ownerRoles = $business_info['owner_role_id'];
+        $ownerRoles = explode(',',$ownerRoles);
+        if($ownerRoles && !$auth){
+            foreach ($ownerRoles as $owner){
+                if(in_array($owner, $below_ids)){
+                    $auth = true;
+                    break;
+                }
+            }
+        }
+        if ($business_info && !$auth) {
             alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
         }
         $field_list = M('Fields')->where('model = "business"')->order('order_id')->select();
