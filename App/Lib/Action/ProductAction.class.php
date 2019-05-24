@@ -492,7 +492,7 @@ class ProductAction extends Action {
                         $jobsql = '';
                         $job_arr = explode(',',$job_class);
                         foreach ($job_arr as $v){
-                            $jobsql['_string'] .= " FIND_IN_SET('" . $v . "',job_class) or ";
+                            $jobsql['_string'] .= " FIND_IN_SET('{$v}',job_class) or ";
                         }
                         if($where['_complex']['_string'])
                             $where['_complex']['_string'] .='AND (' . rtrim($jobsql['_string'],'or ').')';
@@ -503,7 +503,7 @@ class ProductAction extends Action {
                         $eplaceSql = '';
                         $ar_eplace = explode(',',$search_eplace);
                         foreach($ar_eplace as $v){
-                            $eplaceSql['_string'] .= " FIND_IN_SET('" . $v . "',intentCity) or ";
+                            $eplaceSql['_string'] .= " FIND_IN_SET('{$v}',intentCity) or ";
                         }
                         if($where['_complex']['_string'])
                             $where['_complex']['_string'] .= 'AND (' . rtrim($eplaceSql['_string'],'or ').')';

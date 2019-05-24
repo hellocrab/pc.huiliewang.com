@@ -515,7 +515,7 @@ class BusinessAction extends Action
             $arr3 = explode(',', $industry);
             foreach ($arr3 as $v) {
                 $industrySql .= " FIND_IN_SET('{$v}',business.industry) or";
-                $industryMap['_string'] .= " FIND_IN_SET('{$v}'',business.industry) or";
+                $industryMap['_string'] .= " FIND_IN_SET('{$v}',business.industry) or";
             }
             $industryMap['_string'] = "(" . rtrim($industryMap['_string'], 'or') . ")";
             $industrySql = "(" . rtrim($industrySql, 'or') . ")";
@@ -549,7 +549,7 @@ class BusinessAction extends Action
         }
 
         $where['_logic'] = 'AND';
-//        dump($where);
+//        dump($where);die;
         unset($where['business.owner_role_id']);
         $list = $d_v_business->where($where)->order($order)->page($p . ',' . $listrows)->select();
 //        dump($list);
