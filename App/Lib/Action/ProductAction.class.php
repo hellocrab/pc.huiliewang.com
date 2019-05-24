@@ -357,7 +357,7 @@ class ProductAction extends Action {
     }
 
     public function index() {
-
+        $resume = D('ResumeeduView');
         $by = $this->_get('by', 'trim');
         if (empty($by))
             $by = 'myself';
@@ -387,8 +387,7 @@ class ProductAction extends Action {
         import('@.ORG.Page'); // 导入分页类
 
         $resume = M("resume");
-
-
+//        dump($resume);
         $where['is_show'] = 1;
         $where['model'] = "resume";
         $this->field_list = M('Fields')->where($where)->order('order_id ASC')->select();
@@ -399,13 +398,27 @@ class ProductAction extends Action {
             $name_field_array[] = $v;
         }
         $this->field_array = $name_field_array;
-//        var_dump($_REQUEST);exit;
         //普通查询
         if ($_REQUEST["field"]) {
             $field = trim($_REQUEST['field']);
             $search_name = empty($_REQUEST['search_name']) ? '' : trim($_REQUEST['search_name']);
             $search_job = empty($_REQUEST['search_job']) ? '' : trim($_REQUEST['search_job']);
 //            $condition = empty($_REQUEST['condition']) ? 'is' : trim($_REQUEST['condition']);
+            $search_email = empty($_REQUEST['search_email']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_email']));
+            $search_tel = empty($_REQUEST['search_tel']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_tel']));
+            $search_comp = empty($_REQUEST['search_comp']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_comp']));
+            $search_cplace = empty($_REQUEST['search_cplace']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_cplace']));
+            $search_owner = empty($_REQUEST['search_owner']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_owner']));
+            $search_major = empty($_REQUEST['search_major']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_major']));
+            $s_f = empty($_REQUEST['s_f']) ? '' :trim(BaseUtils::getStr($_REQUEST['s_f']));
+            $s_e = empty($_REQUEST['s_e']) ? '' :trim(BaseUtils::getStr($_REQUEST['s_e']));
+            $search_sex = empty($_REQUEST['search_sex']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_sex']));
+            $job_class = empty($_REQUEST['job_class']) ? '' :trim(BaseUtils::getStr($_REQUEST['job_class']));
+            $search_eplace = empty($_REQUEST['search_eplace']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_eplace']));
+            $search_number = empty($_REQUEST['search_number']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_number']));
+            $search_edu = empty($_REQUEST['search_edu']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_edu']));
+            $search_age = empty($_REQUEST['search_age']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_age']));
+            $search_worklife = empty($_REQUEST['search_worklife']) ? '' :trim(BaseUtils::getStr($_REQUEST['search_worklife']));
             if ($this->_request('state')) {
                 $state = $this->_request('state', 'trim');
                 $address_where[] = $state . '%';
@@ -431,18 +444,103 @@ class ProductAction extends Action {
                     //$where['name'] = array('like',$search);
 //                    $c_where['_string'] = 'name like "%' . $search . '%" or telephone like "%' . $search . '%"';
                     if ($search_name) {
-                        if (strlen($search_name) >= 11 && is_numeric($search_name)) {
-                            $where['telephone'] = array('eq', "{$search_name}");
-                        } else {
-                            $where['name'] = array('like', $search_name . '%');
-                        }
+//                        if (strlen($search_name) >= 11 && is_numeric($search_name)) {
+//                            $where['telephone'] = array('eq', "{$search_name}");
+//                        } else {
+//                            $where['name'] = array('like', $search_name . '%');
+//                        }
+                        $where['name'] = array('like', $search_name . '%');
                         $params[] = "search_name={$_REQUEST['search_name']}";
                     }
-
                     if ($search_job) {
-                        $where['job_class'] = array('like', $search_job . '%');
+                        $where['curPosition'] = array('like', $search_job . '%');
                         $params[] = "search_job={$_REQUEST['search_job']}";
                     }
+                    if($search_email){
+                        $where['email'] = array('like',$search_email . '%');
+                        $params[] = "search_email={$_REQUEST['search_email']}";
+                    }
+                    if($search_tel){
+                        $where['telephone'] = array('like' ,'%'.$search_tel . '%');
+                        $params[] = "search_tel={$_REQUEST['search_tel']}";
+                    }
+                    if($search_comp){
+                        $where['curCompany'] = array('like' ,'%'.$search_comp . '%');
+                        $params[] = "search_comp={$_REQUEST['search_comp']}";
+                    }
+                    if($search_cplace){
+                        $ar_cplace = explode(',',$search_cplace);
+                        $where['location'] = array('in',$ar_cplace);
+                    }
+                    if($search_owner){
+                        $where['creator_role_name'] = array('like','%' . $search_owner . '%');
+                    }
+                    if($search_major){
+                        $arr_eid = M('resume_edu')->where(array('majorName'=>array('like',$search_major.'%')))->distinct(true)->getField('eid',true);
+                        $where['eid'] = array('in',$arr_eid);
+                    }
+                    if($s_f){
+                        $where['curSalarty'] = array('egt',$s_f);
+                    }
+                    if($s_e){
+                        $where['curSalarty'] = array('elt',$s_f);
+                    }
+                    if($search_sex){
+                        $where['sex'] = array('eq',$search_sex);
+                    }
+                    if($job_class){
+                        $jobsql = '';
+                        $job_arr = explode(',',$job_class);
+                        foreach ($job_arr as $v){
+                            $jobsql['_string'] .= " FIND_IN_SET('" . $v . "',job_class) or ";
+                        }
+                        if($where['_complex']['_string'])
+                            $where['_complex']['_string'] .='AND (' . rtrim($jobsql['_string'],'or ').')';
+                        else
+                            $where['_complex']['_string'] .=' (' . rtrim($jobsql['_string'],'or ').')';
+                    }
+                    if($search_eplace){
+                        $eplaceSql = '';
+                        $ar_eplace = explode(',',$search_eplace);
+                        foreach($ar_eplace as $v){
+                            $eplaceSql['_string'] .= " FIND_IN_SET('" . $v . "',intentCity) or ";
+                        }
+                        if($where['_complex']['_string'])
+                            $where['_complex']['_string'] .= 'AND (' . rtrim($eplaceSql['_string'],'or ').')';
+                        else
+                            $where['_complex']['_string'] .= ' (' . rtrim($eplaceSql['_string'],'or ').')';
+                    }
+                    if($search_number){
+                        $where['eid'] = array('eq',$search_number);
+                    }
+                    if($search_edu){
+                        $where['edu'] = array('eq',$search_edu);
+                    }
+                    if($search_age){
+                        $arr_age = explode('-',$search_age);
+                        if($arr_age[1]){
+                             $start = (date('Y')-$arr_age[1]);
+                             $end = (date('Y')-$arr_age[0]);
+                             $where['birthYear'] = array('between',array($start,$end));
+                        }else{
+                            $where['birthYear'] = array('elt',(date('Y')-$arr_age[0]));
+                        }
+                    }
+                    if(search_worklife){
+                        $arr_work = explode('-',$search_worklife);
+                        if(count(explode('-',$search_worklife))>1){
+                            $wstart = date("Y") - $arr_work[1];
+                            $wend = date('Y') - $arr_work['0'];
+                            $where['startWorkyear'] = array('between',array($wstart,$wend));
+                            if(empty($arr_work['1'])){
+                                $where['startWorkyear'] = array('elt',(date('Y')-$arr_work[0]));
+                            }
+                        }else{
+                            $where['startWorkyear'] = array('egt',(date('Y')-$arr_work[0]));
+                        }
+                    }
+
+
                 }
                 $params[] = "field={$_REQUEST['field']}";
             }
@@ -607,7 +705,6 @@ class ProductAction extends Action {
         if ($p_num < $p) {
             $p = $p_num;
         }
-
         //客户导出
         if (trim($_GET['act']) == 'excel') {
             $dc_id = $_GET['daochu'];
@@ -656,6 +753,7 @@ class ProductAction extends Action {
                 alert('error', L('HAVE NOT PRIVILEGES'), $_SERVER['HTTP_REFERER']);
             }
         } else {
+//            dump($where);die;
             $list = $resume->where($where)->order('addtime desc')->Page($p . ',' . $listrows)->select();
 //            var_dump($resume->getLastSql());
 //            print_r($resume->getLastSql());die;

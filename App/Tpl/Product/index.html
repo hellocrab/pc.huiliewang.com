@@ -21,7 +21,7 @@
     .file {
         position: relative;
         display: inline-block;
-        background: #D0EEFF;  
+        background: #D0EEFF;
         border: 1px solid #99D3F5;
         border-radius: 4px;
         padding: 4px 12px;
@@ -48,6 +48,29 @@
 <style>
     body{
         overflow-y: hidden;
+    }
+    .LocalDataUIB-input{
+        width: 150px !important;
+        z-index: 1  !important;
+    }
+    .LocalDataUID{
+        width: 150px !important;
+        z-index: 1  !important;
+    }
+    .LocalDataUID-input{
+        width: 150px !important;
+        height: 40px !important;
+        z-index: 1  !important;
+    }
+    .items{
+        width: 150px !important;
+        z-index: 2  !important;
+    }
+    .drop{
+        z-index: 3 !important;
+    }
+    .LocalDataUIB{
+        width: 150px !important;
     }
     #picker div:nth-child(1){
         height:30px;
@@ -226,14 +249,34 @@
                                     });
 								});
 							</script>
-                    <div class="row " id="title-show">
+                            <script>
+                                $(function () {
+                                    $('#reset').on('click',function () {
+                                       $('.re').val('');
+                                       $('.items').html('');
+                                       $('#ree').val('');
+                                       $('.placeholder').css('display','block');
+                                    });
+                                });
+                            </script>
+                    <div class="row " id="title-show" style="height: 130px;margin-right: 0.5%;">
                         <ul class="nav pull-left" style='display: flex;'>
                             <a href="{:U('product/add')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 新增人才</a>
+                            <div class="btn-group " style="margin-right:8px">
+                                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+
+                                    <if condition = "checkPerByAction('product','excelexport')">
+                                        <li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></li>
+                                    </if>
+                                </ul>
+                            </div>
                             <a id="picker">简历解析</a>
                             <div class="ideBtn">简历查重</div>
                         </ul>
                         <form class="form-inline" id="" action="" method="get">
-                            <ul class="breadcrum pull-right" style="margin-bottom: 0px">
+                            <ul class="nav pull-right" style="margin-bottom: 2px;">
                                 <li>
                                     搜索：
                                     <div class="input-group">
@@ -244,29 +287,97 @@
                                         <input type="hidden" name="by" value="{$_GET['by']}"/>
                                         </if>
                                         <input type="hidden" name="condition" value="contains"/>
-                                        <input id="short_search" type="text" style="width:180px;" placeholder="请输入职能岗位" class="form-control input-sm" name="search_job" <if condition = "$_GET['search_job'] neq ''">value="{$_GET['search_job']}"</if>/>
-                                        <input id="short_search" type="text" style="width:180px;" placeholder="请输入人才姓名或手机号" class="form-control input-sm" name="search_name" <if condition = "$_GET['search_name'] neq ''">value="{$_GET['search_name']}"</if>/>
-                                        
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default btn-search" id="short_search_btn" type="submit"><i class="fa fa-search"></i></button>
-                                        </span>
+                                        <input type="text" style="width:150px;" placeholder="搜索职位" class="form-control input-sm re" name="search_job" <if condition = "$_GET['search_job'] neq ''">value="{$_GET['search_job']}"</if>/>
+                                        <input type="text" style="width:150px;" placeholder="搜索姓名" class="form-control input-sm re" name="search_name" <if condition = "$_GET['search_name'] neq ''">value="{$_GET['search_name']}"</if>/>
+                                        <input type="text" style="width:150px;" placeholder="搜索邮箱" class="form-control input-sm re" name="search_email" <if condition = "$_GET['search_email'] neq ''">value="{$_GET['search_email']}"</if>>
+                                        <input type="text" style="width:150px;" placeholder="搜索电话" class="form-control input-sm re" name="search_tel" <if condition = "$_GET['search_tel'] neq ''">value="{$_GET['search_tel']}"</if>>
+                                        <input type="text" style="width:150px;" placeholder="搜索公司" class="form-control input-sm re" name="search_comp" <if condition = "$_GET['search_comp'] neq ''">value="{$_GET['search_comp']}"</if>>
+
+                                        <div  class="form-group" style="width: 150px;">
+                                            <div style="width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                                                <input data-selector="dqs" data-option="10" class="text re" type="text" placeholder="选择所属城市" name="search_cplace" data-ui="LocalDataUIB" style="display: none;width:440px;height:40px;border: 1px solid #d8e3ef;" value="{:I('search_cplace')}"  data-option="1" />
+                                            </div>
+                                        </div>
                                     </div>
-                                    &nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>
-
+                                    <!--&nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
                                 </li>&nbsp;&nbsp;
-                                <div class="btn-group ">
-                                    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-
-                                        <if condition = "checkPerByAction('product','excelexport')">
-                                            <li><a href="javascript:void(0);" class="link excelExport"><i class="fa fa-download"></i>&nbsp;导出</a></li>
-                                        </if>
-                                    </ul>
-                                </div>
+                            </ul>
+                            <ul class="nav pull-right" style="display:flex;">
+                                <li>
+                                    <div class="input-group">
+                                        <div  class="form-group" style="width: 150px;">
+                                            <div style="width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                                                <input data-selector="jobtitles" class="text re" type="text" placeholder="职能" id="jobtitles" name="job_class" data-ui="LocalDataUID" style="display: none;width:325px;height:40px;"  data-option="1"  value="{:I('job_class')}"/>
+                                            </div>
+                                        </div>
+                                        <div  class="form-group" style="width: 150px;">
+                                            <div style="width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                                                <input data-selector="dqs" data-option="10" class="text re" type="text" placeholder="期望城市" name="search_eplace" data-ui="LocalDataUIB" style="display: none;width:440px;height:40px;border: 1px solid #d8e3ef;" value="{:I('search_eplace')}"  data-option="10" />
+                                            </div>
+                                        </div>
+                                        <input type="text" style="width:150px;" placeholder="拥有者" class="form-control input-sm re" name="search_owner" <if condition = "$_GET['search_owner'] neq ''">value="{$_GET['search_owner']}"</if>>
+                                        <input type="text" style="width:150px;" placeholder="专业名称" class="form-control input-sm re" name="search_major" <if condition = "$_GET['search_major'] neq ''">value="{$_GET['search_major']}"</if>>
+                                        <div style="width: 150px;padding: 0px;" class="form-control">
+                                            <span style="font-size: 0.5em;margin: 0px;width:10px;">目前年薪</span>
+                                            <input type="text" placeholder="w" class="re" style="width: 40px;" name="s_f" value="{$_GET['s_f']}" match="^\d{1,5}(\.\d{1,2})?$">
+                                            <span style="width: 2px">-</span>
+                                            <input type="text" placeholder="w" class="re" style="width: 40px;" name="s_e" value="{$_GET['s_e']}" match="^\d{1,5}(\.\d{1,2})?$">
+                                        </div>
+                                        <select style="width:150px;" class="form-control input-sm re" name="search_sex">
+                                            <option value="" disabled selected="selected">---性别---</option>
+                                            <option value="1" <if condition="$_GET['search_sex'] eq 1">selected="selected"</if> >男</option>
+                                            <option value="2" <if condition="$_GET['search_sex'] eq 2">selected="selected"</if> >女</option>
+                                        </select>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="nav pull-right" style="margin-top: 1%;display:flex;">
+                                <li>
+                                    <div class="input-group">
+                                        <input type="text" style="width:150px;" placeholder="简历编号" class="form-control input-sm re" name="search_number" <if condition = "$_GET['search_number'] neq ''">value="{$_GET['search_number']}"</if>>
+                                        <select style="width:150px;" class="form-control input-sm re" name="search_edu" >
+                                            <option value="" disabled selected>---学历---</option>
+                                            <option value="博士后" <if condition="$_GET['search_edu'] eq '博士后'">selected="selected"</if>>博士后</option>
+                                            <option value="MBA/EMBA" <if condition="$_GET['search_edu'] eq 'MBA/EMBA'">selected="selected"</if>>MBA/EMBA </option>
+                                            <option value="博士" <if condition="$_GET['search_edu'] eq '博士'">selected="selected"</if>>博士 </option>
+                                            <option value="硕士" <if condition="$_GET['search_edu'] eq '硕士'">selected="selected"</if>>硕士 </option>
+                                            <option value="本科" <if condition="$_GET['search_edu'] eq '本科'">selected="selected"</if>>本科 </option>
+                                            <option value="大专" <if condition="$_GET['search_edu'] eq '大专'">selected="selected"</if>>大专 </option>
+                                            <option value="中专" <if condition="$_GET['search_edu'] eq '中专'">selected="selected"</if>>中专 </option>
+                                            <option value="高中" <if condition="$_GET['search_edu'] eq '高中'">selected="selected"</if>>高中 </option>
+                                            <option value="无" <if condition="$_GET['search_edu'] eq '无'">selected="selected"</if>>无 </option>
+                                        </select>
+                                        <select style="width:150px;" class="form-control input-sm re" name="search_age">
+                                            <option value="" disabled selected>---年龄---</option>
+                                            <option value="20-25" <if condition="$_GET['search_age'] eq '20-25'">selected="selected"</if>>20-25岁</option>
+                                            <option value="25-30" <if condition="$_GET['search_age'] eq '25-30'">selected="selected"</if>>25-30岁</option>
+                                            <option value="30-35" <if condition="$_GET['search_age'] eq '30-35'">selected="selected"</if>>30-35岁</option>
+                                            <option value="35-40" <if condition="$_GET['search_age'] eq '35-40'">selected="selected"</if>>35-40岁</option>
+                                            <option value="40-50" <if condition="$_GET['search_age'] eq '40-50'">selected="selected"</if>>40-50岁</option>
+                                            <option value="50-"   <if condition="$_GET['search_age'] eq '50-'">selected="selected"</if>>50以上</option>
+                                        </select>
+                                        <select style="width:150px;" class="form-control input-sm re" name="search_worklife">
+                                            <option value="" disabled selected>---工作年限---</option>
+                                            <option value="10-"  <if condition="$_GET['search_worklife'] eq '10-'">selected="selected"</if>>10年以上</option>
+                                            <option value="5-10" <if condition="$_GET['search_worklife'] eq '5-10'">selected="selected"</if>>5-10年</option>
+                                            <option value="3-5"  <if condition="$_GET['search_worklife'] eq '3-5'">selected="selected"</if>>3-5年</option>
+                                            <option value="1-3"  <if condition="$_GET['search_worklife'] eq '1-3'">selected="selected"</if>>1-3年</option>
+                                            <option value="-1"   <if condition="$_GET['search_worklife'] eq '-1'">selected="selected"</if>>1年以下</option>
+                                            <option value="0"    <if condition="$_GET['search_worklife'] eq '0'">selected="selected"</if>>应届生</option>
+                                        </select>
+                                        <span class="input-group-btn btn-group">
+                                            <button class="btn btn-default btn-search btn-primary" style="margin-right: 5px;" type="submit"><i class="fa fa-search">搜索</i></button>
+                                            <button class="btn btn-default btn-primary" type="button" style="margin-right: 175px;" id="reset">重置</button>
+                                        </span>
+                                        <!--<input type="text" style="width:150px;" placeholder="职能" class="form-control input-sm" name="search_zn" <if condition = "$_GET['search_zn'] neq ''">value="{$_GET['search_zn']}"</if>>-->
+                                        <!--<input type="text" style="width:150px;" placeholder="专业名称" class="form-control input-sm" name="search_major" <if condition = "$_GET['search_major'] neq ''">value="{$_GET['search_major']}"</if>>-->
+                                        <!--<input type="text" style="width:150px;" placeholder="目前年薪" class="form-control input-sm" name="search_" <if condition = "$_GET['search_mark'] neq ''">value="{$_GET['search_mark']}"</if>>-->
+                                        <!--<input type="text" style="width:150px;" placeholder="" class="form-control input-sm" name="search_" <if condition = "$_GET['search_mark'] neq ''">value="{$_GET['search_mark']}"</if>>-->
+                                    </div>
+                                </li>
                             </ul>
                         </form>
-                        <ul class="breadcrum pull-right" style="margin-bottom: 0px">
+                        <ul class="breadcrum pull-right" style="margin-top: 1%;">
                             <li>
                                 <div class="input-group">
                                     <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value, target = '_self')" style="margin-bottom:5px;">
@@ -322,7 +433,7 @@
                                             <!--<td>状态</td>-->
                                             <td>操作</td>
                                             </tr>
-                                            <tbody>
+                                            <tbody">
                                             <volist name="list" id="vo">
                                                 <tr class="controls_tr">
                                                     <td>
