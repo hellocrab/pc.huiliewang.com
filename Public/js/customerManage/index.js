@@ -280,6 +280,8 @@ $('#name').on('keydown', ev => {
     }
 })
 $('#goto').on('keydown', ev => {
+    let reg = new RegExp(/^\d+$/);
+    if(!($('#goto').val().trim().match(reg)))return;
     if (ev.keyCode == 13&&($('#goto').val()-0<=totalPage_)) {
         current_page = $('#goto').val();
         getData();
