@@ -992,7 +992,8 @@ class CustomerAction extends Action {
             case 'sub' : $where['owner_role_id'] = array('in', $below_ids);
                 break;
             case 'me' :
-                $where['owner_role_id'] = session('role_id');
+//                $where['owner_role_id'] = session('role_id');
+                $where['_complex'] = ['customer.transfer_role'=>session('role_id'),'_logic' => 'or' ,"customer.creator_role_id"=>session('role_id')];
                 break;
             case 'share' : $where['customer_id'] = array('in', $customerid);
                 break;
@@ -1026,7 +1027,7 @@ class CustomerAction extends Action {
                 break;
         }
         if (!isset($where['owner_role_id']) && $this->_get('content') !== 'resource') {
-            if ($by != 'deleted' && $by != 'share' && $by != 'myshare' && $by != 'all') {
+            if ($by != 'deleted' && $by != 'share' && $by != 'myshare' && $by != 'all' && $by != 'me') {
                 $where['owner_role_id'] = array('in', implode(',', $this->_permissionRes));
             }
         }
@@ -1423,7 +1424,8 @@ class CustomerAction extends Action {
             import("@.ORG.Page");
             $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
             $customerIds =[];
-            $myCustomerIds = M('customer')->where(['owner_role_id' => session('role_id')])->getField('customer_id', true);
+            $mapMy = ['owner_role_id' => session('role_id'),"_complex"=>['transfer_role'=>session('role_id')],'_logic'=>'or'];
+            $myCustomerIds = M('customer')->where($mapMy)->getField('customer_id', true);
             switch ($by){
                 case 'sub':
                     if($below_ids[0]!=-1){
