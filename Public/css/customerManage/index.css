@@ -45,7 +45,7 @@ select {
     line-height: 33px;
     align-items: center;
     justify-content: center;
-    width: 109px;
+    padding: 0 15px;
     color: #fff;
     height: 33px;
     background: rgba(61, 107, 180, 1);
@@ -62,14 +62,17 @@ table {
     width: 100%;
     background: #f9f9f9;
 }
+
 table tbody {
     display: block;
     overflow-y: scroll;
     max-height: 720px;
 }
-thead{
-    width: calc( 100% - 16px) !important;
+
+thead {
+    width: calc(100% - 16px) !important;
 }
+
 table thead,
 tbody tr {
     display: table;
@@ -83,7 +86,7 @@ tr:nth-child(2n) {
 
 td,
 th {
-    padding: 10px 20px;
+    padding: 10px 0px;
     white-space: wrap;
     border-bottom: 1px solid #edeff0;
     text-align: center;
@@ -107,7 +110,8 @@ table select {
     align-items: center;
     justify-content: flex-end;
 }
-.pageBox span{
+
+.pageBox span {
     border-right: 1px solid #e6e6e6;
     line-height: 30px;
     width: 30px;
@@ -115,29 +119,35 @@ table select {
     text-align: center;
     cursor: pointer;
 }
-.pageBox span:nth-last-child(1){
+
+.pageBox span:nth-last-child(1) {
     border-right: none;
 }
-.pageBox{
+
+.pageBox {
     border: 1px solid #e6e6e6;
     border-radius: 6px;
     margin-left: 10px;
     margin-right: 10px;
     display: flex;
 }
-.pageBox .choosed{
+
+.pageBox .choosed {
     background: #ccc;
 }
-#goto{
+
+#goto {
     height: 30px;
     padding-left: 10px;
     border: #e6e6e6;
     border-radius: 4px;
 }
-.moneyDetail{
+
+.moneyDetail {
     cursor: pointer;
 }
-.showDetail{
+
+.showDetail,.blackDetail{
     width: 122px;
     height: 76px;
     background: url('../../img/customerManage/ku_03.png') no-repeat top center transparent;
@@ -146,13 +156,41 @@ table select {
     padding-top: 5px;
     box-sizing: content-box;
     padding-left: 20px;
+    color: #fff;
 }
-.showDetail span{
+
+.showDetail span {
     display: block;
     color: #fff;
     width: 100%;
 }
-.set_dialog{
+.meanDetail{
+    width: 84px;
+    height: 56px;
+    background: url('../../img/customerManage/ku_06.png') no-repeat top center transparent;
+    position: absolute;
+    padding-bottom: 40px;
+    box-sizing: content-box;
+    font-size: 12px;
+    color: #fff;
+}
+.andcan{
+    background: url('../../img/customerManage/is_03.png') no-repeat top center transparent;
+    height: 76px;
+}
+.meanDetail span{
+    display: block;
+    width: 100%;
+    color: #fff;
+    padding: 2px 0px;
+    cursor: pointer;
+}
+.meanDetail span:hover{
+    background: #edf1f6;
+    color: #3D6BB4;
+}
+
+.dialog {
     width: 100%;
     height: 100vh;
     background: rgba(0, 0, 0, .2);
@@ -162,102 +200,184 @@ table select {
     display: none;
     z-index: 9;
 }
-.setting{
+
+.setting {
     cursor: pointer;
 }
-.dialogBox{
-    width:591px;
-height:746px;
-background: #fff;
-margin: 90px auto 0;
+
+.set_dialog .dialogBox {
+    width: 591px;
+    height: 746px;
+    background: #fff;
+    margin: 90px auto 0;
 }
-.dialogHead{
+.black_dialog .dialogBox{
+    width: 490px;
+    height: 453px;
+    background: #fff;
+    margin: 190px auto 0;
+}
+.rank_dialog .dialogBox{
+    width: 490px;
+    height: 453px;
+    background: #fff;
+    margin: 190px auto 0;
+}
+.rank_dialog p{
+    display: block;
+    padding-left: 38px;
+    margin-bottom: 20px;
+}
+.rank_dialog .custType{
+    margin-bottom: 60px;
+}
+.rank_dialog .custRank{
+    margin-bottom: 90px;
+}
+.rank_dialog span{
+    display: inline-block;
+    color:rgba(102,102,102,1);
+    margin-right: 36px;
+}
+.rank_dialog label{
+    margin-right: 15px;
+    color:rgba(102,102,102,1);
+    font-weight: normal;
+    font-size: 13px;
+    margin-left: 5px;
+}
+.dialogHead {
     text-align: right;
     padding: 15px;
 }
-.dialogHead img{
+
+.dialogHead img {
     cursor: pointer;
 }
-.dialogTitle{
+
+.dialogTitle {
     display: flex;
     align-items: center;
     padding-left: 50px;
     height: 17px;
     color: #333;
 }
-.dialogTitle div{
-    width:4px;
-height:17px;
-background:rgba(56,108,189,1);
-margin-right: 10px;
+
+.dialogTitle div {
+    width: 4px;
+    height: 17px;
+    background: rgba(56, 108, 189, 1);
+    margin-right: 10px;
 }
-.divide1{
-    width:434px;
-height:1px;
-background:rgba(204,204,204,1);
-margin: 30px  0 8px 44px   ;
+.mi{
+    display: block;
+    margin: 20px auto;
+    width: 97px;
 }
-.con{
+.mo{
+    display: block;
+    line-height: 35px;
+    width: 100%;
+    text-align: center;
+    color:rgba(88,138,218,1);
+}
+.mp{
+    resize: none;
+    width: 337px;
+    height: 104px;
+    padding: 10px;
+    display: block;
+    margin: 10px auto;
+}
+.divide1 {
+    width: calc(100%-76px);
+    height: 1px;
+    background: rgba(204, 204, 204, 1);
+    margin: 30px 38px 8px 38px;
+}
+
+.con {
     margin-left: 74px;
     margin-right: 84px;
     padding: 12px 56px 22px 0;
     border-bottom: 1px solid #ccc;
 }
-.con>span{
-    font-size:13px;
+
+.con>span {
+    font-size: 13px;
     color: #686868;
 }
-.con p span{
-    font-size:13px;
+
+.con p span {
+    font-size: 13px;
     line-height: 35px;
     display: inline-block;
     margin-right: 30px;
 }
-.ranka{
-    color:rgba(181,51,51,1);
+
+.ranka {
+    color: rgba(181, 51, 51, 1);
 }
-.rankb{
-    color:rgba(70,163,228,1)
+
+.rankb {
+    color: rgba(70, 163, 228, 1)
 }
-.rankc{
-    color:rgba(204,170,110,1);
+
+.rankc {
+    color: rgba(204, 170, 110, 1);
 }
-.rankd{
-    color:rgba(61,105,174,1);
+
+.rankd {
+    color: rgba(61, 105, 174, 1);
 }
+
 .con p {
     margin: 0;
 }
-.con p input{
-    width:77px;
-height:18px;
+
+.con p input {
+    width: 77px;
+    height: 18px;
 }
-.dialogfoot{
+
+.dialogfoot {
     text-align: center;
 }
-.dialogfoot button{
-    width:76px;
-height:27px;
-border-radius:6px;
-text-align: center;
-line-height: 27px;
-outline: none;
-border: none;
-color: #fff;
+
+.dialogfoot button {
+    width: 76px;
+    height: 27px;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 27px;
+    outline: none;
+    border: none;
+    color: #fff;
 }
-.submit{
-background:rgba(88,138,216,1);
+
+.submit {
+    background: rgba(88, 138, 216, 1);
 }
-.cannal{
-    background:rgba(220,74,74,1);
+
+.cannal {
+    background: rgba(220, 74, 74, 1);
     margin-right: 47px;
 }
-.notice{
+
+.notice {
     display: block;
     width: 100%;
     text-align: center;
-    font-weight:400;
-color:rgba(176,176,176,1);
-font-size: 12px;
-margin-top: 20px;
+    font-weight: 400;
+    color: rgba(176, 176, 176, 1);
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+.blackNote {
+    margin-left: 5px;
+    cursor: pointer;
+}
+.mean{
+    cursor: pointer;
 }

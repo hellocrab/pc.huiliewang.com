@@ -6,7 +6,7 @@
  *+++++++++++++++++++++++++++++++++++++++++++++++++++
  */
 
-class CustomerManageAction extends Action
+class CustomermanageAction extends Action
 {
     protected $_permissionRes = '';
     protected $pro_type = [0 => '初始条件', 1 => '面试快', 2 => '入职快', 3 => '专业猎头'];
@@ -34,6 +34,10 @@ class CustomerManageAction extends Action
      * @desc 客户回访
      */
     public function index() {
+        $this->_permissionRes = getPerByAction(MODULE_NAME, 'customers');
+        if (!$this->_permissionRes) {
+            $this->error('您没有权限操作', 'index');
+        }
         $this->display();
     }
 
@@ -41,6 +45,9 @@ class CustomerManageAction extends Action
      * @desc 客户回访
      */
     public function visit() {
+        if (!$this->_permissionRes) {
+            $this->error('您没有权限操作');
+        }
         $this->display();
     }
 
@@ -99,11 +106,13 @@ class CustomerManageAction extends Action
             if (!$id) {
                 continue;
             }
+            if ($info['max_condition'] && $info['min_condition'] && ($info['min_condition'] >= $info['max_condition'])) {
+                $this->response('最小值不能大于等于最大值', 500, false);
+            }
             $info['max_condition'] && $data['max_condition'] = $info['max_condition'];
             $info['min_condition'] && $data['min_condition'] = $info['min_condition'];
             if ($data) {
                 $data['up_time'] = time();
-
                 $res = M('customer_rank_config')->where(['id' => $id])->save($data);
             }
         }
@@ -149,17 +158,30 @@ class CustomerManageAction extends Action
                     $where['_complex'] = $map;
                     continue;
                 }
+                //生日筛选
+                if ($fields == "birth_month") {
+                    $moth = intval($value);
+                    $moth = strlen($moth) == 1 ? "0{$moth}" : $moth;
+                    $value = $moth;
+                }
                 $where[$fields] = $value;
             }
+        }
+        //查询权限
+        if ($this->_permissionRes) {
+            $where['role_id'] = ['in', $this->_permissionRes];
         }
         //排序处理
         $model = M('customer_rank')->where($where);
         if (in_array($order, ['money'])) {
             $model = $model->order("{$order} {$asc}");
         }
+
         //分页
         $startNo = ($page - 1) * $pageSize;
         $list = $model->limit($startNo, $pageSize)->select();
+        $counts = M('customer_rank')->where($where)->count();
+
         foreach ($list as &$info) {
             include APP_PATH . "Common/city.cache.php";
             include APP_PATH . "Common/industry.cache.php";
@@ -171,25 +193,20 @@ class CustomerManageAction extends Action
             $info['up_time'] = date('Y-m-d', $info['up_time']);
             $info['role_name'] = M('user')->where(['user_id' => $info['role_id']])->getField('full_name');
             !$info['role_name'] && $info['role_name'] = '';
-            $money_list = M('customer_rank_list')->where(['customer_id'=>$info['customer_id']])->field('rank_name,integral,pro_type')->select();
+            $money_list = M('customer_rank_list')->where(['customer_id' => $info['customer_id']])->field('rank_name,integral,pro_type')->select();
             $data = [];
-            foreach ($money_list as $moneys){
+            foreach ($money_list as $moneys) {
                 $data[$moneys['pro_type']] = $moneys['integral'];
             }
+            $enterNum = M('customer_rank_list')->where(['customer_id' => $info['customer_id'], 'pro_type' => 2])->getField('enter_num');
+            $info['enter_num'] = intval($enterNum);
             $info['money_list'] = $data ? $data : [];
         }
         if (!$list) {
             $list = [];
             $counts = 0;
-            $show = '';
-        } else {
-            import('@.ORG.Page'); // 导入分页类
-            $counts = $model->count();
-            $pageObj = new Page($counts, $pageSize);
-            $show = $pageObj->show(); // 分页显示输出
         }
-
-        $this->response(['list' => $list, 'current_page' => $page, 'counts' =>$counts, 'page' => $show, 'listrows' => $pageSize]);
+        $this->response(['list' => $list, 'current_page' => $page, 'counts' => $counts, 'listrows' => $pageSize]);
     }
 
     /**
@@ -200,8 +217,9 @@ class CustomerManageAction extends Action
         $this->authCheck();
         $customerId = BaseUtils::getStr(I('customer_id', 0), 'int'); //客户ID
         $proType = BaseUtils::getStr(I('pro_type', 0), 'int'); //项目类型
-        $rankName = BaseUtils::getStr(I('rank_name', '')); //等级名称
+        $rankName = strtoupper(BaseUtils::getStr(I('rank_name', ''))); //等级名称
         $isBlack = BaseUtils::getStr(I('is_black', 0), 'int'); //是否加入黑名单
+        $isManual = BaseUtils::getStr(I('is_manual', ''), 'int'); //是否加入黑名单
         $note = BaseUtils::getStr(I('note', '')); //备注信息
 
         if ($customerId <= 0) {
@@ -213,17 +231,23 @@ class CustomerManageAction extends Action
         }
         $data = [];
         //项目类型修改
-        if ($proType && $this->pro_type[$proType]) {
+        if ($proType && $this->pro_type[$proType] && $info['pro_type'] != $proType) {
             $data['pro_type'] = $proType;
+            $data['is_manual'] = 1;
         }
         //客户等级手工修改
-        if ($rankName && $this->rank_name[$rankName]) {
+        if ($rankName && $this->rank_name[$rankName] && $info['rank_name'] != $rankName) {
             $data['rank_name'] = $rankName;
+            $data['is_manual'] = 1;
+        }
+        //手工分级修改
+        if (isset($_REQUEST['is_manual']) && $isManual == 0) {
+            $data['is_manual'] = 0;
         }
         //备注信息
         $note && $data['note'] = $note;
         //黑名单
-        if (isset($_REQUEST['is_black'])) {
+        if (isset($_REQUEST['is_black']) && $isBlack !== '') {
             $data['is_black'] = $isBlack;
         }
         if (!$data) {
@@ -283,7 +307,7 @@ class CustomerManageAction extends Action
      * @desc 回访条件更改
      */
     public function visitConfigUp() {
-        $list = BaseUtils::getStr($_REQUEST);
+        $list = BaseUtils::getStr($_REQUEST['data']);
         $res = false;
         foreach ($list as $info) {
             $data = [];

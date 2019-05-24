@@ -1190,25 +1190,7 @@
                                             <tr height="24px">
                                                 <td align="left" style="font-size: 12px;color: #999999;">offer附件：</td>
                                                 <td align="left">
-                                            <volist name="vo.file" id="vvo">
-                                                <tr>
-                                                    <td>&nbsp;&nbsp;
-                                                        <a <if condition="in_array(getExtension($vvo['name']),imgFormat())">class="litebox_file" href="{$vvo['file_path']}" data-litebox-group="group-{$info['contract_id']}" title="点击查看大图"<else/>href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);"</if>>{$vvo.name}</a>
-                                                    </td>
-                                                <if condition="C('ismobile') neq 1">
-                                                    <td>
-                                                    <notempty name="vvo.owner.user_name">{$vvo.owner.user_name}</notempty>
-                                                    </td>
-                                                    <td>
-                                                    <notempty name="vvo.create_date">{$vvo.create_date|date="Y-m-d H:i",###}</notempty>
-                                                    </td>
-                                                    <td class="tdleft">
-                                                        <a href="javascript:void(0);" rel="{$vvo['file_id']}" class="del_file">{:L('DELETE')}</a>
-                                                        <a href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);">下载</a>
-                                                    </td>
-                                                </if>
-                                                </tr>
-                                            </volist>
+                                                    {$vo.file}
                                             </td>
                                             </tr>
                                         </table>
@@ -1425,25 +1407,7 @@
                                             <tr height="24px">
                                                 <td align="left" style="font-size: 12px;color: #999999;">offer附件：</td>
                                                 <td align="left">
-                                            <volist name="vo.file" id="vvo">
-                                                <tr>
-                                                    <td>&nbsp;&nbsp;
-                                                        <a <if condition="in_array(getExtension($vvo['name']),imgFormat())">class="litebox_file" href="{$vvo['file_path']}" data-litebox-group="group-{$info['contract_id']}" title="点击查看大图"<else/>href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);"</if>>{$vvo.name}</a>
-                                                    </td>
-                                                <if condition="C('ismobile') neq 1">
-                                                    <td>
-                                                    <notempty name="vvo.owner.user_name">{$vvo.owner.user_name}</notempty>
-                                                    </td>
-                                                    <td>
-                                                    <notempty name="vvo.create_date">{$vvo.create_date|date="Y-m-d H:i",###}</notempty>
-                                                    </td>
-                                                    <td class="tdleft">
-                                                        <a href="javascript:void(0);" rel="{$vvo['file_id']}" class="del_file">{:L('DELETE')}</a>
-                                                        <a href="javascript:;" file="{$vvo.file_path}" filename="{$vvo.name}" onclick="filedown(this);">下载</a>
-                                                    </td>
-                                                </if>
-                                                </tr>
-                                            </volist>
+                                                    {$vo.file}
                                             </td>
                                             </tr>
                                         </table>

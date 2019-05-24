@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="__PUBLIC__/css/customerManage/index.css">
 <div class="wrapper wrapper-content">
     <include file="Public:alert" />
-    <div class="set_dialog">
+    <div class="set_dialog dialog">
         <div class="dialogBox">
             <div class="dialogHead">
                 <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
@@ -72,6 +72,57 @@
             <span class="notice">确认后在次日0:00生效</span>
         </div>
     </div>
+    <div class="black_dialog dialog">
+        <div class="dialogBox">
+            <div class="dialogHead">
+                <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
+            </div>
+            <div class="dialogTitle">
+                <div></div>
+                黑名单操作
+            </div>
+            <div class="divide1"></div>
+            <img src="__PUBLIC__/img/customerManage/4_03.png" alt="" class="mi">
+            <span class="mo">真的要将客户加入黑名单吗？</span>
+            <textarea placeholder="添加黑名单备注" class="mp"></textarea>
+            <div class="dialogfoot">
+                <button class="cannal">取消</button>
+                <button class="submit">确认</button>
+            </div>
+        </div>
+    </div>
+    <div class="rank_dialog dialog">
+        <div class="dialogBox">
+            <div class="dialogHead">
+                <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
+            </div>
+            <div class="dialogTitle">
+                <div></div>
+                手动分级
+            </div>
+            <div class="divide1"></div>
+            <p class="custName"><span>客户名称</span>aa科技公司</p>
+            <p class="custType">
+                <span>客户类型</span>
+                <select class="diaSel">
+                    <option value="1">面试快</option>
+                    <option value="2">入职快</option>
+                    <option value="3">专业猎头</option>
+                </select>
+            </p>
+            <p class="custRank">
+                <span>客户级别</span>
+                <input type="radio" value="a" name="diaRa" id='ra' checked><label for='ra' >A级</label>
+                <input type="radio" value="b" name="diaRa" id='rb'><label for='rb'>B级</label>
+                <input type="radio" value="c" name="diaRa" id='rc'><label for='rc'>C级</label>
+            </p>
+            <div class="dialogfoot">
+                <button class="cannal">取消</button>
+                <button class="submit">确认</button>
+            </div>
+            <span class="notice">确认后在次日0:00生效</span>
+        </div>
+    </div>
     <div class="top">
         <div>
             <select name="" id="is_manual">
@@ -88,10 +139,9 @@
         </div>
         <div>
             <span>搜索:</span>
-            <input type="text" placeholder="请输入人才姓名" id="name" />
+            <input type="text" placeholder="客户名/联系人" id="name" />
             <div class='setting'>
-                <img src="__PUBLIC__/img/customerManage/8_1.png" alt="" style="width: 16px;height:16px">
-                <span>&nbsp;分级标准设置</span>
+                <span>设置</span>
             </div>
         </div>
 
@@ -107,6 +157,7 @@
                         <option value="A">A级</option>
                         <option value="B">B级</option>
                         <option value="C">C级</option>
+                        <option value="D">D级</option>
                     </select>
                 </th>
                 <th>

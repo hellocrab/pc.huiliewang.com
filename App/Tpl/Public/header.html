@@ -577,8 +577,8 @@
                     <?php if (in_array('log',$new_module_list)): ?>
                     <li>
                         <a data-toggle="tooltip" data-placement="right" data-original-title="客户回访" <if
-                            condition="($module_name eq 'CustomerManage' || $module_name eq 'customer_manage'  || $module_name eq 'customermanage' )"> class="active"</if>
-                        href="{:U('CustomerManage/index')}"><i class="fa fa-credit-card"></i><span
+                            condition="($module_name eq 'Customermanage' || $module_name eq 'customer_manage'  || $module_name eq 'Customermanage' )"> class="active"</if>
+                        href="{:U('Customermanage/index')}"><i class="fa fa-credit-card"></i><span
                             class="menu_code">回访</span></a>
                     </li>
                     <?php endif; ?>
@@ -694,12 +694,12 @@
                                     style="display:inline"></span>&nbsp;&nbsp;回款记录</a></li>
 
 
-                        <?php elseif($module_name == 'CustomerManage' || $module_name == 'customer_manage' || $module_name == 'customermanage'): ?>
+                        <?php elseif($module_name == 'Customermanage' || $module_name == 'customer_manage' || $module_name == 'customermanage'): ?>
                         <li <if condition="$action_name eq 'index' ||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add' ">class="active"</if> >
-                        <a href="{:U('CustomerManage/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;客户分级</a>
+                        <a href="{:U('Customermanage/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;客户分级</a>
                         </li>
                         <li <if condition="$action_name eq 'visit' ||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add' ">class="active"</if> >
-                        <a href="{:U('CustomerManage/visit')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;客户回访</a>
+                        <a href="{:U('Customermanage/visit')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;客户回访</a>
                         </li>
 
 
@@ -896,6 +896,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{:U('user/edit')}">个人资料</a></li>
                                 <li><a href="{:U('setting/lockscreen')}">一键锁屏</a></li>
+                                <li><a href="">离职办理</a></li>
                                 <li class="divider"></li>
                                 <li><a class="logout" href="javascript:void(0);">{:L('EXIT')}</a></li>
                             </ul>

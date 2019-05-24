@@ -90,7 +90,7 @@ foreach ($userList as $userInfo) {
         $interviewNum = interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         $data['interview_num'] = isset($interviewNum['countPerson']) ? $interviewNum['countPerson'] : 0;
         //8、面试次数
-        $data['interviewt_num'] = isset($interviewNum['countTimes']) ? $interviewNum['countTimes'] : 0;
+        $data['interviewt_num'] = isset($interviewNum['countInterview']) ? $interviewNum['countInterview'] : 0;
         //9、offer统计
         $data['offer_num'] = offerNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
 
@@ -363,10 +363,25 @@ function interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_interview';
-    $sql = "SELECT count(distinct(pro.resume_id)) as countPerson,count(*) as countTimes FROM {$tableProject} as pro , {$tableInterview} as vie where vie.fine_id = pro.id and vie.role_id = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime < {$nextDayInt} ";
+    $sql = "SELECT count(distinct(pro.resume_id)) as countPerson "
+            . "FROM {$tableProject} as pro , {$tableInterview} as vie "
+            . "where vie.fine_id = pro.id and vie.role_id = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime < {$nextDayInt} ";
+            
+            
+            $sql2 ="select count(*) as countInterview from (SELECT count(*) as countTimes "
+                    . "FROM {$tableProject} as pro , {$tableInterview} as vie "
+                    . "where vie.fine_id = pro.id and vie.role_id = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime < {$nextDayInt} "
+                    . "GROUP BY vie.fine_id) as temp"; //首面数
+                    
     $query = $conn->query($sql);
-    if ($query) {
-        $info = $query->fetch(PDO::FETCH_ASSOC);
+    $query2 = $conn->query($sql2);
+    if ($query && $query2) {
+        $info1 = $query->fetch(PDO::FETCH_ASSOC);
+        $info2 = $query2->fetch(PDO::FETCH_ASSOC);
+        $info = [
+            "countPerson" => $info1['countPerson'],
+            "countInterview" => $info2['countInterview']
+        ];
         return $info;
     } else {
         return 0;
