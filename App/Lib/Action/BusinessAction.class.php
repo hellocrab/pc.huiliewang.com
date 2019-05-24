@@ -514,8 +514,8 @@ class BusinessAction extends Action
             $industry = BaseUtils::getStr($_GET['industry']);
             $arr3 = explode(',', $industry);
             foreach ($arr3 as $v) {
-                $industrySql .= " FIND_IN_SET({$v},business.industry) or";
-                $industryMap['_string'] .= " FIND_IN_SET({$v},business.industry) or";
+                $industrySql .= " FIND_IN_SET('{$v}',business.industry) or";
+                $industryMap['_string'] .= " FIND_IN_SET('{$v}'',business.industry) or";
             }
             $industryMap['_string'] = "(" . rtrim($industryMap['_string'], 'or') . ")";
             $industrySql = "(" . rtrim($industrySql, 'or') . ")";
