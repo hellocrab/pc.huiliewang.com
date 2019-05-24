@@ -69,6 +69,12 @@ $(function(){
 				</li>
 				</if>
 
+				<if condition = "checkPerByAction('user','my_transfer')">
+					<li >
+						<a href="{:U('user/my_transfer')}" ><span <if condition = "$module_name == 'user' && $action_name == 'my_transfer'">class="li_text_active"<else />class="li_text"</if>>离职转交</span></a>
+					</li>
+				</if>
+
 			</ul>
 			<if condition = "session('?admin')">
 				<div class="subNav currentDd currentDt">自定义字段设置</div>
