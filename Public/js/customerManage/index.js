@@ -1,5 +1,6 @@
 var current_page = 1;
 var order_file = 0;
+var totalPage_ = 1;
 var con_id = '';
 var con_proid = '';
 var con_rank = '';
@@ -52,20 +53,25 @@ function getData() {
                 $('table tbody').empty();
                 $('table tbody').append(doc);
                 let totalPage = Math.ceil(res.info.counts / $('#pageSize').val());
+                totalPage_ = totalPage;
                 let page = '<span class="last">«</span>';
                 if (totalPage >= 3) {
-                    if (res.info.current_page != 1) {
+                    if (res.info.current_page != 1&&res.info.current_page != totalPage) {
                         for (let i = 0; i < 3; i++) {
-                            page += `<span class="page${res.info.current_page-1+i+(i==1?' choosed':'')}">${res.info.current_page-1+i}</span>`
+                            page += `<span class="page${i==1?' choosed':''}">${res.info.current_page-1+i}</span>`
                         }
-                    } else {
+                    } else if(res.info.current_page == 1) {
                         for (let i = 0; i < 3; i++) {
-                            page += `<span class="page${res.info.current_page-1+i+(i==0?' choosed':'')}">${res.info.current_page-1+i}</span>`
+                            page += `<span class="page${i==0?' choosed':''}">${res.info.current_page-0+i}</span>`
+                        }
+                    }else if(res.info.current_page == totalPage){
+                        for (let i = 0; i < 3; i++) {
+                            page += `<span class="page${i==2?' choosed':''}">${res.info.current_page-2+i}</span>`
                         }
                     }
                 } else if (totalPage < 3) {
                     for (let i = 0; i < totalPage; i++) {
-                        page += `<span class="page${(1+i)+(i+1==res.info.current_page?' choosed':'')}">${i+1}</span>`
+                        page += `<span class="page${i+1==res.info.current_page?' choosed':''}">${i+1}</span>`
                     }
                 }
                 page += '<span class="next">»</span>';
@@ -73,6 +79,20 @@ function getData() {
                 $('.pageBox').append(page);
                 $('.totalPage').html(`共${res.info.counts}条&nbsp;第${res.info.current_page}/${totalPage}页`)
                 current_page = res.info.current_page;
+                $('.page').click(ev=>{
+                    current_page = $(ev.target).html().trim()-0;
+                    getData();
+                })
+                $('.last').click(ev=>{
+                    if(current_page==1)return;
+                    current_page--;
+                    getData();
+                })
+                $('.next').click(ev=>{
+                    if(current_page==totalPage)return;
+                    current_page++;
+                    getData();
+                })
                 $('.moneyDetail').on('mouseenter', ev => {
                     $('.showDetail').remove();
                     let arr = ev.target.attributes[2].nodeValue.split(',');
@@ -94,7 +114,7 @@ function getData() {
                     let temp = `<div class='blackDetail'>
                         ${arr[1]}
                     </div>`
-                    $(`body`).append(temp)
+                    $(`body`).append(temp);
                     $('.blackDetail').on('mouseleave', ev => {
                         $('.blackDetail').remove()
                     })
@@ -104,16 +124,25 @@ function getData() {
                 $('.mean').mouseenter(ev => {
                     $('.meanDetail').remove();
                     let arr = ev.target.attributes[1].nodeValue.split(',');
-                    let temp = `<div class='meanDetail'>
-                        <span>&nbsp;&nbsp;${res.info.list[arr[0]].is_manual==1?'取消':''}手动分级</span>
+                    let temp = '';
+                    if(res.info.list[arr[0]].is_manual==1){
+                        temp = `<div class='meanDetail andcan'>
+                        <span>&nbsp;&nbsp;手动分级</span>
+                        <span>&nbsp;&nbsp;${arr[1]==0?'加入':'移除'}黑名单</span>
+                        <span>&nbsp;&nbsp;取消手动分级</span>
+                    </div>`
+                    }else{
+                        temp = `<div class='meanDetail'>
+                        <span>&nbsp;&nbsp;手动分级</span>
                         <span>&nbsp;&nbsp;${arr[1]==0?'加入':'移除'}黑名单</span>
                     </div>`
+                    }
                     $(`body`).append(temp)
                     $('.meanDetail').on('mouseleave', ev => {
                         $('.meanDetail').remove()
                     })
-                    $('.meanDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().top - 42 + 'px')
-                    $('.meanDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().left + 15 + 'px')
+                    $('.meanDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().top - (res.info.list[arr[0]].is_manual==1?62:42) + 'px')
+                    $('.meanDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-last-child(1)`).offset().left + 30 + 'px')
                     $('.meanDetail span:nth-child(2)').click(ev => {
                         con_id = res.info.list[arr[0]].customer_id;
                         con_proid = res.info.list[arr[0]].pro_type == '面试快' ? '1' : res.info.list[arr[0]].pro_type == '入职快' ? '2' : '3';
@@ -160,13 +189,18 @@ function getData() {
                         con_rank = res.info.list[arr[0]].rank_id;
                         is_black = res.info.list[arr[0]].is_black;
                         con_note = res.info.list[arr[0]].note;
-                        if (res.info.list[arr[0]].is_manual==0) {
                             $('.custName').html(`<span>客户名称</span>${res.info.list[arr[0]].customer_name}`);
                             $('.rank_dialog').css('display', 'block');
                             $(document).bind('mousewheel', function (event, delta) {
                                 return false;
                             });
-                        } else {
+                    })
+                    $('.meanDetail span:nth-child(3)').click(ev => {
+                        con_id = res.info.list[arr[0]].customer_id;
+                        con_proid = res.info.list[arr[0]].pro_type == '面试快' ? '1' : res.info.list[arr[0]].pro_type == '入职快' ? '2' : '3';
+                        con_rank = res.info.list[arr[0]].rank_id;
+                        is_black = res.info.list[arr[0]].is_black;
+                        con_note = res.info.list[arr[0]].note;
                             swal({
                                 title: '取消自动分级',
                                 text: '取消后将会在次日0:00进行自动分级',
@@ -195,7 +229,6 @@ function getData() {
                                     })
                                 }
                             });
-                        }
                     })
                 })
             }
@@ -247,7 +280,9 @@ $('#name').on('keydown', ev => {
     }
 })
 $('#goto').on('keydown', ev => {
-    if (ev.keyCode == 13) {
+    let reg = new RegExp(/^\d+$/);
+    if(!($('#goto').val().trim().match(reg)))return;
+    if (ev.keyCode == 13&&($('#goto').val()-0<=totalPage_)) {
         current_page = $('#goto').val();
         getData();
     }
