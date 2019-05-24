@@ -1457,9 +1457,9 @@ class CustomerAction extends Action {
                 }
                 $ids = array_unique(array_merge($myCustomerIds, $customerIds));
                 if (!empty($ids)) {
-                    $where['customer.customer_id'] = array('in', $ids);
-                    $myMap = ['transfer_role' => session('role_id'), '_complex' => $where, '_logic' => "or"];
-                    $map = $myMap;
+                    $map['customer_id'] = array('in', $ids);
+                    $map['_complex'] = $where;
+                    $map['_logic'] = 'and';
                 }
             }else{
                 $map = $where;
