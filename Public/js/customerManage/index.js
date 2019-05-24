@@ -1,5 +1,6 @@
 var current_page = 1;
 var order_file = 0;
+var totalPage_ = 1;
 var con_id = '';
 var con_proid = '';
 var con_rank = '';
@@ -52,20 +53,25 @@ function getData() {
                 $('table tbody').empty();
                 $('table tbody').append(doc);
                 let totalPage = Math.ceil(res.info.counts / $('#pageSize').val());
+                totalPage_ = totalPage;
                 let page = '<span class="last">«</span>';
                 if (totalPage >= 3) {
-                    if (res.info.current_page != 1) {
+                    if (res.info.current_page != 1&&res.info.current_page != totalPage) {
                         for (let i = 0; i < 3; i++) {
-                            page += `<span class="page${res.info.current_page-1+i+(i==1?' choosed':'')}">${res.info.current_page-1+i}</span>`
+                            page += `<span class="page${i==1?' choosed':''}">${res.info.current_page-1+i}</span>`
                         }
-                    } else {
+                    } else if(res.info.current_page == 1) {
                         for (let i = 0; i < 3; i++) {
-                            page += `<span class="page${res.info.current_page-1+i+(i==0?' choosed':'')}">${res.info.current_page-1+i}</span>`
+                            page += `<span class="page${i==0?' choosed':''}">${res.info.current_page-0+i}</span>`
+                        }
+                    }else if(res.info.current_page == totalPage){
+                        for (let i = 0; i < 3; i++) {
+                            page += `<span class="page${i==2?' choosed':''}">${res.info.current_page-2+i}</span>`
                         }
                     }
                 } else if (totalPage < 3) {
                     for (let i = 0; i < totalPage; i++) {
-                        page += `<span class="page${(1+i)+(i+1==res.info.current_page?' choosed':'')}">${i+1}</span>`
+                        page += `<span class="page${i+1==res.info.current_page?' choosed':''}">${i+1}</span>`
                     }
                 }
                 page += '<span class="next">»</span>';
@@ -73,6 +79,20 @@ function getData() {
                 $('.pageBox').append(page);
                 $('.totalPage').html(`共${res.info.counts}条&nbsp;第${res.info.current_page}/${totalPage}页`)
                 current_page = res.info.current_page;
+                $('.page').click(ev=>{
+                    current_page = $(ev.target).html().trim()-0;
+                    getData();
+                })
+                $('.last').click(ev=>{
+                    if(current_page==1)return;
+                    current_page--;
+                    getData();
+                })
+                $('.next').click(ev=>{
+                    if(current_page==totalPage)return;
+                    current_page++;
+                    getData();
+                })
                 $('.moneyDetail').on('mouseenter', ev => {
                     $('.showDetail').remove();
                     let arr = ev.target.attributes[2].nodeValue.split(',');
@@ -260,7 +280,7 @@ $('#name').on('keydown', ev => {
     }
 })
 $('#goto').on('keydown', ev => {
-    if (ev.keyCode == 13) {
+    if (ev.keyCode == 13&&($('#goto').val()-0<=totalPage_)) {
         current_page = $('#goto').val();
         getData();
     }
