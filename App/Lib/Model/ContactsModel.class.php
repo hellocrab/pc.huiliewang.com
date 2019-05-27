@@ -107,7 +107,7 @@
          * @return bool|void
          */
         public static function completeInfo($contactId, $customerId = 0) {
-
+            //未有联系方式则删除
             $userRoleId = session('role_id');
             $rankInfo = M('customer_rank')->where(['customer_id' => $customerId])->find();
             if (!$rankInfo || $rankInfo['role_id'] != $userRoleId) {

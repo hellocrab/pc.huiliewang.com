@@ -477,13 +477,23 @@ class ProductAction extends Action {
                         $where['eid'] = array('in',$arr_eid);
                     }
                     if($s_f && empty($s_e)){
-                        $where['curSalary'] = array('egt',$s_f);
+                        $where['CAST(curSalary AS SIGNED)'] = array('egt',$s_f);
+                        if(isset($where['_complex']['_string']))
+                            $where['_complex']['_string'] .= "AND ( CAST(curSalary AS SIGNED) >= {$s_f})";
+                        else
+                            $where['_complex']['_string'] .= " ( CAST(curSalary AS SIGNED) >= {$s_f})";
                     }
                     if($s_e && empty($s_f)){
-                        $where['curSalary'] = array('elt',$s_e);
+                        if(isset($where['_complex']['_string']))
+                            $where['_complex']['_string'] .= "AND ( CAST(curSalary AS SIGNED) <= {$s_e})";
+                        else
+                            $where['_complex']['_string'] .= " ( CAST(curSalary AS SIGNED) <= {$s_e})";
                     }
                     if($s_f && $s_e){
-                        $where['curSalary'] = array('between',array($s_f,$s_e));
+                        if(isset($where['_complex']['_string']))
+                            $where['_complex']['_string'] .= "AND (( CAST(curSalary AS SIGNED) >= {$s_f} AND CAST(curSalary AS SIGNED) <= {$s_e}))";
+                        else
+                            $where['_complex']['_string'] .= "(( CAST(curSalary AS SIGNED) >= {$s_f} AND CAST(curSalary AS SIGNED) <= {$s_e}))";
                     }
                     if($search_sex){
                         $where['sex'] = array('eq',$search_sex);
