@@ -112,13 +112,34 @@ function getData() {
                     $('.blackDetail').remove();
                     let arr = ev.target.attributes[1].nodeValue.split(',');
                     let temp = `<div class='blackDetail'>
-                        ${arr[1]}
+                        <div class='bd1'>
+                            ${arr[1]}
+                        </div>
+                        <div class='bd2'>
+                            <div class='bd3'></div>
+                        </div>
                     </div>`
                     $(`body`).append(temp);
                     $('.blackDetail').on('mouseleave', ev => {
                         $('.blackDetail').remove()
                     })
-                    $('.blackDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(12)`).offset().top - 62 + 'px')
+                    let h = 0;
+                    if(arr[1].length<15){
+                        h = 20;
+                    }else if(arr[1].length>85){
+                        h = 91;
+                    }else if(arr[1].length>70){
+                        h = 79;
+                    }else if(arr[1].length>55){
+                        h = 67;
+                    }else if(arr[1].length>40){
+                        h = 55;
+                    }else if(arr[1].length>25){
+                        h = 44;
+                    }else if(arr[1].length>15){
+                        h = 32;
+                    }
+                    $('.blackDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(12)`).offset().top - h + 'px')
                     $('.blackDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(12)`).offset().left - 0 + 'px')
                 })
                 $('.mean').mouseenter(ev => {

@@ -44,6 +44,15 @@
         color: #004974;
         text-decoration: none;
     }
+    .LocalDataUIB-input{
+        height: 30px;
+    }
+    .LocalDataUID .LocalDataUID-input{
+        height: 30px !important;
+    }
+    .LocalDataUID{
+        height: 32px !important;
+    }
 </style>
 <style>
     body{
@@ -78,7 +87,7 @@
         line-height: 30px;
         text-align: center;
         padding: 0;
-        background: #6cf;
+        background: #1ab394;
         margin-right: 8px;
     }
     .option{padding-left:-30px;}
@@ -124,6 +133,23 @@
     }
     .LocalDataUIB-input{
         left: 5px;
+    }
+    .hibox{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .hibox>*{
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    .hibox .hispan{
+        display: block;
+        width: 310px;
+        margin-top: 0;
+    }
+    .hibox .divide{
+        margin: 0;
     }
 </style>
 <script>
@@ -175,7 +201,7 @@
             <div class="ibox float-e-margins">
                 <div class="title-bar" style="position: relative;z-index: 98;">
                     <div class="row  clearfix" id="title-hide" style="display:none;">
-                        <ul class="breadcrum pull-left">
+                        <ul class="breadcrum">
                             <li>已选中&nbsp;<span id="icheck_num"></span>&nbsp;项</li>
                             <if condition="$Think.get.by neq 'deleted'">
                                 <li class="single_btn"><a href="javascript:void(0)" id="edit_product"><i class="fa fa-pencil"></i>&nbsp;编辑</a></li>
@@ -259,8 +285,8 @@
                                     });
                                 });
                             </script>
-                    <div class="row " id="title-show" style="height: 130px;margin-right: 0.5%;">
-                        <ul class="nav pull-left" style='display: flex;'>
+                    <div class="row " id="title-show" style="margin-right: 0.5%;">
+                        <ul class="nav " style='display: flex;'>
                             <a href="{:U('product/add')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 新增人才</a>
                             <div class="btn-group " style="margin-right:8px">
                                 <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span>
@@ -274,12 +300,20 @@
                             </div>
                             <a id="picker">简历解析</a>
                             <div class="ideBtn">简历查重</div>
+                            <li style="margin-left: 10px;">
+                                <div class="input-group">
+                                    <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value, target = '_self')" style="margin-bottom:5px;">
+                                        <option value="{:U('product/index','by=myself&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'myself'">selected="selected"</if>>我上传的人才</option>
+                                        <option value="{:U('product/index','by=all&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'all'">selected="selected"</if>>全部人才</option>
+                                        <option value="{:U('product/index','by=favorite&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'favorite'">selected="selected"</if>>我的收藏
+                                    </select>
+                                </div>
+                            </li>
                         </ul>
                         <form class="form-inline" id="" action="" method="get">
-                            <ul class="nav pull-right" style="margin-bottom: 2px;">
-                                <li>
-                                    搜索：
-                                    <div class="input-group">
+                            <div class="nav hibox" style="margin-bottom: 2px;">
+                                <!-- &nbsp;&nbsp;&nbsp;&nbsp;搜索:
+                                    <div style='width:100%;height:1px;' class='divide'></div> -->
                                         <input type="hidden" name="m" value="product"/>
                                         <input type="hidden" name="a" value="index"/>
                                         <input type="hidden" name="field" value="search"/>
@@ -298,13 +332,6 @@
                                                 <input data-selector="dqs" data-option="10" class="text re" type="text" placeholder="选择所属城市" name="search_cplace" data-ui="LocalDataUIB" style="display: none;width:440px;height:40px;border: 1px solid #d8e3ef;" value="{:I('search_cplace')}"  data-option="1" />
                                             </div>
                                         </div>
-                                    </div>
-                                    <!--&nbsp;&nbsp;<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
-                                </li>&nbsp;&nbsp;
-                            </ul>
-                            <ul class="nav pull-right" style="display:flex;">
-                                <li>
-                                    <div class="input-group">
                                         <div  class="form-group" style="width: 150px;">
                                             <div style="width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
                                                 <input data-selector="jobtitles" class="text re" type="text" placeholder="职能" id="jobtitles" name="job_class" data-ui="LocalDataUID" style="display: none;width:325px;height:40px;"  data-option="1"  value="{:I('job_class')}"/>
@@ -328,12 +355,6 @@
                                             <option value="1" <if condition="$_GET['search_sex'] eq 1">selected="selected"</if> >男</option>
                                             <option value="2" <if condition="$_GET['search_sex'] eq 2">selected="selected"</if> >女</option>
                                         </select>
-                                    </div>
-                                </li>
-                            </ul>
-                            <ul class="nav pull-right" style="margin-top: 1%;display:flex;">
-                                <li>
-                                    <div class="input-group">
                                         <input type="text" style="width:150px;" placeholder="简历编号" class="form-control input-sm re" name="search_number" <if condition = "$_GET['search_number'] neq ''">value="{$_GET['search_number']}"</if>>
                                         <select style="width:150px;" class="form-control input-sm re" name="search_edu" >
                                             <option value="" selected>---学历---</option>
@@ -364,29 +385,14 @@
                                             <option value="-1"   <if condition="$_GET['search_worklife'] eq '-1'">selected="selected"</if>>1年以下</option>
                                             <option value="0"    <if condition="$_GET['search_worklife'] eq '0'">selected="selected"</if>>应届生</option>
                                         </select>
-                                        <span class="input-group-btn btn-group">
-                                            <button class="btn btn-default btn-search btn-primary" style="margin-right: 5px;" type="submit"><i class="fa fa-search">搜索</i></button>
+                                    <div style='width:100%;height:1px;' class="class='divide'"></div>
+
+                                        <span class="input-group-btn btn-group hispan">
+                                            <button class="btn btn-default btn-search btn-primary" style="margin-right: 5px;" type="submit"><i class="fa fa-search" style='color:#fff;'>搜索</i></button>
                                             <button class="btn btn-default btn-primary" type="button" style="margin-right: 175px;" id="reset">重置</button>
                                         </span>
-                                        <!--<input type="text" style="width:150px;" placeholder="职能" class="form-control input-sm" name="search_zn" <if condition = "$_GET['search_zn'] neq ''">value="{$_GET['search_zn']}"</if>>-->
-                                        <!--<input type="text" style="width:150px;" placeholder="专业名称" class="form-control input-sm" name="search_major" <if condition = "$_GET['search_major'] neq ''">value="{$_GET['search_major']}"</if>>-->
-                                        <!--<input type="text" style="width:150px;" placeholder="目前年薪" class="form-control input-sm" name="search_" <if condition = "$_GET['search_mark'] neq ''">value="{$_GET['search_mark']}"</if>>-->
-                                        <!--<input type="text" style="width:150px;" placeholder="" class="form-control input-sm" name="search_" <if condition = "$_GET['search_mark'] neq ''">value="{$_GET['search_mark']}"</if>>-->
-                                    </div>
-                                </li>
-                            </ul>
+                            </div>
                         </form>
-                        <ul class="breadcrum pull-right" style="margin-top: 1%;">
-                            <li>
-                                <div class="input-group">
-                                    <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value, target = '_self')" style="margin-bottom:5px;">
-                                        <option value="{:U('product/index','by=myself&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'myself'">selected="selected"</if>>我上传的人才</option>
-                                        <option value="{:U('product/index','by=all&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'all'">selected="selected"</if>>全部人才</option>
-                                        <option value="{:U('product/index','by=favorite&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'favorite'">selected="selected"</if>>我的收藏
-                                    </select>
-                                </div>
-                            </li>
-                        </ul>
                     </div>
                 </div>
                 <div class="row" style="margin: 0;">

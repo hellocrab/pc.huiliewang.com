@@ -147,7 +147,7 @@ table select {
     cursor: pointer;
 }
 
-.showDetail,.blackDetail{
+.showDetail{
     width: 122px;
     height: 76px;
     background: url('../../img/customerManage/ku_03.png') no-repeat top center transparent;
@@ -157,6 +157,32 @@ table select {
     box-sizing: content-box;
     padding-left: 20px;
     color: #fff;
+}
+.blackDetail{
+    width: 180px;
+    position: absolute;
+    box-sizing: content-box;
+    color: #fff;
+}
+.blackDetail .bd1{
+    background: rgba(33, 78, 149, .7);
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: relative;
+    z-index: 2;
+    font-size: 12px;
+}
+.blackDetail .bd2{
+    width: 100%;
+}
+.blackDetail .bd3{
+    position: relative;
+    width:0;
+    height:0;
+    border-left:15px solid transparent;
+    border-right:15px solid transparent;
+    border-top:10px solid rgba(33, 78, 149, .7);
+    left: 74px;
 }
 
 .showDetail span {
