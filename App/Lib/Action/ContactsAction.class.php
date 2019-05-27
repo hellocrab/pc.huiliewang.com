@@ -81,6 +81,8 @@ class ContactsAction extends Action {
 				$contacts->creator_role_id = session('role_id');
 				if($contacts_id = $contacts->add()){
 					if($contacts_id){
+					    //客户分级联系人信息维护
+                        ContactsModel::completeInfo($contacts_id,$customer_id);
 						$RContactsCustomer['contacts_id'] = $contacts_id;
 						$RContactsCustomer['customer_id'] = $_POST['customer_id'];
 						if(M('RContactsCustomer') ->add($RContactsCustomer)){
@@ -226,7 +228,9 @@ class ContactsAction extends Action {
 						$b = 0;
 					}
 					if ($a !== false && $b !== false) {
-						if($_POST['refer_url']){
+					    //客户分级联系人信息维护
+                        ContactsModel::completeInfo($contacts_id,$customer_id);
+                        if($_POST['refer_url']){
 							alert('success', '联系人信息修改成功!', $_POST['refer_url'].'#tab3');
 						}else{
 							alert('success',L('THE CONTACT INFORMATION OF SUCCESS'),U('contacts/view') . "&id=" . $_POST['contacts_id']);
@@ -1172,4 +1176,5 @@ class ContactsAction extends Action {
             $this->error('修改成功');
         }
     }
+
 }

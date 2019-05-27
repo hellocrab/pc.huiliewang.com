@@ -748,6 +748,8 @@ class CustomerAction extends Action {
                         if ($_POST['contacts_id'] && ($_POST['contacts_id'] != $customer['contacts_id'])) {
                             $rcc['contacts_id'] = intval($_POST['contacts_id']);
                             $rcc['customer_id'] = $customer['customer_id'];
+                            //客户分级联系人信息维护
+                            ContactsModel::completeInfo($rcc['contacts_id'],$rcc['customer_id']);
                             M('RContactsCustomer')->add($rcc);
                         }
                         actionLog($customer['customer_id']);
