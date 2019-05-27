@@ -324,7 +324,7 @@
                                             <input type="text" placeholder="w" class="re" style="width: 40px;" name="s_e" value="{$_GET['s_e']}" match="^\d{1,5}(\.\d{1,2})?$">
                                         </div>
                                         <select style="width:150px;" class="form-control input-sm re" name="search_sex">
-                                            <option value="" disabled selected="selected">---性别---</option>
+                                            <option value="" selected="selected">---性别---</option>
                                             <option value="1" <if condition="$_GET['search_sex'] eq 1">selected="selected"</if> >男</option>
                                             <option value="2" <if condition="$_GET['search_sex'] eq 2">selected="selected"</if> >女</option>
                                         </select>
@@ -356,7 +356,7 @@
                                             <option value="50-"   <if condition="$_GET['search_age'] eq '50-'">selected="selected"</if>>50以上</option>
                                         </select>
                                         <select style="width:150px;" class="form-control input-sm re" name="search_worklife">
-                                            <option value="" disabled selected>---工作年限---</option>
+                                            <option value="" selected>---工作年限---</option>
                                             <option value="10-"  <if condition="$_GET['search_worklife'] eq '10-'">selected="selected"</if>>10年以上</option>
                                             <option value="5-10" <if condition="$_GET['search_worklife'] eq '5-10'">selected="selected"</if>>5-10年</option>
                                             <option value="3-5"  <if condition="$_GET['search_worklife'] eq '3-5'">selected="selected"</if>>3-5年</option>
