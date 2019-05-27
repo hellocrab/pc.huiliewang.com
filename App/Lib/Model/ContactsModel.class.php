@@ -1,4 +1,4 @@
-<?php 
+<?php
     class ContactsModel extends Model{
 		protected function _validationFieldItem($data,$val) {
 			switch(strtolower(trim($val[4]))) {
@@ -60,8 +60,8 @@
 					$validate[5] = 3;
 					$this->_validate[] = $validate;
 				}
-				
-				
+
+
 				$validate[0] = $field['field'];
 				$validate[1] = '';
 				$validate[2] = L('FORMAT ERROR',array($field['name']));
@@ -86,7 +86,7 @@
 						$this->_validate[] = $validate;
 						break;
 				}
-				
+
 				if($field['is_unique']) {
 					$validate[0] = $field['field'];
 					$validate[1] = '';
@@ -96,7 +96,7 @@
 					$validate[5] = 3;
 					$this->_validate[] = $validate;
 				}
-				
+
 			}
         }
 
@@ -117,6 +117,7 @@
             if(!$contactInfo){
                 return;
             }
+            //未有联系方式则删除
             $contactsIdList = M('RContactsCustomer')->where(['customer_id' => $customerId])->select();
             $contactsModel = M('contacts');
             foreach ($contactsIdList as $info) {
@@ -126,7 +127,7 @@
                     $contactsModel->where(['contacts_id' => $cId])->save(['is_deleted' => 1, 'is_deleted' => time(), 'delete_role_id' => $userRoleId]);
                 }
             }
-            M('customer')->where(['customer_id' => $customerId])->save(['contacts_id' => $contactId]);
-            return true;
+            $res = M('customer')->where(['customer_id' => $customerId])->save(['contacts_id' => $contactId]);
+            return $res;
         }
     }

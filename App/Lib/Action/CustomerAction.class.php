@@ -994,8 +994,7 @@ class CustomerAction extends Action {
             case 'sub' : $where['owner_role_id'] = array('in', $below_ids);
                 break;
             case 'me' :
-//                $where['owner_role_id'] = session('role_id');
-                $where['_complex'] = ['customer.transfer_role'=>session('role_id'),'_logic' => 'or' ,"customer.creator_role_id"=>session('role_id')];
+                $where['owner_role_id|transfer_role'] = session('role_id');
                 break;
             case 'share' : $where['customer_id'] = array('in', $customerid);
                 break;
@@ -1426,7 +1425,7 @@ class CustomerAction extends Action {
             import("@.ORG.Page");
             $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
             $customerIds =[];
-            $mapMy = ['owner_role_id' => session('role_id'),"_complex"=>['transfer_role'=>session('role_id')],'_logic'=>'or'];
+            $mapMy = ['owner_role_id|transfer_role' => session('role_id')];
             $myCustomerIds = M('customer')->where($mapMy)->getField('customer_id', true);
             switch ($by){
                 case 'sub':
@@ -1470,8 +1469,22 @@ class CustomerAction extends Action {
             }
             if($subGoOn!=1){
 //                $list = $d_v_customer->where($map)->order($order)->page($p . ',' . $listrows)->select();
+
+                if ($_GET['search_owner']){
+                    $search_owner = BaseUtils::getStr($_GET['search_owner']);
+                    $map['customer_owner_name'] = array('like',$search_owner.'%');
+                }
+                if($_GET['search_industry']){
+                    $search_industry = BaseUtils::getStr($_GET['search_industry']);
+                    $search_industry = explode(',',$search_industry);
+                    $map['industry'] = array('in',$search_industry);
+                }
+                if($_GET['search_cplace']){
+                    $search_cplace = BaseUtils::getStr($_GET['search_cplace']);
+                    $search_cplace = explode(',',$search_cplace);
+                    $map['address'] = array('in',$search_cplace);
+                }
                 $list = $d_v_customer->lists($map,$order,$p . ',' . $listrows);
-//                print_r($d_v_customer->getLastSql());die;
                 $count = $d_v_customer->where($map)->count();
             }
             $p_num = ceil($count / $listrows);
@@ -1649,7 +1662,7 @@ class CustomerAction extends Action {
             isset($by) && $params[]= "by={$by}";
             $this->order_parameter = implode('&', $order_params); //排序专用params
             $this->parameter = implode('&', $params);
-// 3/7 Guo_消除缓存
+//          3/7 Guo_消除缓存
             //by_parameter(特殊处理)
 //            $this->by_parameter = str_replace('by=' . $_GET['by'], '', implode('&', $params));
 
@@ -1689,6 +1702,8 @@ class CustomerAction extends Action {
                 }
                 //全部联系人
                 $list[$k]['contacts_list'] = $contacts_list;
+                //客户维护人
+                $list[$k]['customer_owner_name'] = M('User')->where(array('role_id'=>intval($v['customer_owner_id'])))->getField('full_name');
             }
             //客户联系人是否显示
             $m_fields = M('Fields');
@@ -1697,7 +1712,6 @@ class CustomerAction extends Action {
             $this->ct_is_show = $ct_is_show = $m_fields->where('model="contacts" and field ="telephone"')->getField('is_show');
             $this->assign('openrecycle', $openrecycle);
             $this->listrows = $listrows;
-
 
             $this->customerlist = $list;
             $this->assign("count", $count);

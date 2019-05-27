@@ -81,13 +81,36 @@
         box-shadow: rgb(187, 187, 187) -1px 10px 10px;
         border: 2px solid rgb(238, 238, 238);
     }
+    .LocalDataUIB-input{
+        width: 150px !important;
+        z-index: 1  !important;
+    }
+    .LocalDataUID{
+        width: 150px !important;
+        z-index: 1  !important;
+    }
+    .LocalDataUID-input{
+        width: 150px !important;
+        height: 40px !important;
+        z-index: 1  !important;
+    }
+    .items{
+        width: 150px !important;
+        z-index: 2  !important;
+    }
+    .drop{
+        z-index: 3 !important;
+    }
+    .LocalDataUIB{
+        width: 150px !important;
+    }
     .LocalDataUIB{
         border: 1px solid rgb(216, 227, 239) !important;
     }
-    .LocalDataUIB-input{
-        border: none;
-        height: 30px;
-    }
+    /*.LocalDataUIB-input{*/
+        /*border: none;*/
+        /*height: 30px;*/
+    /*}*/
     .LocalDataUIB i.placeholder{
         top: 3px;
     }
@@ -148,6 +171,13 @@
         $("#oDivL_tab_Test3").css({"background-color": "#fff", "border-right": "1px solid #e7eaec"});
         $("#oTableLH_tab_Test3").css({"border-right": "1px solid #e7eaec"});
         $("#oDivH_tab_Test3").height($("#oTableLH_tab_Test3").height()).width($("#table_div").width() - scroll_width).css({'zIndex': 9});
+        //重置
+        $('#reset').on('click',function () {
+            $('.re').val('');
+            $('.items').html('');
+            $('#ree').val('');
+            $('.placeholder').css('display','block');
+        })
     })
 </script>
 <div class="wrapper wrapper-content">
@@ -253,7 +283,6 @@
                                                                         </li>
                                                                 </if>
                                                                 <li>
-                                                                    搜索：
                                                                     <div class="input-group">
                                                                         <span class="fa fa-times-circle clearVal" style="margin: 10px -10px;position: relative;z-index: 5;display:none;cursor:pointer"></span>
                                                                         <input type="hidden" name="m" value="customer"/>
@@ -275,12 +304,24 @@
                                                                             <!-- 导出相关 -->
                                                                         </if>
 
-                                                                        <input id="short_search" type="text" style="width:180px;" placeholder="客户名/联系人/联系电话" onkeydown='if (event.keyCode == 13) {
+                                                                        <input  type="text" style="width:180px;" placeholder="客户名/联系人/联系电话" onkeydown='if (event.keyCode == 13) {
                                                                                                             $("#short_search_btn").trigger("click");
                                                                                                             return false;
-                                                                                                        }' class="form-control input-sm" name="search" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
+                                                                                                        }' class="form-control input-sm re" name="search" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
+                                                                        <div class="form-group" style="width: 150px;">
+                                                                            <div style="width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                                                                                <input data-selector="industrys" class="text re" type="text" placeholder="行业" id="industrys" name="search_industry" data-ui="LocalDataUID" style="display: none;width:325px;height:40px;" rell="行业" value="{:I('search_industry')}" data-option="10"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div  class="form-group" style="width: 150px;">
+                                                                            <div style="width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                                                                                <input data-selector="dqs" data-option="10" class="text re" type="text" placeholder="城市" name="search_cplace" data-ui="LocalDataUIB" style="display: none;width:440px;height:40px;border: 1px solid #d8e3ef;" value="{:I('search_cplace')}"  data-option="1" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <input class="re form-control input-sm re" placeholder="客户维护人" type="text" name="search_owner" style="width: 150px;">
                                                                         <span class="input-group-btn">
-                                                                            <button class="btn btn-default btn-search" id="short_search_btn" type="submit" style="height:32px;"><i class="fa fa-search"></i></button>
+                                                                            <button class="btn btn-primary btn-search" type="submit" style="height:32px;margin-right: 10px;"><i class="fa fa-search">搜索</i></button>
+                                                                            <button class="btn btn-primary btn-search" id="reset" type="button" style="height:32px;"><i class="fa fa-search">重置</i></button>
                                                                         </span>
                                                                     </div>
                                                                     &nbsp;&nbsp;<!--<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
@@ -549,6 +590,8 @@
                                                                                                                                 <input data-selector="wantdqs" value="{$vo[$v['field']]}" type="text" >
                                                                                                                             </div>
                                                                                                                         </div>
+                                                                                                                        <elseif  condition = "$v['field'] eq 'customer_owner_id'" />
+                                                                                                                            {$vo.customer_owner_name}
                                                                                                                         <else />
                                                                                                                         {$vo[$v['field']]}
 
