@@ -78,15 +78,35 @@
     }
     .LocalDataUIB{
         border: 1px solid rgb(216, 227, 239) !important;
+        width: 150px !important;
+        height: 32px !important;
+    }
+    .LocalDataUIB .items{
+        width: 150px !important;
+        height: 28px !important;
+    }
+    .LocalDataUIB em{
+        height: 32px !important;
     }
     .LocalDataUIB-input{
         border: none;
+        height: 28px !important;
+    }
+    .LocalDataUID{
+        width: 150px !important;
+        height: 32px !important;
     }
     .dropdown-menu{
         z-index: 99999 !important;
     }
     .ui-dialog .ui-dialog-content{
         overflow-x: hidden;
+    }
+    .section{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding-left: 15px;
     }
 </style>
 <script>
@@ -165,12 +185,11 @@
                         </ul>
                     </div>
                     <div class="row " id="title-show">
-                        <ul class="nav pull-left" style="margin:2px 0 0 15px;">
+                        <ul class="nav" style="margin:2px 0 0 15px;">
                             <a href="{:U('business/add')}" class="btn btn-primary btn-sm pull-left" style="margin-right:8px"><i class="fa fa-plus-circle"></i>&nbsp; 新建项目</a>
                         </ul>
                         <form class="form-inline" id="business_search" action="" method="get">
-                            <ul class="breadcrum pull-right" style="margin-bottom: 0px">
-                                <li>
+                            <div class="section">
                                     <div class="input-group" style="margin-right: 10px;margin-bottom: 5px;">
                                         <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value, target = '_self')" >
                                             <option value="{:U('business/index','by=me&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'me' || $_GET['by'] eq ''">selected="selected"</if>>我的项目</option>
@@ -178,10 +197,8 @@
                                             <option value="{:U('business/index','by=all&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'all'">selected="selected"</if>>全部项目</option>
                                         </select>
                                     </div>
-                                </li>
-                                <li>
                                     搜索：
-                                    <div class="input-group" style='height:37px'>
+                                    <div class="input-group" style='height:32px'>
                                         <span class="fa fa-times-circle clearVal" style="margin: 10px -10px;position: relative;z-index: 5;display:none;cursor:pointer;top:-8px;left:-4px"></span>
                                         <input type="hidden" name="m" value="business"/>
                                         <input type="hidden" name="a" value="index"/>
@@ -193,7 +210,7 @@
                                                     return false;
                                                 }' class="form-control input-sm" name="search" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default btn-search" id="short_search_btn" type="submit" style="height:32px;"><i class="fa fa-search"></i></button>
+                                            <button class="btn btn-default btn-search" id="short_search_btn" type="submit" style="height:32px;margin:0"><i class="fa fa-search"></i></button>
                                         </span>
                                         <select class="form-control" name="pro_type" id="pro_type" style="margin:0px 10px;width:150px;">
                                             <option value="">--请选择项目类型--</option>
@@ -210,10 +227,6 @@
                                             </volist>
                                         </select>
                                     </div>
-                                    &nbsp;&nbsp;<!--<a title="高级搜索" href="javascript:void(0)" id="search_type" class="btn btn-white btn-bitbucket"><i class="fa fa-filter" style="color: #D8E3EF;"></i></a>-->
-                                </li>
-                            </ul>
-                            <ul class="breadcrum pull-right" style="margin-bottom: 0px">
                                 <div class="form-group">
                                     <input data-selector="industrys" class="text re" type="text" placeholder="请选择行业"  name="industry" data-ui="LocalDataUID" data-option="10"  style="display: none;height:40px;text-align: center;" rell="行业"  value="{$_GET['industry']}"  />
                                 </div>
@@ -229,9 +242,9 @@
                                 <div class="form-group">
                                     <input data-selector="wantdqs" class="text re" type="text" placeholder="点击选择城市" name="address" data-option="10" data-ui="LocalDataUIB" value="{$_GET['address']}" style="display: none;height:40px;" aria-required="true" />
                                 </div>
-                                <button type="button" class="btn btn-default btn-search" id="cs">查询</button>
-                                <button type="button" class="btn btn-default" id="reset">重置</button>
-                            </ul>
+                                <button type="button" class="btn btn-default btn-search" id="cs" style="border: 1px solid #D8E3EF;margin:0">查询</button>
+                                <button type="button" class="btn btn-default" id="reset" style="margin: 0">重置</button>
+                            </div>
                         </form>
                     </div>
                 </div>

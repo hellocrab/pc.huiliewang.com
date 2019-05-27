@@ -365,9 +365,7 @@ class ProductAction extends Action {
             $where['eid'] = array('in', $eids);
         }
         if ($by == 'myself') {
-//            $where['creator_role_id'] = session("role_id");
-//            $where['_complex'] = ['transfer_role'=>session('role_id'),'_logic' => 'or' ,"creator_role_id"=>session('role_id')];
-              $where['_complex']['_string'] = '( ( transfer_role = '.session('role_id').' ) OR ( creator_role_id = '.session('role_id').' ) )';
+            $where['creator_role_id|transfer_role'] = session("role_id");
         }
 //        if ($by != 'deleted') {
 //            $where['is_deleted'] = array('neq',1);

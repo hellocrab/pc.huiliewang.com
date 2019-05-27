@@ -166,7 +166,7 @@ class BusinessAction extends Action
                 $order = 'business.update_time desc,business.business_id asc';
                 break;
             case 'me' :
-                $where['business.creator_role_id'] = session('role_id');
+                $where['business.creator_role_id|business.transfer_role'] = session('role_id');
                 break;
             case 'all' :
 //                $where['business.owner_role_id'] = array('in',$ownerAllIds);
@@ -989,6 +989,9 @@ class BusinessAction extends Action
         $below_ids = getPerByAction('business', 'edit');
         $auth = false;
         if($business_info['creator_role_id'] == session('role_id')){
+            $auth = true;
+        }
+        if($business_info['transfer_role'] == session('role_id')){
             $auth = true;
         }
         $ownerRoles = $business_info['owner_role_id'];
