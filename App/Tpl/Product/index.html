@@ -336,7 +336,7 @@
                                     <div class="input-group">
                                         <input type="text" style="width:150px;" placeholder="简历编号" class="form-control input-sm re" name="search_number" <if condition = "$_GET['search_number'] neq ''">value="{$_GET['search_number']}"</if>>
                                         <select style="width:150px;" class="form-control input-sm re" name="search_edu" >
-                                            <option value="" disabled selected>---学历---</option>
+                                            <option value="" selected>---学历---</option>
                                             <option value="博士后" <if condition="$_GET['search_edu'] eq '博士后'">selected="selected"</if>>博士后</option>
                                             <option value="MBA/EMBA" <if condition="$_GET['search_edu'] eq 'MBA/EMBA'">selected="selected"</if>>MBA/EMBA </option>
                                             <option value="博士" <if condition="$_GET['search_edu'] eq '博士'">selected="selected"</if>>博士 </option>
@@ -345,10 +345,9 @@
                                             <option value="大专" <if condition="$_GET['search_edu'] eq '大专'">selected="selected"</if>>大专 </option>
                                             <option value="中专" <if condition="$_GET['search_edu'] eq '中专'">selected="selected"</if>>中专 </option>
                                             <option value="高中" <if condition="$_GET['search_edu'] eq '高中'">selected="selected"</if>>高中 </option>
-                                            <option value="无" <if condition="$_GET['search_edu'] eq '无'">selected="selected"</if>>无 </option>
                                         </select>
                                         <select style="width:150px;" class="form-control input-sm re" name="search_age">
-                                            <option value="" disabled selected>---年龄---</option>
+                                            <option value=""  selected>---年龄---</option>
                                             <option value="20-25" <if condition="$_GET['search_age'] eq '20-25'">selected="selected"</if>>20-25岁</option>
                                             <option value="25-30" <if condition="$_GET['search_age'] eq '25-30'">selected="selected"</if>>25-30岁</option>
                                             <option value="30-35" <if condition="$_GET['search_age'] eq '30-35'">selected="selected"</if>>30-35岁</option>

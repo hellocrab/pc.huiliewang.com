@@ -357,7 +357,6 @@ class ProductAction extends Action {
     }
 
     public function index() {
-        $resume = D('ResumeeduView');
         $by = $this->_get('by', 'trim');
         if (empty($by))
             $by = 'myself';
@@ -367,7 +366,8 @@ class ProductAction extends Action {
         }
         if ($by == 'myself') {
 //            $where['creator_role_id'] = session("role_id");
-            $where['_complex'] = ['transfer_role'=>session('role_id'),'_logic' => 'or' ,"creator_role_id"=>session('role_id')];
+//            $where['_complex'] = ['transfer_role'=>session('role_id'),'_logic' => 'or' ,"creator_role_id"=>session('role_id')];
+              $where['_complex']['_string'] = '( ( transfer_role = '.session('role_id').' ) OR ( creator_role_id = '.session('role_id').' ) )';
         }
 //        if ($by != 'deleted') {
 //            $where['is_deleted'] = array('neq',1);
@@ -387,7 +387,6 @@ class ProductAction extends Action {
         import('@.ORG.Page'); // 导入分页类
 
         $resume = M("resume");
-//        dump($resume);
         $where['is_show'] = 1;
         $where['model'] = "resume";
         $this->field_list = M('Fields')->where($where)->order('order_id ASC')->select();
@@ -479,11 +478,14 @@ class ProductAction extends Action {
                         $arr_eid = M('resume_edu')->where(array('majorName'=>array('like',$search_major.'%')))->distinct(true)->getField('eid',true);
                         $where['eid'] = array('in',$arr_eid);
                     }
-                    if($s_f){
-                        $where['curSalarty'] = array('egt',$s_f);
+                    if($s_f && empty($s_e)){
+                        $where['curSalary'] = array('egt',$s_f);
                     }
-                    if($s_e){
-                        $where['curSalarty'] = array('elt',$s_f);
+                    if($s_e && empty($s_f)){
+                        $where['curSalary'] = array('elt',$s_e);
+                    }
+                    if($s_f && $s_e){
+                        $where['curSalary'] = array('between',array($s_f,$s_e));
                     }
                     if($search_sex){
                         $where['sex'] = array('eq',$search_sex);
@@ -494,7 +496,7 @@ class ProductAction extends Action {
                         foreach ($job_arr as $v){
                             $jobsql['_string'] .= " FIND_IN_SET('{$v}',job_class) or ";
                         }
-                        if($where['_complex']['_string'])
+                        if(isset($where['_complex']['_string']))
                             $where['_complex']['_string'] .='AND (' . rtrim($jobsql['_string'],'or ').')';
                         else
                             $where['_complex']['_string'] .=' (' . rtrim($jobsql['_string'],'or ').')';
@@ -505,7 +507,7 @@ class ProductAction extends Action {
                         foreach($ar_eplace as $v){
                             $eplaceSql['_string'] .= " FIND_IN_SET('{$v}',intentCity) or ";
                         }
-                        if($where['_complex']['_string'])
+                        if(isset($where['_complex']['_string']))
                             $where['_complex']['_string'] .= 'AND (' . rtrim($eplaceSql['_string'],'or ').')';
                         else
                             $where['_complex']['_string'] .= ' (' . rtrim($eplaceSql['_string'],'or ').')';
@@ -526,7 +528,7 @@ class ProductAction extends Action {
                             $where['birthYear'] = array('elt',(date('Y')-$arr_age[0]));
                         }
                     }
-                    if(search_worklife){
+                    if($search_worklife){
                         $arr_work = explode('-',$search_worklife);
                         if(count(explode('-',$search_worklife))>1){
                             $wstart = date("Y") - $arr_work[1];
@@ -544,6 +546,7 @@ class ProductAction extends Action {
                 }
                 $params[] = "field={$_REQUEST['field']}";
             }
+//            dump($where);die;
             //过滤不在权限范围内的role_id
             if (trim($_REQUEST['field']) == 'owner_role_id') {
                 if (!in_array(trim($search), $this->_permissionRes)) {
@@ -753,10 +756,9 @@ class ProductAction extends Action {
                 alert('error', L('HAVE NOT PRIVILEGES'), $_SERVER['HTTP_REFERER']);
             }
         } else {
-//            dump($where);die;
             $list = $resume->where($where)->order('addtime desc')->Page($p . ',' . $listrows)->select();
 //            var_dump($resume->getLastSql());
-//            print_r($resume->getLastSql());die;
+//            die;
         }
 
         foreach ($list as $key => $li) {
