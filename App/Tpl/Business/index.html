@@ -197,19 +197,18 @@
                                             <option value="{:U('business/index','by=all&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'all'">selected="selected"</if>>全部项目</option>
                                         </select>
                                     </div>
-                                    搜索：
-                                    <div class="input-group" style='height:32px'>
+                                    <div class="input-group" style='height:32px '>
                                         <span class="fa fa-times-circle clearVal" style="margin: 10px -10px;position: relative;z-index: 5;display:none;cursor:pointer;top:-8px;left:-4px"></span>
                                         <input type="hidden" name="m" value="business"/>
                                         <input type="hidden" name="a" value="index"/>
                                         <input type="hidden" name="field" value="name"/>
                                         <input type="hidden" name="condition" value="contains"/>
                                         <input type="hidden" name="by" value="{$_GET['by']}"/>
-                                        <input id="short_search" type="text" style="width:200px;margin-top:-8px" placeholder="职位名/客户名/联系人/电话" onkeydown='if (event.keyCode == 13) {
+                                        <input id="short_search" type="text" style="width:200px;margin-top:-8px;display: none;" placeholder="职位名/客户名/联系人/电话" onkeydown='if (event.keyCode == 13) {
                                                     $("#short_search_btn").trigger("click");
                                                     return false;
-                                                }' class="form-control input-sm" name="search" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
-                                        <span class="input-group-btn">
+                                                }' class="form-control input-sm" name="" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
+                                        <span class="input-group-btn" style="display: none;">
                                             <button class="btn btn-default btn-search" id="short_search_btn" type="submit" style="height:32px;margin:0"><i class="fa fa-search"></i></button>
                                         </span>
                                         <select class="form-control" name="pro_type" id="pro_type" style="margin:0px 10px;width:150px;">
@@ -227,14 +226,15 @@
                                             </volist>
                                         </select>
                                     </div>
+                                搜索：
                                 <div class="form-group">
                                     <input data-selector="industrys" class="text re" type="text" placeholder="请选择行业"  name="industry" data-ui="LocalDataUID" data-option="10"  style="display: none;height:40px;text-align: center;" rell="行业"  value="{$_GET['industry']}"  />
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control re" name="business_name" placeholder="项目名" value="">
+                                    <input type="text" class="form-control re" name="business_name" placeholder="项目名" value="{$_GET['business_name']}">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control re" name="customer_name" placeholder="公司名" value="">
+                                    <input type="text" class="form-control re" name="customer_name" placeholder="客户名" value="{$_GET['customer_name']}">
                                 </div>
                                 <div class="form-group">
                                     <input type="text" class="form-control re" name="ownerr" placeholder="项目负责人" value="{$_GET['ownerr']}">

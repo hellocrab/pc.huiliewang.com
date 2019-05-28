@@ -307,13 +307,17 @@
                                                                             <!-- 导出相关 -->
                                                                         </if>
 
-                                                                        <input  type="text" style="width:180px;" placeholder="客户名/联系人/联系电话" onkeydown='if (event.keyCode == 13) {
+                                                                        <input  type="text" style="width:180px;display: none;" placeholder="客户名/联系人/联系电话" onkeydown='if (event.keyCode == 13) {
                                                                                                             $("#short_search_btn").trigger("click");
                                                                                                             return false;
                                                                                                         }' class="form-control input-sm re" name="search" <if condition = "$_GET['field'] eq 'name'">value="{$_GET['search']}"</if>/>
+
+                                                                        <input type="text" style="width:180px;" placeholder="公司名" name="customer" class="form-control input-sm re" value="{:I('customer')}">
+                                                                        <input type="text" style="width:180px;" placeholder="联系人" name="contacts" class="form-control input-sm re" value="{:I('contacts')}">
+                                                                        <input type="text" style="width:180px;" placeholder="联系电话" name="contacts_phone" class="form-control input-sm re" value="{:I('contacts_phone')}">
                                                                         <div class="form-group" style="width: 150px;">
                                                                             <div style="width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-                                                                                <input data-selector="industrys" class="text re" type="text" placeholder="行业" id="industrys" name="search_industry" data-ui="LocalDataUID" style="display: none;width:325px;height:40px;" rell="行业" value="{:I('search_industry')}" data-option="10"/>
+                                                                                <input data-selector="industrys" class="text re" type="text" placeholder="行业"  name="search_industry" data-ui="LocalDataUID" style="display: none;width:325px;height:40px;" rell="行业" value="{:I('search_industry')}" data-option="10"/>
                                                                             </div>
                                                                         </div>
                                                                         <div  class="form-group" style="width: 150px;">
@@ -321,7 +325,7 @@
                                                                                 <input data-selector="dqs" data-option="10" class="text re" type="text" placeholder="城市" name="search_cplace" data-ui="LocalDataUIB" style="display: none;width:440px;height:40px;border: 1px solid #d8e3ef;" value="{:I('search_cplace')}"  data-option="1" />
                                                                             </div>
                                                                         </div>
-                                                                        <input class="re form-control input-sm re" placeholder="客户维护人" type="text" name="search_owner" style="width: 150px;">
+                                                                        <input class="re form-control input-sm re" placeholder="客户维护人" type="text" name="search_owner" value="{:I('search_owner')}" style="width: 150px;">
                                                                         <span class="input-group-btn">
                                                                             <button class="btn btn-primary btn-search" type="submit" style="height:32px;margin-right: 10px;"><i class="fa fa-search">搜索</i></button>
                                                                             <button class="btn btn-primary btn-search" id="reset" type="button" style="height:32px;"><i class="fa fa-search">重置</i></button>

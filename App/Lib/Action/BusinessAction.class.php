@@ -180,7 +180,8 @@ class BusinessAction extends Action
             $field = trim($_REQUEST['field']);
             $search = empty($_REQUEST['search']) ? '' : trim($_REQUEST['search']);
             $condition = empty($_REQUEST['condition']) ? 'is' : trim($_REQUEST['condition']);
-
+            $business_name = empty($_REQUEST['business_name']) ? '' : trim($_REQUEST['business_name']);
+            $customer_name = empty($_REQUEST['customer_name']) ? '' : trim($_REQUEST['customer_name']);
             if ($field == "customer_id") {
                 $c_where['name'] = array('like', '%' . $search . '%');
                 //权限
@@ -188,7 +189,7 @@ class BusinessAction extends Action
                 $where[$field] = array('in', $customer_ids);
             } elseif ($field == "status_id") {
                 unset($where['status_id']);
-            } elseif ($field == 'name' && !empty($search)) {
+            } elseif ($field == 'name' && !empty($search) ) {
                 //获取客户ID
                 $cus_where['name'] = array('like', '%' . $search . '%');
                 $customer_ids = M('Customer')->where($cus_where)->getField('customer_id', true);
@@ -206,7 +207,20 @@ class BusinessAction extends Action
                 } else {
                     $where['_string'] = 'business.name like "%' . $search . '%"';
                 }
-            } else {
+            } elseif(!empty($business_name) || !empty($customer_name)){
+                if(!empty($customer_name)){
+                    $cus_where['name'] = array('like', '%' . $customer_name . '%');
+                    $customer_ids = M('Customer')->where($cus_where)->getField('customer_id', true);
+                    $customer_str = implode(',', $customer_ids);
+                }
+                if($business_name && $customer_name){
+                    $where['_string'] = 'business.name like "%' . $business_name . '%" AND business.customer_id in (' . $customer_str . ')';
+                }elseif($customer_name){
+                    $where['_string'] = 'business.customer_id in (' . $customer_str . ')';
+                }else{
+                    $where['_string'] = 'business.name like "%' . $business_name . '%"';
+                }
+            }else {
                 switch ($condition) {
                     case "is" :
                         !empty($search) && $where[$field] = array('eq', $search);
@@ -411,12 +425,7 @@ class BusinessAction extends Action
             $where['pro_type'] = $_GET['pro_type'];
             $params[] = 'pro_type=' . $_GET['pro_type'];
         }
-        //公司名
-        if ($_GET['customer_name']) {
-            $customer = BaseUtils::getStr($_GET['customer_name']);
-            $arr1 = M('Customer')->where(array('name' => array('like', '%' . $customer . '%')))->field('customer_id')->select();
-            $where['customer_id'] = array('in', $arr1);
-        }
+
         if ($_GET['owner']) {
             $owner = BaseUtils::getStr($_GET['owner']);
             $arr2 = M('Customer')->where(array('name' => array('like', '%' . $owner . '%')))->field('customer_id')->select();
