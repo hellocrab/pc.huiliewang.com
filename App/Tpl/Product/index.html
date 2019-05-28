@@ -31,6 +31,13 @@
         text-indent: 0;
         line-height: 20px;
     }
+    .LocalDataUID span.items span{
+        width: 250px;
+        padding-right: 0;
+    }
+    .LocalDataUID span.items{
+        width: 250px !important;
+    }
     .file input {
         position: absolute;
         font-size: 100px;
@@ -63,11 +70,11 @@
         z-index: 1  !important;
     }
     .LocalDataUID{
-        width: 150px !important;
+        width: 250px !important;
         z-index: 1  !important;
     }
     .LocalDataUID-input{
-        width: 150px !important;
+        width: 250px !important;
         height: 40px !important;
         z-index: 1  !important;
     }
@@ -105,6 +112,10 @@
         left: 50%;
         margin-left: -159px;
         z-index: 101;
+    }
+    .LocalDataUID span.items span a.close{
+        right:auto !important;
+        color: #ccc !important;
     }
     .status_ico:before {
         content: "";
@@ -332,7 +343,7 @@
                                                 <input data-selector="dqs" data-option="10" class="text re" type="text" placeholder="选择所属城市" name="search_cplace" data-ui="LocalDataUIB" style="display: none;width:440px;height:40px;border: 1px solid #d8e3ef;" value="{:I('search_cplace')}"  data-option="1" />
                                             </div>
                                         </div>
-                                        <div  class="form-group" style="width: 150px;">
+                                        <div  class="form-group" style="width: 250px;">
                                             <div style="width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
                                                 <input data-selector="jobtitles" class="text re" type="text" placeholder="职能" id="jobtitles" name="job_class" data-ui="LocalDataUID" style="display: none;width:325px;height:40px;"  data-option="1"  value="{:I('job_class')}"/>
                                             </div>

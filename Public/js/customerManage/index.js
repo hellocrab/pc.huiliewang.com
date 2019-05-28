@@ -34,7 +34,7 @@ function getData() {
                         <td>${val.rank_name}</td>
                         <td>
                             ${val.money}${val.pro_type=='入职快'?'('+val.enter_num+'人)':''}&nbsp;&nbsp;
-                            <img src='Public/img/customerManage/8_15.png' class='moneyDetail' 
+                            <img src='Public/img/customerManage/8_15.png' class='moneyDetail'
                             reco='${index},${val.money_list["1"]?val.money_list["1"]:0},${val.money_list["2"]?val.money_list["2"]:0},${val.money_list["3"]?val.money_list["3"]:0}'>
                         </td>
                         <td>${val.contact_name}</td>
@@ -106,7 +106,7 @@ function getData() {
                         $('.showDetail').remove()
                     })
                     $('.showDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(4)`).offset().top - 62 + 'px')
-                    $('.showDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(4)`).offset().left - 20 + 'px')
+                    $('.showDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(4)`).offset().left - 15 + 'px')
                 })
                 $('.blackNote').on('mouseenter', ev => {
                     $('.blackDetail').remove();
@@ -124,20 +124,22 @@ function getData() {
                         $('.blackDetail').remove()
                     })
                     let h = 0;
-                    if(arr[1].length<15){
-                        h = 20;
-                    }else if(arr[1].length>85){
-                        h = 91;
-                    }else if(arr[1].length>70){
-                        h = 79;
-                    }else if(arr[1].length>55){
-                        h = 67;
-                    }else if(arr[1].length>40){
-                        h = 55;
-                    }else if(arr[1].length>25){
-                        h = 44;
-                    }else if(arr[1].length>15){
-                        h = 32;
+                    if(arr[1].length<=13){
+                        h = 15;
+                    }else if(arr[1].length>91){
+                        h = 150;
+                    }else if(arr[1].length>78){
+                        h = 134;
+                    }else if(arr[1].length>65){
+                        h = 114;
+                    }else if(arr[1].length>52){
+                        h = 94;
+                    }else if(arr[1].length>39){
+                        h = 74;
+                    }else if(arr[1].length>26){
+                        h = 54;
+                    }else if(arr[1].length>13){
+                        h = 34;
                     }
                     $('.blackDetail').css('top', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(12)`).offset().top - h + 'px')
                     $('.blackDetail').css('left', $(`tbody tr:nth-child(${arr[0]-0+1}) td:nth-child(12)`).offset().left - 0 + 'px')
@@ -295,7 +297,13 @@ $('select').on('change', ev => {
     getData();
 })
 $('#name').on('keydown', ev => {
-    if (ev.keyCode == 13) {
+    if (ev.keyCode == 13&&$('#name').val()) {
+        current_page = 1;
+        getData();
+    }
+})
+$('.fa-search').click(ev=>{
+    if($('#name').val()){
         current_page = 1;
         getData();
     }

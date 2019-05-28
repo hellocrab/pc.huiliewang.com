@@ -1491,6 +1491,8 @@ class CustomerAction extends Action {
                 if($_GET['contacts'] && $_GET['contacts_phone']){
                     $con = BaseUtils::getStr($_GET['contacts']);
                     $phone = BaseUtils::getStr($_GET['contacts_phone']);
+                    $phone = trim($phone);
+                    $con = trim($con);
                     $c_where['_string'] = 'name like "%' . $con . '%" and telephone like "%' . $phone . '%"';
                     $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
                     $contacts_str = implode(',', $contacts_ids);
@@ -1498,6 +1500,7 @@ class CustomerAction extends Action {
                     $map['customer_id'] = array('in',$customerIds);
                 }elseif($_GET['contacts']){
                     $con = BaseUtils::getStr($_GET['contacts']);
+                    $con = trim($con);
                     $c_where['_string'] = 'name like "%' . $con . '%" ';
                     $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
                     $contacts_str = implode(',', $contacts_ids);
@@ -1505,6 +1508,7 @@ class CustomerAction extends Action {
                     $map['customer_id'] = array('in',$customerIds);
                 }elseif($_GET['contacts_phone']){
                     $phone = BaseUtils::getStr($_GET['contacts_phone']);
+                    $phone = trim($phone);
                     $c_where['_string'] = ' telephone like "%' . $phone . '%"';
                     $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
                     $contacts_str = implode(',', $contacts_ids);
