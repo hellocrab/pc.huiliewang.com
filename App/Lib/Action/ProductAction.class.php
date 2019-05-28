@@ -470,7 +470,10 @@ class ProductAction extends Action {
                         $where['location'] = array('in',$ar_cplace);
                     }
                     if($search_owner){
-                        $where['creator_role_name'] = array('like','%' . $search_owner . '%');
+                        $search_owner = trim($search_owner);
+//                        $where['creator_role_name'] = array('like','%' . $search_owner . '%');
+                        $role_ids = M('user')->where(array('full_name'=>array('like','%'.$search_owner.'%')))->getField('role_id',true);
+                        $where['creator_role_id'] = array('in',$role_ids);
                     }
                     if($search_major){
                         $arr_eid = M('resume_edu')->where(array('majorName'=>array('like',$search_major.'%')))->distinct(true)->getField('eid',true);
@@ -491,9 +494,9 @@ class ProductAction extends Action {
                     }
                     if($s_f && $s_e){
                         if(isset($where['_complex']['_string']))
-                            $where['_complex']['_string'] .= "AND (( CAST(curSalary AS SIGNED) >= {$s_f} AND CAST(curSalary AS SIGNED) <= {$s_e}))";
+                            $where['_complex']['_string'] .= "AND (( CAST(curSalary AS decimal(9,2)) >= {$s_f} AND CAST(curSalary AS decimal(9,2)) <= {$s_e}))";
                         else
-                            $where['_complex']['_string'] .= "(( CAST(curSalary AS SIGNED) >= {$s_f} AND CAST(curSalary AS SIGNED) <= {$s_e}))";
+                            $where['_complex']['_string'] .= "(( CAST(curSalary AS decimal(9,2)) >= {$s_f} AND CAST(curSalary AS decimal(9,2)) <= {$s_e}))";
                     }
                     if($search_sex){
                         $where['sex'] = array('eq',$search_sex);
