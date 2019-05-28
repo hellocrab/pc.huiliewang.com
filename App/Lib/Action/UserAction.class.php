@@ -2518,6 +2518,8 @@ class UserAction extends Action
             ->order('mx_user.role_id asc')
             ->find();
         $parentInfo = $parentInfo ? $parentInfo : [];
+        $parentInfo['role_id'] = session('role_id');
+        $parentInfo['role_name'] = session('full_name');
         $return = ['success' => 1, 'code' => 200, 'info' => $parentInfo];
         $this->ajaxReturn($return);
     }
