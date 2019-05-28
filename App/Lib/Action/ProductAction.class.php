@@ -1010,7 +1010,7 @@ class ProductAction extends Action {
 
     public function check_tel() {
         if ($_POST) {
-            $where['telephone'] = intval($_POST['telephone']);
+            $where['telephone'] = $_POST['telephone'];
             $id = M("resume")->where($where)->find();
 
             if ($id) {
