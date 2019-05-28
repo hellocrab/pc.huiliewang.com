@@ -2484,7 +2484,6 @@ class UserAction extends Action
         $page = BaseUtils::getStr(I('page', 1), 'int');
         $pageSize = BaseUtils::getStr(I('pageSize', 20), 'int');
         $departmentId = BaseUtils::getStr(I('departmentId', 0), 'int');
-        $pDepartments = M('role_department')->where(['patent_id' => 1])->field('department_id,name')->select();
         $where = [];
         $departmentId > 0 && $where['parent_department_id'] = $departmentId;
         $startNo = ($page - 1) * $pageSize;
@@ -2493,8 +2492,16 @@ class UserAction extends Action
             $info['add_time'] = date('Y-m-d H:i:s', $info['add_time']);
             $info['receive_time'] = $info['receive_time'] ? date('Y-m-d H:i:s', $info['receive_time']) : '';
         }
-        $data = ['departments' => $pDepartments, 'list' => $list];
-        $return = ['success' => 1, 'code' => 200, 'info' => $data];
+        $return = ['success' => 1, 'code' => 200, 'info' => $list];
+        $this->ajaxReturn($return);
+    }
+
+    /**
+     * @desc 获取事业部列表
+     */
+    public function departmentList() {
+        $pDepartments = M('role_department')->where(['patent_id' => 1])->field('department_id,name')->select();
+        $return = ['success' => 1, 'code' => 200, 'info' => $pDepartments];
         $this->ajaxReturn($return);
     }
 

@@ -11,6 +11,8 @@ class CustomermanageAction extends Action
     protected $_permissionRes = '';
     protected $pro_type = [0 => '初始条件', 1 => '面试快', 2 => '入职快', 3 => '专业猎头'];
     protected $rank_name = ['A' => 'A级', 'B' => 'B级', 'C' => 'C级'];
+    protected $call_record = [1 => '接通电话', 2 => '电话未接听', 3 => '无效电话', 4 => '电话忙'];
+    protected $degree = [5 => '非常满意', 4 => '满意', 3 => '基本满意', 2 => '不太满意', 1 => '不满意'];
 
     /**
      * 用于判断权限
@@ -331,8 +333,62 @@ class CustomermanageAction extends Action
     /**
      * @desc 待回访客户
      */
-    public function waitVisit() {
+    public function visitList() {
+        $page = BaseUtils::getStr(I('page', 1), 'int');
+        $pageSize = BaseUtils::getStr(I('pageSize', 15), 'int');
+        //回访时间
+        $timeStart = BaseUtils::getStr(I('start_time', ''), 'string');
+        $timeEnd = BaseUtils::getStr(I('end_time', ''), 'string');
+        //事业部
+        $departmentId = BaseUtils::getStr(I('department_id', '0'), 'int');
+        //业务类型
+        $proType = BaseUtils::getStr(I('pro_type', 0), 'int');
+        //搜索字段【签单人、客户名、联系人、联系电话】
+        $search = BaseUtils::getStr(I('search', ''), 'string');
+        //是否有电话
+        $isPhone = BaseUtils::getStr(I('is_phone', ''), 'int');
+        //是否有商机
+        $isBusiness = BaseUtils::getStr(I('is_business', ''), 'int');
+        //是否导出操作
+        $isExport = BaseUtils::getStr(I('is_export', 0), 'int');
 
+        //时间判断
+        if ($timeEnd && ($timeStart > $timeEnd)) {
+            $this->response('结束时间不能大于开始时间', 500, false);
+        }
+        //查询条件组装
+        $where = [];
+        $timeStart && $where['add_time'] = ['gt', $timeStart];
+        $timeEnd && $where['add_time'] = ['lt', $timeEnd];
+        $departmentId && $where['p_department_id|department_id'] = $departmentId;
+        $proType && $where['pro_type'] = $proType;
+        $search && $where['customer_name|contact_name|phone'] = ['like', "%{$search}%"];
+        if (isset($_REQUEST['is_phone'])) {
+            $isPhone && $where['phone'] = ['neq', ''];
+            !$isPhone && $where['phone'] = ['eq', ''];
+        }
+        if (isset($_REQUEST['is_business'])) {
+            $where['business_status'] = $isBusiness;
+        }
+        include APP_PATH . "Common/city.cache.php";
+        include APP_PATH . "Common/industry.cache.php";
+        if (!$isExport) {
+            $pageStart = ($page - 1) * $pageSize;
+            $list = M('customer_visit')->where($where)->limit($pageStart, $pageSize)->select();
+            foreach ($list as &$info) {
+                $info['city'] = $city_name[$info['city']];
+                $info['industry'] = $industry_name[$info['industry']];
+                $info['add_time'] = date("Y-m-d", $info['add_time']);
+                $info['last_visit_time'] && $info['last_visit_time'] = date("Y-m-d", $info['last_visit_time']);
+                $info['finish_time'] && $info['finish_time'] = date("Y-m-d", $info['finish_time']);
+            }
+            $this->response(['list' => $list]);
+
+        } else {
+            //@todo 数据导出excel
+            //导出excel操作
+
+        }
     }
 
     /**
@@ -350,16 +406,67 @@ class CustomermanageAction extends Action
     }
 
     /**
+     * @todo 信息补充完整
      * @desc 客户详情内页
+     * 1、客户信息
+     * 2、项目列表
+     * 3、回访列表信息
+     * 4、匹配爱客系统
+     * 5、添加项目资料
      */
     public function customerInfo() {
+        $customerId = BaseUtils::getStr(I('customer_id', 0), 'int');
+        if (!$customerId) {
+            $this->response('参数错误', 500, false);
+        }
+        $customerFiled = "customer_id,contacts_id,customer_owner_id,customer_owner_name,creator_role_id,name as customer_name,telephone";
+        $customerInfo = M('customer')->field($customerFiled)->where(['customer_id' => $customerId])->find();
+        $visitInfo = M('customer_visit')->where(['customer_id' => $customerId])->find();
+        if (!$customerInfo || !$visitInfo) {
+            $this->response('客户信息不存在', 500, false);
+        }
+        //客户等级
+        $customerInfo['rank'] = M('customer_rank')->where(['customer_id' => $customerId])->getField('rank_name');
+        //回访次数
+        $customerInfo['visit_times'] = '';
+        //上次回访时间
+        $customerInfo['last_visit_time'] = '';
+        //客户联系人
+        $customerInfo['contacts'] = '';
+        //联系电话
+        $customerInfo['contacts_phone'] = '';
+        //项目列表
+        $businessField = "name,business_id,creator_role_id";
+        $businessList = M('business')->field($businessField)->where(['customer_id' => $customerId, 'is_deleted' => 0])->select();
+        foreach ($businessList as &$businessInfo) {
+            //1、项目状态
+            $businessInfo['status'] = '';
+            //2、面试时间
+            $businessInfo['interview_time'] = '';
+            //3、offer时间
+            $businessInfo['offer_time'] = '';
+            //4、入职时间
+            $businessInfo['enter_time'] = '';
+            //5、回款时间
+            $businessInfo['invoice_time'] = '';
+            //6、合同开始时间
+            $businessInfo['contract_start_time'] = '';
+            //7、合同结束时间
+            $businessInfo['contract_end_time'] = '';
 
+        }
+        $customerInfo['businessList'] = $businessList ? $businessList : [];
+        //回访记录
+        $visit = M('customer_visit_note')->where(['customer_id' => $customerId])->select();
+        $customerInfo['visit_log'] = $visit ? $visit : [];
+        $this->response(['info' => $customerInfo]);
     }
 
     /**
      * @desc 回访备注
      */
     public function visitRemark() {
+
 
     }
 }
