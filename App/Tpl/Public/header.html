@@ -235,6 +235,97 @@
 
         input[type="number"] {
             -moz-appearance: textfield;
+        }
+        .dialog {
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 999;
+}
+ .dialogBox{
+    width: 490px;
+    background: #fff;
+    margin: 190px auto 0;
+}
+.dialogHead {
+    text-align: right;
+    padding: 15px;
+}
+
+.dialogHead img {
+    cursor: pointer;
+}
+
+.dialogTitle {
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+    height: 17px;
+    color: #333;
+}
+
+.dialogTitle div {
+    width: 4px;
+    height: 17px;
+    background: rgba(56, 108, 189, 1);
+    margin-right: 10px;
+}
+.dialogfoot {
+    text-align: center;
+}
+
+.dialogfoot button {
+    width: 76px;
+    height: 27px;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 27px;
+    outline: none;
+    border: none;
+    color: #fff;
+}
+
+.submit {
+    background: rgba(88, 138, 216, 1);
+}
+
+.cannal {
+    background: rgba(220, 74, 74, 1);
+    margin-right: 47px;
+}
+
+.notice {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-weight: 400;
+    color: rgba(176, 176, 176, 1);
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+.blackNote {
+    margin-left: 5px;
+    cursor: pointer;
+}
+.divide1 {
+    width: calc(100%-76px);
+    height: 1px;
+    background: rgba(204, 204, 204, 1);
+    margin: 30px 38px 8px 38px;
+}
+.dimission_dialog .mo{
+    display: block;
+    padding-left: 38px;
+    padding-top: 20px;
+}
+.dimission_dialog .dialogfoot{
+    padding: 20px 0;
+}
     </style>
 
 
@@ -279,6 +370,41 @@
 </head>
 <script>
     $(function () {
+        let receiver_id = '';
+        $('.dimission').click(ev=>{
+            $.ajax({
+                url:'/index.php?m=user&a=getReceiver',
+                success(res){
+                    if(res.code==200){
+                        $('.dimission_dialog .mo').html(`您的上级是${res.info.receiver}，点击确认后系统将一键转交给您的上级。`);
+                        receiver_id = res.info.receiver_id;
+                        $('.dimission_dialog').css('display',"block");
+                    }else{
+                        swal("操作失败","获取转交上级失败","error")
+                    }
+                }
+            })
+        })
+        $('.dimission_dialog img').click(ev=>{
+            $('.dimission_dialog').css('display',"none");
+        })
+        $('.dimission_dialog .cannal').click(ev=>{
+            $('.dimission_dialog').css('display',"none");
+        })
+        $('.dimission_dialog .submit').click(ev=>{
+            $.ajax({
+                url:'/index.php?m=user&a=transfer',
+                data:{receiver_id},
+                success(res){
+                    if(res.code==200){
+                        swal("提交成功","您的转交请求已提交","success")
+                    }else{
+                        swal("提交失败","您的转交请求提交出现问题","error")
+                    }
+                }
+            })
+            $('.dimission_dialog').css('display',"none");
+        })
         $('input:not([autocomplete]),textarea:not([autocomplete]),select:not([autocomplete])').attr(
             'autocomplete', 'off')
         sessionStorage.removeItem("idskey");
@@ -896,7 +1022,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{:U('user/edit')}">个人资料</a></li>
                                 <li><a href="{:U('setting/lockscreen')}">一键锁屏</a></li>
-                                <li><a href="">离职办理</a></li>
+                                <li class="dimission"><a href="#">离职办理</a></li>
                                 <li class="divider"></li>
                                 <li><a class="logout" href="javascript:void(0);">{:L('EXIT')}</a></li>
                             </ul>
@@ -929,8 +1055,28 @@
                     </div>
                 </div>
             </div>
+            <div class="dimission_dialog dialog">
+                <div class="dialogBox">
+                    <div class="dialogHead">
+                        <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
+                    </div>
+                    <div class="dialogTitle">
+                        <div></div>
+                        离职办理
+                    </div>
+                    <div class="divide1"></div>
+                    <span class="mo">您的上级为：XXX，点击确认后系统将一键转交给您的上级。</span>
+                    <div class="dialogfoot">
+                        <button class="cannal">取消</button>
+                        <button class="submit">确认</button>
+                    </div>
+                </div>
+            </div>
             <script type="text/javascript">
                 $(document).ready(function () {
+                    $('.dimission').click(ev=>{
+
+                    })
                     $("#phone_url").on("click", function () {
                         var tel = $("#telphone").val();
                         if (tel == '') {
