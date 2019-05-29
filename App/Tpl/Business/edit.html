@@ -140,7 +140,10 @@
                                             <div class="col-sm-4">
                                                 {$vo.html}
                                             </div>
-                                            <div class="col-md-2"><span style="color:red;line-height: 32px;margin-left: 10px;">*</span></div>
+                                            <div class="col-md-2">
+                                                <span style="color:red;line-height: 32px;margin-left: 10px;">*</span>
+                                                <span style="color:red">原类型:{$old_pro_type[$business_info['old_pro_type']]}</span>
+                                            </div>
                                         </div>
                                         <elseif condition = "$vo['field'] eq 'minexp'" />
                                         <div class="form-group">

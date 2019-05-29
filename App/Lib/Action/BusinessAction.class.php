@@ -16,6 +16,12 @@ class BusinessAction extends Action
         6 => '线下慧入职',// 入职快
         7 => '线下专业猎头'//专业猎头
       ];
+    protected $old_pro_type = [
+        1 => '面试快', //面试快
+        2 => '入职快',//入职快
+        3 => '专业猎头',//专业猎头
+        4 => '慧简历',//慧简历
+      ];
 
     /**
      * 用于判断权限
@@ -783,6 +789,7 @@ class BusinessAction extends Action
             }
         }
         $this->assign('pro_type', $this->pro_type);
+        $this->assign('old_pro_type', $this->old_pro_type);
         $this->field_array = $name_field_array;
         $this->fields_search = $fields_search;
         $this->listrows = $listrows;
@@ -1147,6 +1154,7 @@ class BusinessAction extends Action
                 $possibility_list[] = $x * 10;
             }
             $this->assign('pro_type', $this->pro_type);
+            $this->assign('old_pro_type', $this->old_pro_type);
             $this->possibility_list = $possibility_list;
             $this->business_info = $business_info;
             //自定义字段
@@ -1254,6 +1262,7 @@ class BusinessAction extends Action
 //        $this->field_list = M('Fields')->where(array('model'=>'business','field'=>array('not in',array('name','status_id'))))->order('is_main desc, order_id asc')->select();
         $this->alert = parseAlert();
         $this->assign('pro_type', $this->pro_type);
+        $this->assign('old_pro_type', $this->old_pro_type);
         $this->display();
     }
 
