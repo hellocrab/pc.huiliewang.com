@@ -2541,7 +2541,7 @@ class UserAction extends Action
     public function transferDetail() {
         $roleId = I('role_id', session('role_id'));
         $transferModel = M('user_transfer');
-        $info = $transferModel->where(['role_id' => $roleId])->field('role_id,receiver_id,user_name,receiver,status')->find();
+        $info = $transferModel->where(['role_id' => $roleId])->field('id,role_id,receiver_id,user_name,receiver,status')->find();
         if ($info) {
             $info['customer_count'] = M('customer')->where(['creator_role_id' => $info['role_id']])->count();
             $info['resume_count'] = M('resume')->where(['creator_role_id' => $info['role_id']])->count();
@@ -2633,7 +2633,7 @@ class UserAction extends Action
      *  转交数据给上级【客户，简历，项目】
      */
     public function receiveTransfer() {
-        $transferId = I('transfer_id', 0);
+        $transferId = I('receiver_id', 0);
         $status = I('status', 0); //1：接收 2：拒绝
         $userId = session('role_id');
 //        $userId = 47;
