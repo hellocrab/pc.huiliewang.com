@@ -2482,10 +2482,12 @@ class UserAction extends Action
      */
     public function transferList() {
         $page = BaseUtils::getStr(I('page', 1), 'int');
-        $pageSize = BaseUtils::getStr(I('pageSize', 20), 'int');
-        $departmentId = BaseUtils::getStr(I('departmentId', 0), 'int');
+        $pageSize = BaseUtils::getStr(I('page_size', 20), 'int');
+        $departmentId = BaseUtils::getStr(I('department_id', 0), 'int');
+        $search = BaseUtils::getStr(I('search', 0), 'string');
         $where = [];
-        $departmentId > 0 && $where['parent_department_id'] = $departmentId;
+        $departmentId > 0 && $where['parent_department_id|department_id'] = $departmentId;
+        $search && $where['phone|user_name'] = $search;
         $startNo = ($page - 1) * $pageSize;
         $list = M('user_transfer')->where($where)->limit($startNo, $pageSize)->select();
         foreach ($list as &$info) {
