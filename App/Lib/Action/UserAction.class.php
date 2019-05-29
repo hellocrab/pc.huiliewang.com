@@ -2499,7 +2499,7 @@ class UserAction extends Action
         foreach ($list as &$info) {
             $info['add_time'] = date('Y-m-d H:i:s', $info['add_time']);
             $info['receive_time'] = $info['receive_time'] ? date('Y-m-d H:i:s', $info['receive_time']) : '';
-            $info['city '] = isset($info['city ']) ? $info['city '] : '重庆';
+            $info['city'] = isset($info['city']) ? $info['city'] : '重庆';
         }
         $counts = M('user_transfer')->where($where)->count();
         $data = ['list' => $list, 'current_page' => $page, 'counts' => $counts> 0 ? $counts : 0 ];
