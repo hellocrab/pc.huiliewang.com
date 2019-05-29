@@ -10,7 +10,7 @@ class CustomermanageAction extends Action
 {
     protected $_permissionRes = '';
     protected $pro_type = [0 => '初始条件', 1 => '面试快', 2 => '入职快', 3 => '专业猎头'];
-    protected $rank_name = ['A' => 'A级', 'B' => 'B级', 'C' => 'C级'];
+    protected $rank_name = ['A' => 'A级', 'B' => 'B级', 'C' => 'C级', 'D' => 'D级'];
     protected $call_record = [1 => '接通电话', 2 => '电话未接听', 3 => '无效电话', 4 => '电话忙'];
     protected $degree = [5 => '非常满意', 4 => '满意', 3 => '基本满意', 2 => '不太满意', 1 => '不满意'];
 
@@ -473,7 +473,7 @@ class CustomermanageAction extends Action
      */
     public function visitRemark() {
 
-        
+
 
     }
 
