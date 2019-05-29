@@ -2586,12 +2586,12 @@ class UserAction extends Action
         $roleId = session('role_id');
         $parentId = I('receiver_id', 0);
         $transferModel = M('user_transfer');
-        $info = $transferModel->where(['role_id' => $roleId])->find();
+        $info = $transferModel->where(['role_id' => $roleId])->order("id desc")->find();
 
         if ($parentId <= 0) {
             $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '参数错误']);
         }
-        if ($info && $info['receive_time'] > 0) {
+        if ($info && $info['receive_time'] > 0 && $info['status'] != 2) {
             $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '您的转交已被处理，不需要重复提交了']);
         }
         if ($info && $info['receive_time'] == 0) {
