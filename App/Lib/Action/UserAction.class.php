@@ -2487,7 +2487,7 @@ class UserAction extends Action
         $search = BaseUtils::getStr(I('search', 0), 'string');
         $where = [];
         $departmentId > 0 && $where['parent_department_id|department_id'] = $departmentId;
-        $search && $where['phone|user_name'] = $search;
+        $search && $where['phone|user_name'] = ['like',"%{$search}%"];
         $startNo = ($page - 1) * $pageSize;
         $list = M('user_transfer')->where($where)->limit($startNo, $pageSize)->select();
         foreach ($list as &$info) {
