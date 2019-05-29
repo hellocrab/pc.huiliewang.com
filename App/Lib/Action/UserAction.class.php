@@ -2501,7 +2501,9 @@ class UserAction extends Action
             $info['receive_time'] = $info['receive_time'] ? date('Y-m-d H:i:s', $info['receive_time']) : '';
             $info['city '] = isset($info['city ']) ? $info['city '] : '重庆';
         }
-        $return = ['success' => 1, 'code' => 200, 'info' => $list];
+        $counts = M('user_transfer')->where($where)->count();
+        $data = ['list' => $list, 'current_page' => $page, 'counts' => $counts> 0 ? $counts : 0 ];
+        $return = ['success' => 1, 'code' => 200, 'info' => $data];
         $this->ajaxReturn($return);
     }
 
