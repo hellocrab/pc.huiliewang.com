@@ -247,8 +247,8 @@ class Visit
         $roleId = $customerInfo['creator_role_id'];
         if (!$contactsId) {
             //寻找联系人ID
-            $contactsRSql = "select contacts_id from {$this->contactsR}".
-                " where customer_id = {$customerId}".
+            $contactsRSql = "select contacts_id from {$this->contactsR}" .
+                " where customer_id = {$customerId}" .
                 " order by contacts_id desc limit 1";
             $contactsRInfo = $this->selectSql($contactsRSql, false);
             $contactsId = $contactsRInfo['contacts_id'];
@@ -274,6 +274,7 @@ class Visit
         $data['industry'] = $industry;
         $data['customer_id'] = $customerId;
         $data['city'] = $city;
+        $data['add_time'] = time();
         $data['contacts_id'] = $contactsId ? $contactsId : 0;
         $data['contact_name'] = isset($contactsInfo['name']) ? $contactsInfo['name'] : '';
         $data['phone'] = isset($customerInfo['telephone']) ? $customerInfo['telephone'] : '';
@@ -311,9 +312,9 @@ class Visit
      * @return array
      */
     public function history($customerId, $proType = 1, $isAll = false) {
-        $exitSql = "select * from {$this->visit}".
-            " where customer_id = {$customerId}".
-            " and pro_type = {$proType}".
+        $exitSql = "select * from {$this->visit}" .
+            " where customer_id = {$customerId}" .
+            " and pro_type = {$proType}" .
             " order by id desc ";
         return $this->selectSql($exitSql, $isAll);
     }
