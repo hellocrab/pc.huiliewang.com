@@ -130,6 +130,12 @@ class Rank
         //每个项目类型对应的业绩金额
         $data = [];
         foreach ($list as $info) {
+            //线下慧面试 =》面试快
+            $info['type'] == 5 && $info['type'] = 1;
+            //线下慧入职 =》入职快
+            $info['type'] == 6 && $info['type'] = 2;
+            //线下专业猎头 =》专业猎头
+            $info['type'] == 7 && $info['type'] = 3;
             $data[$info['type']] = $info['integral'];
         }
         //删除列表历史数据
