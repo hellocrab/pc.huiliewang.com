@@ -2635,8 +2635,8 @@ class UserAction extends Action
     public function receiveTransfer() {
         $transferId = I('transfer_id', 0);
         $status = I('status', 0); //1：接收 2：拒绝
-//        $userId = session('role_id');
-        $userId = 47;
+        $userId = session('role_id');
+//        $userId = 47;
         if (!$transferId || !$userId || !$status) {
             $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '参数错误']);
         }
