@@ -2633,7 +2633,7 @@ class UserAction extends Action
      *  转交数据给上级【客户，简历，项目】
      */
     public function receiveTransfer() {
-        $transferId = I('receiver_id', 0);
+        $transferId = I('transfer_id', 0);
         $status = I('status', 0); //1：接收 2：拒绝
         $userId = session('role_id');
 //        $userId = 47;
