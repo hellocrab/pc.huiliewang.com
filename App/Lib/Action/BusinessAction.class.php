@@ -8,12 +8,14 @@ class BusinessAction extends Action
 {
 
     protected $pro_type = [
-        1 => '面试快',
-        2 => '入职快',
-        3 => '专业猎头',
-        4 => '慧简历',
-        5 => '其他'
-    ];
+        1 => '线上面试快', //面试快
+        2 => '线上入职快',//入职快
+        3 => '线上专业猎头',//专业猎头
+        4 => '线下慧沟通',//慧简历
+        5 => '线下慧面试',//面试快
+        6 => '线下慧入职',// 入职快
+        7 => '线下专业猎头'//专业猎头
+      ];
 
     /**
      * 用于判断权限
@@ -1810,13 +1812,13 @@ class BusinessAction extends Action
         $business = M("business")->where("business_id=%d", $project['project_id'])->field("pro_type")->find();
         //@edit by yanghao 2018-11-26 修改交易模式交易节点
         $this->pro_type = $business['pro_type'];
-        if ($this->pro_type == "1") {//面试快
+        if ($this->pro_type == "1" || $this->pro_type == "5") {//面试快
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3);
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试");
-        } elseif ($this->pro_type == "2") {//入职快
+        } elseif ($this->pro_type == "2" || $this->pro_type == "6") {//入职快
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3, "pass" => 4, "offer" => 5, "enter" => 6, "safe" => 7);
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职", "过保");
-        } elseif ($this->pro_type == "3") {//专业猎头
+        } elseif ($this->pro_type == "3" || $this->pro_type == "7") {//专业猎头
             $this->process = array("calllist" => 0, "adviser" => 1, "tj" => 2, "interview" => 3, "pass" => 4, "offer" => 5, "enter" => 6, "safe" => 7);
             $this->process_name = array("CallList", "顾问面试", "简历推荐", "客户面试", "面试通过", "Offer", "入职", "过保");
         } else if ($this->pro_type == '4') {//慧简历

@@ -211,7 +211,7 @@ class DataAnalysisAction extends Action {
 
             }
         }elseif($field=="pro_type"){
-            $pro_type = array("3","1","2","5");
+            $pro_type = array("3","1","2","5","6","7");
             foreach ($pro_type as $k=>$v) {
 
                 $field_total_count = 0;

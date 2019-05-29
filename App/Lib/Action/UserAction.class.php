@@ -2558,7 +2558,15 @@ class UserAction extends Action
      * @return array|mixed
      */
     private function getUserBusiness($where = []) {
-        $proTypes = [1 => '面试快', 2 => '入职快', 3 => '专业猎头'];
+        $proTypes = [
+            1 => '线上面试快', //面试快
+            2 => '线上入职快', //入职快
+            3 => '线上专业猎头', //专业猎头
+            4 => '线下慧沟通', //慧简历
+            5 => '线下慧面试', //面试快
+            6 => '线下慧入职', // 入职快
+            7 => '线下专业猎头'//专业猎头
+        ];
         $projectStatus = C('PROJECT_STATUS');
         $list = M('business')->field('business_id,name,pro_type,customer_id,create_time')->where($where)->select();
         foreach ($list as &$info) {

@@ -51,16 +51,24 @@
                     <td style="min-width: 80px;"><a href="{:U('business/view','id='.$vo['business_id'])}" target="_blank">{$vo.name}</a></td>
                     <td style="min-width: 80px;"><a href="{:U('customer/view', 'id='.$vo['customer_id'])}" target="_blank">{$vo.customer_name}</a></td>
                     <td style="min-width: 80px;">
-                        <if condition="$vo.pro_type eq '1'">
-                            面试快
-                            <elseif condition="$vo.pro_type eq '2'"/>
-                            入职快
-                            <elseif condition="$vo.pro_type eq '3'"/>
-                            专业猎头
-                            <else/>
-                            慧简历
-                        </if>
-                    </td>
+                <if condition="$vo.pro_type eq '1'">
+                    线上面试快
+                    <elseif condition="$vo.pro_type eq '2'"/>
+                    线上入职快
+                    <elseif condition="$vo.pro_type eq '3'"/>
+                    线上专业猎头
+                    <elseif condition="$vo.pro_type eq '4'"/>
+                    线下慧沟通
+                    <elseif condition="$vo.pro_type eq '5'"/>
+                    线下慧面试
+                    <elseif condition="$vo.pro_type eq '6'"/>
+                    线下慧入职
+                    <elseif condition="$vo.pro_type eq '7'"/>
+                    线下专业猎头
+                    <else/>
+                    未选择
+                </if>
+            </td>
                     <td  style="padding-left: 15px;text-align: left;" nowrap="nowrap">{$vo.user_name}</td>
                     <!--<td  style="padding-left: 15px;text-align: left;" nowrap="nowrap"><a href="javascript:void(0);" class="role_info" rel="">{$vo.user_name}</a></td>-->
                     <td style="min-width: 100px;">{$vo.department_name}</td>

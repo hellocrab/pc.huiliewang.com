@@ -75,16 +75,16 @@
                         <label class="col-sm-2 control-label">项目类型</label>
                         <div class="col-sm-4">
                             <p class="form-p color-a-edit">
-                            <if condition="$business_info['pro_type'] eq '1'">
+                            <if condition="$business_info['pro_type'] eq '1' OR $business_info['pro_type'] eq '5'">
                                 <span class="label">{$pro_type[$business_info['pro_type']]}</span>
-                                <elseif condition="$business_info['pro_type'] eq '2'"/>
+                                <elseif condition="$business_info['pro_type'] eq '2' OR $business_info['pro_type'] eq '6'"/>
                                 <span class="label">{$pro_type[$business_info['pro_type']]}</span>
-                                <elseif condition="$business_info['pro_type'] eq '3'"/>
+                                <elseif condition="$business_info['pro_type'] eq '3' OR $business_info['pro_type'] eq '7'"/>
                                 <span class="label">{$pro_type[$business_info['pro_type']]}</span>
                                 <elseif condition="$business_info['pro_type'] eq '4'"/>
                                 <span class="label">{$pro_type[$business_info['pro_type']]}</span>
                                 <else/>
-                                <span class="label">其他</span>
+                                <span class="label">未选择</span>
                             </if>
                             </p>
                         </div>

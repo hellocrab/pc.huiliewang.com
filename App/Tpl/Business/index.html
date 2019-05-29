@@ -213,10 +213,13 @@
                                         </span>
                                         <select class="form-control" name="pro_type" id="pro_type" style="margin:0px 10px;width:150px;">
                                             <option value="">--请选择项目类型--</option>
-                                            <option value="1">面试快</option>
-                                            <option value="2">入职快</option>
-                                            <option value="3">专业猎头</option>
-                                            <option value="4">慧简历</option>
+                                            <option value="1">线上面试快</option>
+                                            <option value="2">线上入职快</option>
+                                            <option value="3">线上专业猎头</option>
+                                            <option value="4">线下慧沟通</option>
+                                            <option value="5">线下慧面试</option>
+                                            <option value="6">线下慧入职</option>
+                                            <option value="7">线下专业猎头</option>
                                             <!--<option value="5">其他</option>-->
                                         </select>
                                         <select class="form-control" name="status_id" id="status_id" style="margin:0px 10px;width:150px;">
@@ -366,16 +369,16 @@
                                                             </if>
                                                             <else />
                                                             <if  condition="$v['field'] eq 'pro_type'">
-                                                                <if condition="$vo['pro_type'] eq '1'">
+                                                                <if condition="$vo['pro_type'] eq '1' OR $vo['pro_type'] eq '5'">
                                                                     <span class="label">{$pro_type[$vo['pro_type']]}</span>
-                                                                    <elseif condition="$vo['pro_type'] eq '2'"/>
+                                                                    <elseif condition="$vo['pro_type'] eq '2' OR $vo['pro_type'] eq '6'"/>
                                                                     <span class="label">{$pro_type[$vo['pro_type']]}</span>
-                                                                    <elseif condition="$vo['pro_type'] eq '3'"/>
+                                                                    <elseif condition="$vo['pro_type'] eq '3' OR $vo['pro_type'] eq '7'"/>
                                                                     <span class="label">{$pro_type[$vo['pro_type']]}</span>
                                                                     <elseif condition="$vo['pro_type'] eq '4'"/>
                                                                     <span class="label">{$pro_type[$vo['pro_type']]}</span>
-                                                                    <elseif condition="$vo['pro_type'] eq '5'"/>
-                                                                    <span class="label">其他</span>
+                                                                    <elseif condition="$vo['pro_type'] eq '0'"/>
+                                                                    <span class="label">未选择</span>
                                                                 </if>
                                                                 <else />{$vo[$v['field']]}</if>
                                                         </if>

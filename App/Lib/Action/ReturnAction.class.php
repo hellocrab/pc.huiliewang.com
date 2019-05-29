@@ -33,7 +33,7 @@ class ReturnAction extends Action
         $d_v_business = D('BusinessView');
         if(count($test)){
         $map['business_id'] = ['not in',$test];
-        $map['pro_type'] = ['in',[2,3]];
+        $map['pro_type'] = ['in',[2,3,6,7]];
         }
         $business = $d_v_business->where($map)->select();
         $this->assign('business',$business);
@@ -173,7 +173,7 @@ class ReturnAction extends Action
         $d_v_business = D('BusinessView');
         if (count($test)) {
             $map['business_id'] = ['not in', $test];
-            $map['pro_type'] = ['in', [2, 3]];
+            $map['pro_type'] = ['in', [2, 3,6,7]];
         }
         $business_all = $d_v_business->where($map)->select();
         
