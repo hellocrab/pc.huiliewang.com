@@ -387,6 +387,12 @@ class CustomermanageAction extends Action
         } else {
             //@todo 数据导出excel
             //导出excel操作
+            $list = M('customer_visit')->where($where)->limit(0, 500)->select();
+            foreach ($list as &$info) {
+                $info['city'] = $city_name[$info['city']];
+                $info['industry'] = $industry_name[$info['industry']];
+            }
+            $this->exportExcel('客户待回访数据', $list);
 
         }
     }
@@ -468,5 +474,81 @@ class CustomermanageAction extends Action
     public function visitRemark() {
 
 
+    }
+
+    /**
+     * @desc EXCEL数据导出
+     * @param string $expTitle
+     * @param $data
+     * @throws PHPExcel_Exception
+     * @throws PHPExcel_Reader_Exception
+     * @throws PHPExcel_Writer_Exception
+     */
+    private function exportExcel($expTitle, $data) {
+        {
+            $expCellName = [
+                ['pro_type', '项目类型'],
+                ['department_name', '部门'],
+                ['signer', '签单人'],
+                ['p_department_name', '事业部'],
+                ['customer_name', '客户'],
+                ['industry', '行业'],
+                ['ccnum', '产品'],
+                ['callsucc_num', '保证期'],
+                ['hkNum', '盖章公司'],
+                ['bdNum', '项目经理'],
+                ['customerNum', '职位名称'],
+                ['projectNum', '进展'],
+                ['resumeNum', '更新时间'],
+                ['fineNum', 'offer日期'],
+                ['interviewNum', '入职日期'],
+                ['interviewtNum', '回款日期'],
+                ['offerNum', '合同开始'],
+                ['offerdNum', '合同结束']
+            ];
+
+            if (count($data) == 0) {
+                exit();
+            }
+            $xlsTitle = iconv('utf-8', 'gb2312', $expTitle);//文件名称
+            $fileName = $xlsTitle . time();
+            $cellNum = count($expCellName);
+            $dataNum = count($data);
+            import("ORG.PHPExcel.PHPExcel");
+            $objPHPExcel = new PHPExcel();
+            $objActSheet = $objPHPExcel->getActiveSheet(0);
+            $cellName = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ');
+
+            //标题设置
+            $objPHPExcel->getActiveSheet(0)->mergeCells('A1:' . $cellName[$cellNum - 1] . '1');//合并单元格
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $expTitle . '  Export time:' . date('Y-m-d H:i:s'));
+            $objPHPExcel->getActiveSheet()->getStyle('A1:' . $cellName[$cellNum - 1] . '1')->getFont()->setBold(true); //字体加粗
+            $objPHPExcel->getActiveSheet()->getStyle('A1:' . $cellName[$cellNum - 1] . '1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+            //表头设置
+            $size = [10, 18, 18, 18, 24, 24, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18];
+            for ($i = 0; $i < $cellNum; $i++) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i] . '2', $expCellName[$i][1]);
+                $objActSheet->getColumnDimension($cellName[$i])->setWidth($size[$i]);
+                $objPHPExcel->getActiveSheet()->getStyle($cellName[$i] . '2')->getFont()->setBold(true); //字体加粗
+                $objPHPExcel->getActiveSheet()->getStyle($cellName[$i] . '2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            }
+
+            //填充数据
+            for ($i = 0; $i < $dataNum; $i++) {
+                for ($j = 0; $j < $cellNum; $j++) {
+                    $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j] . ($i + 3), $data[$i][$expCellName[$j][0]]);
+                }
+            }
+
+            //下载输出
+            header('pragma:public');
+            @ob_end_clean();//清除缓冲区,避免乱码
+            header("Content-type: application/octet-stream;charset=utf-8;name={$xlsTitle}.xls");
+            header("Content-Disposition:attachment;filename={$fileName}.xls");//attachment新窗口打印inline本窗口打印
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            exit();
+        }
     }
 }

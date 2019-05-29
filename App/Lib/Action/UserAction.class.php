@@ -2499,6 +2499,7 @@ class UserAction extends Action
         foreach ($list as &$info) {
             $info['add_time'] = date('Y-m-d H:i:s', $info['add_time']);
             $info['receive_time'] = $info['receive_time'] ? date('Y-m-d H:i:s', $info['receive_time']) : '';
+            $info['city '] = isset($info['city ']) ? $info['city '] : '重庆';
         }
         $return = ['success' => 1, 'code' => 200, 'info' => $list];
         $this->ajaxReturn($return);
