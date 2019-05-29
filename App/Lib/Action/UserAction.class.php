@@ -2474,6 +2474,9 @@ class UserAction extends Action
      * @desc 离职转交列表入口
      */
     public function my_transfer() {
+        if (!getPerByAction(MODULE_NAME, ACTION_NAME)) {
+//            $this->error('您没有权限操作');
+        }
         $this->display();
     }
 
@@ -2481,14 +2484,17 @@ class UserAction extends Action
      * @desc 离职转交列表
      */
     public function transferList() {
+        $rolesIds = getPerByAction(MODULE_NAME, 'my_transfer');
+        !$rolesIds && $rolesIds = [session('role_id')];
         $page = BaseUtils::getStr(I('page', 1), 'int');
         $pageSize = BaseUtils::getStr(I('page_size', 20), 'int');
         $departmentId = BaseUtils::getStr(I('department_id', 0), 'int');
         $search = BaseUtils::getStr(I('search', 0), 'string');
         $where = [];
         $departmentId > 0 && $where['parent_department_id|department_id'] = $departmentId;
-        $search && $where['phone|user_name'] = ['like',"%{$search}%"];
+        $search && $where['phone|user_name'] = ['like', "%{$search}%"];
         $startNo = ($page - 1) * $pageSize;
+        $where['role_id|receiver_id'] = ['in', $rolesIds];
         $list = M('user_transfer')->where($where)->limit($startNo, $pageSize)->select();
         foreach ($list as &$info) {
             $info['add_time'] = date('Y-m-d H:i:s', $info['add_time']);

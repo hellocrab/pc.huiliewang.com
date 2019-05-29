@@ -658,6 +658,15 @@
 						<span style="width:25%; float:left;">
 							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['user/edit'])">checked="checked"</if> name="per[]" value="user/edit"/>{:L('EDIT')}&nbsp;	
 						</span>
+						<span style="width:25%; float:left;">
+							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['user/my_transfer'])">checked="checked"</if> name="per[]" value="user/my_transfer"/>离职转交&nbsp;
+							<select style="width:auto;<if condition="!isset($owned_permission['user/my_transfer'])">display:none;</if>"  name="user[my_transfer]">
+								<option <if condition="$owned_permission['user/my_transfer'] == 1">selected="selected"</if> value="1">{:L('PERMISSION_SUB')}</option>
+							<option <if condition="$owned_permission['user/my_transfer'] == 2">selected="selected"</if> value="2">{:L('PERMISSION_EVERYONE')}</option>
+							<option <if condition="$owned_permission['user/my_transfer'] == 3">selected="selected"</if> value="3">{:L('PERMISSION_SELF')}</option>
+							<option <if condition="$owned_permission['user/my_transfer'] == 4">selected="selected"</if> value="4">{:L('PERMISSION_DEPARTMENT')}</option>
+							</select>
+						</span>
 						<h4 style="padding-top: 10px;clear:both;">通讯录</h4>
 						<span style="width:25%; float:left;">
 							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['user/contacts'])">checked="checked"</if> name="per[]" value="user/contacts"/>列表&nbsp;	
