@@ -42,7 +42,7 @@ class Rank
      * @desc 入口
      */
     public function index() {
-        $sql = "select * from {$this->achievementTable} where `com_id` > 0 and `project_id` > 0 order by id desc ";
+        $sql = "select * from {$this->achievementTable} where `com_id` > 0 and `type` > 0 order by id desc ";
         $list = $this->selectSql($sql);
         if (!$list) {
             return false;
