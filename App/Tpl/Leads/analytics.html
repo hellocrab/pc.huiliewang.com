@@ -311,7 +311,7 @@
                                         <td style="min-width: 80px;">新增项目数</td>
                                         <td style="min-width: 80px;">新增简历数</td>
                                         <td style="min-width: 80px;">推荐简历数</td>
-                                        <td style="min-width: 80px;">面试人数</td>
+                                        <td style="min-width: 80px;">面试次数</td>
                                         <td style="min-width: 80px;">首面数</td>
                                         <!--<td style="min-width: 80px;">到场数</td>-->
                                         <td style="min-width: 80px;">Offer</td>
@@ -633,7 +633,7 @@
         </div>
     </div>
 </div>
-<div class="" style="display:none;" id="dialog-interview" title="面试人数">
+<div class="" style="display:none;" id="dialog-interview" title="面试次数">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
             <div class="sk-bounce1"></div>
@@ -642,7 +642,7 @@
         </div>
     </div>
 </div>
-<div class="" style="display:none;" id="dialog-interviewt" title="面试次数">
+<div class="" style="display:none;" id="dialog-interviewt" title="首面数">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
             <div class="sk-bounce1"></div>
@@ -971,7 +971,7 @@
         var id = $(this).attr("data-id");
         var num = $(this).text();
         $("#dialog-interview").dialog('option', {
-            title: '面试人数(' + num + ')'
+            title: '面试次数(' + num + ')'
         }).dialog('open');
         $("#dialog-interview").load(
             '{:U("leads/dialoginterview",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' +
@@ -993,7 +993,7 @@
         var id = $(this).attr("data-id");
         var num = $(this).text();
         $("#dialog-interviewt").dialog('option', {
-            title: '面试次数(' + num + ')'
+            title: '首面数(' + num + ')'
         }).dialog('open');
         $("#dialog-interviewt").load(
             '{:U("leads/dialoginterviewt",array("start_date"=>$start_time,"end_date"=>$end_time))}&id=' +

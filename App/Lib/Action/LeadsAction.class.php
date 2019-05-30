@@ -1848,10 +1848,28 @@ class LeadsAction extends Action
     }
 
     /*
-     * 面试人数
+     * 面试次数
      */
 
     public function dialoginterview() {
+        $start_time = I("start_date");
+        $end_time = I("end_date");
+        $roleIds = I("roleIds", '');
+        $role_id = intval(I("id"));
+        $role_id > 0 && $where['fine_project_interview.role_id'] = $role_id;
+        ($role_id <= 0 && $roleIds) && $where['fine_project_interview.role_id'] = ['in', $roleIds];
+        $where['fine_project.interview_times'] = array('egt', 1);
+        $where['fine_project_interview.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
+        $projectSafeModel = new ProjectStepViewModel('fine_project_interview', 'fine_project_interview.role_id');
+        $this->list = $projectSafeModel->where($where)->select();
+        $this->display();
+    }
+
+    /*
+     * 首面数
+     */
+
+    public function dialoginterviewt() {
         $start_time = I("start_date");
         $end_time = I("end_date");
         $roleIds = I("roleIds", '');
@@ -1868,24 +1886,6 @@ class LeadsAction extends Action
             $newList[$info['resume_id']] = $info;
         }
         $this->list = $newList;
-        $this->display();
-    }
-
-    /*
-     * 面试次人数
-     */
-
-    public function dialoginterviewt() {
-        $start_time = I("start_date");
-        $end_time = I("end_date");
-        $roleIds = I("roleIds", '');
-        $role_id = intval(I("id"));
-        $role_id > 0 && $where['fine_project_interview.role_id'] = $role_id;
-        ($role_id <= 0 && $roleIds) && $where['fine_project_interview.role_id'] = ['in', $roleIds];
-        $where['fine_project.interview_times'] = array('egt', 1);
-        $where['fine_project_interview.addtime'] = array(array('elt', $end_time), array('egt', $start_time), 'and');
-        $projectSafeModel = new ProjectStepViewModel('fine_project_interview', 'fine_project_interview.role_id');
-        $this->list = $projectSafeModel->where($where)->select();
         $this->display();
     }
 
@@ -2185,7 +2185,7 @@ class LeadsAction extends Action
                 ['user_name', '员工姓名'], ['department', '部门'], ['position_name', '职位名称'], ['second_name', '顾问英文名'],
                 ['integral', '业绩'], ['callistnum', 'callist'], ['ccnum', 'cc备注'],['callsucc_num', '有效CC'], ['hkNum', '回款个数'],
                 ['bdNum', '新增BD数'], ['customerNum', '新增客户数'], ['projectNum', '新增项目数'], ['resumeNum', '新增简历数'],
-                ['fineNum', '推荐简历数'], ['interviewNum', '面试人数'], ['interviewtNum', '面试次数'], ['offerNum', 'Offer'],
+                ['fineNum', '推荐简历数'], ['interviewNum', '面试次数'], ['interviewtNum', '首面数'], ['offerNum', 'Offer'],
                 ['offerdNum', '掉Offer数'], ['enterNum', '入职数'], ['safeNum', '过保数']];
             $this->exportExcel('员工业绩报表--', $cellName, $list, $countList);
             return;
