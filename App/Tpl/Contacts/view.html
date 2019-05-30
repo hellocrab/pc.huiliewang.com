@@ -431,7 +431,8 @@ $('.eye').click(ar=>{
 						document.querySelector('.mailshow').innerHTML=val.info.email;
                         document.querySelector('.qqshow').innerHTML=val.info.qq;
                         document.querySelector('.wxshow').innerHTML=val.info.wetchat;
-                        document.querySelector('.crmshow').innerHTML=val.info.mobile;
+						$('.crmshow').html(val.info.mobile);
+						console.log($('.crmshow'),document.querySelector('.crmshow'))
                     }
                 }
             )
