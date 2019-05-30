@@ -429,10 +429,13 @@ $('.eye').click(ar=>{
                     if(val.code==200){
                         document.querySelector('.telshow').innerHTML=val.info.telephone;
 						document.querySelector('.mailshow').innerHTML=val.info.email;
-                        document.querySelector('.qqshow').innerHTML=val.info.qq;
-                        document.querySelector('.wxshow').innerHTML=val.info.wetchat;
 						$('.crmshow').html(val.info.mobile);
-						console.log($('.crmshow'),document.querySelector('.crmshow'))
+						setTimeout(() => {
+							document.querySelector('.qqshow').innerHTML=val.info.qq;
+						}, 1);
+                        setTimeout(() => {
+							document.querySelector('.wxshow').innerHTML=val.info.wetchat;
+						}, 1);
                     }
                 }
             )
