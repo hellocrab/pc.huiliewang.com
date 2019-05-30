@@ -2572,7 +2572,7 @@ class UserAction extends Action
         $list = M('business')->field('business_id,name,pro_type,customer_id,create_time')->where($where)->select();
         foreach ($list as &$info) {
             $info['customer_name'] = M('customer')->where(['customer_id' => $info['customer_id']])->getField('name');
-            $info['pro_type'] = isset($proTypes[$info['pro_type']]) ? $proTypes[$info['pro_type']] : $info['pro_type'];
+            $info['pro_type'] = isset($proTypes[$info['pro_type']]) ? $proTypes[$info['pro_type']] : '';
             $info['create_time'] = date('Y-m-d H:i:s', $info['create_time']);
             $statusId = M('fine_project')->where(['project_id' => $info['business_id'], 'stop' => 0])->order('status desc')->limit(1)->getField('status');
             $info['status'] = $projectStatus[$statusId];
@@ -2604,7 +2604,9 @@ class UserAction extends Action
         $userName = $userList[$roleId];
         $parentName = $userList[$parentId];
 
-        $departmentId = session('department_id');
+        $positionId = M('role')->where(['role_id' => $roleId])->getField('position_id');
+        $departmentId = M('position')->where(['position_id' => $positionId])->getField('department_id');
+        !$departmentId && $departmentId = session('department_id');
         $parentDepartmentId = M('role_department')->where(['department_id' => $departmentId])->getField('parent_id');
         $departmentList = M('role_department')->where(['department_id' => ['in', "{$departmentId},{$parentDepartmentId}"]])->getField('department_id,name', true);
 
@@ -2613,10 +2615,10 @@ class UserAction extends Action
         $data = [
             'role_id' => $roleId,
             'user_name' => $userName,
-            'parent_department_id' => $parentDepartmentId,
-            'parent_department' => $departmentNameP,
-            'department_id' => $departmentId,
-            'department' => $departmentName,
+            'parent_department_id' => $parentDepartmentId ? $parentDepartmentId : 0,
+            'parent_department' => $departmentNameP ? $departmentNameP : '',
+            'department_id' => $departmentId ? $departmentId : 0,
+            'department' => $departmentName ? $departmentName : '',
             'phone' => M('user')->where(['role_id' => $roleId])->getField('telephone'),
             'receiver' => $parentName,
             'receiver_id' => $parentId,
