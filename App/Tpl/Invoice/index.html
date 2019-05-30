@@ -157,18 +157,21 @@
                                                             <div class="col-sm-2">
                                                                 <select id="type_business" class="form-control">
                                                                     <option value="">全部</option>
-                                                                    <option value="1">面试快</option>
-                                                                    <option value="2">入职快 </option>
-                                                                    <option value="3">专业猎头</option>
-                                                                    <option value="4">慧简历</option>
+                                                                    <option value="1" <if condition="$Think.request.type_business eq 1">selected="selected"</if>>线上面试快</option>
+                                                                    <option value="2" <if condition="$_GET['type_business'] eq 2">selected="selected"</if>>线上入职快</option>
+                                                                    <option value="3" <if condition="$_GET['type_business'] eq 3">selected="selected"</if>>线上专业猎头</option>
+                                                                    <option value="4" <if condition="$_GET['type_business'] eq 4">selected="selected"</if>>线下慧沟通</option>
+                                                                    <option value="5" <if condition="$_GET['type_business'] eq 5">selected="selected"</if>>线下慧面试</option>
+                                                                    <option value="6" <if condition="$_GET['type_business'] eq 6">selected="selected"</if>>线下慧入职</option>
+                                                                    <option value="7" <if condition="$_GET['type_business'] eq 7">selected="selected"</if>>线下专业猎头</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-sm-3" style="padding-left: 60px;">
                                                                 <input value="{$type}" type="hidden" id="type"/>
-                                                                <input id="applyed_time" placeholder="申请时间" class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" value="" type="text" />
+                                                                <input id="applyed_time" placeholder="申请时间" class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" value="{$_GET['applyed_time']}" type="text" />
                                                             </div>
                                                             <div class="col-sm-3">
-                                                                至:<input id="applyed_endtime" class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" value="" type="text" />
+                                                                至:<input id="applyed_endtime" class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" value="{$_GET['applyed_endtime']}" type="text" />
                                                             </div>
                                                             <div class="col-sm-1">
                                                                 <button class="btn btn-primary" id="shaixuan" type="button">筛选</button>
@@ -190,19 +193,22 @@
                                                             </div>
                                                             <div class="col-sm-2">
                                                                    <select id="type_business" class="form-control">
-                                                                       <option value="">全部</option>
-                                                                       <option value="1">面试快</option>
-                                                                       <option value="2">入职快</option>
-                                                                       <option value="3">专业猎头</option>
-                                                                       <option value="4">慧简历</option>
+                                                                       <option value="">全部 </option>
+                                                                       <option value="1" <if condition="$Think.request.type_business eq 1">selected="selected"</if>>线上面试快</option>
+                                                                       <option value="2" <if condition="$_GET['type_business'] eq 2">selected="selected"</if>>线上入职快</option>
+                                                                       <option value="3" <if condition="$_GET['type_business'] eq 3">selected="selected"</if>>线上专业猎头</option>
+                                                                       <option value="4" <if condition="$_GET['type_business'] eq 4">selected="selected"</if>>线下慧沟通</option>
+                                                                       <option value="5" <if condition="$_GET['type_business'] eq 5">selected="selected"</if>>线下慧面试</option>
+                                                                       <option value="6" <if condition="$_GET['type_business'] eq 6">selected="selected"</if>>线下慧入职</option>
+                                                                       <option value="7" <if condition="$_GET['type_business'] eq 7">selected="selected"</if>>线下专业猎头</option>
                                                                    </select>
                                                             </div>
                                                             <div class="col-sm-3" style="padding-left: 60px;">
                                                                 <input value="{$type}" type="hidden" id="type"/>
-                                                                <input id="applyed_time" placeholder="申请时间" class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" value="" type="text" />
+                                                                <input id="applyed_time" placeholder="申请时间" class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" value="{$_GET['applyed_time']}" type="text" />
                                                                 </div>
                                                             <div class="col-sm-4">
-                                                                至:<input id="applyed_endtime" class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" value="" type="text" />
+                                                                至:<input id="applyed_endtime" class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd H:m:s'})" value="{$_GET['applyed_endtime']}" type="text" />
                                                             </div>
                                                             <div class="col-sm-1">
                                                                 <button class="btn btn-primary" id="shaixuan" type="button">筛选</button>
@@ -229,13 +235,19 @@
                                                                                     <span class="label label-primary m-l-xs ng-binding" style="float:left">{$vo.cost_type}</span>
                                                                                     <span class="label label-warning m-l-xs ng-binding" style="float:left">
                                                                                         <if condition="$vo.project_type eq 1">
-                                                                                            面试快
+                                                                                            线上面试快
                                                                                             <elseif  condition="$vo.project_type eq 2"/>
-                                                                                            入职快
+                                                                                            线上入职快
                                                                                             <elseif  condition="$vo.project_type eq 3"/> 
-                                                                                            专业猎头
+                                                                                            线上专业猎头
                                                                                             <elseif  condition="$vo.project_type eq 4"/>
-                                                                                            慧简历
+                                                                                            线下慧沟通
+                                                                                            <elseif  condition="$vo.project_type eq 5"/>
+                                                                                            线下慧面试
+                                                                                            <elseif  condition="$vo.project_type eq 6"/>
+                                                                                            线下慧入职
+                                                                                            <elseif  condition="$vo.project_type eq 7"/>
+                                                                                            线下专业猎头
                                                                                             <else />
                                                                                             {$vo.project_type}
                                                                                         </if>
