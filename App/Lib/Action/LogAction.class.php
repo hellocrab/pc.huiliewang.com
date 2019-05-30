@@ -385,7 +385,7 @@ class LogAction extends Action{
 //        }
 
         //我全部项目
-        $where['_string'] = "business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
+        $where['_string'] = "business.transfer_role = ".session('role_id')." OR business.creator_role_id = ".session('role_id')." OR business.joiner  = ".session('role_id')." OR FIND_IN_SET(".session('role_id').",business.owner_role_id) OR FIND_IN_SET(".session('role_id').",business.parter)";
         $where['_logic'] = 'OR';
         $map['_complex'] = $where;
         $map['is_deleted'] = 0;

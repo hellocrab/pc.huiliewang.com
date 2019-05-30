@@ -2669,6 +2669,7 @@ class UserAction extends Action
                 M('customer')->where($whereTrans)->save($dataTrans);
                 M('resume')->where($whereTrans)->save($resumeTrans);
                 M('business')->where($whereTrans)->save($dataTrans);
+                M('contacts')->where(['creator_role_id' => $transferInfo['role_id']])->save(['creator_role_id' => $transferInfo['receiver_id']]);
                 M()->commit();
             } catch (Exception $e) {
                 $res = false;
