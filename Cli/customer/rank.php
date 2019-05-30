@@ -136,7 +136,11 @@ class Rank
             $info['type'] == 6 && $info['type'] = 2;
             //线下专业猎头 =》专业猎头
             $info['type'] == 7 && $info['type'] = 3;
-            $data[$info['type']] = $info['integral'];
+            if(isset($data[$info['type']])){
+                $data[$info['type']] += $info['integral'];
+            }else{
+                $data[$info['type']] = $info['integral'];
+            }
         }
         //删除列表历史数据
         $sqlList = "select * from {$this->rankList} where customer_id = {$customerId}";
