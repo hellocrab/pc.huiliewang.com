@@ -86,10 +86,10 @@ foreach ($userList as $userInfo) {
         $data['resume_num'] = resumeNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
         //6、推荐人员
         $data['fine_project_num'] = fineProjectNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
-        //7、面试人数
+        //7、面试次数
         $interviewNum = interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
-        $data['interview_num'] = isset($interviewNum['countPerson']) ? $interviewNum['countPerson'] : 0;
-        //8、面试次数
+        $data['interview_num'] = isset($interviewNum['countTimes']) ? $interviewNum['countTimes'] : 0;
+        //8、首面数
         $data['interviewt_num'] = isset($interviewNum['countInterview']) ? $interviewNum['countInterview'] : 0;
         //9、offer统计
         $data['offer_num'] = offerNum($userRoleId, $dateStartInt, $nextDayInt, $conn);
@@ -363,9 +363,9 @@ function interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
 {
     $tableProject = 'mx_fine_project';
     $tableInterview = 'mx_fine_project_interview';
-    $sql = "SELECT count(distinct(pro.resume_id)) as countPerson "
-            . "FROM {$tableProject} as pro , {$tableInterview} as vie "
-            . "where vie.fine_id = pro.id and vie.role_id = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime < {$nextDayInt} ";
+    $sql = "SELECT count(*) as countTimes "
+                    . "FROM {$tableProject} as pro , {$tableInterview} as vie "
+                    . "where vie.fine_id = pro.id and vie.role_id = {$userRoleId} and vie.addtime >= {$dateStartInt} and vie.addtime < {$nextDayInt} ";
             
             
             $sql2 ="select count(*) as countInterview from (SELECT count(*) as countTimes "
@@ -379,8 +379,8 @@ function interviewNum($userRoleId, $dateStartInt, $nextDayInt, $conn)
         $info1 = $query->fetch(PDO::FETCH_ASSOC);
         $info2 = $query2->fetch(PDO::FETCH_ASSOC);
         $info = [
-            "countPerson" => $info1['countPerson'],
-            "countInterview" => $info2['countInterview']
+            "countTimes" => $info1['countTimes'],//面试次数
+            "countInterview" => $info2['countInterview']//首面数
         ];
         return $info;
     } else {

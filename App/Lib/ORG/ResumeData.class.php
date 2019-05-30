@@ -57,7 +57,7 @@ class ResumeData {
                 $text = file_get_contents($basePath . $htmlName);
             } else {
                 mt_srand(time());
-                $docker_num = mt_rand(1, 45);
+                $docker_num = mt_rand(1, 55);
                 $_filename = implode('.', $filename);
                 $relPath = '/root/html1/'.$_filename;
                 $basePath = '/root/html1';
