@@ -2659,7 +2659,7 @@ class UserAction extends Action
             //接收转交
             $res = true;
             //更改项目、简历、客户创建人
-            $whereTrans = ['creator_role_id' => $transferInfo['role_id']];
+            $whereTrans = ['creator_role_id|transfer_role' => $transferInfo['role_id']];
             $dataTrans = ['transfer_role' => $transferInfo['receiver_id'], 'update_time' => time()];
             $resumeTrans = ['transfer_role' => $transferInfo['receiver_id'], 'lastupdate' => time()];
             try {
