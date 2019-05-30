@@ -191,10 +191,13 @@
                                                             <div class="col-sm-2">
                                                                    <select id="type_business" class="form-control">
                                                                        <option value="">全部</option>
-                                                                       <option value="1">面试快</option>
-                                                                       <option value="2">入职快</option>
-                                                                       <option value="3">专业猎头</option>
-                                                                       <option value="4">慧简历</option>
+                                                                       <option value="1">线上面试快</option>
+                                                                       <option value="2">线上入职快</option>
+                                                                       <option value="3">线上专业猎头</option>
+                                                                       <option value="4">线下慧沟通</option>
+                                                                       <option value="5">线下慧面试</option>
+                                                                       <option value="6">线下慧入职</option>
+                                                                       <option value="7">线下专业猎头</option>
                                                                    </select>
                                                             </div>
                                                             <div class="col-sm-3" style="padding-left: 60px;">
@@ -229,13 +232,19 @@
                                                                                     <span class="label label-primary m-l-xs ng-binding" style="float:left">{$vo.cost_type}</span>
                                                                                     <span class="label label-warning m-l-xs ng-binding" style="float:left">
                                                                                         <if condition="$vo.project_type eq 1">
-                                                                                            面试快
+                                                                                            线上面试快
                                                                                             <elseif  condition="$vo.project_type eq 2"/>
-                                                                                            入职快
+                                                                                            线上入职快
                                                                                             <elseif  condition="$vo.project_type eq 3"/> 
-                                                                                            专业猎头
+                                                                                            线上专业猎头
                                                                                             <elseif  condition="$vo.project_type eq 4"/>
-                                                                                            慧简历
+                                                                                            线下慧沟通
+                                                                                            <elseif  condition="$vo.project_type eq 5"/>
+                                                                                            线下慧面试
+                                                                                            <elseif  condition="$vo.project_type eq 6"/>
+                                                                                            线下慧入职
+                                                                                            <elseif  condition="$vo.project_type eq 7"/>
+                                                                                            线下专业猎头
                                                                                             <else />
                                                                                             {$vo.project_type}
                                                                                         </if>
