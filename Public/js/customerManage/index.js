@@ -30,7 +30,7 @@ function getData() {
                 res.info.list.map((val, index) => {
                     doc += `<tr>
                         <td>${val.pro_type}</td>
-                        <td>${val.customer_name}</td>
+                        <td><a href='/index.php?m=customer&a=view&id=${val.customer_id}content=1'>${val.customer_name}</a></td>
                         <td>${val.rank_name}</td>
                         <td>
                             ${val.money}${val.pro_type=='入职快'?'('+val.enter_num+'人)':''}&nbsp;&nbsp;
