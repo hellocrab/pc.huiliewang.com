@@ -2652,8 +2652,6 @@ class UserAction extends Action
         $transferModel = M('user_transfer');
         $where = ['id' => $transferId, 'receiver_id' => $userId];
         $transferInfo = $transferModel->where($where)->find();
-        var_dump($transferInfo, M()->getLastSql());
-        die;
         if (!$transferInfo) {
             $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '没有找到转交记录']);
         }
