@@ -136,7 +136,11 @@ class Rank
             $info['type'] == 6 && $info['type'] = 2;
             //线下专业猎头 =》专业猎头
             $info['type'] == 7 && $info['type'] = 3;
-            $data[$info['type']] = $info['integral'];
+            if (isset($data[$info['type']])) {
+                $data[$info['type']] += $info['integral'];
+            } else {
+                $data[$info['type']] = $info['integral'];
+            }
         }
         //删除列表历史数据
         $sqlList = "select * from {$this->rankList} where customer_id = {$customerId}";
@@ -162,7 +166,7 @@ class Rank
                 $typeData['enter_num'] = 0;
                 if ($type == 2) {
                     //入职人数
-                    $integral = $this->getEnters($customerId, $type);
+                    $integral = $this->getEnters($customerId, "2,6");
                     $typeData['enter_num'] = $integral;
                 }
                 //B或者C 级别
@@ -212,7 +216,7 @@ class Rank
      * @param int $proType
      * @return int|mixed
      */
-    private function getEnters($customerId, $proType = 2) {
+    private function getEnters($customerId, $proType = '2,6') {
         $tableProject = 'mx_fine_project';
         $tableInterview = 'mx_fine_project_enter';
         $tableBusiness = 'mx_business';
@@ -221,7 +225,7 @@ class Rank
             "and bu.business_id = pro.project_id " .
             " and pro.com_id = {$customerId} " .
             "and bu.customer_id = {$customerId} " .
-            "and  bu.pro_type = {$proType}";
+            "and  bu.pro_type  in ({$proType}) ";
         $info = $this->selectSql($sql, false);
         return $info['counts'] > 0 ? $info['counts'] : 0;
     }

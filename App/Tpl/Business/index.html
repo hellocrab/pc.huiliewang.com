@@ -156,6 +156,8 @@
     $(function () {
         $('#reset').on('click',function () {
             $('.re').val('');
+            $('.re .items').html('');
+            $('.placeholder').css('display','block')
         })
         $('#cs').on('click',function () {
             $('#business_search').submit();

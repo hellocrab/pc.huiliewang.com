@@ -380,7 +380,7 @@
                         receiver_id = res.info.receiver_id;
                         $('.dimission_dialog').css('display',"block");
                     }else{
-                        swal("操作失败","获取转交上级失败","error")
+                        swal("操作失败",res.info,"error")
                     }
                 }
             })
@@ -399,7 +399,7 @@
                     if(res.code==200){
                         swal("提交成功","您的转交请求已提交","success")
                     }else{
-                        swal("提交失败","您的转交请求提交出现问题","error")
+                        swal("提交失败",res.info,"error")
                     }
                 }
             })

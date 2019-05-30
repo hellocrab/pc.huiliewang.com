@@ -2502,7 +2502,7 @@ class UserAction extends Action
             $info['city'] = isset($info['city']) ? $info['city'] : '重庆';
         }
         $counts = M('user_transfer')->where($where)->count();
-        $data = ['list' => $list, 'current_page' => $page, 'counts' => $counts> 0 ? $counts : 0 ];
+        $data = ['list' => $list, 'current_page' => $page, 'counts' => $counts > 0 ? $counts : 0];
         $return = ['success' => 1, 'code' => 200, 'info' => $data];
         $this->ajaxReturn($return);
     }
@@ -2539,9 +2539,10 @@ class UserAction extends Action
      * @desc 我的离职转交
      */
     public function transferDetail() {
-        $roleId = I('role_id', session('role_id'));
+//        $roleId = I('role_id', session('role_id'));
+        $receiverId = I('transfer_id', 0);
         $transferModel = M('user_transfer');
-        $info = $transferModel->where(['role_id' => $roleId])->field('id,role_id,receiver_id,user_name,receiver,status')->find();
+        $info = $transferModel->where(['id' => $receiverId])->field('id,role_id,receiver_id,user_name,receiver,status')->find();
         if ($info) {
             $info['customer_count'] = M('customer')->where(['creator_role_id' => $info['role_id']])->count();
             $info['resume_count'] = M('resume')->where(['creator_role_id' => $info['role_id']])->count();
@@ -2659,7 +2660,7 @@ class UserAction extends Action
             //接收转交
             $res = true;
             //更改项目、简历、客户创建人
-            $whereTrans = ['creator_role_id' => $transferInfo['role_id']];
+            $whereTrans = ['creator_role_id|transfer_role' => $transferInfo['role_id']];
             $dataTrans = ['transfer_role' => $transferInfo['receiver_id'], 'update_time' => time()];
             $resumeTrans = ['transfer_role' => $transferInfo['receiver_id'], 'lastupdate' => time()];
             try {
@@ -2668,6 +2669,7 @@ class UserAction extends Action
                 M('customer')->where($whereTrans)->save($dataTrans);
                 M('resume')->where($whereTrans)->save($resumeTrans);
                 M('business')->where($whereTrans)->save($dataTrans);
+                M('contacts')->where(['creator_role_id' => $transferInfo['role_id']])->save(['creator_role_id' => $transferInfo['receiver_id']]);
                 M()->commit();
             } catch (Exception $e) {
                 $res = false;
