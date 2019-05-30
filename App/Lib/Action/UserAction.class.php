@@ -2502,7 +2502,7 @@ class UserAction extends Action
             $info['city'] = isset($info['city']) ? $info['city'] : '重庆';
         }
         $counts = M('user_transfer')->where($where)->count();
-        $data = ['list' => $list, 'current_page' => $page, 'counts' => $counts> 0 ? $counts : 0 ];
+        $data = ['list' => $list, 'current_page' => $page, 'counts' => $counts > 0 ? $counts : 0];
         $return = ['success' => 1, 'code' => 200, 'info' => $data];
         $this->ajaxReturn($return);
     }
@@ -2539,9 +2539,10 @@ class UserAction extends Action
      * @desc 我的离职转交
      */
     public function transferDetail() {
-        $roleId = I('role_id', session('role_id'));
+//        $roleId = I('role_id', session('role_id'));
+        $receiverId = I('transfer_id', 0);
         $transferModel = M('user_transfer');
-        $info = $transferModel->where(['role_id' => $roleId])->field('id,role_id,receiver_id,user_name,receiver,status')->find();
+        $info = $transferModel->where(['id' => $receiverId])->field('id,role_id,receiver_id,user_name,receiver,status')->find();
         if ($info) {
             $info['customer_count'] = M('customer')->where(['creator_role_id' => $info['role_id']])->count();
             $info['resume_count'] = M('resume')->where(['creator_role_id' => $info['role_id']])->count();
@@ -2651,6 +2652,8 @@ class UserAction extends Action
         $transferModel = M('user_transfer');
         $where = ['id' => $transferId, 'receiver_id' => $userId];
         $transferInfo = $transferModel->where($where)->find();
+        var_dump($transferInfo, M()->getLastSql());
+        die;
         if (!$transferInfo) {
             $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '没有找到转交记录']);
         }
