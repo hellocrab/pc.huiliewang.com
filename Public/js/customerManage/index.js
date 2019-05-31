@@ -297,16 +297,14 @@ $('select').on('change', ev => {
     getData();
 })
 $('#name').on('keydown', ev => {
-    if (ev.keyCode == 13&&$('#name').val()) {
+    if (ev.keyCode == 13) {
         current_page = 1;
         getData();
     }
 })
 $('.fa-search').click(ev=>{
-    if($('#name').val()){
         current_page = 1;
         getData();
-    }
 })
 $('#goto').on('keydown', ev => {
     let reg = new RegExp(/^\d+$/);
