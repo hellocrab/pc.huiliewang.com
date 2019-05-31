@@ -132,9 +132,9 @@ class CustomermanageAction extends Action
         $params = $_REQUEST;
         $page = I('page', 1);
         $pageSize = I('page_size', 15);
-        $name = BaseUtils::getStr($params['name']);
-        $order = BaseUtils::getStr($params['order_file']);
-        $asc = BaseUtils::getStr($params['order_asc']);
+        $name = trim(BaseUtils::getStr($params['name']));
+        $order = trim(BaseUtils::getStr($params['order_file']));
+        $asc = trim(BaseUtils::getStr($params['order_asc']));
 
         //条件处理
         $where = [];
@@ -344,7 +344,7 @@ class CustomermanageAction extends Action
         //业务类型
         $proType = BaseUtils::getStr(I('pro_type', 0), 'int');
         //搜索字段【签单人、客户名、联系人、联系电话】
-        $search = BaseUtils::getStr(I('search', ''), 'string');
+        $search = trim(BaseUtils::getStr(I('search', ''), 'string'));
         //是否有电话
         $isPhone = BaseUtils::getStr(I('is_phone', ''), 'int');
         //是否有商机
