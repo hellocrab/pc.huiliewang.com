@@ -2657,6 +2657,9 @@ class UserAction extends Action
         if (!$transferInfo) {
             $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '没有找到转交记录']);
         }
+        if ($transferInfo['receive_time'] > 0) {
+            $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => '您已经处理过该转交了']);
+        }
         $data = ['status' => $status, 'receive_time' => time()];
         if ($status == 1) {
             //接收转交
