@@ -134,7 +134,6 @@ class BusinessAction extends Action
         } elseif ($_GET['asc_order']) {
             $order = 'top.set_top desc, top.top_time desc ,' . trim($_GET['asc_order']) . ' asc,business_id asc';
         }
-        $ownerAllIds = implode(',', $this->_permissionRes); //所有的ID
         switch ($by) {
             case 'create' :
                 $where['business.creator_role_id'] = session('role_id');
@@ -174,7 +173,7 @@ class BusinessAction extends Action
                 $order = 'business.update_time desc,business.business_id asc';
                 break;
             case 'me' :
-                $where['business.creator_role_id|business.transfer_role'] = session('role_id');
+                $where['business.creator_role_id|business.transfer_role'] = intval(session('role_id'));
                 break;
             case 'all' :
 //                $where['business.owner_role_id'] = array('in',$ownerAllIds);
@@ -436,7 +435,7 @@ class BusinessAction extends Action
 
         if ($_GET['owner']) {
             $owner = BaseUtils::getStr($_GET['owner']);
-            $arr2 = M('Customer')->where(array('name' => array('like', '%' . $owner . '%')))->field('customer_id')->select();
+            $arr2 = M('Customer')->where(array('name' => array('like', $owner . '%')))->field('customer_id')->select();
             $where['owner_role_id'] = array('in', $arr2);
         }
 
@@ -605,7 +604,6 @@ class BusinessAction extends Action
         $m_receivables = M('Receivables');
         $m_receivingorder = M('Receivingorder');
         $m_contract = M('Contract');
-        $m_r_business_product = M('RBusinessProduct');
         $d_business_product = D('BusinessProductView');
         $m_business_data = M('BusinessData');
         foreach ($list as $k => $v) {
@@ -638,11 +636,9 @@ class BusinessAction extends Action
             }
 
             //提醒
-            $remind_info = array();
             $remind_info = $m_remind->where(array('module' => 'business', 'module_id' => $v['business_id'], 'create_role_id' => session('role_id'), 'is_remind' => array('neq', 1)))->order('remind_id desc')->find();
             $list[$k]['remind_time'] = !empty($remind_info) ? $remind_info['remind_time'] : '';
             //产品名称
-            $product_name = array();
             $product_name = $d_business_product->where('r_business_product.business_id = (%d)', $v['business_id'])->getField('name', true);
             if ($product_name) {
                 if (count($product_name) > 1) {
