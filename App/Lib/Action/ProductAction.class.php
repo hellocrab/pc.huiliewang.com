@@ -458,11 +458,11 @@ class ProductAction extends Action {
                         $params[] = "search_email={$_REQUEST['search_email']}";
                     }
                     if($search_tel){
-                        $where['telephone'] = array('like' ,'%'.$search_tel . '%');
+                        $where['telephone'] = array('like' ,$search_tel . '%');
                         $params[] = "search_tel={$_REQUEST['search_tel']}";
                     }
                     if($search_comp){
-                        $where['curCompany'] = array('like' ,'%'.$search_comp . '%');
+                        $where['curCompany'] = array('like' ,$search_comp . '%');
                         $params[] = "search_comp={$_REQUEST['search_comp']}";
                     }
                     if($search_cplace){
@@ -472,7 +472,7 @@ class ProductAction extends Action {
                     if($search_owner){
                         $search_owner = trim($search_owner);
 //                        $where['creator_role_name'] = array('like','%' . $search_owner . '%');
-                        $role_ids = M('user')->where(array('full_name'=>array('like','%'.$search_owner.'%')))->getField('role_id',true);
+                        $role_ids = M('user')->where(array('full_name'=>array('like',$search_owner.'%')))->getField('role_id',true);
                         $where['creator_role_id'] = array('in',$role_ids);
                     }
                     if($search_major){
