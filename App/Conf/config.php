@@ -17,7 +17,7 @@ return array(
     'LANG_LIST' => 'en-us,zh-cn',
     'VAR_LANGUAGE' => '1',
     'COOKIE_PATH' => __ROOT__,
-    'SESSION_OPTIONS' => array('cookie_path' => __ROOT__),
+    'SESSION_OPTIONS' => array('cookie_path' => __ROOT__,'expire'=>3*3600),
     'TOKEN_ON' => false,  // 是否开启令牌验证
     'TOKEN_NAME' => '__hash__',    // 令牌验证的表单隐藏字段名称
     'TOKEN_TYPE' => 'md5',  //令牌哈希验证规则 默认为MD5
