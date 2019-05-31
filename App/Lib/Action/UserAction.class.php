@@ -2489,7 +2489,7 @@ class UserAction extends Action
         $page = BaseUtils::getStr(I('page', 1), 'int');
         $pageSize = BaseUtils::getStr(I('page_size', 20), 'int');
         $departmentId = BaseUtils::getStr(I('department_id', 0), 'int');
-        $search = BaseUtils::getStr(I('search', 0), 'string');
+        $search = trim(BaseUtils::getStr(I('search', 0), 'string'));
         $where = [];
         $departmentId > 0 && $where['parent_department_id|department_id'] = $departmentId;
         $search && $where['phone|user_name'] = ['like', "%{$search}%"];
@@ -2573,9 +2573,9 @@ class UserAction extends Action
         foreach ($list as &$info) {
             $info['customer_name'] = M('customer')->where(['customer_id' => $info['customer_id']])->getField('name');
             $info['pro_type'] = isset($proTypes[$info['pro_type']]) ? $proTypes[$info['pro_type']] : '';
-            $info['create_time'] = date('Y-m-d H:i:s', $info['create_time']);
+            $info['create_time'] = date('Y-m-d', $info['create_time']);
             $statusId = M('fine_project')->where(['project_id' => $info['business_id'], 'stop' => 0])->order('status desc')->limit(1)->getField('status');
-            $info['status'] = $projectStatus[$statusId];
+            $info['status'] = isset($projectStatus[$statusId]) ? $projectStatus[$statusId] : '暂无';
         }
         return $list;
     }
