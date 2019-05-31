@@ -994,7 +994,7 @@ class CustomerAction extends Action {
             case 'sub' : $where['owner_role_id'] = array('in', $below_ids);
                 break;
             case 'me' :
-                $where['owner_role_id|transfer_role'] = session('role_id');
+                $where['owner_role_id|transfer_role'] = intval(session('role_id'));
                 break;
             case 'share' : $where['customer_id'] = array('in', $customerid);
                 break;
@@ -1486,34 +1486,34 @@ class CustomerAction extends Action {
                 }
                 if($_GET['customer']){
                     $cus = BaseUtils::getStr($_GET['customer']);
-                    $map['name'] = array('like','%'.$cus.'%');
+                    $map['name'] = array('like',$cus.'%');
                 }
                 if($_GET['contacts'] && $_GET['contacts_phone']){
                     $con = BaseUtils::getStr($_GET['contacts']);
                     $phone = BaseUtils::getStr($_GET['contacts_phone']);
                     $phone = trim($phone);
                     $con = trim($con);
-                    $c_where['_string'] = 'name like "%' . $con . '%" and (telephone like "%' . $phone . '%" or crm_ljgmqr like "%'.$phone.'%" )';
+                    $c_where['_string'] = 'name like ' . $con . '%" and (telephone like "%' . $phone . '%" or crm_ljgmqr like "%'.$phone.'%" )';
                     $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
                     $contacts_str = implode(',', $contacts_ids);
                     $customerIds = M('r_contacts_customer')->where(['contacts_id' => ['in', $contacts_str]])->getField('customer_id', true);
-                    $map['customer_id'] = array('in',$customerIds);
+                    $customerIds && $map['customer_id'] = array('in',$customerIds);
                 }elseif($_GET['contacts']){
                     $con = BaseUtils::getStr($_GET['contacts']);
                     $con = trim($con);
-                    $c_where['_string'] = 'name like "%' . $con . '%" ';
+                    $c_where['_string'] = 'name like ' . $con . '%" ';
                     $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
                     $contacts_str = implode(',', $contacts_ids);
                     $customerIds = M('r_contacts_customer')->where(['contacts_id' => ['in', $contacts_str]])->getField('customer_id', true);
-                    $map['customer_id'] = array('in',$customerIds);
+                    $customerIds && $map['customer_id'] = array('in',$customerIds);
                 }elseif($_GET['contacts_phone']){
                     $phone = BaseUtils::getStr($_GET['contacts_phone']);
                     $phone = trim($phone);
-                    $c_where['_string'] = ' (telephone like "%' . $phone . '%" or crm_ljgmqr like "%'.$phone.'%") ';
+                    $c_where['_string'] = ' (telephone like ' . $phone . '%" or crm_ljgmqr like '.$phone.'%") ';
                     $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
                     $contacts_str = implode(',', $contacts_ids);
                     $customerIds = M('r_contacts_customer')->where(['contacts_id' => ['in', $contacts_str]])->getField('customer_id', true);
-                    $map['customer_id'] = array('in',$customerIds);
+                    $customerIds && $map['customer_id'] = array('in',$customerIds);
                 }
                 $list = $d_v_customer->lists($map,$order,$p . ',' . $listrows);
                 $count = $d_v_customer->where($map)->count();
@@ -1652,7 +1652,6 @@ class CustomerAction extends Action {
                 }
             }
 
-            $status_count = M('businessStatus')->count();
             $Page = new Page($count, $listrows);
             if (!empty($_GET['content'])) {
                 $params[] = "content=" . trim($_GET['content']);
