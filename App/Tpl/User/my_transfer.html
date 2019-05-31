@@ -353,10 +353,16 @@
 			})
 		}
 		$('#short_search').on('keydown', ev => {
-			if (ev.keyCode == 13 && $('#short_search').val()) {
+			if (ev.keyCode == 13) {
+			event.preventDefault();
 				current_page = 1;
 				getData();
 			}
+		})
+		$('#short_search_btn').on('click', ev => {
+			event.preventDefault();
+				current_page = 1;
+				getData();
 		})
 		$('#department').change(ev => {
 			current_page = 1;
@@ -481,11 +487,11 @@
 					<div class="title-bar">
 
 						<div class="row " id="title-show">
-							<form class="form-inline" id="" action="" method="get">
+							<form class="form-inline" id="">
 								<ul class="breadcrum pull-right" style="margin-bottom: 0px">
 									<li>
 										<span style="margin-left:20px;">部门：</span>
-										<select class="form-control" id="department" onchange=""
+										<select class="form-control" id="department"
 											style="margin-bottom:5px;">
 											<option value="">--全部--</option>
 										</select>
@@ -495,11 +501,9 @@
 										<div class="input-group">
 											<input id="short_search" type="text" style="width:160px;"
 												placeholder="请输入员工名称"
-												onkeydown='if(event.keyCode==13) {$("#short_search_btn").trigger("click");return false;}'
-												class="form-control input-sm" name="search" />
+												class="form-control input-sm"/>
 											<span class="input-group-btn">
-												<button class="btn btn-default btn-search" id="short_search_btn"
-													type="submit"><i class="fa fa-search"></i></button>
+												<button class="btn btn-default btn-search" id="short_search_btn" type="button"><i class="fa fa-search"></i></button>
 											</span>
 										</div>
 									</li>
