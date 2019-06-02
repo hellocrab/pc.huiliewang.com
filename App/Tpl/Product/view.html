@@ -1773,7 +1773,7 @@
                                         itemId,
                                         type: 1,
                                         tel: '',
-                                        channel: 1
+                                        channel: 3
                                     },
                                     function (data) {
                                         var obj = $.parseJSON(data);
@@ -1814,17 +1814,17 @@
                                         type: "warning",
                                         showCancelButton: true,
                                         confirmButtonColor: "#DD6B55",
-                                        confirmButtonText: "品聘",
-                                        cancelButtonText: '融营云',
+                                        confirmButtonText: "坐席呼叫",
+                                        cancelButtonText: '个人手机拨打',
                                         closeOnConfirm: false,
                                         closeOnCancel: false
                                     },
                                     function (isConfirm) {
                                         var channel;
                                         if (isConfirm) {
-                                            channel = 1;
-                                        } else {
                                             channel = 2;
+                                        } else {
+                                            channel = 3;
                                         }
                                         var fineId = $(_this).attr('data-id');
                                         $.post(

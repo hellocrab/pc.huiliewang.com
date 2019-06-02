@@ -55,7 +55,7 @@ class CallcenterAction extends Action {
         $type = isset($_POST['type']) ? intval($_POST['type']) : 0; //1、简历 2、客户联系人
         $itemId = isset($_POST['itemId']) ? $_POST['itemId'] : 0; //客户联系人/简历ID
         $fineId = isset($_POST['fineId']) ? $_POST['fineId'] : 0; //客户联系人/简历ID
-        $channel = $_POST['channel'] ? BaseUtils::getStr(trim(I('channel'))) : 1;
+        $channel = $_POST['channel'] ? BaseUtils::getStr(trim(I('channel'))) : 3;
         $timestamp = date('YmdHis');
 
         if ($itemId > 0) {
@@ -124,6 +124,12 @@ class CallcenterAction extends Action {
                         'appToken' => self::RONGYINYUN_CALLCENTER_APP_TOKEN
                     ];
                     $callStatus = $this->rongYinYunCall($timestamp, $tel, $sourceTel, $secertArr);
+
+                    if ($callStatus['statuscode'] == 200) {
+                        $callsId = $callStatus['data'];
+                        $this->record($callsId, $phoneRecordData, $channel);
+                        echo json_encode(['code' => 1, 'msg' => '拨打成功']);
+                    }
                     break;
                 case 3 : //融营云点击回拨
                     $secertArr = [
@@ -132,13 +138,13 @@ class CallcenterAction extends Action {
                         'appToken' => self::RONGYINYUN_CALLBACK_APP_TOKEN
                     ];
                     $callStatus = $this->rongYinYunCallBackChannel($timestamp, $tel, $sourceTel, $secertArr);
+                    
+                    if ($callStatus['Flag'] == 1) {
+                        $callsId = $callStatus['Msg'];
+                        $this->record($callsId, $phoneRecordData, $channel);
+                        echo json_encode(['code' => 1, 'msg' => '拨打成功']);
+                    }
                     break;
-            }
-
-            if ($callStatus['statuscode'] == 200) {
-                $callsId = $callStatus['data'];
-                $this->record($callsId, $phoneRecordData, $channel);
-                echo json_encode(['code' => 1, 'msg' => '拨打成功']);
             }
         }
     }
@@ -231,9 +237,6 @@ class CallcenterAction extends Action {
             'Callee' => $Callee,
             'IsDisplayCalleeNbr' => false
         ];
-        var_dump($data);
-        var_dump($sig);
-        var_dump($header);
         $data = json_encode($data);
 
         $ch = curl_init();
@@ -247,8 +250,6 @@ class CallcenterAction extends Action {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $response = curl_exec($ch);
         $result = json_decode($response, true);
-        var_dump($result);
-        exit;
         curl_close($ch);
         return $result;
     }
