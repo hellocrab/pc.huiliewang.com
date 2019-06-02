@@ -38,7 +38,7 @@ class CustomermanageAction extends Action
     public function index() {
         $this->_permissionRes = getPerByAction(MODULE_NAME, 'customers');
         if (!$this->_permissionRes) {
-            $this->error('您没有权限操作', 'index');
+            $this->error('您没有权限操作');
         }
         $this->display();
     }
