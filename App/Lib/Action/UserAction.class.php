@@ -742,7 +742,7 @@ class UserAction extends Action
             if ($_POST['telephone'] && !ereg('^[1-9]{1}[0-9]{10}$', $_POST['telephone'])) {
                 $this->error(L('INVALIDATE_TELEPHONE'));
             } else {
-                //对于融营云进行回呼创建坐席
+                //对于融营云进行回呼创建坐席 edit by yanghao 2019-06-02
                 if ($user['telephone'] !== trim($_POST['telephone'])) {
                     $telephone = $m_user->where(['telephone' => trim($_POST['telephone'])])->field('telephone')->find();
                     if (!$telephone['telephone']) {
