@@ -739,35 +739,38 @@ class UserAction extends Action
             $m_user = M('User');
             $m_role = M('Role');
             $user = $m_user->where('user_id = %d', intval($_POST['user_id']))->find();
-            if ($_POST['telephone'] && !ereg('^[1-9]{1}[0-9]{10}$', $_POST['telephone'])) {
-                $this->error(L('INVALIDATE_TELEPHONE'));
-            } else {
-                //对于融营云进行回呼创建坐席和修改坐席 edit by yanghao 2019-06-02
-                if (!$user['telephone']) {
-                    $telephone = $m_user->where(['telephone' => trim($_POST['telephone'])])->field('telephone')->find();
-                    if (!$telephone['telephone']) {
-                        $callCenter = new CallcenterAction();
-                        $result = $callCenter->createeSeatAccount(trim($_POST['telephone']));
-                        if ($result != 200) {
-                            if ($result == 2012) {
-                                alert('error', '呼叫中心坐席数不足，请联系管理员加坐席！', $_SERVER['HTTP_REFERER']);
-                            }
-                            alert('error', '绑定呼叫中心坐席失败！', $_SERVER['HTTP_REFERER']);
-                        }
-                    }
+            if (trim($_POST['telephone']) != '') {
+                if ($_POST['telephone'] && !ereg('^[1-9]{1}[0-9]{10}$', $_POST['telephone'])) {
+                    $this->error(L('INVALIDATE_TELEPHONE'));
                 } else {
-                    if ($user['telephone'] !== trim($_POST['telephone'])) {
+                    //对于融营云进行回呼创建坐席和修改坐席 edit by yanghao 2019-06-02
+                    if (!$user['telephone']) {
                         $telephone = $m_user->where(['telephone' => trim($_POST['telephone'])])->field('telephone')->find();
                         if (!$telephone['telephone']) {
                             $callCenter = new CallcenterAction();
-                            $result = $callCenter->changeSeatAccount($user['telephone'], trim($_POST['telephone']));
-                            if($result != 200){
-                                alert('error', '变更呼叫中心坐席失败！', $_SERVER['HTTP_REFERER']);
+                            $result = $callCenter->createeSeatAccount(trim($_POST['telephone']));
+                            if ($result != 200) {
+                                if ($result == 2012) {
+                                    alert('error', '呼叫中心坐席数不足，请联系管理员加坐席！', $_SERVER['HTTP_REFERER']);
+                                }
+                                alert('error', '绑定呼叫中心坐席失败！', $_SERVER['HTTP_REFERER']);
+                            }
+                        }
+                    } else {
+                        if ($user['telephone'] !== trim($_POST['telephone'])) {
+                            $telephone = $m_user->where(['telephone' => trim($_POST['telephone'])])->field('telephone')->find();
+                            if (!$telephone['telephone']) {
+                                $callCenter = new CallcenterAction();
+                                $result = $callCenter->changeSeatAccount($user['telephone'], trim($_POST['telephone']));
+                                if ($result != 200) {
+                                    alert('error', '变更呼叫中心坐席失败！', $_SERVER['HTTP_REFERER']);
+                                }
                             }
                         }
                     }
                 }
             }
+
 
             $oldPositionId = $m_role->where(['user_id' => $user['user_id']])->getField('position_id');
             $new_number = trim($_POST['prefixion']) . trim($_POST['number']);
