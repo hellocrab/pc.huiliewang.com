@@ -76,6 +76,38 @@ class CallcenterAction extends Action {
         $uuid = $result['statuscode'];
         return $uuid;
     }
+    
+    
+    /**
+     * 变更现有坐席为新坐席号码
+     * @param type $oldPhoneNum
+     * @param type $newphoneNum
+     */
+    public function changeSeatAccount($oldPhoneNum,$newphoneNum)
+    {
+        $timestamp = date('YmdHis');
+        $sig = $this->getsig($timestamp, self::RONGYINYUN_ACCOUNT_SID, self::RONGYINYUN_CALLBACK_APPID);
+        $auth = $this->getauth($timestamp, self::RONGYINYUN_CALLBACK_APPID, self::RONGYINYUN_CALLBACK_APP_TOKEN);
+        $url = "https://wdapi.yuntongxin.vip/20181221/rest/ChangeBindNumber/v1?sig=" . $sig;
+        $header = array('Content-Type:' . 'application/json;charset=utf-8',
+            'Accept:' . 'application/json',
+            'Authorization:' . $auth);
+        $data = ['Appid' => self::RONGYINYUN_CALLBACK_APPID, 'oldNumber' => $oldPhoneNum, 'newNumber' =>  $newphoneNum];
+        $data = json_encode($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, '1.0');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $msg = curl_exec($ch);
+        $result = json_decode($msg, true);
+        $uuid = $result['Flag'];
+        return $uuid;
+    }
 
     /**
      * @return mixed
