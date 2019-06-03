@@ -1768,12 +1768,14 @@
                             if (seatNum) {
                                 switchLine();
                             } else {
+                                var fineId = $(_this).attr('data-id');
                                 $.post(
                                     "{:U('callcenter/call_out')}", {
                                         itemId,
+                                        fineId,
                                         type: 1,
                                         tel: '',
-                                        channel: 3
+                                        channel: 1
                                     },
                                     function (data) {
                                         var obj = $.parseJSON(data);
@@ -1824,7 +1826,7 @@
                                         if (isConfirm) {
                                             channel = 2;
                                         } else {
-                                            channel = 3;
+                                            channel = 1;
                                         }
                                         var fineId = $(_this).attr('data-id');
                                         $.post(

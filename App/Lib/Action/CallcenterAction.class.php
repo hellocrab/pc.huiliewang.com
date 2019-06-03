@@ -118,7 +118,7 @@ class CallcenterAction extends Action {
         $type = isset($_POST['type']) ? intval($_POST['type']) : 0; //1、简历 2、客户联系人
         $itemId = isset($_POST['itemId']) ? $_POST['itemId'] : 0; //客户联系人/简历ID
         $fineId = isset($_POST['fineId']) ? $_POST['fineId'] : 0; //客户联系人/简历ID
-        $channel = $_POST['channel'] ? BaseUtils::getStr(trim(I('channel'))) : 3;
+        $channel = $_POST['channel'] ? BaseUtils::getStr(trim(I('channel'))) : 1;
         $timestamp = date('YmdHis');
 
         if ($itemId > 0) {
@@ -206,6 +206,8 @@ class CallcenterAction extends Action {
                         $callsId = $callStatus['Msg'];
                         $this->record($callsId, $phoneRecordData, $channel);
                         echo json_encode(['code' => 1, 'msg' => '拨打成功']);
+                    } elseif($callStatus['Flag'] == 2009) {
+                        echo json_encode(['code' => 0, 'msg' => '没有绑定坐席，请联系管理员']);
                     }
                     break;
             }
@@ -313,6 +315,9 @@ class CallcenterAction extends Action {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $response = curl_exec($ch);
         $result = json_decode($response, true);
+//        if(session('role_id') == 66){
+//            var_dump($result);exit;
+//        }
         curl_close($ch);
         return $result;
     }

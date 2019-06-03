@@ -1090,7 +1090,7 @@
                                 $.post(
                                     "{:U('callcenter/call_out')}", {
                                         tel,
-                                        channel: 3
+                                        channel: 1
                                     },
                                     function (data) {
                                         var obj = $.parseJSON(data);
@@ -1126,7 +1126,7 @@
                                         if (isConfirm) {
                                             channel = 2;
                                         } else {
-                                            channel = 3;
+                                            channel = 1;
                                         }
                                         var fineId = $(_this).attr('data-id');
                                         $.post(
