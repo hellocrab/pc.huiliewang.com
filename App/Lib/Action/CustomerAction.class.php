@@ -1489,7 +1489,7 @@ class CustomerAction extends Action {
                 }
                 if($_GET['customer']){
                     $cus = BaseUtils::getStr($_GET['customer']);
-                    $map['name'] = array('like',$cus.'%');
+                    $map['name'] = array('like','%'.$cus.'%');
                     $params[] = "customer=".$_GET['customer'];
                 }
                 if($_GET['contacts'] && $_GET['contacts_phone']){
