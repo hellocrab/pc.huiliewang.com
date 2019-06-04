@@ -329,6 +329,7 @@ class CustomermanageAction extends Action
             $info['times'] && $data['times'] = $info['times'];
             $info['min_condition'] && $data['min_condition'] = $info['min_condition'];
             ($data['is_sign'] == 0 && $data['min_condition']) && $data['is_sign'] = 0;
+            $data['is_sign'] == 1 && $data['min_condition'] = 0;
             if ($data) {
                 $data['up_time'] = time();
                 $res = M('customer_visit_config')->where(['id' => $id])->save($data);
@@ -796,6 +797,51 @@ class CustomermanageAction extends Action
         }
         $data['is_finish'] == 1 && $this->changeVisit($visitId, ['status' => 1, 'business_status' => $params['is_business']]);
         $this->response();
+    }
+
+    /**
+     * @desc  客户签单信息添加
+     */
+    public function signInfoAdd() {
+        $customerId = BaseUtils::getStr(I('customer_id', 0), 'int');
+        $signer = BaseUtils::getStr(I('signer', 0));
+        $company = BaseUtils::getStr(I('seal_company', ''));
+        $start = BaseUtils::getStr(I('contract_start', ''));
+        $end = BaseUtils::getStr(I('contract_end', ''));
+        $invoiceTime = BaseUtils::getStr(I('invoice_time', ''));
+        $customerInfo = M('customer')->where(['customer_id' => $customerId])->find();
+        if (!$customerId || !$customerInfo) {
+            $this->response("客户信息缺失", 500, false);
+        }
+        $data = [];
+        $signer && $data['signer'] = $signer;
+        $company && $data['seal_company'] = $company;
+        $start && $data['contract_start'] = strtotime($start);
+        $end && $data['contract_end'] = strtotime($end);
+        $invoiceTime && $data['invoice_time'] = strtotime($invoiceTime);
+        if (!$data) {
+            $this->response("数据错误", 500, false);
+        }
+        $res = M('customer_data')->where(['customer_id' => $customerId])->save($data);
+        !$res && $this->response("系统错误", 500, false);
+        $this->response("操作成功");
+    }
+
+    /**
+     * @desc 获取签单信息
+     */
+    public function signInfo() {
+        $customerId = BaseUtils::getStr(I('customer_id', 0), 'int');
+        $info = M('customer_data')->field("customer_id,signer,seal_company,contract_start,contract_end,invoice_time")->where(['customer_id' => $customerId])->find();
+        if ($info) {
+            $info['contract_start'] = date("Y-m-d", $info['contract_start']);
+            $info['contract_end'] = date("Y-m-d", $info['contract_end']);
+            $info['invoice_time'] = date("Y-m-d", $info['invoice_time']);
+            $info['customer'] = M('customer')->where(['customer_id' => $customerId])->getField("name");
+        } else {
+            $info = [];
+        }
+        $this->response($info);
     }
 
     /**
