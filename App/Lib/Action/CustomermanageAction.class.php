@@ -706,6 +706,39 @@ class CustomermanageAction extends Action
     }
 
     /**
+     * @desc 获取客户所有的顾问
+     * @param int $customerId
+     */
+    public function getCustomerUsers($customerId = 0) {
+        if (!$customerId) {
+            $customerId = BaseUtils::getStr(I('customer_id', 0), 'int');
+        }
+        $business = M('business')->field("owner_role_id,creator_role_id")->where(['customer_id' => $customerId])->select();
+        $roles = "";
+        foreach ($business as $role) {
+            $ownerIds = $role['owner_role_id'];
+            $creator = $role['creator_role_id'];
+            if (!$ownerIds) {
+                $ownerIds = $creator;
+            }
+            if (!$ownerIds) {
+                continue;
+            }
+            $roles .= "{$ownerIds},";
+        }
+        $roles = rtrim($roles, ",");
+        $users = [];
+        if ($roles) {
+            $list = explode(',', $roles);
+            $list = array_unique($list);
+            foreach ($list as $roleId) {
+                $users[$roleId] = M('user')->where(['role_id' => $roleId])->getField("full_name");
+            }
+        }
+        $this->response(["list" => $users]);
+    }
+
+    /**
      * @desc 部门和上级部门信息
      * @param $roleId
      * @return array
@@ -783,6 +816,10 @@ class CustomermanageAction extends Action
             if ($key == "is_finish" && $value == 1) {
                 $data['finish_time'] = time();
             }
+            //消息通知顾问
+            if ($key == "message_role" && $value > 1) {
+                $this->messageNotice($value, $info['customer_id'], $params['business_note']);
+            }
             $data[$key] = $value;
         }
         if (!$data) {
@@ -856,6 +893,26 @@ class CustomermanageAction extends Action
             return $info;
         }
         $this->response($info);
+    }
+
+    /**
+     * @desc  推送商机通知给顾问
+     * @param $roleId
+     * @param $customerId
+     * @param $content
+     */
+    private function messageNotice($roleId, $customerId, $content) {
+        //消息发送
+        $data = [];
+        $data['to_role_id'] = $roleId;
+        $data['from_role_id'] = session('role_id') ? session('role_id') : 0;
+        $data['content'] = $content;
+        $data['send_time'] = time();
+        $data['deadline'] = strtotime(date('Y-m-d')) + 3600 * 24;
+        $data['type'] = 3;
+        $data['link'] = '';
+        $data['params'] = json_encode(['customer_id' => $customerId]);
+        M('message')->add($data);
     }
 
     /**
