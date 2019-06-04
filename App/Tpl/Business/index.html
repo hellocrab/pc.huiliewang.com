@@ -205,9 +205,9 @@
                             <div class="section">
                                     <div class="input-group" style="margin-right: 10px;margin-bottom: 5px;">
                                         <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value, target = '_self')" >
-                                            <option value="{:U('business/index','by=me&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'me' || $_GET['by'] eq ''">selected="selected"</if>>我的项目</option>
+                                            <option value="{:U('business/index','by=all&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'all' || $_GET['by'] eq ''">selected="selected"</if>>全部项目</option>
+                                            <option value="{:U('business/index','by=me&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'me' ">selected="selected"</if>>我的项目</option>
                                             <option value="{:U('business/index','by=sub&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'sub'">selected="selected"</if>>下属项目</option>
-                                            <option value="{:U('business/index','by=all&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'all'">selected="selected"</if>>全部项目</option>
                                         </select>
                                     </div>
                                     <div class="input-group" style='height:32px '>
