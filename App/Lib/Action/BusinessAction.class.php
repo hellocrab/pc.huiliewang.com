@@ -124,7 +124,7 @@ class BusinessAction extends Action
         $d_v_business = D('BusinessTopView');
         $below_ids = getPerByAction(MODULE_NAME, ACTION_NAME, true);
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
-        $by = (isset($_GET['by']) && $_GET['by']) ? trim($_GET['by']) : 'me';
+        $by = (isset($_GET['by']) && $_GET['by']) ? trim($_GET['by']) : 'all';
         $where = array();
         $params = array();
         $order = "top.set_top desc, top.top_time desc ,business_id desc";
