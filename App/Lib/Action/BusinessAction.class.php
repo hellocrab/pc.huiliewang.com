@@ -227,6 +227,8 @@ class BusinessAction extends Action
                 }else{
                     $where['_string'] = 'business.name like "%' . $business_name . '%"';
                 }
+                $params[] = "business_name=".$business_name;
+                $params[] = "customer_name=".$customer_name;
             }else {
                 switch ($condition) {
                     case "is" :
@@ -523,6 +525,7 @@ class BusinessAction extends Action
                     $where['_logic'] = 'OR';
                 }
             }
+            $params[] = "ownerr=".$_GET['ownerr'];
         }
         if ($_GET['industry']) {
             $industrySql = '';
@@ -541,7 +544,7 @@ class BusinessAction extends Action
                 $where['_complex'] = $industryMap;
                 $where['_logic'] = 'OR';
             }
-
+            $params[] = "industry=".$_GET['industry'];
         }
 
         if ($_GET['address']) {
@@ -562,6 +565,7 @@ class BusinessAction extends Action
                 $where['_complex'] = $addressMap;
                 $where['_logic'] = 'OR';
             }
+            $params[] = "address=".$_GET['address'];
         }
 
         $where['_logic'] = 'AND';
@@ -2556,6 +2560,8 @@ class BusinessAction extends Action
                 $result = M("fine_project_offer")->add($_POST);
                 $arr['status'] = 6;
                 $arr['tracker'] = session('role_id');
+//                //发offer之后添加保护中标志
+//                $arr['is_protected'] = 1;
                 M("fine_project")->where("id=%d", $id)->save($arr);
             }
 
