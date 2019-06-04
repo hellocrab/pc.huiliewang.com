@@ -300,7 +300,10 @@ class Visit
         $parentInfo = $this->selectSql($parentSql, false);
         $pName = $parentInfo['name'];
         return [
-            'id' => $departmentId, 'name' => $departmentName, 'p_id' => $parentDepartId, 'p_name' => $pName
+            'id' => $departmentId,
+            'name' => $departmentName,
+            'p_id' => $parentDepartId ? $parentDepartId : $departmentId,
+            'p_name' => $pName ? $pName : $departmentName
         ];
     }
 
