@@ -387,16 +387,20 @@ class CustomermanageAction extends Action
         }
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
+
         if (!$isExport) {
             $pageStart = ($page - 1) * $pageSize;
             $list = M('customer_visit')->where($where)->limit($pageStart, $pageSize)->select();
             foreach ($list as &$info) {
+                $customerId = $info['customer_id'];
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
                 $info['city'] = $city_name[$info['city']];
                 $info['industry'] = $industry_name[$info['industry']];
                 $info['add_time'] = date("Y-m-d", $info['add_time']);
                 $info['last_visit_time'] && $info['last_visit_time'] = date("Y-m-d", $info['last_visit_time']);
                 $info['finish_time'] && $info['finish_time'] = date("Y-m-d", $info['finish_time']);
+                $signInfo = $this->signInfo(false, $customerId);
+                $info['signer'] = $signInfo['signer'];
             }
             $counts = M('customer_visit')->where($where)->count();
             $this->response(['list' => $list, 'current_page' => $page, 'counts' => $counts]);
@@ -406,9 +410,23 @@ class CustomermanageAction extends Action
             //导出excel操作
             $list = M('customer_visit')->where($where)->limit(0, 500)->select();
             foreach ($list as &$info) {
+                $customerId = $info['customer_id'];
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
                 $info['city'] = $city_name[$info['city']];
                 $info['industry'] = $industry_name[$info['industry']];
+                $info['update_time'] = date("Y-m-d", $info['update_time']);
+                $info['status'] = "";
+
+                $signInfo = $this->signInfo(false, $customerId);
+                $info['contract_start'] = $signInfo['contract_start'] ? $signInfo['contract_start'] : '';
+                $info['contract_end'] = $signInfo['contract_end'] ? $signInfo['contract_end'] : '';
+                $info['invoice_time'] = $signInfo['invoice_time'] ? $signInfo['invoice_time'] : '';
+                $info['seal_company'] = $signInfo['seal_company'] ? $signInfo['seal_company'] : '';
+                $info['signer'] = $signInfo['signer'] ? $signInfo['signer'] : '';
+                //3、offer时间
+                $info['offer_time'] = $this->businessLog(['fine.com_id' => $customerId], 'fine_project_offer');
+                //4、入职时间
+                $info['enter_time'] = $this->businessLog(['fine.com_id' => $customerId], 'fine_project_enter');
             }
             $expCellName = [
                 ['pro_type', '项目类型'],
@@ -417,18 +435,18 @@ class CustomermanageAction extends Action
                 ['p_department_name', '事业部'],
                 ['customer_name', '客户'],
                 ['industry', '行业'],
-                ['ccnum', '产品'],
-                ['callsucc_num', '保证期'],
-                ['company', '盖章公司'],
+                ['product', '产品'],
+//                ['callsucc_num', '保证期'],
+                ['seal_company', '盖章公司'],
                 ['manager', '项目经理'],
                 ['job', '职位名称'],
                 ['status', '进展'],
                 ['update_time', '更新时间'],
                 ['offer_time', 'offer日期'],
                 ['enter_time', '入职日期'],
-                ['money_time', '回款日期'],
-                ['contact_start', '合同开始'],
-                ['contact_end', '合同结束']
+                ['invoice_time', '回款日期'],
+                ['contract_start', '合同开始'],
+                ['contract_end', '合同结束']
             ];
             $this->exportExcel('客户待回访数据', $list, $expCellName);
         }
@@ -500,12 +518,45 @@ class CustomermanageAction extends Action
                 ['not_understand', '岗位不理解'],
                 ['recommend', '推荐简历'],
                 ['not_recommend', '未推荐简历'],
-                ['quality_5', '推荐质量非常满意'],
-                ['quality_4', '推荐质量满意'],
-                ['quality_3', '推荐质量基本满意'],
-                ['quality_2', '推荐质量不满意'],
-                ['quality_1', '推荐质量不太满意'],
+                ['resume_enough', '推荐足够数量'],
+                ['resume_not_enough', '未推荐足够数量'],
                 ['business', '商机'],
+                //推荐质量满意度
+                ['quality_very_satisfied', '推荐质量非常满意'],
+                ['quality_satisfaction', '推荐质量满意'],
+                ['quality_general', '推荐质量基本满意'],
+                ['quality_dissatisfied', '推荐质量不满意'],
+                ['quality_very_dissatisfied', '推荐质量不太满意'],
+                //推荐数量满意度
+                ['recommends_very_satisfied', '推荐数量非常满意'],
+                ['recommends_satisfaction', '推荐数量满意'],
+                ['recommends_general', '推荐数量基本满意'],
+                ['recommends_dissatisfied', '推荐数量不满意'],
+                ['recommends_very_dissatisfied', '推荐数量不太满意'],
+                //服务满意度
+                ['service_very_satisfied', '服务非常满意'],
+                ['service_satisfaction', '服务满意'],
+                ['service_general', '服务基本满意'],
+                ['service_dissatisfied', '服务不满意'],
+                ['service_very_dissatisfied', '服务不太满意'],
+                //反馈速度满意度
+                ['feedback_very_satisfied', '反馈速度非常满意'],
+                ['feedback_satisfaction', '反馈速度满意'],
+                ['feedback_general', '反馈速度基本满意'],
+                ['feedback_dissatisfied', '反馈速度不满意'],
+                ['feedback_very_dissatisfied', '反馈速度不太满意'],
+                //入职人员满意度
+                ['enter_very_satisfied', '入职人员非常满意'],
+                ['enter_satisfaction', '入职人员满意'],
+                ['enter_general', '入职人员基本满意'],
+                ['enter_dissatisfied', '入职人员不满意'],
+                ['enter_very_dissatisfied', '入职人员不太满意'],
+                //整体满意度
+                ['very_satisfied', '整体非常满意'],
+                ['satisfaction', '整体满意'],
+                ['general', '整体基本满意'],
+                ['dissatisfied', '整体不满意'],
+                ['very_dissatisfied', '整体不太满意'],
             ];
             $this->exportExcel('回访数据统计', $list, $expCellName);
         }
@@ -755,16 +806,22 @@ class CustomermanageAction extends Action
 
     /**
      * @desc 项目流程数据
-     * @param $businessId
      * @param $table
+     * @param $where
      * @param string $field
      * @return mixed
      */
-    private function businessLog($businessId, $table, $field = "log.addtime") {
+    private function businessLog($where, $table, $field = "log.addtime") {
+        if ($where > 0) {
+            $where = ['fine.project_id' => $where];
+        } else {
+            $where = $where;
+        }
+
         $info = M('fine_project')
             ->alias('fine')
             ->join("INNER JOIN mx_{$table} log ON log.fine_id = fine.id")
-            ->where(['fine.project_id' => $businessId])
+            ->where($where)
             ->order("{$field} asc")
             ->getField($field);
         return $field && $info ? date("Y-m-d", $info) : '';
