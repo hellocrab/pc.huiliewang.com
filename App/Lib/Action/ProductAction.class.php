@@ -468,16 +468,19 @@ class ProductAction extends Action {
                     if($search_cplace){
                         $ar_cplace = explode(',',$search_cplace);
                         $where['location'] = array('in',$ar_cplace);
+                        $params[] = "search_cplace=".$search_cplace;
                     }
                     if($search_owner){
                         $search_owner = trim($search_owner);
 //                        $where['creator_role_name'] = array('like','%' . $search_owner . '%');
                         $role_ids = M('user')->where(array('full_name'=>array('like',$search_owner.'%')))->getField('role_id',true);
                         $where['creator_role_id'] = array('in',$role_ids);
+                        $params[] = "search_owner=".$search_owner;
                     }
                     if($search_major){
                         $arr_eid = M('resume_edu')->where(array('majorName'=>array('like',$search_major.'%')))->distinct(true)->getField('eid',true);
                         $where['eid'] = array('in',$arr_eid);
+                        $params[] = "search_major=".$search_major;
                     }
                     if($s_f && empty($s_e)){
                         $where['CAST(curSalary AS SIGNED)'] = array('egt',$s_f);
@@ -485,21 +488,26 @@ class ProductAction extends Action {
                             $where['_complex']['_string'] .= "AND ( CAST(curSalary AS SIGNED) >= {$s_f})";
                         else
                             $where['_complex']['_string'] .= " ( CAST(curSalary AS SIGNED) >= {$s_f})";
+                        $params[] = 's_f='.$s_f;
                     }
                     if($s_e && empty($s_f)){
                         if(isset($where['_complex']['_string']))
                             $where['_complex']['_string'] .= "AND ( CAST(curSalary AS SIGNED) <= {$s_e})";
                         else
                             $where['_complex']['_string'] .= " ( CAST(curSalary AS SIGNED) <= {$s_e})";
+                        $params[] = "s_e=".$s_e;
                     }
                     if($s_f && $s_e){
                         if(isset($where['_complex']['_string']))
                             $where['_complex']['_string'] .= "AND (( CAST(curSalary AS decimal(9,2)) >= {$s_f} AND CAST(curSalary AS decimal(9,2)) <= {$s_e}))";
                         else
                             $where['_complex']['_string'] .= "(( CAST(curSalary AS decimal(9,2)) >= {$s_f} AND CAST(curSalary AS decimal(9,2)) <= {$s_e}))";
+                        $params[] = 's_f='.$s_f;
+                        $params[] = "s_e=".$s_e;
                     }
                     if($search_sex){
                         $where['sex'] = array('eq',$search_sex);
+                        $params[] = "search_sex=".$search_sex;
                     }
                     if($job_class){
                         $jobsql = '';
@@ -511,6 +519,7 @@ class ProductAction extends Action {
                             $where['_complex']['_string'] .='AND (' . rtrim($jobsql['_string'],'or ').')';
                         else
                             $where['_complex']['_string'] .=' (' . rtrim($jobsql['_string'],'or ').')';
+                        $params[] = "job_class=".$job_class;
                     }
                     if($search_eplace){
                         $eplaceSql = '';
@@ -522,12 +531,15 @@ class ProductAction extends Action {
                             $where['_complex']['_string'] .= 'AND (' . rtrim($eplaceSql['_string'],'or ').')';
                         else
                             $where['_complex']['_string'] .= ' (' . rtrim($eplaceSql['_string'],'or ').')';
+                        $params[] = "search_eplace=".$search_eplace;
                     }
                     if($search_number){
                         $where['eid'] = array('eq',$search_number);
+                        $params[] = "search_number=".$search_number;
                     }
                     if($search_edu){
                         $where['edu'] = array('eq',$search_edu);
+                        $params[] = "search_edu=".$search_edu;
                     }
                     if($search_age){
                         $arr_age = explode('-',$search_age);
@@ -538,6 +550,7 @@ class ProductAction extends Action {
                         }else{
                             $where['birthYear'] = array('elt',(date('Y')-$arr_age[0]));
                         }
+                        $params[] = "search_age=".$search_age;
                     }
                     if($search_worklife){
                         $arr_work = explode('-',$search_worklife);
@@ -551,6 +564,7 @@ class ProductAction extends Action {
                         }else{
                             $where['startWorkyear'] = array('egt',(date('Y')-$arr_work[0]));
                         }
+                        $params[] = "search_worklife=".$search_worklife;
                     }
 
 
@@ -1419,6 +1433,14 @@ class ProductAction extends Action {
         $this->project = D("ProjectView")->where("fine_project.resume_id=%d", $eid)->select();
 //        header('content-type:text/html;charset=utf-8');
 //        dump($resume);die;
+
+        //人才状态日志
+        // fin_project、fine_project_adviser、fine_project tj_addtime、fine_project_interview、
+        //fine_project pass_addtime、fine_project_offer、fine_project_enter、fine_project_safe
+
+
+
+
         $this->display();
     }
 
