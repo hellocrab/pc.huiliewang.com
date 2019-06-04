@@ -656,18 +656,20 @@ class CustomermanageAction extends Action
         $customerInfo['contacts'] = $contactsInfo['name'];
         //联系电话
         $customerInfo['contacts_phone'] = $contactsInfo['telephone'];
+        //签约信息
+        $signInfo = $this->signInfo(false, $customerId);
         //回款时间
-        $customerInfo['invoice_time'] = '';
+        $customerInfo['invoice_time'] = $signInfo['invoice_time'] ? $signInfo['invoice_time'] : '';
         //合同开始时间
-        $customerInfo['contract_start_time'] = '';
+        $customerInfo['contract_start_time'] = $signInfo['contract_start'] ? $signInfo['contract_start'] : '';
         //合同结束时间
-        $customerInfo['contract_end_time'] = '';
+        $customerInfo['contract_end_time'] = $signInfo['contract_end'] ? $signInfo['contract_end'] : '';
         //盖章公司
-        $customerInfo['seal_company'] = '';
+        $customerInfo['seal_company'] = $signInfo['seal_company'];
 
         //项目列表
         $businessField = "name,business_id,creator_role_id,update_time,pro_type,creator_role_id,owner_role_id";
-        $businessList = M('business')->field($businessField)->where(['customer_id' => $customerId, 'is_deleted' => 0])->order('business_id desc')->limit(2)->select();
+        $businessList = M('business')->field($businessField)->where(['customer_id' => $customerId, 'is_deleted' => 0])->order('business_id desc')->limit(50)->select();
         foreach ($businessList as &$businessInfo) {
             $businessId = $businessInfo['business_id'];
             $businessInfo['update_time'] = date("Y-m-d", $businessInfo['update_time']);
@@ -822,6 +824,7 @@ class CustomermanageAction extends Action
         if (!$data) {
             $this->response("数据错误", 500, false);
         }
+        $data['sign_date'] = time();
         $res = M('customer_data')->where(['customer_id' => $customerId])->save($data);
         !$res && $this->response("系统错误", 500, false);
         $this->response("操作成功");
@@ -829,10 +832,18 @@ class CustomermanageAction extends Action
 
     /**
      * @desc 获取签单信息
+     * @param int $customerId
+     * @param bool $isAjax 是否是接口获取
+     * @return array|mixed|string
      */
-    public function signInfo() {
-        $customerId = BaseUtils::getStr(I('customer_id', 0), 'int');
-        $info = M('customer_data')->field("customer_id,signer,seal_company,contract_start,contract_end,invoice_time")->where(['customer_id' => $customerId])->find();
+    public function signInfo($isAjax = true, $customerId = 0) {
+        if ($customerId <= 0) {
+            $customerId = BaseUtils::getStr(I('customer_id', 0), 'int');
+        }
+        $info = M('customer_data')
+            ->field("customer_id,signer,seal_company,contract_start,contract_end,invoice_time")
+            ->where(['customer_id' => $customerId])
+            ->find();
         if ($info) {
             $info['contract_start'] = date("Y-m-d", $info['contract_start']);
             $info['contract_end'] = date("Y-m-d", $info['contract_end']);
@@ -840,6 +851,9 @@ class CustomermanageAction extends Action
             $info['customer'] = M('customer')->where(['customer_id' => $customerId])->getField("name");
         } else {
             $info = [];
+        }
+        if (!$isAjax) {
+            return $info;
         }
         $this->response($info);
     }
