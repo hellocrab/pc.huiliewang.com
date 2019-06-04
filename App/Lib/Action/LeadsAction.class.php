@@ -2256,6 +2256,7 @@ class LeadsAction extends Action
      */
     public function analytics() {
         $below_ids = getPerByAction(MODULE_NAME, ACTION_NAME);
+        $allIds = $below_ids;
         //是否仅查询销售岗
         $role_ids = [];
         $role_id_array = [];
@@ -2291,6 +2292,7 @@ class LeadsAction extends Action
             //数组交集
             $role_id_array = array_intersect($role_ids, $below_ids);
         }
+        $role_id_array = array_intersect($role_id_array,$allIds);
         //时间段搜索
         if ($_GET['between_date']) {
             $between_date = explode(' - ', trim($_GET['between_date']));
