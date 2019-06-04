@@ -219,16 +219,19 @@ class BusinessAction extends Action
                     $cus_where['name'] = array('like', '%' . $customer_name . '%');
                     $customer_ids = M('Customer')->where($cus_where)->getField('customer_id', true);
                     $customer_str = implode(',', $customer_ids);
+                    $params[] = "customer_name=".$customer_name;
                 }
                 if($business_name && $customer_name){
                     $where['_string'] = 'business.name like "%' . $business_name . '%" AND business.customer_id in (' . $customer_str . ')';
+                    $params[] = "business_name=".$business_name;
+                    $params[] = "customer_name=".$customer_name;
                 }elseif($customer_name){
                     $where['_string'] = 'business.customer_id in (' . $customer_str . ')';
+                    $params[] = "customer_name=".$customer_name;
                 }else{
                     $where['_string'] = 'business.name like "%' . $business_name . '%"';
+                    $params[] = "business_name=".$business_name;
                 }
-                $params[] = "business_name=".$business_name;
-                $params[] = "customer_name=".$customer_name;
             }else {
                 switch ($condition) {
                     case "is" :
@@ -286,6 +289,7 @@ class BusinessAction extends Action
                         $where[$field] = array('eq', $search);
                 }
             }
+//            dump($params);die;
             $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'search=' . $search);
             //过滤不在权限范围内的role_id
             if (trim($_REQUEST['field']) == 'owner_role_id') {
@@ -567,6 +571,13 @@ class BusinessAction extends Action
             }
             $params[] = "address=".$_GET['address'];
         }
+        $business_name = empty($_REQUEST['business_name']) ? '' : trim($_REQUEST['business_name']);
+        $customer_name = empty($_REQUEST['customer_name']) ? '' : trim($_REQUEST['customer_name']);
+        if($business_name)
+            $params[] = "business_name=".$business_name;
+        if($customer_name)
+            $params[] = "customer_name=".$customer_name;
+
 
         $where['_logic'] = 'AND';
 //        dump($where);die;
