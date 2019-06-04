@@ -882,9 +882,9 @@ class CustomermanageAction extends Action
             ->where(['customer_id' => $customerId])
             ->find();
         if ($info) {
-            $info['contract_start'] = date("Y-m-d", $info['contract_start']);
-            $info['contract_end'] = date("Y-m-d", $info['contract_end']);
-            $info['invoice_time'] = date("Y-m-d", $info['invoice_time']);
+            $info['contract_start'] = $info['contract_start'] ? date("Y-m-d", $info['contract_start']) : '';
+            $info['contract_end'] = $info['contract_end'] ? date("Y-m-d", $info['contract_end']) : '';
+            $info['invoice_time'] = $info['invoice_time'] ? date("Y-m-d", $info['invoice_time']) : '';
             $info['customer'] = M('customer')->where(['customer_id' => $customerId])->getField("name");
         } else {
             $info = [];
