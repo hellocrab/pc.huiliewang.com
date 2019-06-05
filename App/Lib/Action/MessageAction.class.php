@@ -477,7 +477,7 @@ class MessageAction extends Action
 
         //员工站内信
         $m_user = M('User');
-        $from_role_ids = $m_message->where(array( 'type' => 0, 'to_role_id' => session('role_id'), 'read_time' => 0, 'status' => array('neq', 1), 'from_role_id' => array('neq', '')))->group('from_role_id')->order('message_id desc')->getField('from_role_id', true);
+        $from_role_ids = $m_message->where(array('type' => 0, 'to_role_id' => session('role_id'), 'read_time' => 0, 'status' => array('neq', 1), 'from_role_id' => array('neq', '')))->group('from_role_id')->order('message_id desc')->getField('from_role_id', true);
 
         foreach ($from_role_ids as $k => $v) {
             $user_info = $m_user->where('role_id = %d', $v)->field('full_name,role_id,thumb_path')->find();
@@ -491,7 +491,7 @@ class MessageAction extends Action
                 $role_message_list[$k]['content'] = '附件信息';
             }
             //查询未读数
-            $role_message_list[$k]['unread_num'] = $m_message->where(array( 'type' => 0, 'from_role_id' => $v, 'to_role_id' => session('role_id'), 'read_time' => array('eq', '')))->count();
+            $role_message_list[$k]['unread_num'] = $m_message->where(array('type' => 0, 'from_role_id' => $v, 'to_role_id' => session('role_id'), 'read_time' => array('eq', '')))->count();
         }
         $new_num['role_message_list'] = $role_message_list ? $role_message_list : array();
 
@@ -1086,14 +1086,14 @@ class MessageAction extends Action
         $day = I('deadline', 0);
         $page = I('page', 1);
         $pageSize = I('page_size', 10);
-        $where = ['type' => ['in', '1,2']];
+        $where = ['type' => ['gt', 0]];
         $type && $where['type'] = $type;
         $day && $where['deadline'] = ['gt', strtotime($day)];
         $where['to_role_id'] = session('role_id');
         $startNo = ($page - 1) * $pageSize;
         $list = M('message')->where($where)->order('deadline asc')->limit($startNo, $pageSize)->select();
         $nextDay = strtotime(date('Y-m-d')) + 3600 * 24;
-
+        $count = M('message')->where($where)->count();
         foreach ($list as &$info) {
             $info['send_time'] = date('Y-m-d', $info['send_time']);
             $endTime = date('Y-m-d H:i', $info['deadline']);
@@ -1103,7 +1103,7 @@ class MessageAction extends Action
             $info['deadline'] = $endTime;
             $info['degree'] = $info['degree'] ? '重要' : '一般';
         }
-        $return = ['success' => 1, 'code' => 200, 'info' => $list];
+        $return = ['success' => 1, 'code' => 200, 'info' => ['list' => $list, 'count' => $count]];
         $this->ajaxReturn($return);
     }
 
@@ -1111,7 +1111,13 @@ class MessageAction extends Action
      * @desc 生日弹窗数据接口
      */
     public function birthdayList() {
-        $userRoleId = I('role_id', 0);
+        $message_id = I('message_id', 0);
+        $messInfo = M('massage')->where(['message_id' => $message_id, 'type' => 2])->find();
+        if (!$messInfo) {
+            $return = ['success' => 0, 'code' => 500, 'info' => "没有此消息"];
+            $this->ajaxReturn($return);
+        }
+        $userRoleId = $messInfo['to_role_id'];
         $list = M('message')->where(['to_role_id' => $userRoleId, 'type' => 2])->select();
 
         $nestDay = strtotime(date('Y-m-d', time())) + 3600 * 24;
@@ -1152,6 +1158,21 @@ class MessageAction extends Action
             }
         }
         $return = ['success' => 1, 'code' => 200, 'info' => $data];
+        $this->ajaxReturn($return);
+    }
+
+    /**
+     * @desc 消息已处理
+     */
+    public function handle() {
+        $message_id = I('message_id', 0);
+        $messInfo = M('massage')->where(['message_id' => $message_id])->find();
+        if (!$messInfo) {
+            $return = ['success' => 0, 'code' => 500, 'info' => "没有此消息"];
+            $this->ajaxReturn($return);
+        }
+        M('message')->where(['message_id' => $message_id])->save(['status' => 1]);
+        $return = ['success' => 1, 'code' => 200, 'info' => "操作成功"];
         $this->ajaxReturn($return);
     }
 }
