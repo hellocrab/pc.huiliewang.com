@@ -281,6 +281,7 @@ class CustomermanageAction extends Action
         $data = [
             'pro_type' => $proType,
             'rank' => $this->rank_name,
+            'allProType' => $this->proTypes
         ];
         $this->response($data);
     }
@@ -871,7 +872,7 @@ class CustomermanageAction extends Action
             //下次跟进时间
             if ($key == 'follow_time' && $value) {
                 $value = strtotime($value);
-                $this->messageNotice(session('role_id'), $info['customer_id'],4);
+                $this->messageNotice(session('role_id'), $info['customer_id'], 4);
             }
             //回访完成
             if ($key == "is_finish" && $value == 1) {
