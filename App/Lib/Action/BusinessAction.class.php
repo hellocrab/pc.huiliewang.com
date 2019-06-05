@@ -2262,6 +2262,8 @@ class BusinessAction extends Action
                 $_POST['addtime'] = time();
                 M("fine_project_bhs")->add($_POST);
                 $arr["stop"] = 1;
+                //取消保护
+                $arr['is_protected'] = 0 ;
                 $result = M("fine_project")->where("id=%d", $id)->save($arr);
             }
 
@@ -2338,6 +2340,17 @@ class BusinessAction extends Action
                 //标记已提醒过一次
                 M('fine_project_cc')->where(array('id' => $v['id']))->setField(array('noticed' => 1));
             }
+        }
+        $arr_time = M('fine_project')->where(array('is_protected'=>1))->field('updatetime,id')->select();
+        dump($arr_time);die;
+    }
+
+    //超时6个月,取消人才保护
+    function remove_protect(){
+        $arr_time = M('fine_project')->where(array('is_protected'=>1))->field('updatetime,id')->select();
+        foreach ($arr_time as $k=>$v){
+            if((time()-$v['updatetime'])>(182*24*3600000))
+                M('fine_project')->where(array('id'=>intval($v['id'])))->save(array('is_protected'=>0));
         }
     }
 
@@ -2571,8 +2584,8 @@ class BusinessAction extends Action
                 $result = M("fine_project_offer")->add($_POST);
                 $arr['status'] = 6;
                 $arr['tracker'] = session('role_id');
-//                //发offer之后添加保护中标志
-//                $arr['is_protected'] = 1;
+                //发offer之后添加保护中标志
+                $arr['is_protected'] = 1;
                 M("fine_project")->where("id=%d", $id)->save($arr);
             }
 
@@ -2678,7 +2691,7 @@ class BusinessAction extends Action
             $res = $safeObj->where($where)->save($data);
         }
         if ($res) {
-            M("fine_project")->where("id=%d", $projectId)->save(['status' => 8, 'updatetime' => time(), 'tracker' => session('role_id')]);
+            M("fine_project")->where("id=%d", $projectId)->save(['status' => 8, 'updatetime' => time(), 'tracker' => session('role_id'),'is_protected'=>0]);//is_protected=0取消保护标识
             $this->ajaxReturn(1, '操作成功', 1);
         }
         $this->ajaxReturn(1, '系统错误', 0);
