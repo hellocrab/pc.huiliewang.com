@@ -127,12 +127,12 @@ class BusinessAction extends Action
         $by = (isset($_GET['by']) && $_GET['by']) ? trim($_GET['by']) : 'all';
         $where = array();
         $params = array();
-        $order = "top.set_top desc, top.top_time desc ,business_id desc";
+        $order = "business_id desc";
 
         if ($_GET['desc_order']) {
-            $order = 'top.set_top desc, top.top_time desc ,' . trim($_GET['desc_order']) . ' desc,business_id asc';
+            $order = '' . trim($_GET['desc_order']) . ' desc,business_id asc';
         } elseif ($_GET['asc_order']) {
-            $order = 'top.set_top desc, top.top_time desc ,' . trim($_GET['asc_order']) . ' asc,business_id asc';
+            $order = '' . trim($_GET['asc_order']) . ' asc,business_id asc';
         }
         switch ($by) {
             case 'create' :
