@@ -1086,7 +1086,7 @@ class MessageAction extends Action
         $day = I('deadline', 0);
         $page = I('page', 1);
         $pageSize = I('page_size', 10);
-        $where = ['type' => ['in', '1,2']];
+        $where = ['type' => ['gt', 0]];
         $type && $where['type'] = $type;
         $day && $where['deadline'] = ['gt', strtotime($day)];
         $where['to_role_id'] = session('role_id');

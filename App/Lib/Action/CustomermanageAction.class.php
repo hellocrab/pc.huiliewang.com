@@ -871,6 +871,7 @@ class CustomermanageAction extends Action
             //下次跟进时间
             if ($key == 'follow_time' && $value) {
                 $value = strtotime($value);
+                $this->messageNotice(session('role_id'), $info['customer_id'],4);
             }
             //回访完成
             if ($key == "is_finish" && $value == 1) {
@@ -959,17 +960,28 @@ class CustomermanageAction extends Action
      * @desc  推送商机通知给顾问
      * @param $roleId
      * @param $customerId
-     * @param $content
+     * @param $type
      */
-    private function messageNotice($roleId, $customerId, $content) {
+    private function messageNotice($roleId, $customerId, $type = 3) {
         //消息发送
+        $customerName = M('customer')->where(['customer_id' => $customerId])->getField('name');
+        if (4 == $type) {
+            //跟进消息
+            $url = "";
+            sendMessage($roleId, '&nbsp;&nbsp;温馨提醒：回访客户《<a href="' . $url . '" title="点击查看">' . $customerName . '</a>》<font style="color:green;">需进行跟进沟通</font>！', 1);
+            return;
+        }
+        $content = '';
+        if ($type == 3) {
+            $content = "{$customerName}客户  有商机信息，详情询问客服部";
+        }
         $data = [];
         $data['to_role_id'] = $roleId;
         $data['from_role_id'] = session('role_id') ? session('role_id') : 0;
         $data['content'] = $content;
         $data['send_time'] = time();
         $data['deadline'] = strtotime(date('Y-m-d')) + 3600 * 24;
-        $data['type'] = 3;
+        $data['type'] = $type;
         $data['link'] = '';
         $data['params'] = json_encode(['customer_id' => $customerId]);
         M('message')->add($data);
