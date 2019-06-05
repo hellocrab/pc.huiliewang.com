@@ -750,6 +750,8 @@ class CustomerAction extends Action {
                             $rcc['customer_id'] = $customer['customer_id'];
                             //客户分级联系人信息维护
                             ContactsModel::completeInfo($rcc['contacts_id'],$rcc['customer_id']);
+                            //客户联系方式完善消息处理
+                            MessageAction::read($_POST['messageId']);
                             M('RContactsCustomer')->add($rcc);
                         }
                         actionLog($customer['customer_id']);

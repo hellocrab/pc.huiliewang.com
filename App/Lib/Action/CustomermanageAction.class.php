@@ -643,7 +643,7 @@ class CustomermanageAction extends Action
             $info['very_dissatisfied'] = $noteModel->where(['degree' => 1])->count($field);
 
             //信息不准确
-            $info['Information_error'] = 0;
+            $info['Information_error'] = $noteModel->where(['call_status' => 3])->count($field);;
             //商机信息
             $info['business'] = $noteModel->where(['is_business' => 1])->count($field);
         }
@@ -854,12 +854,17 @@ class CustomermanageAction extends Action
                 $this->response("请选择 {$name}", 500, false);
             }
         }
+        $customerId = $info['customer_id'];
+        $customerInfo = M('customer')->where(['customer_id' => $customerId])->find();
+        $creator = $customerInfo['creator_role_id'];
         $data = [];
         foreach ($params as $key => $value) {
             $value = BaseUtils::getStr($value);
             //电话结果
             if ($key == "call_status") {
                 !isset($this->call_status[$value]) && $this->response('请选择正确的电话结果', 500, false);
+                //联系方式错误发送消息
+                $value == 3 && $this->messageNotice($creator, $customerId, 5);
             }
             //项目类型
             if ($key == "pro_type") {
@@ -872,7 +877,7 @@ class CustomermanageAction extends Action
             //下次跟进时间
             if ($key == 'follow_time' && $value) {
                 $value = strtotime($value);
-                $this->messageNotice(session('role_id'), $info['customer_id'], 4);
+                $this->messageNotice(session('role_id'), $customerId, 4);
             }
             //回访完成
             if ($key == "is_finish" && $value == 1) {
@@ -880,7 +885,7 @@ class CustomermanageAction extends Action
             }
             //消息通知顾问
             if ($key == "message_role" && $value > 1) {
-                $this->messageNotice($value, $info['customer_id'], $params['business_note']);
+                $this->messageNotice($value, $customerId, $params['business_note']);
             }
             $data[$key] = $value;
         }
@@ -973,8 +978,13 @@ class CustomermanageAction extends Action
             return;
         }
         $content = '';
-        if ($type == 3) {
+        $link = '';
+        if (3 == $type) {
             $content = "{$customerName}客户  有商机信息，详情询问客服部";
+        }
+        if (5 == $type) {
+            $content = "{$customerName}客户 联系方式错误，请更正";
+            $link = "/index.php?m=customer&a=edit&id={$customerId}";
         }
         $data = [];
         $data['to_role_id'] = $roleId;
@@ -983,9 +993,15 @@ class CustomermanageAction extends Action
         $data['send_time'] = time();
         $data['deadline'] = strtotime(date('Y-m-d')) + 3600 * 24;
         $data['type'] = $type;
-        $data['link'] = '';
+        $data['link'] = $link;
+        $data['degree'] = 2;
         $data['params'] = json_encode(['customer_id' => $customerId]);
-        M('message')->add($data);
+        $messageId = M('message')->add($data);
+        if ($messageId && 5 == $type) {
+            $link = "/index.php?m=customer&a=edit&id={$customerId}&messageId={$messageId}";
+            M('message')->where(['message_id' => $messageId])->save(['link' => $link]);
+        }
+        return $messageId;
     }
 
     /**
