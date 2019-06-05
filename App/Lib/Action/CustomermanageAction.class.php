@@ -662,6 +662,9 @@ class CustomermanageAction extends Action
         if (!$info) {
             $this->response('数据错误', 500, false);
         }
+        if ($info['status'] == 1) {
+            $this->response('已经回访过了', 500, false);
+        }
         $data = [
             'visit_id' => $visitId, 'customer_id' => $info['customer_id'], 'pro_type' => $info['pro_type'],
             'is_finish' => 1, 'finish_time' => time(), 'visit_note' => $note, 'add_time' => time(), 'visit_status' => 2
