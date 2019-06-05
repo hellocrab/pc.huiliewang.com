@@ -1318,6 +1318,19 @@
                     setTimeout('attention()', 60000);
                 }
 
+                /*时隔一天轮询*/
+                function remove_protect() {
+                    $.get(
+                        '{:U("business/remove_protect")}', {},
+                        function (data) {
+
+                        },
+                        'json'
+                    );
+                    setTimeout('attention()', 24*3600000);
+                }
+
+
                 /*轮询*/
                 var mark_count = 1; //标记第一次弹出
                 /*初始默认值*/

@@ -782,7 +782,8 @@ class ProductAction extends Action {
             }
         } else {
             $list = $resume->where($where)->order('addtime desc')->Page($p . ',' . $listrows)->select();
-//            var_dump($resume->getLastSql());
+//            dump($list);
+////            var_dump($resume->getLastSql());
 //            die;
         }
 
@@ -791,6 +792,9 @@ class ProductAction extends Action {
             $where['eid'] = $li['eid'];
             $where['role_id'] = session("role_id");
             $list[$key]['favorite'] = M("resume_collection")->where($where)->find();
+            //查找是否被保护
+            $has_pro = M('fine_project')->where(array('resume_id'=>intval($li['eid']),'is_protected'=>1))->find();
+            $list[$key]['is_protected'] = empty($has_pro) ? 0 : 1 ;
             $list[$key]['birthday'] <= 0 && $list[$key]['birthday'] = strtotime("{$list[$key]['birthYear']}-{$list[$key]['birthMouth']}");
         }
         include APP_PATH . "Common/job.cache.php";
@@ -1380,6 +1384,8 @@ class ProductAction extends Action {
         $resume['now_industry'] = $resume['now_industry'];
 
         $resume['sex'] = $resume['sex'] == 1 ? "男" : "女";
+        $has_pro = M('fine_project')->where(array('resume_id'=>intval($eid),'is_protected'=>1))->find();
+        $resume['is_protected'] = empty($has_pro) ? 0 : 1 ;
         $resume_work = M("resume_work")->where("eid=%d", $eid)->select();
         foreach ($resume_work as $kw => $rw) {
             $_position = M('resume_work_position')->where(['work_id' => $rw['id']])->find();

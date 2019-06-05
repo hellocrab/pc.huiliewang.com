@@ -472,6 +472,9 @@
                                                                                         </a>
                                                                                     </if>
                                                                         </span>
+                                                                        <if condition="$vo['is_protected'] eq 1">
+                                                                            保护中
+                                                                        </if>
                                                                         <if condition="$vo['favorite']">
                                                                             <i class="fa fa-star star-orange" style="float: right;margin-right: 20px;"></i>
                                                                         </if>
