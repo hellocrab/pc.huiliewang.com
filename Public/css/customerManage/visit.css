@@ -1,0 +1,160 @@
+.tabSec{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    border-bottom: 1px solid #eceef0;
+    padding-bottom: 0;
+}
+/* .switchBox{
+    border-bottom: 1px solid #eceef0;
+} */
+.switchBox span{
+    cursor: pointer;
+    display: inline-block;
+    width: 80px;
+    line-height: 40px;
+    text-align: center;
+    position: relative;
+    top: 1px;
+    color:  #A7B1C2;
+}
+.switchBox span.choosed{
+    border: 1px solid #eceef0;
+    border-bottom: 1px solid #fff;
+    color: #333;
+    border-top: #03a9f3 solid 1px;
+}
+.settingBox span{
+    color: #333;
+    font-size: 14px;
+    display: inline-block;
+    margin-right: 30px;
+    cursor: pointer;
+}
+.settingBox i{
+    color: #3D6BB4;
+    font-size: 16px;
+}
+.selBox{
+    background: #fff;
+    width: 100%;
+    display: flex;
+    padding: 10px 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+select {
+    padding-left: 10px;
+    padding-right: 35px;
+    height: 31px;
+    border-radius: 6px;
+    color: #999;
+    /*去掉默认的下拉三角*/
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    outline: none !important;
+    margin-right: 23px;
+    cursor: pointer;
+    /*添加下拉三角图标*/
+    background: url("../../img/customerManage/8_03.png") no-repeat right center transparent;
+}
+.dateBox input{
+    width: 150px;
+    margin:0 10px;
+}
+.dateBox{
+    display: flex;
+    align-items: center;
+}
+table {
+    width: 100%;
+    background: #f9f9f9;
+}
+
+table tbody {
+    display: block;
+    overflow-y: scroll;
+    max-height: 720px;
+}
+
+thead {
+    width: calc(100% - 16px) !important;
+}
+
+table thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+tr:nth-child(2n) {
+    background: #fff;
+}
+
+td,
+th {
+    padding: 10px 0px;
+    white-space: wrap;
+    border-bottom: 1px solid #edeff0;
+    text-align: center;
+    position: relative;
+}
+table select {
+    height: 20px;
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 25px;
+    margin-right: 0;
+    background: url("../../img/customerManage/8_04.png") no-repeat right center transparent;
+}
+.pager_ {
+    background: #f9f9f9;
+    margin: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.pageBox span {
+    border-right: 1px solid #e6e6e6;
+    line-height: 30px;
+    width: 30px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+}
+
+.pageBox span:nth-last-child(1) {
+    border-right: none;
+}
+
+.pageBox {
+    border: 1px solid #e6e6e6;
+    border-radius: 6px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+}
+
+.pageBox .choosed {
+    background: #ccc;
+}
+
+#goto {
+    height: 30px;
+    padding-left: 10px;
+    border: #e6e6e6;
+    border-radius: 4px;
+}
+.tableBox{
+    width: 100%;
+    padding-bottom: 50px;
+    margin-top: 20px;
+}
+
