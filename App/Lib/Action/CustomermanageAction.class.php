@@ -655,7 +655,7 @@ class CustomermanageAction extends Action
     public function notVisit() {
         $visitId = BaseUtils::getStr(I('visit_id', 0));
         $note = BaseUtils::getStr(I('visit_note', ''));
-        if (!$visitId || !$note) {
+        if (!$visitId) {
             $this->response('参数错误', 500, false);
         }
         $info = M('customer_visit')->where(['id' => $visitId])->find();
