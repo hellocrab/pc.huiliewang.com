@@ -19,6 +19,7 @@ class Visit
     protected $visit = "mx_customer_visit";
     protected $achievement = 'mx_achievement';
     protected $customer = 'mx_customer';
+    protected $customer_data = 'mx_customer_data';
     protected $contacts = "mx_contacts";
     protected $contactsR = "mx_r_contacts_customer";
     protected $user = 'mx_users';
@@ -27,6 +28,7 @@ class Visit
     protected $role_department = 'mx_role_department';
 
     protected $offer = "mx_fine_project_offer";
+    protected $enter = "mx_fine_project_enter";
     protected $business = "mx_business";
     protected $fine = "mx_fine_project";
     protected $dbConn;
@@ -46,12 +48,18 @@ class Visit
      * @desc 入口
      */
     public function index() {
-        //1、面试快
-        $this->interview();
-        //2、入职快
-        $this->offer();
-        //3、专业猎头
-        $this->professional();
+        //1、线上面试快
+        $this->interview(1);
+        //线下面试快
+        $this->interview(5);
+        //2、线上入职快
+        $this->offer(2);
+        //线下入职快
+        $this->offer(6);
+        //3、线上专业猎头
+        $this->professional(3);
+        //线下专业猎头
+        $this->professional(7);
     }
 
     /**
@@ -83,10 +91,21 @@ class Visit
             $money = $info['integral'];
             $history = $this->history($customerId, $proType);
             if (!$history) {
-                //首次回访
-                $minCondition = $firstCondition['min_condition'];
-                if ($money < $minCondition) {
-                    continue;
+                //查询是否按照签单信息判断
+                $isSign = $firstCondition['is_sign'];
+                if ($isSign == 1) {
+                    //根据签单信息判断
+                    $minCondition = 0;
+                    $signInfo = $this->signInfo($customerId);
+                    if (!$signInfo['sign_date']) {
+                        continue;
+                    }
+                } else {
+                    //首次回访
+                    $minCondition = $firstCondition['min_condition'];
+                    if ($money < $minCondition) {
+                        continue;
+                    }
                 }
                 //添加待回访数据
                 $data = [
@@ -127,7 +146,7 @@ class Visit
             }
             echo "{$customerId} SUCCESS" . PHP_EOL;
         }
-        echo "ALL proType: {$proType} SUCCESS" . PHP_EOL;
+        echo "ALL proType: {$proType} SUCCESS" . PHP_EOL . PHP_EOL . PHP_EOL;
     }
 
     /**
@@ -139,12 +158,12 @@ class Visit
      * @param int $proType
      */
     public function offer($proType = 2) {
-        $filed = "b.business_id,b.telephone,b.customer_id,b.creator_role_id,offer.id as offer_id";
-        $sql = "select {$filed} from {$this->business} as b ,{$this->fine} as fine ,{$this->offer} as offer" .
-            " where offer.fine_id = fine.id" .
+        $filed = "b.business_id,b.telephone,b.customer_id,b.creator_role_id,enter.id as enter_id";
+        $sql = "select {$filed} from {$this->business} as b ,{$this->fine} as fine ,{$this->enter} as enter" .
+            " where enter.fine_id = fine.id" .
             " and fine.project_id = b.business_id" .
             " and b.pro_type = {$proType}" .
-            " order by offer.addtime desc";
+            " order by enter.addtime desc";
         $list = $this->selectSql($sql, true);
         //客户列表
         $customers = [];
@@ -167,11 +186,22 @@ class Visit
             $customerId = $customerInfo['customer_id'];
             $condition = $customerInfo['condition'];
             $history = $this->history($customerId, $proType);
+            //首次回访
             if (!$history) {
-                //首次回访
-                $minCondition = $firstCondition['min_condition'];
-                if ($condition < $minCondition) {
-                    continue;
+                //查询是否按照签单信息判断
+                $isSign = $firstCondition['is_sign'];
+                if ($isSign == 1) {
+                    //根据签单信息判断
+                    $minCondition = 0;
+                    $signInfo = $this->signInfo($customerId);
+                    if (!$signInfo['sign_date']) {
+                        continue;
+                    }
+                } else {
+                    $minCondition = $firstCondition['min_condition'];
+                    if ($condition < $minCondition) {
+                        continue;
+                    }
                 }
                 //添加待回访数据
                 $data = [
@@ -214,7 +244,7 @@ class Visit
             }
             echo "{$customerId} SUCCESS" . PHP_EOL;
         }
-        echo "ALL proType:{$proType} SUCCESS" . PHP_EOL;
+        echo "ALL proType:{$proType} SUCCESS" . PHP_EOL . PHP_EOL . PHP_EOL;
     }
 
     /**
@@ -223,9 +253,107 @@ class Visit
      * 1、首次访记录添加
      * 2、下次回访【下次回访截至入职人数 -- 上次回访完成时间产生的入职人数】
      * 3、记录历史数据
+     * @param int $proType
      */
-    public function professional() {
+    public function professional($proType = 3) {
+        $filed = "b.business_id,b.telephone,b.customer_id,b.creator_role_id,enter.id as enter_id";
+        $sql = "select {$filed} from {$this->business} as b ,{$this->fine} as fine ,{$this->enter} as enter" .
+            " where enter.fine_id = fine.id" .
+            " and fine.project_id = b.business_id" .
+            " and b.pro_type = {$proType}" .
+            " order by enter.addtime desc";
+        $list = $this->selectSql($sql, true);
+        //客户列表
+        $customers = [];
+        foreach ($list as $info) {
+            $customerId = $info['customer_id'];
+            if (isset($customers[$customerId])) {
+                $customers[$customerId]['condition']++;
+                continue;
+            }
+            $customers[$customerId] = ['customer_id' => $customerId, 'condition' => 1];
+        }
+        if (!$customers) {
+            exit("没有匹配到客户数据");
+        }
+        //循环客户,计算每个客户的回访数据
+        $config = $this->config($proType);
+        $firstCondition = $config['first']; //首次回访条件
+        $nestCondition = $config['nest']; //下次回访条件
+        foreach ($customers as $customerInfo) {
+            $customerId = $customerInfo['customer_id'];
+            $condition = $customerInfo['condition'];
+            $history = $this->history($customerId, $proType);
+            //首次回访
+            if (!$history) {
+                //查询是否按照签单信息判断
+                $isSign = $firstCondition['is_sign'];
+                if ($isSign == 1) {
+                    //根据签单信息判断
+                    $minCondition = 0;
+                    $signInfo = $this->signInfo($customerId);
+                    if (!$signInfo['sign_date']) {
+                        continue;
+                    }
+                } else {
+                    $minCondition = $firstCondition['min_condition'];
+                    if ($condition < $minCondition) {
+                        continue;
+                    }
+                }
+                //添加待回访数据
+                $data = [
+                    'pro_type' => $proType, 'last_visit_time' => 0, 'times' => 1, 'condition' => $minCondition, 'current_condition' => $condition, 'time_condition' => 0
+                ];
+            } else {
+                //下次回访
+                $status = $history['status'];
+                $finishTime = $history['finish_time'];
+                $times = $history['times'] + 1;
+                if ($status == 0) {
+                    //未处理的
+                    continue;
+                }
+                $thisTimeSql = "select count('offer.id') as counts  from " .
+                    " {$this->business} as b ,{$this->fine} as fine ,{$this->offer} as offer" .
+                    " where enter.fine_id = fine.id " .
+                    " and fine.project_id = b.business_id" .
+                    " and b.pro_type = {$proType}" .
+                    " and  b.customer_id = {$customerId}" .
+                    " and offer.addtime > {$finishTime}";
+                $info = $this->selectSql($thisTimeSql);
+                $thisCondition = isset($info['counts']) ? $info['counts'] : 0;
+                //是否满足条件
+                $nestMin = $nestCondition['min_condition']; //下次满足条件金额
+                $nestTime = $nestCondition['times'] * 3600 * 24; //下次满足条件时间间隔
+                if ($thisCondition < $nestMin || (time() - $finishTime) < $nestTime) {
+                    //不满足条件的
+                    continue;
+                }
+                //添加待回访数据
+                $data = [
+                    'pro_type' => $proType, 'last_visit_time' => $finishTime, 'times' => $times, 'condition' => $nestMin, 'current_condition' => $thisCondition, 'time_condition' => $nestCondition['times']
+                ];
+            }
+            $res = $this->visitAdd($customerId, $data, $proType);
+            if (!$res) {
+                echo "{$customerId} error !!" . PHP_EOL;
+                continue;
+            }
+            echo "{$customerId} SUCCESS" . PHP_EOL;
+        }
+        echo "ALL proType:{$proType} SUCCESS" . PHP_EOL . PHP_EOL . PHP_EOL;
+    }
 
+    /**
+     * @desc 签单信息
+     * @param $customerId
+     * @return array
+     */
+    private function signInfo($customerId) {
+        $sql = "select sign_date,signer,seal_company,contract_start,contract_end,invoice_time from {$this->customer_data} where customer_id = {$customerId}";
+        $info = $this->selectSql($sql, false);
+        return $info;
     }
 
     /**
@@ -300,7 +428,10 @@ class Visit
         $parentInfo = $this->selectSql($parentSql, false);
         $pName = $parentInfo['name'];
         return [
-            'id' => $departmentId, 'name' => $departmentName, 'p_id' => $parentDepartId, 'p_name' => $pName
+            'id' => $departmentId,
+            'name' => $departmentName,
+            'p_id' => $parentDepartId ? $parentDepartId : $departmentId,
+            'p_name' => $pName ? $pName : $departmentName
         ];
     }
 

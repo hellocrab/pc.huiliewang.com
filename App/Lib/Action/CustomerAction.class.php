@@ -750,6 +750,8 @@ class CustomerAction extends Action {
                             $rcc['customer_id'] = $customer['customer_id'];
                             //客户分级联系人信息维护
                             ContactsModel::completeInfo($rcc['contacts_id'],$rcc['customer_id']);
+                            //客户联系方式完善消息处理
+                            MessageAction::read($_POST['messageId']);
                             M('RContactsCustomer')->add($rcc);
                         }
                         actionLog($customer['customer_id']);
@@ -1473,20 +1475,24 @@ class CustomerAction extends Action {
                 if ($_GET['search_owner']){
                     $search_owner = BaseUtils::getStr($_GET['search_owner']);
                     $map['customer_owner_name'] = array('like','%'.$search_owner.'%');
+                    $params[] = "search_owner=".$_GET['search_owner'];
                 }
-                if($_GET['search_industry']){
-                    $search_industry = BaseUtils::getStr($_GET['search_industry']);
+                if($_GET['industry']){
+                    $search_industry = BaseUtils::getStr($_GET['industry']);
                     $search_industry = explode(',',$search_industry);
                     $map['industry'] = array('in',$search_industry);
+                    $params[] = "industry=".$_GET['industry'];
                 }
                 if($_GET['search_cplace']){
                     $search_cplace = BaseUtils::getStr($_GET['search_cplace']);
                     $search_cplace = explode(',',$search_cplace);
                     $map['address'] = array('in',$search_cplace);
+                    $params[] = "search_cplace=".$_GET['search_cplace'];
                 }
                 if($_GET['customer']){
                     $cus = BaseUtils::getStr($_GET['customer']);
-                    $map['name'] = array('like',$cus.'%');
+                    $map['name'] = array('like','%'.$cus.'%');
+                    $params[] = "customer=".$_GET['customer'];
                 }
                 if($_GET['contacts'] && $_GET['contacts_phone']){
                     $con = BaseUtils::getStr($_GET['contacts']);
@@ -1498,6 +1504,8 @@ class CustomerAction extends Action {
                     $contacts_str = implode(',', $contacts_ids);
                     $customerIds = M('r_contacts_customer')->where(['contacts_id' => ['in', $contacts_str]])->getField('customer_id', true);
                     $customerIds && $map['customer_id'] = array('in',$customerIds);
+                    $params[] = "contacts=".$_GET['contacts'];
+                    $params[] = "contacts_phone=".$_GET['contacts_phone'];
                 }elseif($_GET['contacts']){
                     $con = BaseUtils::getStr($_GET['contacts']);
                     $con = trim($con);
@@ -1506,6 +1514,7 @@ class CustomerAction extends Action {
                     $contacts_str = implode(',', $contacts_ids);
                     $customerIds = M('r_contacts_customer')->where(['contacts_id' => ['in', $contacts_str]])->getField('customer_id', true);
                     $customerIds && $map['customer_id'] = array('in',$customerIds);
+                    $params[] = "contacts=".$_GET['contacts'];
                 }elseif($_GET['contacts_phone']){
                     $phone = BaseUtils::getStr($_GET['contacts_phone']);
                     $phone = trim($phone);
@@ -1514,6 +1523,7 @@ class CustomerAction extends Action {
                     $contacts_str = implode(',', $contacts_ids);
                     $customerIds = M('r_contacts_customer')->where(['contacts_id' => ['in', $contacts_str]])->getField('customer_id', true);
                     $customerIds && $map['customer_id'] = array('in',$customerIds);
+                    $params[] = "contacts_phone=".$_GET['contacts_phone'];
                 }
                 $list = $d_v_customer->lists($map,$order,$p . ',' . $listrows);
                 $count = $d_v_customer->where($map)->count();
@@ -1651,7 +1661,6 @@ class CustomerAction extends Action {
                     alert('error', L('HAVE NOT PRIVILEGES'), $_SERVER['HTTP_REFERER']);
                 }
             }
-
             $Page = new Page($count, $listrows);
             if (!empty($_GET['content'])) {
                 $params[] = "content=" . trim($_GET['content']);

@@ -1,43 +1,68 @@
 <?php
 
-class CallcenterAction extends Action
-{
+/**
+ * 呼叫中心
+ */
+class CallcenterAction extends Action {
 
-    const APPID = '00000000699efd070169e76bd4970372';
-    const APP_TOKEN = "3ff246aa87687839df55f843459e47b6";
+    /**
+     * 融营云账户令牌
+     */
+    //
+    //账户授权令牌
+    const RONGYINYUN_ACCOUNT_SID = '5bee00bd21de4a65a50e14d714d58412';
+    //呼叫中心令牌
+    const RONGYINYUN_CALLCENTER_APPID = '00000000699efd070169e76bd4970372';
+    const RONGYINYUN_CALLCENTER_APP_TOKEN = "3ff246aa87687839df55f843459e47b6";
+    //点击回拨令牌
+    const RONGYINYUN_CALLBACK_APPID = '00000000699efd07016afdbdec981541';
+    const RONGYINYUN_CALLBACK_APP_TOKEN = '4ac7a32cb830dfecf477941620ee1a2b';
+
+    //通道名称
+    private $channelName = [
+        '1' => '品聘',
+        '2' => '融营云坐席呼叫',
+        '3' => '融营云点击回拨'
+    ];
+    //通话来源
+    private $typeName = [
+        '1' => '人才',
+        '2' => '客户联系人'
+    ];
 
     /**
      * 融营云呼叫中心SIG获取
      */
-    function getsig($timestamp) {
-        $authtoken = "5bee00bd21de4a65a50e14d714d58412"; // 账户授权令牌
-        $account = self::APPID;
-        $sig = strtoupper(md5($authtoken . ":" . $account . ":" . $timestamp));
+    private static function getsig($timestamp, $accountSid, $appId) {
+        $sig = strtoupper(md5($accountSid . ":" . $appId . ":" . $timestamp));
         return $sig;
     }
 
     /**
      * 融营云呼叫中心auth获取
      */
-    function getauth($timestamp) {
-        $authtoken = self::APPID; // APPID
-        $datatoken = "3ff246aa87687839df55f843459e47b6"; // appToken
-        $auth = base64_encode($authtoken . ":" . $datatoken . ":" . $timestamp);
+    private static function getauth($timestamp, $appId, $appToken) {
+        $auth = base64_encode($appId . ":" . $appToken . ":" . $timestamp);
         return $auth;
     }
 
-    //坐席上班
-    function startWork($timestamp, $sourceTel = '') {
-        $sig = $this->getsig($timestamp);
-        $auth = $this->getauth($timestamp);
-        $url = "https://wdapi.yuntongxin.vip/bind/agentOnWork/v2?Sig=" . $sig;
+    
+    /**
+     * 创建坐席
+     * @return type
+     */
+    public function createeSeatAccount($phoneNum)
+    {
+        $timestamp = date('YmdHis');
+        $sig = $this->getsig($timestamp, self::RONGYINYUN_ACCOUNT_SID, self::RONGYINYUN_CALLBACK_APPID);
+        $auth = $this->getauth($timestamp, self::RONGYINYUN_CALLBACK_APPID, self::RONGYINYUN_CALLBACK_APP_TOKEN);
+        $url = "https://wdapi.yuntongxin.vip/20181221/rest/CreateSeatAccount/v1?sig=" . $sig;
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
             'Accept:' . 'application/json',
             'Authorization:' . $auth);
-        $data = ["voipAccount" => $sourceTel];
+        $data = ['appId' => self::RONGYINYUN_CALLBACK_APPID,'bindNumber' => $phoneNum];
         $data = json_encode($data);
         $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -51,28 +76,36 @@ class CallcenterAction extends Action
         $uuid = $result['statuscode'];
         return $uuid;
     }
-
-    //坐席下班
-    function offWork($timestamp, $sourceTel) {
-        $sig = $this->getsig($timestamp);
-        $auth = $this->getauth($timestamp);
-
-        $url = "http://47.96.62.197:8090/bind/agentOffWork/v2?Sig=" . $sig;
+    
+    
+    /**
+     * 变更现有坐席为新坐席号码
+     * @param type $oldPhoneNum
+     * @param type $newphoneNum
+     */
+    public function changeSeatAccount($oldPhoneNum,$newphoneNum)
+    {
+        $timestamp = date('YmdHis');
+        $sig = $this->getsig($timestamp, self::RONGYINYUN_ACCOUNT_SID, self::RONGYINYUN_CALLBACK_APPID);
+        $auth = $this->getauth($timestamp, self::RONGYINYUN_CALLBACK_APPID, self::RONGYINYUN_CALLBACK_APP_TOKEN);
+        $url = "https://wdapi.yuntongxin.vip/20181221/rest/ChangeBindNumber/v1?sig=" . $sig;
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
             'Accept:' . 'application/json',
             'Authorization:' . $auth);
-        $data = ["voipAccount" => $sourceTel];
+        $data = ['Appid' => self::RONGYINYUN_CALLBACK_APPID, 'oldNumber' => $oldPhoneNum, 'newNumber' =>  $newphoneNum];
         $data = json_encode($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, '1.0');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $msg = curl_exec($ch);
         $result = json_decode($msg, true);
-        $uuid = $result['resp']['Msg'];
+        $uuid = $result['Flag'];
         return $uuid;
     }
 
@@ -86,6 +119,8 @@ class CallcenterAction extends Action
         $itemId = isset($_POST['itemId']) ? $_POST['itemId'] : 0; //客户联系人/简历ID
         $fineId = isset($_POST['fineId']) ? $_POST['fineId'] : 0; //客户联系人/简历ID
         $channel = $_POST['channel'] ? BaseUtils::getStr(trim(I('channel'))) : 1;
+        $timestamp = date('YmdHis');
+
         if ($itemId > 0) {
             //简历联系人电话
             if ($type == 1) {
@@ -94,6 +129,15 @@ class CallcenterAction extends Action
             //客户联系人电话
             if ($type == 2) {
                 $tel = M('contacts')->where(['contacts_id' => $itemId])->getField('telephone');
+                $phone = M('contacts')->where(['contacts_id' => $itemId])->getField('crm_ljgmqr');
+                if(!$tel){
+                    if($phone){
+                        $tel = $phone;
+                    } else {
+                        exit(json_encode(['code' => 0, 'msg' => '请检查联系电话']));
+                    }
+                }
+                
             }
         }
         $sourceTel = '';
@@ -112,8 +156,7 @@ class CallcenterAction extends Action
         }
 
         //日志记录
-        $channelName = [1 => '品聘', '2' => '融营云'];
-        $typeName = [1 => '人才', 2 => '客户联系人'];
+
         $userName = session('full_name');
         $log = [
             'role_id' => session('role_id'),
@@ -122,7 +165,7 @@ class CallcenterAction extends Action
             'create_time' => time(),
             'action_id' => $fineId,
             'param_name' => "user_name = {$userName} , channel = $channel , type = {$type} , tel = {$tel} , fine_id = {$fineId}",
-            'content' => " 顾问：{$userName} 选择通道：" . $channelName[$channel] . " 拨打了来源：{$typeName[$type]} 的电话 : {$tel}， fine_id 为: {$fineId}"
+            'content' => " 顾问：{$userName} 选择通道：" . $this->channelName[$channel] . " 拨打了来源：{$this->typeName[$type]} 的电话 : {$tel}， fine_id 为: {$fineId}"
         ];
         M('action_log')->add($log);
 
@@ -138,41 +181,93 @@ class CallcenterAction extends Action
             $callsId = $msg['data'];
             $this->record($callsId, $phoneRecordData, $channel);
             exit(json_encode(['code' => 1, 'msg' => '拨打成功']));
-
-        } elseif ($channel == 2) {
+        } elseif ($channel == 2 || $channel == 3) {
             //融营云坐席外呼
-            $sourceTel = M('user')->where(['role_id' => session('role_id')])->getField('ryy_tel');
-            if (!$sourceTel) {
-                exit(json_encode(['code' => 0, 'msg' => '请设置坐席号，谢谢']));
+            $secertArr = [];
+            switch ($channel) {
+                case 2 : //融营云坐席外呼
+                    $sourceTel = M('user')->where(['role_id' => session('role_id')])->getField('ryy_tel');
+                    if (!$sourceTel) {
+                        exit(json_encode(['code' => 0, 'msg' => '请设置坐席号，谢谢']));
+                    }
+                    $secertArr = [
+                        'accountSid' => self::RONGYINYUN_ACCOUNT_SID,
+                        'appId' => self::RONGYINYUN_CALLCENTER_APPID,
+                        'appToken' => self::RONGYINYUN_CALLCENTER_APP_TOKEN
+                    ];
+                    $callStatus = $this->rongYinYunCall($timestamp, $tel, $sourceTel, $secertArr);
+
+                    if ($callStatus['statuscode'] == 200) {
+                        $callsId = $callStatus['data'];
+                        $this->record($callsId, $phoneRecordData, $channel);
+                        echo json_encode(['code' => 1, 'msg' => '拨打成功']);
+                    }
+                    break;
+                case 3 : //融营云点击回拨
+                    $secertArr = [
+                        'accountSid' => self::RONGYINYUN_ACCOUNT_SID,
+                        'appId' => self::RONGYINYUN_CALLBACK_APPID,
+                        'appToken' => self::RONGYINYUN_CALLBACK_APP_TOKEN
+                    ];
+                    $callStatus = $this->rongYinYunCallBackChannel($timestamp, $tel, $sourceTel, $secertArr);
+                    
+                    if ($callStatus['Flag'] == 1) {
+                        $callsId = $callStatus['Msg'];
+                        $this->record($callsId, $phoneRecordData, $channel);
+                        echo json_encode(['code' => 1, 'msg' => '拨打成功']);
+                    } elseif($callStatus['Flag'] == 2009) {
+                        echo json_encode(['code' => 0, 'msg' => '没有绑定坐席，请联系管理员']);
+                    }
+                    break;
             }
-            $timestamp = date('YmdHis');
-            $uuid = $this->startWork($timestamp, $sourceTel);
-            if ($uuid != 200) {
-                //融营云服务暂时不可用
-                exit(json_encode(['code' => 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
-            }
-            $callStatus = $this->rongYinYunCall($timestamp, $tel, $sourceTel);
-            if ($callStatus['statuscode'] == 200) {
-                $callsId = $callStatus['data'];
-                $this->record($callsId, $phoneRecordData, $channel);
-                echo json_encode(['code' => 1, 'msg' => '拨打成功']);
-            }
-            $this->offWork($timestamp, $sourceTel);
         }
     }
 
-    /**
-     * 融营云呼叫
-     */
+    //坐席上班
+    function startWork($sig, $auth, $sourceTel = '') {
+        $url = "https://wdapi.yuntongxin.vip/bind/agentOnWork/v2?Sig=" . $sig;
+        $header = array('Content-Type:' . 'application/json;charset=utf-8',
+            'Accept:' . 'application/json',
+            'Authorization:' . $auth);
+        $data = ["voipAccount" => $sourceTel];
+        $data = json_encode($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, '1.0');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $msg = curl_exec($ch);
+        $result = json_decode($msg, true);
+        $uuid = $result['statuscode'];
+        return $uuid;
+    }
 
-    private function rongYinYunCall($timestamp, $tel, $sourceTel) {
-        $sig = $this->getsig($timestamp);
-        $auth = $this->getauth($timestamp);
+    /**
+     * 融营云坐席呼叫
+     */
+    private function rongYinYunCall($timestamp, $tel, $sourceTel, $secertArr) {
+
+        if (!$secertArr) {
+            exit(json_encode(['code' => 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
+        }
+        $sig = $this->getsig($timestamp, $secertArr['accountSid'], $secertArr['appId']);
+        $auth = $this->getauth($timestamp, $secertArr['appId'], $secertArr['appToken']);
+        $uuid = $this->startWork($sig, $auth, $sourceTel);
+
+        if ($uuid != 200) {
+            //融营云服务暂时不可用
+            exit(json_encode(['code' => 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
+        }
+
         $url = "https://wdapi.yuntongxin.vip/bind/callEvent/v2?Sig=" . $sig;
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
             'Accept:' . 'application/json',
             'Authorization:' . $auth);
-        $data = ["Appid" => self::APPID, "Phone" => $tel, "voipAccount" => $sourceTel];
+        $data = ["Appid" => $secertArr['appId'], "Phone" => $tel, "voipAccount" => $sourceTel];
 
         $data = json_encode($data);
         $ch = curl_init();
@@ -186,8 +281,53 @@ class CallcenterAction extends Action
         curl_setopt($ch, CURLOPT_HTTP_VERSION, '1.0');
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $msg = curl_exec($ch);
-        $result = json_decode($msg, true);
+        $response = curl_exec($ch);
+        $result = json_decode($response, true);
+        curl_close($ch);
+        return $result;
+    }
+
+    /**
+     * 融营云点击回拨呼叫
+     */
+    private function rongYinYunCallBackChannel($timestamp, $tel, $sourceTel, $secertArr) {
+
+        if (!$secertArr) {
+            exit(json_encode(['code' => 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
+        }
+
+        $sig = $this->getsig($timestamp, $secertArr['accountSid'], $secertArr['appId']);
+        $auth = $this->getauth($timestamp, $secertArr['appId'], $secertArr['appToken']);
+
+        $Caller = trim(BaseUtils::getStr($sourceTel));
+        $Callee = trim(BaseUtils::getStr($tel));
+
+        $url = "https://wdapi.yuntongxin.vip/20181221/rest/click/call/event/v1?sig=" . $sig; //点击回呼请求链接地址
+        $header = array('Content-Type:' . 'application/json;charset=utf-8', 'Accept:' . 'application/json', 'Authorization:' . $auth);
+        $data = [
+            'Appid' => $secertArr['appId'],
+            'AccountSid' => $secertArr['accountSid'],
+            'Caller' => $Caller,
+            'Callee' => $Callee,
+            'IsDisplayCalleeNbr' => false
+        ];
+        $data = json_encode($data);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $response = curl_exec($ch);
+        $result = json_decode($response, true);
+//        if(session('role_id') == 66){
+//            var_dump($result);exit;
+//        }
+        curl_close($ch);
         return $result;
     }
 
@@ -199,7 +339,12 @@ class CallcenterAction extends Action
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
             'Accept:' . 'application/json'
         );
+
 //            'Authorization:'.$auth
+        if (preg_match('/0\d{2,5}\d{7,8}/', $tel)) {
+            $tel = substr_replace($tel, '', 0, 1);
+        } 
+
         $data = ["callerNbr" => "+86" . $sourceTel,
             "calleeNbr" => "+86" . $tel,
             "userData" => "7be4a9ce-8ea2-4c74-b822-f4472194621d",
@@ -253,7 +398,7 @@ class CallcenterAction extends Action
     /**
      * @desc  通话记录添加/维护
      * @param $callsId
-     * @param $channel [1 => '品聘', '2' => '融营云'];
+     * @param $channel [1 => '品聘', '2' => '融营云坐席呼叫' , '3' => '融营云点击回拨'];
      * @param array $data
      * @return bool|mixed
      */
@@ -293,8 +438,9 @@ class CallcenterAction extends Action
         ini_set("memory_limit", "1024M");
 
         $content = json_decode($contentOri, true);
+        BaseUtils::addLog("融营云回掉参数 ：$contentOri ", 'callback_log', '/var/log/rongyinyun/');
         if (isset($content['Table']) && $content['Table']) {
-            BaseUtils::addLog("融营云回掉参数 ：$contentOri ", 'callback_log', '/var/log/rongyinyun/');
+            //BaseUtils::addLog("融营云回掉参数 ：$contentOri ", 'callback_log', '/var/log/rongyinyun/');
             return $this->rongYinYunCallBack($content);
         }
         //品聘回掉
@@ -421,7 +567,6 @@ class CallcenterAction extends Action
             $data['recordFlag'] = $content['RecordUrl'] ? 1 : 0; // 录音地址
             $data['direction'] = $content['Context']; // 呼入呼出类型
             $data['callback_time'] = time(); // 回掉时间记录
-
             //录音地址处理
             $data['oss_record_url'] = '';
             if ($data['recordUrl']) {
@@ -512,7 +657,6 @@ class CallcenterAction extends Action
         $result = json_decode($msg, true);
         return $result;
     }
-
 
     /**
      * @录音信息加入队列处理

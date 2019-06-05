@@ -310,6 +310,7 @@ class Rank
                     'send_time' => time(),
                     'deadline' => strtotime(date('Y-m-d') . " 23:59:59"),
                     'type' => 1,
+                    'degree' => 1,
                     'params' => json_encode(['customer_id' => $customerId]),
                     'link' => "/index.php?m=contacts&a=complete&customerId={$customerId}&userRoleId={$userRoleId}&from=rank",
                 ];

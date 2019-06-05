@@ -316,8 +316,8 @@
                             <li style="margin-left: 10px;">
                                 <div class="input-group">
                                     <select class="form-control" onchange="window.open(this.options[this.selectedIndex].value, target = '_self')" style="margin-bottom:5px;">
-                                        <option value="{:U('product/index','by=myself&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'myself'">selected="selected"</if>>我上传的人才</option>
                                         <option value="{:U('product/index','by=all&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'all'">selected="selected"</if>>全部人才</option>
+                                        <option value="{:U('product/index','by=myself&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'myself'">selected="selected"</if>>我上传的人才</option>
                                         <option value="{:U('product/index','by=favorite&'.$by_parameter)}" <if condition = "$_GET['by'] eq 'favorite'">selected="selected"</if>>我的收藏
                                     </select>
                                 </div>
@@ -472,6 +472,9 @@
                                                                                         </a>
                                                                                     </if>
                                                                         </span>
+                                                                        <if condition="$vo['is_protected'] eq 1">
+                                                                            保护中
+                                                                        </if>
                                                                         <if condition="$vo['favorite']">
                                                                             <i class="fa fa-star star-orange" style="float: right;margin-right: 20px;"></i>
                                                                         </if>

@@ -55,6 +55,7 @@
                         <ul class="nav pull-left" style="margin:0px 10px 0px 20px;">
                             <span><img src="__PUBLIC__/img/view_icon.png" style="margin-bottom:9px;" alt=""></span>
                             <span style="font-size:24px;color: #000;">{$resume.name}</span>&nbsp;&nbsp;
+                            <span><if condition="$resume.is_protected eq 1">已发offer</if></span>
                             <span class="basic_item">{$resume.sex}</span>
                             <span class="basic_item">{$resume.age}岁</span>
                             <span class="basic_item">{$resume.edu}</span>
@@ -1768,9 +1769,11 @@
                             if (seatNum) {
                                 switchLine();
                             } else {
+                                var fineId = $(_this).attr('data-id');
                                 $.post(
                                     "{:U('callcenter/call_out')}", {
                                         itemId,
+                                        fineId,
                                         type: 1,
                                         tel: '',
                                         channel: 1
@@ -1814,17 +1817,17 @@
                                         type: "warning",
                                         showCancelButton: true,
                                         confirmButtonColor: "#DD6B55",
-                                        confirmButtonText: "品聘",
-                                        cancelButtonText: '融营云',
+                                        confirmButtonText: "坐席呼叫",
+                                        cancelButtonText: '个人手机拨打',
                                         closeOnConfirm: false,
                                         closeOnCancel: false
                                     },
                                     function (isConfirm) {
                                         var channel;
                                         if (isConfirm) {
-                                            channel = 1;
-                                        } else {
                                             channel = 2;
+                                        } else {
+                                            channel = 1;
                                         }
                                         var fineId = $(_this).attr('data-id');
                                         $.post(

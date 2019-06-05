@@ -124,7 +124,7 @@ class BusinessAction extends Action
         $d_v_business = D('BusinessTopView');
         $below_ids = getPerByAction(MODULE_NAME, ACTION_NAME, true);
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
-        $by = (isset($_GET['by']) && $_GET['by']) ? trim($_GET['by']) : 'me';
+        $by = (isset($_GET['by']) && $_GET['by']) ? trim($_GET['by']) : 'all';
         $where = array();
         $params = array();
         $order = "top.set_top desc, top.top_time desc ,business_id desc";
@@ -219,13 +219,18 @@ class BusinessAction extends Action
                     $cus_where['name'] = array('like', '%' . $customer_name . '%');
                     $customer_ids = M('Customer')->where($cus_where)->getField('customer_id', true);
                     $customer_str = implode(',', $customer_ids);
+                    $params[] = "customer_name=".$customer_name;
                 }
                 if($business_name && $customer_name){
                     $where['_string'] = 'business.name like "%' . $business_name . '%" AND business.customer_id in (' . $customer_str . ')';
+                    $params[] = "business_name=".$business_name;
+                    $params[] = "customer_name=".$customer_name;
                 }elseif($customer_name){
                     $where['_string'] = 'business.customer_id in (' . $customer_str . ')';
+                    $params[] = "customer_name=".$customer_name;
                 }else{
                     $where['_string'] = 'business.name like "%' . $business_name . '%"';
+                    $params[] = "business_name=".$business_name;
                 }
             }else {
                 switch ($condition) {
@@ -284,6 +289,7 @@ class BusinessAction extends Action
                         $where[$field] = array('eq', $search);
                 }
             }
+//            dump($params);die;
             $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'search=' . $search);
             //过滤不在权限范围内的role_id
             if (trim($_REQUEST['field']) == 'owner_role_id') {
@@ -523,6 +529,7 @@ class BusinessAction extends Action
                     $where['_logic'] = 'OR';
                 }
             }
+            $params[] = "ownerr=".$_GET['ownerr'];
         }
         if ($_GET['industry']) {
             $industrySql = '';
@@ -541,7 +548,7 @@ class BusinessAction extends Action
                 $where['_complex'] = $industryMap;
                 $where['_logic'] = 'OR';
             }
-
+            $params[] = "industry=".$_GET['industry'];
         }
 
         if ($_GET['address']) {
@@ -562,7 +569,15 @@ class BusinessAction extends Action
                 $where['_complex'] = $addressMap;
                 $where['_logic'] = 'OR';
             }
+            $params[] = "address=".$_GET['address'];
         }
+        $business_name = empty($_REQUEST['business_name']) ? '' : trim($_REQUEST['business_name']);
+        $customer_name = empty($_REQUEST['customer_name']) ? '' : trim($_REQUEST['customer_name']);
+        if($business_name)
+            $params[] = "business_name=".$business_name;
+        if($customer_name)
+            $params[] = "customer_name=".$customer_name;
+
 
         $where['_logic'] = 'AND';
 //        dump($where);die;
@@ -2247,6 +2262,8 @@ class BusinessAction extends Action
                 $_POST['addtime'] = time();
                 M("fine_project_bhs")->add($_POST);
                 $arr["stop"] = 1;
+                //取消保护
+                $arr['is_protected'] = 0 ;
                 $result = M("fine_project")->where("id=%d", $id)->save($arr);
             }
 
@@ -2323,6 +2340,17 @@ class BusinessAction extends Action
                 //标记已提醒过一次
                 M('fine_project_cc')->where(array('id' => $v['id']))->setField(array('noticed' => 1));
             }
+        }
+        $arr_time = M('fine_project')->where(array('is_protected'=>1))->field('updatetime,id')->select();
+        dump($arr_time);die;
+    }
+
+    //超时6个月,取消人才保护
+    function remove_protect(){
+        $arr_time = M('fine_project')->where(array('is_protected'=>1))->field('updatetime,id')->select();
+        foreach ($arr_time as $k=>$v){
+            if((time()-$v['updatetime'])>(182*24*3600000))
+                M('fine_project')->where(array('id'=>intval($v['id'])))->save(array('is_protected'=>0));
         }
     }
 
@@ -2556,6 +2584,8 @@ class BusinessAction extends Action
                 $result = M("fine_project_offer")->add($_POST);
                 $arr['status'] = 6;
                 $arr['tracker'] = session('role_id');
+                //发offer之后添加保护中标志
+                $arr['is_protected'] = 1;
                 M("fine_project")->where("id=%d", $id)->save($arr);
             }
 
@@ -2661,7 +2691,7 @@ class BusinessAction extends Action
             $res = $safeObj->where($where)->save($data);
         }
         if ($res) {
-            M("fine_project")->where("id=%d", $projectId)->save(['status' => 8, 'updatetime' => time(), 'tracker' => session('role_id')]);
+            M("fine_project")->where("id=%d", $projectId)->save(['status' => 8, 'updatetime' => time(), 'tracker' => session('role_id'),'is_protected'=>0]);//is_protected=0取消保护标识
             $this->ajaxReturn(1, '操作成功', 1);
         }
         $this->ajaxReturn(1, '系统错误', 0);
