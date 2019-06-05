@@ -129,6 +129,15 @@ class CallcenterAction extends Action {
             //客户联系人电话
             if ($type == 2) {
                 $tel = M('contacts')->where(['contacts_id' => $itemId])->getField('telephone');
+                $phone = M('contacts')->where(['contacts_id' => $itemId])->getField('crm_ljgmqr');
+                if(!$tel){
+                    if($phone){
+                        $tel = $phone;
+                    } else {
+                        exit(json_encode(['code' => 0, 'msg' => '请检查联系电话']));
+                    }
+                }
+                
             }
         }
         $sourceTel = '';
