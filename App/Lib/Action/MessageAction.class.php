@@ -1083,15 +1083,16 @@ class MessageAction extends Action
      */
     public function messageList() {
         $type = I('type', 0);
-        $day = I('deadline', 0);
+        $day = I('deadline', date('Y-m-d', time()));
         $page = I('page', 1);
         $pageSize = I('page_size', 10);
         $where = ['type' => ['gt', 0]];
         $type && $where['type'] = $type;
-        $day && $where['deadline'] = ['gt', strtotime($day)];
+//        $day && $where['deadline'] = ['gt', strtotime($day)];
         $where['to_role_id'] = session('role_id');
         $startNo = ($page - 1) * $pageSize;
-        $list = M('message')->where($where)->order('deadline asc')->limit($startNo, $pageSize)->select();
+        $filed = "message_id,to_role_id,from_role_id,content,send_time,status,type,deadline,link,degree";
+        $list = M('message')->field($filed)->where($where)->order('deadline asc')->limit($startNo, $pageSize)->select();
         $nextDay = strtotime(date('Y-m-d')) + 3600 * 24;
         $count = M('message')->where($where)->count();
         foreach ($list as &$info) {
@@ -1099,6 +1100,9 @@ class MessageAction extends Action
             $endTime = date('Y-m-d H:i', $info['deadline']);
             if ($info['type'] == 1 && (time() < $info['deadline'] && $info['deadline'] < $nextDay)) {
                 $endTime = '今天';
+            }
+            if ($info['type'] == 1 && (time() > $info['deadline'])) {
+                self::read($info['message_id'], 2);
             }
             $info['deadline'] = $endTime;
             $info['degree'] = $info['degree'] ? '重要' : '一般';
@@ -1171,8 +1175,25 @@ class MessageAction extends Action
             $return = ['success' => 0, 'code' => 500, 'info' => "没有此消息"];
             $this->ajaxReturn($return);
         }
-        M('message')->where(['message_id' => $message_id])->save(['status' => 1]);
+        M('message')->where(['message_id' => $message_id])->save(['status' => 1, 'read_time' => time()]);
         $return = ['success' => 1, 'code' => 200, 'info' => "操作成功"];
         $this->ajaxReturn($return);
+    }
+
+    /**
+     * @desc 消息已处理
+     * @param $messageId
+     * @param $status
+     * @return bool
+     */
+    public static function read($messageId, $status = 1) {
+        $where = ['message_id' => $messageId];
+        $messInfo = M('massage')->where($where)->find();
+        if (!$messInfo) {
+            return false;
+        }
+        $data = ['status' => $status];
+        $status == 1 && $data['read_time'] = time();
+        return M('message')->where($where)->save($data);
     }
 }
