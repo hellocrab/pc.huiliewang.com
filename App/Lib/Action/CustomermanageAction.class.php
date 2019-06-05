@@ -375,6 +375,9 @@ class CustomermanageAction extends Action
         $where = [];
         $timeStart && $where['add_time'] = ['gt', strtotime($timeStart)];
         $timeEnd && $where['add_time'] = ['lt', strtotime($timeEnd)];
+        if ($timeStart && $timeEnd) {
+            $where['add_time'] = [['gt', strtotime($timeStart)], ['lt', strtotime($timeEnd)]];
+        }
         $departmentId && $where['p_department_id|department_id'] = $departmentId;
         $proType && $where['pro_type'] = $proType;
         $visitStatus && $where['visit_status'] = $visitStatus;
@@ -417,6 +420,8 @@ class CustomermanageAction extends Action
                 $info['industry'] = $industry_name[$info['industry']];
                 $info['update_time'] = date("Y-m-d", $info['update_time']);
                 $info['status'] = "";
+                $roles = M('customer')->where(['customer_id' => $customerId])->getField("creator_role_id");
+                $info['manager'] = M('user')->where(['role_id' => $roles])->getField("full_name");
 
                 $signInfo = $this->signInfo(false, $customerId);
                 $info['contract_start'] = $signInfo['contract_start'] ? $signInfo['contract_start'] : '';
@@ -473,8 +478,11 @@ class CustomermanageAction extends Action
         if ($timeEnd && ($timeStart > $timeEnd)) {
             $this->response('结束时间不能大于开始时间', 500, false);
         }
-        $timeStart && $where['visit.finish_time'] = ['gt', $timeStart];
-        $timeEnd && $where['visit.finish_time'] = ['lt', $timeEnd];
+        $timeStart && $where['visit.finish_time'] = ['gt', strtotime($timeStart)];
+        $timeEnd && $where['visit.finish_time'] = ['lt', strtotime($timeEnd)];
+        if ($timeStart && $timeEnd) {
+            $where['visit.finish_time'] = [['gt', strtotime($timeStart)], ['lt', strtotime($timeEnd)]];
+        }
         $departmentId && $where['visit.p_department_id'] = $departmentId;
         $proType && $where['visit.pro_type'] = $proType;
         $model = M('customer_visit_note');

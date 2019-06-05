@@ -2091,6 +2091,7 @@ class BusinessAction extends Action
                 $arr['remove_remark'] = "";
                 $arr['updatetime'] = time();
                 $arr['tracker'] = session('role_id');//默认tracker为操作人
+                $arr['is_protected'] = 1;
                 M("fine_project_bhs")->where("fine_id=%d", $id)->delete();
                 $result = M("fine_project")->where("id=%d", $id)->save($arr);
                 if ($result) {
