@@ -340,9 +340,11 @@ class CallcenterAction extends Action {
             'Accept:' . 'application/json'
         );
 
-//            'Authorization:'.$auth
         if (preg_match('/0\d{2,5}\d{7,8}/', $tel)) {
             $tel = substr_replace($tel, '', 0, 1);
+        } 
+        if (strpos($tel, '-')) {
+            $tel = str_replace('-', '', $tel);
         } 
 
         $data = ["callerNbr" => "+86" . $sourceTel,
