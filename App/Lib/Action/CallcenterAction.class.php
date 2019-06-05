@@ -330,7 +330,12 @@ class CallcenterAction extends Action {
         $header = array('Content-Type:' . 'application/json;charset=utf-8',
             'Accept:' . 'application/json'
         );
+
 //            'Authorization:'.$auth
+        if (preg_match('/0\d{2,5}\d{7,8}/', $tel)) {
+            $tel = substr_replace($tel, '', 0, 1);
+        } 
+
         $data = ["callerNbr" => "+86" . $sourceTel,
             "calleeNbr" => "+86" . $tel,
             "userData" => "7be4a9ce-8ea2-4c74-b822-f4472194621d",
