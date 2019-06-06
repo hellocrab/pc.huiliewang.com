@@ -429,6 +429,7 @@ class LogAction extends Action{
                     $data['com_id'] = $customer_id['customer_id'];
                     $data['status'] = 1;
                     $data['tracker'] = session("role_id");
+                    $data['callist_role_id'] = session('role_id');
                     $data['addtime'] = time();
                     $protected_m = M('fine_project')->where(array('resume_id'=>$_POST['resume_id'],'is_protected'=>1))->field('tracker')->find();
                     $business_name = M('business')->where(array('business_id'=>intval($_POST['project'])))->getField('name');
@@ -466,6 +467,7 @@ class LogAction extends Action{
                     $data['com_id'] = $customer_id['customer_id'];
                     $data['status'] = 1;
                     $data['tracker'] = session("role_id");
+                    $data['callist_role_id'] = session('role_id');
                     $data['addtime'] = time();
                     $url = U('product/view','id='.$v);
                     $arr_pro = M('fine_project')->where(array('resume_id'=>$v,'is_protected'=>1))->field('tracker')->select();
