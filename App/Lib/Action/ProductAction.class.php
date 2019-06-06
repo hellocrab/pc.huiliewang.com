@@ -1440,13 +1440,95 @@ class ProductAction extends Action {
 //        header('content-type:text/html;charset=utf-8');
 //        dump($resume);die;
 
-        //人才状态日志
-        // fin_project、fine_project_adviser、fine_project tj_addtime、fine_project_interview、
-        //fine_project pass_addtime、fine_project_offer、fine_project_enter、fine_project_safe
-
-
-
-
+        //获取人才状态日志
+        //获取加入CallList日志
+        $log_list = array();
+        $arr_call = D('ProductCView')->where(array('resume_id'=>intval($eid)))->field('callist_role_id,tracker,addtime,name')->select();
+        if(!empty($arr_call)){
+            foreach ($arr_call as $k=>$v){
+                $arr_call[$k]['callist_role_id'] = empty($v['callist']) ? $v['tracker'] : $v['callist_role_id'];
+                $arr_call[$k]['user'] = M('user')->where(array('role_id'=>intval($v['tracker'])))->getField('full_name');
+                $arr_call[$k]['status'] = 'CallList';
+            }
+            $log_list = array_merge($log_list,$arr_call);
+        }
+        //获取顾问面试日志
+        $fineIds = M('fine_project')->where(array('resume_id'=>intval($eid)))->getField('id',true);
+        $arr_adv = D('ProductAdView')->where(array('fine_id'=>array('in',$fineIds)))->field('role_id,addtime,com_id')->select();
+        if(!empty($arr_adv)){
+            foreach ($arr_adv as $k => $v){
+                $arr_adv[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name');
+                $arr_adv[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                $arr_adv[$k]['status'] = '顾问面试';
+            }
+            $log_list = array_merge($log_list,$arr_adv);
+        }
+        //获取推荐日志
+        $arr_tj = D('ProductCView')->where(array('resume_id'=>intval($eid)))->field('tj_role_id,tjaddtime,name')->select();
+        if(!empty($arr_tj)){
+            foreach ($arr_tj as $k=>$v){
+                $arr_tj[$k]['user'] = M('user')->where(array('role_id'=>intval($v['tj_role_id'])))->getField('full_name');
+                $arr_tj[$k]['addtime'] = $v['tjaddtime'];
+                $arr_tj[$k]['status'] = '客户推荐';
+            }
+            $log_list = array_merge($log_list,$arr_tj);
+        }
+        //获取客户面试日志
+        $arr_interview = D('ProductInterView')->where(array('fine_id'=>array('in',$fineIds)))->field('role_id,addtime,com_id')->select();
+        if(!empty($arr_interview)){
+            foreach ($arr_interview as $k=>$v){
+                $arr_interview[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name');
+                $arr_interview[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                $arr_interview[$k]['status'] = '客户面试';
+            }
+            $log_list = array_merge($log_list,$arr_interview);
+        }
+        //获取面试通过日志
+        $arr_pass = D('ProductCView')->where(array('resume_id'=>intval($eid)))->field('pass_role_id,passtime,name')->select();
+        if(!empty($arr_pass)){
+            foreach ($arr_pass as $k=>$v) {
+                $arr_pass[$k]['user'] = M('user')->where(array('role_id'=>intval($v['pass_role_id'])))->getField('full_name');
+                $arr_pass[$k]['addtime'] = $v['passtime'];
+                $arr_pass[$k]['status'] = '面试通过';
+            }
+            $log_list = array_merge($log_list,$arr_pass);
+        }
+        //获取offer日志
+        $arr_offer = D('ProductOfferView')->where(array('fine_id'=>array('in',$fineIds)))->field('addtime,role_id,com_id')->select();
+        if(!empty($arr_offer)){
+            foreach ($arr_offer as $k=>$v){
+                $arr_offer[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name');
+                $arr_offer[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                $arr_offer[$k]['status'] = '发offer';
+            }
+            $log_list = array_merge($log_list,$arr_offer);
+        }
+        //获取入职日志
+        $arr_ener = D('ProductEnterView')->where(array('fine_id'=>array('in',$fineIds)))->field('addtime,role_id,com_id')->select();
+        if(!empty($arr_ener)){
+            foreach ($arr_ener as $k=>$v){
+                $arr_ener[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name');
+                $arr_ener[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                $arr_ener[$k]['status'] = '入职';
+            }
+            $log_list = array_merge($log_list,$arr_ener);
+        }
+        //获取过保日志
+        $arr_safe = D('ProductSafeView')->where(array('fine_id'=>array('in',$fineIds)))->field('addtime,create_role_id,com_id')->select();
+        if(!empty($arr_safe)){
+            foreach ($arr_safe as $k=>$v){
+                $arr_safe[$k]['user'] = M('user')->where(array('role_id'=>intval($v['create_role_id'])))->getField('full_name');
+                $arr_safe[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                $arr_safe[$k]['status'] = '过保';
+            }
+            $log_list = array_merge($log_list,$arr_safe);
+        }
+        foreach ($log_list as $k=>$v){
+            $log_list[$v['addtime']] = $v;
+            unset($log_list[$k]);
+        }
+        krsort($log_list);
+        $this->assign('status_log',$log_list);
         $this->display();
     }
 
