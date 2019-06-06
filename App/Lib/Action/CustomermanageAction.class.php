@@ -415,11 +415,17 @@ class CustomermanageAction extends Action
             $list = M('customer_visit')->where($where)->limit(0, 500)->select();
             foreach ($list as &$info) {
                 $customerId = $info['customer_id'];
+                $lastPro = $this->lastBusiness($customerId, $info['pro_type']);
+                $info['update_time'] = $lastPro['last_update'];
+                $info['status'] = $lastPro['pro_status'];
+                $info['pro_name'] = $lastPro['name'];
+                $info['offer_time'] = $lastPro['offer'] ? date("Y-m-d", $lastPro['offer']) : '';
+                $info['enter_time'] = $lastPro['enter'] ? date("Y-m-d", $lastPro['enter']) : '';
+
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
                 $info['city'] = $city_name[$info['city']];
                 $info['industry'] = $industry_name[$info['industry']];
-                $info['update_time'] = date("Y-m-d", $info['update_time']);
-                $info['status'] = "";
+
                 $roles = M('customer')->where(['customer_id' => $customerId])->getField("creator_role_id");
                 $info['manager'] = M('user')->where(['role_id' => $roles])->getField("full_name");
 
@@ -429,10 +435,7 @@ class CustomermanageAction extends Action
                 $info['invoice_time'] = $signInfo['invoice_time'] ? $signInfo['invoice_time'] : '';
                 $info['seal_company'] = $signInfo['seal_company'] ? $signInfo['seal_company'] : '';
                 $info['signer'] = $signInfo['signer'] ? $signInfo['signer'] : '';
-                //3、offer时间
-                $info['offer_time'] = $this->businessLog(['fine.com_id' => $customerId], 'fine_project_offer');
-                //4、入职时间
-                $info['enter_time'] = $this->businessLog(['fine.com_id' => $customerId], 'fine_project_enter');
+
             }
             $expCellName = [
                 ['pro_type', '项目类型'],
@@ -445,7 +448,7 @@ class CustomermanageAction extends Action
 //                ['callsucc_num', '保证期'],
                 ['seal_company', '盖章公司'],
                 ['manager', '项目经理'],
-                ['job', '职位名称'],
+                ['pro_name', '职位名称'],
                 ['status', '进展'],
                 ['update_time', '更新时间'],
                 ['offer_time', 'offer日期'],
@@ -837,6 +840,23 @@ class CustomermanageAction extends Action
             ->order("{$field} asc")
             ->getField($field);
         return $field && $info ? date("Y-m-d", $info) : '';
+    }
+
+    /**
+     * @desc 最新项目信息
+     * @param $customerId
+     * @param $type
+     * @return mixed|string
+     */
+    private function lastBusiness($customerId, $type = 0) {
+        $businessInfo = M('business')->where(['customer_id' => $customerId, 'pro_type' => $type])->order('business_id desc')->find();
+        $fineInfo = M('fine_project')->where(['project_id' => $businessInfo['business_id'], 'com_id' => $customerId])->order("status desc")->find();
+        $fineId = $fineInfo['id'];
+        $businessInfo['pro_status'] = C('PROJECT_STATUS')[$fineInfo['status']];
+        $businessInfo['last_update'] = $fineInfo['updatetime'] ? date("Y-m-d", $fineInfo['updatetime']) : '';
+        $businessInfo['offer'] = M('fine_project_offer')->where(['fine_id' => $fineId])->order("addtime")->getField("addtime");
+        $businessInfo['enter'] = M('fine_project_enter')->where(['fine_id' => $fineId])->order("addtime")->getField("addtime");
+        return $businessInfo;
     }
 
     /**
