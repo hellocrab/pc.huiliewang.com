@@ -2,6 +2,100 @@
 <link rel="stylesheet" href="__PUBLIC__/css/customerManage/visit.css">
 <div class="wrapper wrapper-content">
     <include file="Public:alert" />
+    <div class="set_dialog2 dialog">
+        <div class="dialogBox">
+            <div class="dialogHead">
+                <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
+            </div>
+            <div class="dialogTitle">
+                <div></div>
+                分级标准设置
+            </div>
+            <div class="divide1"></div>
+            <div class="conBox">
+                <div class="con">
+                    <span>线上面试快</span>
+                    <p>
+                        <span class="ranka">首次</span>
+                        金额≥<input type="number" class="mif">元
+                    </p>
+                    <p>
+                        <span class="rankb">下次</span>
+                        金额≥<input type="number" class="mim">元&nbsp;&nbsp;间隔时间≥<input class="mit" type="number">天
+                    </p>
+                </div>
+                <div class="con">
+                    <span>线上入职快</span>
+                    <p>
+                        <span class="ranka">首次</span>
+                        入职≥<input type="number" class="ruf">人
+                    </p>
+                    <p>
+                        <span class="rankb">下次</span>
+                        入职≥<input type="number" class="rum">人&nbsp;&nbsp;间隔时间≥<input class="rut" type="number">天
+                    </p>
+                </div>
+                <div class="con">
+                    <span>线上专业猎头</span>
+                    <p>
+                        <span class="ranka">首次</span>
+                        入职≥<input type="number" class="zhf">人
+                    </p>
+                    <p>
+                        <span class="rankb">下次</span>
+                        入职≥<input type="number" class="zhm">人&nbsp;&nbsp;间隔时间≥<input class="zht" type="number">天
+                    </p>
+                </div>
+                <div class="con">
+                    <span>线下面试快</span>
+                    <p>
+                        <span class="ranka">首次</span>
+                        <input type="radio" value="1" name="mi" id='xmsq' checked>
+                        <label for='xmsq'>签单</label>
+                        <input type="radio" value="0" name="mi" id='xmsm'>
+                        <label for='xmsm'>金额≥<input type="number" class="xmia"></label>元
+                    </p>
+                    <p>
+                        <span class="rankb">下次</span>
+                        金额≥<input type="number" class="xmms">元&nbsp;&nbsp;间隔时间≥<input class="xmts" type="number">天
+                    </p>
+                </div>
+                <div class="con">
+                    <span>线下入职快</span>
+                    <p>
+                        <span class="ranka">首次</span>
+                        <input type="radio" value="1" name="ru" id='xrsq' checked>
+                        <label for='xrsq'>签单</label>
+                        <input type="radio" value="0" name="ru" id='xrsm'>
+                        <label for='xrsm'>入职<input type="number" class="xrm">人</label>
+                    </p>
+                    <p>
+                        <span class="rankb">下次</span>
+                        入职<input type="number" class="xrms">人&nbsp;&nbsp;间隔时间≥<input class="xrts" type="number">天
+                    </p>
+                </div>
+                <div class="con">
+                    <span>线下专业猎头</span>
+                    <p>
+                        <span class="ranka">首次</span>
+                        <input type="radio" value="1" name="zh" id='xzsq' checked>
+                        <label for='xzsq'>签单</label>
+                        <input type="radio" value="0" name="zh" id='xzsm'>
+                        <label for='xzsm'>入职<input type="number" class="xzha">人</label>
+                    </p>
+                    <p>
+                        <span class="rankb">下次</span>
+                        入职<input type="number" class="xzms">人&nbsp;&nbsp;间隔时间≥<input class="xzts" type="number">天
+                    </p>
+                </div>
+            </div>
+            <div class="dialogfoot">
+                <button class="cannal">取消</button>
+                <button class="submit">确认</button>
+            </div>
+            <span class="notice">确认后在次日0:00生效</span>
+        </div>
+    </div>
     <section class="tabSec">
         <div class="switchBox">
             <span class="choosed">待回访</span>
@@ -11,15 +105,19 @@
         <div class="settingBox">
             <span><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;&nbsp;设置</span>
             <span><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;导出</span>
+            <input type="text" placeholder="签单人/客户名/联系人电话" id='search' />
+            <span class="searchBtn">搜&nbsp;&nbsp;索</span>
         </div>
     </section>
     <section class="selBox">
         <div class="dateBox">
             创建时间
-            <input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id="start"
+            <input class="form-control Wdate" input_type="time"
+                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:datepicker,oncleared:datepicker})" id="start"
                 type="text" value="" autocomplete="off">
             到
-            <input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id="end"
+            <input class="form-control Wdate" input_type="time"
+                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:datepicker,oncleared:datepicker})" id="end"
                 type="text" value="" autocomplete="off">
         </div>
         <div class="sels">
@@ -39,51 +137,121 @@
         </div>
     </section>
     <section class="tableBox">
-            <table>
-                    <thead>
-                        <th>类型</th>
-                        <th>事业部</th>
-                        <th>部门</th>
-                        <th>签单人</th>
-                        <th>客户名称</th>
-                        <th>客户联系人</th>
-                        <th>
-                            <select name="" id="phone_num">
-                                <option value="1">联系电话</option>
-                                <option value="0">无效电话</option>
-                            </select>
-                        </th>
-                        <th>所属行业</th>
-                        <th>地点</th>
-                        <th>上次回访时间</th>
-                        <th>创建时间</th>
-                        <th>操作</th>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-                <div class="pager_">
-                    <select name="" id="pageSize" style="background:none;padding-right:10px;">
-                        <option value="20">20</option>
-                        <option value="30">30</option>
-                        <option value="40">40</option>
-                        <option value="50">50</option>
-                        <option value="60">60</option>
-                        <option value="70">70</option>
-                        <option value="80">80</option>
-                        <option value="90">90</option>
-                        <option value="100">100</option>
+        <table>
+            <thead>
+                <th>类型</th>
+                <th>事业部</th>
+                <th>部门</th>
+                <th>签单人</th>
+                <th>客户名称</th>
+                <th>客户联系人</th>
+                <th>
+                    <select name="" id="phone_num">
+                        <option value="1">联系电话</option>
+                        <option value="0">无效电话</option>
                     </select>
-                    <span class="totalPage">
-                        共0条&nbsp;第1/0页
-                    </span>
-                    <div class="pageBox">
-                        <span class="last">«</span>
-                        <span class="page1 choosed">1</span>
-                        <span class="next">»</span>
-                    </div>
-                    <input type="number" id="goto">&nbsp;&nbsp;页&nbsp;&nbsp;&nbsp;&nbsp;
-                </div>
+                </th>
+                <th>所属行业</th>
+                <th>地点</th>
+                <th>上次回访时间</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="pager_">
+            <select name="" id="pageSize" style="background:none;padding-right:10px;">
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="60">60</option>
+                <option value="70">70</option>
+                <option value="80">80</option>
+                <option value="90">90</option>
+                <option value="100">100</option>
+            </select>
+            <span class="totalPage">
+                共0条&nbsp;第1/0页
+            </span>
+            <div class="pageBox">
+                <span class="last">«</span>
+                <span class="page1 choosed">1</span>
+                <span class="next">»</span>
+            </div>
+            <input type="number" id="goto">&nbsp;&nbsp;页&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
     </section>
+    <div class="set_dialog dialog">
+        <div class="dialogBox">
+            <div class="dialogHead">
+                <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
+            </div>
+            <div class="dialogTitle">
+                <div></div>
+                分级标准设置
+            </div>
+            <div class="divide1"></div>
+            <div class="con">
+                <span>初始条件</span>
+                <p>
+                    <span class="rankd">D级</span>
+                    贡献条件≥<input type="number" class="chu">
+                </p>
+            </div>
+            <div class="con">
+                <span>面试快</span>
+                <p>
+                    <span class="ranka">A级</span>
+                    贡献条件≥<input type="number" class="mia">
+                </p>
+                <p>
+                    <span class="rankb">B级</span>
+                    <input type="number" class="mib1">≤贡献条件＜<input class="mib2" type="number">
+                </p>
+                <p>
+                    <span class="rankc">C级</span>
+                    <input type="number" class="mic1">≤贡献条件＜<input class="mic2" type="number">
+                </p>
+            </div>
+            <div class="con">
+                <span>入职快</span>
+                <p>
+                    <span class="ranka">A级</span>
+                    入职人数≥<input type="number" class="rua">
+                </p>
+                <p>
+                    <span class="rankb">B级</span>
+                    <input type="number" class="rub1">≤入职人数＜<input class="rub2" type="number">
+                </p>
+                <p>
+                    <span class="rankc">C级</span>
+                    <input type="number" class="ruc1">≤入职人数＜<input class="ruc2" type="number">
+                </p>
+            </div>
+            <div class="con" style="border: none;">
+                <span>专业猎头</span>
+                <p>
+                    <span class="ranka">A级</span>
+                    贡献条件≥<input type="number" class="zha">
+                </p>
+                <p>
+                    <span class="rankb">B级</span>
+                    <input type="number" class="zhb1">≤贡献条件＜<input class="zhb2" type="number">
+                </p>
+                <p>
+                    <span class="rankc">C级</span>
+                    <input type="number" class="zhc1">≤贡献条件＜<input class="zhc2" type="number">
+                </p>
+                <p>
+            </div>
+            <div class="dialogfoot">
+                <button class="cannal">取消</button>
+                <button class="submit">确认</button>
+            </div>
+            <span class="notice">确认后在次日0:00生效</span>
+        </div>
+    </div>
 </div>
 <include file="Public:footer" />
 <script src="__PUBLIC__/js/customerManage/visit.js"></script>

@@ -1,4 +1,31 @@
-.tabSec{
+input::-webkit-input-placeholder {
+    /* WebKit, Blink, Edge */
+    color: #ccc;
+    font-size: 12px;
+}
+
+input::-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #ccc;
+    font-size: 12px;
+
+}
+
+input::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #ccc;
+    font-size: 12px;
+
+}
+
+input::-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #ccc;
+    font-size: 12px;
+
+}
+
+.tabSec {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -8,10 +35,11 @@
     border-bottom: 1px solid #eceef0;
     padding-bottom: 0;
 }
+
 /* .switchBox{
     border-bottom: 1px solid #eceef0;
 } */
-.switchBox span{
+.switchBox span {
     cursor: pointer;
     display: inline-block;
     width: 80px;
@@ -19,26 +47,49 @@
     text-align: center;
     position: relative;
     top: 1px;
-    color:  #A7B1C2;
+    color: #A7B1C2;
 }
-.switchBox span.choosed{
+
+.switchBox span.choosed {
     border: 1px solid #eceef0;
     border-bottom: 1px solid #fff;
     color: #333;
     border-top: #03a9f3 solid 1px;
 }
-.settingBox span{
+
+.settingBox span {
     color: #333;
     font-size: 14px;
     display: inline-block;
     margin-right: 30px;
     cursor: pointer;
 }
-.settingBox i{
+
+.settingBox i {
     color: #3D6BB4;
     font-size: 16px;
 }
-.selBox{
+
+.settingBox input {
+    width: 191px;
+    padding: 0 10px;
+    height: 36px;
+    border: #ccc 1px solid;
+}
+
+.settingBox .searchBtn {
+    width: 65px;
+    background: #3D6BB4;
+    border-radius: 6px;
+    display: inline-block;
+    line-height: 33px;
+    text-align: center;
+    margin-left: 10px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.selBox {
     background: #fff;
     width: 100%;
     display: flex;
@@ -46,6 +97,7 @@
     align-items: center;
     justify-content: space-between;
 }
+
 select {
     padding-left: 10px;
     padding-right: 35px;
@@ -62,14 +114,17 @@ select {
     /*添加下拉三角图标*/
     background: url("../../img/customerManage/8_03.png") no-repeat right center transparent;
 }
-.dateBox input{
+
+.dateBox input {
     width: 150px;
-    margin:0 10px;
+    margin: 0 10px;
 }
-.dateBox{
+
+.dateBox {
     display: flex;
     align-items: center;
 }
+
 table {
     width: 100%;
     background: #f9f9f9;
@@ -104,6 +159,7 @@ th {
     text-align: center;
     position: relative;
 }
+
 table select {
     height: 20px;
     padding: 0;
@@ -112,6 +168,7 @@ table select {
     margin-right: 0;
     background: url("../../img/customerManage/8_04.png") no-repeat right center transparent;
 }
+
 .pager_ {
     background: #f9f9f9;
     margin: 0;
@@ -152,9 +209,97 @@ table select {
     border: #e6e6e6;
     border-radius: 4px;
 }
-.tableBox{
+
+.tableBox {
     width: 100%;
     padding-bottom: 50px;
     margin-top: 20px;
 }
 
+.visit {
+    width: 49px;
+    line-height: 25px;
+    text-align: center;
+    border: 1px solid rgba(92, 147, 234, 1);
+    border-radius: 4px;
+    display: inline-block;
+    color: rgba(92, 147, 234, 1);
+    cursor: pointer;
+    font-size: 12px;
+    margin: 2px;
+
+}
+.visitless {
+    width: 49px;
+    line-height: 25px;
+    background: rgba(92, 147, 234, 1);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    margin: 2px ;
+}
+.dialog {
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, .2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 9;
+}
+.set_dialog2 .dialogBox {
+    width: 591px;
+    height: 786px;
+    background: #fff;
+    margin: 125px auto 0;
+}
+.dialogHead {
+    text-align: right;
+    padding: 15px;
+}
+
+.dialogHead img {
+    cursor: pointer;
+}
+
+.dialogTitle {
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+    height: 17px;
+    color: #333;
+}
+
+.dialogTitle div {
+    width: 4px;
+    height: 17px;
+    background: rgba(56, 108, 189, 1);
+    margin-right: 10px;
+}
+.conBox{
+    padding: 0 38px;
+}
+.conBox input[type=number]{
+    width: 62px;
+    margin: 0 10px;
+    text-align: center;
+}
+.con>span{
+    font-weight: 600;
+    color: rgba(92, 147, 234, 1)
+}
+.con{
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+label{
+    font-weight: normal;
+    cursor: pointer;
+}
+input[type=radio]{
+    cursor: pointer;
+}
