@@ -1098,16 +1098,14 @@ class MessageAction extends Action
         foreach ($list as &$info) {
             $info['send_time'] = date('Y-m-d', $info['send_time']);
             $endTime = date('Y-m-d H:i', $info['deadline']);
-            if ($info['type'] == 1 && (time() < $info['deadline'] && $info['deadline'] < $nextDay)) {
-                $endTime = '今天';
-            }
-            if ($info['type'] == 1 && (time() > $info['deadline'])) {
-                self::read($info['message_id'], 2);
+            if ($info['type'] == 1) {
+                (time() < $info['deadline'] && $info['deadline'] < $nextDay) && $endTime = '今天';
+                (time() > $info['deadline']) && self::read($info['message_id'], 2);
             }
             $info['deadline'] = $endTime;
             $info['degree'] = $info['degree'] ? '重要' : '一般';
         }
-        $return = ['success' => 1, 'code' => 200, 'info' => ['list' => $list, 'count' => $count]];
+        $return = ['success' => 1, 'code' => 200, 'info' => ['list' => $list, 'counts' => $count, 'current_page' => $page]];
         $this->ajaxReturn($return);
     }
 

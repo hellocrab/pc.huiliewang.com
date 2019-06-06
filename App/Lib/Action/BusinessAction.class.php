@@ -127,12 +127,12 @@ class BusinessAction extends Action
         $by = (isset($_GET['by']) && $_GET['by']) ? trim($_GET['by']) : 'all';
         $where = array();
         $params = array();
-        $order = "top.set_top desc, top.top_time desc ,business_id desc";
+        $order = "business_id desc";
 
         if ($_GET['desc_order']) {
-            $order = 'top.set_top desc, top.top_time desc ,' . trim($_GET['desc_order']) . ' desc,business_id asc';
+            $order = '' . trim($_GET['desc_order']) . ' desc,business_id asc';
         } elseif ($_GET['asc_order']) {
-            $order = 'top.set_top desc, top.top_time desc ,' . trim($_GET['asc_order']) . ' asc,business_id asc';
+            $order = '' . trim($_GET['asc_order']) . ' asc,business_id asc';
         }
         switch ($by) {
             case 'create' :
@@ -2091,6 +2091,7 @@ class BusinessAction extends Action
                 $arr['remove_remark'] = "";
                 $arr['updatetime'] = time();
                 $arr['tracker'] = session('role_id');//默认tracker为操作人
+                $arr['is_protected'] = 1;
                 M("fine_project_bhs")->where("fine_id=%d", $id)->delete();
                 $result = M("fine_project")->where("id=%d", $id)->save($arr);
                 if ($result) {
@@ -2325,24 +2326,24 @@ class BusinessAction extends Action
 
     //面试二次通知
     function notice() {
-        $role_id = intval(session('role_id'));
-        $where['role_id'] = array('eq', $role_id);
-        $where['gjtime'] = array('neq', '');
-        $where['noticed'] = array('neq', 1);
-//        $data = M('fine_project_cc')->where($where)->select();
-        $data = D('FineProjectCcResume')->where($where)->select();
-        foreach ($data as $k => $v) {
-            $gjtime = strtotime($v['gjtime']);
-            $now = time();
-            if (($now - $gjtime) >= 0 && 60 >= ($now - $gjtime)) {
-                $url = U('business/view', 'id=' . $v['project_id']);
-                sendMessage($role_id, '&nbsp;&nbsp;温馨提醒：候选人《<a href="' . $url . '" title="点击查看">' . $v['name'] . '</a>》<font style="color:green;">需进行跟进沟通</font>！', 1);
-                //标记已提醒过一次
-                M('fine_project_cc')->where(array('id' => $v['id']))->setField(array('noticed' => 1));
-            }
-        }
-        $arr_time = M('fine_project')->where(array('is_protected'=>1))->field('updatetime,id')->select();
-        dump($arr_time);die;
+//        $role_id = intval(session('role_id'));
+//        $where['role_id'] = array('eq', $role_id);
+//        $where['gjtime'] = array('neq', '');
+//        $where['noticed'] = array('neq', 1);
+////        $data = M('fine_project_cc')->where($where)->select();
+//        $data = D('FineProjectCcResume')->where($where)->select();
+//        foreach ($data as $k => $v) {
+//            $gjtime = strtotime($v['gjtime']);
+//            $now = time();
+//            if (($now - $gjtime) >= 0 && 60 >= ($now - $gjtime)) {
+//                $url = U('business/view', 'id=' . $v['project_id']);
+//                sendMessage($role_id, '&nbsp;&nbsp;温馨提醒：候选人《<a href="' . $url . '" title="点击查看">' . $v['name'] . '</a>》<font style="color:green;">需进行跟进沟通</font>！', 1);
+//                //标记已提醒过一次
+//                M('fine_project_cc')->where(array('id' => $v['id']))->setField(array('noticed' => 1));
+//            }
+//        }
+//        $arr_time = M('fine_project')->where(array('is_protected'=>1))->field('updatetime,id')->select();
+//        dump($arr_time);die;
     }
 
     //超时6个月,取消人才保护
