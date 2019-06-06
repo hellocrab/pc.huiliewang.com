@@ -42,7 +42,7 @@ function getData(is_export) {
                         <td>${val.city}</td>
                         <td>${val.last_visit_time}</td>
                         <td>${val.add_time}</td>
-                        <td><span class='visit'>回访</span><span class='visitless'>不回访</span></td>
+                        <td><span class='visit' cus_id='${val.customer_id}' cus_name='${val.customer_name}'>回访</span><span class='visitless' cus_id='${val.customer_id}' cus_name='${val.customer_name}'>不回访</span></td>
                     </tr>`
                 })
                 $('table tbody').empty();
@@ -88,6 +88,7 @@ function getData(is_export) {
                     current_page++;
                     getData();
                 })
+                bindvisit();
             }
         }
     })
@@ -106,7 +107,20 @@ function getDepartment() {
         }
     })
 }
-
+function bindvisit(){
+    $('.visit').click(ev=>{
+        let id = ev.target.attributes[1].value;
+        let name = ev.target.attributes[2].value;
+        console.log(id,name)
+    })
+    $('.visitless').click(ev=>{
+        let id = ev.target.attributes[1].value;
+        let name = ev.target.attributes[2].value;
+        $('.visitless_notice').html(`${name}客户确认不用回访了吗`);
+        $('.visitless_dialog').css('display','block');
+        $('.visitless_notice').attr('cus_id',id);
+    })
+}
 function datepicker(ev) {
     getData()
 }
@@ -157,12 +171,12 @@ $('#goto').on('keydown', ev => {
         getData();
     }
 })
-$('.set_dialog2 img').click(ev => {
-    $('.set_dialog2').css('display', 'none')
+$('.dialog img').click(ev => {
+    $('.dialog').css('display', 'none')
 
 })
-$('.set_dialog2 .cannal').click(ev => {
-    $('.set_dialog2').css('display', 'none')
+$('.cannal').click(ev => {
+    $('.dialog').css('display', 'none')
 
 })
 $('.settingBox>span:nth-child(1)').click(ev => {
@@ -209,7 +223,7 @@ $('.set_dialog2 .submit').click(ev => {
     $.ajax({
         url: '/index.php?m=customermanage&a=visitConfigUp',
         data: {
-            date: [{
+            data: [{
                 id: "1",
                 min_condition: $('.mif').val(),
                 times: 0,
@@ -273,9 +287,31 @@ $('.set_dialog2 .submit').click(ev => {
         },
         type:'post',
         success(res){
-            
+            if(res.code==200){
+                swal('修改成功','更改将于次日0:00生效','success')
+                $('.set_dialog2').css('display', 'none')
+            }else{
+                swal('操作失败',res.info,'error')
+            }
         }
     })
-    $('.set_dialog2').css('display', 'none')
-
+})
+$('.visitless_dialog .submit').click(ev=>{
+    $.ajax({
+        url:'/index.php?m=customermanage&a=notVisit',
+        data:{
+            visit_id:$('.visitless_notice').attr('cus_id'),
+            visit_note:$('.visitless_area').val()
+        },
+        type:'post',
+        success(res){
+            if(res.code==200){
+                swal('操作成功','已取消该客户回访计划','success')
+                $('.visitless_dialog').css('display', 'none')
+                getData()
+            }else{
+                swal('操作失败',res.info,'error')
+            }
+        }
+    })
 })

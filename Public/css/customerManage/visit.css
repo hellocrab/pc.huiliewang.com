@@ -1,28 +1,34 @@
-input::-webkit-input-placeholder {
+input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
     /* WebKit, Blink, Edge */
     color: #ccc;
     font-size: 12px;
 }
 
-input::-moz-placeholder {
+input::-moz-placeholder,textarea::-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
     color: #ccc;
     font-size: 12px;
 
 }
 
-input::-moz-placeholder {
+input::-moz-placeholder,textarea::-moz-placeholder {
     /* Mozilla Firefox 19+ */
     color: #ccc;
     font-size: 12px;
 
 }
 
-input::-ms-input-placeholder {
+input::-ms-input-placeholder,textarea::-ms-input-placeholder {
     /* Internet Explorer 10-11 */
     color: #ccc;
     font-size: 12px;
 
+}
+textarea{
+    width:337px;
+height:104px;
+border:1px solid rgba(204,204,204,1);
+resize: none;
 }
 
 .tabSec {
@@ -302,4 +308,26 @@ label{
 }
 input[type=radio]{
     cursor: pointer;
+}
+.visitless_dialog .dialogBox{
+    width: 490px;
+    height: 453px;
+    background: #fff;
+    margin: 185px auto 0;
+}
+.visitless_dialog>.dialogBox>img{
+    display: block;
+    width: 100px;
+    margin: 15px auto;
+}
+.visitless_dialog textarea{
+    margin: 20px auto;
+    display: block;
+}
+.visitless_dialog .visitless_notice{
+    color:rgba(88,138,218,1);
+line-height:35px;
+width: 100%;
+display: block;
+text-align: center;
 }
