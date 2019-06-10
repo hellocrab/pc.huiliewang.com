@@ -332,8 +332,12 @@ class CustomermanageAction extends Action
             }
             $info['times'] && $data['times'] = $info['times'];
             $info['min_condition'] && $data['min_condition'] = $info['min_condition'];
-            ($data['is_sign'] == 0 && $data['min_condition']) && $data['is_sign'] = 0;
-            $data['is_sign'] == 1 && $data['min_condition'] = 0;
+            if($info['is_sign'] == 0 && $info['min_condition']){
+                $data['is_sign'] = 0;
+            }else{
+                $data['is_sign'] = 1;
+                $data['min_condition'] = 0;
+            }
             if ($data) {
                 $data['up_time'] = time();
                 $res = M('customer_visit_config')->where(['id' => $id])->save($data);
@@ -408,6 +412,8 @@ class CustomermanageAction extends Action
                 $customerId = $info['customer_id'];
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
                 $info['city'] = $city_name[$info['city']];
+                $res = M('customer_visit_note')->where(['is_finish' => 1, 'visit_id' => $info['id']])->getField('is_business');
+                $info['is_business'] = $res ? $res : '';
                 $info['industry'] = $industry_name[$info['industry']];
                 $info['add_time'] = date("Y-m-d", $info['add_time']);
                 $info['last_visit_time'] && $info['last_visit_time'] = date("Y-m-d", $info['last_visit_time']);
