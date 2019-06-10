@@ -30,8 +30,8 @@ function getData(is_export) {
         success(res) {
             if (res.code == 200) {
                 let doc = '';
-                if(!res.info){
-                    res.info = [];
+                if(!res.info.list){
+                    res.info.list = [];
                 }
                 if (sym == 0) {
                     res.info.list.map((val, index) => {
