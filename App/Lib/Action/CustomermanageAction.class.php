@@ -843,8 +843,6 @@ class CustomermanageAction extends Action
     private function businessLog($where, $table, $field = "log.addtime") {
         if ($where > 0) {
             $where = ['fine.project_id' => $where];
-        } else {
-            $where = $where;
         }
 
         $info = M('fine_project')
