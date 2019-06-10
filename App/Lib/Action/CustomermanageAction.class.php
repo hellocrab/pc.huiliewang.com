@@ -347,6 +347,7 @@ class CustomermanageAction extends Action
      * @desc 已经回访客户列表
      */
     public function visitList() {
+        $this->_permissionRes = getPerByAction(MODULE_NAME, 'visit');
         $page = BaseUtils::getStr(I('page', 1), 'int');
         $pageSize = BaseUtils::getStr(I('page_size', 15), 'int');
         //回访时间
@@ -371,6 +372,7 @@ class CustomermanageAction extends Action
         if ($timeEnd && ($timeStart > $timeEnd)) {
             $this->response('结束时间不能大于开始时间', 500, false);
         }
+
         //查询条件组装
         $where = [];
         $timeStart && $where['add_time'] = ['gt', strtotime($timeStart)];
@@ -380,7 +382,7 @@ class CustomermanageAction extends Action
         }
         $departmentId && $where['p_department_id|department_id'] = $departmentId;
         $proType && $where['pro_type'] = $proType;
-        $visitStatus && $where['visit_status'] = $visitStatus;
+        $where['status'] = $visitStatus;
         $search && $where['customer_name|contact_name|phone'] = ['like', "%{$search}%"];
         if (isset($_REQUEST['is_phone'])) {
             $isPhone && $where['phone'] = ['neq', ''];
@@ -389,6 +391,7 @@ class CustomermanageAction extends Action
         if (isset($_REQUEST['is_business'])) {
             $where['business_status'] = $isBusiness;
         }
+        $where['role_id'] = ['in', $this->_permissionRes];
         include APP_PATH . "Common/city.cache.php";
         include APP_PATH . "Common/industry.cache.php";
 
@@ -488,8 +491,9 @@ class CustomermanageAction extends Action
         }
         $departmentId && $where['visit.p_department_id'] = $departmentId;
         $proType && $where['visit.pro_type'] = $proType;
-        $model = M('customer_visit_note');
+        $where['visit.role_id'] = ['in', $this->_permissionRes];
 
+        $model = M('customer_visit_note');
         $fields = "visit.pro_type,visit.p_department_name,visit.p_department_id";
         if ($isExport) {
             $page = 1;
