@@ -319,6 +319,9 @@ class CustomermanageAction extends Action
      * @desc 回访条件更改
      */
     public function visitConfigUp() {
+        if (!$this->_permissionRes) {
+            $this->response('您没有权限操作', 500, false);
+        }
         $list = BaseUtils::getStr($_REQUEST['data']);
         $res = false;
         foreach ($list as $info) {
@@ -805,7 +808,11 @@ class CustomermanageAction extends Action
             $list = explode(',', $roles);
             $list = array_unique($list);
             foreach ($list as $roleId) {
-                $users[$roleId] = M('user')->where(['role_id' => $roleId])->getField("full_name");
+                if (!$roleId) {
+                    continue;
+                }
+                $name = M('user')->where(['role_id' => $roleId])->getField("full_name");
+                $users[] = ['name' => $name ? $name : '', 'id' => $roleId];
             }
         }
         $this->response(["list" => $users]);
@@ -870,6 +877,9 @@ class CustomermanageAction extends Action
      * @desc 回访备注
      */
     public function visitRemark() {
+        if (!$this->_permissionRes) {
+            $this->response('您没有权限操作', 500, false);
+        }
         $params = $_REQUEST;
         if (!$params) {
             $this->response('请求数据错误', 500, false);
