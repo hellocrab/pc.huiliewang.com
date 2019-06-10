@@ -403,6 +403,7 @@ class Visit
         $data['customer_id'] = $customerId;
         $data['city'] = $city;
         $data['add_time'] = time();
+        $data['role_id'] = $roleId;
         $data['contacts_id'] = $contactsId ? $contactsId : 0;
         $data['contact_name'] = isset($contactsInfo['name']) ? $contactsInfo['name'] : '';
         $data['phone'] = isset($customerInfo['telephone']) ? $customerInfo['telephone'] : '';
