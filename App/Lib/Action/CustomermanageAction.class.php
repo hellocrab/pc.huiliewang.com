@@ -366,7 +366,7 @@ class CustomermanageAction extends Action
         //是否导出操作
         $isExport = BaseUtils::getStr(I('is_export', 0), 'int');
         //回访状态 1:已经回访 0:待回访
-        $visitStatus = BaseUtils::getStr(I('status', 0));
+        $visitStatus = BaseUtils::getStr(I('visit_status', 0));
 
         //时间判断
         if ($timeEnd && ($timeStart > $timeEnd)) {
