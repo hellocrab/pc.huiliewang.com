@@ -63,7 +63,7 @@
                         <ul class="nav pull-left" style="margin:0px 10px 0px 20px;">
                             <span><img src="__PUBLIC__/img/view_icon.png" style="margin-bottom:9px;" alt=""></span>
                             <span style="font-size:24px;color: #000;">{$resume.name}</span>&nbsp;&nbsp;
-                            <span class='in_portect'><if condition="$resume.is_protected eq 1">已发offer</if></span>
+                            <if condition="$resume.is_protected eq 1"><span class='in_portect'>人才保护中</span></if>
                             <span class="basic_item">{$resume.sex}</span>
                             <span class="basic_item">{$resume.age}岁</span>
                             <span class="basic_item">{$resume.edu}</span>
