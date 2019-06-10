@@ -1,34 +1,39 @@
-input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
     /* WebKit, Blink, Edge */
     color: #ccc;
     font-size: 12px;
 }
 
-input::-moz-placeholder,textarea::-moz-placeholder {
+input::-moz-placeholder,
+textarea::-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
     color: #ccc;
     font-size: 12px;
 
 }
 
-input::-moz-placeholder,textarea::-moz-placeholder {
+input::-moz-placeholder,
+textarea::-moz-placeholder {
     /* Mozilla Firefox 19+ */
     color: #ccc;
     font-size: 12px;
 
 }
 
-input::-ms-input-placeholder,textarea::-ms-input-placeholder {
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
     /* Internet Explorer 10-11 */
     color: #ccc;
     font-size: 12px;
 
 }
-textarea{
-    width:337px;
-height:104px;
-border:1px solid rgba(204,204,204,1);
-resize: none;
+
+textarea {
+    width: 337px;
+    height: 104px;
+    border: 1px solid rgba(204, 204, 204, 1);
+    resize: none;
 }
 
 .tabSec {
@@ -166,7 +171,8 @@ th {
     position: relative;
 }
 
-table select {
+table select,
+.dialog select {
     height: 20px;
     padding: 0;
     padding-left: 10px;
@@ -235,6 +241,7 @@ table select {
     margin: 2px;
 
 }
+
 .visitless {
     width: 49px;
     line-height: 25px;
@@ -245,8 +252,9 @@ table select {
     cursor: pointer;
     display: inline-block;
     text-align: center;
-    margin: 2px ;
+    margin: 2px;
 }
+
 .dialog {
     width: 100%;
     height: 100vh;
@@ -257,12 +265,14 @@ table select {
     display: none;
     z-index: 9;
 }
+
 .set_dialog2 .dialogBox {
     width: 591px;
     height: 786px;
     background: #fff;
     margin: 125px auto 0;
 }
+
 .dialogHead {
     text-align: right;
     padding: 15px;
@@ -286,48 +296,119 @@ table select {
     background: rgba(56, 108, 189, 1);
     margin-right: 10px;
 }
-.conBox{
+
+.conBox {
     padding: 0 38px;
 }
-.conBox input[type=number]{
+
+.conBox input[type=number] {
     width: 62px;
     margin: 0 10px;
     text-align: center;
 }
-.con>span{
+
+.con>span {
     font-weight: 600;
     color: rgba(92, 147, 234, 1)
 }
-.con{
+
+.con {
     border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
 }
-label{
+
+label {
     font-weight: normal;
     cursor: pointer;
 }
-input[type=radio]{
+
+input[type=radio] {
     cursor: pointer;
 }
-.visitless_dialog .dialogBox{
+
+.visitless_dialog .dialogBox {
     width: 490px;
     height: 453px;
     background: #fff;
     margin: 185px auto 0;
 }
-.visitless_dialog>.dialogBox>img{
+
+.visitless_dialog>.dialogBox>img {
     display: block;
     width: 100px;
     margin: 15px auto;
 }
-.visitless_dialog textarea{
+
+.visitless_dialog textarea {
     margin: 20px auto;
     display: block;
 }
-.visitless_dialog .visitless_notice{
-    color:rgba(88,138,218,1);
-line-height:35px;
-width: 100%;
-display: block;
-text-align: center;
+
+.visitless_dialog .visitless_notice {
+    color: rgba(88, 138, 218, 1);
+    line-height: 35px;
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+
+.visit_dialog .dialogBox {
+    width: 590px;
+    background: #fff;
+    margin: 108px auto 0;
+    padding-bottom: 20px;
+}
+
+.visit_dialog p {
+    display: block;
+    padding-left: 30px;
+}
+
+.visit_dialog p:not(.claa_result)>span:nth-child(1),
+.claa_result>span:nth-child(1) {
+    display: inline-block;
+    color: rgba(102, 102, 102, 1);
+    width: 104px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+#next_time {
+    width: 112px;
+    height: 25px;
+}
+
+.is_continue input {
+    display: inline-block;
+}
+
+.claa_result>span:not(:nth-child(1)) {
+    display: inline-block;
+    width: 75px;
+    line-height: 27px;
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid rgba(204, 204, 204, 1);
+    cursor: pointer;
+    color: #999;
+}
+
+.claa_result>span.choosed {
+    background: #7FA9EB;
+    color: #fff;
+    border: 1px solid #7FA9EB;
+}
+.visit_dialog label{
+    color: #666;
+    font-size: 13px;
+}
+.radio_box{
+    display: inline-block;
+    width: 78px;
+}
+.zh_box{
+    display: none;
+}
+.ru_box{
+    display: none;
 }
