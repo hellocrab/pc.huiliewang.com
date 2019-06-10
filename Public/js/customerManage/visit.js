@@ -1,6 +1,7 @@
 $('.switchBox span').click(ev => {
     $('.switchBox span').removeClass('choosed');
     $(ev.target).addClass('choosed');
+    getData()
 })
 var current_page = 1;
 var total_page = 1;
@@ -29,7 +30,7 @@ function getData(is_export) {
         success(res) {
             if (res.code == 200) {
                 let doc = '';
-                if(sym==0){
+                if (sym == 0) {
                     res.info.list.map((val, index) => {
                         doc += `<tr>
                             <td>${val.pro_type}</td>
@@ -46,8 +47,8 @@ function getData(is_export) {
                             <td><span class='visit' cus_id='${val.id}' cus_name='${val.customer_name}' cus_id_='${val.customer_id}'>回访</span><span class='visitless' cus_id='${val.id}' cus_name='${val.customer_name}'>不回访</span></td>
                         </tr>`
                     })
-                bindvisit();
-                }else if(sym == 1){
+                    $('th:nth-last-child(2)').html('创建时间');
+                } else if (sym == 1) {
                     res.info.list.map((val, index) => {
                         doc += `<tr>
                             <td>${val.pro_type}</td>
@@ -60,13 +61,18 @@ function getData(is_export) {
                             <td>${val.industry}</td>
                             <td>${val.city}</td>
                             <td>${val.last_visit_time}</td>
-                            <td>${val.add_time}</td>
+                            <td>${val.is_business==1?'有<img src=""/>':'无'}</td>
                             <td><span class='visit' cus_id='${val.id}' cus_name='${val.customer_name}' cus_id_='${val.customer_id}'>回访</span><span class='visitless' cus_id='${val.id}' cus_name='${val.customer_name}'>不回访</span></td>
                         </tr>`
                     })
+                    $('th:nth-last-child(2)').html(`<select name="" id="business">
+                    <option value="1">有商机</option>
+                    <option value="0">无商机</option>
+                </select>`);
                 }
                 $('table tbody').empty();
                 $('table tbody').append(doc);
+                bindvisit();
                 let totalPage = Math.ceil(res.info.counts / $('#pageSize').val());
                 totalPage_ = totalPage;
                 let page = '<span class="last">«</span>';
@@ -133,25 +139,27 @@ function bindvisit() {
         let name = ev.target.attributes[2].value;
         let cus_id = ev.target.attributes[3].value;
         $.ajax({
-            url:'/index.php?m=customermanage&a=getCustomerUsers',
-            data:{
-                customer_id:cus_id
+            url: '/index.php?m=customermanage&a=getCustomerUsers',
+            data: {
+                customer_id: cus_id
             },
-            success(res){
-                if(res.code==200){
+            success(res) {
+                if (res.code == 200) {
                     $('#advicer').empty();
-                    res.info.list.map(val=>{
+                    res.info.list.map(val => {
                         $('#advicer').append(`<option value='${val.id}'>${val.name}</option>`);
                     })
                     $('.visit_dialog').css('display', 'block');
-                    $('.visit_dialog .submit').attr('sub_id',id);
-                }else{
+                    $('.visit_dialog .submit').attr('sub_id', id);
+                } else {
                     swal('操作失败', res.info, 'error')
                 }
             }
         })
     })
     $('.visitless').click(ev => {
+    console.log(44)
+
         let id = ev.target.attributes[1].value;
         let name = ev.target.attributes[2].value;
         $('.visitless_notice').html(`${name}客户确认不用回访了吗`);
@@ -359,19 +367,19 @@ $('.claa_result span:not(:nth-child(1))').click(ev => {
     $('.claa_result span').removeClass('choosed');
     $(ev.target).addClass('choosed');
     let str = $(ev.target).html().trim();
-    switch(str){
+    switch (str) {
         case '接通电话':
-        $('.claa_result').attr('chiose','1');
-        break
+            $('.claa_result').attr('chiose', '1');
+            break
         case '电话未接听':
-        $('.claa_result').attr('chiose','2');
-        break
+            $('.claa_result').attr('chiose', '2');
+            break
         case '无效电话':
-        $('.claa_result').attr('chiose','3');
-        break
+            $('.claa_result').attr('chiose', '3');
+            break
         case '电话忙':
-        $('.claa_result').attr('chiose','4');
-        break
+            $('.claa_result').attr('chiose', '4');
+            break
     }
 })
 $('#visit_type').change(ev => {
@@ -380,99 +388,99 @@ $('#visit_type').change(ev => {
         $('.mi_box').css('display', 'block');
         $('.ru_box').css('display', 'none');
         $('.zh_box').css('display', 'none');
-        $('.visit_dialog input[type=radio]').attr('checked',false);
+        $('.visit_dialog input[type=radio]').attr('checked', false);
     } else if (str == 2) {
         $('.mi_box').css('display', 'none');
         $('.ru_box').css('display', 'block');
         $('.zh_box').css('display', 'none');
-        $('.visit_dialog input[type=radio]').attr('checked',false);
+        $('.visit_dialog input[type=radio]').attr('checked', false);
     } else if (str == 3) {
         $('.mi_box').css('display', 'none');
         $('.ru_box').css('display', 'none');
         $('.zh_box').css('display', 'block');
-        $('.visit_dialog input[type=radio]').attr('checked',false);
+        $('.visit_dialog input[type=radio]').attr('checked', false);
 
     }
 })
-$('.visit_dialog .submit').click(ev=>{
+$('.visit_dialog .submit').click(ev => {
     let temp = $('#visit_type').val();
     let speed = '';
     let quality = '';
-    if($('input[name=is_continue]:checked').length==0||
-    $('input[name=business]:checked').length==0||
-    $('input[name=visit]:checked').length==0||
-    $('input[name=complate]:checked').length==0||
-    $('#advicer_area').val()==''||
-    $('#visit_area').val()==''||
-    $('#next_time').val()==''){
-        swal('请填写完整','','warning')
+    if ($('input[name=is_continue]:checked').length == 0 ||
+        $('input[name=business]:checked').length == 0 ||
+        $('input[name=visit]:checked').length == 0 ||
+        $('input[name=complate]:checked').length == 0 ||
+        $('#advicer_area').val() == '' ||
+        $('#visit_area').val() == '' ||
+        $('#next_time').val() == '') {
+        swal('请填写完整', '', 'warning')
         return
     }
-    if(temp == 1){
-        if($('input[name=serve]:checked').length==0||
-        $('input[name=callback]:checked').length==0||
-        $('input[name=quality]:checked').length==0){
-            swal('请填写完整','','warning')
+    if (temp == 1) {
+        if ($('input[name=serve]:checked').length == 0 ||
+            $('input[name=callback]:checked').length == 0 ||
+            $('input[name=quality]:checked').length == 0) {
+            swal('请填写完整', '', 'warning')
             return
         }
         speed = $('input[name=callback]:checked').val();
         quality = $('input[name=quality]:checked').val();
 
-    }else if(temp == 2){
-        if($('input[name=ruq]:checked').length==0||
-        $('input[name=ruma]:checked').length==0||
-        $('input[name=rufk]:checked').length==0||
-        $('input[name=rutj]:checked').length==0||
-        $('input[name=rutz]:checked').length==0){
-            swal('请填写完整','','warning')
+    } else if (temp == 2) {
+        if ($('input[name=ruq]:checked').length == 0 ||
+            $('input[name=ruma]:checked').length == 0 ||
+            $('input[name=rufk]:checked').length == 0 ||
+            $('input[name=rutj]:checked').length == 0 ||
+            $('input[name=rutz]:checked').length == 0) {
+            swal('请填写完整', '', 'warning')
             return
         }
         speed = $('input[name=rufk]:checked').val();
         quality = $('input[name=rutz]:checked').val();
 
 
-    }else if(temp == 3){
-        if($('input[name=zhd]:checked').length==0||
-        $('input[name=zhg]:checked').length==0||
-        $('input[name=zhtj]:checked').length==0||
-        $('input[name=zhtp]:checked').length==0){
-            swal('请填写完整','','warning')
+    } else if (temp == 3) {
+        if ($('input[name=zhd]:checked').length == 0 ||
+            $('input[name=zhg]:checked').length == 0 ||
+            $('input[name=zhtj]:checked').length == 0 ||
+            $('input[name=zhtp]:checked').length == 0) {
+            swal('请填写完整', '', 'warning')
             return
         }
     }
     console.log(111)
     $.ajax({
-        url:'/index.php?m=customermanage&a=visitRemark',
-        type:'post',
-        data:{
-            call_status:$('.claa_result').attr('chiose')?$('.claa_result').attr('chiose'):'1',
-            pro_type:$('#visit_type').val(),
-            is_follow:$('input[name=is_continue]:checked').val(),
-            is_finish:$('input[name=complate]:checked').val(),
-            is_business:$('input[name=business]:checked').val(),
-            nest_visit:$('input[name=visit]:checked').val(),
-             visit_id:$('.visit_dialog .submit').attr('sub_id'),
-             follow_time:$('#next_time').val(),
-             is_understand:$('input[name=zhg]:checked').val(),
-             is_in_time:$('input[name=zhd]:checked').val(),
-             is_recommend:$('input[name=zhtj]:checked').val(),
-             matching_degree:$('input[name=zhtp]:checked').val(),
-             service_degree:$('input[name=serve]:checked').val(),
-             feedback_degree:speed,
-             quality_degree:quality,
-             degree:$('input[name=ruma]:checked').val(),
-             recommends_degree:$('input[name=rutj]:checked').val(),
-             is_resume_enough:$('input[name=mij]:checked').val(),
-             message_role:$('#advicer').val(),
-             business_note:$('#advicer_area').val(),
-             visit_note:$('#visit_area').val()
+        url: '/index.php?m=customermanage&a=visitRemark',
+        type: 'post',
+        data: {
+            call_status: $('.claa_result').attr('chiose') ? $('.claa_result').attr('chiose') : '1',
+            pro_type: $('#visit_type').val(),
+            is_follow: $('input[name=is_continue]:checked').val(),
+            is_finish: $('input[name=complate]:checked').val(),
+            is_business: $('input[name=business]:checked').val(),
+            nest_visit: $('input[name=visit]:checked').val(),
+            visit_id: $('.visit_dialog .submit').attr('sub_id'),
+            follow_time: $('#next_time').val(),
+            is_understand: $('input[name=zhg]:checked').val(),
+            is_in_time: $('input[name=zhd]:checked').val(),
+            is_recommend: $('input[name=zhtj]:checked').val(),
+            matching_degree: $('input[name=zhtp]:checked').val(),
+            service_degree: $('input[name=serve]:checked').val(),
+            feedback_degree: speed,
+            quality_degree: quality,
+            degree: $('input[name=ruma]:checked').val(),
+            recommends_degree: $('input[name=rutj]:checked').val(),
+            is_resume_enough: $('input[name=mij]:checked').val(),
+            message_role: $('#advicer').val(),
+            business_note: $('#advicer_area').val(),
+            visit_note: $('#visit_area').val()
         },
-        success(res){
-            if(res.code==200){
-                swal('操作成功','','success')
+        success(res) {
+            if (res.code == 200) {
+                swal('操作成功', '', 'success')
                 getData();
-            }else{
-                swal('操作失败',res.info,'error')
+            } else {
+                swal('操作失败', res.info, 'error')
             }
         }
     })
