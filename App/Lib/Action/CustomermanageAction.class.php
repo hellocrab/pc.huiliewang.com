@@ -383,6 +383,9 @@ class CustomermanageAction extends Action
         $departmentId && $where['p_department_id|department_id'] = $departmentId;
         $proType && $where['pro_type'] = $proType;
         $where['status'] = $visitStatus;
+        if ($visitStatus == 1) {
+            $where['status'] = ['in', [1, 2]];
+        }
         $search && $where['customer_name|contact_name|phone'] = ['like', "%{$search}%"];
         if (isset($_REQUEST['is_phone'])) {
             $isPhone && $where['phone'] = ['neq', ''];
