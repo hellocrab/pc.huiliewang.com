@@ -791,7 +791,7 @@ class CustomermanageAction extends Action
         $visit = M('customer_visit_note')->where(['customer_id' => $customerId])->order('id desc')->select();
         foreach ($visit as &$visitInfo) {
             $visitInfo['add_time'] = date("Y-m-d H:i:s", $visitInfo['add_time']);
-            $visitInfo['call_status'] = $this->call_status[$visitInfo['call_status']];
+            $visitInfo['call_status'] = $this->call_status[$visitInfo['call_status']] ? $this->call_status[$visitInfo['call_status']] : '无';
             $visitInfo['matching_degree'] = isset($this->degree[$visitInfo['matching_degree']]) ? $this->degree[$visitInfo['matching_degree']] : '无';
             $visitInfo['service_degree'] = isset($this->degree[$visitInfo['service_degree']]) ? $this->degree[$visitInfo['service_degree']] : '无';
             $visitInfo['feedback_degree'] = isset($this->degree[$visitInfo['feedback_degree']]) ? $this->degree[$visitInfo['feedback_degree']] : '无';
@@ -940,7 +940,7 @@ class CustomermanageAction extends Action
                 !isset($this->proTypes[$value]) && $this->response('请选择正确的项目类型', 500, false);
             }
             //评分分数检测
-            if (in_array($key, ['matching_degree', 'service_degree', 'feedback_degree', 'quality_degree', 'degree', 'recommends_degree','enter_degree'])) {
+            if (in_array($key, ['matching_degree', 'service_degree', 'feedback_degree', 'quality_degree', 'degree', 'recommends_degree', 'enter_degree'])) {
                 !isset($this->degree[$value]) && $this->response('满意度评分错误', 500, false);
             }
             //下次跟进时间
