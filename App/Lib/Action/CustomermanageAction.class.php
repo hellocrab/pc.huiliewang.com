@@ -934,7 +934,7 @@ class CustomermanageAction extends Action
                 !isset($this->proTypes[$value]) && $this->response('请选择正确的项目类型', 500, false);
             }
             //评分分数检测
-            if (in_array($key, ['matching_degree', 'service_degree', 'feedback_degree', 'quality_degree', 'degree', 'recommends_degree'])) {
+            if (in_array($key, ['matching_degree', 'service_degree', 'feedback_degree', 'quality_degree', 'degree', 'recommends_degree','enter_degree'])) {
                 !isset($this->degree[$value]) && $this->response('满意度评分错误', 500, false);
             }
             //下次跟进时间
