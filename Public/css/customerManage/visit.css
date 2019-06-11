@@ -165,12 +165,14 @@ tr:nth-child(2n) {
 td,
 th {
     padding: 10px 0px;
-    white-space: wrap;
     border-bottom: 1px solid #edeff0;
     text-align: center;
     position: relative;
+    font-size: 12px;
 }
-
+th{
+    padding: 10px 5px;
+}
 table select,
 .dialog select {
     height: 20px;
@@ -398,17 +400,144 @@ input[type=radio] {
     color: #fff;
     border: 1px solid #7FA9EB;
 }
-.visit_dialog label{
+
+.visit_dialog label {
     color: #666;
     font-size: 13px;
 }
-.radio_box{
+
+.radio_box {
     display: inline-block;
     width: 78px;
 }
-.zh_box{
+
+.zh_box {
     display: none;
 }
-.ru_box{
+
+.ru_box {
     display: none;
+}
+
+table .notice_msg {
+    width: 57px;
+    height: 20px;
+    border: 1px solid rgba(92, 147, 234, 1);
+    border-radius: 4px;
+    font-size: 12px;
+    color: rgba(92, 147, 234, 1);
+    padding: 3px;
+    cursor: pointer;
+}
+
+table .notice_msg:hover {
+    background: rgba(92, 147, 234, 1);
+    color: #fff;
+}
+
+table .fa-play-circle {
+    color: rgba(92, 147, 234, 1);
+    font-size: 18px;
+    cursor: pointer;
+}
+.canbusi_dialog .dialogBox {
+    width: 490px;
+    background: #fff;
+    margin: 185px auto 0;
+    padding-bottom: 20px;
+}
+.canbusi_dialog .dialogBox>img{
+    display: block;
+    margin: 0 auto;
+    width: 120px;
+}
+.canbusi_notice{
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin: 30px 0;
+    color:rgba(88,138,218,1);
+    font-size: 18px;
+}
+.canbusi{
+    cursor: pointer;
+}
+.record_dialog .dialogBox {
+    width: 590px;
+    background: #fff;
+    margin: 87px auto 0;
+    padding-bottom: 20px;
+}
+.record_wrap{
+    height: 600px;
+    margin:20px 38px;
+    overflow-y: scroll;
+    position: relative;
+}
+.record_sec{
+    position: relative;
+    padding-top: 52px;
+}
+.record_wrap>img{
+    position: absolute;
+    left: 110px;
+    top: 0;
+}
+.record_wrap .line{
+    width: 2px;
+    background:rgba(3,169,243,1);
+    position: absolute;
+    left: 133px;
+    top: 46px;
+}
+.record_box{
+    padding-left: 152px;
+    position: relative;
+}
+.record_box p{
+    padding-left: 10px;
+    font-size: 12px;
+    color: #666;
+    line-height: 18px;
+}
+.record_box p:nth-child(1){
+    font-style: 10px;
+    color: #333;
+    padding-left: 0;
+    font-weight: 600;
+}
+.record_box p:nth-child(1) span{
+    color: #FB994C;
+}
+.year{
+    color: #1296DB;
+    font-size: 20px;
+    padding-left: 52px;
+    display: block;
+    margin-bottom: 10px;
+}
+.record_time{
+    position: absolute;
+    left: 88px;
+    top: -10px;
+    color: #999;
+    font-size: 12px;
+    text-align: center;
+}
+.record_time span:nth-child(1){
+    font-size: 14px;
+}
+.point{
+    color: #52B4EC;
+    font-size: 20px;
+    position: absolute;
+    top: 2px;
+    left: 127px;
+    width: 15px;
+    line-height: 11px;
+    border-radius: 12px;
+    display: block;
+    text-align: center;
+    background: #fff;
+    border: 2px solid #52B4EC;
 }

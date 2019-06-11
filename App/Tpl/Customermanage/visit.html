@@ -415,6 +415,41 @@
             </div>
         </div>
     </div>
+    <div class="canbusi_dialog dialog">
+            <div class="dialogBox">
+                <div class="dialogHead">
+                    <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
+                </div>
+                <div class="dialogTitle">
+                    <div></div>
+                    取消商机
+                </div>
+                <div class="divide1"></div>
+                <img src="__PUBLIC__/img/customerManage/light.png" alt="">
+                <span class='canbusi_notice'>确定取消XXX的商机标记吗？</span>
+                <div class="dialogfoot">
+                    <button class="cannal">取消</button>
+                    <button class="submit">确认</button>
+                </div>
+            </div>
+        </div>
+        <div class="record_dialog dialog">
+                <div class="dialogBox">
+                    <div class="dialogHead">
+                        <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
+                    </div>
+                    <div class="dialogTitle">
+                        <div></div>
+                        回访备注记录
+                    </div>
+                    <div class="divide1"></div>
+                    <div class="record_wrap">
+                        <img src="__PUBLIC__/img/customerManage/3_03.png" alt="">
+                        <div class="line"></div>
+                        <div class="record_sec"></div>
+                    </div>
+                </div>
+            </div>
     <section class="tabSec">
         <div class="switchBox">
             <span class="choosed">待回访</span>
@@ -457,7 +492,7 @@
     </section>
     <section class="tableBox">
         <table>
-            <thead>
+            <thead class="he1">
                 <th>类型</th>
                 <th>事业部</th>
                 <th>部门</th>
@@ -474,8 +509,90 @@
                 <th>地点</th>
                 <th>上次回访时间</th>
                 <th>创建时间</th>
+                <th>
+                    <select name="" id="business">
+                        <option value="1">有商机</option>
+                        <option value="0">无商机</option>
+                    </select>
+                </th>
                 <th>操作</th>
             </thead>
+            <thead class="he2">
+                    <th>事业部</th>
+                    <th>类型</th>
+                    <th>原始数据</th>
+                    <th>可回访数</th>
+                    <th>回访成功</th>
+                    <th>服务非常满意</th>
+                    <th>服务满意</th>
+                    <th>服务基本满意</th>
+                    <th>服务不太满意</th>
+                    <th>服务不满意</th>
+                    <th>反馈速度非常满意</th>
+                    <th>反馈速度满意</th>
+                    <th>反馈速度基本满意</th>
+                    <th>反馈速度不太满意</th>
+                    <th>反馈速度不满意</th>
+                    <th>推荐足够数量</th>
+                    <th>推荐数量不足</th>
+                    <th>推荐质量非常满意</th>
+                    <th>推荐质量满意</th>
+                    <th>推荐质量基本满意</th>
+                    <th>推荐质量不太满意</th>
+                    <th>推荐质量不满意</th>
+                    <th>信息不准确</th>
+                    <th>商机信息</th>
+                </thead>
+                <thead class="he3">
+                        <th>事业部</th>
+                        <th>类型</th>
+                        <th>原始数据</th>
+                        <th>可回访数</th>
+                        <th>回访成功</th>
+                        <th>人员入职非常满意</th>
+                        <th>人员入职满意</th>
+                        <th>人员入职基本满意</th>
+                        <th>人员入职不满意</th>
+                        <th>人员入职不太满意</th>
+                        <th>整体非常满意</th>
+                        <th>整体满意</th>
+                        <th>整体基本满意</th>
+                        <th>整体不满意</th>
+                        <th>整体不太满意</th>
+                        <th>反馈速度非常满意</th>
+                        <th>反馈速度满意</th>
+                        <th>反馈速度基本满意</th>
+                        <th>反馈速度不太满意</th>
+                        <th>反馈速度不满意</th>
+                        <th>推荐数量满意</th>
+                        <th>推荐数量基本满意</th>
+                        <th>推荐数量不太满意</th>
+                        <th>推荐数量不满意</th>
+                        <th>推荐质量非常满意</th>
+                        <th>推荐质量满意</th>
+                        <th>推荐质量基本满意</th>
+                        <th>推荐质量不满意</th>
+                        <th>推荐质量不太满意</th>
+                    </thead>
+                    <thead class="he4">
+                            <th>事业部</th>
+                            <th>类型</th>
+                            <th>原始数据</th>
+                            <th>可回访数</th>
+                            <th>回访成功</th>
+                            <th>及时联系</th>
+                            <th>未及时联系</th>
+                            <th>理解岗位</th>
+                            <th>不理解岗位</th>
+                            <th>推荐简历</th>
+                            <th>未推荐简历</th>
+                            <th>推荐质量非常满意</th>
+                            <th>推荐质量满意</th>
+                            <th>推荐质量基本满意</th>
+                            <th>推荐质量不太满意</th>
+                            <th>信息不准确</th>
+                            <th>商机信息</th>
+                        </thead>
             <tbody></tbody>
         </table>
         <div class="pager_">
