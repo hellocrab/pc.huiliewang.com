@@ -3416,6 +3416,7 @@ class ProductAction extends Action {
      * @return array
      */
     private function pinPinData($data) {
+
         $filedMap = [
             'experiences' => [
                 'end' => "endtime",
@@ -3456,6 +3457,9 @@ class ProductAction extends Action {
         ];
         $data = json_decode($data, true);
         $list = $data['data'][0]['guess'];
+        if(!$list){
+            return false;
+        }
         $edu = [];
         $exp = [];
         $resume = [];
@@ -3491,6 +3495,9 @@ class ProductAction extends Action {
             $resume[$resumes[$key]] = $value;
         }
 
+        if(!$resume){
+            return false;
+        }
         //工作经历
         foreach ($experiences as $key => $exps) {
             $info = [];
