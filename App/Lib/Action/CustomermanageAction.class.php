@@ -794,6 +794,8 @@ class CustomermanageAction extends Action
             $visitInfo['call_status'] = $this->call_status[$visitInfo['call_status']];
             $visitInfo['matching_degree'] = isset($this->degree[$visitInfo['matching_degree']]) ? $this->degree[$visitInfo['matching_degree']] : '无';
             $visitInfo['phone_record'] = $visitInfo['phone_record'] ? $visitInfo['phone_record'] : '无';
+            $userName = M('user')->where(['role_id' => $visitInfo['create_role']])->getField('full_name');
+            $visitInfo['create_role'] = $userName ? $userName : '';
         }
         $customerInfo['visit_log'] = $visit ? $visit : [];
         $this->response(['info' => $customerInfo]);
@@ -954,6 +956,7 @@ class CustomermanageAction extends Action
             $this->response('请求数据错误', 500, false);
         }
         $data['add_time'] = time();
+        $data['create_role'] = session('role_id');
         $data['customer_id'] = $info['customer_id'];
         $data['update_time'] = time();
         $data['p_department_id'] = $info['p_department_id'];
