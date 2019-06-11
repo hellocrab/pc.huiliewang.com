@@ -793,6 +793,12 @@ class CustomermanageAction extends Action
             $visitInfo['add_time'] = date("Y-m-d H:i:s", $visitInfo['add_time']);
             $visitInfo['call_status'] = $this->call_status[$visitInfo['call_status']];
             $visitInfo['matching_degree'] = isset($this->degree[$visitInfo['matching_degree']]) ? $this->degree[$visitInfo['matching_degree']] : '无';
+            $visitInfo['service_degree'] = isset($this->degree[$visitInfo['service_degree']]) ? $this->degree[$visitInfo['service_degree']] : '无';
+            $visitInfo['feedback_degree'] = isset($this->degree[$visitInfo['feedback_degree']]) ? $this->degree[$visitInfo['feedback_degree']] : '无';
+            $visitInfo['quality_degree'] = isset($this->degree[$visitInfo['quality_degree']]) ? $this->degree[$visitInfo['quality_degree']] : '无';
+            $visitInfo['degree'] = isset($this->degree[$visitInfo['degree']]) ? $this->degree[$visitInfo['degree']] : '无';
+            $visitInfo['enter_degree'] = isset($this->degree[$visitInfo['enter_degree']]) ? $this->degree[$visitInfo['enter_degree']] : '无';
+            $visitInfo['recommends_degree'] = isset($this->degree[$visitInfo['recommends_degree']]) ? $this->degree[$visitInfo['recommends_degree']] : '无';
             $visitInfo['phone_record'] = $visitInfo['phone_record'] ? $visitInfo['phone_record'] : '无';
             $userName = M('user')->where(['role_id' => $visitInfo['create_role']])->getField('full_name');
             $visitInfo['create_role'] = $userName ? $userName : '';
