@@ -332,9 +332,9 @@ class CustomermanageAction extends Action
             }
             $info['times'] && $data['times'] = $info['times'];
             $info['min_condition'] && $data['min_condition'] = $info['min_condition'];
-            if($info['is_sign'] == 0 && $info['min_condition']){
+            if ($info['is_sign'] == 0 && $info['min_condition']) {
                 $data['is_sign'] = 0;
-            }else{
+            } else {
                 $data['is_sign'] = 1;
                 $data['min_condition'] = 0;
             }
@@ -346,6 +346,18 @@ class CustomermanageAction extends Action
         if (!$res) {
             $this->response('操作失败', 500, false);
         }
+        $this->response('操作成功');
+    }
+
+    /**
+     * @desc 商机取消
+     */
+    public function businessCancel() {
+        $visitId = BaseUtils::getStr(I('visit_id'), 'int');
+        if (!$visitId) {
+            $this->response('visit_id缺失', 500, false);
+        }
+        M('customer_visit_note')->where(['visit_id' => $visitId])->save(['is_business' => 0]);
         $this->response('操作成功');
     }
 
