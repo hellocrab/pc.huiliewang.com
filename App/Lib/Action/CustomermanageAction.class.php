@@ -503,6 +503,7 @@ class CustomermanageAction extends Action
         $proType = BaseUtils::getStr(I('pro_type', 0), 'int');
         //是否导出操作
         $isExport = BaseUtils::getStr(I('is_export', 0), 'int');
+        $search = BaseUtils::getStr(I('search', ''), 'string');
         $where = [];
         //时间判断
         if ($timeEnd && ($timeStart > $timeEnd)) {
@@ -512,6 +513,9 @@ class CustomermanageAction extends Action
         $timeEnd && $where['visit.finish_time'] = ['lt', strtotime($timeEnd)];
         if ($timeStart && $timeEnd) {
             $where['visit.finish_time'] = [['gt', strtotime($timeStart)], ['lt', strtotime($timeEnd)]];
+        }
+        if ($search) {
+            $where['customer_name|signer|contact_name|phone'] = ['like', "%{$search}%"];
         }
         $departmentId && $where['visit.p_department_id'] = $departmentId;
         $proType && $where['visit.pro_type'] = $proType;
@@ -791,9 +795,17 @@ class CustomermanageAction extends Action
         $visit = M('customer_visit_note')->where(['customer_id' => $customerId])->order('id desc')->select();
         foreach ($visit as &$visitInfo) {
             $visitInfo['add_time'] = date("Y-m-d H:i:s", $visitInfo['add_time']);
-            $visitInfo['call_status'] = $this->call_status[$visitInfo['call_status']];
+            $visitInfo['call_status'] = $this->call_status[$visitInfo['call_status']] ? $this->call_status[$visitInfo['call_status']] : '无';
             $visitInfo['matching_degree'] = isset($this->degree[$visitInfo['matching_degree']]) ? $this->degree[$visitInfo['matching_degree']] : '无';
+            $visitInfo['service_degree'] = isset($this->degree[$visitInfo['service_degree']]) ? $this->degree[$visitInfo['service_degree']] : '无';
+            $visitInfo['feedback_degree'] = isset($this->degree[$visitInfo['feedback_degree']]) ? $this->degree[$visitInfo['feedback_degree']] : '无';
+            $visitInfo['quality_degree'] = isset($this->degree[$visitInfo['quality_degree']]) ? $this->degree[$visitInfo['quality_degree']] : '无';
+            $visitInfo['degree'] = isset($this->degree[$visitInfo['degree']]) ? $this->degree[$visitInfo['degree']] : '无';
+            $visitInfo['enter_degree'] = isset($this->degree[$visitInfo['enter_degree']]) ? $this->degree[$visitInfo['enter_degree']] : '无';
+            $visitInfo['recommends_degree'] = isset($this->degree[$visitInfo['recommends_degree']]) ? $this->degree[$visitInfo['recommends_degree']] : '无';
             $visitInfo['phone_record'] = $visitInfo['phone_record'] ? $visitInfo['phone_record'] : '无';
+            $userName = M('user')->where(['role_id' => $visitInfo['create_role']])->getField('full_name');
+            $visitInfo['create_role'] = $userName ? $userName : '';
         }
         $customerInfo['visit_log'] = $visit ? $visit : [];
         $this->response(['info' => $customerInfo]);
@@ -932,7 +944,7 @@ class CustomermanageAction extends Action
                 !isset($this->proTypes[$value]) && $this->response('请选择正确的项目类型', 500, false);
             }
             //评分分数检测
-            if (in_array($key, ['matching_degree', 'service_degree', 'feedback_degree', 'quality_degree', 'degree', 'recommends_degree'])) {
+            if (in_array($key, ['matching_degree', 'service_degree', 'feedback_degree', 'quality_degree', 'degree', 'recommends_degree', 'enter_degree'])) {
                 !isset($this->degree[$value]) && $this->response('满意度评分错误', 500, false);
             }
             //下次跟进时间
@@ -954,6 +966,7 @@ class CustomermanageAction extends Action
             $this->response('请求数据错误', 500, false);
         }
         $data['add_time'] = time();
+        $data['create_role'] = session('role_id');
         $data['customer_id'] = $info['customer_id'];
         $data['update_time'] = time();
         $data['p_department_id'] = $info['p_department_id'];
