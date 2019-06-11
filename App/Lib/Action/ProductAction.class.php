@@ -3432,8 +3432,8 @@ class ProductAction extends Action {
                 'start' => 'starttime',
                 'title' => 'majorName',
                 'company_name' => 'schoolName',
-                'f6' => 'degree',
-                'f8' => 'recruitment',
+                'f6mc' => 'degree',
+                'f7' => 'recruitment',
             ],
             'resume' => [
                 'mobile' => 'telephone',
@@ -3508,6 +3508,7 @@ class ProductAction extends Action {
                 if ($filed == 'end' || $filed == 'start') {
                     $value = strtotime($value);
                 }
+
                 if ($value == null || $value == 'null') {
                     $value = '';
                 }
@@ -3523,6 +3524,13 @@ class ProductAction extends Action {
                 $value = trim($value);
                 if ($filed == 'end' || $filed == 'start') {
                     $value = strtotime($value);
+                }
+                if($filed == "f7"){
+                    $value = $value == "是" ? 1 : 0;
+                }
+                if($filed == "f6mc"){
+                    $degree = [1 => '高中', 2 => '中专,', 3 => '大专', 4 => '本科',5 => '硕士', 6 => "博士"];
+                    $value = array_search($value,$degree) ? array_search($value,$degree) : 0;
                 }
                 if ($value == null || $value == 'null') {
                     $value = '';
