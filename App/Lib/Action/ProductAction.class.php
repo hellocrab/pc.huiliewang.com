@@ -81,7 +81,9 @@ class ProductAction extends Action {
             if ($this->resolveChanel == 'pinPin') {
                 $res = $this->fileToPinPin($v['path']);
                 $data = $this->pinPinData($res);
-            } else {
+                !$data && $this->resolveChanel = "hlw";
+            }
+            if ($this->resolveChanel != 'pinPin') {
                 import('@.ORG.ResumeData');
                 $reData = new ResumeData();
                 $data = $reData->getData($v);
@@ -3402,6 +3404,7 @@ class ProductAction extends Action {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);  //该curl_setopt可以向header写键值对
         curl_setopt($ch, CURLOPT_HEADER, false); // 不返回头信息
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60); //设置超时时长
         $output = curl_exec($ch);
         curl_close($ch);
         return $output;
