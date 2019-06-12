@@ -475,6 +475,7 @@
                                 </ul>
                             </div>
                         </div>
+
                         <table class="table select-table">
                             <tr class="tabTh" style="background-color:#f9fafc;">
                                 <td width="30px"
@@ -503,6 +504,10 @@
                     </div>
 
                     <div id="st1" class="tab-pane fade in tab-content">
+                        <div class="form-group">
+                            <input class="" type="text" placeholder="姓名" style="height:30px;text-align: center;" value=""  />
+                            <button type="button" class="btn btn-search" id="CSearch2" style="border: 1px solid #D8E3EF;margin:0">搜索</button>
+                        </div>
                         <table class="table select-table">
                             <tr class="tabTh" style="background-color:#f9fafc;">
                                 <td style="text-align:center;background-color:#f9fafc;padding:14px;color:#999">姓名</td>
@@ -2199,6 +2204,22 @@
             $('#dialog-setting_reply').dialog('open');
             $('#dialog-setting_reply').load('{:U("setting/replyList")}');
         });
+        $('#CSearch2').on('click',function () {
+            var val = $(this).prev().val();
+            $.ajax({
+                type : "get",
+                url : "{:U('business/searchCallist')}",
+                data:{
+                    business_id : "{:I('id')}",
+                    name : val
+                },
+                async :false,
+                success:function (data) {
+
+                },
+                dataType:'json'
+            });
+        })
     })
 
     function selectStatus() {
