@@ -121,10 +121,10 @@ function getData(is_export) {
                                 <td>${val.service_dissatisfied}</td>
                                 <td>${val.service_very_dissatisfied}</td>
                                 <td>${val.feedback_very_satisfied}</td>
-                                <td>${val.feedbac_satisfaction}</td>
-                                <td>${val.feedbac_general}</td>
-                                <td>${val.feedbac_dissatisfied}</td>
-                                <td>${val.feedbac_very_dissatisfied}</td>
+                                <td>${val.feedback_satisfaction}</td>
+                                <td>${val.feedback_general}</td>
+                                <td>${val.feedback_dissatisfied}</td>
+                                <td>${val.feedback_very_dissatisfied}</td>
                                 <td>${val.resume_enough}</td>
                                 <td>${val.resume_not_enough}</td>
                                 <td>${val.quality_very_satisfied}</td>
