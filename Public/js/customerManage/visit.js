@@ -408,6 +408,8 @@ function num2str(num) {
         return '不太满意'
     } else if (num == 1) {
         return '不满意'
+    }else{
+        return '无'
     }
 }
 
@@ -525,10 +527,18 @@ $('#goto').on('keydown', ev => {
 })
 $('.dialog img').click(ev => {
     $('.dialog').css('display', 'none')
+    $('.radio_box input[type=radio]').attr('checked',false);
+    $('#visit_type').val('1');
+    $('#next_time').val('');
+    $('.visit_dialog textarea').val('');
 
 })
 $('.cannal').click(ev => {
     $('.dialog').css('display', 'none')
+    $('.radio_box input[type=radio]').attr('checked',false);
+    $('#visit_type').val('1');
+    $('#next_time').val('');
+    $('.visit_dialog textarea').val('');
 
 })
 $('.settingBox>span:nth-child(1)').click(ev => {
