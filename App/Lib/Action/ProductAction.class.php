@@ -587,108 +587,111 @@ class ProductAction extends Action {
                 }
             }
         }
+        //去除原有高级搜索逻辑 edit by yanghao 2019-06-12 
         //多选类型字段
-        $check_field_arr = M('Fields')->where(array('model' => 'customer', 'form_type' => 'box', 'setting' => array('like', '%' . "'type'=>'checkbox'" . '%')))->getField('field', true);
+        //$check_field_arr = M('Fields')->where(array('model' => 'customer', 'form_type' => 'box', 'setting' => array('like', '%' . "'type'=>'checkbox'" . '%')))->getField('field', true);
         //高级搜索
-        if (!$_GET['field']) {
-            $no_field_array = array('act', 'content', 'p', 'condition', 'listrows', 'daochu', 'this_page', 'current_page', 'export_limit', 'desc_order', 'asc_order', 'selectexcelxport', 'by', 'scene_id', 'order_field', 'order_type');
-
-            foreach ($_GET as $k => $v) {
-                if (!in_array($k, $no_field_array)) {
-                    if ($k == "industry" && $v) {
-                        $industryName = M('industry')->where(['industry_id' => $v])->getField('name');
-                        if ($where['_string']) {
-//                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',industry)";
-                            $where['_string'] .= " and industry  like '{$industryName}%' ";
-                        } else {
-//                            $where['_string'] = "FIND_IN_SET('" . $v . "',industry)";
-                            $where['_string'] = "industry  like  '{$industryName}%' ";
-                        }
-                    } elseif ($k == "job_class" && $v) {
-                        $jobName = M('job_class')->where(['job_id' => $v])->getField('name');
-                        if ($where['_string']) {
-//                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',job_class)";
-                            $where['_string'] .= " and job_class like '{$jobName}%'";
-                        } else {
-//                            $where['_string'] = "FIND_IN_SET('" . $v . "',job_class)";
-                            $where['_string'] = "job_class like '{$jobName}%'";
-                        }
-                    } elseif ($k == "intentCity" && $v) {
-                        if ($where['_string']) {
-                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',intentCity)";
-                        } else {
-                            $where['_string'] = "FIND_IN_SET('" . $v . "',intentCity)";
-                        }
-                    } elseif ($k == "creater_role_id" && $v) {
-                        $v = $v['value'];
-                        $where['creator_role_id'] = $v;
-                    } elseif (is_array($v)) {
-                        $v['value'] = trim($v['value']);
-                        if ($v['state']) {
-                            $address_where[] = $v['state'] . '%';
-
-                            if ($v['city']) {
-                                $address_where[] = $v['city'] . '%';
-
-                                if ($v['area']) {
-                                    $address_where[] = $v['area'] . '%';
-                                }
-                            }
-                            if ($v['search'])
-                                $address_where[] = $v['search'] . '%';
-
-                            if ($v['condition'] == 'not_contain') {
-                                $where[$k] = array('notlike', $address_where, 'OR');
-                            } else {
-                                $where[$k] = array('like', $address_where, 'AND');
-                            }
-                        } elseif (($v['start'] != '' || $v['end'] != '')) {
-                            if ($k == 'create_time') {
-                                $k = 'customer.create_time';
-                            } elseif ($k == 'update_time') {
-                                $k = 'customer.update_time';
-                            }
-                            //时间段查询
-                            if ($v['start'] && $v['end']) {
-                                $where[$k] = array('between', array(strtotime($v['start']), strtotime($v['end']) + 86399));
-                            } elseif ($v['start']) {
-                                $where[$k] = array('egt', strtotime($v['start']));
-                            } else {
-                                $where[$k] = array('elt', strtotime($v['end']) + 86399);
-                            }
-                        } elseif (($v['value']) != '') {
-                            if (in_array($k, $check_field_arr)) {
-                                $where[$k] = field($v['value'], 'contains');
-                            } else {
-                                if ($k == 'status_id') {
-                                    $business_map['status_id'] = $v['value'];
-                                } else {
-                                    // $v['condition'] = $v['condition'] ? : 'contains';
-                                    $where[$k] = field($v['value'], $v['condition']);
-                                }
-                            }
-                        }
-                    } else {
-                        if (!empty($v)) {
-                            $where[$k] = field($v);
-                        }
-                    }
-                }
-                if ($k == 'resume.addtime') {
-                    $k = 'addtime';
-                } elseif ($k == 'resume.lastupdate') {
-                    $k = 'lastupdate';
-                }
-                if (is_array($v)) {
-
-                    foreach ($v as $key => $value) {
-                        $params[] = $k . '[' . $key . ']=' . $value;
-                    }
-                } else {
-                    $params[] = $k . '=' . $v;
-                }
-            }
-        }
+//        var_dump(1);
+//        if (!$_GET['field']) {
+////            var_dump(2);exit;
+//            $no_field_array = array('act', 'content', 'p', 'condition', 'listrows', 'daochu', 'this_page', 'current_page', 'export_limit', 'desc_order', 'asc_order', 'selectexcelxport', 'by', 'scene_id', 'order_field', 'order_type');
+//
+//            foreach ($_GET as $k => $v) {
+//                if (!in_array($k, $no_field_array)) {
+//                    if ($k == "industry" && $v) {
+//                        $industryName = M('industry')->where(['industry_id' => $v])->getField('name');
+//                        if ($where['_string']) {
+////                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',industry)";
+//                            $where['_string'] .= " and industry  like '{$industryName}%' ";
+//                        } else {
+////                            $where['_string'] = "FIND_IN_SET('" . $v . "',industry)";
+//                            $where['_string'] = "industry  like  '{$industryName}%' ";
+//                        }
+//                    } elseif ($k == "job_class" && $v) {
+//                        $jobName = M('job_class')->where(['job_id' => $v])->getField('name');
+//                        if ($where['_string']) {
+////                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',job_class)";
+//                            $where['_string'] .= " and job_class like '{$jobName}%'";
+//                        } else {
+////                            $where['_string'] = "FIND_IN_SET('" . $v . "',job_class)";
+//                            $where['_string'] = "job_class like '{$jobName}%'";
+//                        }
+//                    } elseif ($k == "intentCity" && $v) {
+//                        if ($where['_string']) {
+//                            $where['_string'] .= " and FIND_IN_SET('" . $v . "',intentCity)";
+//                        } else {
+//                            $where['_string'] = "FIND_IN_SET('" . $v . "',intentCity)";
+//                        }
+//                    } elseif ($k == "creater_role_id" && $v) {
+//                        $v = $v['value'];
+//                        $where['creator_role_id'] = $v;
+//                    } elseif (is_array($v)) {
+//                        $v['value'] = trim($v['value']);
+//                        if ($v['state']) {
+//                            $address_where[] = $v['state'] . '%';
+//
+//                            if ($v['city']) {
+//                                $address_where[] = $v['city'] . '%';
+//
+//                                if ($v['area']) {
+//                                    $address_where[] = $v['area'] . '%';
+//                                }
+//                            }
+//                            if ($v['search'])
+//                                $address_where[] = $v['search'] . '%';
+//
+//                            if ($v['condition'] == 'not_contain') {
+//                                $where[$k] = array('notlike', $address_where, 'OR');
+//                            } else {
+//                                $where[$k] = array('like', $address_where, 'AND');
+//                            }
+//                        } elseif (($v['start'] != '' || $v['end'] != '')) {
+//                            if ($k == 'create_time') {
+//                                $k = 'customer.create_time';
+//                            } elseif ($k == 'update_time') {
+//                                $k = 'customer.update_time';
+//                            }
+//                            //时间段查询
+//                            if ($v['start'] && $v['end']) {
+//                                $where[$k] = array('between', array(strtotime($v['start']), strtotime($v['end']) + 86399));
+//                            } elseif ($v['start']) {
+//                                $where[$k] = array('egt', strtotime($v['start']));
+//                            } else {
+//                                $where[$k] = array('elt', strtotime($v['end']) + 86399);
+//                            }
+//                        } elseif (($v['value']) != '') {
+//                            if (in_array($k, $check_field_arr)) {
+//                                $where[$k] = field($v['value'], 'contains');
+//                            } else {
+//                                if ($k == 'status_id') {
+//                                    $business_map['status_id'] = $v['value'];
+//                                } else {
+//                                    // $v['condition'] = $v['condition'] ? : 'contains';
+//                                    $where[$k] = field($v['value'], $v['condition']);
+//                                }
+//                            }
+//                        }
+//                    } else {
+//                        if (!empty($v)) {
+//                            $where[$k] = field($v);
+//                        }
+//                    }
+//                }
+//                if ($k == 'resume.addtime') {
+//                    $k = 'addtime';
+//                } elseif ($k == 'resume.lastupdate') {
+//                    $k = 'lastupdate';
+//                }
+//                if (is_array($v)) {
+//
+//                    foreach ($v as $key => $value) {
+//                        $params[] = $k . '[' . $key . ']=' . $value;
+//                    }
+//                } else {
+//                    $params[] = $k . '=' . $v;
+//                }
+//            }
+//        }
 
         foreach ($params as $k => $v) {
             if (strpos($v, '[condition]=') || strpos($v, '[value]=') || strpos($v, '[state]=') || strpos($v, '[city]=') || strpos($v, '[area]=') || strpos($v, '[start]=') || strpos($v, '[end]=')) {
@@ -791,7 +794,7 @@ class ProductAction extends Action {
         } else {
             $list = $resume->where($where)->order('addtime desc')->Page($p . ',' . $listrows)->select();
 //            dump($list);
-////            var_dump($resume->getLastSql());
+//            var_dump($resume->getLastSql());
 //            die;
         }
 
