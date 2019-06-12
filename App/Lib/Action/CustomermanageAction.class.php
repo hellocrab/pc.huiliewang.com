@@ -549,7 +549,7 @@ class CustomermanageAction extends Action
         $where['visit.role_id'] = ['in', $this->_permissionRes];
 
         $model = M('customer_visit_note');
-        $fields = "visit.pro_type,visit.p_department_name,visit.p_department_id";
+        $fields = "note.pro_type,visit.p_department_name,visit.p_department_id";
         if ($isExport) {
             $page = 1;
             $pageSize = 500;
@@ -645,7 +645,7 @@ class CustomermanageAction extends Action
         foreach ($list as &$info) {
             $map['pro_type'] = $info['pro_type'];
             $map['p_department_id'] = $info['p_department_id'];
-            $info['pro_type'] = $this->proTypes[$info['pro_type']];
+            $info['pro_type'] = $this->pro_type[$info['pro_type']];
             //原始数据
             $info['raw_data'] = $visitModel->where($map)->count();
             //可回访数据
