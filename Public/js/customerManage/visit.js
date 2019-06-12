@@ -187,7 +187,7 @@ function getData(is_export) {
     };
     $('thead').css('display', 'none');
     $('.he1').css('display', 'table');
-    if ($('#type option').length != 7)
+    if ($('#type option').length != 8)
         $('#type').html(`<option value="">所有类型</option>
         <option value="1">线上面试快</option>
         <option value="2">线上入职快</option>
