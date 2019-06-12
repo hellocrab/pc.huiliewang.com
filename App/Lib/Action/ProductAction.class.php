@@ -3423,7 +3423,7 @@ class ProductAction extends Action {
                 'start' => "starttime",
                 'title' => "jobPosition",
                 'dept' => "depart",
-                'name' => "company",
+                'client' => "company",
                 'description' => "companyDes",
                 'industry' => "industry",
             ],
@@ -3440,7 +3440,7 @@ class ProductAction extends Action {
                 'email' => 'email',
                 'gender' => 'sex',
                 'education' => 'edu',
-                'dateOfBirth' => 'birthYear',
+                'dateOfBirth' => 'birthday',
                 'annualSalary' => 'curSalary',
                 'company' => 'curCompany',
                 'citybm' => 'intentCity',
@@ -3453,11 +3453,10 @@ class ProductAction extends Action {
                 'Master' => '硕士',
                 'Doctor' => '博士',
             ]
-
         ];
         $data = json_decode($data, true);
         $list = $data['data'][0]['guess'];
-        if(!$list){
+        if (!$list) {
             return false;
         }
         $edu = [];
@@ -3476,8 +3475,13 @@ class ProductAction extends Action {
             if (!isset($resumes[$key])) {
                 continue;
             }
-            if ($key == 'end' || $key == 'start') {
+            if ($key == 'end' || $key == 'start' || $key == 'dateOfBirth') {
                 $value = strtotime($value);
+                if($key == 'dateOfBirth') {
+                    //生日
+                    $resume['birthYear'] = date("Y",$value);
+                    $resume['birthMouth'] = date("m",$value);
+                }
             }
             if ($key == "education") {
                 $value = $filedMap['education'][$value];
@@ -3495,7 +3499,7 @@ class ProductAction extends Action {
             $resume[$resumes[$key]] = $value;
         }
 
-        if(!$resume){
+        if (!$resume) {
             return false;
         }
         //工作经历
@@ -3504,14 +3508,17 @@ class ProductAction extends Action {
             $info['duty'] = '';
             foreach ($expMap as $filed => $localFiled) {
                 $value = $exps[$filed];
-                $value = trim($value);
                 if ($filed == 'end' || $filed == 'start') {
                     $value = strtotime($value);
+                }
+                if ($filed == "client") {
+                    $value = $value['name']; //公司名
                 }
 
                 if ($value == null || $value == 'null') {
                     $value = '';
                 }
+                $value = trim($value);
                 $info[$localFiled] = $value;
             }
             $exp[] = $info;
@@ -3521,20 +3528,20 @@ class ProductAction extends Action {
             $info = [];
             foreach ($educationexperiences as $filed => $localFiled) {
                 $value = $edus[$filed];
-                $value = trim($value);
                 if ($filed == 'end' || $filed == 'start') {
                     $value = strtotime($value);
                 }
-                if($filed == "f7"){
+                if ($filed == "f7") {
                     $value = $value == "是" ? 1 : 0;
                 }
-                if($filed == "f6mc"){
-                    $degree = [1 => '高中', 2 => '中专,', 3 => '大专', 4 => '本科',5 => '硕士', 6 => "博士"];
-                    $value = array_search($value,$degree) ? array_search($value,$degree) : 0;
+                if ($filed == "f6mc") {
+                    $degree = [1 => '高中', 2 => '中专,', 3 => '大专', 4 => '本科', 5 => '硕士', 6 => "博士"];
+                    $value = array_search($value, $degree) ? array_search($value, $degree) : 0;
                 }
                 if ($value == null || $value == 'null') {
                     $value = '';
                 }
+                $value = trim($value);
                 $info[$localFiled] = $value;
             }
             $edu[] = $info;
