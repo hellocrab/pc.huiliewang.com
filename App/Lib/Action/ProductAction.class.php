@@ -12,6 +12,7 @@ class ProductAction extends Action {
         7 => 'MBA/EMBA',
         8 => '博士后'
     ];
+    protected $resolveChanel = "pinPin";
 
     /**
      *
@@ -77,9 +78,16 @@ class ProductAction extends Action {
         );
         //保存简历
         foreach ($imporFile as $v) {
-            import('@.ORG.ResumeData');
-            $reData = new ResumeData();
-            $data = $reData->getData($v);
+            if ($this->resolveChanel == 'pinPin') {
+                $res = $this->fileToPinPin($v['path']);
+                $data = $this->pinPinData($res);
+                !$data && $this->resolveChanel = "hlw";
+            }
+            if ($this->resolveChanel != 'pinPin') {
+                import('@.ORG.ResumeData');
+                $reData = new ResumeData();
+                $data = $reData->getData($v);
+            }
 
             if (!$data['data']) {
                 $this->ajaxReturn(['succ' => 0, 'code' => 500, 'message' => '没有匹配数据']);
@@ -3374,4 +3382,189 @@ class ProductAction extends Action {
         return $data;
     }
 
+    /**
+     * curl Post文件，php5以下版本可用
+     *
+     * @param $action (处理上传文件的url，form表单的action)
+     * @param $path (文件路径)
+     **/
+    private function fileToPinPin($path) {
+        $path = realpath($path);
+        $url = "http://testlt.pinpinsoft.cn:45697/rest/file/uploadopen";
+        $data = array(
+            // 需要注意的是，在路径前必须带上@，不然只会当做是简单的键值对
+            // 'file'   =>  '@'.realpath($path),
+            'file' => new CURLFile($path),
+            'data' => '{"tag":"1","type":"candidate"}'
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);  //该curl_setopt可以向header写键值对
+        curl_setopt($ch, CURLOPT_HEADER, false); // 不返回头信息
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60); //设置超时时长
+        $output = curl_exec($ch);
+        curl_close($ch);
+        return $output;
+    }
+
+    /**
+     * @desc 品聘附件简历解析
+     * @param $data
+     * @return array
+     */
+    private function pinPinData($data) {
+
+        $filedMap = [
+            'experiences' => [
+                'end' => "endtime",
+                'start' => "starttime",
+                'title' => "jobPosition",
+                'dept' => "depart",
+                'name' => "company",
+                'description' => "companyDes",
+                'industry' => "industry",
+            ],
+            'educationexperiences' => [
+                'end' => 'endtime',
+                'start' => 'starttime',
+                'title' => 'majorName',
+                'company_name' => 'schoolName',
+                'f6mc' => 'degree',
+                'f7' => 'recruitment',
+            ],
+            'resume' => [
+                'mobile' => 'telephone',
+                'email' => 'email',
+                'gender' => 'sex',
+                'education' => 'edu',
+                'dateOfBirth' => 'birthYear',
+                'annualSalary' => 'curSalary',
+                'company' => 'curCompany',
+                'citybm' => 'intentCity',
+                'chineseName' => 'name',
+                'location' => 'location',
+            ],
+            'education' => [
+                'College' => '专科',
+                'Bachelor' => '本科',
+                'Master' => '硕士',
+                'Doctor' => '博士',
+            ]
+
+        ];
+        $data = json_decode($data, true);
+        $list = $data['data'][0]['guess'];
+        if(!$list){
+            return false;
+        }
+        $edu = [];
+        $exp = [];
+        $resume = [];
+        $expMap = $filedMap['experiences'];
+        $educationexperiences = $filedMap['educationexperiences'];
+        $resumes = $filedMap['resume'];
+        $experiences = $list['experiences'];
+        $eduList = $list['educationexperiences'];
+        unset($list['educationexperiences']);
+        unset($list['experiences']);
+
+        //简历基本信息
+        foreach ($list as $key => $value) {
+            if (!isset($resumes[$key])) {
+                continue;
+            }
+            if ($key == 'end' || $key == 'start') {
+                $value = strtotime($value);
+            }
+            if ($key == "education") {
+                $value = $filedMap['education'][$value];
+            }
+            if ($key == "location") {
+                $value = $value['name'] ? $value['name'] : '';
+            }
+            if ($key == 'citybm' || $key == 'location') {
+                $value = $this->getCityCode($value);
+            }
+            $value = trim($value);
+            if ($value == null || $value == 'null') {
+                $value = '';
+            }
+            $resume[$resumes[$key]] = $value;
+        }
+
+        if(!$resume){
+            return false;
+        }
+        //工作经历
+        foreach ($experiences as $key => $exps) {
+            $info = [];
+            $info['duty'] = '';
+            foreach ($expMap as $filed => $localFiled) {
+                $value = $exps[$filed];
+                $value = trim($value);
+                if ($filed == 'end' || $filed == 'start') {
+                    $value = strtotime($value);
+                }
+
+                if ($value == null || $value == 'null') {
+                    $value = '';
+                }
+                $info[$localFiled] = $value;
+            }
+            $exp[] = $info;
+        }
+        //教育经历
+        foreach ($eduList as $edus) {
+            $info = [];
+            foreach ($educationexperiences as $filed => $localFiled) {
+                $value = $edus[$filed];
+                $value = trim($value);
+                if ($filed == 'end' || $filed == 'start') {
+                    $value = strtotime($value);
+                }
+                if($filed == "f7"){
+                    $value = $value == "是" ? 1 : 0;
+                }
+                if($filed == "f6mc"){
+                    $degree = [1 => '高中', 2 => '中专,', 3 => '大专', 4 => '本科',5 => '硕士', 6 => "博士"];
+                    $value = array_search($value,$degree) ? array_search($value,$degree) : 0;
+                }
+                if ($value == null || $value == 'null') {
+                    $value = '';
+                }
+                $info[$localFiled] = $value;
+            }
+            $edu[] = $info;
+        }
+
+        $startWork = end($exp);
+        $resume['startWorkyear'] = $startWork['starttime'] ? date('Y', $startWork['starttime']) : 0;
+
+        $dbDataInfo = [];
+        $dbDataInfo['evaluate'] = $list['advantage'] ? $list['advantage'] : '';
+        $dbProjectData = [];
+        return ['data' => $resume, 'info' => $dbDataInfo, 'job' => $exp, 'project' => $dbProjectData, 'edu' => $edu, 'language' => []];
+    }
+
+    /**
+     * @desc  获取城市code
+     * @param string $name
+     * @return bool
+     */
+    private function getCityCode($name = '') {
+        if (!$name) {
+            return false;
+        }
+        $name = BaseUtils::getStr($name);
+        $list = explode(',', $name);
+        $ids = '';
+        foreach ($list as $name) {
+            $city_id = M('city')->where(['name' => ['like', "%{$name}%"]])->getField('city_id');
+            $ids .= $city_id . ',';
+        }
+        return trim($ids, ',');
+    }
 }
