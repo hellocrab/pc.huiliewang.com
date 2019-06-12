@@ -981,7 +981,7 @@ class CustomermanageAction extends Action
             }
             //消息通知顾问
             if ($key == "message_role" && $value > 1) {
-                $this->messageNotice($value, $customerId, $params['business_note']);
+                $this->messageNotice($value, $customerId);
             }
             $data[$key] = $value;
         }
