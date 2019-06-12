@@ -405,12 +405,12 @@ class CustomermanageAction extends Action
         if ($visitStatus == 1) {
             $where['status'] = ['in', [1, 2]];
         }
-        $search && $where['customer_name|contact_name|phone'] = ['like', "%{$search}%"];
-        if (isset($_REQUEST['is_phone'])) {
+        $search && $where['customer_name|contact_name|phone|signer'] = ['like', "%{$search}%"];
+        if (isset($_REQUEST['is_phone']) && strlen($isPhone) > 0) {
             $isPhone && $where['phone'] = ['neq', ''];
-            !$isPhone && $where['phone'] = ['eq', ''];
+            $isPhone === 0 && $where['phone'] = ['eq', ''];
         }
-        if (isset($_REQUEST['is_business'])) {
+        if (isset($_REQUEST['is_business']) && strlen($isBusiness) > 0) {
             $where['business_status'] = $isBusiness;
         }
         $where['role_id'] = ['in', $this->_permissionRes];
@@ -432,6 +432,7 @@ class CustomermanageAction extends Action
                 $info['finish_time'] && $info['finish_time'] = date("Y-m-d", $info['finish_time']);
                 $signInfo = $this->signInfo(false, $customerId);
                 $info['signer'] = $signInfo['signer'];
+                $this->infoMaintain($customerId, $info);
             }
             $counts = M('customer_visit')->where($where)->count();
             $this->response(['list' => $list, 'current_page' => $page, 'counts' => $counts]);
@@ -485,6 +486,29 @@ class CustomermanageAction extends Action
                 ['contract_end', '合同结束']
             ];
             $this->exportExcel('客户待回访数据', $list, $expCellName);
+        }
+    }
+
+    /**
+     * @desc  信息维护
+     * @param $customerId
+     * @param $info
+     * @return bool
+     */
+    private function infoMaintain($customerId, $info) {
+        $visitInfo = M('customer_visit')->where(['customer_id' => $customerId])->find();
+        $data = [];
+        if (!$visitInfo['signer'] && $info['signer']) {
+            $data['signer'] = $info['signer'];
+        }
+        if (!$visitInfo['phone']) {
+            $customerInfo = M('customer')->where(['customer_id' => $customerId])->find();
+            $contactsId = $customerInfo['contacts_id'];
+            $phone = M('contacts')->where(['contacts_id' => $contactsId])->getField('telephone');
+            $phone && $data['phone'] = $phone;
+        }
+        if ($data) {
+            M('customer_visit')->where(['customer_id' => $customerId])->save($data);
         }
     }
 
