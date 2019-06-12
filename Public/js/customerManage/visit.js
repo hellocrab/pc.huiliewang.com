@@ -479,7 +479,7 @@ $('.settingBox>span:nth-child(2)').click(ev => {
     if (sym == '待回访') sym = 0;
     else if (sym == '回访记录') sym = 1;
     else sym = 2;
-    let url = `/index.php?m=customermanage&a=visitList&visit_status=${$('#type').val()}&page=${current_page}&page_size=${$('#pageSize').val()}&start_time=${$('#start').val()}&end_time=${$('#end').val()}&department_id=${$('#department').val()},&pro_type=${$('#type').val()}&search=${$('#search').val()}&is_phone=${$('#phone_num').val()}&is_business=${sym==2?$('#business').val():''}&is_export=1`
+    let url = `/index.php?m=customermanage&a=visitList&visit_status=${sym}&page=${current_page}&page_size=${$('#pageSize').val()}&start_time=${$('#start').val()}&end_time=${$('#end').val()}&department_id=${$('#department').val()},&pro_type=${$('#type').val()}&search=${$('#search').val()}&is_phone=${$('#phone_num').val()}&is_business=${sym==2?$('#business').val():''}&is_export=1`
     var elemIF = document.createElement("iframe");
     elemIF.src = url;
     elemIF.style.display = "none";
@@ -711,47 +711,51 @@ $('.visit_dialog .submit').click(ev => {
     let temp = $('#visit_type').val();
     let speed = '';
     let quality = '';
-    if ($('input[name=is_continue]:checked').length == 0 ||
-        $('input[name=business]:checked').length == 0 ||
-        $('input[name=visit]:checked').length == 0 ||
-        $('input[name=complate]:checked').length == 0 ||
-        $('#advicer_area').val() == '' ||
-        $('#visit_area').val() == '' ||
-        $('#next_time').val() == '') {
+    if ($('input[name=complate]:checked').val() == 1) {
+        if ($('input[name=is_continue]:checked').length == 0 ||
+            $('input[name=business]:checked').length == 0 ||
+            $('input[name=visit]:checked').length == 0 ||
+            $('#advicer_area').val() == '' ||
+            $('#visit_area').val() == '' ||
+            $('#next_time').val() == '') {
+            swal('请填写完整', '', 'warning')
+            return
+        }
+        if (temp == 1) {
+            if ($('input[name=serve]:checked').length == 0 ||
+                $('input[name=callback]:checked').length == 0 ||
+                $('input[name=quality]:checked').length == 0) {
+                swal('请填写完整', '', 'warning')
+                return
+            }
+            speed = $('input[name=callback]:checked').val();
+            quality = $('input[name=quality]:checked').val();
+
+        } else if (temp == 2) {
+            if ($('input[name=ruq]:checked').length == 0 ||
+                $('input[name=ruma]:checked').length == 0 ||
+                $('input[name=rufk]:checked').length == 0 ||
+                $('input[name=rutj]:checked').length == 0 ||
+                $('input[name=rutz]:checked').length == 0) {
+                swal('请填写完整', '', 'warning')
+                return
+            }
+            speed = $('input[name=rufk]:checked').val();
+            quality = $('input[name=rutz]:checked').val();
+
+
+        } else if (temp == 3) {
+            if ($('input[name=zhd]:checked').length == 0 ||
+                $('input[name=zhg]:checked').length == 0 ||
+                $('input[name=zhtj]:checked').length == 0 ||
+                $('input[name=zhtp]:checked').length == 0) {
+                swal('请填写完整', '', 'warning')
+                return
+            }
+        }
+    }else if($('input[name=complate]:checked').length==0){
         swal('请填写完整', '', 'warning')
-        return
-    }
-    if (temp == 1) {
-        if ($('input[name=serve]:checked').length == 0 ||
-            $('input[name=callback]:checked').length == 0 ||
-            $('input[name=quality]:checked').length == 0) {
-            swal('请填写完整', '', 'warning')
-            return
-        }
-        speed = $('input[name=callback]:checked').val();
-        quality = $('input[name=quality]:checked').val();
-
-    } else if (temp == 2) {
-        if ($('input[name=ruq]:checked').length == 0 ||
-            $('input[name=ruma]:checked').length == 0 ||
-            $('input[name=rufk]:checked').length == 0 ||
-            $('input[name=rutj]:checked').length == 0 ||
-            $('input[name=rutz]:checked').length == 0) {
-            swal('请填写完整', '', 'warning')
-            return
-        }
-        speed = $('input[name=rufk]:checked').val();
-        quality = $('input[name=rutz]:checked').val();
-
-
-    } else if (temp == 3) {
-        if ($('input[name=zhd]:checked').length == 0 ||
-            $('input[name=zhg]:checked').length == 0 ||
-            $('input[name=zhtj]:checked').length == 0 ||
-            $('input[name=zhtp]:checked').length == 0) {
-            swal('请填写完整', '', 'warning')
-            return
-        }
+                return
     }
     $.ajax({
         url: '/index.php?m=customermanage&a=visitRemark',
