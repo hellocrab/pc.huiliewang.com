@@ -558,7 +558,7 @@ class CustomermanageAction extends Action
         $list = $model->field($fields)->alias('note')
             ->join("mx_customer_visit visit ON visit.id = note.visit_id")
             ->where($where)
-            ->group("visit.pro_type,visit.p_department_id")
+            ->group("note.pro_type,visit.p_department_id")
             ->limit($starNo, $pageSize)
             ->select();
 
