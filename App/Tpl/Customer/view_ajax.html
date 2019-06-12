@@ -55,6 +55,9 @@
     #tab0 .panel-body{
         padding-left: 0px !important;
     }
+    .qian-table{
+        margin-top: 20px;
+    }
 </style>
 <ul class="nav nav-tabs" id="left_list">
     <li class="active">
@@ -88,6 +91,9 @@
 	<!--</if>-->
     <li class="">
         <a href="#tab7" data-toggle="tab" type="tab7">附件</a>
+    </li>
+    <li class="">
+        <a href="#tab10" data-toggle="tab" type="tab10">签单记录</a>
     </li>
 
    <!--  <div class="nav pull-right">
@@ -988,7 +994,19 @@
 				</volist>
 			</div>
 		</div>
-	</div>
+    </div>
+    <div class="tab-pane fade in" id="tab10">
+        <table class="table product-table qian-table">
+                    <tr>
+                            <td>签单人</td>
+                            <td>签单公司</td>
+                            <td>客户</td>
+                            <td>合同开始时间</td>
+                            <td>合同结束时间</td>
+                            <td>回款时间</td>
+                        </tr>
+        </table>
+    </div>
 </div>
 <div style="display:none" id="dialog-role-info" title="{:L('EMPLOYEE_INFORMATION')}">
     <div class="spiner-example">
@@ -1075,6 +1093,29 @@
                                             });
                                         });
     $(".select2").select2();
+   (function(){
+    var customer_id = "{$customer_id}";
+        $.ajax({
+            url:'/index.php?m=customermanage&a=signInfo',
+            data:{
+                customer_id
+            },
+            success(res){
+                if(res.code==200){
+                    $('.qian-table tbody').append(`
+                        <tr>
+                            <td>${res.info.signer}</td>
+                            <td>${res.info.seal_company}</td>
+                            <td>${res.info.customer}</td>
+                            <td>${res.info.contract_start}</td>
+                            <td>${res.info.contract_end}</td>
+                            <td>${res.info.customer}</td>
+                        </tr>
+                    `)
+                }
+            }
+        })
+    })()
 
     $("#dialog-setting_reply").dialog({
         autoOpen: false,

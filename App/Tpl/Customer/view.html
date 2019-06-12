@@ -11,6 +11,25 @@
     .all_business{background-color: #fff;color: #00aaef;}
     .all_business_a{background-color: #00aaef;color: #fff !important;}
     .form-horizontal .control-label{color: #999;}
+    .add_dialog p{
+        padding-left: 40px;
+        color: #999;
+    }
+    .add_dialog p input{
+        width: 150px;
+        display: inline-block;
+        border: 1px solid #d8e3ef;
+        border-radius: 1px;
+        height: 32px;
+        padding: 6px 12px;
+    }
+    .add_dialog p span{
+        display: inline-block;
+        width: 100px;
+    }
+    .add_dialog .dialogBox{
+        padding-bottom: 20px;
+    }
 </style>
 <div class="wrapper wrapper-content animated fadeIn" >
     <div class="ibox-content" style="padding-top:9px;padding-bottom:4px;">
@@ -51,6 +70,11 @@
                                 <i class="fa fa-bell-o"></i>&nbsp;&nbsp;添加提醒
                             </a>
                         </li>
+                        <li>
+                                <a href="javascript:void(0);" id="add_qian" rel="{$customer['customer_id']}">
+                                    <i class="fa fa-plus-circle"></i>&nbsp;&nbsp;添加签单信息
+                                </a>
+                            </li>
                     </ul>
                 </div>
                 <div class="pull-right" style="padding-right: 15px;">
@@ -240,6 +264,31 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeIn" style="padding-top:10px;">
+        <div class="add_dialog dialog">
+                <div class="dialogBox">
+                    <div class="dialogHead">
+                        <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
+                    </div>
+                    <div class="dialogTitle">
+                        <div></div>
+                        添加签单信息
+                    </div>
+                    <div class="divide1"></div>
+                    <p><span>客户名称:</span>{$customer['name']}</p>
+                    <p><span>签单人: </span><input type="text" id="add_role"/></p>
+                    <p><span>盖章公司: </span><input type="text" id="gai"/></p>
+                    <p><span>合同开始时间: </span><input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                        id="begin_time" type="text" value=""></p>
+                    <p><span>合同结束时间: </span><input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                        id="end_time" type="text" value=""></p>
+                    <p><span>回款时间: </span><input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                        id="back_time" type="text" value=""></p>
+                    <div class="dialogfoot">
+                            <button class="cannal">取消</button>
+                            <button class="submit">确认</button>
+                        </div>
+                </div>
+            </div>
     <div class="row" style="margin: 0">
         <div class="pull-left" style="width:26.222%;margin-bottom: 10px;display: none">
             <div class="ibox-title clearfix">
@@ -1009,7 +1058,44 @@
         $('#dialog-remind').dialog('open');
         $('#dialog-remind').load("{:U('remind/add','module=customer&module_id=')}"+customer_id);
     });
+    $('#add_qian').click(ev=>{
+        $(".add_dialog").css('display','block')
+    })
+    $(".add_dialog img").click(ev=>{
+        $(".add_dialog").css('display','none')
+    })
+    $(".add_dialog .cannal").click(ev=>{
+        $(".add_dialog").css('display','none')
+    })
+    $(".add_dialog .submit").click(ev=>{
+        $(".add_dialog").css('display','none')
+        var customer_id = "{$customer['customer_id']}";
+        if(!$('#add_role').val()||!$('#begin_time').val()||!$('#gai').val()||!$('#end_time').val()||!$('#back_time').val()){
+            swal('请填写完整','','warning');
+            return
+        }
+        $.ajax({
+            url:'/index.php?m=customermanage&a=signInfoAdd',
+            data:{
+                customer_id,
+                signer:$('#add_role').val(),
+                seal_company:$('#gai').val(),
+                contract_start:$('#begin_time').val(),
+                contract_end:$('#end_time').val(),
+                invoice_time:$('#back_time').val(),
+            },
+            type:'post',
+            success(res){
+                if(res.code==200){
+                    swal('添加成功','','success');
+        $(".add_dialog").css('display','none')
 
+                }else{
+                    swal('操作失败',res.info,'error');
+                }
+            }
+        })
+    })
     $("#remind_view").click(function(){
         var customer_id = "{$customer['customer_id']}";
         $('#dialog-remind_view').dialog('open');
