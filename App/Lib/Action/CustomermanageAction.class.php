@@ -960,10 +960,10 @@ class CustomermanageAction extends Action
             if ($key == "call_status") {
                 (!isset($this->call_status[$value]) && $isFinish) && $this->response('请选择正确的电话结果', 500, false);
                 //联系方式错误发送消息
-                $value == 3 && $this->messageNotice($creator, $customerId, 5);
+                ($value == 3 && $isFinish) && $this->messageNotice($creator, $customerId, 5);
             }
             //项目类型
-            if ($key == "pro_type") {
+            if ($key == "pro_type" && $value) {
                 (!isset($this->proTypes[$value]) && $isFinish) && $this->response('请选择正确的项目类型', 500, false);
             }
             //评分分数检测
