@@ -1129,6 +1129,7 @@ class CustomermanageAction extends Action
         $data['update_time'] = time();
         $data['is_finish'] = 1;
         $data['finish_time'] = time();
+        $data['last_visit_time'] = time();
         return M('customer_visit')->where(['id' => $id])->save($data);
     }
 
