@@ -3440,7 +3440,7 @@ class ProductAction extends Action {
                 'email' => 'email',
                 'gender' => 'sex',
                 'education' => 'edu',
-                'dateOfBirth' => 'birthYear',
+                'dateOfBirth' => 'birthday',
                 'annualSalary' => 'curSalary',
                 'company' => 'curCompany',
                 'citybm' => 'intentCity',
@@ -3475,8 +3475,13 @@ class ProductAction extends Action {
             if (!isset($resumes[$key])) {
                 continue;
             }
-            if ($key == 'end' || $key == 'start') {
+            if ($key == 'end' || $key == 'start' || $key == 'dateOfBirth') {
                 $value = strtotime($value);
+                if($key == 'dateOfBirth') {
+                    //生日
+                    $resume['birthYear'] = date("Y",$value);
+                    $resume['birthMouth'] = date("m",$value);
+                }
             }
             if ($key == "education") {
                 $value = $filedMap['education'][$value];
@@ -3523,7 +3528,6 @@ class ProductAction extends Action {
             $info = [];
             foreach ($educationexperiences as $filed => $localFiled) {
                 $value = $edus[$filed];
-                $value = trim($value);
                 if ($filed == 'end' || $filed == 'start') {
                     $value = strtotime($value);
                 }
@@ -3537,6 +3541,7 @@ class ProductAction extends Action {
                 if ($value == null || $value == 'null') {
                     $value = '';
                 }
+                $value = trim($value);
                 $info[$localFiled] = $value;
             }
             $edu[] = $info;
@@ -3548,8 +3553,7 @@ class ProductAction extends Action {
         $dbDataInfo = [];
         $dbDataInfo['evaluate'] = $list['advantage'] ? $list['advantage'] : '';
         $dbProjectData = [];
-        $return = ['data' => $resume, 'info' => $dbDataInfo, 'job' => $exp, 'project' => $dbProjectData, 'edu' => $edu, 'language' => []];
-        return $return;
+        return ['data' => $resume, 'info' => $dbDataInfo, 'job' => $exp, 'project' => $dbProjectData, 'edu' => $edu, 'language' => []];
     }
 
     /**
