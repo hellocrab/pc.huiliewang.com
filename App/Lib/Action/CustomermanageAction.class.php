@@ -933,6 +933,7 @@ class CustomermanageAction extends Action
             $this->response('请求数据错误', 500, false);
         }
         $visitId = BaseUtils::getStr($params['visit_id']);
+        $isFinish = BaseUtils::getStr($params['is_finish']);
         $info = M('customer_visit')->where(['id' => $visitId])->find();
         if (!$info) {
             $this->response('请求数据错误', 500, false);
@@ -942,9 +943,11 @@ class CustomermanageAction extends Action
             'is_finish' => '是否完成回访', 'is_business' => '是否有商机', 'nest_visit' => '下次是否回放'
         ];
         //必填项检测
-        foreach ($mustFields as $field => $name) {
-            if (!isset($params[$field])) {
-                $this->response("请选择 {$name}", 500, false);
+        if ($isFinish == 1) {
+            foreach ($mustFields as $field => $name) {
+                if (!isset($params[$field])) {
+                    $this->response("请选择 {$name}", 500, false);
+                }
             }
         }
         $customerId = $info['customer_id'];
@@ -955,17 +958,17 @@ class CustomermanageAction extends Action
             $value = BaseUtils::getStr($value);
             //电话结果
             if ($key == "call_status") {
-                !isset($this->call_status[$value]) && $this->response('请选择正确的电话结果', 500, false);
+                (!isset($this->call_status[$value]) && $isFinish) && $this->response('请选择正确的电话结果', 500, false);
                 //联系方式错误发送消息
                 $value == 3 && $this->messageNotice($creator, $customerId, 5);
             }
             //项目类型
             if ($key == "pro_type") {
-                !isset($this->proTypes[$value]) && $this->response('请选择正确的项目类型', 500, false);
+                (!isset($this->proTypes[$value]) && $isFinish) && $this->response('请选择正确的项目类型', 500, false);
             }
             //评分分数检测
-            if (in_array($key, ['matching_degree', 'service_degree', 'feedback_degree', 'quality_degree', 'degree', 'recommends_degree', 'enter_degree'])) {
-                !isset($this->degree[$value]) && $this->response('满意度评分错误', 500, false);
+            if (in_array($key, ['matching_degree', 'service_degree', 'feedback_degree', 'quality_degree', 'degree', 'recommends_degree', 'enter_degree']) && $value) {
+                (!isset($this->degree[$value]) && $isFinish) && $this->response('满意度评分错误', 500, false);
             }
             //下次跟进时间
             if ($key == 'follow_time' && $value) {
