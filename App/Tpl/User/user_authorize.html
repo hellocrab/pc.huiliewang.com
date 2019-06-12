@@ -239,7 +239,7 @@
 						</span>
 						<span style="width:25%; float:left;">
 							<input class="check_opt" type="checkbox" <if condition="isset($owned_permission['customermanage/logs'])">checked="checked"</if> name="per[]" value="customermanage/logs"/>数据统计&nbsp;
-							<select style="width:auto;<if condition="!isset($owned_permission['customermanage/logs'])">display:none;</if>"  name="customermanage[visit]">
+							<select style="width:auto;<if condition="!isset($owned_permission['customermanage/logs'])">display:none;</if>"  name="customermanage[logs]">
 								<option <if condition="$owned_permission['customermanage/logs'] == 1">selected="selected"</if> value="1">{:L('PERMISSION_SUB')}</option>
 							<option <if condition="$owned_permission['customermanage/logs'] == 2">selected="selected"</if> value="2">{:L('PERMISSION_EVERYONE')}</option>
 							<option <if condition="$owned_permission['customermanage/logs'] == 3">selected="selected"</if> value="3">{:L('PERMISSION_SELF')}</option>
