@@ -1319,6 +1319,21 @@ class BusinessAction extends Action
         $this->display();
     }
 
+    //查找CallList
+    public function searchCallist(){
+        import("@.ORG.ApiClient");
+        ApiClient::init();
+        $business =  new com\hlw\huiliewang\interfaces\BusinessServiceClient();
+        ApiClient::build($business);
+        $id = BaseUtils::getStr(I('business_id'),'int');
+        $name = BaseUtils::getStr(trim(I('name')));
+        $resultDo = new com\hlw\huiliewang\dataobject\business\businessRequestDTO();
+        $resultDo->id = $id;
+        $resultDo->name = $name;
+        $project = $business->searchCallist($resultDo);
+        dump($project->data);die;
+    }
+
     //商机详情加载
     public function view_ajax() {
         include APP_PATH . "Common/job.cache.php";
@@ -2330,24 +2345,24 @@ class BusinessAction extends Action
 
     //面试二次通知
     function notice() {
-//        $role_id = intval(session('role_id'));
-//        $where['role_id'] = array('eq', $role_id);
-//        $where['gjtime'] = array('neq', '');
-//        $where['noticed'] = array('neq', 1);
-////        $data = M('fine_project_cc')->where($where)->select();
-//        $data = D('FineProjectCcResume')->where($where)->select();
-//        foreach ($data as $k => $v) {
-//            $gjtime = strtotime($v['gjtime']);
-//            $now = time();
-//            if (($now - $gjtime) >= 0 && 60 >= ($now - $gjtime)) {
-//                $url = U('business/view', 'id=' . $v['project_id']);
-//                sendMessage($role_id, '&nbsp;&nbsp;温馨提醒：候选人《<a href="' . $url . '" title="点击查看">' . $v['name'] . '</a>》<font style="color:green;">需进行跟进沟通</font>！', 1);
-//                //标记已提醒过一次
-//                M('fine_project_cc')->where(array('id' => $v['id']))->setField(array('noticed' => 1));
-//            }
-//        }
+        $role_id = intval(session('role_id'));
+        $where['role_id'] = array('eq', $role_id);
+        $where['gjtime'] = array('neq', '');
+        $where['noticed'] = array('neq', 1);
+//        $data = M('fine_project_cc')->where($where)->select();
+        $data = D('FineProjectCcResume')->where($where)->select();
+        foreach ($data as $k => $v) {
+            $gjtime = strtotime($v['gjtime']);
+            $now = time();
+            if (($now - $gjtime) >= 0 && 60 >= ($now - $gjtime)) {
+                $url = U('product/view', 'id=' . $v['resume_id']);
+                sendMessage($role_id, '&nbsp;&nbsp;温馨提醒：候选人《<a href="' . $url . '" title="点击查看">' . $v['name'] . '</a>》<font style="color:green;">需进行跟进沟通</font>！', 1);
+                //标记已提醒过一次
+                M('fine_project_cc')->where(array('id' => $v['id']))->setField(array('noticed' => 1));
+            }
+        }
 //        $arr_time = M('fine_project')->where(array('is_protected'=>1))->field('updatetime,id')->select();
-//        dump($arr_time);die;
+////        dump($arr_time);die;
     }
 
     //超时6个月,取消人才保护
