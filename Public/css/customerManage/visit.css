@@ -172,6 +172,7 @@ th {
 }
 th{
     padding: 10px 5px;
+    white-space: normal !important;
 }
 table select,
 .dialog select {

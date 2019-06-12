@@ -375,6 +375,7 @@ function bindvisit() {
             type: 'post',
             success(res) {
                 $('.record_box').remove();
+                $('.year').remove();
                 if (res.code == 200) {
                     let year = res.info.info.visit_log[0].add_time.substr(0, 4);
                     $('.record_sec').append(`<span class='year'>${year}年</span>`)

@@ -397,9 +397,103 @@
 <!--the css for this plugin-->
 <link rel="stylesheet" href="__PUBLIC__/emoji/css/jquery.emoji.css" />
 <script>
+        let current_page = 1;
+        let totalPage_ = 0;
+
+
+    function onpick(){
+        current_page = 1;
+        getWorkMouments();
+
+    }
+    function getWorkMouments(type, keyWord) {
+            //获取待办事项数据
+            /*type: crm表示全部动态、
+             *customer表示客户相关、
+             *Business表示项目相关
+             */
+            $.ajax({
+                url: '/index.php?m=message&a=messageList',
+                data: {
+                    page: current_page,
+                    page_size: 20,
+                    type: '',
+                    deadline: $('#end_time').val()
+                },
+                type: 'get',
+                success(res) {
+                    if (res.code == 200 && res.info) {
+                        let doc = '';
+                        res.info.list.map((val, index) => {
+                            doc += `<tr>
+                        <td>${val.content}</td>
+                        <td>${val.deadline.substr(0,10)}</td>
+                        <td>${val.degree}</td>
+                        <td class='${val.status==0?'wait':val.status==1?'ed':'dead'}'>${val.status==0?'未处理':val.status==1?'已处理':'已过期'}</td>
+                        <td><a href='${val.link}'>${val.status==0?'去处理':'查看'}</a></td>
+                    </tr>`
+                        })
+                        $('.content table tbody').empty();
+                        $('.content table tbody').append(doc);
+                        let totalPage = Math.ceil(res.info.counts / $('#pageSize').val());
+                        totalPage_ = totalPage;
+                        let page = '<span class="last">«</span>';
+                        if (totalPage >= 3) {
+                            if (res.info.current_page != 1 && res.info.current_page != totalPage) {
+                                for (let i = 0; i < 3; i++) {
+                                    page +=
+                                        `<span class="page${i==1?' choosed':''}">${res.info.current_page-1+i}</span>`
+                                }
+                            } else if (res.info.current_page == 1) {
+                                for (let i = 0; i < 3; i++) {
+                                    page +=
+                                        `<span class="page${i==0?' choosed':''}">${res.info.current_page-0+i}</span>`
+                                }
+                            } else if (res.info.current_page == totalPage) {
+                                for (let i = 0; i < 3; i++) {
+                                    page +=
+                                        `<span class="page${i==2?' choosed':''}">${res.info.current_page-2+i}</span>`
+                                }
+                            }
+                        } else if (totalPage < 3) {
+                            for (let i = 0; i < totalPage; i++) {
+                                page +=
+                                    `<span class="page${i+1==res.info.current_page?' choosed':''}">${i+1}</span>`
+                            }
+                        }
+                        page += '<span class="next">»</span>';
+                        $('.pageBox').empty();
+                        $('.pageBox').append(page);
+                        $('.totalPage').html(
+                            `共${res.info.counts}条&nbsp;第${res.info.current_page}/${totalPage}页`)
+                        current_page = res.info.current_page;
+                        $('.page').click(ev => {
+                            current_page = $(ev.target).html().trim() - 0;
+                            getWorkMouments();
+                        })
+                        $('.last').click(ev => {
+                            if (current_page == 1) return;
+                            current_page--;
+                            getWorkMouments();
+                        })
+                        $('.next').click(ev => {
+                            if (current_page == totalPage) return;
+                            current_page++;
+                            getWorkMouments();
+                        })
+                    } else {
+                        $('.content table tbody').empty();
+                        $('.workMouments .content tbody').append(
+                            '<tr><td class="noData" colspan="5">暂无更多数据</tr></td>'
+                        )
+                    }
+                }
+            })
+        }
+
     $(function () {
         var scroll_width = 5;
-        getWorkMouments('crm', '');
+        getWorkMouments();
         getPipeline('');
         $(".nicescroll").niceScroll({
             cursorcolor: "#ccc", //#CC0071 光标颜色
@@ -412,23 +506,6 @@
             zindex: 100,
             background: "#F3F3F5", //滚动条背景色
         });
-        $('.workMouments .dimens span').click(ev => {
-            $('.workMouments .dimens span').removeClass('choosed');
-            $(ev.target).addClass('choosed')
-            let temp = $(ev.target).html();
-            $('.workMouments .content').empty()
-            switch (temp.trim()) {
-                case '全部动态':
-                    getWorkMouments('crm', $('.searchInput input').val());
-                    break
-                case '客户相关':
-                    getWorkMouments('customer', $('.searchInput input').val());
-                    break
-                case '项目相关':
-                    getWorkMouments('Business', $('.searchInput input').val());
-                    break
-            }
-        })
         $('.pipeline .dimens span').click(ev => {
             $('.pipeline .dimens span').removeClass('choosed');
             $(ev.target).addClass('choosed')
@@ -446,11 +523,12 @@
                     break
             }
         })
-        $('.searchInput input').on('keydown',ev=>{
-            if(ev.keyCode == 13){
+        $('.searchInput input').on('keydown', ev => {
+            if (ev.keyCode == 13) {
                 $('.searchInput i').click();
             }
         })
+
         function getPipeline(type) {
             $.ajax({
                 url: 'index.php?m=index&a=pipeline',
@@ -496,7 +574,7 @@
                                 break
                             default:
                                 $('.pipeline table').removeClass().addClass('oth');
-                                let temp_ = type== 'offer'?'签订时间':'入职时间'
+                                let temp_ = type == 'offer' ? '签订时间' : '入职时间'
                                 temp = `<tr>
                                         <th>项目名称</th>
                                         <th>姓名</th>
@@ -553,45 +631,7 @@
             return year + "-" + month + "-" + date;
         }
 
-        function getWorkMouments(type, keyWord) {
-            //获取工作圈数据
-            /*type: crm表示全部动态、
-             *customer表示客户相关、
-             *Business表示项目相关
-             */
-            $.ajax({
-                url: '/index.php?m=index&a=dynamic_data',
-                data: {
-                    by: type,
-                    search: keyWord
-                },
-                type: 'get',
-                success(res) {
-                    if (res.code == 200 && res.info.length != 0) {
-                        res.info.map((val, index) => {
-                            let headImg = val.creator.thumb_path == '' ?
-                                "/Public/img/avatar_default.png" : val.creator.thumb_path;
-                            let dom = `
-                            <div>
-                                <div class='headImg'>
-                                    <img src='${headImg}' alt='头像'/>
-                                </div>
-                                <div class='details'>
-                                    <span class='creator'><span>${val.creator.full_name}(${val.creator.department_name})</span>${val.dynamic}</span><br/>
-                                    <span class='createTime'>${val.create_time}</span><br/>
-                                    <p>${val.type}</p>
-                                </div>
-                            </div>
-                            `
-                            $('.workMouments .content').append(dom)
-                        })
-                    } else {
-                        $('.workMouments .content').append('<span class="noData">暂无更多数据</span>')
-                    }
-                }
-            })
-        }
-
+        
         function getBlocks(range, part) {
             $.ajax({
                 url: 'index.php?m=index&a=face_part',
@@ -607,19 +647,13 @@
                 }
             })
         }
-        $('.searchInput i').click(ev => {
-            $('.workMouments .content').empty()
-            switch ($('.workMouments .dimens .choosed').html().trim()) {
-                case '全部动态':
-                    getWorkMouments('crm', $('.searchInput input').val());
-                    break
-                case '客户相关':
-                    getWorkMouments('customer', $('.searchInput input').val());
-                    break
-                case '项目相关':
-                    getWorkMouments('Business', $('.searchInput input').val());
-                    break
-            }
+        $('#end_time').click(ev => {
+            current_page = 1;
+                    getWorkMouments();
+        })
+        $('#pageSize').click(ev => {
+            current_page = 1;
+                    getWorkMouments();
         })
         $('.range').click(ev => {
             let part = ev.target.dataset.part;
@@ -794,24 +828,46 @@
     <section class="reportBox">
         <div class="workMouments">
             <div class="searchBox">
-                <span class='secTitle'>工作圈</span>
+                <span class='secTitle'>待办事项</span>
                 <div class="searchInput">
-                    <input type="text" placeholder="人员搜索">
-                    <i class="fa fa-search"></i>
+                    <input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:onpick})"
+                        id="end_time" type="text" value="">
                 </div>
             </div>
-            <div class="dimens">
-                <span class="choosed">
-                    全部动态
-                </span>
-                <span>
-                    客户相关
-                </span>
-                <span>
-                    项目相关
-                </span>
+            <div class="content">
+                <table>
+                    <thead>
+                        <th>事件</th>
+                        <th>时间</th>
+                        <th>重要程度</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="pager_">
+                    <select name="" id="pageSize" style="background:none;padding-right:10px;">
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                        <option value="60">60</option>
+                        <option value="70">70</option>
+                        <option value="80">80</option>
+                        <option value="90">90</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span class="totalPage">
+                        共0条&nbsp;第1/0页
+                    </span>
+                    <div class="pageBox">
+                        <span class="last">«</span>
+                        <span class="page1 choosed">1</span>
+                        <span class="next">»</span>
+                    </div>
+                    <input type="number" id="goto">&nbsp;&nbsp;页&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
             </div>
-            <div class="content"></div>
         </div>
         <div class="report">
             <div class='shortReport'>
