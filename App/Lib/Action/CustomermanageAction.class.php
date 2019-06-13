@@ -63,6 +63,13 @@ class CustomermanageAction extends Action
     }
 
     /**
+     * @desc 回访内页
+     */
+    public function customer_info() {
+        $this->display();
+    }
+
+    /**
      * @desc 操作权限检测
      */
     private function authCheck() {
