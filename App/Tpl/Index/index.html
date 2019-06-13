@@ -397,99 +397,152 @@
 <!--the css for this plugin-->
 <link rel="stylesheet" href="__PUBLIC__/emoji/css/jquery.emoji.css" />
 <script>
-        let current_page = 1;
-        let totalPage_ = 0;
+    let current_page = 1;
+    let totalPage_ = 0;
 
 
-    function onpick(){
+    function onpick() {
         current_page = 1;
         getWorkMouments();
 
     }
+
     function getWorkMouments(type, keyWord) {
-            //获取待办事项数据
-            /*type: crm表示全部动态、
-             *customer表示客户相关、
-             *Business表示项目相关
-             */
-            $.ajax({
-                url: '/index.php?m=message&a=messageList',
-                data: {
-                    page: current_page,
-                    page_size: 20,
-                    type: '',
-                    deadline: $('#end_time').val()
-                },
-                type: 'get',
-                success(res) {
-                    if (res.code == 200 && res.info) {
-                        let doc = '';
-                        res.info.list.map((val, index) => {
-                            doc += `<tr>
+        //获取待办事项数据
+        /*type: crm表示全部动态、
+         *customer表示客户相关、
+         *Business表示项目相关
+         */
+        $.ajax({
+            url: '/index.php?m=message&a=messageList',
+            data: {
+                page: current_page,
+                page_size: 20,
+                type: '',
+                deadline: $('#end_time').val()
+            },
+            type: 'get',
+            success(res) {
+                if (res.code == 200 && res.info) {
+                    let doc = '';
+                    res.info.list.map((val, index) => {
+                        doc += `<tr>
                         <td>${val.content}</td>
                         <td>${val.deadline.substr(0,10)}</td>
                         <td>${val.degree}</td>
                         <td class='${val.status==0?'wait':val.status==1?'ed':'dead'}'>${val.status==0?'未处理':val.status==1?'已处理':'已过期'}</td>
-                        <td><a href='${val.link}'>${val.status==0?'去处理':'查看'}</a></td>
+                        <td style='display:${val.type!=2?'table-cell':'none'}'><a href='${val.link}'>${val.status==0?'去处理':'查看'}</a></td>
+                        <td style='display:${val.type==2?'table-cell':'none'}'><span class='check_birth' list_id='${val.message_id}'>查看</span></td>
                     </tr>`
-                        })
-                        $('.content table tbody').empty();
-                        $('.content table tbody').append(doc);
-                        let totalPage = Math.ceil(res.info.counts / $('#pageSize').val());
-                        totalPage_ = totalPage;
-                        let page = '<span class="last">«</span>';
-                        if (totalPage >= 3) {
-                            if (res.info.current_page != 1 && res.info.current_page != totalPage) {
-                                for (let i = 0; i < 3; i++) {
-                                    page +=
-                                        `<span class="page${i==1?' choosed':''}">${res.info.current_page-1+i}</span>`
-                                }
-                            } else if (res.info.current_page == 1) {
-                                for (let i = 0; i < 3; i++) {
-                                    page +=
-                                        `<span class="page${i==0?' choosed':''}">${res.info.current_page-0+i}</span>`
-                                }
-                            } else if (res.info.current_page == totalPage) {
-                                for (let i = 0; i < 3; i++) {
-                                    page +=
-                                        `<span class="page${i==2?' choosed':''}">${res.info.current_page-2+i}</span>`
+                    })
+                    $('.content table tbody').empty();
+                    $('.content table tbody').append(doc);
+                    $('.content table tbody').scrollTop(0)
+                    $('.check_birth').click(ev => {
+                        let id = ev.target.attributes[1].value
+                        $.ajax({
+                            url: '/index.php?m=message&a=birthdayList',
+                            data: {
+                                message_id: id
+
+                            },
+                            success(resp) {
+                                if (resp.code == 200) {
+                                    $('.today_bri').html(`今天生日共${resp.info.today.count}人`);
+                                    let doc = '';
+                                    resp.info.today.sons.map(val => {
+                                        doc += `<tr>
+                                            <td>${val.customer_name}</td>
+                                            <td>${val.rank}</td>
+                                            <td>${val.achievement}</td>
+                                            <td>${val.contacts}</td>
+                                            <td>${val.telephone}</td>
+                                            </tr>`
+                                    })
+                                    $('.today_bri+.sd table tbody').html(doc);
+                                    doc = '';
+                                    $('.toweek_bri').html(`两周内生日共${resp.info.fifteen.count}人`)
+                                    resp.info.today.sons.map(val => {
+                                        doc += `<tr>
+                                            <td>${val.customer_name}</td>
+                                            <td>${val.rank}</td>
+                                            <td>${val.achievement}</td>
+                                            <td>${val.contacts}</td>
+                                            <td>${val.telephone}</td>
+                                            <td>${val.birthday}</td>
+                                            </tr>`
+                                    })
+                                    $('.toweek_bri+.sd table tbody').html(doc);
+                                    $('.bri_dialog').css('display', 'block');
+                                    $('.dialogfoot .confirm').click(ev => {
+                                        $.ajax({
+                                            url: '/index.php?m=message&a=handle',
+                                            message_id: id,
+                                            success(res){
+                                    $('.bri_dialog').css('display', 'none');
+
+                                            }
+                                        })
+                                    })
                                 }
                             }
-                        } else if (totalPage < 3) {
-                            for (let i = 0; i < totalPage; i++) {
+                        })
+                    })
+                    let totalPage = Math.ceil(res.info.counts / $('#pageSize').val());
+                    totalPage_ = totalPage;
+                    let page = '<span class="last">«</span>';
+                    if (totalPage >= 3) {
+                        if (res.info.current_page != 1 && res.info.current_page != totalPage) {
+                            for (let i = 0; i < 3; i++) {
                                 page +=
-                                    `<span class="page${i+1==res.info.current_page?' choosed':''}">${i+1}</span>`
+                                    `<span class="page${i==1?' choosed':''}">${res.info.current_page-1+i}</span>`
+                            }
+                        } else if (res.info.current_page == 1) {
+                            for (let i = 0; i < 3; i++) {
+                                page +=
+                                    `<span class="page${i==0?' choosed':''}">${res.info.current_page-0+i}</span>`
+                            }
+                        } else if (res.info.current_page == totalPage) {
+                            for (let i = 0; i < 3; i++) {
+                                page +=
+                                    `<span class="page${i==2?' choosed':''}">${res.info.current_page-2+i}</span>`
                             }
                         }
-                        page += '<span class="next">»</span>';
-                        $('.pageBox').empty();
-                        $('.pageBox').append(page);
-                        $('.totalPage').html(
-                            `共${res.info.counts}条&nbsp;第${res.info.current_page}/${totalPage}页`)
-                        current_page = res.info.current_page;
-                        $('.page').click(ev => {
-                            current_page = $(ev.target).html().trim() - 0;
-                            getWorkMouments();
-                        })
-                        $('.last').click(ev => {
-                            if (current_page == 1) return;
-                            current_page--;
-                            getWorkMouments();
-                        })
-                        $('.next').click(ev => {
-                            if (current_page == totalPage) return;
-                            current_page++;
-                            getWorkMouments();
-                        })
-                    } else {
-                        $('.content table tbody').empty();
-                        $('.workMouments .content tbody').append(
-                            '<tr><td class="noData" colspan="5">暂无更多数据</tr></td>'
-                        )
+                    } else if (totalPage < 3) {
+                        for (let i = 0; i < totalPage; i++) {
+                            page +=
+                                `<span class="page${i+1==res.info.current_page?' choosed':''}">${i+1}</span>`
+                        }
                     }
+                    page += '<span class="next">»</span>';
+                    $('.pageBox').empty();
+                    $('.pageBox').append(page);
+                    $('.totalPage').html(
+                        `共${res.info.counts}条&nbsp;第${res.info.current_page}/${totalPage}页`)
+                    current_page = res.info.current_page;
+                    $('.page').click(ev => {
+                        current_page = $(ev.target).html().trim() - 0;
+                        getWorkMouments();
+                    })
+                    $('.last').click(ev => {
+                        if (current_page == 1) return;
+                        current_page--;
+                        getWorkMouments();
+                    })
+                    $('.next').click(ev => {
+                        if (current_page == totalPage) return;
+                        current_page++;
+                        getWorkMouments();
+                    })
+                } else {
+                    $('.content table tbody').empty();
+                    $('.workMouments .content tbody').append(
+                        '<tr><td class="noData" colspan="5">暂无更多数据</tr></td>'
+                    )
                 }
-            })
-        }
+            }
+        })
+    }
 
     $(function () {
         var scroll_width = 5;
@@ -523,11 +576,17 @@
                     break
             }
         })
+        $('.dialog img').click(ev => {
+            $('.dialog').css('display', 'none')
+
+        })
         $('.searchInput input').on('keydown', ev => {
             if (ev.keyCode == 13) {
                 $('.searchInput i').click();
             }
         })
+
+
 
         function getPipeline(type) {
             $.ajax({
@@ -631,7 +690,7 @@
             return year + "-" + month + "-" + date;
         }
 
-        
+
         function getBlocks(range, part) {
             $.ajax({
                 url: 'index.php?m=index&a=face_part',
@@ -649,11 +708,11 @@
         }
         $('#end_time').click(ev => {
             current_page = 1;
-                    getWorkMouments();
+            getWorkMouments();
         })
         $('#pageSize').click(ev => {
             current_page = 1;
-                    getWorkMouments();
+            getWorkMouments();
         })
         $('.range').click(ev => {
             let part = ev.target.dataset.part;
@@ -689,6 +748,50 @@
 </script>
 <link rel="stylesheet" href="__PUBLIC__/css/index.css">
 <div class="page-wrapper wrapper wrapper-content animated fadeIn" style="background:#fff">
+    <div class="bri_dialog dialog">
+        <div class="dialogBox">
+            <div class="dialogHead">
+                <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
+            </div>
+            <div class="dialogTitle">
+                <div></div>
+                客户生日通知
+            </div>
+            <div class="divide1"></div>
+            <span class='today_bri'>今日生日共2人</span>
+            <div class="sd">
+                <table>
+                    <thead>
+                        <th>公司名</th>
+                        <th>级别</th>
+                        <th>与我签约金额</th>
+                        <th>联系人</th>
+                        <th>联系电话</th>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <span class='toweek_bri'>今日生日共2人</span>
+            <div class="sd">
+                <table>
+                    <thead>
+                        <th>公司名</th>
+                        <th>级别</th>
+                        <th>与我签约金额</th>
+                        <th>联系人</th>
+                        <th>联系电话</th>
+                        <th>生日日期</th>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="dialogfoot">
+                <button class="confirm">我知道了</button>
+            </div>
+        </div>
+    </div>
     <div class="blocks">
         <div>
             <img src="__PUBLIC__/img/paid.png" alt="图片加载失败">
@@ -830,8 +933,9 @@
             <div class="searchBox">
                 <span class='secTitle'>待办事项</span>
                 <div class="searchInput">
-                    <input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:onpick})"
-                        id="end_time" type="text" value="">
+                    <input class="form-control Wdate" input_type="time"
+                        onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:onpick})" id="end_time" type="text"
+                        value="">
                 </div>
             </div>
             <div class="content">
