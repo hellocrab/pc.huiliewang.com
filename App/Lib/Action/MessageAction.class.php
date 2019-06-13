@@ -1116,7 +1116,7 @@ class MessageAction extends Action
      */
     public function birthdayList() {
         $message_id = I('message_id', 0);
-        $messInfo = M('massage')->where(['message_id' => $message_id, 'type' => 2])->find();
+        $messInfo = M('message')->where(['message_id' => $message_id, 'type' => 2])->find();
         if (!$messInfo) {
             $return = ['success' => 0, 'code' => 500, 'info' => "没有此消息"];
             $this->ajaxReturn($return);
