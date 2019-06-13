@@ -798,6 +798,8 @@ class CustomermanageAction extends Action
         $customerInfo['contract_end_time'] = $signInfo['contract_end'] ? $signInfo['contract_end'] : '';
         //盖章公司
         $customerInfo['seal_company'] = $signInfo['seal_company'];
+        //签单人
+        $customerInfo['signer'] = $signInfo['signer'] ? $signInfo['signer'] : '';
 
         //项目列表
         $businessField = "name,business_id,creator_role_id,update_time,pro_type,creator_role_id,owner_role_id";
