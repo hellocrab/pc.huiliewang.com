@@ -3407,7 +3407,7 @@ class ProductAction extends Action {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);  //该curl_setopt可以向header写键值对
         curl_setopt($ch, CURLOPT_HEADER, false); // 不返回头信息
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 60); //设置超时时长
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30); //设置超时时长
         $output = curl_exec($ch);
         curl_close($ch);
         return $output;
