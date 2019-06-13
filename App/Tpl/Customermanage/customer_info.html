@@ -1,230 +1,507 @@
 <include file="Public:header" />
-<link rel="stylesheet" href="__PUBLIC__/css/customerManage/index.css">
+<link rel="stylesheet" href="__PUBLIC__/css/customerManage/detail.css">
 <div class="wrapper wrapper-content">
     <include file="Public:alert" />
-    <div class="set_dialog dialog">
-        <div class="dialogBox">
-            <div class="dialogHead">
-                <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
-            </div>
-            <div class="dialogTitle">
-                <div></div>
-                分级标准设置
-            </div>
-            <div class="divide1"></div>
-            <div class="con">
-                <span>初始条件</span>
-                <p>
-                    <span class="rankd">D级</span>
-                    贡献条件≥<input type="number" class="chu">
+    <div class="visit_dialog dialog">
+            <div class="dialogBox">
+                <div class="dialogHead">
+                    <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
+                </div>
+                <div class="dialogTitle">
+                    <div></div>
+                    回访备注
+                </div>
+                <div class="divide1"></div>
+                <p class="cus_type">
+                    <span>客户类型</span>
+                    <select id="visit_type">
+                        <option value="1">面试快</option>
+                        <option value="2">入职快</option>
+                        <option value="3">专业猎头</option>
+                    </select>
                 </p>
-            </div>
-            <div class="con">
-                <span>面试快</span>
-                <p>
-                    <span class="ranka">A级</span>
-                    贡献条件≥<input type="number" class="mia">
+                <p class="claa_result">
+                    <span>电话结果</span>
+                    <span class="choosed">接通电话</span>
+                    <span>电话未接听</span>
+                    <span>无效电话</span>
+                    <span>电话忙</span>
                 </p>
-                <p>
-                    <span class="rankb">B级</span>
-                    <input type="number" class="mib1">≤贡献条件＜<input class="mib2" type="number">
-                </p>
-                <p>
-                    <span class="rankc">C级</span>
-                    <input type="number" class="mic1">≤贡献条件＜<input class="mic2" type="number">
-                </p>
-            </div>
-            <div class="con">
-                <span>入职快</span>
-                <p>
-                    <span class="ranka">A级</span>
-                    入职人数≥<input type="number" class="rua">
-                </p>
-                <p>
-                    <span class="rankb">B级</span>
-                    <input type="number" class="rub1">≤入职人数＜<input class="rub2" type="number">
-                </p>
-                <p>
-                    <span class="rankc">C级</span>
-                    <input type="number" class="ruc1">≤入职人数＜<input class="ruc2" type="number">
-                </p>
-            </div>
-            <div class="con" style="border: none;">
-                <span>专业猎头</span>
-                <p>
-                    <span class="ranka">A级</span>
-                    贡献条件≥<input type="number" class="zha">
-                </p>
-                <p>
-                    <span class="rankb">B级</span>
-                    <input type="number" class="zhb1">≤贡献条件＜<input class="zhb2" type="number">
-                </p>
-                <p>
-                    <span class="rankc">C级</span>
-                    <input type="number" class="zhc1">≤贡献条件＜<input class="zhc2" type="number">
-                </p>
-                <p>
-            </div>
-            <div class="dialogfoot">
-                <button class="cannal">取消</button>
-                <button class="submit">确认</button>
-            </div>
-            <span class="notice">确认后在次日0:00生效</span>
-        </div>
-    </div>
-    <div class="black_dialog dialog">
-        <div class="dialogBox">
-            <div class="dialogHead">
-                <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
-            </div>
-            <div class="dialogTitle">
-                <div></div>
-                黑名单操作
-            </div>
-            <div class="divide1"></div>
-            <img src="__PUBLIC__/img/customerManage/4_03.png" alt="" class="mi">
-            <span class="mo">真的要将客户加入黑名单吗？</span>
-            <textarea placeholder="添加黑名单备注" class="mp" maxlength="100"></textarea>
-            <div class="dialogfoot">
-                <button class="cannal">取消</button>
-                <button class="submit">确认</button>
-            </div>
-        </div>
-    </div>
-    <div class="rank_dialog dialog">
-        <div class="dialogBox">
-            <div class="dialogHead">
-                <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
-            </div>
-            <div class="dialogTitle">
-                <div></div>
-                手动分级
-            </div>
-            <div class="divide1"></div>
-            <p class="custName"><span>客户名称</span>aa科技公司</p>
-            <p class="custType">
-                <span>客户类型</span>
-                <select class="diaSel">
-                    <option value="1">面试快</option>
-                    <option value="2">入职快</option>
-                    <option value="3">专业猎头</option>
-                </select>
-            </p>
-            <p class="custRank">
-                <span>客户级别</span>
-                <input type="radio" value="a" name="diaRa" id='ra' checked><label for='ra' >A级</label>
-                <input type="radio" value="b" name="diaRa" id='rb'><label for='rb'>B级</label>
-                <input type="radio" value="c" name="diaRa" id='rc'><label for='rc'>C级</label>
-            </p>
-            <div class="dialogfoot">
-                <button class="cannal">取消</button>
-                <button class="submit">确认</button>
-            </div>
-        </div>
-    </div>
-    <div class="top">
-        <div>
-            <select name="" id="is_manual">
-                <option value="">全部分级</option>
-                <option value="1">手动分级</option>
-                <option value="0">自动分级</option>
-            </select>
-            <select name="" id="pro_type">
-                <option value="">所有类型</option>
-                <option value="1">面试快</option>
-                <option value="2">入职快</option>
-                <option value="3">专业猎头</option>
-            </select>
-        </div>
-        <div>
-            <span>搜索:</span>
-            <input type="text" placeholder="客户名/联系人" id="name" />
-            <div class='setting'>
-                <span>设置</span>
-            </div>
-            <i class="fa fa-search" aria-hidden="true"></i>
-        </div>
+                <p class="is_continue">
+                    <span>是否继续跟进</span>
+                    <span class="radio_box">
+                        <input type="radio" id="continue" name="is_continue" value='1'><label for="continue">是</label>
 
+                    </span>
+                    <span class="radio_box">
+                        <input type="radio" id="break" name="is_continue" value='0' checked><label for="break">否</label>
+
+                    </span>
+
+                    <input class="form-control Wdate" input_type="time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd:HH-mm-ss'})"
+                        id="next_time" type="text" value="" autocomplete="off">
+                </p>
+                <div class="mi_box">
+                    <p>
+                        <span>服务态度</span>
+                        <span class="radio_box">
+                            <input type="radio" id="serve1" name="serve" value="5"><label for="serve1">非常满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="serve2" name="serve" value="4"><label for="serve2">满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="serve3" name="serve" value="3"><label for="serve3">基本满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="serve5" name="serve" value="2"><label for="serve5">不太满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="serve5" name="serve" value="1"><label for="serve5">不满意</label>
+                        </span>
+                    </p>
+                    <p>
+                        <span>反馈速度</span>
+                        <span class="radio_box">
+                            <input type="radio" id="callback1" name="callback" value="5"><label for="callback1">非常满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="callback2" name="callback" value="4"><label for="callback2">满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="callback3" name="callback" value="3"><label for="callback3">基本满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="callback4" name="callback" value="2"><label for="callback4">不太满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="callback5" name="callback" value="1"><label for="callback5">不满意</label>
+                        </span>
+                    </p>
+                    <p>
+                        <span>简历数是否足够</span>
+                        <span class="radio_box">
+                            <input type="radio" id="mij1" name="mij" value="1"><label for="mij1">是</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="mij2" name="mij" value="0"><label for="mij2">否</label>
+                        </span>
+                    </p>
+                    <p>
+                        <span>推荐质量</span>
+                        <span class="radio_box">
+                            <input type="radio" id="quality1" name="quality" value="5"><label for="quality1">非常满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="quality2" name="quality" value="4"><label for="quality2">满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="quality3" name="quality" value="3"><label for="quality3">基本满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="quality4" name="quality" value="2"><label for="quality4">不太满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="quality5" name="quality" value="1"><label for="quality5">不满意</label>
+                        </span>
+                    </p>
+                </div>
+                <div class="ru_box">
+                    <p>
+                        <span>人员入职情况</span>
+                        <span class="radio_box">
+                            <input type="radio" id="ruq1" name="ruq" value="5"><label for="ruq1">非常满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="ruq2" name="ruq" value="4"><label for="ruq2">满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="ruq3" name="ruq" value="3"><label for="ruq3">基本满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="ruq4" name="ruq" value="2"><label for="ruq4">不太满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="ruq8" name="ruq" value="1"><label for="ruq8">不满意</label>
+                        </span>
+                    </p>
+                    <p>
+                        <span>整体满意度</span>
+                        <span class="radio_box">
+                            <input type="radio" id="ruma1" name="ruma" value="5"><label for="ruma1">非常满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="ruma2" name="ruma" value="4"><label for="ruma2">满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="ruma3" name="ruma" value="3"><label for="ruma3">基本满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="ruma4" name="ruma" value="2"><label for="ruma4">不太满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="ruma5" name="ruma" value="1"><label for="ruma5">不满意</label>
+                        </span>
+                    </p>
+                    <p>
+                        <span>反馈速度</span>
+                        <span class="radio_box">
+                            <input type="radio" id="rufk1" name="rufk" value="5"><label for="rufk1">非常满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rufk2" name="rufk" value="4"><label for="rufk2">满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rufk3" name="rufk" value="3"><label for="rufk3">基本满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rufk4" name="rufk" value="2"><label for="rufk4">不太满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rufk5" name="rufk" value="1"><label for="rufk5">不满意</label>
+                        </span>
+                    </p>
+                    <p>
+                        <span>推荐数量</span>
+                        <span class="radio_box">
+                            <input type="radio" id="rutj1" name="rutj" value="5"><label for="rutj1">非常满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rutj2" name="rutj" value="4"><label for="rutj2">满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rutj3" name="rutj" value="3"><label for="rutj3">基本满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rutj4" name="rutj" value="2"><label for="rutj4">不太满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rutj5" name="rutj" value="1"><label for="rutj5">不满意</label>
+                        </span>
+                    </p>
+                    <p>
+                        <span>推荐质量</span>
+                        <span class="radio_box">
+                            <input type="radio" id="rutz1" name="rutz" value="5"><label for="rutz1">非常满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rutz2" name="rutz" value="4"><label for="rutz2">满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rutz3" name="rutz" value="3"><label for="rutz3">基本满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rutz4" name="rutz" value="2"><label for="rutz4">不太满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="rutz5" name="rutz" value="1"><label for="rutz5">不满意</label>
+                        </span>
+                    </p>
+                </div>
+                <div class="zh_box">
+                    <p>
+                        <span>是否及时联系对接</span>
+                        <span class="radio_box">
+                            <input type="radio" id="zhd1" name="zhd" value="1"><label for="zhd1">是</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="zhd2" name="zhd" value="0"><label for="zhd2">否</label>
+                        </span>
+                    </p>
+                    <p>
+                        <span>岗位理解</span>
+                        <span class="radio_box">
+                            <input type="radio" id="zhg1" name="zhg" value='1'><label for="zhg1">是</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="zhg2" name="zhg" value="0"><label for="zhg2">否</label>
+                        </span>
+                    </p>
+                    <p>
+                        <span>是否推荐</span>
+                        <span class="radio_box">
+                            <input type="radio" id="zhtj1" name="zhtj" value='1'><label for="zhtj1">是</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="zhtj2" name="zhtj" value='0'><label for="zhtj2">否</label>
+                        </span>
+                    </p>
+                    <p>
+                        <span>推荐匹配度</span>
+                        <span class="radio_box">
+                            <input type="radio" id="zhtp1" name="zhtp" value="5"><label for="zhtp1">非常满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="zhtp2" name="zhtp" value="4"><label for="zhtp2">满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="zhtp3" name="zhtp" value="3"><label for="zhtp3">基本满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="zhtp4" name="zhtp" value="2"><label for="zhtp4">不太满意</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="zhtp5" name="zhtp" value="1"><label for="zhtp5">不满意</label>
+                        </span>
+                    </p>
+                </div>
+                <div class="business_box">
+                    <p>
+                        <span>是否有商机</span>
+                        <span class="radio_box">
+                            <input type="radio" id="business1" name="business" value='1'><label for="business1">有</label>
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="business2" name="business" value='0' checked><label for="business2">无</label>
+                        </span>
+                    </p>
+                    <p>
+                        <span></span>
+                        通知顾问
+                        <select id="advicer">
+                        </select>
+                    </p>
+                        <p>
+                            <span></span>
+                            <textarea id="advicer_area" maxlength="100" placeholder="输入商机备注"></textarea>
+
+                        </p>
+                </div>
+                <div class="visit_box">
+                    <p>
+                        <span>下次是否回访</span>
+                        <span class="radio_box">
+                            <input type="radio" id="visit" name="visit" value="1"><label for="visit">回访</label>
+
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="visitless" name="visit" value="0"><label for="visitless">下次不回访</label>
+
+                        </span>
+                    </p>
+                    <p>
+                        <span>备注</span>
+                        <textarea id="visit_area" maxlength="100" placeholder="输入回访备注"></textarea>
+                    </p>
+                    <p>
+                        <span>是否完成回访</span>
+                        <span class="radio_box">
+                            <input type="radio" id="complate" name="complate" value="1"><label for="complate">完成</label>
+
+                        </span>
+                        <span class="radio_box">
+                            <input type="radio" id="discomplate" name="complate" value="0"><label
+                                for="discomplate">未完成</label>
+
+                        </span>
+                    </p>
+                </div>
+                <div class="dialogfoot">
+                    <button class="cannal">取消</button>
+                    <button class="submit">确认</button>
+                </div>
+            </div>
+        </div>
+    <span class="title_">客户详情</span>
+    <div class="sec_title ti1">
+        <span>公司</span>
+        <i class="glyphicon glyphicon-earphone call_out"></i>
+        <span>备&nbsp;&nbsp;注</span>
     </div>
-    <div class="sec">
+    <section class="base_info">
+        <p class="rank">
+            <span>客户等级</span><span></span>
+        </p>
+        <p class="keli">
+            <span>客户联系人</span><span></span>
+        </p>
+        <p class="tel">
+            <span>联系电话</span><span></span>
+        </p>
+        <p class="kewei">
+            <span>客户维护人</span><span></span>
+        </p>
+        <p class="create_time">
+            <span>创建时间</span><span></span>
+        </p>
+        <p class="much">
+            <span>总回访次数</span><span></span>
+        </p>
+        <p class="last_time">
+            <span>上次回访时间</span><span></span>
+        </p>
+        <p class="gai">
+            <span>盖章公司</span><span></span>
+        </p>
+        <p class="qina">
+            <span>签单人</span><span></span>
+        </p>
+        <p class="start_time">
+            <span>合同开始时间</span><span></span>
+        </p>
+        <p class="end_time">
+            <span>合同结束时间</span><span></span>
+        </p>
+        <p class="hui">
+            <span>回款时间</span><span></span>
+        </p>
+    </section>
+    <div class="sec_title ti2">
+            <span>项目列表</span>
+            <span>匹配爱客系统</span>
+        </div>
+    <section class="pro_list">
         <table>
             <thead>
+                <th>项目名称</th>
                 <th>类型</th>
-                <th>客户名称</th>
-                <th>
-                    <select name="" id="rank">
-                        <option value="">全部分级</option>
-                        <option value="A">A级</option>
-                        <option value="B">B级</option>
-                        <option value="C">C级</option>
-                        <option value="D">D级</option>
-                    </select>
-                </th>
-                <th>
-                    贡献价值
-                    <img src="__PUBLIC__/img/customerManage/8_045.png" alt="" class="order_file"
-                        style="cursor:pointer;">
-                </th>
-                <th>
-                    <select name="" id="is_perfection">
-                        <option value="1">客户联系人</option>
-                        <option value="0">未填写</option>
-                    </select>
-                </th>
-                <th>职位</th>
-                <th>
-                    <select name="" id="birth_month">
-                        <option value="">生日</option>
-                        <option value="1月">1月</option>
-                        <option value="2月">2月</option>
-                        <option value="3月">3月</option>
-                        <option value="4月">4月</option>
-                        <option value="5月">5月</option>
-                        <option value="6月">6月</option>
-                        <option value="7月">7月</option>
-                        <option value="8月">8月</option>
-                        <option value="9月">9月</option>
-                        <option value="10月">10月</option>
-                        <option value="11月">11月</option>
-                        <option value="12月">12月</option>
-                    </select>
-                </th>
-                <th>所属行业</th>
-                <th>所在城市</th>
-                <th>维护人</th>
-                <th>创建时间</th>
-                <th><select name="" id="is_black">
-                        <option value="">黑名单</option>
-                        <option value="1">是</option>
-                        <option value="0">否</option>
-                    </select></th>
-                <th>操作</th>
+                <th>事业部</th>
+                <th>部门</th>
+                <th>项目经理</th>
+                <th>项目状态</th>
+                <th>最后更新时间</th>
+                <th>面试时间</th>
+                <th>offer时间</th>
+                <th>入职时间</th>
             </thead>
             <tbody></tbody>
         </table>
-        <div class="pager_">
-            <select name="" id="pageSize" style="background:none;padding-right:10px;">
-                <option value="20">20</option>
-                <option value="30">30</option>
-                <option value="40">40</option>
-                <option value="50">50</option>
-                <option value="60">60</option>
-                <option value="70">70</option>
-                <option value="80">80</option>
-                <option value="90">90</option>
-                <option value="100">100</option>
-            </select>
-            <span class="totalPage">
-                共0条&nbsp;第1/0页
-            </span>
-            <div class="pageBox">
-                <span class="last">«</span>
-                <span class="page1 choosed">1</span>
-                <span class="next">»</span>
-            </div>
-            <input type="number" id="goto">&nbsp;&nbsp;页&nbsp;&nbsp;&nbsp;&nbsp;
+    </section>
+    <div class="sec_title">
+            <span>回访备注</span>
         </div>
-    </div>
-</div>
-<include file="Public:footer" />
-<script src="__PUBLIC__/js/customerManage/index.js"></script>
+    <section class="record_wrap">
+        <img src="__PUBLIC__/img/customerManage/3_03.png" alt="">
+        <div class="line"></div>
+        <div class="record_sec"></div>
+    </section>
+    <include file="Public:footer" />
+    <script src="__PUBLIC__/js/customerManage/detail.js"></script>
+    <script>
+        $(".call_out").on('click', function () {
+    var _this = this;
+    let seatNum = "{$zxhNo|default=''}";
+    let itemId = $(_this).attr('rel');
+    if (seatNum) {
+        switchLine();
+    } else {
+        var fineId = $(_this).attr('data-id');
+        $.post(
+            "{:U('callcenter/call_out')}", {
+                itemId,
+                fineId,
+                type: 1,
+                tel: '',
+                channel: 1
+            },
+            function (data) {
+                var obj = $.parseJSON(data);
+                if (obj.code) {
+                    $('.fa-times').remove()
+                    swal("操作成功！",
+                        "拨打电话成功,请稍等电话接通！",
+                        "success");
+                    var id = $(_this).attr("data-id");
+                    var step = $(_this).attr("data-step");
+                    var ref_type = encodeURIComponent("resume");
+                    var ref = itemId;
+                    console.log(id)
+                    var key = $(_this).attr("data-key") ? $(this).attr(
+                        "data-key") : 0;
+                    $('#dialog-addCCbz').dialog('open');
+                    if (key) {
+                        $('#dialog-addCCbz').load(
+                            "/index.php?m=business&a=addcc&id=" + id +
+                            "&key=" + key + "&step=" + step+ "&rt=" + ref_type+ "&ref=" + ref);
+                    } else {
+                        $('#dialog-addCCbz').load(
+                            "/index.php?m=business&a=addcc&id=" + id + "&step=" + step+ "&rt=" + ref_type+ "&ref=" + ref);
+                    }
+                } else {
+                    $('.fa-times').remove()
+                    alert_crm(obj.msg +
+                        ",请联系管理员！");
+                }
+            }
+        );
+    }
+
+    function switchLine() {
+        swal({
+                title: "请选择线路",
+                text: "选择一个电话线路",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "坐席呼叫",
+                cancelButtonText: '个人手机拨打',
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                var channel;
+                if (isConfirm) {
+                    channel = 2;
+                } else {
+                    channel = 1;
+                }
+                var fineId = $(_this).attr('data-id');
+                $.post(
+                    "{:U('callcenter/call_out')}", {
+                        itemId,
+                        fineId,
+                        type: 1,
+                        tel: $('.tel span:nth-child(2)').html().trim(),
+                        channel
+                    },
+                    function (data) {
+                        var obj = $.parseJSON(data);
+                        if (obj.code) {
+                            $('.fa-times').remove()
+                            swal("操作成功！",
+                                "拨打电话成功,请稍等电话接通！",
+                                "success");
+                            var id = $(_this).attr("data-id");
+                            var step = $(_this).attr("data-step");
+                            var ref_type = encodeURIComponent("resume");
+                            var ref = itemId;
+                            console.log(id)
+                            var key = $(_this).attr("data-key") ? $(
+                                    this)
+                                .attr(
+                                    "data-key") : 0;
+                            $('#dialog-addCCbz').dialog('open');
+                            if (key) {
+                                $('#dialog-addCCbz').load(
+                                    "/index.php?m=business&a=addcc&id=" +
+                                    id +
+                                    "&key=" + key + "&step=" + step+ "&rt=" + ref_type+ "&ref=" + ref);
+                            } else {
+                                $('#dialog-addCCbz').load(
+                                    "/index.php?m=business&a=addcc&id=" +
+                                    id + "&step=" + step+ "&rt=" + ref_type+ "&ref=" + ref);
+                            }
+                        } else {
+                            $('.fa-times').remove()
+                            alert_crm(obj.msg +
+                                ",请联系管理员！");
+                        }
+                    }
+                );
+            });
+        $('.cancel').css('backgroundColor', 'rgb(221, 107, 85)').on(
+            'mouseenter', ev => {
+                $('.cancel').css('backgroundColor', 'rgb(212,103,82)')
+            }).on('mouseleave', ev => {
+            $('.cancel').css('backgroundColor', 'rgb(221, 107, 85)')
+        })
+        $('.sweet-alert').append(
+            `<i style='position:absolute;top:10px;right:10px;cursor:pointer;' class='fa fa-times'/>`
+        );
+        $('.fa-times').click(ev => {
+            swal("已取消", "您取消了拨打电话！", "error");
+            $('.fa-times').remove()
+        })
+    }
+});
+    </script>

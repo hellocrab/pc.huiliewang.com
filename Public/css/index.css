@@ -219,41 +219,43 @@
 .content .noData{
     /* columns: 5; */
 }
-.content table {
+.content table,.bri_dialog table{
     width: 100%;
     background: #f9f9f9;
 }
 
-.content table tbody {
+.content table tbody,.bri_dialog table tbody {
     display: block;
     overflow-y: scroll;
     height: 270px;
 }
 
-.content thead {
-    width: calc(100% - 16px) !important;
+.content thead,.bri_dialog thead {
+    width: 100% - 16px !important;
 }
-
+.sd{
+    padding: 0 40px;
+}
 .content table thead,
-.content tbody tr {
+.content tbody tr,.bri_dialog table thead,.bri_dialog tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
 }
 
-.content tr:nth-child(2n) {
+.content tr:nth-child(2n),.bri_dialog tr:nth-child(2n) {
     background: #fff;
 }
 
-.content td,
-.content th {
+.content td,.bri_dialog td,
+.content th,.bri_dialog th {
     padding: 10px 0px;
     border-bottom: 1px solid #edeff0;
     text-align: center;
     position: relative;
     font-size: 12px;
 }
-.content th{
+.content th,.bri_dialog th{
     white-space: normal !important;
 }
 .pager_ {
@@ -355,4 +357,39 @@
 }
 .moreBlock{
     background: #ccc;
+}
+.check_birth{
+    display: inline-block;
+    background: #337ab7;
+    width: 60px;
+    line-height: 26px;
+    border-radius: 6px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+}
+.check_birth:hover{
+    background: #6cf;
+}
+.bri_dialog table tbody{
+    height: auto;
+    overflow: auto;
+}
+.bri_dialog table{
+    margin: 15px 0;
+}
+.bri_dialog .today_bri,.bri_dialog .toweek_bri{
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: #333;
+    font-size: 14px;
+    line-height: 20px;
+}
+.dialogfoot .confirm{
+    background: #337ab7;
+}
+.bri_dialog .dialogBox{
+    padding-bottom: 20px;
+    width: 590px;
 }

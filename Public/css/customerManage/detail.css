@@ -1,0 +1,384 @@
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+    /* WebKit, Blink, Edge */
+    color: #ccc;
+    font-size: 12px;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #ccc;
+    font-size: 12px;
+
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #ccc;
+    font-size: 12px;
+
+}
+
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #ccc;
+    font-size: 12px;
+
+}
+
+select {
+    padding-left: 10px;
+    padding-right: 35px;
+    height: 31px;
+    border-radius: 6px;
+    color: #999;
+    /*去掉默认的下拉三角*/
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    outline: none !important;
+    margin-right: 23px;
+    cursor: pointer;
+    /*添加下拉三角图标*/
+    background: url("../../img/customerManage/8_03.png") no-repeat right center transparent;
+}
+
+.title_ {
+    width: 100%;
+    display: block;
+    padding: 15px 20px;
+    background: #fff;
+    font-size: 24px;
+    border-bottom: 1px solid #e7eaec;
+}
+
+.base_info {
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    padding: 20px;
+}
+
+.base_info p:nth-child(2n+1) {
+    width: 40%;
+}
+
+.base_info p:nth-child(2n) {
+    width: 60%
+}
+
+.base_info p span:nth-child(1) {
+    width: 100px;
+    display: inline-block;
+    color: #999;
+    font-size: 13px;
+}
+
+.base_info p span:nth-child() {
+    font-size: 13px;
+    color: #333
+}
+
+.sec_title {
+    background: #fff;
+    padding: 15px 20px;
+}
+
+.sec_title span:nth-child(1) {
+    color: #333333;
+    font-size: 14px;
+}
+
+.sec_title i {
+    color: #6FABEE;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.sec_title span:nth-last-child(1):not(:nth-child(1)) {
+    display: inline-block;
+    background: #6FABEE;
+    color: #fff;
+    line-height: 20px;
+    cursor: pointer;
+    width: 90px;
+    border-radius: 4px;
+    text-align: center;
+    margin-left: 20px;
+
+}
+
+.sec_title span:nth-child(1) {
+    color: #333333;
+    font-size: 14px;
+}
+
+.record_wrap {
+    position: relative;
+    background: #fff;
+}
+
+.record_sec {
+    position: relative;
+    padding-top: 52px;
+}
+
+.record_wrap>img {
+    position: absolute;
+    left: 237px;
+    top: 0;
+}
+
+.record_wrap .line {
+    width: 2px;
+    background: rgba(3, 169, 243, 1);
+    position: absolute;
+    left: 260px;
+    top: 46px;
+}
+
+.record_box {
+    padding-left: 280px;
+    position: relative;
+}
+
+.record_box p {
+    padding-left: 10px;
+    font-size: 12px;
+    color: #666;
+    line-height: 18px;
+}
+
+.record_box p:nth-child(1) {
+    font-style: 10px;
+    color: #333;
+    padding-left: 0;
+    font-weight: 600;
+}
+
+.record_box p:nth-child(1) span {
+    color: #FB994C;
+}
+
+.year {
+    color: #1296DB;
+    font-size: 20px;
+    padding-left: 184px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.record_time {
+    position: absolute;
+    left: 212px;
+    top: -10px;
+    color: #999;
+    font-size: 12px;
+    text-align: center;
+}
+
+.record_time span:nth-child(1) {
+    font-size: 14px;
+}
+
+.point {
+    color: #52B4EC;
+    font-size: 20px;
+    position: absolute;
+    top: 2px;
+    left: 253px;
+    width: 15px;
+    line-height: 11px;
+    border-radius: 12px;
+    display: block;
+    text-align: center;
+    background: #fff;
+    border: 2px solid #52B4EC;
+}
+
+table {
+    width: 100%;
+    background: #f9f9f9;
+}
+
+table tbody {
+    display: block;
+    max-height: 720px;
+}
+
+thead {
+    /* width: calc(100% - 16px) !important; */
+}
+
+table thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+tr:nth-child(2n) {
+    background: #fff;
+}
+
+td,
+th {
+    padding: 10px 0px;
+    border-bottom: 1px solid #edeff0;
+    text-align: center;
+    position: relative;
+    font-size: 12px;
+}
+
+th {
+    padding: 10px 5px;
+    white-space: normal !important;
+}
+
+table select,
+.dialog select {
+    height: 20px;
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 25px;
+    margin-right: 0;
+    background: url("../../img/customerManage/8_04.png") no-repeat right center transparent;
+}
+
+.pro_list {
+    padding: 20px;
+    background: #fff;
+}
+
+.dialog {
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, .2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 9;
+}
+
+.set_dialog2 .dialogBox {
+    width: 591px;
+    height: 786px;
+    background: #fff;
+    margin: 125px auto 0;
+}
+
+.dialogHead {
+    text-align: right;
+    padding: 15px;
+}
+
+.dialogHead img {
+    cursor: pointer;
+}
+
+.dialogTitle {
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+    height: 17px;
+    color: #333;
+}
+
+.dialogTitle div {
+    width: 4px;
+    height: 17px;
+    background: rgba(56, 108, 189, 1);
+    margin-right: 10px;
+}
+
+.visit_dialog .dialogBox {
+    width: 590px;
+    background: #fff;
+    margin: 108px auto 0;
+    padding-bottom: 20px;
+}
+
+.visit_dialog p {
+    display: block;
+    padding-left: 30px;
+}
+
+.visit_dialog p:not(.claa_result)>span:nth-child(1),
+.claa_result>span:nth-child(1) {
+    display: inline-block;
+    color: rgba(102, 102, 102, 1);
+    width: 104px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.visit_dialog label {
+    color: #666;
+    font-size: 13px;
+}
+
+.radio_box {
+    display: inline-block;
+    width: 78px;
+}
+
+.zh_box {
+    display: none;
+}
+
+.ru_box {
+    display: none;
+}
+
+label {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+#next_time {
+    width: 185px;
+    height: 25px;
+    display: none;
+}
+
+textarea {
+    width: 337px;
+    height: 104px;
+    border: 1px solid rgba(204, 204, 204, 1);
+    resize: none;
+}
+
+.business_box p:not(:nth-child(1)) {
+    display: none;
+}
+
+.visit_dialog p:not(.claa_result)>span:nth-child(1),
+.claa_result>span:nth-child(1) {
+    display: inline-block;
+    color: rgba(102, 102, 102, 1);
+    width: 104px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.claa_result>span:not(:nth-child(1)) {
+    display: inline-block;
+    width: 75px;
+    line-height: 27px;
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid rgba(204, 204, 204, 1);
+    cursor: pointer;
+    color: #999;
+}
+
+.claa_result>span.choosed {
+    background: #7FA9EB;
+    color: #fff;
+    border: 1px solid #7FA9EB;
+}
