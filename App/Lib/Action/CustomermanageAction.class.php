@@ -429,7 +429,7 @@ class CustomermanageAction extends Action
 
         if (!$isExport) {
             $pageStart = ($page - 1) * $pageSize;
-            $list = M('customer_visit')->where($where)->limit($pageStart, $pageSize)->select();
+            $list = M('customer_visit')->where($where)->order('id desc')->limit($pageStart, $pageSize)->select();
             foreach ($list as &$info) {
                 $customerId = $info['customer_id'];
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
@@ -744,8 +744,8 @@ class CustomermanageAction extends Action
             $this->response('已经回访过了', 500, false);
         }
         $data = [
-            'visit_id' => $visitId, 'customer_id' => $info['customer_id'], 'pro_type' => $info['pro_type'],
-            'is_finish' => 1, 'finish_time' => time(), 'visit_note' => $note, 'add_time' => time(), 'visit_status' => 2
+            'visit_id' => $visitId, 'customer_id' => $info['customer_id'], 'pro_type' => $info['pro_type'], 'create_role' => session('role_id'),
+            'is_finish' => 1, 'finish_time' => time(), 'visit_note' => $note, 'add_time' => time(), 'visit_status' => 2, 'is_finish' => 2
         ];
         $res = M('customer_visit_note')->add($data);
         if ($res) {
