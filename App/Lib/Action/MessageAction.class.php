@@ -1088,7 +1088,9 @@ class MessageAction extends Action
         $pageSize = I('page_size', 10);
         $where = ['type' => ['gt', 0]];
         $type && $where['type'] = $type;
-//        $day && $where['deadline'] = ['gt', strtotime($day)];
+        if ($day) {
+            $where['deadline'] = [['egt', strtotime($day)], ['lt', strtotime($day) + 3600 * 24]];
+        }
         $where['to_role_id'] = session('role_id');
         $startNo = ($page - 1) * $pageSize;
         $filed = "message_id,to_role_id,from_role_id,content,send_time,status,type,deadline,link,degree";
@@ -1105,7 +1107,7 @@ class MessageAction extends Action
             $info['deadline'] = $endTime;
             $info['degree'] = $info['degree'] ? '重要' : '一般';
         }
-        $return = ['success' => 1, 'code' => 200, 'info' => ['list' => $list, 'counts' => $count, 'current_page' => $page]];
+        $return = ['success' => 1, 'code' => 200, 'info' => ['list' => $list ? $list : [], 'counts' => $count, 'current_page' => $page]];
         $this->ajaxReturn($return);
     }
 
