@@ -1200,4 +1200,16 @@ class CustomermanageAction extends Action
             exit();
         }
     }
+
+    /**
+     * @desc 联系人修改记录
+     */
+    public function contactsUpLog() {
+        $customerId = BaseUtils::getStr(I('customerId'));
+        if (!$customerId) {
+            $this->response("参数customerId错误", 500, false);
+        }
+        $logs = ContactsModel::logs($customerId);
+        $this->response(['list' => $logs]);
+    }
 }

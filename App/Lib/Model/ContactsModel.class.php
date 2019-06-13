@@ -130,4 +130,74 @@
             $res = M('customer')->where(['customer_id' => $customerId])->save(['contacts_id' => $contactId]);
             return $res;
         }
+
+        /**
+         * @desc  联系人修改记录
+         * @param $id
+         * @param $customerId
+         * @param $data
+         * @return bool|mixed
+         */
+        public static function updateLog($id, $customerId, $data) {
+            if (!$id || !$data) {
+                return false;
+            }
+            $map = [
+                'name' => '姓名',
+                'post' => '职位',
+                'department' => '部门',
+                'sex' => '性别',
+                'telephone' => '电话',
+                'birthday' => '生日',
+                'email' => '邮箱',
+                'qq_no' => 'QQ号',
+                'wetchat' => '微信',
+                'contacts_address' => '联系地址'
+            ];
+
+            $info = M('contacts')->field("name,post,department,sex,telephone,birthday,email,qq_no,wetchat,contacts_address")->where(['contacts_id' => $id])->find();
+            $action = "edit";
+            if (!$info) {
+                $action = "add";
+            }
+            $content = '';
+            foreach ($info as $key => $value) {
+                if ((!isset($data[$key]) || !$data[$key]) && $action == 'edit') {
+                    continue;
+                }
+                //验证
+                $dataValue = trim(BaseUtils::getStr($data[$key]));
+                if ($dataValue == $value && $action == 'edit') {
+                    continue;
+                }
+                //日志记录
+                $content .= $map[$key] . "[$dataValue] ,";
+            }
+            $action == 'edit' ? " 编辑了" . $content : ' 新增了' . $content;
+            $fullName = M('user')->where(['role_id',session('role_id')])->getField("full_name");
+            $action = "员工".$fullName . $action;
+            $data = [
+                'role_id' => session('role_id'),
+                'module_name' => 'contacts',
+                'action_name' => $action,
+                'action_id' => $customerId,
+                'param_name' => "contacts_id = {$id}",
+                'content' => $content,
+                'create_time' => time()
+            ];
+            return M('actionLog')->add($data);
+        }
+
+        /**
+         * @desc 历史修改记录
+         * @param $customerId
+         * @return array|mixed
+         */
+        public static function logs($customerId){
+            $list = M('actionLog')->field("log_id,role_id,content,create_time")->where(['action_id'=>$customerId,'module_name'=>'contacts'])->select();
+            foreach ($list as &$info){
+                $info['create_time'] = date("Y-m-d H:i:s",$info['create_time']);
+            }
+            return $list ? $list : [];
+        }
     }
