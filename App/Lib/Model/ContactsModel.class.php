@@ -173,9 +173,9 @@
                 //日志记录
                 $content .= $map[$key] . "[$dataValue] ,";
             }
-            $action == 'edit' ? " 编辑了" . $content : ' 新增了' . $content;
+            $content = $action == 'edit' ? " 编辑了" . $content : ' 新增了' . $content;
             $fullName = M('user')->where(['role_id',session('role_id')])->getField("full_name");
-            $action = "员工".$fullName . $action;
+            $content = "员工". $fullName . $content;
             $data = [
                 'role_id' => session('role_id'),
                 'module_name' => 'contacts',
