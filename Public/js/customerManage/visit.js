@@ -50,6 +50,7 @@ function getData(is_export) {
                     if (!res.info.list) {
                         res.info.list = [];
                     }
+                    console.log($('#type').val())
                     if ($('#type').val() == 3) {
                         $('.he4').css('display', 'table');
                         res.info.list.map((val, index) => {
@@ -93,10 +94,10 @@ function getData(is_export) {
                                 <td>${val.dissatisfied}</td>
                                 <td>${val.very_dissatisfied}</td>
                                 <td>${val.feedback_very_satisfied}</td>
-                                <td>${val.feedbac_satisfaction}</td>
-                                <td>${val.feedbac_general}</td>
-                                <td>${val.feedbac_dissatisfied}</td>
-                                <td>${val.feedbac_very_dissatisfied}</td>
+                                <td>${val.feedback_satisfaction}</td>
+                                <td>${val.feedback_general}</td>
+                                <td>${val.feedback_dissatisfied}</td>
+                                <td>${val.feedback_very_dissatisfied}</td>
                                 <td>${val.recommends_very_satisfied}</td>
                                 <td>${val.recommends_satisfaction}</td>
                                 <td>${val.recommends_general}</td>
