@@ -418,7 +418,11 @@ class CustomermanageAction extends Action
         $search && $where['customer_name|contact_name|phone|signer'] = ['like', "%{$search}%"];
         if (isset($_REQUEST['is_phone']) && strlen($isPhone) > 0) {
             $isPhone && $where['phone'] = ['neq', ''];
-            $isPhone === 0 && $where['phone'] = ['eq', ''];
+            if ($isPhone === 0) {
+                $where["_string"] = "phone = '' or phone_invalid = 1 ";
+            } else {
+                $where["_string"] = "phone <> '' or phone_invalid = 0 ";
+            }
         }
         if (isset($_REQUEST['is_business']) && strlen($isBusiness) > 0) {
             $where['business_status'] = $isBusiness;
@@ -511,11 +515,18 @@ class CustomermanageAction extends Action
         if (!$visitInfo['signer'] && $info['signer']) {
             $data['signer'] = $info['signer'];
         }
+        $customerInfo = M('customer')->where(['customer_id' => $customerId])->find();
+        $contactsInfo = $this->customerContacts($customerInfo['contacts_id'], $customerId);
         if (!$visitInfo['phone']) {
-            $customerInfo = M('customer')->where(['customer_id' => $customerId])->find();
             $contactsId = $customerInfo['contacts_id'];
             $phone = M('contacts')->where(['contacts_id' => $contactsId])->getField('telephone');
             $phone && $data['phone'] = $phone;
+        }else{
+            if($contactsInfo['telephone'] && $contactsInfo['telephone'] != $visitInfo['phone']){
+                $data['phone'] = $contactsInfo['telephone'];
+                $data['contact_name'] = $contactsInfo['name'];
+                $data['contacts_id'] = $contactsInfo['contacts_id'];
+            }
         }
         if ($data) {
             M('customer_visit')->where(['customer_id' => $customerId])->save($data);
@@ -969,7 +980,11 @@ class CustomermanageAction extends Action
             if ($key == "call_status") {
                 (!isset($this->call_status[$value]) && $isFinish) && $this->response('请选择正确的电话结果', 500, false);
                 //联系方式错误发送消息
-                ($value == 3 && $isFinish) && $this->messageNotice($creator, $customerId, 5);
+                if ($value == 3) {
+                    ($value == 3 && $isFinish) && $this->messageNotice($creator, $customerId, 5);
+                    M('customer_visit')->where(['id' => $visitId])->save(['phone_invalid' => 1]);
+                }
+
             }
             //项目类型
             if ($key == "pro_type" && $value) {
