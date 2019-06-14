@@ -33,7 +33,7 @@ $.ajax({
                     }
                     create_record(val);
                 })
-                $('.line').height($('.record_sec').height());
+                $('.line').height($('.record_sec').height()-20);
             }
 
             let doc = '';
@@ -90,7 +90,7 @@ function create_record(val) {
             <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -110,7 +110,7 @@ function create_record(val) {
             <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -129,7 +129,7 @@ function create_record(val) {
             <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -222,8 +222,7 @@ $('.visit_dialog .submit').click(ev => {
             return
         }
         if (
-            $('input[name=visit]:checked').length == 0 ||
-            $('#visit_area').val() == ''
+            $('input[name=visit]:checked').length == 0
         ) {
             swal('请填写完整', '', 'warning')
             return
@@ -295,7 +294,7 @@ $('.visit_dialog .submit').click(ev => {
             if (res.code == 200) {
                 swal('操作成功', '', 'success')
                 $('.visit_dialog').css('display', 'none')
-                getData();
+                location.reload()
             } else {
                 swal('操作失败', res.info, 'error')
             }

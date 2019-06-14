@@ -6,6 +6,9 @@ if (sessionStorage.visit_Tab) {
 $('.switchBox span').click(ev => {
     $('.switchBox span').removeClass('choosed');
     $(ev.target).addClass('choosed');
+    $('#start').val('');
+    $('#end').val('');
+    $('#department').val('');
     getData()
     let sym = $('.switchBox .choosed').html().trim();
     if (sym == '待回访') sym = 0;
@@ -252,7 +255,7 @@ function getData(is_export) {
                             <td>${val.last_visit_time}</td>
                             <td>${val.is_business==1?'有<img class="canbusi" cus_id="'+val.id+'" cus_name="'+val.customer_name+'" src="Public/img/customerManage/cancel.png"/>':'无'}</td>
                             <td>
-                                <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                <i class="fa fa-play-circle" aria-hidden="true" style='display:none'></i>
                                 <span class='notice_msg' cus_id='${val.id}' cus_name='${val.customer_name}' cus_id_='${val.customer_id}'>备注信息</span>
                             </td>
                         </tr>`
@@ -411,7 +414,7 @@ function create_record(val) {
             <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -431,7 +434,7 @@ function create_record(val) {
             <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -450,7 +453,7 @@ function create_record(val) {
             <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>

@@ -125,6 +125,7 @@ select {
 .record_sec {
     position: relative;
     padding-top: 52px;
+    padding-bottom: 20px;
 }
 
 .record_wrap>img {
