@@ -463,6 +463,7 @@ class CustomermanageAction extends Action
                 $info['pro_name'] = $lastPro['name'];
                 $info['offer_time'] = $lastPro['offer'] ? date("Y-m-d", $lastPro['offer']) : '';
                 $info['enter_time'] = $lastPro['enter'] ? date("Y-m-d", $lastPro['enter']) : '';
+                $info['interview_time'] = $lastPro['interview'] ? date("Y-m-d", $lastPro['interview']) : '';
 
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
                 $info['city'] = $city_name[$info['city']];
@@ -493,6 +494,7 @@ class CustomermanageAction extends Action
                 ['pro_name', '职位名称'],
                 ['status', '进展'],
                 ['update_time', '更新时间'],
+                ['interview_time', '面试日期'],
                 ['offer_time', 'offer日期'],
                 ['enter_time', '入职日期'],
                 ['invoice_time', '回款日期'],
@@ -609,7 +611,7 @@ class CustomermanageAction extends Action
         } else {
             //excel导出
             $expCellName = [
-                ['pro_type', '项目类型'],
+                ['pro_type', '产品'],
                 ['p_department_name', '部门'],
                 ['raw_data', '原始数据'],
                 ['can_visit', '可回访数据'],
@@ -952,6 +954,7 @@ class CustomermanageAction extends Action
         $businessInfo['last_update'] = $fineInfo['updatetime'] ? date("Y-m-d", $fineInfo['updatetime']) : '';
         $businessInfo['offer'] = M('fine_project_offer')->where(['fine_id' => $fineId])->order("addtime")->getField("addtime");
         $businessInfo['enter'] = M('fine_project_enter')->where(['fine_id' => $fineId])->order("addtime")->getField("addtime");
+        $businessInfo['interview'] = M('fine_project_interview')->where(['fine_id' => $fineId])->order("addtime")->getField("addtime");
         return $businessInfo;
     }
 
