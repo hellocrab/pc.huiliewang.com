@@ -325,9 +325,16 @@
                         });
 
                     }
+                    function bind_role_info() {
+                        $(".role_info").click(function () {
+                            $role_id = $(this).attr('rel');
+                            $('#dialog-role-info').dialog('open');
+                            $('#dialog-role-info').load('{:U("user/dialoginfo","id=")}' + $role_id);
+                        });
+                    }
                     $(function () {
                         bind_call_out();
-
+                        bind_role_info();
                         $("#dialog-addCCbz").dialog({
                             autoOpen: false,
                             modal: true,
@@ -2305,7 +2312,7 @@
                         })
                     $('#CShow').html(doc);
                     bind_call_out();
-
+                    bind_role_info();
                 },
                 dataType:'json'
             });
