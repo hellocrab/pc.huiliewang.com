@@ -802,7 +802,7 @@ class ProductAction extends Action {
         foreach ($list as $key=>$v){
             $eid_arr[] = intval($v['eid']);
         }
-        $has_pro = M('fine_project')->where(array('resume_id'=>array('in',$eid_arr)))->select();
+        $has_pro = M('fine_project')->where(array('resume_id'=>array('in',$eid_arr)))->getField('resume_id,is_protected',true);
         foreach ($list as $key => $li) {
             $where = "";
             $where['eid'] = $li['eid'];
@@ -813,8 +813,8 @@ class ProductAction extends Action {
 //            $list[$key]['is_protected'] = empty($has_pro) ? 0 : 1 ;
             //判断是否被保护
             foreach ($has_pro as $kk=>$vv){
-                if($vv['resume_id'] == $li['eid'])
-                    $list[$key]['is_protected'] = empty($vv['is_protected']) ? 0 : 1;
+                if($kk == $li['eid'])
+                    $list[$key]['is_protected'] = empty($vv) ? 0 : 1;
             }
             $list[$key]['birthday'] <= 0 && $list[$key]['birthday'] = strtotime("{$list[$key]['birthYear']}-{$list[$key]['birthMouth']}");
         }
