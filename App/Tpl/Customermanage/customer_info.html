@@ -384,11 +384,9 @@
     if (seatNum) {
         switchLine();
     } else {
-        var fineId = $(_this).attr('data-id');
         $.post(
             "{:U('callcenter/call_out')}", {
                 itemId:id,
-                fineId,
                 type: 3,
                 tel: $('.tel span:nth-child(2)').html().trim(),
                 channel: 1,
@@ -444,12 +442,10 @@
                 } else {
                     channel = 1;
                 }
-                var fineId = $(_this).attr('data-id');
                 $.post(
                     "{:U('callcenter/call_out')}", {
                         itemId:id,
-                        fineId,
-                        type: 1,
+                        type: 3,
                         tel: $('.tel span:nth-child(2)').html().trim(),
                         channel
                     },
@@ -464,7 +460,6 @@
                             var step = $(_this).attr("data-step");
                             var ref_type = encodeURIComponent("resume");
                             var ref = id;
-                            console.log(id)
                             var key = $(_this).attr("data-key") ? $(
                                     this)
                                 .attr(
