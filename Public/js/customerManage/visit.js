@@ -272,7 +272,7 @@ function getData(is_export) {
                             <td>${val.last_visit_time}</td>
                             <td>${val.is_business==1?'有<img class="canbusi" cus_id="'+val.id+'" cus_name="'+val.customer_name+'" src="Public/img/customerManage/cancel.png"/>':'无'}</td>
                             <td>
-                                <i class="fa fa-play-circle" aria-hidden="true" style='display:none'></i>
+                                <i class="fa fa-play-circle" link='${val.phone_record}' style='display:${val.phone_record?'block':'none'}'></i>
                                 <span class='notice_msg' cus_id='${val.id}' cus_name='${val.customer_name}' cus_id_='${val.customer_id}'>备注信息</span>
                             </td>
                         </tr>`

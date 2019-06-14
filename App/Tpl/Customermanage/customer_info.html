@@ -390,7 +390,7 @@
                 itemId:id,
                 fineId,
                 type: 3,
-                tel: '',
+                tel: $('.tel span:nth-child(2)').html().trim(),
                 channel: 1,
             },
             function (data) {
@@ -403,7 +403,7 @@
                     var id = $(_this).attr("data-id");
                     var step = $(_this).attr("data-step");
                     var ref_type = encodeURIComponent("resume");
-                    var ref = itemId;
+                    var ref = id;
                     console.log(id)
                     var key = $(_this).attr("data-key") ? $(this).attr(
                         "data-key") : 0;
@@ -447,7 +447,7 @@
                 var fineId = $(_this).attr('data-id');
                 $.post(
                     "{:U('callcenter/call_out')}", {
-                        itemId,
+                        itemId:id,
                         fineId,
                         type: 1,
                         tel: $('.tel span:nth-child(2)').html().trim(),
@@ -463,7 +463,7 @@
                             var id = $(_this).attr("data-id");
                             var step = $(_this).attr("data-step");
                             var ref_type = encodeURIComponent("resume");
-                            var ref = itemId;
+                            var ref = id;
                             console.log(id)
                             var key = $(_this).attr("data-key") ? $(
                                     this)
