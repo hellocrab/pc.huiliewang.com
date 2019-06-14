@@ -328,8 +328,8 @@ function bindvisit() {
         let id = ev.target.attributes[1].value;
         let name = ev.target.attributes[2].value;
         let cus_id = ev.target.attributes[3].value;
-        window.location.href=`/index.php?m=customermanage&a=customer_info&cus_id=${cus_id}&id=${id}`
-        
+        window.location.href = `/index.php?m=customermanage&a=customer_info&cus_id=${cus_id}&id=${id}`
+
     })
     $('.visitless').click(ev => {
         let id = ev.target.attributes[1].value;
@@ -392,14 +392,15 @@ function num2str(num) {
         return '不太满意'
     } else if (num == 1) {
         return '不满意'
-    }else{
+    } else {
         return '无'
     }
 }
 
 function create_record(val) {
-    if (val.pro_type == 1) {
-        $('.record_sec').append(`<div class='record_box'>
+    if (val.nest_visit == 1) {
+        if (val.pro_type == 1) {
+            $('.record_sec').append(`<div class='record_box'>
             <p>用户<span>【${val.create_role}】</span>添加了回访备注</p>
             <p>电话结果：${val.call_status}</p>
             <p>是否继续跟进：${val.is_follow==1?'是':'否'}</p>
@@ -417,8 +418,8 @@ function create_record(val) {
             </span>
             <span class='point'>·</span>
         </div>`)
-    } else if (val.protype == 2) {
-        $('.record_sec').append(`<div class='record_box'>
+        } else if (val.protype == 2) {
+            $('.record_sec').append(`<div class='record_box'>
             <p>用户<span>【${val.create_role}】</span>添加了回访备注</p>
             <p>电话结果：${val.call_status}</p>
             <p>是否继续跟进：${val.is_follow==1?'是':'否'}</p>
@@ -437,8 +438,8 @@ function create_record(val) {
             </span>
             <span class='point'>·</span>
         </div>`)
-    } else {
-        $('.record_sec').append(`<div class='record_box'>
+        } else {
+            $('.record_sec').append(`<div class='record_box'>
             <p>用户<span>【${val.create_role}】</span>添加了回访备注</p>
             <p>电话结果：${val.call_status}</p>
             <p>是否继续跟进：${val.is_follow==1?'是':'否'}</p>
@@ -456,6 +457,16 @@ function create_record(val) {
             </span>
             <span class='point'>·</span>
         </div>`)
+        }
+    } else {
+        $('.record_sec').append(`<div class='record_box' style='margin:20px 0'>
+        <p>用户<span>【${val.create_role}】</span>将客户标记为不回访</p>
+        <span class='record_time'>
+        <span>${val.add_time.substr(10,6)}</span><br/>
+            <span>${val.add_time.substr(5,5)}</span>
+        </span>
+        <span class='point'>·</span>
+    </div>`)
     }
 }
 getDepartment();
@@ -483,7 +494,7 @@ $('#type').change(ev => {
     current_page = 1;
     getData()
 })
-$('#phone_num_').change(ev=>{
+$('#phone_num_').change(ev => {
     current_page = 1;
     getData()
 })
