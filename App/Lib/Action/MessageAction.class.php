@@ -1188,7 +1188,7 @@ class MessageAction extends Action
      */
     public static function read($messageId, $status = 1) {
         $where = ['message_id' => $messageId];
-        $messInfo = M('massage')->where($where)->find();
+        $messInfo = M('message')->where($where)->find();
         if (!$messInfo) {
             return false;
         }
