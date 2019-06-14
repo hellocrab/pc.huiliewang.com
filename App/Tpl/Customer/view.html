@@ -1068,7 +1068,6 @@
         $(".add_dialog").css('display','none')
     })
     $(".add_dialog .submit").click(ev=>{
-        $(".add_dialog").css('display','none')
         var customer_id = "{$customer['customer_id']}";
         if(!$('#add_role').val()||!$('#begin_time').val()||!$('#gai').val()||!$('#end_time').val()||!$('#back_time').val()){
             swal('请填写完整','','warning');

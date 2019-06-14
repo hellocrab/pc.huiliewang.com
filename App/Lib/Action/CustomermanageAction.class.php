@@ -63,6 +63,13 @@ class CustomermanageAction extends Action
     }
 
     /**
+     * @desc 回访内页
+     */
+    public function customer_info() {
+        $this->display();
+    }
+
+    /**
      * @desc 操作权限检测
      */
     private function authCheck() {
@@ -357,7 +364,7 @@ class CustomermanageAction extends Action
         if (!$visitId) {
             $this->response('visit_id缺失', 500, false);
         }
-        M('customer_visit_note')->where(['visit_id' => $visitId])->save(['is_business' => 0]);
+        M('customer_visit')->where(['id' => $visitId])->save(['business_status' => 0]);
         $this->response('操作成功');
     }
 
@@ -411,7 +418,11 @@ class CustomermanageAction extends Action
         $search && $where['customer_name|contact_name|phone|signer'] = ['like', "%{$search}%"];
         if (isset($_REQUEST['is_phone']) && strlen($isPhone) > 0) {
             $isPhone && $where['phone'] = ['neq', ''];
-            $isPhone === 0 && $where['phone'] = ['eq', ''];
+            if ($isPhone === 0) {
+                $where["_string"] = "phone = '' or phone_invalid = 1 ";
+            } else {
+                $where["_string"] = "phone <> '' or phone_invalid = 0 ";
+            }
         }
         if (isset($_REQUEST['is_business']) && strlen($isBusiness) > 0) {
             $where['business_status'] = $isBusiness;
@@ -422,19 +433,19 @@ class CustomermanageAction extends Action
 
         if (!$isExport) {
             $pageStart = ($page - 1) * $pageSize;
-            $list = M('customer_visit')->where($where)->limit($pageStart, $pageSize)->select();
+            $list = M('customer_visit')->where($where)->order('id desc')->limit($pageStart, $pageSize)->select();
             foreach ($list as &$info) {
                 $customerId = $info['customer_id'];
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
                 $info['city'] = $city_name[$info['city']];
-                $res = M('customer_visit_note')->where(['is_finish' => 1, 'visit_id' => $info['id']])->getField('is_business');
-                $info['is_business'] = $res ? $res : '';
+                $info['is_business'] = $info['business_status'];
                 $info['industry'] = $industry_name[$info['industry']];
                 $info['add_time'] = date("Y-m-d", $info['add_time']);
                 $info['last_visit_time'] && $info['last_visit_time'] = date("Y-m-d", $info['last_visit_time']);
                 $info['finish_time'] && $info['finish_time'] = date("Y-m-d", $info['finish_time']);
                 $signInfo = $this->signInfo(false, $customerId);
                 $info['signer'] = $signInfo['signer'];
+                $info['phone_record'] = $this->phoneRecord($info['id']);
                 $this->infoMaintain($customerId, $info);
             }
             $counts = M('customer_visit')->where($where)->count();
@@ -493,6 +504,19 @@ class CustomermanageAction extends Action
     }
 
     /**
+     * @desc 会放录音
+     * @param $visitId
+     * @return string
+     */
+    private function phoneRecord($visitId) {
+        $info = M('phone_record')->field("oss_record_url,recordUrl")->where(['source' => 3, 'item_id' => $visitId, 'recordFlag' => 1])->order("id desc")->find();
+        if (!$info) {
+            return '';
+        }
+        return $info['oss_record_url'] ? $info['oss_record_url'] : $info['recordUrl'];
+    }
+
+    /**
      * @desc  信息维护
      * @param $customerId
      * @param $info
@@ -504,11 +528,18 @@ class CustomermanageAction extends Action
         if (!$visitInfo['signer'] && $info['signer']) {
             $data['signer'] = $info['signer'];
         }
+        $customerInfo = M('customer')->where(['customer_id' => $customerId])->find();
+        $contactsInfo = $this->customerContacts($customerInfo['contacts_id'], $customerId);
         if (!$visitInfo['phone']) {
-            $customerInfo = M('customer')->where(['customer_id' => $customerId])->find();
             $contactsId = $customerInfo['contacts_id'];
             $phone = M('contacts')->where(['contacts_id' => $contactsId])->getField('telephone');
             $phone && $data['phone'] = $phone;
+        } else {
+            if ($contactsInfo['telephone'] && $contactsInfo['telephone'] != $visitInfo['phone']) {
+                $data['phone'] = $contactsInfo['telephone'];
+                $data['contact_name'] = $contactsInfo['name'];
+                $data['contacts_id'] = $contactsInfo['contacts_id'];
+            }
         }
         if ($data) {
             M('customer_visit')->where(['customer_id' => $customerId])->save($data);
@@ -737,8 +768,8 @@ class CustomermanageAction extends Action
             $this->response('已经回访过了', 500, false);
         }
         $data = [
-            'visit_id' => $visitId, 'customer_id' => $info['customer_id'], 'pro_type' => $info['pro_type'],
-            'is_finish' => 1, 'finish_time' => time(), 'visit_note' => $note, 'add_time' => time(), 'visit_status' => 2
+            'visit_id' => $visitId, 'customer_id' => $info['customer_id'], 'pro_type' => $info['pro_type'], 'create_role' => session('role_id'),
+            'is_finish' => 1, 'finish_time' => time(), 'visit_note' => $note, 'add_time' => time(), 'visit_status' => 2, 'is_finish' => 2
         ];
         $res = M('customer_visit_note')->add($data);
         if ($res) {
@@ -791,6 +822,8 @@ class CustomermanageAction extends Action
         $customerInfo['contract_end_time'] = $signInfo['contract_end'] ? $signInfo['contract_end'] : '';
         //盖章公司
         $customerInfo['seal_company'] = $signInfo['seal_company'];
+        //签单人
+        $customerInfo['signer'] = $signInfo['signer'] ? $signInfo['signer'] : '';
 
         //项目列表
         $businessField = "name,business_id,creator_role_id,update_time,pro_type,creator_role_id,owner_role_id";
@@ -960,7 +993,11 @@ class CustomermanageAction extends Action
             if ($key == "call_status") {
                 (!isset($this->call_status[$value]) && $isFinish) && $this->response('请选择正确的电话结果', 500, false);
                 //联系方式错误发送消息
-                ($value == 3 && $isFinish) && $this->messageNotice($creator, $customerId, 5);
+                if ($value == 3) {
+                    ($value == 3 && $isFinish) && $this->messageNotice($creator, $customerId, 5);
+                    M('customer_visit')->where(['id' => $visitId])->save(['phone_invalid' => 1]);
+                }
+
             }
             //项目类型
             if ($key == "pro_type" && $value) {
@@ -979,9 +1016,13 @@ class CustomermanageAction extends Action
             if ($key == "is_finish" && $value == 1) {
                 $data['finish_time'] = time();
             }
+            //有商机
+            if ($key == 'is_business' && $value) {
+                M('customer_visit')->where(['id' => $visitId])->save(['business_status' => 1]);
+            }
             //消息通知顾问
             if ($key == "message_role" && $value > 1) {
-                $this->messageNotice($value, $customerId, $params['business_note']);
+                $this->messageNotice($value, $customerId);
             }
             $data[$key] = $value;
         }
@@ -1190,5 +1231,17 @@ class CustomermanageAction extends Action
             $objWriter->save('php://output');
             exit();
         }
+    }
+
+    /**
+     * @desc 联系人修改记录
+     */
+    public function contactsUpLog() {
+        $customerId = BaseUtils::getStr(I('customerId'));
+        if (!$customerId) {
+            $this->response("参数customerId错误", 500, false);
+        }
+        $logs = ContactsModel::logs($customerId);
+        $this->response(['list' => $logs]);
     }
 }
