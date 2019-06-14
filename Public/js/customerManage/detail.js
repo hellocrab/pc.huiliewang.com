@@ -23,9 +23,9 @@ $.ajax({
             $('.end_time span:nth-child(2)').html(res.info.info.contract_end_time);
             $('.hui span:nth-child(2)').html(res.info.info.invoice_time);
             if (res.info.info.visit_log.length == 0) {
-                $('.record_wrap').css('display','none');
-                $('.ti3').css('display','none');
             } else {
+                $('.record_wrap').css('display','block');
+                $('.ti3').css('display','block');
                 let year = res.info.info.visit_log[0].add_time.substr(0, 4);
                 $('.record_sec').append(`<span class='year'>${year}年</span>`)
                 res.info.info.visit_log.map(val => {
@@ -301,7 +301,6 @@ $('.visit_dialog .submit').click(ev => {
         success(res) {
             if (res.code == 200) {
                 swal('操作成功', '', 'success')
-                return
                 $('.visit_dialog').css('display', 'none')
                 location.reload()
             } else {

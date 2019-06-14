@@ -2,6 +2,14 @@ if (sessionStorage.visit_Tab) {
     let sym = sessionStorage.visit_Tab - 0 + 1;
     $('.switchBox span').removeClass('choosed');
     $(`.switchBox span:nth-child(${sym})`).addClass('choosed');
+    if (sym == '0') {
+        $('.chant').html('创建时间')
+    } else if (sym == '1') {
+        $('.chant').html('回访时间')
+
+    } else{
+        $('.chant').html('回访时间')
+    }
 }
 $('.switchBox span').click(ev => {
     $('.switchBox span').removeClass('choosed');
@@ -11,9 +19,17 @@ $('.switchBox span').click(ev => {
     $('#department').val('');
     getData()
     let sym = $('.switchBox .choosed').html().trim();
-    if (sym == '待回访') sym = 0;
-    else if (sym == '回访记录') sym = 1;
-    else sym = 2;
+    if (sym == '待回访') {
+        sym = 0;
+        $('.chant').html('创建时间')
+    } else if (sym == '回访记录') {
+        sym = 1;
+        $('.chant').html('回访时间')
+
+    } else{
+        sym = 2;
+        $('.chant').html('回访时间')
+    }
     sessionStorage.visit_Tab = sym;
 })
 var current_page = 1;
@@ -50,7 +66,6 @@ function getData(is_export) {
                     if (!res.info.list) {
                         res.info.list = [];
                     }
-                    console.log($('#type').val())
                     if ($('#type').val() == 3) {
                         $('.he4').css('display', 'table');
                         res.info.list.map((val, index) => {
@@ -71,6 +86,7 @@ function getData(is_export) {
                                 <td>${val.quality_general}</td>
                                 <td>${val.quality_dissatisfied}</td>
                                 <td>${val.quality_very_dissatisfied}</td>
+                                <td>${val.Information_error}</td>
                                 <td>${val.business}</td>
                             </tr>`
                         })
@@ -239,8 +255,8 @@ function getData(is_export) {
                             <td><a><span class='visit' cus_id='${val.id}' cus_name='${val.customer_name}' cus_id_='${val.customer_id}'>回访</span><span class='visitless' cus_id='${val.id}' cus_name='${val.customer_name}'>不回访</span></td>
                         </tr>`
                     })
-                    $('th:nth-last-child(3)').css('display', 'block');
-                    $('th:nth-last-child(2)').css('display', 'none');
+                    $('.he1 th:nth-last-child(3)').css('display', 'block');
+                    $('.he1 th:nth-last-child(2)').css('display', 'none');
                 } else if (sym == 1) {
                     res.info.list.map((val, index) => {
                         doc += `<tr>
@@ -261,8 +277,8 @@ function getData(is_export) {
                             </td>
                         </tr>`
                     })
-                    $('th:nth-last-child(3)').css('display', 'none');
-                    $('th:nth-last-child(2)').css('display', 'block');
+                    $('.he1 th:nth-last-child(3)').css('display', 'none');
+                    $('.he1 th:nth-last-child(2)').css('display', 'block');
                 }
                 $('table tbody').empty();
                 $('table tbody').append(doc);
