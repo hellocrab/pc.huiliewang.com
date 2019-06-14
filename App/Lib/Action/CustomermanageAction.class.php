@@ -394,6 +394,8 @@ class CustomermanageAction extends Action
         //回访状态 1:已经回访 0:待回访
         $visitStatus = BaseUtils::getStr(I('visit_status', 0));
 
+        $order = "id";
+        $visitStatus && $order = "update_time";
         //时间判断
         if ($timeEnd && ($timeStart > $timeEnd)) {
             $this->response('结束时间不能大于开始时间', 500, false);
@@ -433,7 +435,7 @@ class CustomermanageAction extends Action
 
         if (!$isExport) {
             $pageStart = ($page - 1) * $pageSize;
-            $list = M('customer_visit')->where($where)->order('id desc')->limit($pageStart, $pageSize)->select();
+            $list = M('customer_visit')->where($where)->order('id desc')->limit($pageStart, $pageSize)->order("$order desc")->select();
             foreach ($list as &$info) {
                 $customerId = $info['customer_id'];
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
