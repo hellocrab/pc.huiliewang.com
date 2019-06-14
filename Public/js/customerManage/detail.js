@@ -9,9 +9,9 @@ $.ajax({
         if (res.code == 200) {
             $('.ti1 span:nth-child(1)').html(res.info.info.customer_name);
             $('.rank span:nth-child(2)').html(res.info.info.rank);
-            $('.keli span:nth-child(2)').html(res.info.info.customer_owner_name);
+            $('.keli span:nth-child(2)').html(res.info.info.contacts);
             $('.tel span:nth-child(2)').html(res.info.info.contacts_phone);
-            $('.kewei span:nth-child(2)').html(res.info.info.contacts);
+            $('.kewei span:nth-child(2)').html(res.info.info.customer_owner_name);
             $('.create_time span:nth-child(2)').html(res.info.info.create_time);
             $('.much span:nth-child(2)').html(res.info.info.visit_times);
             $('.last_time span:nth-child(2)').html(res.info.info.last_visit_time);
@@ -20,31 +20,41 @@ $.ajax({
             $('.start_time span:nth-child(2)').html(res.info.info.contract_start_time);
             $('.end_time span:nth-child(2)').html(res.info.info.contract_end_time);
             $('.hui span:nth-child(2)').html(res.info.info.invoice_time);
-            let year = res.info.info.visit_log[0].add_time.substr(0, 4);
-            $('.record_sec').append(`<span class='year'>${year}年</span>`)
-            res.info.info.visit_log.map(val => {
-                if (year != val.add_time.substr(0, 4)) {
-                    year = val.add_time.substr(0, 4);
-                    $('.record_sec').append(`<span class='year'>${year}年</span>`)
-                }
-                create_record(val);
-            })
-            $('.line').height($('.record_sec').height());
+            if (res.info.info.visit_log.length == 0) {
+                $('.record_wrap').css('display','none');
+                $('.ti3').css('display','none');
+            } else {
+                let year = res.info.info.visit_log[0].add_time.substr(0, 4);
+                $('.record_sec').append(`<span class='year'>${year}年</span>`)
+                res.info.info.visit_log.map(val => {
+                    if (year != val.add_time.substr(0, 4)) {
+                        year = val.add_time.substr(0, 4);
+                        $('.record_sec').append(`<span class='year'>${year}年</span>`)
+                    }
+                    create_record(val);
+                })
+                $('.line').height($('.record_sec').height());
+            }
+
             let doc = '';
-            res.info.info.businessList.map(val => {
-                doc += `<tr>
-                            <td>${val.name}</td>
-                            <td>${val.pro_type}</td>
-                            <td>${val.p_department}</td>
-                            <td>${val.department}</td>
-                            <td>${val.owner_list}</td>
-                            <td>${val.status}</td>
-                            <td>${val.update_time}</td>
-                            <td>${val.interview_time}</td>
-                            <td>${val.offer_time}</td>
-                            <td>${val.enter_time}</td>
-                        </tr>`
-            })
+            if(res.info.info.businessList.length==0){
+                doc='<tr><td colume="10">暂无数据</td></tr>'
+            }else{
+                res.info.info.businessList.map(val => {
+                    doc += `<tr>
+                                <td>${val.name}</td>
+                                <td>${val.pro_type}</td>
+                                <td>${val.p_department}</td>
+                                <td>${val.department}</td>
+                                <td>${val.owner_list}</td>
+                                <td>${val.status}</td>
+                                <td>${val.update_time}</td>
+                                <td>${val.interview_time}</td>
+                                <td>${val.offer_time}</td>
+                                <td>${val.enter_time}</td>
+                            </tr>`
+                })
+            }
             $('tbody').html(doc)
         }
     }
@@ -127,7 +137,7 @@ function create_record(val) {
             <span class='point'>·</span>
         </div>`)
         }
-    }else{
+    } else {
         $('.record_sec').append(`<div class='record_box' style='margin:20px 0'>
             <p>用户<span>【${val.create_role}】</span>将客户标记为不回访</p>
             <span class='record_time'>
