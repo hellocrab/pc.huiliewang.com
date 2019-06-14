@@ -379,13 +379,13 @@ class Rank
         if (!$userRoleId) {
             return 0;
         }
-        $userSql = "select user_id from {$this->users} where role_id = {$userRoleId} and status = 1";
+        $userSql = "select role_id,user_id from {$this->users} where user_id = {$userRoleId} and status = 1";
         $userInfo = $this->selectSql($userSql, false);
         if (!$userInfo) {
             $notInUsers .= ",{$userRoleId}";
             $this->getCustomerUser($customerId, $notInUsers);
         }
-        return $userInfo ? $userInfo['user_id'] : 0;
+        return $userInfo ? $userInfo['role_id'] : 0;
     }
 
     /**
@@ -507,7 +507,7 @@ class Rank
      * @param string $env
      * @return PDO
      */
-    private function dbConn($env = 'test') {
+    private function dbConn($env = 'product') {
 
         // 数据库链接 配置
         $productConf = array(
