@@ -384,13 +384,11 @@
     if (seatNum) {
         switchLine();
     } else {
-        var fineId = $(_this).attr('data-id');
         $.post(
             "{:U('callcenter/call_out')}", {
                 itemId:id,
-                fineId,
                 type: 3,
-                tel: '',
+                tel: $('.tel span:nth-child(2)').html().trim(),
                 channel: 1,
             },
             function (data) {
@@ -403,7 +401,7 @@
                     var id = $(_this).attr("data-id");
                     var step = $(_this).attr("data-step");
                     var ref_type = encodeURIComponent("resume");
-                    var ref = itemId;
+                    var ref = id;
                     console.log(id)
                     var key = $(_this).attr("data-key") ? $(this).attr(
                         "data-key") : 0;
@@ -444,12 +442,10 @@
                 } else {
                     channel = 1;
                 }
-                var fineId = $(_this).attr('data-id');
                 $.post(
                     "{:U('callcenter/call_out')}", {
-                        itemId,
-                        fineId,
-                        type: 1,
+                        itemId:id,
+                        type: 3,
                         tel: $('.tel span:nth-child(2)').html().trim(),
                         channel
                     },
@@ -463,8 +459,7 @@
                             var id = $(_this).attr("data-id");
                             var step = $(_this).attr("data-step");
                             var ref_type = encodeURIComponent("resume");
-                            var ref = itemId;
-                            console.log(id)
+                            var ref = id;
                             var key = $(_this).attr("data-key") ? $(
                                     this)
                                 .attr(
