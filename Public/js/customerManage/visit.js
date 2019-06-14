@@ -7,7 +7,7 @@ if (sessionStorage.visit_Tab) {
     } else if (sym == '1') {
         $('.chant').html('回访时间')
 
-    } else{
+    } else {
         $('.chant').html('回访时间')
     }
 }
@@ -26,7 +26,7 @@ $('.switchBox span').click(ev => {
         sym = 1;
         $('.chant').html('回访时间')
 
-    } else{
+    } else {
         sym = 2;
         $('.chant').html('回访时间')
     }
@@ -272,7 +272,7 @@ function getData(is_export) {
                             <td>${val.last_visit_time}</td>
                             <td>${val.is_business==1?'有<img class="canbusi" cus_id="'+val.id+'" cus_name="'+val.customer_name+'" src="Public/img/customerManage/cancel.png"/>':'无'}</td>
                             <td>
-                                <i class="fa fa-play-circle" link='${val.phone_record}' style='display:${val.phone_record?'block':'none'}'></i>
+                                <i class="fa fa-play-circle" link='${val.phone_record}' style='display:${val.phone_record?'inline-block':'none'}'></i>
                                 <span class='notice_msg' cus_id='${val.id}' cus_name='${val.customer_name}' cus_id_='${val.customer_id}'>备注信息</span>
                             </td>
                         </tr>`
@@ -350,6 +350,22 @@ function bindvisit() {
         let cus_id = ev.target.attributes[3].value;
         window.location.href = `/index.php?m=customermanage&a=customer_info&cus_id=${cus_id}&id=${id}`
 
+    })
+    $('.fa-play-circle').click(ev => {
+        let link = ev.target.attributes[1].value;
+        var audio = document.getElementById('myaudio');
+        console.log($('#myaudio').attr('src'))
+        if (link == $('#myaudio').attr('src')) {
+            console.log(audio.paused);
+            if (audio.paused) {
+                autoPlay();
+            } else {
+                closePlay();
+            }
+        } else {
+            $('#myaudio').attr('src', link);
+            autoPlay();
+        }
     })
     $('.visitless').click(ev => {
         let id = ev.target.attributes[1].value;
@@ -707,3 +723,14 @@ $('.canbusi_dialog .submit').click(ev => {
         }
     })
 })
+
+function autoPlay() {
+    var myAuto = document.getElementById('myaudio');
+    myAuto.play();
+}
+
+function closePlay() {
+    var myAuto = document.getElementById('myaudio');
+    myAuto.pause();
+    // myAuto.load();
+}
