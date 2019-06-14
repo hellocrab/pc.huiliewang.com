@@ -859,9 +859,9 @@ class CustomermanageAction extends Action
             $businessInfo['owner_list'] = implode(",", $roleList);
             //事业部
             $departments = $this->departments($businessInfo['creator_role_id']);
-            $businessInfo['p_department'] = $departments['p_department'];
+            $businessInfo['p_department'] = $departments['p_department'] ? $departments['p_department'] : '';
             //部门
-            $businessInfo['department'] = $departments['department'];
+            $businessInfo['department'] = $departments['department'] ?  $departments['department'] : '';
         }
         $customerInfo['businessList'] = $businessList ? $businessList : [];
         //回访记录
