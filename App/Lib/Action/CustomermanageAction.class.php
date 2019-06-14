@@ -394,6 +394,8 @@ class CustomermanageAction extends Action
         //回访状态 1:已经回访 0:待回访
         $visitStatus = BaseUtils::getStr(I('visit_status', 0));
 
+        $order = "id";
+        $visitStatus && $order = "update_time";
         //时间判断
         if ($timeEnd && ($timeStart > $timeEnd)) {
             $this->response('结束时间不能大于开始时间', 500, false);
@@ -433,7 +435,7 @@ class CustomermanageAction extends Action
 
         if (!$isExport) {
             $pageStart = ($page - 1) * $pageSize;
-            $list = M('customer_visit')->where($where)->order('id desc')->limit($pageStart, $pageSize)->select();
+            $list = M('customer_visit')->where($where)->order("$order desc")->limit($pageStart, $pageSize)->select();
             foreach ($list as &$info) {
                 $customerId = $info['customer_id'];
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
@@ -441,7 +443,7 @@ class CustomermanageAction extends Action
                 $info['is_business'] = $info['business_status'];
                 $info['industry'] = $industry_name[$info['industry']];
                 $info['add_time'] = date("Y-m-d", $info['add_time']);
-                $info['last_visit_time'] && $info['last_visit_time'] = date("Y-m-d", $info['last_visit_time']);
+                $info['last_visit_time'] = $info['last_visit_time'] ? date("Y-m-d", $info['last_visit_time']) : "无";
                 $info['finish_time'] && $info['finish_time'] = date("Y-m-d", $info['finish_time']);
                 $signInfo = $this->signInfo(false, $customerId);
                 $info['signer'] = $signInfo['signer'];
@@ -463,6 +465,7 @@ class CustomermanageAction extends Action
                 $info['pro_name'] = $lastPro['name'];
                 $info['offer_time'] = $lastPro['offer'] ? date("Y-m-d", $lastPro['offer']) : '';
                 $info['enter_time'] = $lastPro['enter'] ? date("Y-m-d", $lastPro['enter']) : '';
+                $info['interview_time'] = $lastPro['interview'] ? date("Y-m-d", $lastPro['interview']) : '';
 
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
                 $info['city'] = $city_name[$info['city']];
@@ -493,6 +496,7 @@ class CustomermanageAction extends Action
                 ['pro_name', '职位名称'],
                 ['status', '进展'],
                 ['update_time', '更新时间'],
+                ['interview_time', '面试日期'],
                 ['offer_time', 'offer日期'],
                 ['enter_time', '入职日期'],
                 ['invoice_time', '回款日期'],
@@ -576,7 +580,7 @@ class CustomermanageAction extends Action
             $where['customer_name|signer|contact_name|phone'] = ['like', "%{$search}%"];
         }
         $departmentId && $where['visit.p_department_id'] = $departmentId;
-        $proType && $where['visit.pro_type'] = $proType;
+        $proType && $where['note.pro_type'] = $proType;
         $where['visit.role_id'] = ['in', $this->_permissionRes];
 
         $model = M('customer_visit_note');
@@ -602,14 +606,14 @@ class CustomermanageAction extends Action
             $counts = $model->field($fields)->alias('note')
                 ->join("mx_customer_visit visit ON visit.id = note.visit_id")
                 ->where($where)
-                ->group("visit.pro_type,visit.p_department_id")
+                ->group("note.pro_type,visit.p_department_id")
                 ->select();
             $counts = count($counts);
             $this->response(['list' => $list, 'current_page' => $page, 'counts' => $counts]);
         } else {
             //excel导出
             $expCellName = [
-                ['pro_type', '项目类型'],
+                ['pro_type', '产品'],
                 ['p_department_name', '部门'],
                 ['raw_data', '原始数据'],
                 ['can_visit', '可回访数据'],
@@ -681,73 +685,80 @@ class CustomermanageAction extends Action
             $info['raw_data'] = $visitModel->where($map)->count();
             $notVisit = $visitModel->where($map)->where(['status' => 2])->count(); //不回访
             //可回访数据
-            $info['can_visit'] =  intval($info['raw_data'] - $notVisit);
+            $info['can_visit'] = intval($info['raw_data'] - $notVisit);
             //回访成功
             $info['visit_success'] = $visitModel->where($map)->where(['status' => 1])->count();
             //及时联系
             $field = "DISTINCT visit_id";
             $noteModel = $noteModel->where($map);
-            $info['in_time'] = $noteModel->where(['is_in_time' => 1])->count($field);
+            $info['in_time'] = $noteModel->where(['is_in_time' => 1])->where($map)->count($field);
             //未及时联系
-            $info['not_in_time'] = $noteModel->where(['is_in_time' => 0])->count($field);
+            $info['not_in_time'] = $noteModel->where(['is_in_time' => 0])->where($map)->count($field);
             //理解岗位
-            $info['understand'] = $noteModel->where(['is_understand' => 1])->count($field);
+            $info['understand'] = $noteModel->where(['is_understand' => 1])->where($map)->count($field);
             //不理解岗位
-            $info['not_understand'] = $noteModel->where(['is_understand' => 0])->count($field);
+            $info['not_understand'] = $noteModel->where(['is_understand' => 0])->where($map)->count($field);
             //推荐简历
-            $info['recommend'] = $noteModel->where(['is_recommend' => 1])->count($field);
+            $info['recommend'] = $noteModel->where(['is_recommend' => 1])->where($map)->count($field);
             //未推荐简历
-            $info['not_recommend'] = $noteModel->where(['is_recommend' => 0])->count($field);
+            $info['not_recommend'] = $noteModel->where(['is_recommend' => 0])->where($map)->count($field);
             //推荐足够数量
-            $info['resume_enough'] = $noteModel->where(['is_resume_enough' => 1])->count($field);
-            $info['resume_not_enough'] = $noteModel->where(['is_resume_enough' => 0])->count($field);
+            $info['resume_enough'] = $noteModel->where(['is_resume_enough' => 1])->where($map)->count($field);
+            $info['resume_not_enough'] = $noteModel->where(['is_resume_enough' => 0])->where($map)->count($field);
 
             //推荐质量满意度
-            $info['quality_very_satisfied'] = $noteModel->where(['quality_degree' => 5])->count($field);
-            $info['quality_satisfaction'] = $noteModel->where(['quality_degree' => 4])->count($field);
-            $info['quality_general'] = $noteModel->where(['quality_degree' => 3])->count($field);
-            $info['quality_dissatisfied'] = $noteModel->where(['quality_degree' => 2])->count($field);
-            $info['quality_very_dissatisfied'] = $noteModel->where(['quality_degree' => 1])->count($field);
+            $info['quality_very_satisfied'] = $noteModel->where(['quality_degree' => 5])->where($map)->count($field);
+            $info['quality_satisfaction'] = $noteModel->where(['quality_degree' => 4])->where($map)->count($field);
+            $info['quality_general'] = $noteModel->where(['quality_degree' => 3])->where($map)->count($field);
+            $info['quality_dissatisfied'] = $noteModel->where(['quality_degree' => 2])->where($map)->count($field);
+            $info['quality_very_dissatisfied'] = $noteModel->where(['quality_degree' => 1])->where($map)->count($field);
 
             //推荐数量满意度
-            $info['recommends_very_satisfied'] = $noteModel->where(['recommends_degree' => 5])->count($field);
-            $info['recommends_satisfaction'] = $noteModel->where(['recommends_degree' => 4])->count($field);
-            $info['recommends_general'] = $noteModel->where(['recommends_degree' => 3])->count($field);
-            $info['recommends_dissatisfied'] = $noteModel->where(['recommends_degree' => 2])->count($field);
-            $info['recommends_very_dissatisfied'] = $noteModel->where(['recommends_degree' => 1])->count($field);
+            $info['recommends_very_satisfied'] = $noteModel->where(['recommends_degree' => 5])->where($map)->count($field);
+            $info['recommends_satisfaction'] = $noteModel->where(['recommends_degree' => 4])->where($map)->count($field);
+            $info['recommends_general'] = $noteModel->where(['recommends_degree' => 3])->where($map)->count($field);
+            $info['recommends_dissatisfied'] = $noteModel->where(['recommends_degree' => 2])->where($map)->count($field);
+            $info['recommends_very_dissatisfied'] = $noteModel->where(['recommends_degree' => 1])->where($map)->count($field);
 
             //服务满意度
-            $info['service_very_satisfied'] = $noteModel->where(['service_degree' => 5])->count($field);
-            $info['service_satisfaction'] = $noteModel->where(['service_degree' => 4])->count($field);
-            $info['service_general'] = $noteModel->where(['service_degree' => 3])->count($field);
-            $info['service_dissatisfied'] = $noteModel->where(['service_degree' => 2])->count($field);
-            $info['service_very_dissatisfied'] = $noteModel->where(['service_degree' => 1])->count($field);
+            $info['service_very_satisfied'] = $noteModel->where(['service_degree' => 5])->where($map)->count($field);
+            $info['service_satisfaction'] = $noteModel->where(['service_degree' => 4])->where($map)->count($field);
+            $info['service_general'] = $noteModel->where(['service_degree' => 3])->where($map)->count($field);
+            $info['service_dissatisfied'] = $noteModel->where(['service_degree' => 2])->where($map)->count($field);
+            $info['service_very_dissatisfied'] = $noteModel->where(['service_degree' => 1])->where($map)->count($field);
+
+            //服务满意度
+            $info['matching_very_satisfied'] = $noteModel->where(['matching_degree' => 5])->where($map)->count($field);
+            $info['matching_satisfaction'] = $noteModel->where(['matching_degree' => 4])->where($map)->count($field);
+            $info['matching_general'] = $noteModel->where(['matching_degree' => 3])->where($map)->count($field);
+            $info['matching_dissatisfied'] = $noteModel->where(['matching_degree' => 2])->where($map)->count($field);
+            $info['matching_very_dissatisfied'] = $noteModel->where(['matching_degree' => 1])->where($map)->count($field);
 
             //反馈速度满意度
-            $info['feedback_very_satisfied'] = $noteModel->where(['feedback_degree' => 5])->count($field);
-            $info['feedback_satisfaction'] = $noteModel->where(['feedback_degree' => 4])->count($field);
-            $info['feedback_general'] = $noteModel->where(['feedback_degree' => 3])->count($field);
-            $info['feedback_dissatisfied'] = $noteModel->where(['feedback_degree' => 2])->count($field);
-            $info['feedback_very_dissatisfied'] = $noteModel->where(['feedback_degree' => 1])->count($field);
+            $info['feedback_very_satisfied'] = $noteModel->where(['feedback_degree' => 5])->where($map)->count($field);
+            $info['feedback_satisfaction'] = $noteModel->where(['feedback_degree' => 4])->where($map)->count($field);
+            $info['feedback_general'] = $noteModel->where(['feedback_degree' => 3])->where($map)->count($field);
+            $info['feedback_dissatisfied'] = $noteModel->where(['feedback_degree' => 2])->where($map)->count($field);
+            $info['feedback_very_dissatisfied'] = $noteModel->where(['feedback_degree' => 1])->where($map)->count($field);
 
             //入职人员满意度
-            $info['enter_very_satisfied'] = $noteModel->where(['enter_degree' => 5])->count($field);
-            $info['enter_satisfaction'] = $noteModel->where(['enter_degree' => 4])->count($field);
-            $info['enter_general'] = $noteModel->where(['enter_degree' => 3])->count($field);
-            $info['enter_dissatisfied'] = $noteModel->where(['enter_degree' => 2])->count($field);
-            $info['enter_very_dissatisfied'] = $noteModel->where(['enter_degree' => 1])->count($field);
+            $info['enter_very_satisfied'] = $noteModel->where(['enter_degree' => 5])->where($map)->count($field);
+            $info['enter_satisfaction'] = $noteModel->where(['enter_degree' => 4])->where($map)->count($field);
+            $info['enter_general'] = $noteModel->where(['enter_degree' => 3])->where($map)->count($field);
+            $info['enter_dissatisfied'] = $noteModel->where(['enter_degree' => 2])->where($map)->count($field);
+            $info['enter_very_dissatisfied'] = $noteModel->where(['enter_degree' => 1])->where($map)->count($field);
 
             //整体满意度
-            $info['very_satisfied'] = $noteModel->where(['degree' => 5])->count($field);
-            $info['satisfaction'] = $noteModel->where(['degree' => 4])->count($field);
-            $info['general'] = $noteModel->where(['degree' => 3])->count($field);
-            $info['dissatisfied'] = $noteModel->where(['degree' => 2])->count($field);
-            $info['very_dissatisfied'] = $noteModel->where(['degree' => 1])->count($field);
+            $info['very_satisfied'] = $noteModel->where(['degree' => 5])->where($map)->count($field);
+            $info['satisfaction'] = $noteModel->where(['degree' => 4])->where($map)->count($field);
+            $info['general'] = $noteModel->where(['degree' => 3])->where($map)->count($field);
+            $info['dissatisfied'] = $noteModel->where(['degree' => 2])->where($map)->count($field);
+            $info['very_dissatisfied'] = $noteModel->where(['degree' => 1])->where($map)->count($field);
 
             //信息不准确
-            $info['Information_error'] = $noteModel->where(['call_status' => 3])->count($field);;
+            $info['Information_error'] = $noteModel->where(['call_status' => 3])->where($map)->count($field);
             //商机信息
-            $info['business'] = $noteModel->where(['is_business' => 1])->count($field);
+            $info['business'] = $noteModel->where(['is_business' => 1])->where($map)->count($field);
         }
         return $list;
     }
@@ -804,7 +815,15 @@ class CustomermanageAction extends Action
         //1客户等级
         $customerInfo['rank'] = M('customer_rank')->where(['customer_id' => $customerId])->getField('rank_name');
         //回访次数
-        $visitInfo = M('customer_visit')->field('times,last_visit_time,contact_name,phone')->where(['customer_id' => $customerId, 'status' => 1])->order('id desc')->find();
+        $visitInfo = M('customer_visit')->field('pro_type,times,last_visit_time,contact_name,phone')->where(['customer_id' => $customerId, 'status' => 1])->order('id desc')->find();
+
+        $pro_type = M('customer_visit')->order('id desc')->getField('pro_type');
+        $customerInfo['pro_type'] = $pro_type;
+        if ($pro_type > 3) {
+            $pro_type == 5 && $customerInfo['pro_type'] = 1;
+            $pro_type == 6 && $customerInfo['pro_type'] = 2;
+            $pro_type == 7 && $customerInfo['pro_type'] = 3;
+        }
         $customerInfo['visit_times'] = $visitInfo['times'] ? $visitInfo['times'] : 0;
         //上次回访时间
         $customerInfo['last_visit_time'] = $visitInfo['last_visit_time'] ? date('Y-m-d', $visitInfo['last_visit_time']) : '';
@@ -847,9 +866,9 @@ class CustomermanageAction extends Action
             $businessInfo['owner_list'] = implode(",", $roleList);
             //事业部
             $departments = $this->departments($businessInfo['creator_role_id']);
-            $businessInfo['p_department'] = $departments['p_department'];
+            $businessInfo['p_department'] = $departments['p_department'] ? $departments['p_department'] : '';
             //部门
-            $businessInfo['department'] = $departments['department'];
+            $businessInfo['department'] = $departments['department'] ?  $departments['department'] : '';
         }
         $customerInfo['businessList'] = $businessList ? $businessList : [];
         //回访记录
@@ -952,6 +971,7 @@ class CustomermanageAction extends Action
         $businessInfo['last_update'] = $fineInfo['updatetime'] ? date("Y-m-d", $fineInfo['updatetime']) : '';
         $businessInfo['offer'] = M('fine_project_offer')->where(['fine_id' => $fineId])->order("addtime")->getField("addtime");
         $businessInfo['enter'] = M('fine_project_enter')->where(['fine_id' => $fineId])->order("addtime")->getField("addtime");
+        $businessInfo['interview'] = M('fine_project_interview')->where(['fine_id' => $fineId])->order("addtime")->getField("addtime");
         return $businessInfo;
     }
 
@@ -1130,7 +1150,7 @@ class CustomermanageAction extends Action
         $data['from_role_id'] = session('role_id') ? session('role_id') : 0;
         $data['content'] = $content;
         $data['send_time'] = time();
-        $data['deadline'] = strtotime(date('Y-m-d')) + 3600 * 24;
+        $data['deadline'] = strtotime(date('Y-m-d'));
         $data['type'] = $type;
         $data['link'] = $link;
         $data['degree'] = 2;

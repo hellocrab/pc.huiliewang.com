@@ -1,5 +1,6 @@
 let cus_id = window.location.href.match(/&cus_id=(\S*)&/)[1];
 let id = window.location.href.match(/&id=(\S*)/)[1];
+let pro_type = '';
 $.ajax({
     url: '/index.php?m=customermanage&a=customerInfo',
     data: {
@@ -7,6 +8,7 @@ $.ajax({
     },
     success(res) {
         if (res.code == 200) {
+            pro_type = res.info.info.pro_type;
             $('.ti1 span:nth-child(1)').html(res.info.info.customer_name);
             $('.rank span:nth-child(2)').html(res.info.info.rank);
             $('.keli span:nth-child(2)').html(res.info.info.contacts);
@@ -21,9 +23,9 @@ $.ajax({
             $('.end_time span:nth-child(2)').html(res.info.info.contract_end_time);
             $('.hui span:nth-child(2)').html(res.info.info.invoice_time);
             if (res.info.info.visit_log.length == 0) {
-                $('.record_wrap').css('display','none');
-                $('.ti3').css('display','none');
             } else {
+                $('.record_wrap').css('display','block');
+                $('.ti3').css('display','block');
                 let year = res.info.info.visit_log[0].add_time.substr(0, 4);
                 $('.record_sec').append(`<span class='year'>${year}年</span>`)
                 res.info.info.visit_log.map(val => {
@@ -33,7 +35,7 @@ $.ajax({
                     }
                     create_record(val);
                 })
-                $('.line').height($('.record_sec').height());
+                $('.line').height($('.record_sec').height()-20);
             }
 
             let doc = '';
@@ -86,31 +88,33 @@ function create_record(val) {
             <p>服务态度：${num2str(val.service_degree)}</p>
             <p>反馈速度：${num2str(val.feedback_degree)}</p>
             <p>简历数是否足够：${val.is_resume_enough==1?'是':'否'}</p>
-            <p>推荐质量：${num2str(val.recommends_degree)}</p>
-            <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
+            <p>推荐质量：${num2str(val.quality_degree)}</p>
+            <p>是否有商机：${val.is_business==1?'是，备注内容：'+val.business_note:'否'}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
             </span>
             <span class='point'>·</span>
         </div>`)
-        } else if (val.protype == 2) {
+        } else if (val.pro_type == 2) {
             $('.record_sec').append(`<div class='record_box'>
             <p>用户<span>【${val.create_role}】</span>添加了回访备注</p>
             <p>电话结果：${val.call_status}</p>
             <p>是否继续跟进：${val.is_follow==1?'是':'否'}</p>
-            <p>人员入职情况：${num2str(val.service_degree)}</p>
+            <p>人员入职情况：${num2str(val.enter_degree)}</p>
             <p>整体满意度：${num2str(val.degree)}</p>
             <p>反馈速度：${num2str(val.feedback_degree)}</p>
             <p>推荐数量：${num2str(val.recommends_degree)}</p>
             <p>推荐质量：${num2str(val.quality_degree)}</p>
-            <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
+            <p>是否有商机：${val.is_business==1?'是，备注内容：'+val.business_note:'否'}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -128,8 +132,9 @@ function create_record(val) {
             <p>推荐匹配度：${num2str(val.matching_degree)}</p>
             <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -148,6 +153,7 @@ function create_record(val) {
         </div>`)
     }
 }
+
 $('.cannal').click(ev => {
     $('.dialog').css('display', 'none')
     $('.radio_box input[type=radio]').attr('checked', false);
@@ -178,6 +184,8 @@ $('.ti1 span:nth-child(3)').click(ev => {
                 res.info.list.map(val => {
                     $('#advicer').append(`<option value='${val.id}'>${val.name}</option>`);
                 })
+                $('#visit_type').val(pro_type);
+                $('#visit_type').change();
                 $('.visit_dialog').css('display', 'block');
                 $('.visit_dialog .submit').attr('sub_id', id);
             } else {
@@ -222,8 +230,7 @@ $('.visit_dialog .submit').click(ev => {
             return
         }
         if (
-            $('input[name=visit]:checked').length == 0 ||
-            $('#visit_area').val() == ''
+            $('input[name=visit]:checked').length == 0
         ) {
             swal('请填写完整', '', 'warning')
             return
@@ -295,7 +302,7 @@ $('.visit_dialog .submit').click(ev => {
             if (res.code == 200) {
                 swal('操作成功', '', 'success')
                 $('.visit_dialog').css('display', 'none')
-                getData();
+                location.reload()
             } else {
                 swal('操作失败', res.info, 'error')
             }

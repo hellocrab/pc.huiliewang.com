@@ -348,7 +348,7 @@
     </section>
     <div class="sec_title ti2">
             <span>项目列表</span>
-            <span>匹配爱客系统</span>
+            <!-- <span>匹配爱客系统</span> -->
         </div>
     <section class="pro_list">
         <table>
@@ -367,10 +367,10 @@
             <tbody></tbody>
         </table>
     </section>
-    <div class="sec_title ti3">
+    <div class="sec_title ti3" style="display: none">
             <span>回访备注</span>
         </div>
-    <section class="record_wrap">
+    <section class="record_wrap" style="display: none">
         <img src="__PUBLIC__/img/customerManage/3_03.png" alt="">
         <div class="line"></div>
         <div class="record_sec"></div>
@@ -381,18 +381,17 @@
         $(".call_out").on('click', function () {
     var _this = this;
     let seatNum = "{$zxhNo|default=''}";
-    let itemId = $(_this).attr('rel');
     if (seatNum) {
         switchLine();
     } else {
         var fineId = $(_this).attr('data-id');
         $.post(
             "{:U('callcenter/call_out')}", {
-                itemId,
+                itemId:id,
                 fineId,
-                type: 1,
+                type: 3,
                 tel: '',
-                channel: 1
+                channel: 1,
             },
             function (data) {
                 var obj = $.parseJSON(data);

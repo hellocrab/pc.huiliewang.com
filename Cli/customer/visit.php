@@ -32,12 +32,14 @@ class Visit
     protected $business = "mx_business";
     protected $fine = "mx_fine_project";
     protected $dbConn;
+    protected $initTime = 0;
 
     /**
      * @desc 数据库链接
      * Visit constructor.
      */
     public function __construct() {
+        $this->initTime = strtotime("2019-06-01");
         if ($this->dbConn) {
             return;
         }
@@ -76,8 +78,21 @@ class Visit
             " where `com_id` > 0" .
             " and `project_id` > 0" .
             " and `type` = {$proType}" .
+            " and addtime > {$this->initTime}" .
             " group by com_id desc";
         $achievements = $this->selectSql($sql);
+        $achievements = $achievements ? $achievements : [];
+        if ($proType == 5) {
+            //线下
+            $singList = $this->signList();
+            foreach ($singList as $singInfo) {
+                $singCustomerId = $singInfo['customer_id'];
+                if (isset($achievements[$singCustomerId])) {
+                    continue;
+                }
+                $achievements[] = ['customer_id' => $singCustomerId, 'integral' => 0];
+            }
+        }
         if (!$achievements) {
             return false;
         }
@@ -117,7 +132,7 @@ class Visit
                 $finishTime = $history['finish_time'];
                 $times = $history['times'] + 1;
                 $nest_visit = $history['nest_visit'];
-                if ($status == 0 && $nest_visit == 1) {
+                if ($status == 0 || $nest_visit == 0) {
                     //未处理的
                     continue;
                 }
@@ -164,8 +179,21 @@ class Visit
             " where enter.fine_id = fine.id" .
             " and fine.project_id = b.business_id" .
             " and b.pro_type = {$proType}" .
+            " and enter.addtime > {$this->initTime}" .
             " order by enter.addtime desc";
         $list = $this->selectSql($sql, true);
+        $list = $list ? $list : [];
+        if ($proType == 6) {
+            //线下
+            $singList = $this->signList();
+            foreach ($singList as $singInfo) {
+                $singCustomerId = $singInfo['customer_id'];
+                if (isset($list[$singCustomerId])) {
+                    continue;
+                }
+                $list[] = ['customer_id' => $singCustomerId, 'integral' => 0];
+            }
+        }
         //客户列表
         $customers = [];
         foreach ($list as $info) {
@@ -214,13 +242,13 @@ class Visit
                 $finishTime = $history['finish_time'];
                 $times = $history['times'] + 1;
                 $nest_visit = $history['nest_visit'];
-                if ($status == 0 && $nest_visit == 1) {
+                if ($status == 0 || $nest_visit == 0) {
                     //未处理的
                     continue;
                 }
                 $thisTimeSql = "select count('offer.id') as counts  from " .
                     " {$this->business} as b ,{$this->fine} as fine ,{$this->offer} as offer" .
-                    " where enter.fine_id = fine.id " .
+                    " where offer.fine_id = fine.id " .
                     " and fine.project_id = b.business_id" .
                     " and b.pro_type = {$proType}" .
                     " and  b.customer_id = {$customerId}" .
@@ -263,8 +291,21 @@ class Visit
             " where enter.fine_id = fine.id" .
             " and fine.project_id = b.business_id" .
             " and b.pro_type = {$proType}" .
+            " and enter.addtime > {$this->initTime}" .
             " order by enter.addtime desc";
         $list = $this->selectSql($sql, true);
+        $list = $list ? $list : [];
+        if ($proType == 7) {
+            //线下
+            $singList = $this->signList();
+            foreach ($singList as $singInfo) {
+                $singCustomerId = $singInfo['customer_id'];
+                if (isset($list[$singCustomerId])) {
+                    continue;
+                }
+                $list[] = ['customer_id' => $singCustomerId, 'integral' => 0];
+            }
+        }
         //客户列表
         $customers = [];
         foreach ($list as $info) {
@@ -313,13 +354,13 @@ class Visit
                 $finishTime = $history['finish_time'];
                 $times = $history['times'] + 1;
                 $nest_visit = $history['nest_visit'];
-                if ($status == 0 && $nest_visit == 1) {
+                if ($status == 0 || $nest_visit == 0) {
                     //未处理的
                     continue;
                 }
                 $thisTimeSql = "select count('offer.id') as counts  from " .
                     " {$this->business} as b ,{$this->fine} as fine ,{$this->offer} as offer" .
-                    " where enter.fine_id = fine.id " .
+                    " where offer.fine_id = fine.id " .
                     " and fine.project_id = b.business_id" .
                     " and b.pro_type = {$proType}" .
                     " and  b.customer_id = {$customerId}" .
@@ -357,6 +398,16 @@ class Visit
         $sql = "select sign_date,signer,seal_company,contract_start,contract_end,invoice_time from {$this->customer_data} where customer_id = {$customerId}";
         $info = $this->selectSql($sql, false);
         return $info;
+    }
+
+    /**
+     * @desc 签单信息
+     * @return array
+     */
+    private function signList() {
+        $singList = "select customer_id from {$this->customer_data} where sign_date > 0";
+        $list = $this->selectSql($singList, true);
+        return $list;
     }
 
     /**
@@ -447,6 +498,10 @@ class Visit
      * @return array
      */
     public function history($customerId, $proType = 1, $isAll = false) {
+        if (!$customerId) {
+            return;
+        }
+        $this->deleteData($this->visit, ['eq' => ['customer_id' => $customerId, 'pro_type' => $proType, "status" => 0]]);
         $exitSql = "select * from {$this->visit}" .
             " where customer_id = {$customerId}" .
             " and pro_type = {$proType}" .

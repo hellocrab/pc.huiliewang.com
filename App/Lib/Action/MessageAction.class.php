@@ -1144,20 +1144,19 @@ class MessageAction extends Action
             $sons = ['customer_name' => $customerName, 'achievement' => $achievement ? $achievement : 0, 'rank' => $rank, 'contacts' => $contactName, 'telephone' => $telephone, 'birthday' => $birthday];
             //当天生日
             $key = 'today';
+            $data['today'] = ['day' => '今日', 'sons' => [], 'count' => 0];
             if (($nestDay - 3600 * 24) <= $deadline && $deadline <= $nestDay) {
-                if (!isset($data[$key])) {
-                    $data[$key] = ['day' => '今日', 'sons' => [], 'count' => 0];
-                } else {
+                if (isset($data[$key])) {
                     $data[$key]['count']++;
                     $data[$key]['sons'][] = $sons;
                 }
             }
             //15天后生日
+            $data['fifteen'] = ['day' => '两周后', 'sons' => [], 'count' => 0];
             if (($fifteenDays - 3600 * 24) <= $deadline && $deadline <= $fifteenDays) {
                 $key = 'fifteen';
-                if (!$data[$key]) {
-                    $data[$key] = ['day' => '两周后', 'sons' => [], 'count' => 0];
-                } else {
+                if ($data[$key]) {
+                    $data[$key]['count']++;
                     $data[$key]['sons'][] = $sons;
                 }
             }
@@ -1171,7 +1170,7 @@ class MessageAction extends Action
      */
     public function handle() {
         $message_id = I('message_id', 0);
-        $messInfo = M('massage')->where(['message_id' => $message_id])->find();
+        $messInfo = M('message')->where(['message_id' => $message_id])->find();
         if (!$messInfo) {
             $return = ['success' => 0, 'code' => 500, 'info' => "没有此消息"];
             $this->ajaxReturn($return);
@@ -1189,7 +1188,7 @@ class MessageAction extends Action
      */
     public static function read($messageId, $status = 1) {
         $where = ['message_id' => $messageId];
-        $messInfo = M('massage')->where($where)->find();
+        $messInfo = M('message')->where($where)->find();
         if (!$messInfo) {
             return false;
         }

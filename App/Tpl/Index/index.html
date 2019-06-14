@@ -425,19 +425,37 @@
             success(res) {
                 if (res.code == 200 && res.info) {
                     let doc = '';
-                    res.info.list.map((val, index) => {
-                        doc += `<tr>
+                    if (res.info.list.length == 0) {
+                        doc = '<tr><td colume="5">暂无数据</td></tr>'
+                    } else {
+                        res.info.list.map((val, index) => {
+                            doc += `<tr>
                         <td>${val.content}</td>
                         <td>${val.deadline.substr(0,10)}</td>
                         <td>${val.degree}</td>
                         <td class='${val.status==0?'wait':val.status==1?'ed':'dead'}'>${val.status==0?'未处理':val.status==1?'已处理':'已过期'}</td>
-                        <td style='display:${val.type!=2?'table-cell':'none'}'><a href='${val.link}'>${val.status==0?'去处理':'查看'}</a></td>
+                        <td style='display:${val.type!=2?'table-cell':'none'}'><a href='${val.link}' list_id='${val.message_id}'>${val.status==0?'去处理':'查看'}</a></td>
                         <td style='display:${val.type==2?'table-cell':'none'}'><span class='check_birth' list_id='${val.message_id}'>查看</span></td>
                     </tr>`
-                    })
+                        })
+                    }
                     $('.content table tbody').empty();
                     $('.content table tbody').append(doc);
-                    $('.content table tbody').scrollTop(0)
+                    $('.content table tbody').scrollTop(0);
+                    $('.content table tbody a').click(ev => {
+                        let id = ev.target.attributes[1].value;
+                        $.ajax({
+                            url: '/index.php?m=message&a=handle',
+                            data: {
+                                message_id: id,
+                            },
+                            success(res) {
+                                $('.bri_dialog').css('display',
+                                    'none');
+
+                            }
+                        })
+                    })
                     $('.check_birth').click(ev => {
                         let id = ev.target.attributes[1].value
                         $.ajax({
@@ -450,20 +468,27 @@
                                 if (resp.code == 200) {
                                     $('.today_bri').html(`今天生日共${resp.info.today.count}人`);
                                     let doc = '';
-                                    resp.info.today.sons.map(val => {
-                                        doc += `<tr>
+                                    if (resp.info.today.sons.length == 0) {
+                                        doc = '<tr><td colume="5">暂无数据</td></tr>'
+                                    } else {
+                                        resp.info.today.sons.map(val => {
+                                            doc += `<tr>
                                             <td>${val.customer_name}</td>
                                             <td>${val.rank}</td>
                                             <td>${val.achievement}</td>
                                             <td>${val.contacts}</td>
                                             <td>${val.telephone}</td>
                                             </tr>`
-                                    })
+                                        })
+                                    }
                                     $('.today_bri+.sd table tbody').html(doc);
                                     doc = '';
                                     $('.toweek_bri').html(`两周内生日共${resp.info.fifteen.count}人`)
-                                    resp.info.today.sons.map(val => {
-                                        doc += `<tr>
+                                    if (resp.info.fifteen.sons.length == 0) {
+                                        doc = '<tr><td colume="6">暂无数据</td></tr>'
+                                    } else {
+                                        resp.info.fifteen.sons.map(val => {
+                                            doc += `<tr>
                                             <td>${val.customer_name}</td>
                                             <td>${val.rank}</td>
                                             <td>${val.achievement}</td>
@@ -471,13 +496,16 @@
                                             <td>${val.telephone}</td>
                                             <td>${val.birthday}</td>
                                             </tr>`
-                                    })
+                                        })
+                                    }
                                     $('.toweek_bri+.sd table tbody').html(doc);
                                     $('.bri_dialog').css('display', 'block');
                                     $('.dialogfoot .confirm').click(ev => {
                                         $.ajax({
                                             url: '/index.php?m=message&a=handle',
-                                            message_id: id,
+                                            data: {
+                                                message_id: id,
+                                            },
                                             success(res) {
                                                 $('.bri_dialog').css('display',
                                                     'none');

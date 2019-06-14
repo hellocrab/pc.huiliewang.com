@@ -2,15 +2,34 @@ if (sessionStorage.visit_Tab) {
     let sym = sessionStorage.visit_Tab - 0 + 1;
     $('.switchBox span').removeClass('choosed');
     $(`.switchBox span:nth-child(${sym})`).addClass('choosed');
+    if (sym == '0') {
+        $('.chant').html('创建时间')
+    } else if (sym == '1') {
+        $('.chant').html('回访时间')
+
+    } else{
+        $('.chant').html('回访时间')
+    }
 }
 $('.switchBox span').click(ev => {
     $('.switchBox span').removeClass('choosed');
     $(ev.target).addClass('choosed');
+    $('#start').val('');
+    $('#end').val('');
+    $('#department').val('');
     getData()
     let sym = $('.switchBox .choosed').html().trim();
-    if (sym == '待回访') sym = 0;
-    else if (sym == '回访记录') sym = 1;
-    else sym = 2;
+    if (sym == '待回访') {
+        sym = 0;
+        $('.chant').html('创建时间')
+    } else if (sym == '回访记录') {
+        sym = 1;
+        $('.chant').html('回访时间')
+
+    } else{
+        sym = 2;
+        $('.chant').html('回访时间')
+    }
     sessionStorage.visit_Tab = sym;
 })
 var current_page = 1;
@@ -62,11 +81,12 @@ function getData(is_export) {
                                 <td>${val.not_understand}</td>
                                 <td>${val.recommend}</td>
                                 <td>${val.not_recommend}</td>
-                                <td>${val.quality_very_satisfied}</td>
-                                <td>${val.quality_satisfaction}</td>
-                                <td>${val.quality_general}</td>
-                                <td>${val.quality_dissatisfied}</td>
-                                <td>${val.quality_very_dissatisfied}</td>
+                                <td>${val.matching_very_satisfied}</td>
+                                <td>${val.matching_satisfaction}</td>
+                                <td>${val.matching_general}</td>
+                                <td>${val.matching_dissatisfied}</td>
+                                <td>${val.matching_very_dissatisfied}</td>
+                                <td>${val.Information_error}</td>
                                 <td>${val.business}</td>
                             </tr>`
                         })
@@ -90,10 +110,10 @@ function getData(is_export) {
                                 <td>${val.dissatisfied}</td>
                                 <td>${val.very_dissatisfied}</td>
                                 <td>${val.feedback_very_satisfied}</td>
-                                <td>${val.feedbac_satisfaction}</td>
-                                <td>${val.feedbac_general}</td>
-                                <td>${val.feedbac_dissatisfied}</td>
-                                <td>${val.feedbac_very_dissatisfied}</td>
+                                <td>${val.feedback_satisfaction}</td>
+                                <td>${val.feedback_general}</td>
+                                <td>${val.feedback_dissatisfied}</td>
+                                <td>${val.feedback_very_dissatisfied}</td>
                                 <td>${val.recommends_very_satisfied}</td>
                                 <td>${val.recommends_satisfaction}</td>
                                 <td>${val.recommends_general}</td>
@@ -235,8 +255,8 @@ function getData(is_export) {
                             <td><a><span class='visit' cus_id='${val.id}' cus_name='${val.customer_name}' cus_id_='${val.customer_id}'>回访</span><span class='visitless' cus_id='${val.id}' cus_name='${val.customer_name}'>不回访</span></td>
                         </tr>`
                     })
-                    $('th:nth-last-child(3)').css('display', 'block');
-                    $('th:nth-last-child(2)').css('display', 'none');
+                    $('.he1 th:nth-last-child(3)').css('display', 'block');
+                    $('.he1 th:nth-last-child(2)').css('display', 'none');
                 } else if (sym == 1) {
                     res.info.list.map((val, index) => {
                         doc += `<tr>
@@ -252,13 +272,13 @@ function getData(is_export) {
                             <td>${val.last_visit_time}</td>
                             <td>${val.is_business==1?'有<img class="canbusi" cus_id="'+val.id+'" cus_name="'+val.customer_name+'" src="Public/img/customerManage/cancel.png"/>':'无'}</td>
                             <td>
-                                <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                <i class="fa fa-play-circle" aria-hidden="true" style='display:none'></i>
                                 <span class='notice_msg' cus_id='${val.id}' cus_name='${val.customer_name}' cus_id_='${val.customer_id}'>备注信息</span>
                             </td>
                         </tr>`
                     })
-                    $('th:nth-last-child(3)').css('display', 'none');
-                    $('th:nth-last-child(2)').css('display', 'block');
+                    $('.he1 th:nth-last-child(3)').css('display', 'none');
+                    $('.he1 th:nth-last-child(2)').css('display', 'block');
                 }
                 $('table tbody').empty();
                 $('table tbody').append(doc);
@@ -407,11 +427,12 @@ function create_record(val) {
             <p>服务态度：${num2str(val.service_degree)}</p>
             <p>反馈速度：${num2str(val.feedback_degree)}</p>
             <p>简历数是否足够：${val.is_resume_enough==1?'是':'否'}</p>
-            <p>推荐质量：${num2str(val.recommends_degree)}</p>
-            <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
+            <p>推荐质量：${num2str(val.quality_degree)}</p>
+            <p>是否有商机：${val.is_business==1?'是，备注内容：'+val.business_note:'否'}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -428,10 +449,11 @@ function create_record(val) {
             <p>反馈速度：${num2str(val.feedback_degree)}</p>
             <p>推荐数量：${num2str(val.recommends_degree)}</p>
             <p>推荐质量：${num2str(val.quality_degree)}</p>
-            <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
+            <p>是否有商机：${val.is_business==1?'是，备注内容：'+val.business_note:'否'}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -447,10 +469,11 @@ function create_record(val) {
             <p>岗位理解：${val.is_understand==1?'是':'否'}</p>
             <p>是否推荐：${val.is_recommend==1?'是':'否'}</p>
             <p>推荐匹配度：${num2str(val.matching_degree)}</p>
-            <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
+            <p>是否有商机：${val.is_business==1?'是，备注内容：'+val.business_note:'否'}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p>录音：${val.is_business==1?'是':'否'}</p>
+            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
