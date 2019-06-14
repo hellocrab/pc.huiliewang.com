@@ -821,12 +821,13 @@
 
 
                         <?php elseif($module_name == 'Customermanage' || $module_name == 'customer_manage' || $module_name == 'customermanage'): ?>
+                        <li <if condition="$action_name eq 'visit' ||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add' ">class="active"</if> >
+                            <a href="{:U('Customermanage/visit')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;客户回访</a>
+                            </li>
                         <li <if condition="$action_name eq 'index' ||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add' ">class="active"</if> >
                         <a href="{:U('Customermanage/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;客户分级</a>
                         </li>
-                        <li <if condition="$action_name eq 'visit' ||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add' ">class="active"</if> >
-                        <a href="{:U('Customermanage/visit')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;客户回访</a>
-                        </li>
+                        
 
 
                         <!--<li <if condition = "$action_name eq 'index'||$action_name eq 'backrecord'||$action_name eq 'ticketrecord'||$action_name eq 'add'">class=""</if> ><a href="{:U('return/index')}"><span class="fa fa-inbox" style="display:inline"></span>&nbsp;&nbsp;开票记录</a></li>-->
