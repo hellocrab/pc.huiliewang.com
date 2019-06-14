@@ -1144,20 +1144,19 @@ class MessageAction extends Action
             $sons = ['customer_name' => $customerName, 'achievement' => $achievement ? $achievement : 0, 'rank' => $rank, 'contacts' => $contactName, 'telephone' => $telephone, 'birthday' => $birthday];
             //当天生日
             $key = 'today';
+            $data['today'] = ['day' => '今日', 'sons' => [], 'count' => 0];
             if (($nestDay - 3600 * 24) <= $deadline && $deadline <= $nestDay) {
-                if (!isset($data[$key])) {
-                    $data[$key] = ['day' => '今日', 'sons' => [], 'count' => 0];
-                } else {
+                if (isset($data[$key])) {
                     $data[$key]['count']++;
                     $data[$key]['sons'][] = $sons;
                 }
             }
             //15天后生日
+            $data['fifteen'] = ['day' => '两周后', 'sons' => [], 'count' => 0];
             if (($fifteenDays - 3600 * 24) <= $deadline && $deadline <= $fifteenDays) {
                 $key = 'fifteen';
-                if (!$data[$key]) {
-                    $data[$key] = ['day' => '两周后', 'sons' => [], 'count' => 0];
-                } else {
+                if ($data[$key]) {
+                    $data[$key]['count']++;
                     $data[$key]['sons'][] = $sons;
                 }
             }
