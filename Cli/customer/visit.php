@@ -610,7 +610,7 @@ class Visit
      * @param string $env
      * @return PDO
      */
-    private function dbConn($env = 'test') {
+    private function dbConn($env = 'product') {
 
         // 数据库链接 配置
         $productConf = array(
