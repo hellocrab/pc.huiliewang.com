@@ -438,13 +438,14 @@ class CustomermanageAction extends Action
                 $customerId = $info['customer_id'];
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
                 $info['city'] = $city_name[$info['city']];
-                $info['is_business'] =  $info['business_status'];
+                $info['is_business'] = $info['business_status'];
                 $info['industry'] = $industry_name[$info['industry']];
                 $info['add_time'] = date("Y-m-d", $info['add_time']);
                 $info['last_visit_time'] && $info['last_visit_time'] = date("Y-m-d", $info['last_visit_time']);
                 $info['finish_time'] && $info['finish_time'] = date("Y-m-d", $info['finish_time']);
                 $signInfo = $this->signInfo(false, $customerId);
                 $info['signer'] = $signInfo['signer'];
+                $info['phone_record'] = $this->phoneRecord($info['id']);
                 $this->infoMaintain($customerId, $info);
             }
             $counts = M('customer_visit')->where($where)->count();
@@ -500,6 +501,19 @@ class CustomermanageAction extends Action
             ];
             $this->exportExcel('客户待回访数据', $list, $expCellName);
         }
+    }
+
+    /**
+     * @desc 会放录音
+     * @param $visitId
+     * @return string
+     */
+    private function phoneRecord($visitId) {
+        $info = M('phone_record')->field("oss_record_url,recordUrl")->where(['source' => 3, 'item_id' => $visitId, 'recordFlag' => 1])->order("id desc")->find();
+        if (!$info) {
+            return '';
+        }
+        return $info['oss_record_url'] ? $info['oss_record_url'] : $info['recordUrl'];
     }
 
     /**
