@@ -7,7 +7,7 @@ $.ajax({
     },
     success(res) {
         if (res.code == 200) {
-            $('ti1 span:nth-child(1)').html(res.info.info.customer_name);
+            $('.ti1 span:nth-child(1)').html(res.info.info.customer_name);
             $('.rank span:nth-child(2)').html(res.info.info.rank);
             $('.keli span:nth-child(2)').html(res.info.info.customer_owner_name);
             $('.tel span:nth-child(2)').html(res.info.info.contacts_phone);
@@ -67,8 +67,9 @@ function num2str(num) {
 }
 
 function create_record(val) {
-    if (val.pro_type == 1) {
-        $('.record_sec').append(`<div class='record_box'>
+    if (val.nest_visit == 1) {
+        if (val.pro_type == 1) {
+            $('.record_sec').append(`<div class='record_box'>
             <p>用户<span>【${val.create_role}】</span>添加了回访备注</p>
             <p>电话结果：${val.call_status}</p>
             <p>是否继续跟进：${val.is_follow==1?'是':'否'}</p>
@@ -86,8 +87,8 @@ function create_record(val) {
             </span>
             <span class='point'>·</span>
         </div>`)
-    } else if (val.protype == 2) {
-        $('.record_sec').append(`<div class='record_box'>
+        } else if (val.protype == 2) {
+            $('.record_sec').append(`<div class='record_box'>
             <p>用户<span>【${val.create_role}】</span>添加了回访备注</p>
             <p>电话结果：${val.call_status}</p>
             <p>是否继续跟进：${val.is_follow==1?'是':'否'}</p>
@@ -106,8 +107,8 @@ function create_record(val) {
             </span>
             <span class='point'>·</span>
         </div>`)
-    } else {
-        $('.record_sec').append(`<div class='record_box'>
+        } else {
+            $('.record_sec').append(`<div class='record_box'>
             <p>用户<span>【${val.create_role}】</span>添加了回访备注</p>
             <p>电话结果：${val.call_status}</p>
             <p>是否继续跟进：${val.is_follow==1?'是':'否'}</p>
@@ -119,6 +120,16 @@ function create_record(val) {
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
             <p>录音：${val.is_business==1?'是':'否'}</p>
+            <span class='record_time'>
+            <span>${val.add_time.substr(10,6)}</span><br/>
+                <span>${val.add_time.substr(5,5)}</span>
+            </span>
+            <span class='point'>·</span>
+        </div>`)
+        }
+    }else{
+        $('.record_sec').append(`<div class='record_box' style='margin:20px 0'>
+            <p>用户<span>【${val.create_role}】</span>将客户标记为不回访</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
