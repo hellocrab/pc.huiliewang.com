@@ -808,7 +808,7 @@ class CustomermanageAction extends Action
         //1客户等级
         $customerInfo['rank'] = M('customer_rank')->where(['customer_id' => $customerId])->getField('rank_name');
         //回访次数
-        $visitInfo = M('customer_visit')->field('times,last_visit_time,contact_name,phone')->where(['customer_id' => $customerId, 'status' => 1])->order('id desc')->find();
+        $visitInfo = M('customer_visit')->field('pro_type,times,last_visit_time,contact_name,phone')->where(['customer_id' => $customerId, 'status' => 1])->order('id desc')->find();
         $customerInfo['pro_type'] = $visitInfo['pro_type'] ? $visitInfo['pro_type'] : 0;
         $customerInfo['visit_times'] = $visitInfo['times'] ? $visitInfo['times'] : 0;
         //上次回访时间
