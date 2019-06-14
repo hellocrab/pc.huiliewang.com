@@ -1500,7 +1500,7 @@ class CustomerAction extends Action {
                     $phone = BaseUtils::getStr($_GET['contacts_phone']);
                     $phone = trim($phone);
                     $con = trim($con);
-                    $c_where['_string'] = 'name like ' . $con . '%" and (telephone like "%' . $phone . '%" or crm_ljgmqr like "%'.$phone.'%" )';
+                    $c_where['_string'] = 'name like "' . $con . '%" and (telephone like "%' . $phone . '%" or crm_ljgmqr like "%'.$phone.'%" )';
                     $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
                     $contacts_str = implode(',', $contacts_ids);
                     $customerIds = M('r_contacts_customer')->where(['contacts_id' => ['in', $contacts_str]])->getField('customer_id', true);
@@ -1510,7 +1510,7 @@ class CustomerAction extends Action {
                 }elseif($_GET['contacts']){
                     $con = BaseUtils::getStr($_GET['contacts']);
                     $con = trim($con);
-                    $c_where['_string'] = 'name like ' . $con . '%" ';
+                    $c_where['_string'] = 'name like "' . $con . '%" ';
                     $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
                     $contacts_str = implode(',', $contacts_ids);
                     $customerIds = M('r_contacts_customer')->where(['contacts_id' => ['in', $contacts_str]])->getField('customer_id', true);
@@ -1519,7 +1519,7 @@ class CustomerAction extends Action {
                 }elseif($_GET['contacts_phone']){
                     $phone = BaseUtils::getStr($_GET['contacts_phone']);
                     $phone = trim($phone);
-                    $c_where['_string'] = ' (telephone like ' . $phone . '%" or crm_ljgmqr like '.$phone.'%") ';
+                    $c_where['_string'] = ' (telephone like "' . $phone . '%" or crm_ljgmqr like "'.$phone.'%") ';
                     $contacts_ids = M('Contacts')->where($c_where)->getField('contacts_id', true);
                     $contacts_str = implode(',', $contacts_ids);
                     $customerIds = M('r_contacts_customer')->where(['contacts_id' => ['in', $contacts_str]])->getField('customer_id', true);
