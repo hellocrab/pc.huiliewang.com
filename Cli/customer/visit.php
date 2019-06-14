@@ -141,7 +141,7 @@ class Visit
                     " and `com_id` = {$customerId}" .
                     " and `type` = {$proType}" .
                     " and  addtime > {$finishTime}";
-                $info = $this->selectSql($thisTimeSql);
+                $info = $this->selectSql($thisTimeSql,false);
                 $thisTimesMoney = isset($info['integral']) ? $info['integral'] : 0;
                 //是否满足条件
                 $lastMoney = $nestCondition['min_condition']; //下次满足条件金额
@@ -365,7 +365,7 @@ class Visit
                     " and b.pro_type = {$proType}" .
                     " and  b.customer_id = {$customerId}" .
                     " and offer.addtime > {$finishTime}";
-                $info = $this->selectSql($thisTimeSql);
+                $info = $this->selectSql($thisTimeSql,false);
                 $thisCondition = isset($info['counts']) ? $info['counts'] : 0;
                 //是否满足条件
                 $nestMin = $nestCondition['min_condition']; //下次满足条件金额
