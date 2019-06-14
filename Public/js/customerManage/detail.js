@@ -312,7 +312,6 @@ $('.visit_dialog .submit').click(ev => {
         success(res) {
             if (res.code == 200) {
                 swal('操作成功', '', 'success')
-                return
                 $('.visit_dialog').css('display', 'none')
                 location.reload()
             } else {
