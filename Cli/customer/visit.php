@@ -32,12 +32,14 @@ class Visit
     protected $business = "mx_business";
     protected $fine = "mx_fine_project";
     protected $dbConn;
+    protected $initTime = 0;
 
     /**
      * @desc 数据库链接
      * Visit constructor.
      */
     public function __construct() {
+        $this->initTime = strtotime("2019-06-01");
         if ($this->dbConn) {
             return;
         }
@@ -72,10 +74,12 @@ class Visit
      * @return bool
      */
     public function interview($proType = 1) {
+
         $sql = "select com_id as customer_id,sum(integral) as integral  from {$this->achievement} " .
             " where `com_id` > 0" .
             " and `project_id` > 0" .
             " and `type` = {$proType}" .
+            " and addtime > {$this->initTime}" .
             " group by com_id desc";
         $achievements = $this->selectSql($sql);
         if (!$achievements) {
@@ -117,7 +121,7 @@ class Visit
                 $finishTime = $history['finish_time'];
                 $times = $history['times'] + 1;
                 $nest_visit = $history['nest_visit'];
-                if ($status == 0 && $nest_visit == 1) {
+                if ($status == 0 || $nest_visit == 0) {
                     //未处理的
                     continue;
                 }
@@ -164,6 +168,7 @@ class Visit
             " where enter.fine_id = fine.id" .
             " and fine.project_id = b.business_id" .
             " and b.pro_type = {$proType}" .
+            " and enter.addtime > {$this->initTime}" .
             " order by enter.addtime desc";
         $list = $this->selectSql($sql, true);
         //客户列表
@@ -214,7 +219,7 @@ class Visit
                 $finishTime = $history['finish_time'];
                 $times = $history['times'] + 1;
                 $nest_visit = $history['nest_visit'];
-                if ($status == 0 && $nest_visit == 1) {
+                if ($status == 0 || $nest_visit == 0) {
                     //未处理的
                     continue;
                 }
@@ -263,6 +268,7 @@ class Visit
             " where enter.fine_id = fine.id" .
             " and fine.project_id = b.business_id" .
             " and b.pro_type = {$proType}" .
+            " and enter.addtime > {$this->initTime}" .
             " order by enter.addtime desc";
         $list = $this->selectSql($sql, true);
         //客户列表
@@ -313,7 +319,7 @@ class Visit
                 $finishTime = $history['finish_time'];
                 $times = $history['times'] + 1;
                 $nest_visit = $history['nest_visit'];
-                if ($status == 0 && $nest_visit == 1) {
+                if ($status == 0 || $nest_visit == 0) {
                     //未处理的
                     continue;
                 }
@@ -447,6 +453,10 @@ class Visit
      * @return array
      */
     public function history($customerId, $proType = 1, $isAll = false) {
+        if (!$customerId) {
+            return;
+        }
+        $this->deleteData($this->visit, ['eq' => ['customer_id' => $customerId, 'pro_type' => $proType, "status" => 0]]);
         $exitSql = "select * from {$this->visit}" .
             " where customer_id = {$customerId}" .
             " and pro_type = {$proType}" .

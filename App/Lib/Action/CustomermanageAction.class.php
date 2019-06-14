@@ -721,11 +721,11 @@ class CustomermanageAction extends Action
             $info['recommends_very_dissatisfied'] = $noteModel->where(['recommends_degree' => 1])->where($map)->count($field);
 
             //服务满意度
-            $info['service_very_satisfied'] = $noteModel->field($field)->where(['service_degree' => 5])->where($map)->count($field);
-            $info['service_satisfaction'] = $noteModel->field($field)->where(['service_degree' => 4])->where($map)->count($field);
-            $info['service_general'] = $noteModel->field($field)->where(['service_degree' => 3])->where($map)->count($field);
-            $info['service_dissatisfied'] = $noteModel->field($field)->where(['service_degree' => 2])->where($map)->count($field);
-            $info['service_very_dissatisfied'] = $noteModel->field($field)->where(['service_degree' => 1])->where($map)->count($field);
+            $info['service_very_satisfied'] = $noteModel->where(['service_degree' => 5])->where($map)->count($field);
+            $info['service_satisfaction'] = $noteModel->where(['service_degree' => 4])->where($map)->count($field);
+            $info['service_general'] = $noteModel->where(['service_degree' => 3])->where($map)->count($field);
+            $info['service_dissatisfied'] = $noteModel->where(['service_degree' => 2])->where($map)->count($field);
+            $info['service_very_dissatisfied'] = $noteModel->where(['service_degree' => 1])->where($map)->count($field);
 
             //反馈速度满意度
             $info['feedback_very_satisfied'] = $noteModel->where(['feedback_degree' => 5])->where($map)->count($field);
