@@ -200,7 +200,7 @@
                     <!--<a class="btn btn-default" href="/index.php?m=product&a=add_more&pro_id={$project['business_id']}" target="_blank">批量导入简历</a>-->
                 </div>
                 <script>
-                    $(function () {
+                    function bind_call_out() {
                         $(".call_out").on('click', function () {
                             var _this = this;
                             let seatNum = "{$zxhNo|default=''}";
@@ -286,7 +286,7 @@
                                                     var step = $(_this).attr("data-step");
                                                     console.log(id)
                                                     var key = $(_this).attr("data-key") ? $(
-                                                            this)
+                                                        this)
                                                         .attr(
                                                             "data-key") : 0;
                                                     $('#dialog-addCCbz').dialog('open');
@@ -310,19 +310,23 @@
                                     });
                                 $('.cancel').css('backgroundColor', 'rgb(221, 107, 85)').on(
                                     'mouseenter', ev => {
-                                        $('.cancel').css('backgroundColor', 'rgb(212,103,82)')
-                                    }).on('mouseleave', ev => {
+                                    $('.cancel').css('backgroundColor', 'rgb(212,103,82)')
+                            }).on('mouseleave', ev => {
                                     $('.cancel').css('backgroundColor', 'rgb(221, 107, 85)')
-                                })
+                            })
                                 $('.sweet-alert').append(
                                     `<i style='position:absolute;top:10px;right:10px;cursor:pointer;' class='fa fa-times'/>`
                                 );
                                 $('.fa-times').click(ev => {
                                     swal("已取消", "您取消了拨打电话！", "error");
-                                    $('.fa-times').remove()
-                                })
+                                $('.fa-times').remove()
+                            })
                             }
                         });
+
+                    }
+                    $(function () {
+                        bind_call_out();
 
                         $("#dialog-addCCbz").dialog({
                             autoOpen: false,
@@ -523,7 +527,7 @@
                                     style="border-right: 1px solid #e7eaec;text-align:center;background-color:#f9fafc;padding:14px;color:#999">
                                     最近操作时间</td>
                             </tr>
-                            <tbody>
+                            <tbody id="CShow">
 
 
                                 <volist name="project[calllist]" id="vo">
@@ -2206,6 +2210,12 @@
         });
         $('#CSearch2').on('click',function () {
             var val = $(this).prev().val();
+            var call_icon1 = '{$call_icon1}';
+            call_icon1 = JSON.parse(call_icon1);
+            var call_icon2 = '{$call_icon2}';
+            call_icon2 = JSON.parse(call_icon2);
+            var call_icon3 = '{$call_icon3}';
+            call_icon3 = JSON.parse(call_icon3);
             $.ajax({
                 type : "get",
                 url : "{:U('business/searchCallist')}",
@@ -2215,13 +2225,104 @@
                 },
                 async :false,
                 success:function (data) {
+                        if(data == null){
+                            $('#CShow').html('');
+                        }
+                        var  doc = '';
+                        data.map((vo, index) => {
+                            doc += `<tr>
+                                        <td style="text-align:center;padding:14px;color:#666;">
+                                            <a href="index.php?id=${vo['resume_id']}">${vo['name']}</a>
+                                            <a class="dropdown-toggle count-info call_out" id="phone_url"
+                                                rel="${vo['resume_id']}" data-id="${vo['id']}" data-step="1" data-toggle="dropdown"
+                                                href="#" title="呼叫">
+                                                <span class="glyphicon glyphicon-earphone" id="phone_num"></span>
+                                            </a>
+                                        </td>
+                                        <if condition="$business_info['pro_type'] eq '4'">
+                                                <td style="text-align:right;padding:14px;color:#666;display: ${vo['hjl_status']==0?'block':'none'}">
+                                                    <input type="button" class="btn btn-primary btn-sm upresumes"
+                                                        value="推荐 >" style="width: 80px;" data-id="${vo['id']}" /></td>
+
+                                                <td style="text-align:right;padding:14px;color:#666;display: ${vo['hjl_status']==1?'block':'none'}">已推荐</td>
+
+                                                <td style="text-align:right;padding:14px;color:#666;display: ${vo['hjl_status']==2?'block':'none'}">客户选取</td>
+
+                                            <else />
+                                            <td style="text-align:right;padding:14px;color:#666;">
+                                                <input type="button" class="btn btn-primary btn-sm slidebar-nav"
+                                                    value="CallList >" style="width: 80px;" data-id="${vo['id']}" />
+                                            </td>
+                                        </if>
+                                        <td style="text-align:left;padding:14px;color:#666;">
+
+                                                <span class="icosgj" style="display:${vo['call_result']!='' ? 'inline' : 'none' }">
+                                                    <embed src="/Public/img/svg/`+call_icon1[`${vo['call_result']}`]+`.svg"
+                                                        width="30px" height="30px" type="image/svg+xml"
+                                                        pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                                    <div class="beizhus">${vo['call_result']}</div>
+                                                </span>
+                                                <span class="icosgj" style="display:${vo['call_result']!='' ? 'inline' : 'none' }">
+                                                    <embed src="/Public/img/svg/`+call_icon2[+`${vo['ccgj']}`]+`.svg"
+                                                        width="30px" height="30px" type="image/svg+xml"
+                                                        pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                                    <div class="beizhus">
+                                                        ${vo['ccgj'] !='' ?'继续跟进':'暂停跟进'}
+                                                    </div>
+                                                </span>
+                                                <span class="icosgj" style="display:${vo['call_result']!='' ? 'inline' : 'none' }">
+                                                    <embed src="/Public/img/svg/`+call_icon3[+`${vo['target']}`]+`.svg"
+                                                        width="30px" height="30px" type="image/svg+xml"
+                                                        pluginspage="http://www.adobe.com/svg/viewer/install/" />
+                                                    <div class="beizhus">
+                                                        ${vo['target'] !='' ?  '是目标候选人' : '不是目标候选人'}
+                                                    </div>
+                                                </span>
+
+                                        </td>
+                                        <td style="text-align:center;padding:14px;color:#666;">
+                                            <div class="nowap"
+                                                style="max-width: 100px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"
+                                                title="${vo['current_company']}">${vo['current_company']}</div>
+                                        </td>
+                                        <td style="text-align:center;padding:14px;color:#666;">
+                                            <div class="nowap"
+                                                style="max-width: 100px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"
+                                                title=" ${vo['current_job']}"> ${vo['current_job']}</div>
+                                        </td>
+                                        <td style="text-align:center;padding:14px;color:#666;">
+                                                ${vo['sex']==1?'男':'女'}
+                                        </td>
+                                        <td style="text-align:center;padding:14px;color:#666;">${vo['curSalary']}万</td>
+                                        <td style="text-align:center;padding:14px;color:#666;"><a
+                                                href="javascript:void(0);" class="role_info"
+                                                rel="${vo['tracker']}">${vo['tracker_name']}</a></td>
+                                        <td
+                                            style="border-right: 1px solid #e7eaec;text-align:center;padding:14px;color:#666;">
+                                            ${getTime(vo['addtime'])}</td>
+                                    </tr>`
+
+                        })
+                    $('#CShow').html(doc);
+                    bind_call_out();
 
                 },
                 dataType:'json'
             });
         })
     })
-
+    function add0(m){return m<10?'0'+m:m }
+    function  getTime(date) {
+        var date1 = Number(date);
+        var time = new Date(date1*1000);
+        var y = time.getFullYear();
+        var m = time.getMonth()+1;
+        var d = time.getDate();
+        var h = time.getHours();
+        var mm = time.getMinutes();
+        var s = time.getSeconds();
+        return y+'-'+add0(m)+'-'+add0(d)+' '+add0(h)+':'+add0(mm)+':'+add0(s);
+    }
     function selectStatus() {
         var status_id = $("#status_id option:selected").val();
         var temp = '<option value="">--请选择--</option>';
