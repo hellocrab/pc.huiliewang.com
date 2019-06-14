@@ -435,7 +435,7 @@ class CustomermanageAction extends Action
 
         if (!$isExport) {
             $pageStart = ($page - 1) * $pageSize;
-            $list = M('customer_visit')->where($where)->order('id desc')->limit($pageStart, $pageSize)->order("$order desc")->select();
+            $list = M('customer_visit')->where($where)->order("$order desc")->limit($pageStart, $pageSize)->select();
             foreach ($list as &$info) {
                 $customerId = $info['customer_id'];
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
@@ -443,7 +443,7 @@ class CustomermanageAction extends Action
                 $info['is_business'] = $info['business_status'];
                 $info['industry'] = $industry_name[$info['industry']];
                 $info['add_time'] = date("Y-m-d", $info['add_time']);
-                $info['last_visit_time'] && $info['last_visit_time'] = date("Y-m-d", $info['last_visit_time']);
+                $info['last_visit_time'] = $info['last_visit_time'] ? date("Y-m-d", $info['last_visit_time']) : "无";
                 $info['finish_time'] && $info['finish_time'] = date("Y-m-d", $info['finish_time']);
                 $signInfo = $this->signInfo(false, $customerId);
                 $info['signer'] = $signInfo['signer'];
@@ -685,7 +685,7 @@ class CustomermanageAction extends Action
             $info['raw_data'] = $visitModel->where($map)->count();
             $notVisit = $visitModel->where($map)->where(['status' => 2])->count(); //不回访
             //可回访数据
-            $info['can_visit'] =  intval($info['raw_data'] - $notVisit);
+            $info['can_visit'] = intval($info['raw_data'] - $notVisit);
             //回访成功
             $info['visit_success'] = $visitModel->where($map)->where(['status' => 1])->count();
             //及时联系
