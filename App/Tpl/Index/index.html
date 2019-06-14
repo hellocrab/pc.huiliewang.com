@@ -478,8 +478,9 @@
                                         $.ajax({
                                             url: '/index.php?m=message&a=handle',
                                             message_id: id,
-                                            success(res){
-                                    $('.bri_dialog').css('display', 'none');
+                                            success(res) {
+                                                $('.bri_dialog').css('display',
+                                                    'none');
 
                                             }
                                         })
@@ -586,7 +587,18 @@
             }
         })
 
-
+        $('#goto').on('keydown', ev => {
+            let reg = new RegExp(/^\d+$/);
+            if (!($('#goto').val().trim().match(reg))) return;
+            if (ev.keyCode == 13 && ($('#goto').val() - 0 <= totalPage_)) {
+                current_page = $('#goto').val();
+                getWorkMouments();
+            }
+        })
+        $('#pageSize').change(ev => {
+            current_page = 1;
+            getWorkMouments()
+        })
 
         function getPipeline(type) {
             $.ajax({

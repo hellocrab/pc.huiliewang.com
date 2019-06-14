@@ -208,7 +208,7 @@ function getData(is_export) {
             department_id: $('#department').val(),
             pro_type: $('#type').val(),
             search: $('#search').val(),
-            is_phone: $('#phone_num').val(),
+            is_phone: $('#phone_num_').val(),
             is_business: sym == 1 ? $('#business').val() : '',
             is_export,
         },
@@ -465,7 +465,7 @@ $('.settingBox>span:nth-child(2)').click(ev => {
     if (sym == '待回访') sym = 0;
     else if (sym == '回访记录') sym = 1;
     else sym = 2;
-    let url = `/index.php?m=customermanage&a=visitList&visit_status=${sym}&page=${current_page}&page_size=${$('#pageSize').val()}&start_time=${$('#start').val()}&end_time=${$('#end').val()}&department_id=${$('#department').val()},&pro_type=${$('#type').val()}&search=${$('#search').val()}&is_phone=${$('#phone_num').val()}&is_business=${sym==2?$('#business').val():''}&is_export=1`
+    let url = `/index.php?m=customermanage&a=visitList&visit_status=${sym}&page=${current_page}&page_size=${$('#pageSize').val()}&start_time=${$('#start').val()}&end_time=${$('#end').val()}&department_id=${$('#department').val()},&pro_type=${$('#type').val()}&search=${$('#search').val()}&is_phone=${$('#phone_num_').val()}&is_business=${sym==2?$('#business').val():''}&is_export=1`
     var elemIF = document.createElement("iframe");
     elemIF.src = url;
     elemIF.style.display = "none";
@@ -483,7 +483,7 @@ $('#type').change(ev => {
     current_page = 1;
     getData()
 })
-$('#phone_num').change(ev => {
+$('#phone_num_').change(ev=>{
     current_page = 1;
     getData()
 })
