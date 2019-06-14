@@ -679,8 +679,9 @@ class CustomermanageAction extends Action
             $info['pro_type'] = $this->pro_type[$info['pro_type']];
             //原始数据
             $info['raw_data'] = $visitModel->where($map)->count();
+            $notVisit = $visitModel->where($map)->where(['status' => 2])->count(); //不回访
             //可回访数据
-            $info['can_visit'] = $visitModel->where($map)->where(['status' => 0])->count();
+            $info['can_visit'] =  intval($info['raw_data'] - $notVisit);
             //回访成功
             $info['visit_success'] = $visitModel->where($map)->where(['status' => 1])->count();
             //及时联系
