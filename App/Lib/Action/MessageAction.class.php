@@ -1083,7 +1083,8 @@ class MessageAction extends Action
      */
     public function messageList() {
         $type = I('type', 0);
-        $day = I('deadline', date('Y-m-d', time()));
+        $day = I('deadline');
+        $day = $day ? $day : date('Y-m-d', time());
         $page = I('page', 1);
         $pageSize = I('page_size', 10);
         $where = ['type' => ['gt', 0]];
@@ -1094,7 +1095,7 @@ class MessageAction extends Action
         $where['to_role_id'] = session('role_id');
         $startNo = ($page - 1) * $pageSize;
         $filed = "message_id,to_role_id,from_role_id,content,send_time,status,type,deadline,link,degree";
-        $list = M('message')->field($filed)->where($where)->order('deadline asc')->limit($startNo, $pageSize)->select();
+        $list = M('message')->field($filed)->where($where)->order('deadline desc')->limit($startNo, $pageSize)->select();
         $nextDay = strtotime(date('Y-m-d')) + 3600 * 24;
         $count = M('message')->where($where)->count();
         foreach ($list as &$info) {
