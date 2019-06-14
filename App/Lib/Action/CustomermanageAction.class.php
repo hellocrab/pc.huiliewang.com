@@ -364,7 +364,7 @@ class CustomermanageAction extends Action
         if (!$visitId) {
             $this->response('visit_id缺失', 500, false);
         }
-        M('customer_visit_note')->where(['visit_id' => $visitId])->save(['is_business' => 0]);
+        M('customer_visit')->where(['id' => $visitId])->save(['business_status' => 0]);
         $this->response('操作成功');
     }
 
@@ -438,8 +438,7 @@ class CustomermanageAction extends Action
                 $customerId = $info['customer_id'];
                 $info['pro_type'] = $this->proTypes[$info['pro_type']];
                 $info['city'] = $city_name[$info['city']];
-                $res = M('customer_visit_note')->where(['is_finish' => 1, 'visit_id' => $info['id']])->getField('is_business');
-                $info['is_business'] = $res ? $res : '';
+                $info['is_business'] =  $info['business_status'];
                 $info['industry'] = $industry_name[$info['industry']];
                 $info['add_time'] = date("Y-m-d", $info['add_time']);
                 $info['last_visit_time'] && $info['last_visit_time'] = date("Y-m-d", $info['last_visit_time']);
@@ -521,8 +520,8 @@ class CustomermanageAction extends Action
             $contactsId = $customerInfo['contacts_id'];
             $phone = M('contacts')->where(['contacts_id' => $contactsId])->getField('telephone');
             $phone && $data['phone'] = $phone;
-        }else{
-            if($contactsInfo['telephone'] && $contactsInfo['telephone'] != $visitInfo['phone']){
+        } else {
+            if ($contactsInfo['telephone'] && $contactsInfo['telephone'] != $visitInfo['phone']) {
                 $data['phone'] = $contactsInfo['telephone'];
                 $data['contact_name'] = $contactsInfo['name'];
                 $data['contacts_id'] = $contactsInfo['contacts_id'];
@@ -1002,6 +1001,10 @@ class CustomermanageAction extends Action
             //回访完成
             if ($key == "is_finish" && $value == 1) {
                 $data['finish_time'] = time();
+            }
+            //有商机
+            if ($key == 'is_business' && $value) {
+                M('customer_visit')->where(['id' => $visitId])->save(['business_status' => 1]);
             }
             //消息通知顾问
             if ($key == "message_role" && $value > 1) {
