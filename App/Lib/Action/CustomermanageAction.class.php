@@ -1136,7 +1136,7 @@ class CustomermanageAction extends Action
         $data['from_role_id'] = session('role_id') ? session('role_id') : 0;
         $data['content'] = $content;
         $data['send_time'] = time();
-        $data['deadline'] = strtotime(date('Y-m-d')) + 3600 * 24;
+        $data['deadline'] = strtotime(date('Y-m-d'));
         $data['type'] = $type;
         $data['link'] = $link;
         $data['degree'] = 2;
