@@ -1170,7 +1170,7 @@ class CustomermanageAction extends Action
         if (!$info) {
             return false;
         }
-        $customerId = $info['customer_Id'];
+        $customerId = $info['customer_id'];
         if ($data['status'] == 1) {
             $data['last_visit_time'] = time();
         } else {
