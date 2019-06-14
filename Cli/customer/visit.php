@@ -116,7 +116,8 @@ class Visit
                 $status = $history['status'];
                 $finishTime = $history['finish_time'];
                 $times = $history['times'] + 1;
-                if ($status == 0) {
+                $nest_visit = $history['nest_visit'];
+                if ($status == 0 && $nest_visit == 1) {
                     //未处理的
                     continue;
                 }
@@ -212,7 +213,8 @@ class Visit
                 $status = $history['status'];
                 $finishTime = $history['finish_time'];
                 $times = $history['times'] + 1;
-                if ($status == 0) {
+                $nest_visit = $history['nest_visit'];
+                if ($status == 0 && $nest_visit == 1) {
                     //未处理的
                     continue;
                 }
@@ -310,7 +312,8 @@ class Visit
                 $status = $history['status'];
                 $finishTime = $history['finish_time'];
                 $times = $history['times'] + 1;
-                if ($status == 0) {
+                $nest_visit = $history['nest_visit'];
+                if ($status == 0 && $nest_visit == 1) {
                     //未处理的
                     continue;
                 }

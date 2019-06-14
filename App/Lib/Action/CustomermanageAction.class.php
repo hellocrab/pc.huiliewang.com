@@ -1039,7 +1039,7 @@ class CustomermanageAction extends Action
         if (!$res) {
             $this->response("系统错误", 500, false);
         }
-        $data['is_finish'] == 1 && $this->changeVisit($visitId, ['status' => 1, 'business_status' => $params['is_business']]);
+        $data['is_finish'] == 1 && $this->changeVisit($visitId, ['status' => 1, 'business_status' => $params['is_business'], 'nest_visit' => $params['nest_visit']]);
         $this->response();
     }
 
@@ -1170,10 +1170,17 @@ class CustomermanageAction extends Action
         if (!$info) {
             return false;
         }
+        $customerId = $info['customer_Id'];
+        if ($data['status'] == 1) {
+            $data['last_visit_time'] = time();
+        } else {
+            $lastFinish = $model->where(['customer_id' => $customerId, 'status' => 1])->order("id desc")->getField("finish_time");
+            $data['last_visit_time'] = $lastFinish ? $lastFinish : 0;
+        }
         $data['update_time'] = time();
         $data['is_finish'] = 1;
         $data['finish_time'] = time();
-        $data['last_visit_time'] = time();
+
         return M('customer_visit')->where(['id' => $id])->save($data);
     }
 
