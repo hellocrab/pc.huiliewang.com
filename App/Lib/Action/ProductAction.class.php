@@ -798,6 +798,11 @@ class ProductAction extends Action {
 //            die;
         }
 
+        $eid_arr = array();
+        foreach ($list as $key=>$v){
+            $eid_arr[] = intval($v['eid']);
+        }
+        $has_pro = M('fine_project')->where(array('resume_id'=>array('in',$eid_arr)))->select();
         foreach ($list as $key => $li) {
             $where = "";
             $where['eid'] = $li['eid'];
@@ -806,6 +811,11 @@ class ProductAction extends Action {
             //查找是否被保护
 //            $has_pro = M('fine_project')->where(array('resume_id'=>intval($li['eid']),'is_protected'=>1))->find();
 //            $list[$key]['is_protected'] = empty($has_pro) ? 0 : 1 ;
+            //判断是否被保护
+            foreach ($has_pro as $kk=>$vv){
+                if($vv['resume_id'] == $li['eid'])
+                    $list[$key]['is_protected'] = empty($vv['is_protected']) ? 0 : 1;
+            }
             $list[$key]['birthday'] <= 0 && $list[$key]['birthday'] = strtotime("{$list[$key]['birthYear']}-{$list[$key]['birthMouth']}");
         }
         include APP_PATH . "Common/job.cache.php";
