@@ -1195,7 +1195,6 @@ class BusinessAction extends Action
         $m_contacts = M('Contacts');
         $m_business_status = M('BusinessStatus');
         $below_ids = getPerByAction('business', 'view');
-
         //判断权限
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();
         $owner_role_ids = explode(',', ($business_info['owner_role_id']));
@@ -1331,7 +1330,8 @@ class BusinessAction extends Action
         $resultDo->id = $id;
         $resultDo->name = $name;
         $project = $business->searchCallist($resultDo);
-        dump($project->data);die;
+        $data = $project->data;
+        $this->ajaxReturn($data);
     }
 
     //商机详情加载
@@ -1371,7 +1371,9 @@ class BusinessAction extends Action
         $this->call_ico3 = array("1" => "mubiao", "0" => "buheshi");
         $this->adviser_ico = array("1" => "jxgenjin", "0" => "ztgenjin");
         $this->assign("project", $project);
-
+        $this->call_icon1 = '{"接通电话" : "yijieting", "电话未接听" : "weijietong", "无效电话" :"konghao", "电话忙" :"guaduan"}';
+        $this->call_icon2 = '{"1" : "jxgenjin", "0" : "ztgenjin"}';
+        $this->call_icon3 = '{"1" : "mubiao", "0" : "buheshi"}';
 
         $d_business = D('BusinessView');
         $business_info = $d_business->where(array('business.business_id' => $business_id))->find();

@@ -679,8 +679,9 @@ class CustomermanageAction extends Action
             $info['pro_type'] = $this->pro_type[$info['pro_type']];
             //原始数据
             $info['raw_data'] = $visitModel->where($map)->count();
+            $notVisit = $visitModel->where($map)->where(['status' => 2])->count(); //不回访
             //可回访数据
-            $info['can_visit'] = $visitModel->where($map)->where(['status' => 0])->count();
+            $info['can_visit'] =  intval($info['raw_data'] - $notVisit);
             //回访成功
             $info['visit_success'] = $visitModel->where($map)->where(['status' => 1])->count();
             //及时联系
@@ -1039,7 +1040,7 @@ class CustomermanageAction extends Action
         if (!$res) {
             $this->response("系统错误", 500, false);
         }
-        $data['is_finish'] == 1 && $this->changeVisit($visitId, ['status' => 1, 'business_status' => $params['is_business']]);
+        $data['is_finish'] == 1 && $this->changeVisit($visitId, ['status' => 1, 'business_status' => $params['is_business'], 'nest_visit' => $params['nest_visit']]);
         $this->response();
     }
 
@@ -1170,10 +1171,17 @@ class CustomermanageAction extends Action
         if (!$info) {
             return false;
         }
+        $customerId = $info['customer_id'];
+        if ($data['status'] == 1) {
+            $data['last_visit_time'] = time();
+        } else {
+            $lastFinish = $model->where(['customer_id' => $customerId, 'status' => 1])->order("id desc")->getField("finish_time");
+            $data['last_visit_time'] = $lastFinish ? $lastFinish : 0;
+        }
         $data['update_time'] = time();
         $data['is_finish'] = 1;
         $data['finish_time'] = time();
-        $data['last_visit_time'] = time();
+
         return M('customer_visit')->where(['id' => $id])->save($data);
     }
 
