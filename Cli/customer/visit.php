@@ -242,9 +242,6 @@ class Visit
                 $finishTime = $history['finish_time'];
                 $times = $history['times'] + 1;
                 $nest_visit = $history['nest_visit'];
-                if($customerId == 27411 && $proType == 2){
-//                    var_dump($status,$nest_visit);
-                }
                 if ($status == 0 || $nest_visit == 0) {
                     //未处理的
                     continue;

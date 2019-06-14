@@ -571,10 +571,10 @@ class CustomermanageAction extends Action
         if ($timeEnd && ($timeStart > $timeEnd)) {
             $this->response('结束时间不能大于开始时间', 500, false);
         }
-        $timeStart && $where['visit.finish_time'] = ['gt', strtotime($timeStart)];
-        $timeEnd && $where['visit.finish_time'] = ['lt', strtotime($timeEnd)];
+        $timeStart && $where['note.add_time'] = ['gt', strtotime($timeStart)];
+        $timeEnd && $where['note.add_time'] = ['lt', strtotime($timeEnd)];
         if ($timeStart && $timeEnd) {
-            $where['visit.finish_time'] = [['gt', strtotime($timeStart)], ['lt', strtotime($timeEnd)]];
+            $where['note.add_time'] = [['gt', strtotime($timeStart)], ['lt', strtotime($timeEnd)]];
         }
         if ($search) {
             $where['customer_name|signer|contact_name|phone'] = ['like', "%{$search}%"];
