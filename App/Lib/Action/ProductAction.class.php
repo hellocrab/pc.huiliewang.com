@@ -3440,6 +3440,7 @@ class ProductAction extends Action {
             ],
             'resume' => [
                 'mobile' => 'telephone',
+                'title' => 'curDepartment',
                 'email' => 'email',
                 'gender' => 'sex',
                 'education' => 'edu',
@@ -3552,7 +3553,6 @@ class ProductAction extends Action {
 
         $startWork = end($exp);
         $resume['startWorkyear'] = $startWork['starttime'] ? date('Y', $startWork['starttime']) : 0;
-
         $dbDataInfo = [];
         $dbDataInfo['evaluate'] = $list['advantage'] ? $list['advantage'] : '';
         $dbProjectData = [];

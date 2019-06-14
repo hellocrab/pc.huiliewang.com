@@ -218,6 +218,7 @@ class ContactsAction extends Action {
 					}else{
 						alert('error', L('NOT NULL',array(L('CUSTOMER'))), $_SERVER['HTTP_REFERER']);
 					}
+                    ContactsModel::updateLog($_POST['contacts_id'],$_POST['customer_id'], $_POST);
 					$a = $m_contacts->where('contacts_id= %d',$_POST['contacts_id'])->save();
 //					header('content-type:text/html;charset=utf-8');
 //					dump(M()->getLastSql());die;
