@@ -242,18 +242,21 @@ class Visit
                 $finishTime = $history['finish_time'];
                 $times = $history['times'] + 1;
                 $nest_visit = $history['nest_visit'];
+                if($customerId == 27411 && $proType == 2){
+//                    var_dump($status,$nest_visit);
+                }
                 if ($status == 0 || $nest_visit == 0) {
                     //未处理的
                     continue;
                 }
                 $thisTimeSql = "select count('offer.id') as counts  from " .
-                    " {$this->business} as b ,{$this->fine} as fine ,{$this->offer} as offer" .
+                    " {$this->business} as b ,{$this->fine} as fine ,{$this->enter} as offer" .
                     " where offer.fine_id = fine.id " .
                     " and fine.project_id = b.business_id" .
                     " and b.pro_type = {$proType}" .
                     " and  b.customer_id = {$customerId}" .
                     " and offer.addtime > {$finishTime}";
-                $info = $this->selectSql($thisTimeSql);
+                $info = $this->selectSql($thisTimeSql,false);
                 $thisCondition = isset($info['counts']) ? $info['counts'] : 0;
                 //是否满足条件
                 $nestMin = $nestCondition['min_condition']; //下次满足条件金额
