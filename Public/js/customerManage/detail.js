@@ -86,9 +86,10 @@ function create_record(val) {
             <p>服务态度：${num2str(val.service_degree)}</p>
             <p>反馈速度：${num2str(val.feedback_degree)}</p>
             <p>简历数是否足够：${val.is_resume_enough==1?'是':'否'}</p>
-            <p>推荐质量：${num2str(val.recommends_degree)}</p>
-            <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
+            <p>推荐质量：${num2str(val.quality_degree)}</p>
+            <p>是否有商机：${val.is_business==1?'是，备注内容：'+val.business_note:'否'}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
             <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
@@ -97,18 +98,19 @@ function create_record(val) {
             </span>
             <span class='point'>·</span>
         </div>`)
-        } else if (val.protype == 2) {
+        } else if (val.pro_type == 2) {
             $('.record_sec').append(`<div class='record_box'>
             <p>用户<span>【${val.create_role}】</span>添加了回访备注</p>
             <p>电话结果：${val.call_status}</p>
             <p>是否继续跟进：${val.is_follow==1?'是':'否'}</p>
-            <p>人员入职情况：${num2str(val.service_degree)}</p>
+            <p>人员入职情况：${num2str(val.enter_degree)}</p>
             <p>整体满意度：${num2str(val.degree)}</p>
             <p>反馈速度：${num2str(val.feedback_degree)}</p>
             <p>推荐数量：${num2str(val.recommends_degree)}</p>
             <p>推荐质量：${num2str(val.quality_degree)}</p>
-            <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
+            <p>是否有商机：${val.is_business==1?'是，备注内容：'+val.business_note:'否'}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
             <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
@@ -128,6 +130,7 @@ function create_record(val) {
             <p>推荐匹配度：${num2str(val.matching_degree)}</p>
             <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
             <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
@@ -293,6 +296,7 @@ $('.visit_dialog .submit').click(ev => {
         success(res) {
             if (res.code == 200) {
                 swal('操作成功', '', 'success')
+                return
                 $('.visit_dialog').css('display', 'none')
                 location.reload()
             } else {

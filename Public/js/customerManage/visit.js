@@ -410,9 +410,10 @@ function create_record(val) {
             <p>服务态度：${num2str(val.service_degree)}</p>
             <p>反馈速度：${num2str(val.feedback_degree)}</p>
             <p>简历数是否足够：${val.is_resume_enough==1?'是':'否'}</p>
-            <p>推荐质量：${num2str(val.recommends_degree)}</p>
-            <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
+            <p>推荐质量：${num2str(val.quality_degree)}</p>
+            <p>是否有商机：${val.is_business==1?'是，备注内容：'+val.business_note:'否'}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
             <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
@@ -431,8 +432,9 @@ function create_record(val) {
             <p>反馈速度：${num2str(val.feedback_degree)}</p>
             <p>推荐数量：${num2str(val.recommends_degree)}</p>
             <p>推荐质量：${num2str(val.quality_degree)}</p>
-            <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
+            <p>是否有商机：${val.is_business==1?'是，备注内容：'+val.business_note:'否'}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
             <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
@@ -450,8 +452,9 @@ function create_record(val) {
             <p>岗位理解：${val.is_understand==1?'是':'否'}</p>
             <p>是否推荐：${val.is_recommend==1?'是':'否'}</p>
             <p>推荐匹配度：${num2str(val.matching_degree)}</p>
-            <p>是否有商机：${val.is_business==1?'是':'否'}，备注内容：${val.business_note}</p>
+            <p>是否有商机：${val.is_business==1?'是，备注内容：'+val.business_note:'否'}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
+            <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
             <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
