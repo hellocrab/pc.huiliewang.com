@@ -81,11 +81,11 @@ function getData(is_export) {
                                 <td>${val.not_understand}</td>
                                 <td>${val.recommend}</td>
                                 <td>${val.not_recommend}</td>
-                                <td>${val.quality_very_satisfied}</td>
-                                <td>${val.quality_satisfaction}</td>
-                                <td>${val.quality_general}</td>
-                                <td>${val.quality_dissatisfied}</td>
-                                <td>${val.quality_very_dissatisfied}</td>
+                                <td>${val.matching_very_satisfied}</td>
+                                <td>${val.matching_satisfaction}</td>
+                                <td>${val.matching_general}</td>
+                                <td>${val.matching_dissatisfied}</td>
+                                <td>${val.matching_very_dissatisfied}</td>
                                 <td>${val.Information_error}</td>
                                 <td>${val.business}</td>
                             </tr>`
