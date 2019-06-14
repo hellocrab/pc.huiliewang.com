@@ -338,7 +338,7 @@ class Rank
                 $contentBirthday = "您有客户：{$customerName} 联系人：{$contactsInfo['contact_name']} 今天生日";
             }
             //提前15天发送
-            if (($currentDay - $currentBirthday) == 15 * 24 * 3600) {
+            if (($currentBirthday - $currentDay) == 15 * 24 * 3600) {
                 $day = 15;
                 $contentBirthday = "您有客户：{$customerName}  联系人：{$contactsInfo['contact_name']} 15天后生日";
             }
@@ -352,7 +352,7 @@ class Rank
             $data['from_role_id'] = 0;
             $data['content'] = $contentBirthday;
             $data['send_time'] = time();
-            $data['deadline'] = strtotime(date('Y-m-d')) + $day * 3600 * 24;
+            $data['deadline'] = strtotime(date('Y-m-d'));
             $data['type'] = 2;
             $data['link'] = '';
             $data['params'] = json_encode(['customer_id' => $customerId, 'contacts_id' => $contactsId]);
@@ -507,7 +507,7 @@ class Rank
      * @param string $env
      * @return PDO
      */
-    private function dbConn($env = 'product') {
+    private function dbConn($env = 'test') {
 
         // 数据库链接 配置
         $productConf = array(
