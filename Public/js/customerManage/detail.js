@@ -270,6 +270,17 @@ $('.visit_dialog .submit').click(ev => {
     } else if ($('input[name=complate]:checked').length == 0) {
         swal('请填写完整', '', 'warning')
         return
+    }else{
+        if (temp == 1) {
+            speed = $('input[name=callback]:checked').val();
+            quality = $('input[name=quality]:checked').val();
+
+        } else if (temp == 2) {
+            speed = $('input[name=rufk]:checked').val();
+            quality = $('input[name=rutz]:checked').val();
+
+
+        }
     }
     $.ajax({
         url: '/index.php?m=customermanage&a=visitRemark',
@@ -301,6 +312,7 @@ $('.visit_dialog .submit').click(ev => {
         success(res) {
             if (res.code == 200) {
                 swal('操作成功', '', 'success')
+                return
                 $('.visit_dialog').css('display', 'none')
                 location.reload()
             } else {

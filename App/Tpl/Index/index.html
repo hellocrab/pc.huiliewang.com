@@ -434,7 +434,8 @@
                         <td>${val.deadline.substr(0,10)}</td>
                         <td>${val.degree}</td>
                         <td class='${val.status==0?'wait':val.status==1?'ed':'dead'}'>${val.status==0?'未处理':val.status==1?'已处理':'已过期'}</td>
-                        <td style='display:${val.type!=2?'table-cell':'none'}'><a href='${val.link}' list_id='${val.message_id}'>${val.status==0?'去处理':'查看'}</a></td>
+                        <td style='display:${val.type!=2&&val.type!=3?'table-cell':'none'}'><a href='${val.link}' list_id='${val.message_id}'>${val.status==0?'去处理':'查看'}</a></td>
+                        <td style='display:${val.type=3?'table-cell':'none'}'><a href='${val.link}' list_id='${val.message_id}'>${val.status==0?'去处理':''}</a></td>
                         <td style='display:${val.type==2?'table-cell':'none'}'><span class='check_birth' list_id='${val.message_id}'>查看</span></td>
                     </tr>`
                         })

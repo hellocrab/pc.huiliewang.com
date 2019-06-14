@@ -1137,13 +1137,14 @@ class MessageAction extends Action
             $customerName = M('customer')->where(['customer_id' => $customerId])->getField('name');
             $achievement = M('achievement')->where(['com_id' => $customerId, 'user_id' => $userRoleId])->sum('integral');
             $rank = M('customer_rank')->where(['customer_id' => $customerId])->getField('rank_name');
-            $contactInfo = M('contacts')->where(['contacts_id' => $contactsId])->field('name,telephone')->find();
+            $contactInfo = M('contacts')->where(['contacts_id' => $contactsId])->field('birthday,name,telephone')->find();
             $contactName = isset($contactInfo['name']) ? $contactInfo['name'] : '';
             $telephone = isset($contactInfo['telephone']) ? $contactInfo['telephone'] : '';
-            $birthday = isset($contactInfo['birthday']) ? $contactInfo['birthday'] : '';
+            $birthday = isset($contactInfo['birthday']) ? date("Y-") . $contactInfo['birthday'] : '';
             $sons = ['customer_name' => $customerName, 'achievement' => $achievement ? $achievement : 0, 'rank' => $rank, 'contacts' => $contactName, 'telephone' => $telephone, 'birthday' => $birthday];
             //当天生日
             $key = 'today';
+            $deadline = $birthday ? strtotime($birthday) : $deadline;
             $data['today'] = ['day' => '今日', 'sons' => [], 'count' => 0];
             if (($nestDay - 3600 * 24) <= $deadline && $deadline <= $nestDay) {
                 if (isset($data[$key])) {
