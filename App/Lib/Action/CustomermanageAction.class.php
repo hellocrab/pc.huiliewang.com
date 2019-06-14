@@ -727,6 +727,13 @@ class CustomermanageAction extends Action
             $info['service_dissatisfied'] = $noteModel->where(['service_degree' => 2])->where($map)->count($field);
             $info['service_very_dissatisfied'] = $noteModel->where(['service_degree' => 1])->where($map)->count($field);
 
+            //服务满意度
+            $info['matching_very_satisfied'] = $noteModel->where(['matching_degree' => 5])->where($map)->count($field);
+            $info['matching_satisfaction'] = $noteModel->where(['matching_degree' => 4])->where($map)->count($field);
+            $info['matching_general'] = $noteModel->where(['matching_degree' => 3])->where($map)->count($field);
+            $info['matching_dissatisfied'] = $noteModel->where(['matching_degree' => 2])->where($map)->count($field);
+            $info['matching_very_dissatisfied'] = $noteModel->where(['matching_degree' => 1])->where($map)->count($field);
+
             //反馈速度满意度
             $info['feedback_very_satisfied'] = $noteModel->where(['feedback_degree' => 5])->where($map)->count($field);
             $info['feedback_satisfaction'] = $noteModel->where(['feedback_degree' => 4])->where($map)->count($field);
