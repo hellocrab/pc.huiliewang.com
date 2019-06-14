@@ -216,6 +216,15 @@
     color: #ccc;
     line-height: 220px;
 }
+.content thead{
+    width: calc(100% - 16px) !important;
+}
+.content td,.content th{
+    width: 15%;
+}
+.content td:nth-child(1),.content th:nth-child(1){
+    width: 40%;
+}
 .content .noData{
     /* columns: 5; */
 }
@@ -230,9 +239,7 @@
     height: 270px;
 }
 
-.content thead,.bri_dialog thead {
-    width: 100% - 16px !important;
-}
+
 .sd{
     padding: 0 40px;
 }

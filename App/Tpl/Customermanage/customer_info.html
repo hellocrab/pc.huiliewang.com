@@ -381,18 +381,17 @@
         $(".call_out").on('click', function () {
     var _this = this;
     let seatNum = "{$zxhNo|default=''}";
-    let itemId = $(_this).attr('rel');
     if (seatNum) {
         switchLine();
     } else {
         var fineId = $(_this).attr('data-id');
         $.post(
             "{:U('callcenter/call_out')}", {
-                itemId,
+                itemId:id,
                 fineId,
-                type: 1,
+                type: 3,
                 tel: '',
-                channel: 1
+                channel: 1,
             },
             function (data) {
                 var obj = $.parseJSON(data);

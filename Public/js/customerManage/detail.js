@@ -1,5 +1,6 @@
 let cus_id = window.location.href.match(/&cus_id=(\S*)&/)[1];
 let id = window.location.href.match(/&id=(\S*)/)[1];
+let pro_type = '';
 $.ajax({
     url: '/index.php?m=customermanage&a=customerInfo',
     data: {
@@ -7,6 +8,7 @@ $.ajax({
     },
     success(res) {
         if (res.code == 200) {
+            pro_type = res.info.info.pro_type;
             $('.ti1 span:nth-child(1)').html(res.info.info.customer_name);
             $('.rank span:nth-child(2)').html(res.info.info.rank);
             $('.keli span:nth-child(2)').html(res.info.info.contacts);
@@ -151,6 +153,7 @@ function create_record(val) {
         </div>`)
     }
 }
+
 $('.cannal').click(ev => {
     $('.dialog').css('display', 'none')
     $('.radio_box input[type=radio]').attr('checked', false);
@@ -181,6 +184,8 @@ $('.ti1 span:nth-child(3)').click(ev => {
                 res.info.list.map(val => {
                     $('#advicer').append(`<option value='${val.id}'>${val.name}</option>`);
                 })
+                $('#visit_type').val(pro_type);
+                $('#visit_type').change();
                 $('.visit_dialog').css('display', 'block');
                 $('.visit_dialog .submit').attr('sub_id', id);
             } else {
