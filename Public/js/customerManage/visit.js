@@ -255,8 +255,8 @@ function getData(is_export) {
                             <td><a><span class='visit' cus_id='${val.id}' cus_name='${val.customer_name}' cus_id_='${val.customer_id}'>回访</span><span class='visitless' cus_id='${val.id}' cus_name='${val.customer_name}'>不回访</span></td>
                         </tr>`
                     })
-                    $('th:nth-last-child(3)').css('display', 'block');
-                    $('th:nth-last-child(2)').css('display', 'none');
+                    $('.he1 th:nth-last-child(3)').css('display', 'block');
+                    $('.he1 th:nth-last-child(2)').css('display', 'none');
                 } else if (sym == 1) {
                     res.info.list.map((val, index) => {
                         doc += `<tr>
@@ -277,8 +277,8 @@ function getData(is_export) {
                             </td>
                         </tr>`
                     })
-                    $('th:nth-last-child(3)').css('display', 'none');
-                    $('th:nth-last-child(2)').css('display', 'block');
+                    $('.he1 th:nth-last-child(3)').css('display', 'none');
+                    $('.he1 th:nth-last-child(2)').css('display', 'block');
                 }
                 $('table tbody').empty();
                 $('table tbody').append(doc);
