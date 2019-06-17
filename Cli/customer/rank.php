@@ -61,6 +61,8 @@ class Rank
             return false;
         }
 
+        //删除以往的不满足条件的数据
+        $this->deleteData('mx_customer_rank', ['eq' => ['is_manual' => 0, 'is_black' => 0]]);
         //客户等级初始值
         $defaultMoney = $this->rankConfig(0);
         if (!$defaultMoney) {

@@ -28,6 +28,29 @@
                 </td>
            </tr>
            </if>
+
+           <tr  height="50">
+               <td style="text-align: right;"><label style="color: red;">*</label>线索提供人:</td>
+               <td class="result_select" style="padding-left: 20px;">
+                   <input type="hidden" id="line_user" name="line_role">
+                   <input type="text" class="form-control" id="user_name"  onclick="userChoose('user_name','line_user',2)" style="cursor:pointer;" placeholder="请点击选择" readonly="readonly" value="{$line_role|default=''}">
+               </td>
+           </tr>
+           <tr  height="50">
+               <td style="text-align: right;"><label style="color: red;">*</label>BD姓名:</td>
+               <td class="result_select" style="padding-left: 20px;">
+                   <input type="hidden" id="bd_role" name="bd_role">
+                   <input type="text" class="form-control"  onclick="userChoose('bd_name','bd_role',3)" style="cursor:pointer;" placeholder="请点击选择" readonly="readonly" id="bd_name">
+               </td>
+           </tr>
+           <tr  height="50">
+               <td style="text-align: right;"><label style="color: red;">*</label>项目经理:</td>
+               <td class="result_select" style="padding-left: 20px;">
+                   <input type="hidden" id="project_role" name="project_role" value="{$projectInfo.project_role_id|default=0}">
+                   <input type="text" class="form-control"  id="project_user_name" value="{$projectInfo.project_role|default=''}" onclick="userChoose('project_user_name','project_role',4)" aria-required="true" style="cursor:pointer;" placeholder="请点击选择" readonly="readonly">
+               </td>
+           </tr>
+
            <tr  height="50">
                <td style="text-align: right;"><label style="color: red;">*</label>发票编号:</td>
                <td class="result_select" style="padding-left: 20px;">
@@ -97,7 +120,33 @@
     </div>
 </div>
 </form>
-
+<div style="display:none" id="dialog-role-list2" title="选择线索提供人">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<div style="display:none" id="dialog-role-list3" title="选择BD姓名">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<div style="display:none" id="dialog-role-list4" title="选择项目经理">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
 <div style="display:none" id="dialog-gw">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
@@ -117,23 +166,59 @@
 
     $(function () {
         $("input[name=ftype]").click(function () {
-            var flag=$(this).val();
+            var flag = $(this).val();
             $("#ftype").val(flag);
-            var a=0,b=270;
-            if(flag==2){
+            var a = 0, b = 270;
+            if (flag == 2) {
                 $("input[name=price]").val(b.toFixed(2));
-                $("input[name=price]").attr("readOnly",true);
-            }else{
+                $("input[name=price]").attr("readOnly", true);
+            } else {
                 $("input[name=price]").val(a.toFixed(2));
-                $("input[name=price]").attr("readOnly",false);
+                $("input[name=price]").attr("readOnly", false);
             }
         })
 
-        $("input,select").on("blur",function () {
-            $(this).css("border","1px solid #d8e3ef");
+        $("input,select").on("blur", function () {
+            $(this).css("border", "1px solid #d8e3ef");
         })
-
     })
+
+    function userChoose(id,$valueId,dialog) {
+//选择成员
+        $('#'+id+'').click(function () {
+            $('#dialog-role-list'+dialog).dialog('open');
+            $('#dialog-role-list'+dialog).load("{:U('User/listDialog')}");
+        });
+        $('#dialog-role-list'+dialog).dialog({
+            autoOpen: false,
+            modal: true,
+            width: 700,
+            maxHeight: 400,
+            buttons: {
+                "{:L('CONFIRM')}": function () {
+                    var joiner = new Array();
+                    var joiner_name = new Array();
+                    $('input:checkbox[name="owner"]:checked').each(function () {
+                        joiner.push($(this).val());
+                        joiner_name.push($(this).attr('rel'));
+                    })
+                    joiner = joiner.join(",");
+                    joiner_name = joiner_name.join(",");
+                    var nameskey = sessionStorage.getItem("nameskey");
+                    var idskey = sessionStorage.getItem("idskey");
+                    $('#'+id+'').val("");
+                    $('#'+id+'').val("");
+                    $('#'+id+'').val(nameskey);
+                    $('#'+$valueId+'').val(idskey);
+                    $(this).dialog("close");
+                },
+                "{:L('CANCEL')}": function () {
+                    $(this).dialog("close");
+                }
+            },
+            position: ["center", 100]
+        });
+    }
 
 
 

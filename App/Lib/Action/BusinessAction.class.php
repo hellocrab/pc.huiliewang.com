@@ -2527,6 +2527,10 @@ class BusinessAction extends Action
                 $this->error('添加失败，请重试！');
             }
         }
+        $projectRole = M('business')->where(['business_id'=> $project['project_id']])->getField('joiner');
+        $projectRoleInfo = M('user')->where(['role_id' => $projectRole])->getField("full_name");
+        $this->assign("projectInfo", ['project_role'=>$projectRoleInfo , 'project_role_id'=> $projectRole]);
+
         $this->assign("pro_type", $this->pro_type);
         $this->display();
     }
