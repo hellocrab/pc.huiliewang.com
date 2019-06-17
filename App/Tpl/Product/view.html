@@ -31,6 +31,75 @@
         border: 1px solid #ff8484;
         padding: 0 5px;
     }
+    .tui{
+        position: fixed;
+        right:0 ;
+        top: 110px;
+        width: 0    ;
+        z-index: 101;
+        transition: 0.2s;
+        overflow: hidden;
+    }
+    .tui_content{
+        background: #fff;
+        position: relative;
+        border:1px #ccc solid;
+        border-right: none;
+        z-index: 103;
+        box-shadow: 0 0 5px rgba(0,0,0,.2);
+        
+    }
+    .tui_head>span{
+        display:block;
+        padding: 10px;
+        padding-bottom: 0;
+        font-size: 16px;
+        color:#3497e2;
+    }
+    .tui_head{
+        position: relative;
+    }
+    .tui_body{
+        max-height: 800px;
+        overflow-y: scroll;
+    }
+    .tui_head>span>span{
+        display: inline-block;
+        margin-right: 5px;
+        width: 3px;
+        background: #3497e2;
+        height: 13px;
+    }
+    .tui_content .fa-times{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 20px;
+        color: #ccc;
+        cursor:pointer;
+    }
+    .tui_box{
+        margin: 10px;
+        padding: 10px;
+        border:1px solid #ccc;
+    }
+    .user_info{
+        display:flex;
+        align-items:center;
+    }
+    .user_info *{
+        margin-right: 10px;
+    }
+    .user_info span:nth-child(3){
+        font-size: 12px;
+        color:#999;
+    }
+    .tui_box>span{
+        font-size: 12px;
+        line-height: 18px;
+        display: block;
+        margin:5px 0;
+    }
 </style>
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/webuploader/webuploader.css">
 
@@ -46,6 +115,31 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeIn">
+    <div class="tui">
+        <div class="tui_content">
+                <div class="tui_head">
+                        <i class='fa fa-times'></i>
+                        <span><span></span>人才动态</span>
+                </div>
+                <div class="tui_body">
+                        <volist name="status_log" id="vo">
+                                <div class="tui_box">
+                                    <div class="user_info">
+                                        <if condition="$vo['thumb_path'] neq null">
+                                            <img src="{$vo['thumb_path']}" alt="">
+                                            <else/>
+                                            <img src="/Public/img/avatar_default.png" alt="">
+                                        </if>
+                                        <span>{$vo['user']}</span>
+                                        <span>{$vo['addtime']|date='Y-m-d H:i',###}</span>
+                                    </div>
+                                    <span>公司名：<a href="http://localhost/index.php?m=customer&a=view&id={$vo['com_id']}">{$vo['name']}</a></span>
+                                    <span>候选人状态：{$vo['status']}</span>
+                                </div>
+                            </volist>
+                </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <!-- <div class="white-bg" style="padding:7px 25px 0px 25px;margin-bottom:15px;">
@@ -77,6 +171,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a id="1" href="{:U('product/edit','id='.$_GET['id'])}"><i class="fa fa-edit (alias)"></i>&nbsp;编辑</a></li>
+                                <if condition='$status_log neq null'><li><a id="show_tui" href="#"><i class="fa fa-window-maximize"></i>&nbsp;动态</a></li></if>
                                 <!--<li><a id="" href="#"><i class="fa fa-bell-o"></i>&nbsp;添加提醒</a></li>-->
                                 <!--<li><a id="" href="#"><i class="fa fa-comments"></i>&nbsp;添加备注</a></li>-->
                             </ul>
@@ -909,7 +1004,14 @@
                                                                     var atype = thisId.substr(1);
                                                                     $('#left_list a[type="' + atype + '"]').tab('show');
                                                                 });
-
+                                                                $(function () {
+                                                                    $('#show_tui').click(ev=>{
+                                                                        $('.tui').css('width','400px')
+                                                                    })
+                                                                    $('.tui .fa-times').click(ev=>{
+                                                                        $('.tui').css('width','0');
+                                                                    })
+                                                                });
 
                                                                 $(function () {
                                                                     var resumeurl = $("#resumeurl").val();
@@ -1811,8 +1913,7 @@
                                             }
                                         } else {
                                             $('.fa-times').remove()
-                                            alert_crm(obj.msg +
-                                                ",请联系管理员！");
+                                            alert_crm(obj.msg);
                                         }
                                     }
                                 );
@@ -1875,8 +1976,7 @@
                                                     }
                                                 } else {
                                                     $('.fa-times').remove()
-                                                    alert_crm(obj.msg +
-                                                        ",请联系管理员！");
+                                                    alert_crm(obj.msg);
                                                 }
                                             }
                                         );
