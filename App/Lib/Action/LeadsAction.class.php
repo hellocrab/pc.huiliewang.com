@@ -172,6 +172,14 @@ class LeadsAction extends Action
     }
 
     /**
+     * 原始晋升业绩设置
+     */
+
+    public function firsthand_hand(){
+
+    }
+
+    /**
      * 字段查重
      * */
     public function checkinfo() {
