@@ -29,7 +29,6 @@ class CallcenterAction extends Action {
         '1' => '人才',
         '2' => '客户联系人'
     ];
-
     /**
      * 融营云呼叫中心SIG获取
      */
@@ -134,7 +133,7 @@ class CallcenterAction extends Action {
                     if($phone){
                         $tel = $phone;
                     } else {
-                        exit(json_encode(['code' => 0, 'msg' => '请检查联系电话']));
+                        exit(json_encode(['code' => 0, 'msg' => '您所拨打的电话号码'.$tel.'错误，请修改后拨打']));
                     }
                 }
                 
@@ -147,8 +146,6 @@ class CallcenterAction extends Action {
                 if ($user['telephone']) {
                     session('tel', $user['telephone']);
                     $sourceTel = $user['telephone'];
-                } else {
-                    exit(json_encode(['code' => 0, 'msg' => '请绑定手机号码']));
                 }
             }
         } else {
@@ -156,7 +153,6 @@ class CallcenterAction extends Action {
         }
 
         //日志记录
-
         $userName = session('full_name');
         $log = [
             'role_id' => session('role_id'),
@@ -171,18 +167,18 @@ class CallcenterAction extends Action {
 
         //电话号码验证
         $sourceTel = trim($sourceTel);
+        if(!$sourceTel){
+            exit(json_encode(['code' => 0, 'msg' => '您的手机号未添加，添加方式：点击系统右上角头像图标——个人资料——手机号码']));
+        }
         $tel = trim($tel);
         $preg = '/^((0\d{2,3}-?\d{7,8})|(1[3584796]\d{9}))$/';
         if(!$tel || !preg_match($preg,$tel,$match)){
-            exit(json_encode(['code' => 0, 'msg' => '请确认候选人联系电话是否正确: '.$tel]));
+            exit(json_encode(['code' => 0, 'msg' => '您所拨打的电话号码'.$tel.'错误，请修改后拨打']));
         }
 
         $phoneRecordData = ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel, 'source' => $type, 'item_id' => $itemId];
         if ($channel == 1) {
             //品聘坐席外呼
-            if (!$sourceTel) {
-                exit(json_encode(['code' => 0, 'msg' => '您的电话号码错误']));
-            }
             $msg = $this->pinPingCall($sourceTel, $tel);
             $isSuccess = $msg['meta']['success'];
             if (!$isSuccess) {
@@ -199,7 +195,7 @@ class CallcenterAction extends Action {
                 case 2 : //融营云坐席外呼
                     $sourceTel = M('user')->where(['role_id' => session('role_id')])->getField('ryy_tel');
                     if (!$sourceTel) {
-                        exit(json_encode(['code' => 0, 'msg' => '请设置坐席号，谢谢']));
+                        exit(json_encode(['code' => 0, 'msg' => '您的坐席电话未添加，添加方式：点击系统右上角头像图标——个人资料——坐席电话,如果您未分配坐席电话请咨询综合部']));
                     }
                     $secertArr = [
                         'accountSid' => self::RONGYINYUN_ACCOUNT_SID,
@@ -227,7 +223,7 @@ class CallcenterAction extends Action {
                         $this->record($callsId, $phoneRecordData, $channel);
                         echo json_encode(['code' => 1, 'msg' => '拨打成功']);
                     } elseif($callStatus['Flag'] == 2009) {
-                        echo json_encode(['code' => 0, 'msg' => '没有绑定坐席，请联系管理员']);
+                        echo json_encode(['code' => 0, 'msg' => '您的坐席电话未添加，添加方式：点击系统右上角头像图标——个人资料——坐席电话，如果您未分配坐席电话请咨询综合部']);
                     }
                     break;
             }
@@ -263,7 +259,7 @@ class CallcenterAction extends Action {
     private function rongYinYunCall($timestamp, $tel, $sourceTel, $secertArr) {
 
         if (!$secertArr) {
-            exit(json_encode(['code' => 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
+            exit(json_encode(['code' => 0, 'msg' => '抱歉，目前无法拨打电话，运营商线路出现问题，技术部正在向运营商咨询解决方案，请您耐心等待']));
         }
         $sig = $this->getsig($timestamp, $secertArr['accountSid'], $secertArr['appId']);
         $auth = $this->getauth($timestamp, $secertArr['appId'], $secertArr['appToken']);
@@ -271,7 +267,7 @@ class CallcenterAction extends Action {
 
         if ($uuid != 200) {
             //融营云服务暂时不可用
-            exit(json_encode(['code' => 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
+            exit(json_encode(['code' => 0, 'msg' => '抱歉，目前无法拨打电话，运营商线路出现问题，技术部正在向运营商咨询解决方案，请您耐心等待']));
         }
 
         $url = "https://wdapi.yuntongxin.vip/bind/callEvent/v2?Sig=" . $sig;
@@ -304,7 +300,7 @@ class CallcenterAction extends Action {
     private function rongYinYunCallBackChannel($timestamp, $tel, $sourceTel, $secertArr) {
 
         if (!$secertArr) {
-            exit(json_encode(['code' => 0, 'msg' => '融营云呼叫中心暂时停止服务，请联系管理员']));
+            exit(json_encode(['code' => 0, 'msg' => '抱歉，目前无法拨打电话，运营商线路出现问题，技术部正在向运营商咨询解决方案，请您耐心等待']));
         }
 
         $sig = $this->getsig($timestamp, $secertArr['accountSid'], $secertArr['appId']);
