@@ -169,9 +169,20 @@ class CallcenterAction extends Action {
         ];
         M('action_log')->add($log);
 
+        //电话号码验证
+        $sourceTel = trim($sourceTel);
+        $tel = trim($tel);
+        $preg = '/^((0\d{2,3}-?\d{7,8})|(1[3584796]\d{9}))$/';
+        if(!$tel || !preg_match($preg,$tel,$match)){
+            exit(json_encode(['code' => 0, 'msg' => '电话错误: '.$tel]));
+        }
+
         $phoneRecordData = ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel, 'source' => $type, 'item_id' => $itemId];
         if ($channel == 1) {
             //品聘坐席外呼
+            if (!$sourceTel) {
+                exit(json_encode(['code' => 0, 'msg' => '您的电话号码错误']));
+            }
             $msg = $this->pinPingCall($sourceTel, $tel);
             $isSuccess = $msg['meta']['success'];
             if (!$isSuccess) {
