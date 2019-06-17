@@ -1464,11 +1464,22 @@ class ProductAction extends Action {
         //获取人才状态日志
         //获取加入CallList日志
         $log_list = array();
-        $arr_call = D('ProductCView')->where(array('resume_id'=>intval($eid)))->field('callist_role_id,tracker,addtime,name')->select();
+        $arr_call = D('ProductCView')->where(array('resume_id'=>intval($eid)))->field('com_id,callist_role_id,tracker,addtime,name')->select();
+        $roleId = array();
+        foreach ($arr_call  as $k=>$v){
+            $roleId[] = intval($v['tracker']);
+        }
+        $roids = implode(',',$roleId);
+        $d =  M('user')->where('role_id in ('.$roids.')')->getField('role_id,full_name,thumb_path',true);
         if(!empty($arr_call)){
             foreach ($arr_call as $k=>$v){
                 $arr_call[$k]['callist_role_id'] = empty($v['callist']) ? $v['tracker'] : $v['callist_role_id'];
-                $arr_call[$k]['user'] = M('user')->where(array('role_id'=>intval($v['tracker'])))->getField('full_name');
+                foreach ($d as $kk=>$vv){
+                    if($kk == $v['tracker']){
+                        $arr_call[$k]['user'] = $vv['full_name'];
+                        $arr_call[$k]['thumb_path'] = $vv['thumb_path'];
+                    }
+                }
                 $arr_call[$k]['status'] = 'CallList';
             }
             $log_list = array_merge($log_list,$arr_call);
@@ -1477,18 +1488,50 @@ class ProductAction extends Action {
         $fineIds = M('fine_project')->where(array('resume_id'=>intval($eid)))->getField('id',true);
         $arr_adv = D('ProductAdView')->where(array('fine_id'=>array('in',$fineIds)))->field('role_id,addtime,com_id')->select();
         if(!empty($arr_adv)){
+            $adv_roleIds = array();
+            $adv_comIds = array();
             foreach ($arr_adv as $k => $v){
-                $arr_adv[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name');
-                $arr_adv[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                $adv_roleIds[] = $v['role_id'];
+                $adv_comIds[] = $v['com_id'];
+            }
+            $advRoleIds = implode(',',$adv_roleIds);
+            $advComIds = implode(',',$adv_comIds);
+            $user_ad =  M('user')->where('role_id in ('.$advRoleIds.')')->getField('role_id,full_name,thumb_path',true);
+            $com_ad = M('customer')->where('customer_id in ('.$advComIds.')')->getField('customer_id,name',true);
+            foreach ($arr_adv as $k => $v){
+//                $arr_adv[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name');
+//                $arr_adv[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                foreach ($user_ad as $kk=>$vv){
+                    if($kk == $v['role_id']){
+                        $arr_adv[$k]['user'] = $vv['full_name'];
+                        $arr_adv[$k]['thumb_path'] = $vv['thumb_path'];
+                    }
+                }
+                foreach ($com_ad as $kk=>$vv){
+                    if($kk == $v['com_id'])
+                        $arr_adv[$k]['name'] = $vv;
+                }
                 $arr_adv[$k]['status'] = '顾问面试';
             }
             $log_list = array_merge($log_list,$arr_adv);
         }
         //获取推荐日志
-        $arr_tj = D('ProductCView')->where(array('resume_id'=>intval($eid)))->field('tj_role_id,tjaddtime,name')->select();
+        $arr_tj = D('ProductCView')->where(array('resume_id'=>intval($eid)))->field('com_id,tj_role_id,tjaddtime,name')->select();
         if(!empty($arr_tj)){
+            $tj_roleId = array();
+            foreach ($arr_tj as $k=>$v) {
+                $tj_roleId[] = $v['tj_role_id'];
+            }
+            $tj_roleIds = implode(',',$tj_roleId);
+            $tj_user_data = M('user')->where('role_id in ('.$tj_roleIds.')')->getField('role_id,full_name,thumb_path',true);
             foreach ($arr_tj as $k=>$v){
-                $arr_tj[$k]['user'] = M('user')->where(array('role_id'=>intval($v['tj_role_id'])))->getField('full_name');
+//                $arr_tj[$k]['user'] = M('user')->where(array('role_id'=>intval($v['tj_role_id'])))->getField('full_name');
+                foreach ($tj_user_data as $kk => $vv) {
+                    if($kk == $v['tj_role_id']){
+                        $arr_tj[$k]['user'] = $vv['full_name'];
+                        $arr_adv[$k]['thumb_path'] = $vv['thumb_path'];
+                    }
+                }
                 $arr_tj[$k]['addtime'] = $v['tjaddtime'];
                 $arr_tj[$k]['status'] = '客户推荐';
             }
@@ -1497,18 +1540,50 @@ class ProductAction extends Action {
         //获取客户面试日志
         $arr_interview = D('ProductInterView')->where(array('fine_id'=>array('in',$fineIds)))->field('role_id,addtime,com_id')->select();
         if(!empty($arr_interview)){
+            $int_roleId = array();
+            $int_comId = array();
             foreach ($arr_interview as $k=>$v){
-                $arr_interview[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name');
-                $arr_interview[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                $int_roleId[] = $v['role_id'];
+                $int_comId[] = $v['com_id'];
+            }
+            $int_roleIds = implode(',',$int_roleId);
+            $int_comIds = implode(',',$int_comId);
+            $int_user_data = M('user')->where('role_id in ('.$int_roleIds.')')->getField('role_id,full_name,thumb_path',true);
+            $int_com_data = M('customer')->where('customer_id in ('.$int_comIds.')')->getField('customer_id,name',true);
+            foreach ($arr_interview as $k=>$v){
+//                $arr_interview[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name');
+//                $arr_interview[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                foreach ($int_user_data as $kk=>$vv){
+                    if($kk == $v['role_id']){
+                        $arr_interview[$k]['user'] = $vv['full_name'];
+                        $arr_interview[$k]['thumb_path'] = $vv['thumb_path'];
+                    }
+                }
+                foreach ($int_com_data as $kk=>$vv){
+                    if($kk == $v['com_id'])
+                        $arr_interview[$k]['name'] = $vv;
+                }
                 $arr_interview[$k]['status'] = '客户面试';
             }
             $log_list = array_merge($log_list,$arr_interview);
         }
         //获取面试通过日志
-        $arr_pass = D('ProductCView')->where(array('resume_id'=>intval($eid)))->field('pass_role_id,passtime,name')->select();
+        $arr_pass = D('ProductCView')->where(array('resume_id'=>intval($eid)))->field('com_id,pass_role_id,passtime,name')->select();
         if(!empty($arr_pass)){
+            $pass_roleId = array();
+            foreach ($arr_pass as $k=>$v){
+                $pass_roleId[] = $v['pass_role_id'];
+            }
+            $pass_roleIds = implode(',',$pass_roleId);
+            $pass_user_data = M('user')->where('role_id in ('.$pass_roleIds.')')->getField('role_id,full_name,thumb_path',true);
             foreach ($arr_pass as $k=>$v) {
-                $arr_pass[$k]['user'] = M('user')->where(array('role_id'=>intval($v['pass_role_id'])))->getField('full_name');
+//                $arr_pass[$k]['user'] = M('user')->where(array('role_id'=>intval($v['pass_role_id'])))->getField('full_name');
+                foreach ($pass_user_data as $kk=>$vv){
+                    if($kk == $v['pass_role_id']){
+                        $arr_pass[$k]['user'] = $vv['full_name'];
+                        $arr_pass[$k]['thumb_path'] = $vv['thumb_path'];
+                    }
+                }
                 $arr_pass[$k]['addtime'] = $v['passtime'];
                 $arr_pass[$k]['status'] = '面试通过';
             }
@@ -1517,9 +1592,29 @@ class ProductAction extends Action {
         //获取offer日志
         $arr_offer = D('ProductOfferView')->where(array('fine_id'=>array('in',$fineIds)))->field('addtime,role_id,com_id')->select();
         if(!empty($arr_offer)){
+            $offer_roleId = array();
+            $offer_customerId = array();
             foreach ($arr_offer as $k=>$v){
-                $arr_offer[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name');
-                $arr_offer[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                $offer_roleId[] = $v['role_id'];
+                $offer_customerId[] = $v['com_id'];
+            }
+            $offer_roleIds = implode(',',$offer_roleId);
+            $offer_customerIds = implode(',',$offer_customerId);
+            $offer_user_data = M('user')->where('role_id in ('.$offer_roleIds.')')->getField('role_id,full_name,thumb_path',true);
+            $offer_customer_data = M('customer')->where('customer_id in ('.$offer_customerIds.')')->getField('customer_id,name',true);
+            foreach ($arr_offer as $k=>$v){
+//                $arr_offer[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name');
+//                $arr_offer[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                foreach ($offer_user_data as $kk=>$vv){
+                    if($kk == $v['role_id']){
+                        $arr_offer[$k]['user'] = $vv['full_name'];
+                        $arr_offer[$k]['thumb_path'] = $vv['thumb_path'];
+                    }
+                }
+                foreach ($offer_customer_data as $kk=>$vv){
+                    if ($kk == $v['com_id'])
+                        $arr_offer[$k]['name'] = $vv;
+                }
                 $arr_offer[$k]['status'] = '发offer';
             }
             $log_list = array_merge($log_list,$arr_offer);
@@ -1527,9 +1622,29 @@ class ProductAction extends Action {
         //获取入职日志
         $arr_ener = D('ProductEnterView')->where(array('fine_id'=>array('in',$fineIds)))->field('addtime,role_id,com_id')->select();
         if(!empty($arr_ener)){
+            $ener_roleId = array();
+            $ener_customerId = array();
             foreach ($arr_ener as $k=>$v){
-                $arr_ener[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name');
-                $arr_ener[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                $ener_roleId[] = $v['role_id'];
+                $ener_customerId[] = $v['com_id'];
+            }
+            $enter_roleIds = implode(',',$ener_roleId);
+            $enter_customerIds = implode(',',$ener_customerId);
+            $enter_user_data = M('user')->where('role_id in ('.$enter_roleIds.')')->getField('role_id,full_name,thumb_path',true);
+            $enter_customer_data = M('customer')->where('customer_id in ('.$enter_customerIds.')')->getField('customer_id,name',true);
+            foreach ($arr_ener as $k=>$v){
+//                $arr_ener[$k]['user'] = M('user')->where(array('role_id'=>intval($v['role_id'])))->getField('full_name,thumb_path');
+//                $arr_ener[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                foreach ($enter_user_data as $kk=>$vv){
+                    if($kk == $v['role_id']){
+                        $arr_ener[$k]['user'] = $vv['full_name'];
+                        $arr_ener[$k]['thumb_path'] = $vv['thumb_path'];
+                    }
+                }
+                foreach ($enter_customer_data as $kk=>$vv){
+                    if ($kk == $v['com_id'])
+                        $arr_ener[$k]['name'] = $vv;
+                }
                 $arr_ener[$k]['status'] = '入职';
             }
             $log_list = array_merge($log_list,$arr_ener);
@@ -1537,9 +1652,29 @@ class ProductAction extends Action {
         //获取过保日志
         $arr_safe = D('ProductSafeView')->where(array('fine_id'=>array('in',$fineIds)))->field('addtime,create_role_id,com_id')->select();
         if(!empty($arr_safe)){
+            $safe_roleId = array();
+            $safe_customerId = array();
             foreach ($arr_safe as $k=>$v){
-                $arr_safe[$k]['user'] = M('user')->where(array('role_id'=>intval($v['create_role_id'])))->getField('full_name');
-                $arr_safe[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                $safe_roleId[] = $v['create_role_id'];
+                $safe_customerId[] = $v['com_id'];
+            }
+            $safe_roleIds = implode(',',$safe_roleId);
+            $safe_customerIds = implode(',',$safe_customerId);
+            $safe_user_data = M('user')->where('role_id in ('.$safe_roleIds.')')->getField('role_id,full_name,thumb_path',true);
+            $safe_customer_data = M('customer')->where('customer_id in ('.$safe_customerIds.')')->getField('customer_id,name',true);
+            foreach ($arr_safe as $k=>$v){
+//                $arr_safe[$k]['user'] = M('user')->where(array('role_id'=>intval($v['create_role_id'])))->getField('full_name');
+//                $arr_safe[$k]['name'] = M('customer')->where(array('customer_id'=>intval($v['com_id'])))->getField('name');
+                foreach ($safe_user_data as $kk=>$vv){
+                    if($kk == $v['create_role_id']){
+                        $arr_safe[$k]['user'] = $vv['full_name'];
+                        $arr_safe[$k]['thumb_path'] = $vv['thumb_path'];
+                    }
+                }
+                foreach ($safe_customer_data as $kk=>$vv){
+                    if ($kk == $v['com_id'])
+                        $arr_safe[$k]['name'] = $vv;
+                }
                 $arr_safe[$k]['status'] = '过保';
             }
             $log_list = array_merge($log_list,$arr_safe);
