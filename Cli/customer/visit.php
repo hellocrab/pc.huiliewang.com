@@ -205,7 +205,8 @@ class Visit
             $customers[$customerId] = ['customer_id' => $customerId, 'condition' => 1];
         }
         if (!$customers) {
-            exit("没有匹配到客户数据");
+            echo ("没有匹配到客户数据");
+            return;
         }
         //循环客户,计算每个客户的回访数据
         $config = $this->config($proType);
@@ -317,7 +318,8 @@ class Visit
             $customers[$customerId] = ['customer_id' => $customerId, 'condition' => 1];
         }
         if (!$customers) {
-            exit("没有匹配到客户数据");
+            echo ("没有匹配到客户数据");
+            return;
         }
         //循环客户,计算每个客户的回访数据
         $config = $this->config($proType);
