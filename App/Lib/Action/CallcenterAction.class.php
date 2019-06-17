@@ -174,7 +174,7 @@ class CallcenterAction extends Action {
         $tel = trim($tel);
         $preg = '/^((0\d{2,3}-?\d{7,8})|(1[3584796]\d{9}))$/';
         if(!$tel || !preg_match($preg,$tel,$match)){
-            exit(json_encode(['code' => 0, 'msg' => '电话错误: '.$tel]));
+            exit(json_encode(['code' => 0, 'msg' => '请确认候选人联系电话是否正确: '.$tel]));
         }
 
         $phoneRecordData = ['fine_id' => $fineId, 'setingNbr' => $sourceTel, 'calleeNum' => $tel, 'source' => $type, 'item_id' => $itemId];
