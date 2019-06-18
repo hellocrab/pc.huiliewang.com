@@ -621,47 +621,90 @@ class BusinessAction extends Action
         $m_contract = M('Contract');
         $d_business_product = D('BusinessProductView');
         $m_business_data = M('BusinessData');
+        
+        //组合business_id,role_id数组 editor by yanghao 2019-06-18
+        $businessIds = [];
+        $ownRoleIds = [];
+        $customerIds = [];
+        foreach ($list as $v){
+            $businessIds[] = $v['business_id'];
+            $ownRoleIds[] = $v['owner_role_id'];
+            $customerIds[] = $v['customer_id'];
+        }
+        
+        //读取所有者信息 editor by yanghao 2019-06-18
+        $listOwnRoleIds = [];
+        $ownRoleIds = implode(',', $ownRoleIds);
+        $whereOwnRoleIds['role_id'] = array('in', $ownRoleIds);
+        $_listOwnRoleIds = $m_user->where($whereOwnRoleIds)->field('full_name,role_id')->select();
+        foreach ($_listOwnRoleIds as $rid){
+            $listOwnRoleIds[$rid['role_id']] = $rid;
+        }
+        
+        //读取客户信息 editor by yanghao 2019-06-18
+        $listCustomerIds = [];
+        $customerIds = implode(',', $customerIds);
+        $whereCustomerIds['customer_id'] = array('in', $customerIds);
+        $_listCustomerIds = $m_customer->where($whereCustomerIds)->field('name,customer_id')->select();
+        foreach ($_listCustomerIds as $cid) {
+            $listCustomerIds[$cid['customer_id']] = $cid;
+        }
+
+        //读取项目最近状态 editor by yanghao 2019-06-18
+        $listBusinessFineProjectStatus = [];
+        $listBusinessFineProjectMaxStatus = [];
+        $businessIds = implode(',', $businessIds);
+        $whereBusinessIds['project_id'] = array('in', $businessIds);
+        $_listBusinessFineProjectStatus = M('fine_project')->where($whereBusinessIds)->order('addtime desc')->field("status,project_id")->select();
+        $_listBusinessFineProjectMaxStatus = M('fine_project')->where($whereBusinessIds)->group('project_id')->field("max(`status`) as max_status,project_id")->select();
+        foreach ($_listBusinessFineProjectStatus as $bfid) {
+            $listBusinessFineProjectStatus[$bfid['project_id']] = $bfid;
+        }
+        foreach ($_listBusinessFineProjectMaxStatus as $bfid) {
+            $listBusinessFineProjectMaxStatus[$bfid['project_id']] = $bfid;
+        }
+
         foreach ($list as $k => $v) {
             //判断附表
-            if (!$m_business_data->where(array('business_id' => $v['business_id']))->find()) {
-                $res_data = array();
-                $res_data['business_id'] = $v['business_id'];
-                $m_business_data->add($res_data);
-            }
-            $roleIds = explode(',', $v['owner_role_id']);
-            $where2['role_id'] = array('in', $roleIds);
-            $list[$k]['owner'] = $m_user->where($where2)->field('full_name,role_id')->select();
-            $list[$k]['creator'] = $m_user->where('role_id = %d', $v['creator_role_id'])->field('full_name,role_id')->find();
+            //取消数据补偿 editor by yanghao 2019-06-18
+//            if (!$m_business_data->where(array('business_id' => $v['business_id']))->find()) {
+//                $res_data = array();
+//                $res_data['business_id'] = $v['business_id'];
+//                $m_business_data->add($res_data);
+//            }
+            //商机联系人 
+            //暂时取消商机联系人 editor by yanghao 2019-06-18
+//            $business_contacts_id = $m_r_business_contacts->where('business_id = %d', $v['business_id'])->order('id desc')->getField('contacts_id');
+//            if (!$business_contacts_id) {
+//                //客户联系人
+//                $contacts_id = $m_r_contacts_customer->where('customer_id = %d', $v['customer_id'])->order('id desc')->getField('contacts_id');
+//            } else {
+//                $contacts_id = $business_contacts_id;
+//            }
+//            if ($contacts_id) {
+//                $contacts_info = array();
+//                $contacts_info = $m_contacts->where('contacts_id = %d', $contacts_id)->field('name,telephone')->find();
+//                $list[$k]['c_telephone'] = $contacts_info['telephone'];
+//                $list[$k]['contacts_name'] = $contacts_info['name'];
+//                $list[$k]['contacts_id'] = $contacts_id;
+//            }
+            //提醒 注释无用字段 editor by 2019-06-18
+//            $remind_info = $m_remind->where(array('module' => 'business', 'module_id' => $v['business_id'], 'create_role_id' => session('role_id'), 'is_remind' => array('neq', 1)))->order('remind_id desc')->find();
+//            $list[$k]['remind_time'] = !empty($remind_info) ? $remind_info['remind_time'] : '';
+//            //产品名称
+//            $product_name = $d_business_product->where('r_business_product.business_id = (%d)', $v['business_id'])->getField('name', true);
+//            if ($product_name) {
+//                if (count($product_name) > 1) {
+//                    $list[$k]['product_name'] = $product_name[0] . '、...';
+//                } else {
+//                    $list[$k]['product_name'] = $product_name[0];
+//                }
+//            }
+            //相关所有者信息
+            $list[$k]['owner'][] = $listOwnRoleIds[$v['owner_role_id']];
             //相关客户
-            $list[$k]['customer_name'] = $m_customer->where('customer_id = %s', $v['customer_id'])->getField('name');
-            //商机联系人
-            $business_contacts_id = $m_r_business_contacts->where('business_id = %d', $v['business_id'])->order('id desc')->getField('contacts_id');
-            if (!$business_contacts_id) {
-                //客户联系人
-                $contacts_id = $m_r_contacts_customer->where('customer_id = %d', $v['customer_id'])->order('id desc')->getField('contacts_id');
-            } else {
-                $contacts_id = $business_contacts_id;
-            }
-            if ($contacts_id) {
-                $contacts_info = array();
-                $contacts_info = $m_contacts->where('contacts_id = %d', $contacts_id)->field('name,telephone')->find();
-                $list[$k]['c_telephone'] = $contacts_info['telephone'];
-                $list[$k]['contacts_name'] = $contacts_info['name'];
-                $list[$k]['contacts_id'] = $contacts_id;
-            }
+            $list[$k]['customer_name'] = $listCustomerIds[$v['customer_id']]['name'];
 
-            //提醒
-            $remind_info = $m_remind->where(array('module' => 'business', 'module_id' => $v['business_id'], 'create_role_id' => session('role_id'), 'is_remind' => array('neq', 1)))->order('remind_id desc')->find();
-            $list[$k]['remind_time'] = !empty($remind_info) ? $remind_info['remind_time'] : '';
-            //产品名称
-            $product_name = $d_business_product->where('r_business_product.business_id = (%d)', $v['business_id'])->getField('name', true);
-            if ($product_name) {
-                if (count($product_name) > 1) {
-                    $list[$k]['product_name'] = $product_name[0] . '、...';
-                } else {
-                    $list[$k]['product_name'] = $product_name[0];
-                }
-            }
             //进度
             $status_info = $m_business_status->where(array('status_id' => $v['status_id'], 'type_id' => $v['status_type_id']))->field('name,order_id,is_end')->find();
 
@@ -670,6 +713,7 @@ class BusinessAction extends Action
             $status_order = $status_info['order_id'];
             $progress = intval($status_order / $status_count > 1 ? 100 : $status_order * 100 / $status_count);
             $list[$k]['progress'] = $progress;
+
             //收款进度
             $contract_info = $m_contract->where('business_id = %d', $v['business_id'])->field('contract_id,price')->find();
             $schedule = 0;
@@ -713,10 +757,10 @@ class BusinessAction extends Action
                 }
                 $list[$k]['jobclass'] = implode(",", $arr);
             }
-            //最近项目阶段
-            $temp = M('fine_project')->where(array('project_id' => $v['business_id']))->order('addtime desc')->select();
-            $list[$k]['zj'] = $temp[0]['status'];
-            switch ($temp[0]['status']) {
+
+            //最近项目阶段 editor by yanghao 2019-06-18
+            $list[$k]['zj'] = $listBusinessFineProjectStatus[$v['business_id']]['status'];
+            switch ($list[$k]['zj']) {
                 case '1':
                     $list[$k]['zj'] = 'callList';
                     break;
@@ -745,8 +789,9 @@ class BusinessAction extends Action
                     $list[$k]['zj'] = '无';
                     break;
             }
-            //最后项目阶段
-            $list[$k]['zh'] = M('fine_project')->where(array('project_id' => $v['business_id']))->max('status', true);
+
+            //最后项目阶段 editor by yanghao 2019-06-18
+            $list[$k]['zh'] =  $listBusinessFineProjectMaxStatus[$v['business_id']]['max_status'];
             switch ($list[$k]['zh']) {
                 case '1':
                     $list[$k]['zh'] = 'callList';
@@ -781,7 +826,7 @@ class BusinessAction extends Action
                 $list[$k]['zh'] = '推荐';
             }
         }
-
+        
 //        header('content-type:text/html;charset=utf-8;');
         //商机状态分类
         $this->status_type_list = M('BusinessType')->select();
@@ -1177,7 +1222,7 @@ class BusinessAction extends Action
 
     //商机详情
     public function view() {
-        $business_id = $_GET['id'] ? intval($_GET['id']) : '';
+        $business_id = $_GET['id'] ? intval(BaseUtils::getStr($_GET['id'],'int')) : '';
         if (!$business_id) {
             alert('error', '参数错误！', U('business/index'));
         }
