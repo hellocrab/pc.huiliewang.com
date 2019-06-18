@@ -13,6 +13,8 @@
 <script type="text/javascript" src="__PUBLIC__/js/table-export/jspdf/jspdf.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/table-export/jspdf/libs/base64.js"></script>
 <!--jQuery导出插件-->
+<script src="__PUBLIC__/js/checkbox.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/css/checkbox.css">
 <style>
     body {
         overflow-y: hidden;
@@ -113,7 +115,10 @@
 </style>
 <script>
     function choose(ev) {
-        $('.chooseBox').css('display', 'block')
+        // $('.chooseBox').css('display', 'block')
+        let temp = $('#parter_id').val();
+            $('#dialog-role-list3').dialog('open');
+            createCon('dialog-role-list3', '/index.php?m=user&a=userList')
     }
     function bindClick(){
         $('.chooseBox span').click(ev => {
@@ -265,9 +270,10 @@
 													<option value="{$vo.role_id}" <if condition="$_GET['role'] eq $vo['role_id']">selected</if>>{$vo.role_name}-{$vo.user_name}</option>
 												</volist>
                                             </select> -->
-                                            <input type="text" readonly id='role' value="" style="display: none"
+                                            <input type="text" readonly id='parter_id' value="" style="display: none"
                                                 name='role' />
-                                            <div class="role" onclick="choose()">全部</div>
+                                                <input type="text" class="role" readonly id='parter_name' value="" placeholder="请点击选择"
+                                                name='' onclick="choose()"/>
                                             <div class="chooseBox">
                                                 <volist name="roleList" id="vo">
                                                     <span id="{$vo.role_id}" <if
@@ -571,6 +577,15 @@
     </div>
 </div>
 <div class="" style="display:none;" id="dialog-callistnum" title="callist">
+    <div class="spiner-example">
+        <div class="sk-spinner sk-spinner-three-bounce">
+            <div class="sk-bounce1"></div>
+            <div class="sk-bounce2"></div>
+            <div class="sk-bounce3"></div>
+        </div>
+    </div>
+</div>
+<div style="display:none" id="dialog-role-list3" title="选择项目成员">
     <div class="spiner-example">
         <div class="sk-spinner sk-spinner-three-bounce">
             <div class="sk-bounce1"></div>
