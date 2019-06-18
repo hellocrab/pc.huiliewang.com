@@ -175,7 +175,7 @@ class LeadsAction extends Action
      * 原始晋升业绩设置
      */
 
-    public function firsthand_hand(){
+    public function firsthand_hand() {
 
     }
 
@@ -2162,22 +2162,22 @@ class LeadsAction extends Action
             $pageSize = 1000; //导出条数300条
         }
         $countFields = 'sum(integral) as integral,'
-                . 'sum(customer_num) as customerNum,'
-                . 'sum(project_num) as projectNum,'
-                . 'sum(resume_num) as resumeNum,'
-                . 'sum(fine_project_num) as fineNum,'
-                . 'sum(interview_num) as interviewNum,'
-                . 'sum(bd_num) as bdNum,'
-                . 'sum(hk_num) as hkNum,'
-                . 'sum(present_num) as presentNum,'
-                . 'sum(safe_num) as safeNum,'
-                . 'sum(enter_num) as enterNum ,' 
-                . 'sum(offerd_num) as offerdNum,'
-                . 'sum(offer_num) as offerNum,'
-                . 'sum(interviewt_num) as interviewtNum , '
-                . 'sum(callist_num) as callistnum , '
-                . 'sum(cc_num) as ccnum,'
-                . 'sum(callsucc_num) as callsucc_num';
+            . 'sum(customer_num) as customerNum,'
+            . 'sum(project_num) as projectNum,'
+            . 'sum(resume_num) as resumeNum,'
+            . 'sum(fine_project_num) as fineNum,'
+            . 'sum(interview_num) as interviewNum,'
+            . 'sum(bd_num) as bdNum,'
+            . 'sum(hk_num) as hkNum,'
+            . 'sum(present_num) as presentNum,'
+            . 'sum(safe_num) as safeNum,'
+            . 'sum(enter_num) as enterNum ,'
+            . 'sum(offerd_num) as offerdNum,'
+            . 'sum(offer_num) as offerNum,'
+            . 'sum(interviewt_num) as interviewtNum , '
+            . 'sum(callist_num) as callistnum , '
+            . 'sum(cc_num) as ccnum,'
+            . 'sum(callsucc_num) as callsucc_num';
         $list = M('report_intergral')->where($map)->field('id,user_role_id,user_id,user_name,department,department_id,' . $countFields)->group('user_id')->order('integral desc,customerNum desc')->page($p, $pageSize)->select();
 //        var_dump(M('')->getLastSql());exit;
         //增加员工职位字段和顾问英文名字段
@@ -2191,7 +2191,7 @@ class LeadsAction extends Action
         if ($isExport) {
             $cellName = [
                 ['user_name', '员工姓名'], ['department', '部门'], ['position_name', '职位名称'], ['second_name', '顾问英文名'],
-                ['integral', '业绩'], ['callistnum', 'callist'], ['ccnum', 'cc备注'],['callsucc_num', '有效CC'], ['hkNum', '回款个数'],
+                ['integral', '业绩'], ['callistnum', 'callist'], ['ccnum', 'cc备注'], ['callsucc_num', '有效CC'], ['hkNum', '回款个数'],
                 ['bdNum', '新增BD数'], ['customerNum', '新增客户数'], ['projectNum', '新增项目数'], ['resumeNum', '新增简历数'],
                 ['fineNum', '推荐简历数'], ['interviewNum', '面试次数'], ['interviewtNum', '首面数'], ['offerNum', 'Offer'],
                 ['offerdNum', '掉Offer数'], ['enterNum', '入职数'], ['safeNum', '过保数']];
@@ -2298,9 +2298,13 @@ class LeadsAction extends Action
 
         if ($role_ids) {
             //数组交集
-            $role_id_array = array_intersect($role_ids, $below_ids);
+            if ($role_ids && $below_ids) {
+                $role_id_array = array_intersect($role_ids, $below_ids);
+            } else {
+                $role_id_array = $role_ids ? $role_ids : $below_ids;
+            }
+
         }
-        $role_id_array = array_intersect($role_id_array,$allIds);
         //时间段搜索
         if ($_GET['between_date']) {
             $between_date = explode(' - ', trim($_GET['between_date']));
