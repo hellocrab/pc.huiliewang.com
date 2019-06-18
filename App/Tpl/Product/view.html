@@ -47,7 +47,6 @@
         border-right: none;
         z-index: 103;
         box-shadow: 0 0 5px rgba(0,0,0,.2);
-        
     }
     .tui_head>span{
         display:block;
@@ -171,7 +170,6 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a id="1" href="{:U('product/edit','id='.$_GET['id'])}"><i class="fa fa-edit (alias)"></i>&nbsp;编辑</a></li>
-                                <if condition='$status_log neq null'><li><a id="show_tui" href="#"><i class="fa fa-window-maximize"></i>&nbsp;动态</a></li></if>
                                 <!--<li><a id="" href="#"><i class="fa fa-bell-o"></i>&nbsp;添加提醒</a></li>-->
                                 <!--<li><a id="" href="#"><i class="fa fa-comments"></i>&nbsp;添加备注</a></li>-->
                             </ul>
@@ -182,6 +180,7 @@
                             <a href="javascript:viod(0);" class="btn btn-outline btn-default pull-right" id="favorite" rel="{$_GET['id']}" style="margin-right: 15px;">加入收藏夹</a>
                         </if>
                         <a href="javascript:viod(0);" class="btn btn-outline btn-default pull-right log_calllist" id="add_pro" rel="{$_GET['id']}" style="margin-right: 15px;">加入CallList</a>&nbsp;&nbsp;
+                        <if condition='$status_log neq null'><a id="show_tui" href="#" style="margin-right: 15px;" class="btn btn-outline btn-default pull-right">人才动态</a>&nbsp;&nbsp;</if>
                     </div>
                     <div class="row">
                         <div class="form-horizontal view-group " >
