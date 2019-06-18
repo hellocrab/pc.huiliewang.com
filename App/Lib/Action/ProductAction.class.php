@@ -1517,6 +1517,7 @@ class ProductAction extends Action {
         }
         //获取推荐日志
         $arr_tj = D('ProductCView')->where(array('resume_id'=>intval($eid),'tj_role_id'=>array('neq',0)))->field('com_id,tj_role_id,tjaddtime,name')->select();
+
         if(!empty($arr_tj)){
             $tj_roleId = array();
             foreach ($arr_tj as $k=>$v) {
