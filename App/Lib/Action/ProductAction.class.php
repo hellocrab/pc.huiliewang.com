@@ -1568,7 +1568,7 @@ class ProductAction extends Action {
             $log_list = array_merge($log_list,$arr_interview);
         }
         //获取面试通过日志
-        $arr_pass = D('ProductCView')->where(array('resume_id'=>intval($eid)))->field('com_id,pass_role_id,passtime,name')->select();
+        $arr_pass = D('ProductCView')->where(array('resume_id'=>intval($eid),'pass_role_id'=>array('neq',0)))->field('com_id,pass_role_id,passtime,name')->select();
         if(!empty($arr_pass)){
             $pass_roleId = array();
             foreach ($arr_pass as $k=>$v){
