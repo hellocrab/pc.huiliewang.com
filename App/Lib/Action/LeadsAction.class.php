@@ -2265,15 +2265,15 @@ class LeadsAction extends Action
     public function analytics() {
         $below_ids = getPerByAction(MODULE_NAME, ACTION_NAME);
         $allIds = $below_ids;
+        $roles = BaseUtils::getStr($_GET['role']);
         //是否仅查询销售岗
         $role_ids = [];
         $role_id_array = [];
         $department_id = intval($_GET['department']);
-        if (intval($_GET['role'])) {
+        if ($roles) {
 //            edit by  guoqingsong 05/09
 //            $role_ids = array(intval($_GET['role']));
-            $ids = BaseUtils::getStr($_GET['role']);
-            $role_ids = explode(',',$ids);
+            $role_ids = explode(',', $roles);
             unset($below_ids);
             $below_ids = [];
             if ($department_id) {
@@ -2341,9 +2341,9 @@ class LeadsAction extends Action
             $departmentList = M('roleDepartment')->select();
         } else {
             $ids = getSubDepartmentBrId();
-            if($ids){
-                $departmentList = M('roleDepartment')->where(['department_id'=>['in',$ids]])->select();
-            }else{
+            if ($ids) {
+                $departmentList = M('roleDepartment')->where(['department_id' => ['in', $ids]])->select();
+            } else {
                 $departmentList = M('roleDepartment')->where('department_id =%d', session('department_id'))->select();
             }
         }
@@ -2363,6 +2363,9 @@ class LeadsAction extends Action
         }
         $this->roleList_checked = json_encode($roleList_checked);
         $this->roleIds = implode(',', $role_id_array);
+        $chooseNames = M('user')->where(['role_id' => ['in', $roles]])->getField("role_id,full_name", true);
+        $chooseNames = implode(",", $chooseNames);
+        $chooses = ['ids' => $roles, 'names' => $chooseNames];
         $dateRange = $this->timeplug();
         $this->daterange = $dateRange;
         $this->type_id = intval($_GET['type_id']);
@@ -2372,6 +2375,7 @@ class LeadsAction extends Action
         $lastInfo = M('report_intergral')->field('create_time')->order('create_time desc')->find();
         $lastTime = date('Y-m-d H:i:s', $lastInfo['create_time']);
         $this->assign('lastTime', $lastTime);
+        $this->assign('chooses', $chooses);
         $this->display();
     }
 
