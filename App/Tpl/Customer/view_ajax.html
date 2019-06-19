@@ -58,6 +58,90 @@
     .qian-table{
         margin-top: 20px;
     }
+    .record_wrap {
+    position: relative;
+    background: #fff;
+}
+
+.record_sec {
+    position: relative;
+    padding-top: 52px;
+    padding-bottom: 20px;
+}
+
+.record_wrap>img {
+    position: absolute;
+    left: 237px;
+    top: 0;
+}
+
+.record_wrap .line {
+    width: 2px;
+    background: rgba(3, 169, 243, 1);
+    position: absolute;
+    left: 260px;
+    top: 46px;
+}
+
+.record_box {
+    padding-left: 280px;
+    position: relative;
+}
+
+.record_box p {
+    padding-left: 10px;
+    font-size: 12px;
+    color: #666;
+    line-height: 18px;
+}
+
+
+
+.record_box p:nth-child(1) span {
+    color: #FB994C;
+}
+
+.year {
+    color: #1296DB;
+    font-size: 20px;
+    padding-left: 184px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.record_time {
+    position: absolute;
+    left: 212px;
+    top: -10px;
+    color: #999;
+    font-size: 12px;
+    text-align: center;
+}
+
+.record_time span:nth-child(1) {
+    font-size: 14px;
+}
+
+.point {
+    color: #52B4EC;
+    font-size: 20px;
+    position: absolute;
+    top: 2px;
+    left: 253px;
+    width: 15px;
+    line-height: 11px;
+    border-radius: 12px;
+    display: block;
+    text-align: center;
+    background: #fff;
+    border: 2px solid #52B4EC;
+}
+.no_record {
+    color: #ccc;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 50px;
+}
 </style>
 <ul class="nav nav-tabs" id="left_list">
     <li class="active">
@@ -94,6 +178,9 @@
     </li>
     <li class="">
         <a href="#tab10" data-toggle="tab" type="tab10">签单记录</a>
+    </li>
+    <li class="tab11_btn">
+        <a href="#tab11" data-toggle="tab" type="tab11">联系人修改记录</a>
     </li>
 
    <!--  <div class="nav pull-right">
@@ -1007,6 +1094,16 @@
                         </tr>
         </table>
     </div>
+    <div class="tab-pane fade in" id="tab11">
+        <div class="record_wrap" style="display: none">
+            <img src="__PUBLIC__/img/customerManage/3_03.png" alt="">
+            <div class="line"></div>
+            <div class="record_sec"></div>
+        </div>
+        <div class="no_record" style="display: none">
+            暂时没有修改记录
+        </div>
+    </div>
 </div>
 <div style="display:none" id="dialog-role-info" title="{:L('EMPLOYEE_INFORMATION')}">
     <div class="spiner-example">
@@ -1074,6 +1171,18 @@
 <script src="__PUBLIC__/js/images-loaded.min.js" type="text/javascript"></script>
 <script>
     //快捷沟通
+    
+
+function create_record(val) {
+            $('.record_sec').append(`<div class='record_box'>
+            <p>${val.content}</p>
+            <span class='record_time'>
+            <span>${val.create_time.substr(10,6)}</span><br/>
+                <span>${val.create_time.substr(5,5)}</span>
+            </span>
+            <span class='point'>·</span>
+        </div>`)
+}
     $(document).ready(function () {
                                             $(".call_out").on('click', function () {
                                                 var itemId = $(this).attr('rel');
@@ -1116,6 +1225,39 @@
             }
         })
     })()
+    function fn(){
+    var customerId = "{$customer_id}";
+        $.ajax({
+            url:'/index.php?m=customermanage&a=contactsUpLog',
+            data:{
+                customerId
+            },
+            success(res){
+                if(res.code==200&&res.info.list.length!=0){
+                    $('.tab11_btn').click(ev=>{
+                        setInterval(()=>{
+                $('.line').height($('.record_sec').height()-20);
+                        },20)
+
+                })
+                $('.record_wrap').css('display','block');
+                let year = res.info.list[0].create_time.substr(0, 4);
+                $('.record_sec').append(`<span class='year'>${year}年</span>`)
+                res.info.list.map(val => {
+                    if (year != val.create_time.substr(0, 4)) {
+                        year = val.create_time.substr(0, 4);
+                        $('.record_sec').append(`<span class='year'>${year}年</span>`)
+                    }
+                    create_record(val);
+                })
+                }else{
+                $('.no_record').css('display','block');
+
+                }
+            }
+        })
+    }
+    fn();
 
     $("#dialog-setting_reply").dialog({
         autoOpen: false,

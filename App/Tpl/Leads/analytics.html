@@ -248,7 +248,7 @@
                                             </div>
                                         </li>
                                     </ul>
-                                    <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;">
+                                    <div class="nav pull-left" style="margin:2px 0 0 15px;width: 165px;display:none">
                                         <div class="input-group">
                                             <select class="form-control input-sm select2"
                                                 style="min-width:165px;max-width: 165px;height: 0px;display:none;"
@@ -274,13 +274,6 @@
                                                 name='role' />
                                                 <input type="text" class="role" readonly id='parter_name' value="{$chooses.names}" placeholder="请点击选择"
                                                 name='' onclick="choose()"/>
-                                            <div class="chooseBox">
-                                                <volist name="roleList" id="vo">
-                                                    <span id="{$vo.role_id}" <if
-                                                        condition="$_GET['role'] eq $vo['role_id']">selected</if>
-                                                        >{$vo.role_name}-{$vo.user_name}</span>
-                                                </volist>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="pull-left" style="margin-left: 20px;">
