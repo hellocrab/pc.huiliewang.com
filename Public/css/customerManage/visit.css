@@ -26,9 +26,7 @@ textarea::-ms-input-placeholder {
     /* Internet Explorer 10-11 */
     color: #ccc;
     font-size: 12px;
-
 }
-
 textarea {
     width: 337px;
     height: 104px;
@@ -412,7 +410,7 @@ table .notice_msg:hover {
     color: #fff;
 }
 
-table .fa-play-circle {
+.fa-play-circle {
     color: rgba(92, 147, 234, 1);
     font-size: 18px;
     cursor: pointer;
