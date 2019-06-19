@@ -160,10 +160,14 @@
             if (!$info) {
                 $action = "add";
             }
+            $info['contacts_address'] =  str_replace("\n",'',$info['contacts_address']);
             $content = '';
             foreach ($info as $key => $value) {
                 if ((!isset($data[$key]) || !$data[$key]) && $action == 'edit') {
                     continue;
+                }
+                if($key == 'contacts_address'){
+                    $data[$key] =  str_replace("\n",'',$data[$key]);
                 }
                 //验证
                 $dataValue = trim(BaseUtils::getStr($data[$key]));
@@ -174,7 +178,7 @@
                 $content .= $map[$key] . "[$dataValue] ,";
             }
             $content = $action == 'edit' ? " 编辑了" . $content : ' 新增了' . $content;
-            $fullName = M('user')->where(['role_id',session('role_id')])->getField("full_name");
+            $fullName = M('user')->where(['role_id'=>session('role_id')])->getField("full_name");
             $content = "员工". $fullName . $content;
             $data = [
                 'role_id' => session('role_id'),
