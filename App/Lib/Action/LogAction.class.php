@@ -435,8 +435,9 @@ class LogAction extends Action{
                     $business_name = M('business')->where(array('business_id'=>intval($_POST['project'])))->getField('name');
                     $resume_name = M('resume')->where(array('eid'=>intval($_POST['resume_id'])))->getField('name');
                     $url = U('product/view','id='.$_POST['resume_id']);
+                    $url1 = U('business/view','id='.$_POST['project']);
                     if(!empty($protected_m)){
-                        sendMessage($protected_m['tracker'],$_SESSION['name'].'&nbsp;&nbsp;将人选 &nbsp;&nbsp;<a href="'.$url.'">'.$resume_name.'</a>&nbsp;&nbsp;加入了 <font style="color:green;">'.$business_name.'</font> 项目中！',1);
+                        sendMessage($protected_m['tracker'],$_SESSION['name'].'&nbsp;&nbsp;将人选 &nbsp;&nbsp;<a href="'.$url.'">'.$resume_name.'</a>&nbsp;&nbsp;加入了 <font style="color:green;"><a href="'.$url1.'">'.$business_name.'</a></font> 项目中！',1);
                     }
                     $id = M("fine_project")->add($data);
                     if($id){
