@@ -1141,18 +1141,22 @@ class CustomermanageAction extends Action
     }
 
     /**
-     * @desc  推送商机通知给顾问
+     * @desc 推送商机通知给顾问
      * @param $roleId
      * @param $customerId
-     * @param $visitId
-     * @param $gjTime
-     * @param $type
+     * @param int $type
+     * @param int $visitId
+     * @param int $gjTime
+     * @return mixed
      */
     private function messageNotice($roleId, $customerId, $type = 3, $visitId = 0, $gjTime = 0) {
         //消息发送
         $customerName = M('customer')->where(['customer_id' => $customerId])->getField('name');
         if (4 == $type) {
             //跟进消息
+            if($gjTime < (time() + 600)){
+                return;
+            }
             $url = "/index.php?m=customermanage&a=customer_info&cus_id={$customerId}&id={$visitId}";
             $gjList = F('visit_gj_list');
             if ($gjList) {
@@ -1162,7 +1166,6 @@ class CustomermanageAction extends Action
                 $gjList[$visitId] = ['url' => $url, 'role_id' => $roleId, 'customer_name' => $customerName, 'time' => $gjTime];
             }
             F("visit_gj_list", $gjList);
-//            sendMessage($roleId, '&nbsp;&nbsp;温馨提醒：回访客户《<a href="' . $url . '" title="点击查看">' . $customerName . '</a>》<font style="color:green;">需进行跟进沟通</font>！', 1);
             return;
         }
         $content = '';
