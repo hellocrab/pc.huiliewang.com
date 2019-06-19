@@ -22,6 +22,10 @@ function createCon(boxId, dataUrl) {
                     })
                 }
                 const element = `
+                <div class='search_box'>
+                    <input id='search_input' placeholder='搜索人名'/>
+                    <span class='search_btn'>搜索</span>
+                </div>
                 <div class="listBox">
                     <div class='groupBox'>
                         ${group}
@@ -86,6 +90,51 @@ function createCon(boxId, dataUrl) {
                         }
                     })
                 })
+                $('.search_btn').click(ev => {
+                    let key_word = $('#search_input').val();
+                    if(key_word == '')return;
+                    let members = '';
+                    $('.memberGroup').removeClass('hoverGroup');
+                    res.data.map(val=>{
+                        val.children.map(item=>{
+                            if(item.user_name.indexOf(key_word)!=-1){
+                                members += `<div class='members' member_id='${item.role_id}' member_name='${item.user_name}'>${item.user_name}</div>`
+                            }
+                        })
+                    })
+                    if (members == '') {
+                        members = `<div class="noChild">未查找到相应人员</div>`
+                    }
+                    $('.memberBox').empty();
+                    $('.memberBox').append(members);
+                    $('.members').click(ev => {
+                        //添加人员
+                        let memberId = ev.currentTarget.attributes.member_id.value;
+                        let memberName = ev.currentTarget.attributes.member_name.value;
+                        if (chiose.findIndex(val => {
+                                return val == memberId;
+                            }) == -1) {
+                            chiose.push(memberId)
+                            $('.chioseBox').append(`<div class='chiose' member_id='${memberId}' member_name='${memberName}'>
+                            ${memberName}
+                            <i class="fa fa-times-circle delChiose" member_id='${memberId}'/>
+                        </div>`)
+                            $('.delChiose').click(ev => {
+                                //删除
+                                let delID = ev.currentTarget.attributes.member_id.value;
+                                $(`.chiose[member_id="${delID}"]`).remove();
+                                chiose.splice(chiose.findIndex(val => {
+                                    return val == delID;
+                                }), 1)
+                            })
+                        } else {
+                            $(`.chiose[member_id="${memberId}"]`).remove();
+                            chiose.splice(chiose.findIndex(val => {
+                                return val == memberId;
+                            }), 1)
+                        }
+                    })
+                })
             }
         }
     })
@@ -95,7 +144,7 @@ $(function () {
         autoOpen: false,
         modal: true,
         width: 800,
-        height: 400,
+        height: 500,
         close: function () {
             $(this).html("");
         },
