@@ -200,4 +200,35 @@
             }
             return $list ? $list : [];
         }
+
+        /**
+         * @desc 联系人信息修改
+         * @param $contactsId
+         * @param $data  数据
+         * @param int $customerId 客户ID，当客户时修改客户联系人ID
+         * @return bool
+         */
+        public static function contactsUp($contactsId, $data, $customerId = 0) {
+            $contactsInfo = M('contacts')->field("contacts_id")->where(['contacts_id' => $contactsId])->find();
+            if ($contactsInfo) {
+                $res = M('contacts')->where(['contacts_id' => $contactsId])->save($data);
+            } else {
+                $data['creator_role_id'] = session('role_id');
+                $contactsId = M('contacts')->where(['contacts_id' => $contactsId])->add($data);
+                $res = $contactsId ? true : false;
+            }
+            if (!$customerId) {
+                return $res;
+            }
+            M()->startTrans();
+            try {
+                M('customer')->where(['customer_id' => $customerId])->save(['contacts_id' => $contactsId]);
+                M('RContactsCustomer')->add(['contacts_id' => $contactsId, 'customer_id' => $customerId]);
+                M()->commit();
+                return true;
+            } catch (\think\Exception $e) {
+                M()->rollback();
+                return false;
+            }
+        }
     }
