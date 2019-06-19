@@ -93,8 +93,8 @@ class MessageAction extends Action
 
         //获取站内信相关人
         $m_message = M('message');
-        $to_role_ids = $m_message->where('from_role_id =%d and to_role_id !=%d and status = 0', session('role_id'), session('role_id'))->order('message_id desc')->field('to_role_id,send_time')->select();
-        $from_role_ids = $m_message->where('to_role_id =%d and from_role_id >0 and from_role_id !=%d and status = 0', session('role_id'), session('role_id'))->order('message_id desc')->field('from_role_id,send_time')->select();
+        $to_role_ids = $m_message->where(['type'=>0])->where('from_role_id =%d and to_role_id !=%d and status = 0', session('role_id'), session('role_id'))->order('message_id desc')->field('to_role_id,send_time')->select();
+        $from_role_ids = $m_message->where(['type'=>0])->where('to_role_id =%d and from_role_id >0 and from_role_id !=%d and status = 0', session('role_id'), session('role_id'))->order('message_id desc')->field('from_role_id,send_time')->select();
         if ($to_role_ids && $from_role_ids) {
             $owner_role_id_array = array_merge($to_role_ids, $from_role_ids);//合并数组
         } else {
@@ -817,7 +817,7 @@ class MessageAction extends Action
             $params = array('field=' . trim($_REQUEST['field']), 'condition=' . $condition, 'search=' . $_REQUEST["search"]);
         }
         //import("@.ORG.Page");
-        $m_message = M('message');
+        $m_message = M('message')->where(['type'=>0]);
         if (intval($_GET['to_role_id'])) {
             $to_role_ids = $m_message->where('from_role_id =%d and to_role_id =%d and status = 0', session('role_id'), intval($_GET['to_role_id']))->getField('message_id', true);
             $from_role_ids = $m_message->where('from_role_id =%d and to_role_id =%d and status = 0', intval($_GET['to_role_id']), session('role_id'))->getField('message_id', true);
