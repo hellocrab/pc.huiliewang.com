@@ -2298,12 +2298,7 @@ class LeadsAction extends Action
 
         if ($role_ids) {
             //数组交集
-            if ($role_ids && $below_ids) {
-                $role_id_array = array_intersect($role_ids, $below_ids);
-            } else {
-                $role_id_array = $role_ids ? $role_ids : $below_ids;
-            }
-
+            $role_id_array = array_intersect($allIds, $role_ids);
         }
         //时间段搜索
         if ($_GET['between_date']) {
