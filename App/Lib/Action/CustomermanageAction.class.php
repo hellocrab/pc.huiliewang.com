@@ -199,7 +199,7 @@ class CustomermanageAction extends Action
         $startNo = ($page - 1) * $pageSize;
         $list = $model->limit($startNo, $pageSize)->select();
         $counts = M('customer_rank')->where($where)->count();
-
+        $users = M('user')->where(['status' => ['in', [1, 2]]])->getField("role_id,full_name");
         foreach ($list as &$info) {
             include APP_PATH . "Common/city.cache.php";
             include APP_PATH . "Common/industry.cache.php";
@@ -209,7 +209,7 @@ class CustomermanageAction extends Action
             $info['pro_type'] = $this->pro_type[$info['pro_type']];
             $info['add_time'] = date('Y-m-d', $info['add_time']);
             $info['up_time'] = date('Y-m-d', $info['up_time']);
-            $info['role_name'] = M('user')->where(['user_id' => $info['role_id']])->getField('full_name');
+            $info['role_name'] = $users[$info['role_id']];
             !$info['role_name'] && $info['role_name'] = '';
             $money_list = M('customer_rank_list')->where(['customer_id' => $info['customer_id']])->field('rank_name,integral,pro_type')->select();
             $data = [];
@@ -456,6 +456,7 @@ class CustomermanageAction extends Action
         } else {
             //@todo 数据导出excel
             //导出excel操作
+            $users = M('user')->where(['status' => ['in', [1, 2]]])->getField("role_id,full_name");
             $list = M('customer_visit')->where($where)->limit(0, 500)->select();
             foreach ($list as &$info) {
                 $customerId = $info['customer_id'];
@@ -471,8 +472,8 @@ class CustomermanageAction extends Action
                 $info['city'] = $city_name[$info['city']];
                 $info['industry'] = $industry_name[$info['industry']];
 
-                $roles = M('customer')->where(['customer_id' => $customerId])->getField("creator_role_id");
-                $info['manager'] = M('user')->where(['role_id' => $roles])->getField("full_name");
+                $role = M('customer')->where(['customer_id' => $customerId])->getField("creator_role_id");
+                $info['manager'] = $users[$role];
 
                 $signInfo = $this->signInfo(false, $customerId);
                 $info['contract_start'] = $signInfo['contract_start'] ? $signInfo['contract_start'] : '';
@@ -893,6 +894,7 @@ class CustomermanageAction extends Action
             $list[$record['add_time']] = [
                 'create_role' => $users[$record['role_id']],
                 'phone_record' => $record['oss_record_url'],
+                'nest_visit' => 2,
                 'add_time' => date("Y-m-d H:i:s", $record['add_time'])
             ];
         }
@@ -924,6 +926,7 @@ class CustomermanageAction extends Action
         }
         $roles = rtrim($roles, ",");
         $users = [];
+        $userArr = M('user')->where(['status' => ['in', [1, 2]]])->getField("role_id,full_name");
         if ($roles) {
             $list = explode(',', $roles);
             $list = array_unique($list);
@@ -931,7 +934,7 @@ class CustomermanageAction extends Action
                 if (!$roleId) {
                     continue;
                 }
-                $name = M('user')->where(['role_id' => $roleId])->getField("full_name");
+                $name = $userArr[$roleId];
                 $users[] = ['name' => $name ? $name : '', 'id' => $roleId];
             }
         }
@@ -1048,7 +1051,7 @@ class CustomermanageAction extends Action
             //下次跟进时间
             if ($key == 'follow_time' && $value) {
                 $value = strtotime($value);
-                $this->messageNotice(session('role_id'), $customerId, 4);
+                $this->messageNotice(session('role_id'), $customerId, 4, $visitId);
             }
             //回访完成
             if ($key == "is_finish" && $value == 1) {
@@ -1142,14 +1145,15 @@ class CustomermanageAction extends Action
      * @desc  推送商机通知给顾问
      * @param $roleId
      * @param $customerId
+     * @param $visitId
      * @param $type
      */
-    private function messageNotice($roleId, $customerId, $type = 3) {
+    private function messageNotice($roleId, $customerId, $type = 3, $visitId = 0) {
         //消息发送
         $customerName = M('customer')->where(['customer_id' => $customerId])->getField('name');
         if (4 == $type) {
             //跟进消息
-            $url = "";
+            $url = "/index.php?m=customermanage&a=customer_info&cus_id={$customerId}&id={$visitId}";
             sendMessage($roleId, '&nbsp;&nbsp;温馨提醒：回访客户《<a href="' . $url . '" title="点击查看">' . $customerName . '</a>》<font style="color:green;">需进行跟进沟通</font>！', 1);
             return;
         }
