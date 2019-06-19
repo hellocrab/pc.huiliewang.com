@@ -698,7 +698,8 @@ class CustomerAction extends Action {
                     $a = $m_customer->where('customer_id= %s', $customer['customer_id'])->save();
                     $_POST['con_contacts']['contacts_address']  =   implode(chr(10),$_POST['con_contacts']['contacts_address']);
                     ContactsModel::updateLog($customer['contacts_id'],$customer['contacts_id'], $_POST['con_contacts']);
-                    M('contacts')->where('contacts_id = %d', $customer['contacts_id'])->save($_POST['con_contacts']);
+                    //联系人信息修改
+                    ContactsModel::contactsUp($customer['contacts_id'],$_POST['con_contacts'],$customer['customer_id']);
                     $new_customer = $m_customer->where('customer_id= %d', $customer['customer_id'])->find(); //修改后数据
                     $update_ago = array_diff_assoc($new_customer, $old_customer); //获取已修改的字段
                     $m_fields = M('fields');
