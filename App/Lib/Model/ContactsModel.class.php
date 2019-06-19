@@ -177,6 +177,7 @@
                 //日志记录
                 $content .= $map[$key] . "[$dataValue] ,";
             }
+            $content = rtrim($content,',');
             $content = $action == 'edit' ? " 编辑了" . $content : ' 新增了' . $content;
             $fullName = M('user')->where(['role_id'=>session('role_id')])->getField("full_name");
             $content = "员工". $fullName . $content;
@@ -198,7 +199,7 @@
          * @return array|mixed
          */
         public static function logs($customerId){
-            $list = M('actionLog')->field("log_id,role_id,content,create_time")->where(['action_id'=>$customerId,'module_name'=>'contacts'])->select();
+            $list = M('actionLog')->field("log_id,role_id,content,create_time")->where(['action_id'=>$customerId,'module_name'=>'contacts'])->order("log_id desc")->select();
             foreach ($list as &$info){
                 $info['create_time'] = date("Y-m-d H:i:s",$info['create_time']);
             }
