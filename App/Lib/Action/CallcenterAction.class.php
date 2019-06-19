@@ -29,6 +29,7 @@ class CallcenterAction extends Action {
         '1' => '人才',
         '2' => '客户联系人'
     ];
+    protected $curlTimeOut = 30; //curl接口时间限制
     /**
      * 融营云呼叫中心SIG获取
      */
@@ -70,6 +71,8 @@ class CallcenterAction extends Action {
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
         curl_setopt($ch, CURLOPT_HTTP_VERSION, '1.0');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->curlTimeOut); //设置超时时长
+
         $msg = curl_exec($ch);
         $result = json_decode($msg, true);
         $uuid = $result['statuscode'];
@@ -102,6 +105,7 @@ class CallcenterAction extends Action {
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
         curl_setopt($ch, CURLOPT_HTTP_VERSION, '1.0');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->curlTimeOut); //设置超时时长
         $msg = curl_exec($ch);
         $result = json_decode($msg, true);
         $uuid = $result['Flag'];
@@ -365,6 +369,7 @@ class CallcenterAction extends Action {
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->curlTimeOut); //设置超时时长
         $msg = curl_exec($ch);
         $msg = json_decode($msg, true);
         return $msg;
@@ -397,6 +402,7 @@ class CallcenterAction extends Action {
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->curlTimeOut); //设置超时时长
         $msg = curl_exec($ch);
         $result = json_decode($msg, true);
 //        $uuid=$result['resp']['Msg'];
@@ -660,6 +666,7 @@ class CallcenterAction extends Action {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
         curl_setopt($ch, CURLOPT_HTTP_VERSION, '1.0');
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->curlTimeOut); //设置超时时长
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $msg = curl_exec($ch);
