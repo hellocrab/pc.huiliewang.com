@@ -1050,8 +1050,7 @@ class CustomermanageAction extends Action
             }
             //下次跟进时间
             if ($key == 'follow_time' && $value) {
-                $value = strtotime($value);
-                $this->messageNotice(session('role_id'), $customerId, 4, $visitId);
+                $this->messageNotice(session('role_id'), $customerId, 4, $visitId, $value);
             }
             //回访完成
             if ($key == "is_finish" && $value == 1) {
@@ -1146,15 +1145,24 @@ class CustomermanageAction extends Action
      * @param $roleId
      * @param $customerId
      * @param $visitId
+     * @param $gjTime
      * @param $type
      */
-    private function messageNotice($roleId, $customerId, $type = 3, $visitId = 0) {
+    private function messageNotice($roleId, $customerId, $type = 3, $visitId = 0, $gjTime = 0) {
         //消息发送
         $customerName = M('customer')->where(['customer_id' => $customerId])->getField('name');
         if (4 == $type) {
             //跟进消息
             $url = "/index.php?m=customermanage&a=customer_info&cus_id={$customerId}&id={$visitId}";
-            sendMessage($roleId, '&nbsp;&nbsp;温馨提醒：回访客户《<a href="' . $url . '" title="点击查看">' . $customerName . '</a>》<font style="color:green;">需进行跟进沟通</font>！', 1);
+            $gjList = F('visit_gj_list');
+            if ($gjList) {
+                $gjList[$visitId] = ['url' => $url, 'role_id' => $roleId, 'customer_name' => $customerName, 'time' => $gjTime];
+            } else {
+                $gjList = [];
+                $gjList[$visitId] = ['url' => $url, 'role_id' => $roleId, 'customer_name' => $customerName, 'time' => $gjTime];
+            }
+            F("visit_gj_list", $gjList);
+//            sendMessage($roleId, '&nbsp;&nbsp;温馨提醒：回访客户《<a href="' . $url . '" title="点击查看">' . $customerName . '</a>》<font style="color:green;">需进行跟进沟通</font>！', 1);
             return;
         }
         $content = '';

@@ -2408,6 +2408,21 @@ class BusinessAction extends Action
                 M('fine_project_cc')->where(array('id' => $v['id']))->setField(array('noticed' => 1));
             }
         }
+        //客户回访跟进消息发送
+        if($gjList = F('visit_gj_list')){
+            foreach ($gjList as $k=>$visit){
+                $time = $visit['time']; //跟进时间
+                $needTimes = time() - $time;
+                $roleId = $visit['role_id'];
+                $url = $visit['url'];
+                $customerName = $visit['customer_name'];
+                if($needTimes >= 0 && 600 > $needTimes){
+                    sendMessage($roleId, '&nbsp;&nbsp;温馨提醒：回访客户《<a href="' . $url . '" title="点击查看">' . $customerName . '</a>》<font style="color:green;">需进行跟进沟通</font>！', 1);
+                    unset($gjList[$k]);
+                }
+                F('visit_gj_list',$gjList);
+            }
+        }
 //        $arr_time = M('fine_project')->where(array('is_protected'=>1))->field('updatetime,id')->select();
 ////        dump($arr_time);die;
     }
