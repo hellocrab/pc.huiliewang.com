@@ -62,7 +62,8 @@ class Rank
         }
 
         //删除以往的不满足条件的数据
-        $this->deleteData('mx_customer_rank', ['eq' => ['is_manual' => 0, 'is_black' => 0]]);
+        $currentDay = strtotime(date('Y-m-d'), time());
+        $this->deleteData('mx_customer_rank', ['eq' => ['is_manual' => 0, 'is_black' => 0], 'lt' => ['add_time' => $currentDay]]);
         //客户等级初始值
         $defaultMoney = $this->rankConfig(0);
         if (!$defaultMoney) {
@@ -145,10 +146,10 @@ class Rank
             }
         }
         //删除列表历史数据
-        $sqlList = "select * from {$this->rankList} where customer_id = {$customerId}";
-        if ($this->selectSql($sqlList, false)) {
-            $this->deleteData($this->rankList, ['eq' => ['customer_id' => $customerId]]);
-        }
+//        $sqlList = "select * from {$this->rankList} where customer_id = {$customerId}";
+//        if ($this->selectSql($sqlList, false)) {
+//            $this->deleteData($this->rankList, ['eq' => ['customer_id' => $customerId]]);
+//        }
         //2、计算客户每个项目类型对应的等级
         $proTypeList = [];
         foreach ($data as $type => $integral) {

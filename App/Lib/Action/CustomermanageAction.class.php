@@ -848,6 +848,7 @@ class CustomermanageAction extends Action
         //项目列表
         $businessField = "name,business_id,creator_role_id,update_time,pro_type,creator_role_id,owner_role_id";
         $businessList = M('business')->field($businessField)->where(['customer_id' => $customerId, 'is_deleted' => 0])->order('business_id desc')->limit(50)->select();
+        $users = M('user')->where(['status' => ['in', [1, 2]]])->getField("role_id,full_name");
         foreach ($businessList as &$businessInfo) {
             $businessId = $businessInfo['business_id'];
             $businessInfo['update_time'] = date("Y-m-d", $businessInfo['update_time']);
@@ -868,19 +869,35 @@ class CustomermanageAction extends Action
             $departments = $this->departments($businessInfo['creator_role_id']);
             $businessInfo['p_department'] = $departments['p_department'] ? $departments['p_department'] : '';
             //部门
-            $businessInfo['department'] = $departments['department'] ?  $departments['department'] : '';
+            $businessInfo['department'] = $departments['department'] ? $departments['department'] : '';
         }
         $customerInfo['businessList'] = $businessList ? $businessList : [];
         //回访记录
+        $list = [];
         $visit = M('customer_visit_note')->where(['customer_id' => $customerId])->order('id desc')->select();
+        $visitIds = [];
         foreach ($visit as &$visitInfo) {
+            array_push($visitIds, $visitInfo['visit_id']);
+            $addTime = $visitInfo['add_time'];
             $visitInfo['add_time'] = date("Y-m-d H:i:s", $visitInfo['add_time']);
             $visitInfo['call_status'] = $this->call_status[$visitInfo['call_status']] ? $this->call_status[$visitInfo['call_status']] : '无';
             $visitInfo['phone_record'] = $visitInfo['phone_record'] ? $visitInfo['phone_record'] : '无';
-            $userName = M('user')->where(['role_id' => $visitInfo['create_role']])->getField('full_name');
+            $userName = $users[$visitInfo['create_role']];
             $visitInfo['create_role'] = $userName ? $userName : '';
+            $list[$addTime] = $visitInfo;
         }
-        $customerInfo['visit_log'] = $visit ? $visit : [];
+
+        //回访录音
+        $phoneRecords = M('phone_record')->field("oss_record_url,add_time,role_id")->where(['source' => 3, 'item_id' => ['in', $visitIds]])->select();
+        foreach ($phoneRecords as $record) {
+            $list[$record['add_time']] = [
+                'create_role' => $users[$record['role_id']],
+                'phone_record' => $record['oss_record_url'],
+                'add_time' => date("Y-m-d H:i:s", $record['add_time'])
+            ];
+        }
+        krsort($list);
+        $customerInfo['visit_log'] = $list ? array_values($list) : [];
         $this->response(['info' => $customerInfo]);
     }
 
