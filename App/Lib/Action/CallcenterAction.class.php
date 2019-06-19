@@ -186,7 +186,7 @@ class CallcenterAction extends Action {
             $msg = $this->pinPingCall($sourceTel, $tel);
             $isSuccess = $msg['meta']['success'];
             if (!$isSuccess) {
-                exit(json_encode(['code' => 0, 'msg' => $msg['meta']['message']]));
+                exit(json_encode(['code' => 0, 'msg' => '抱歉，目前无法拨打电话，运营商线路出现问题，技术部正在向运营商咨询解决方案，请您耐心等待']));
             }
             //成功
             $callsId = $msg['data'];
