@@ -383,3 +383,8 @@ textarea {
     color: #fff;
     border: 1px solid #7FA9EB;
 }
+.fa-play-circle {
+    color: rgba(92, 147, 234, 1);
+    font-size: 18px;
+    cursor: pointer;
+}

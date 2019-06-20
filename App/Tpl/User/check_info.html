@@ -1,0 +1,147 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PUBLIC__/style/js/TableFreeze.js"></script>
+<div class="wrapper wrapper-content">
+    <include file="Public:alert" />
+    <div class="resi_dialog dialog">
+        <div class="dialogBox">
+            <div class="dialogHead">
+                <img src="__PUBLIC__/img/customerManage/5_03.png" alt="">
+            </div>
+            <div class="dialogTitle">
+                <div></div>
+                离职移交确认
+            </div>
+            <div class="divide1"></div>
+            <div class="tas">
+                <p>员工<span>【XX】</span>提交离职申请，现将该员工的客户、人才、项目，移交给你，请你 确认以下信息，及时跟进项目情况 </p>
+                <table class="diata1">
+                    <thead>
+                    <th>客户数</th>
+                    <th>人才数</th>
+                    <th>正在进行的项目</th>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                <span>正在进行的项目</span>
+                <table class="diata2">
+                    <thead>
+                    <th>项目名称</th>
+                    <th>项目类型</th>
+                    <th>客户</th>
+                    <th>进度</th>
+                    <th>创建时间</th>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                <span>更多详情请点击项目查看</span>
+            </div>
+            <div class="dialogfoot">
+                <button class="cannal">拒绝移交</button>
+                <button class="submit">接受移交</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <include file="Setting:setting_left" />
+            <div class="col-md-10">
+                <div id="table_container" style="border-top:3px solid #e7eaec;">
+                    <div class="title-bar">
+
+                        <div class="row " id="title-show">
+                            <form class="form-inline" id="">
+                                <ul class="breadcrum pull-right" style="margin-bottom: 0px">
+                                    <li>
+                                        <span style="margin-left:20px;">部门：</span>
+                                        <select class="form-control" id="department"
+                                                style="margin-bottom:5px;">
+                                            <option value="">--全部--</option>
+                                        </select>
+                                    </li>
+                                    <li>
+                                        搜索：
+                                        <div class="input-group">
+                                            <input id="short_search" type="text" style="width:160px;"
+                                                   placeholder="请输入员工名称"
+                                                   class="form-control input-sm"/>
+                                            <span class="input-group-btn">
+												<button class="btn btn-default btn-search" id="short_search_btn" type="button"><i class="fa fa-search"></i></button>
+											</span>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 ibox-content" style="margin-top:0px;padding:0px;">
+                        <div id="table_div" class="full-height-scroll" style="left:0px;top:0px;">
+                            <div>
+                                <table class="table_">
+                                    <thead>
+                                    <th>姓名</th>
+                                    <th>事业部</th>
+                                    <th>部门</th>
+                                    <th>所在城市</th>
+                                    <th>电话</th>
+                                    <th>移交人员</th>
+                                    <th>离职时间</th>
+                                    <th>处理状态</th>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <div class="pager_">
+                                <select name="" id="pageSize" style="background:none;padding-right:10px;">
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="40">40</option>
+                                    <option value="50">50</option>
+                                    <option value="60">60</option>
+                                    <option value="70">70</option>
+                                    <option value="80">80</option>
+                                    <option value="90">90</option>
+                                    <option value="100">100</option>
+                                </select>
+                                <span class="totalPage">
+									共0条&nbsp;第1/0页
+								</span>
+                                <div class="pageBox">
+                                    <span class="last">«</span>
+                                    <span class="page1 choosed">1</span>
+                                    <span class="next">»</span>
+                                </div>
+                                <input type="number" id="goto">&nbsp;&nbsp;页&nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框 -->
+<div class="modal inmodal fade" id="Modal" tabindex="1" style="overflow:auto; border:1px solid #000000;" role="dialog">
+    <div class="modal-dialog modal-md" style="width:700px;">
+        <div class="modal-content" id="dep_modal">
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    /*模态框关闭或打开 先清除内容*/
+    $(".modal").on("hide.bs.modal", function () {
+        $(this).removeData("bs.modal");
+    });
+    $(".modal").on("show.bs.modal", function () {
+        $(this).removeData("bs.modal");
+    });
+
+    $(function () {
+
+    });
+</script>
+<include file="Public:footer" />

@@ -349,14 +349,12 @@ function bindvisit() {
         let name = ev.target.attributes[2].value;
         let cus_id = ev.target.attributes[3].value;
         window.location.href = `/index.php?m=customermanage&a=customer_info&cus_id=${cus_id}&id=${id}`
-
     })
     $('.fa-play-circle').click(ev => {
         let link = ev.target.attributes[1].value;
         var audio = document.getElementById('myaudio');
         console.log($('#myaudio').attr('src'))
         if (link == $('#myaudio').attr('src')) {
-            console.log(audio.paused);
             if (audio.paused) {
                 autoPlay();
             } else {
@@ -407,6 +405,20 @@ function bindvisit() {
                         create_record(val);
                     })
                     $('.line').height($('.record_sec').height());
+                    $('.fa-play-circle').click(ev => {
+                        let link = ev.target.attributes[1].value;
+                        var audio = document.getElementById('myaudio');
+                        if (link == $('#myaudio').attr('src')) {
+                            if (audio.paused) {
+                                autoPlay();
+                            } else {
+                                closePlay();
+                            }
+                        } else {
+                            $('#myaudio').attr('src', link);
+                            autoPlay();
+                        }
+                    })
                 }
             }
         })
@@ -448,7 +460,6 @@ function create_record(val) {
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
             <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -469,7 +480,6 @@ function create_record(val) {
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
             <p>备注：${val.visit_note}</p>
             <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -488,8 +498,7 @@ function create_record(val) {
             <p>是否有商机：${val.is_business==1?'是，备注内容：'+val.business_note:'否'}</p>
             <p>下次是否回访：${val.nest_visit==1?'是':'否'}</p>
             <p>备注：${val.visit_note}</p>
-            <p>是否完成回访：${val.is_finish==1?'是':'否'}</p>
-            <p style='display:none'>录音：${val.is_business==1?'是':'否'}</p>
+            <p>是否完成回访：${val.is_finish?'是':'否'}</p>
             <span class='record_time'>
             <span>${val.add_time.substr(10,6)}</span><br/>
                 <span>${val.add_time.substr(5,5)}</span>
@@ -497,9 +506,18 @@ function create_record(val) {
             <span class='point'>·</span>
         </div>`)
         }
-    } else {
+    } else if(val.nest_visit==0){
         $('.record_sec').append(`<div class='record_box' style='margin:20px 0'>
         <p>用户<span>【${val.create_role}】</span>将客户标记为不回访</p>
+        <span class='record_time'>
+        <span>${val.add_time.substr(10,6)}</span><br/>
+            <span>${val.add_time.substr(5,5)}</span>
+        </span>
+        <span class='point'>·</span>
+    </div>`)
+    }else if(val.nest_visit==2){
+        $('.record_sec').append(`<div class='record_box' style='margin:20px 0'>
+        <p>用户<span>【${val.create_role}】</span>录音：<i class="fa fa-play-circle" link="${val.phone_record}" style="display:inline-block"></i></p>
         <span class='record_time'>
         <span>${val.add_time.substr(10,6)}</span><br/>
             <span>${val.add_time.substr(5,5)}</span>
