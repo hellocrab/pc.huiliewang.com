@@ -932,7 +932,7 @@ class UserAction extends Action
             $this->assign('user_type_list', $user_type_list);
             $user['type_name'] = $user_type_list[$user['type']];
 
-            $this->edit_flag = $edit_flag;
+            $this->assign('edit_flag',$edit_flag);
             $this->user = $user;
             $this->r_url = $_SERVER['HTTP_REFERER'];
             $this->alert = parseAlert();
