@@ -180,6 +180,48 @@ class LeadsAction extends Action
     }
 
     /**
+     * 原始晋升业绩设置
+     */
+
+    public function firsthand_setTarget(){
+        import("@.ORG.ApiClient");
+        ApiClient::init();
+
+        if($this->isPost()){
+            $type = trim(BaseUtils::getStr($_POST['type']));
+            $rank_A2 = trim(BaseUtils::getStr(I('rank_A2'),'float'));
+            $rank_A3 = trim(BaseUtils::getStr(I('rank_A3'),'float'));
+            $rank_A4 = trim(BaseUtils::getStr(I('rank_A4'),'float'));
+            $rank_C1 = trim(BaseUtils::getStr(I('rank_C1'),'float'));
+            $rank_C2 = trim(BaseUtils::getStr(I('rank_C2'),'float'));
+            $rank_C3 = trim(BaseUtils::getStr($_POST['rank_C3'],'float'));
+            $rank_C4 = trim(BaseUtils::getStr($_POST['rank_C4'],'float'));
+            $rank_C5 = trim(BaseUtils::getStr($_POST['rank_C5'],'float'));
+            $rank_C6 = trim(BaseUtils::getStr($_POST['rank_C6'],'float'));
+            $rank_D1 = trim(BaseUtils::getStr($_POST['rank_D1'],'float'));
+            $rank_D2 = trim(BaseUtils::getStr($_POST['rank_D2'],'float'));
+            $rank_D3 = trim(BaseUtils::getStr($_POST['rank_D3'],'float'));
+            $rank_D4 = trim(BaseUtils::getStr($_POST['rank_D4'],'float'));
+            $rank_D5 = trim(BaseUtils::getStr($_POST['rank_D5'],'float'));
+            $rank_D6 = trim(BaseUtils::getStr($_POST['rank_D6'],'float'));
+            $rank_D7 = trim(BaseUtils::getStr($_POST['rank_D7'],'float'));
+            $rank_D8 = trim(BaseUtils::getStr($_POST['rank_D8'],'float'));
+            $rank_D9 = trim(BaseUtils::getStr($_POST['rank_D9'],'float'));
+            $rank_D10 = trim(BaseUtils::getStr($_POST['rank_D10'],'float'));
+            $rank_P1 = trim(BaseUtils::getStr($_POST['rank_P1'],'float'));
+            $rank_S3 = trim(BaseUtils::getStr($_POST['rank_S3'],'float'));
+            $rank_S4 = trim(BaseUtils::getStr($_POST['rank_S4'],'float'));
+            $rank_S5 = trim(BaseUtils::getStr($_POST['rank_S5'],'float'));
+            $rank_S6 = trim(BaseUtils::getStr($_POST['rank_S6'],'float'));
+            $rank_S7 = trim(BaseUtils::getStr($_POST['rank_S7'],'float'));
+            $rank_S8 = trim(BaseUtils::getStr($_POST['rank_S8'],'float'));
+            $rank_S9 = trim(BaseUtils::getStr($_POST['rank_S9'],'float'));
+        }else{
+
+        }
+    }
+
+    /**
      * 字段查重
      * */
     public function checkinfo() {

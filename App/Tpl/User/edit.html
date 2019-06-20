@@ -220,7 +220,7 @@ $(function(){
 											<td class="tdleft">职级</td>
 											<td>
 												<if condition = "$is_edit eq 1">
-													<select id="jobrank" class="form-control" name="jobrank" style="width:280px;">
+													<select id="jobrank" class="form-control" name="jobrank"  <if condition="$edit_flag eq 0">disabled="disabled"</if> style="width:280px;">
 														<option value="" >--员工职级--</option>
 														<volist name="user_jobrank_list" key="key" id="vo">
 															<option value="{$vo.id}" <if condition = "$user['job_rank'] eq $vo['id']">selected</if>>{$vo.name}</option>
@@ -228,6 +228,23 @@ $(function(){
 													</select>
 													<else />
 													{$user['type_name']}
+												</if>
+											</td>
+										</tr>
+
+										<tr>
+											<td class="tdleft">产品类型</td>
+											<td>
+												<if condition = "$is_edit eq 1">
+													<select  class="form-control" name="profession_type" <if condition="$edit_flag eq 0">disabled="disabled"</if> style="width:280px;">
+														<option value="1" <if condition = "$user['profession_type'] eq 1">selected</if> >面试快</option>
+														<option value="2" <if condition = "$user['profession_type'] eq 2">selected</if> >入职快</option>
+														<option value="3" <if condition = "$user['profession_type'] eq 3">selected</if> >专业猎头</option>
+														<option value="4" <if condition = "$user['profession_type'] eq 4">selected</if> >猎萝卜</option>
+														<option value="5" <if condition = "$user['profession_type'] eq 5">selected</if> >BD</option>
+														<option value="6" <if condition = "$user['profession_type'] eq 5">selected</if> >其它</option>
+													</select>
+													<else />
 												</if>
 											</td>
 										</tr>
@@ -242,7 +259,7 @@ $(function(){
 										</tr>
 										<tr>
 											<td class="tdleft">入职日期</td>
-											<td><input class="Wdate text-input small-input form-control" name="entry" id="entry" type="text" value="{$user['entry']}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width:280px;"></td>
+											<td><input class="Wdate text-input small-input form-control" name="entry" id="entry" type="text" value="{$user['entry']}" <if condition="$edit_flag eq 0">disabled="disabled"</if> onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width:280px;"></td>
 										</tr>
 										<tr>
 											<td class="tdleft">自我介绍</td>
