@@ -833,8 +833,16 @@ class UserAction extends Action
                 }
 
                 $m_user->birthday = $this->_post('birthday', 'trim');
-                $m_user->entry = $this->_post('entry', 'trim');
-                $m_user->job_rank = $this->_post('jobrank', 'trim');
+                if(!empty($this->_post('entry', 'trim')))
+                    $m_user->entry = $this->_post('entry', 'trim');
+
+                if(!empty($this->_post('jobrank', 'trim')))
+                    $m_user->job_rank = $this->_post('jobrank', 'trim');
+
+                if(!empty($this->_post('profession_type','trim')))
+                    $m_user->profession_type = intval($this->_post('profession_type','trim'));//产品类型
+
+                $m_user->updatetime = time();
 
                 if ($m_user->save() || $is_update) {
                     //更改数据【部门变更】
@@ -877,6 +885,20 @@ class UserAction extends Action
                 $is_edit = 1;
             }
             $this->is_edit = $is_edit;
+            //是否有编辑 职级、入职时间、产品类型的权限  //限人力和行政
+            $dep_renzi = M('role_department')->where(['name'=>'人力资源部'])->getField('department_id');
+            $dep_xingzheng = M('role_department')->where(['name'=>'行政部'])->getField('department_id');
+            $edit_flag = 0;
+            session('?admin') && $edit_flag = 1;
+            $role_id = session('role_id');
+            $roleIds_renzi = getRoleByDepartmentId(intval($dep_renzi),true);
+            $roleIds_xingzheng = getRoleByDepartmentId(intval($dep_xingzheng),true);
+            foreach ($roleIds_renzi as $k=>$v){
+                $v['role_id'] == $role_id && $edit_flag = 1;
+            }
+            foreach ($roleIds_xingzheng as $k=>$v){
+                $v['role_id'] == $role_id && $edit_flag = 1;
+            }
             $d_user = D('RoleView');
             $user = $d_user->where('user.user_id = %d', $user_id)->find();
             $user['number'] = str_replace($user['prefixion'], '', $user['number']);
@@ -910,6 +932,7 @@ class UserAction extends Action
             $this->assign('user_type_list', $user_type_list);
             $user['type_name'] = $user_type_list[$user['type']];
 
+            $this->assign('edit_flag',$edit_flag);
             $this->user = $user;
             $this->r_url = $_SERVER['HTTP_REFERER'];
             $this->alert = parseAlert();
@@ -1468,7 +1491,7 @@ class UserAction extends Action
             $position_id = intval($_POST['position_id']);
             $department_id = intval($_POST['department_id']);
             $user_jobrank_id = intval($_POST['jobrank']);
-
+            $profession_type = intval($_POST['profession_type']);
             if ($pd !== $confirmpd) {
                 $this->eReturn('两次输入密码不一致');
             }
@@ -1484,6 +1507,9 @@ class UserAction extends Action
             }
             if (!$user_jobrank_id) {
                 $this->eReturn('请选择职级！');
+            }
+            if(!$profession_type){
+                $this->eReturn('请选择产品类型！');
             }
             //存用户信息
             $salt = substr(md5(time()), 0, 4);
@@ -1513,6 +1539,7 @@ class UserAction extends Action
                 'number' => $user_custom . '_' . $this->_post('number'),
                 'prefixion' => $user_custom,
                 'extid' => intval($_POST['extid']),
+                'profession_type' => $profession_type,
             );
             $user_id = M('User')->add($user_data);
 
@@ -2720,5 +2747,115 @@ class UserAction extends Action
             $res = $transferModel->where($where)->save($data);
         }
         $res ? $this->ajaxReturn(['success' => 1, 'code' => 200, 'info' => '处理成功']) : $this->ajaxReturn(['success' => 0, 'code' => 500, 'info' => isset($error) ? $error : '系统发生错误']);
+    }
+
+
+    /**
+     * 个人资料审核
+     */
+    public function check_info(){
+        if (!in_array(session('role_id'), getPerByAction('user', 'index'))) {
+            alert('error', '您没有此权利！', $_SERVER['HTTP_REFERER']);
+        }
+        $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
+        $status = isset($_GET['status']) ? intval($_GET['status']) : '';
+        // $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $d_user = D('UserView'); // 实例化User对象
+        $m_user = M('User');
+        // if(!session('?admin')){
+        // 	$where['role_id'] = array('in', getSubRoleId(true));
+        // }
+        if ($status) {
+            $where['status'] = $status;
+            $params[] = "status=" . $status;
+        }
+        if(trim($_GET['check_type'])){
+            $where['is_checked'] = intval($_GET['is_checked']);
+            $params[] = "is_checked=".trim($_GET['is_checked']);
+        }
+        if (trim($_GET['search'])) {
+            $map['full_name'] = array('like', '%' . trim($_GET['search']) . '%');
+            $map['telephone'] = array('like', '%' . trim($_GET['search']) . '%');
+            $map['logic'] = 'or';
+            $where['_complex'] = $map;
+            $params[] = "search=" . trim($_GET['search']);
+        }
+        // if($id){
+        // 	$where['category_id'] = $id;
+        // 	$params[] = "status=".$status;
+        // }
+        if ($_GET['listrows']) {
+            $listrows = intval($_GET['listrows']);
+            $params[] = "listrows=" . intval($_GET['listrows']);
+        } else {
+            $listrows = 15;
+            $params[] = "listrows=" . $listrows;
+        }
+        import('@.ORG.Page');// 导入分页类
+        $count = $m_user->where($where)->count();
+        $p_num = ceil($count / $listrows);
+        if ($p_num < $p) {
+            $p = $p_num;
+        }
+        $this->parameter = implode('&', $params);
+
+        $Page = new Page($count, $listrows);// 实例化分页类 传入总记录数和每页显示的记录数
+        $Page->parameter = implode('&', $params);
+        $show = $Page->show();// 分页显示输出
+        $user_list = M('User')->order('field(status,1,3,2),updatetime asc')->where($where)->page($p . ',' . $listrows)->select();
+        $user_id = array();
+        $parent_id = array();
+        $rank_id = array();
+        foreach ($user_list as $k => $v){
+            $user_id[] = intval($v['user_id']);
+            $rank_id[] = intval($v['job_rand']);
+        }
+        $userIds = implode(',',$user_id);
+        $rankIds = implode(',',$rank_id);
+        $userInfo = $d_user->where('user.user_id in ('.$userIds.')')->select();
+        $rankInfo = M('job_rank')->where('id in ('.$rankIds.')')->getField('id,name',true);
+        foreach ($userInfo as $k=>$v){
+            $parent_id[] = $v['part_parent_id'];
+        }
+        $parentIds = implode(',',$parent_id);
+        $parent_part = M('role_department')->where('department_id in ('.$parentIds.')')->getField('department_id,name',true);
+        foreach ($user_list as $k => $v) {
+//            $user_list[$k]['role_info'] = $d_user->where('user.user_id = %d', $v['user_id'])->find();
+            foreach ($userInfo as $kk=>$vv){
+                $vv['user_id'] == $v['user_id'] && $user_list[$k]['role_info'] = $vv;
+            }
+            foreach ($parent_part as $kk=>$vv){
+                $kk == $user_list[$k]['role_info']['part_parent_id'] && $user_list[$k]['parent_name'] = $vv;
+            }
+            empty($v['updatetime']) &&  $user_list[$k]['updatetime'] = $user_list[$k]['reg_time'];
+            foreach ($rankInfo as $kk=>$vv){
+                $kk == $v['job_rank'] && $user_list[$k]['rank_name'] = $vv;
+            }
+            //角色
+            $type_name = '';
+            switch ($v['type']) {
+                case 1 :
+                    $type_name = '猎头';
+                    break;
+                case 2 :
+                    $type_name = '财务';
+                    break;
+                case 3 :
+                    $type_name = '行政';
+                    break;
+                case 100 :
+                    $type_name = '其他';
+                    break;
+            }
+            $user_list[$k]['type_name'] = $type_name;
+        }
+        header('content-type:text/html;charset=utf-8;');dump($user_list);die;
+        $this->assign('user_list', $user_list);// 赋值数据集
+        $this->assign('page', $show);// 赋值分页输出
+        $this->assign("listrows", $listrows);
+        $category = M('user_category');
+        $this->categoryList = $category->select();
+        $this->alert = parseAlert();
+        $this->display();
     }
 }

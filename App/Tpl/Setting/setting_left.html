@@ -75,6 +75,11 @@ $(function(){
 					</li>
 				</if>
 
+				<!--<if condition = "checkPerByAction('user','check_info')">-->
+					<!--<li >-->
+						<!--<a href="{:U('user/check_info')}" ><span <if condition = "$module_name == 'user' && $action_name == 'check_info'">class="li_text_active"<else />class="li_text"</if>>个人资料审核</span></a>-->
+					<!--</li>-->
+				<!--</if>-->
 			</ul>
 			<if condition = "session('?admin')">
 				<div class="subNav currentDd currentDt">自定义字段设置</div>

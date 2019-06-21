@@ -180,6 +180,58 @@ class LeadsAction extends Action
     }
 
     /**
+     * 原始晋升业绩设置
+     */
+
+    public function firsthand_setTarget(){
+        import("@.ORG.ApiClient");
+        ApiClient::init();
+        $leads =  new com\hlw\huiliewang\interfaces\LeadsServiceClient();
+        ApiClient::build($leads);
+        $type = intval(trim(BaseUtils::getStr($_GET['type'])));
+
+        if(empty($type))
+            $type = 1 ;//默认面试快
+        if($this->isPost()){
+            $target = new com\hlw\huiliewang\dataobject\targetInfo\targetInfoRequestDTO();
+            $target->type = trim(BaseUtils::getStr($_POST['type'])) ;
+            $target->rank_A2 = trim(BaseUtils::getStr($_POST['rank_A2'],'float'));
+            $target->rank_A3 = trim(BaseUtils::getStr($_POST['rank_A3'],'float'));
+            $target->rank_A4 = trim(BaseUtils::getStr($_POST['rank_A4'],'float'));
+            $target->rank_C1 = trim(BaseUtils::getStr($_POST['rank_C1'],'float'));
+            $target->rank_C2 = trim(BaseUtils::getStr($_POST['rank_C2'],'float'));
+            $target->rank_C3 = trim(BaseUtils::getStr($_POST['rank_C3'],'float'));
+            $target->rank_C4 = trim(BaseUtils::getStr($_POST['rank_C4'],'float'));
+            $target->rank_C5 = trim(BaseUtils::getStr($_POST['rank_C5'],'float'));
+            $target->rank_C6 = trim(BaseUtils::getStr($_POST['rank_C6'],'float'));
+            $target->rank_D1 = trim(BaseUtils::getStr($_POST['rank_D1'],'float'));
+            $target->rank_D2 = trim(BaseUtils::getStr($_POST['rank_D2'],'float'));
+            $target->rank_D3 = trim(BaseUtils::getStr($_POST['rank_D3'],'float'));
+            $target->rank_D4 = trim(BaseUtils::getStr($_POST['rank_D4'],'float'));
+            $target->rank_D5 = trim(BaseUtils::getStr($_POST['rank_D5'],'float'));
+            $target->rank_D6 = trim(BaseUtils::getStr($_POST['rank_D6'],'float'));
+            $target->rank_D7 = trim(BaseUtils::getStr($_POST['rank_D7'],'float'));
+            $target->rank_D8 = trim(BaseUtils::getStr($_POST['rank_D8'],'float'));
+            $target->rank_D9 = trim(BaseUtils::getStr($_POST['rank_D9'],'float'));
+            $target->rank_D10 = trim(BaseUtils::getStr($_POST['rank_D10'],'float'));
+            $target->rank_P1 = trim(BaseUtils::getStr($_POST['rank_P1'],'float'));
+            $target->rank_S3 = trim(BaseUtils::getStr($_POST['rank_S3'],'float'));
+            $target->rank_S4 = trim(BaseUtils::getStr($_POST['rank_S4'],'float'));
+            $target->rank_S5 = trim(BaseUtils::getStr($_POST['rank_S5'],'float'));
+            $target->rank_S6 = trim(BaseUtils::getStr($_POST['rank_S6'],'float'));
+            $target->rank_S7 = trim(BaseUtils::getStr($_POST['rank_S7'],'float'));
+            $target->rank_S8 = trim(BaseUtils::getStr($_POST['rank_S8'],'float'));
+            $target->rank_S9 = trim(BaseUtils::getStr($_POST['rank_S9'],'float'));
+            $result = $leads->setTarget($target);
+            $this->response($result);
+        }else{
+            $result = $leads->getTarget($type);
+            $this->assign('result',$result);
+            $this->display();
+        }
+    }
+
+    /**
      * 字段查重
      * */
     public function checkinfo() {
