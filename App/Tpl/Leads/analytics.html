@@ -1225,7 +1225,7 @@
     $('#btnExport').click(function () {
         var between_date = $('#reservation').val();
         var department_id = $("#department option:selected").val();
-        var role = $("#role").val();
+        var role = $("#parter_id").val();
         var url = '{:U("leads/analytics")}&isExport=1&role=' + role + '&between_date=' + between_date +
             '&department=' + department_id;
         window.location.href = url;
