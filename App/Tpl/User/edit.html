@@ -262,6 +262,10 @@ $(function(){
 											<td><input class="Wdate text-input small-input form-control" name="entry" id="entry" type="text" value="{$user['entry']}" <if condition="$edit_flag eq 0">disabled="disabled"</if> onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width:280px;"></td>
 										</tr>
 										<tr>
+											<td class="tdleft">景升学院毕业日期</td>
+											<td><input class="Wdate text-input small-input form-control" name="graduation_time" id="graduation_time" type="text" value="{$user['graduation_time']}" <if condition="$edit_flag eq 0">disabled="disabled"</if> onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width:280px;"></td>
+										</tr>
+										<tr>
 											<td class="tdleft">自我介绍</td>
 											<td><textarea name="introduce" class="form-control" style="width:280px;">{$user.introduce}</textarea></td>
 										</tr>
