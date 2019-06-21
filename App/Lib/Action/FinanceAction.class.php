@@ -2887,7 +2887,7 @@ class FinanceAction extends Action
     public function reach() {
         $day = BaseUtils::getStr(I('day', date("Y-m-01 00:00:00")));
         $type = BaseUtils::getStr(I('type', 0), 'int');
-        $department = BaseUtils::getStr(I("department", 62), 'int');
+        $department = BaseUtils::getStr(I("department"), 'int');
         $name = BaseUtils::getStr(I("name"));
         $isExport = BaseUtils::getStr(I("isExport"), 'int');
         $page = BaseUtils::getStr(I("page", 1), 'int');
@@ -2935,7 +2935,7 @@ class FinanceAction extends Action
      * @desc 考情导入
      * @throws Exception
      */
-    public function weekExport() {
+    public function workdayExport() {
         $fileDate = I('date', date("Y-m-01", time()));
         import('@.ORG.UploadFile');
         $upload = new UploadFile(); // 实例化上传类
